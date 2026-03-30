@@ -13,7 +13,7 @@ version: 0.2.0
 Prompt user conversationally với numbered list options tại control points.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `StrReplace`, `Read`, `Write`, `Glob`, `Grep`, `Task`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 
 ## D. Subagent Spawning
 Use `Task(subagent_type="generalPurpose", ...)` for parallel execution.

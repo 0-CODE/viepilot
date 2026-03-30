@@ -94,15 +94,23 @@ If gaps found → ask user to clarify or return to brainstorm.
 ## Step 1B: Research Official Stack Guidance (mandatory)
 
 For each selected stack extracted in Step 1:
-1. Research official documentation and authoritative references.
-2. Build a concise implementation guide that can be reused by `vp-auto`.
-3. Capture "Do / Don't" rules and common anti-patterns.
+1. Use `WebSearch` to find official documentation and authoritative references.
+2. Use `WebFetch` to read and verify each selected source before summarizing.
+3. Prefer source priority in this order:
+   - Official framework docs/specification
+   - Official project GitHub org docs
+   - Maintainer-authored references
+   - Community articles (only as supplemental context)
+4. Reject weak sources (outdated, anonymous, unclear version, no technical detail).
+5. Build a concise implementation guide that can be reused by `vp-auto`.
+6. Capture "Do / Don't" rules and common anti-patterns.
 
 Required output per stack:
 - Quick summary (token-light)
 - Best practices
 - Anti-patterns
 - Source links + checked date
+- Version compatibility note (e.g. MyBatis 3.x, Spring Boot 3.x integration notes)
 
 Recommended structure:
 ```yaml

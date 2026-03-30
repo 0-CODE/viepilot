@@ -13,7 +13,7 @@ version: 0.2.0
 Prompt user conversationally với numbered list options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `StrReplace`, `Read`, `Write`, `Glob`, `Grep`, `Task`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
 
 <objective>
@@ -81,6 +81,11 @@ Ask user for:
 - For every selected stack, research official docs and authoritative sources
 - Build concise "Do / Don't / Pitfalls" guidance
 - If guidance is uncertain, ask user before locking decisions
+- Tool policy:
+  - Use `WebSearch` to discover candidate sources
+  - Use `WebFetch` to read source content before extracting guidance
+  - Prioritize official docs, specs, and maintainers' references over blog posts
+  - Save source URLs and access date in `SOURCES.md`
 
 ### Step 1C: Write stack cache
 - Persist guidance to `~/.viepilot/stacks/{stack}/...`
