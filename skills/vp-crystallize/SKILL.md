@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -40,6 +40,13 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 - `LICENSE`
 - Updated `README.md`
 
+**Stack intelligence (global cache):**
+- `~/.viepilot/stacks/{stack}/SUMMARY.md`
+- `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md`
+- `~/.viepilot/stacks/{stack}/ANTI-PATTERNS.md`
+- `~/.viepilot/stacks/{stack}/SOURCES.md`
+- `.viepilot/STACKS.md` (project-local index to global cache)
+
 **After:** Ready for `/vp-auto`
 </objective>
 
@@ -67,7 +74,17 @@ Ask user for:
 ### Step 1: Analyze Brainstorm
 - Load all brainstorm sessions
 - Extract: decisions, architecture, schemas, features
+- Extract selected tech stacks
 - Validate completeness
+
+### Step 1B: Official stack research (mandatory)
+- For every selected stack, research official docs and authoritative sources
+- Build concise "Do / Don't / Pitfalls" guidance
+- If guidance is uncertain, ask user before locking decisions
+
+### Step 1C: Write stack cache
+- Persist guidance to `~/.viepilot/stacks/{stack}/...`
+- Create `.viepilot/STACKS.md` for lookup mapping
 
 ### Step 2: Generate AI-GUIDE.md
 - Quick lookup table
@@ -101,6 +118,7 @@ Ask user for:
 - Git conventions (Conventional Commits)
 - Changelog standards (Keep a Changelog)
 - Quality gates
+- Stack-specific rules from cache
 
 ### Step 7: Generate ROADMAP.md
 - Break into phases
@@ -133,6 +151,9 @@ Ask user for:
 </process>
 
 <success_criteria>
+- [ ] Official stack research completed before architecture lock
+- [ ] Global cache created for all selected stacks
+- [ ] Project-local stack index (`.viepilot/STACKS.md`) created
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md has complete metadata
 - [ ] SYSTEM-RULES.md has all standards

@@ -1,61 +1,61 @@
 {
-  "milestone": "M1.7",
-  "milestone_name": "Brainstorm Intelligence Upgrade",
-  "phase": 10,
-  "phase_name": "Brainstorm Landing + Research",
+  "milestone": "M1.8",
+  "milestone_name": "Stack Intelligence for Crystallize + Auto",
+  "phase": 11,
+  "phase_name": "Stack Intelligence Cache",
   "task": 0,
   "task_name": null,
   "status": "complete",
-  "last_activity": "2026-03-30T23:59:00Z",
+  "last_activity": "2026-03-30T23:59:59Z",
   "version": {
-    "current": "0.5.0",
-    "next": "0.6.0"
+    "current": "0.6.0",
+    "next": "0.7.0"
   },
   "progress": {
-    "phases_total": 10,
-    "phases_completed": 10,
-    "tasks_total": 32,
-    "tasks_completed": 32,
+    "phases_total": 11,
+    "phases_completed": 11,
+    "tasks_total": 35,
+    "tasks_completed": 35,
     "percentage": 100
   },
   "context": {
     "files_touched": [
-      "workflows/brainstorm.md",
-      "skills/vp-brainstorm/SKILL.md",
-      "workflows/evolve.md",
-      "skills/vp-evolve/SKILL.md",
+      "workflows/crystallize.md",
+      "skills/vp-crystallize/SKILL.md",
+      "workflows/autonomous.md",
+      "skills/vp-auto/SKILL.md",
       ".viepilot/ROADMAP.md",
       ".viepilot/TRACKER.md",
       "CHANGELOG.md",
-      ".viepilot/phases/10-brainstorm-intelligence/PHASE-STATE.md"
+      ".viepilot/phases/11-stack-intelligence/PHASE-STATE.md"
     ],
     "decisions": [
       {
         "date": "2026-03-30",
-        "decision": "Landing page brainstorm must include layout selection",
-        "rationale": "Improve clarity before implementation"
+        "decision": "Require official stack research before crystallize decisions",
+        "rationale": "Avoid framework misuse and improve implementation quality"
       },
       {
         "date": "2026-03-30",
-        "decision": "Allow in-session research during brainstorm",
-        "rationale": "Reduce context switching and accelerate decisions"
+        "decision": "Use global stack cache for token-efficient vp-auto lookup",
+        "rationale": "Reuse best practices across projects and reduce context cost"
       }
     ],
     "blockers": [],
     "notes": [
-      "M1.7 complete - Brainstorm Intelligence Upgrade (Phase 10)",
-      "Landing page layout discovery flow added",
-      "Research-in-session supported with /research command"
+      "M1.8 complete - Stack Intelligence for Crystallize + Auto (Phase 11)",
+      "Crystallize now enforces official stack research gate",
+      "vp-auto preflight reads stack summaries before implementation"
     ]
   },
   "checkpoints": [
-    {"tag": "vp-p10-t1", "description": "Start Phase 10 task flow"},
-    {"tag": "vp-p10-t1-done", "description": "Landing deep-dive added"},
-    {"tag": "vp-p10-t2-done", "description": "In-session research mode added"},
-    {"tag": "vp-p10-t3-done", "description": "Evolve routing updated"},
-    {"tag": "vp-p10-complete", "description": "Phase 10 complete"},
-    {"tag": "v0.5.0", "description": "M1.7 complete"}
+    {"tag": "vp-p11-t1", "description": "Start Phase 11 task flow"},
+    {"tag": "vp-p11-t1-done", "description": "Crystallize research gate added"},
+    {"tag": "vp-p11-t2-done", "description": "Global stack cache structure defined"},
+    {"tag": "vp-p11-t3-done", "description": "vp-auto stack preflight lookup added"},
+    {"tag": "vp-p11-complete", "description": "Phase 11 complete"},
+    {"tag": "v0.6.0", "description": "M1.8 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-30T23:59:00Z"
+  "updated_at": "2026-03-30T23:59:59Z"
 }

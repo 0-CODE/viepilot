@@ -1,7 +1,7 @@
 ---
 name: vp-auto
 description: "Autonomous execution loop với control points và recovery"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -33,6 +33,11 @@ Pauses at control points:
 - `.viepilot/phases/*/PHASE-STATE.md`
 - `.viepilot/HANDOFF.json`
 - `CHANGELOG.md` (if feature/fix)
+
+**Preflight before each task implementation:**
+- Read `.viepilot/STACKS.md` (if exists)
+- Read `~/.viepilot/stacks/{stack}/SUMMARY.md` for relevant stacks
+- Expand to detailed cache files only when needed (token-efficient)
 
 **Updates after each phase complete:**
 - `.viepilot/ROADMAP.md` — phase status row and Progress Summary table
@@ -97,6 +102,11 @@ Read:
 - PHASE-STATE.md (current phase)
 - tasks/{task}.md (current task)
 - context_required files (from task)
+
+Stack preflight:
+- Identify stacks used by task
+- Load stack cache summary first
+- Apply stack do/don't rules during implementation
 ```
 
 Create git tag: `vp-p{phase}-t{task}`

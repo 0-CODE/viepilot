@@ -270,6 +270,42 @@
 
 ---
 
+---
+
+## Milestone: M1.8 - Stack Intelligence for Crystallize + Auto
+
+### Overview
+- **Version**: 0.6.0
+- **Goal**: Bắt buộc research chính thống theo tech stack và tái sử dụng best practices qua global cache
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-30)
+
+---
+
+### Phase 11: Stack Intelligence Cache (ENH-008) ✅
+**Goal**: vp-crystallize research official docs theo stack và vp-auto tra cứu nhanh cache để code đúng best practices
+**Estimated Tasks**: 3
+**Dependencies**: Phase 10
+**Directory**: `.viepilot/phases/11-stack-intelligence/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 11.1 | Add research gate in crystallize workflow | Each selected stack requires official-source research summary before architecture lock | ENH-008 |
+| 11.2 | Define global stack cache structure | `~/.viepilot/stacks/{stack}/` has SUMMARY/BEST-PRACTICES/ANTI-PATTERNS/SOURCES files | ENH-008 |
+| 11.3 | Add vp-auto stack preflight lookup | vp-auto reads stack SUMMARY first, expands only when needed | ENH-008 |
+
+---
+
+## Progress Summary (M1.8)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 11. Stack Intelligence Cache | ✅ Complete | 3 | 3 | 100% |
+
+**Total**: 3 tasks, 3 completed, **100%** 🎉
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features

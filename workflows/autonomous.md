@@ -90,21 +90,33 @@ read:
   - context_required files from task file
 ```
 
+#### Stack Preflight (token-efficient lookup)
+Before implementing, detect relevant stacks for the current task and load guidance in this order:
+1. `.viepilot/STACKS.md` (project stack map)
+2. `~/.viepilot/stacks/{stack}/SUMMARY.md` (quick checklist, always first)
+3. `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md` (only if task is medium/high complexity)
+4. `~/.viepilot/stacks/{stack}/ANTI-PATTERNS.md` (for review before finalizing)
+
+If stack cache is missing:
+- warn and optionally run quick research
+- then continue with explicit assumptions noted in task logs
+
 Create git tag: `vp-p{phase}-t{task}`
 Update PHASE-STATE.md: task → in_progress
 
 #### Execute Task
 1. Read task objective and acceptance criteria
 2. Read SYSTEM-RULES.md for coding standards
-3. Load any required schemas
-4. Implement according to task specification
-5. Atomic commits per logical unit:
+3. Apply stack cache guidance from preflight
+4. Load any required schemas
+5. Implement according to task specification
+6. Atomic commits per logical unit:
    ```bash
    git add {relevant files}
    git commit -m "{type}({scope}): {description}"
    git push
    ```
-6. Log notes in task file if needed
+7. Log notes in task file if needed
 
 #### Verify Task
 ```yaml

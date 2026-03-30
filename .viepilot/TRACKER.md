@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.7 - Brainstorm Intelligence Upgrade ✅ COMPLETE
+- **Milestone**: M1.8 - Stack Intelligence for Crystallize + Auto ✅ COMPLETE
 - **Current Phase**: All phases complete
 - **Current Task**: -
-- **Last Activity**: 2026-03-30 - M1.7 Complete v0.5.0
+- **Last Activity**: 2026-03-30 - M1.8 Complete v0.6.0
 
 ## Progress Overview
 ```
@@ -30,17 +30,23 @@ M1.6 Overall:                   [██████████] 100% ✅
 M1.7 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Phase 10: Brainstorm Intelligence [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.7 Overall:                   [██████████] 100% 🎉
+M1.7 Overall:                   [██████████] 100% ✅
+
+M1.8 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 11: Stack Intelligence Cache [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.8 Overall:                   [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.5.0
+0.6.0
 ```
 
 ### Released
+- **0.6.0** — M1.8 Stack Intelligence: official stack research gate + global cache + vp-auto preflight lookup
 - **0.5.0** — M1.7 Brainstorm Intelligence: landing-page layout discovery + in-session research
 - **0.4.0** — M1.6 Generalize: vp-audit 3-tier + workflow framework guards (ENH-006, ENH-007)
 - **0.3.0** — M1.5 ENH Backlog: vp-docs/vp-auto/vp-audit drift prevention (ENH-001~005)
@@ -54,11 +60,11 @@ M1.7 Overall:                   [██████████] 100% 🎉
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 1 features
+- 0 features
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.5.0
+Suggested next version: 0.6.0
 ```
 
 ## Decision Log
@@ -81,7 +87,7 @@ Suggested next version: 0.5.0
 | ENH-005 | 🔧 | vp-docs: Keep skills-reference.md in sync with skills/ | high | new |
 | ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | ✅ done |
 | ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | ✅ done |
-| ENH-008 | 🔧 | vp-crystallize: Research official stack best practices + global cache for vp-auto | **critical** | new |
+| ENH-008 | 🔧 | vp-crystallize: Research official stack best practices + global cache for vp-auto | **critical** | ✅ done |
 
 ## Blockers
 _None currently_
@@ -92,7 +98,7 @@ _None currently_
 ```
 
 ## Next Action
-**Milestone M1.7 Complete!** Next steps:
+**Milestone M1.8 Complete!** Next steps:
 - `/vp-docs` to generate full documentation
 - `/vp-evolve` to plan Milestone M2
 

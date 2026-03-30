@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 
+#### Stack Intelligence (ENH-008)
+- `workflows/crystallize.md` — added mandatory official-doc research gate for each selected tech stack before architecture decisions are locked
+- `workflows/crystallize.md` — added global stack cache write step at `~/.viepilot/stacks/{stack}/` with `SUMMARY.md`, `BEST-PRACTICES.md`, `ANTI-PATTERNS.md`, and `SOURCES.md`
+- `workflows/crystallize.md` — added `.viepilot/STACKS.md` mapping and AI-GUIDE/SYSTEM-RULES integration for stack-guided execution
+- `skills/vp-crystallize/SKILL.md` — updated objective/process/success criteria to require official stack research and cache generation
+- `workflows/autonomous.md` — added task-level stack preflight lookup (read `SUMMARY.md` first, expand only when needed) for token-efficient best-practice enforcement
+- `skills/vp-auto/SKILL.md` — added stack-cache preflight behavior and version bump
+
 #### Brainstorm UX
 - `workflows/brainstorm.md` — added Landing Page deep-dive flow with explicit layout selection (A/B/C/D/custom), follow-up questions, and structure decisions capture
 - `workflows/brainstorm.md` — added in-session research mode so users can request research without leaving brainstorm

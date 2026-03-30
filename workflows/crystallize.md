@@ -90,6 +90,54 @@ Validate completeness:
 If gaps found → ask user to clarify or return to brainstorm.
 </step>
 
+<step name="research_stack_official">
+## Step 1B: Research Official Stack Guidance (mandatory)
+
+For each selected stack extracted in Step 1:
+1. Research official documentation and authoritative references.
+2. Build a concise implementation guide that can be reused by `vp-auto`.
+3. Capture "Do / Don't" rules and common anti-patterns.
+
+Required output per stack:
+- Quick summary (token-light)
+- Best practices
+- Anti-patterns
+- Source links + checked date
+
+Recommended structure:
+```yaml
+stack: mybatis
+official_sources:
+  - https://mybatis.org/mybatis-3/
+guideline:
+  do:
+    - Prefer XML mapper for complex SQL and reusable fragments
+  dont:
+    - Avoid large inline SQL annotations for complex queries
+```
+
+If official sources cannot be verified, pause crystallize and ask user to confirm temporary assumptions.
+</step>
+
+<step name="write_stack_cache">
+## Step 1C: Write Global Stack Cache
+
+Persist stack guidance globally for cross-project reuse:
+
+```bash
+mkdir -p "$HOME/.viepilot/stacks/{stack}"
+```
+
+Files per stack:
+- `~/.viepilot/stacks/{stack}/SUMMARY.md` (short checklist for fast lookup)
+- `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md`
+- `~/.viepilot/stacks/{stack}/ANTI-PATTERNS.md`
+- `~/.viepilot/stacks/{stack}/SOURCES.md` (official docs + last validated date)
+
+Also create project-local index for traceability:
+- `.viepilot/STACKS.md` listing stacks used and cache paths.
+</step>
+
 <step name="generate_ai_guide">
 ## Step 2: Generate AI-GUIDE.md
 
@@ -100,6 +148,10 @@ Customize with:
 - Project-specific file references
 - Context loading strategy based on project size
 - Quick lookup for project-specific terms
+- Fast stack lookup section:
+  - Read `.viepilot/STACKS.md`
+  - For each task stack, read cache `SUMMARY.md` first
+  - Expand to `BEST-PRACTICES.md` only if task complexity requires
 </step>
 
 <step name="generate_project_meta">
@@ -160,6 +212,9 @@ Include:
 - Contributor standards
 - Quality gates
 - Forbidden patterns
+- Stack-specific enforcement:
+  - Must follow cached stack `Do/Don't` guidance
+  - Require official-source alignment for framework-specific implementation
 </step>
 
 <step name="generate_roadmap">
@@ -312,12 +367,16 @@ Display summary:
  
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Note: global stack cache at `~/.viepilot/stacks/` is machine-level knowledge and is not committed to project git.
 </step>
 
 </process>
 
 <success_criteria>
 - [ ] All metadata collected
+- [ ] Official research completed for each selected stack
+- [ ] Global stack cache written under ~/.viepilot/stacks/{stack}/
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md complete
 - [ ] SYSTEM-RULES.md has all standards
