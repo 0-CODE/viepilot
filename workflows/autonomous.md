@@ -211,15 +211,26 @@ Example:
 
 Commit: `chore: update ROADMAP.md — phase {N} complete`
 
-### 5b. Update skills-reference.md if new skills added
+### 5b. Update skills-reference.md if new skills added (viepilot framework only)
 
-Check if this phase added any new skill files:
+> **Guard**: Only run this step if `skills/` directory exists in the project root.
+> Skip entirely for non-framework projects (Java, Node, Python apps, etc.).
+
 ```bash
-NEW_SKILLS=$(git diff vp-p{phase}-t1..HEAD --name-only | grep 'skills/.*/SKILL\.md' | sed 's|skills/||; s|/SKILL\.md||')
+# Skip if not a viepilot framework repo
+if [ ! -d "skills" ]; then
+  echo "→ Skipping skills-reference update (not a viepilot framework repo)"
+else
+  NEW_SKILLS=$(git diff vp-p{phase}-t1..HEAD --name-only | grep 'skills/.*/SKILL\.md' | sed 's|skills/||; s|/SKILL\.md||')
+  if [ -n "$NEW_SKILLS" ]; then
+    # Append new sections to docs/skills-reference.md
+    # (same incremental logic as workflows/documentation.md step 3B)
+    git add docs/skills-reference.md
+    git commit -m "docs: add {skill} to skills-reference.md"
+    git push
+  fi
+fi
 ```
-If `$NEW_SKILLS` is non-empty: append new sections to `docs/skills-reference.md` (same incremental logic as `workflows/documentation.md` step 3B).
-
-Commit: `docs: add {skill} to skills-reference.md`
 </step>
 
 <step name="iterate">
@@ -235,25 +246,41 @@ Milestone complete — Sync ROOT documents:
 
 ### 6a. Sync README.md (milestone complete only)
 
-Read current `README.md` and update the following sections to match reality:
-
+Detect project version from the appropriate version file:
 ```bash
-ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
-ACTUAL_VERSION=$(node bin/vp-tools.cjs version get --raw 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | tail -1)
+# Generic version detection — works for any project type
+if [ -f "package.json" ]; then
+  ACTUAL_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+elif [ -f "pom.xml" ]; then
+  ACTUAL_VERSION=$(grep -m1 "<version>" pom.xml 2>/dev/null | sed 's/.*<version>//;s/<.*//' | tr -d ' ')
+elif [ -f "pyproject.toml" ]; then
+  ACTUAL_VERSION=$(grep '^version' pyproject.toml 2>/dev/null | head -1 | cut -d'"' -f2)
+elif [ -f ".viepilot/TRACKER.md" ]; then
+  # Fallback: read from TRACKER.md (viepilot-managed version)
+  ACTUAL_VERSION=$(grep -A1 "Current Version" .viepilot/TRACKER.md | tail -1 | tr -d '`' | tr -d ' ')
+fi
 ```
 
-Update in README.md:
-1. **Version badge**: `version-{old}` → `version-{ACTUAL_VERSION}`
-2. **Skills badge**: `skills-{old}` → `skills-{ACTUAL_SKILLS}`
-3. **Workflows badge**: `workflows-{old}` → `workflows-{ACTUAL_WORKFLOWS}`
-4. **Project Scale table**: Skills row, Workflows row, CLI Commands row counts
-5. **Skills Reference table**: add any missing `| /vp-{skill} | ... |` rows
-6. **Workflows table**: add any missing `| {workflow} | ... |` rows
-7. **Project Structure** `skills/` list: add missing skill directories
-8. **Completion Status**: update percentage
+Update README.md — **generic updates (all projects)**:
+1. Any version number mentions: update to `$ACTUAL_VERSION`
+2. Any "last updated" or "as of" date references
 
-Commit: `docs: sync README.md badges and counts to v{ACTUAL_VERSION}`
+**viepilot framework only** (skip if `skills/` directory does not exist):
+```bash
+if [ -d "skills" ]; then
+  ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+  # Update: version badge, skills badge, workflows badge
+  # Update: Skills Reference table, Workflows table, Project Structure skills/ list
+fi
+```
+
+Commit: `docs: sync README.md to v{ACTUAL_VERSION}`
+```bash
+git add README.md
+git commit -m "docs: sync README.md to v{ACTUAL_VERSION}"
+git push
+```
 
 ### 6b. Display milestone complete banner
 
