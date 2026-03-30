@@ -635,6 +635,185 @@ const commands = {
   },
 
   /**
+   * List and manage checkpoints (git tags)
+   */
+  checkpoints: (args) => {
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+
+    const { execSync } = require('child_process');
+    
+    try {
+      const tags = execSync('git tag -l "vp-*" --sort=-creatordate', { 
+        cwd: projectRoot, 
+        encoding: 'utf8' 
+      }).trim().split('\n').filter(t => t);
+
+      if (tags.length === 0) {
+        console.log(formatWarning('No checkpoints found'));
+        return;
+      }
+
+      console.log(`\n${colors.bold}ViePilot Checkpoints${colors.reset}\n`);
+      console.log(`  ${colors.gray}TAG${' '.repeat(25)}COMMIT    DATE${colors.reset}`);
+      console.log(`  ${'─'.repeat(55)}`);
+
+      tags.slice(0, 20).forEach(tag => {
+        try {
+          const info = execSync(`git log -1 --format="%h %ci" ${tag}`, { 
+            cwd: projectRoot, 
+            encoding: 'utf8' 
+          }).trim();
+          const [hash, ...dateParts] = info.split(' ');
+          const date = dateParts.slice(0, 2).join(' ');
+          
+          let icon = '📌';
+          if (tag.includes('-complete')) icon = '✅';
+          else if (tag.includes('-done')) icon = '✔️';
+          else if (tag.includes('-backup')) icon = '💾';
+          
+          console.log(`  ${icon} ${tag.padEnd(26)} ${hash}  ${date}`);
+        } catch (e) {
+          console.log(`  📌 ${tag.padEnd(26)} ${colors.gray}(no info)${colors.reset}`);
+        }
+      });
+
+      if (tags.length > 20) {
+        console.log(`\n  ${colors.gray}... and ${tags.length - 20} more${colors.reset}`);
+      }
+      
+      console.log(`\n  Total: ${tags.length} checkpoints\n`);
+      
+    } catch (error) {
+      console.error(formatError('Failed to list checkpoints', error.message));
+      process.exit(1);
+    }
+  },
+
+  /**
+   * Check for potential conflicts
+   */
+  conflicts: (args) => {
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+
+    const { execSync } = require('child_process');
+    
+    try {
+      // Check for uncommitted changes
+      const status = execSync('git status --porcelain', { 
+        cwd: projectRoot, 
+        encoding: 'utf8' 
+      }).trim();
+
+      const changes = status.split('\n').filter(l => l);
+      
+      if (changes.length === 0) {
+        console.log(formatSuccess('No conflicts detected - working directory clean'));
+        return;
+      }
+
+      console.log(`\n${colors.bold}Potential Conflicts${colors.reset}\n`);
+      
+      const conflicts = {
+        modified: [],
+        untracked: [],
+        deleted: [],
+        staged: [],
+      };
+
+      changes.forEach(line => {
+        const [status, ...fileParts] = line.trim().split(/\s+/);
+        const file = fileParts.join(' ');
+        
+        if (status.includes('M')) conflicts.modified.push(file);
+        else if (status === '??') conflicts.untracked.push(file);
+        else if (status.includes('D')) conflicts.deleted.push(file);
+        else if (status.includes('A') || status.includes('R')) conflicts.staged.push(file);
+      });
+
+      if (conflicts.modified.length > 0) {
+        console.log(`  ${colors.yellow}Modified files:${colors.reset}`);
+        conflicts.modified.forEach(f => console.log(`    ${colors.yellow}M${colors.reset} ${f}`));
+      }
+
+      if (conflicts.untracked.length > 0) {
+        console.log(`  ${colors.blue}Untracked files:${colors.reset}`);
+        conflicts.untracked.forEach(f => console.log(`    ${colors.blue}?${colors.reset} ${f}`));
+      }
+
+      if (conflicts.deleted.length > 0) {
+        console.log(`  ${colors.red}Deleted files:${colors.reset}`);
+        conflicts.deleted.forEach(f => console.log(`    ${colors.red}D${colors.reset} ${f}`));
+      }
+
+      if (conflicts.staged.length > 0) {
+        console.log(`  ${colors.green}Staged files:${colors.reset}`);
+        conflicts.staged.forEach(f => console.log(`    ${colors.green}A${colors.reset} ${f}`));
+      }
+
+      console.log(`\n  ${colors.gray}Total: ${changes.length} file(s) with changes${colors.reset}\n`);
+      
+      console.log(formatWarning('Resolve these before running /vp-auto or /vp-rollback'));
+      
+    } catch (error) {
+      console.error(formatError('Failed to check conflicts', error.message));
+      process.exit(1);
+    }
+  },
+
+  /**
+   * Save current state for precise resume
+   */
+  'save-state': (args) => {
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+
+    const handoffPath = path.join(projectRoot, VIEPILOT_DIR, 'HANDOFF.json');
+    const trackerPath = path.join(projectRoot, VIEPILOT_DIR, 'TRACKER.md');
+
+    // Read current state
+    let handoff = {};
+    if (fs.existsSync(handoffPath)) {
+      handoff = readJson(handoffPath);
+    }
+
+    // Get current git info
+    const { execSync } = require('child_process');
+    let gitInfo = {};
+    try {
+      gitInfo.head = execSync('git rev-parse HEAD', { cwd: projectRoot, encoding: 'utf8' }).trim();
+      gitInfo.branch = execSync('git branch --show-current', { cwd: projectRoot, encoding: 'utf8' }).trim();
+      gitInfo.status = execSync('git status --porcelain', { cwd: projectRoot, encoding: 'utf8' }).trim();
+    } catch (e) {
+      gitInfo.error = e.message;
+    }
+
+    // Update handoff with precise state
+    handoff.updated_at = currentTimestamp();
+    handoff.git = gitInfo;
+    handoff.resume_point = {
+      timestamp: currentTimestamp(),
+      cwd: process.cwd(),
+      node_version: process.version,
+    };
+
+    // Save
+    writeJson(handoffPath, handoff);
+    
+    console.log(formatSuccess('State saved for resume'));
+    console.log(JSON.stringify({
+      saved_at: handoff.updated_at,
+      phase: handoff.phase,
+      task: handoff.task,
+      git_head: gitInfo.head?.substring(0, 7),
+    }, null, 2));
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -734,6 +913,9 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}version${colors.reset} [get|bump]       Version management
   ${colors.bold}reset${colors.reset} <target> [-f]      Reset task/phase/all state (interactive)
   ${colors.bold}clean${colors.reset} [-f] [--dry-run]   Clean generated files (interactive)
+  ${colors.bold}checkpoints${colors.reset}              List all ViePilot checkpoints (git tags)
+  ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
+  ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
