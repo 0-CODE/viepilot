@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- `README.md` — Project Scale LOC + M1.11 completion banner; Documentation row includes `api/`
+- `.viepilot/audit-report.md` — PASS after README metric sync (`/vp-audit`)
 - `docs/api/*` — added framework-appropriate API index (no HTTP surface; points to CLI/file model)
 - `docs/dev/getting-started.md` — dev entry linking to canonical getting-started
 - `docs/README.md`, root `README.md` — index and `docs/` tree synced with `api/`

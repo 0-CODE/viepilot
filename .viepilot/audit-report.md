@@ -1,8 +1,8 @@
 # Audit Report — `/vp-audit --report`
 
-- **Generated**: 2026-03-31 (post M1.11 / Phase 14 / `v0.8.1` / ENH-011)
+- **Generated**: 2026-03-31 (post-sync README metrics + TRACKER **v0.8.1** / **M1.11**)
 - **Project type**: viepilot-framework
-- **Status**: **PASS** (ROOT SemVer aligned; tier copy consistent)
+- **Status**: **PASS**
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -11,62 +11,38 @@
 
  Skills:      13 actual, ARCHITECTURE.md (13)     ✅
  Workflows:   11 actual, ARCHITECTURE.md (11)    ✅
+ CLI:         13 commands, docs state 13          ✅
+ Templates:   16 (11 + 5)                        ✅
+ Tests:       194, README badge + tables          ✅
 
- README badges: skills 13, workflows 11         ✅
- README version badge: 0.8.1                     ✅ vs TRACKER 0.8.1
+ README version badge: 0.8.1      ✅ vs TRACKER 0.8.1
+ README LOC / scale:             ✅ synced (see Tier 2)
+ package.json version: 1.0.0     ℹ️ npm axis (documented in README)
 
- TRACKER framework version: 0.8.1
- package.json version: 1.0.0                      ℹ️ second version axis (documented in README)
-
- Gaps: 0 blocking (dual-version called out in README)
+ Gaps: 0 blocking
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
-
-## Summary
-
-| Field | Value |
-|-------|--------|
-| Milestone (TRACKER) | M1.11 ✅ COMPLETE |
-| Framework version | **0.8.1** |
-| README shield | **0.8.1** |
-| npm `package.json` | **1.0.0** |
-| Issues | **0** high — dual-axis explained |
 
 ## Tier 1 — ViePilot state
 
 | Check | Kết quả |
 |-------|---------|
-| TRACKER | M1.11 complete, framework `0.8.1` |
-| HANDOFF.json | ✅ Milestone M1.11, phase 14 complete |
-| ROADMAP Phase 14 | ✅ Complete (ENH-011) |
-| Audit plan copy (`workflows/audit.md`) | ✅ 4 tiers in banner/detect |
+| TRACKER | M1.11 complete, **0.8.1** |
+| HANDOFF.json | milestone **M1.11**, phase **14**, progress 100% — khớp tracker |
+| ROADMAP | Phase 14 / M1.11 documented |
 
-### Incremental state trace (ENH-010)
+## Tier 2 — README & metrics drift (this run)
 
-- State-first task contract remains in `workflows/autonomous.md` / `skills/vp-auto`.
+| Check | Kết quả |
+|-------|---------|
+| Project Scale counts (skills/workflows/templates/tests/cli) | Khớp filesystem |
+| Total LOC | **Đã cập nhật** từ 8,500+ → **~24,000+** (đo nội dung text+code, trừ `node_modules`) |
+| Completion banner | **Đã cập nhật** M1.11 / v0.8.1 |
+| Documentation row | **Đã thêm** `api/` |
 
-## Tier 2 — Documentation drift
+## Tier 3 — Stack (tóm tắt)
 
-- **README** — shield matches TRACKER; Versioning paragraph explains SemVer vs npm.
-- **CHANGELOG** — `[0.8.1]` documents ENH-011; compare links updated.
-
-## Tier 3 — Stack best practices + code quality (tóm tắt)
-
-- **Stack gợi ý:** `nodejs` (Jest + CommonJS).
-
-**Guardrails gợi ý cho `/vp-auto`:**
-
-```yaml
-stack: nodejs
-summary_used: cache_or_research
-must_follow:
-  - Giữ README framework badge đồng bộ với TRACKER/CHANGELOG khi ship milestone/patch.
-avoid:
-  - Examples trong docs/dev trỏ version framework cũ khi TRACKER đã bump.
-preflight_checklist:
-  - Sau mỗi release: grep user-facing paths for stale framework SemVer (không lẫn Jest 30.3.0).
-needs_detail_lookup: false
-```
+- **Stack gợi ý:** `nodejs` — Jest, CommonJS CLI.
 
 ## Tier 4 — Framework integrity
 
@@ -77,8 +53,4 @@ needs_detail_lookup: false
 
 ## Khuyến nghị
 
-1. Trước release lớn tiếp theo: chạy lại audit sau `/vp-docs` nếu generate nhiều file.
-
-## Auto-fix
-
-Báo cáo này **không** tự sửa file. Trạng thái hiện tại đã **PASS** theo tiêu chí ENH-011.
+- Sau thay đổi lớn về phase task count: chạy lại audit và chỉnh **Project Scale** nếu thêm skills/workflows.
