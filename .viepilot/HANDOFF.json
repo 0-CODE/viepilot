@@ -1,26 +1,30 @@
 {
   "milestone": "M1",
   "milestone_name": "Foundation Enhancement",
-  "phase": 2,
-  "phase_name": "Advanced Features",
+  "phase": 3,
+  "phase_name": "Integration & Testing",
   "task": 0,
   "task_name": null,
   "status": "not_started",
-  "last_activity": "2026-03-30T14:38:00Z",
+  "last_activity": "2026-03-30T14:43:00Z",
   "version": {
     "current": "0.1.0",
     "next": "0.2.0"
   },
   "progress": {
     "phases_total": 4,
-    "phases_completed": 1,
+    "phases_completed": 2,
     "tasks_total": 17,
-    "tasks_completed": 4,
-    "percentage": 24
+    "tasks_completed": 9,
+    "percentage": 53
   },
   "context": {
     "files_touched": [
-      "bin/vp-tools.cjs"
+      "bin/vp-tools.cjs",
+      "skills/vp-debug/SKILL.md",
+      "skills/vp-rollback/SKILL.md",
+      "workflows/debug.md",
+      "workflows/rollback.md"
     ],
     "decisions": [
       {
@@ -32,26 +36,29 @@
         "date": "2026-03-30",
         "decision": "Zero external dependencies for CLI",
         "rationale": "Keep framework lightweight"
+      },
+      {
+        "date": "2026-03-30",
+        "decision": "Git tags for checkpoints",
+        "rationale": "Reliable, no external dependencies"
       }
     ],
     "blockers": [],
     "notes": [
-      "Phase 1 complete - CLI Enhancement",
-      "Ready for Phase 2: Advanced Features"
+      "Phase 1 complete - CLI Enhancement (4 tasks)",
+      "Phase 2 complete - Advanced Features (5 tasks)",
+      "Ready for Phase 3: Integration & Testing"
     ]
   },
   "checkpoints": [
-    {
-      "tag": "vp-p1-t1",
-      "description": "Start Phase 1 Task 1",
-      "timestamp": "2026-03-30T14:30:00Z"
-    },
-    {
-      "tag": "vp-p1-t1-done",
-      "description": "Complete Task 1.1 + 1.2",
-      "timestamp": "2026-03-30T14:35:00Z"
-    }
+    {"tag": "vp-p1-t1", "description": "Start Phase 1"},
+    {"tag": "vp-p1-t1-done", "description": "Phase 1 CLI done"},
+    {"tag": "vp-p1-complete", "description": "Phase 1 complete"},
+    {"tag": "vp-p2-t1", "description": "Start Phase 2"},
+    {"tag": "vp-p2-t1-done", "description": "vp-debug done"},
+    {"tag": "vp-p2-t2-done", "description": "vp-rollback done"},
+    {"tag": "vp-p2-complete", "description": "Phase 2 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-30T14:38:00Z"
+  "updated_at": "2026-03-30T14:43:00Z"
 }
