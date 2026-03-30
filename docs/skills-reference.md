@@ -222,6 +222,44 @@ CHANGELOG.md (updated)
 
 ---
 
+## /vp-request
+
+**Purpose**: Tạo và quản lý requests (Bug, Feature, Enhancement, Tech Debt, Brainstorm tiếp)
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--bug` | Bug report mode |
+| `--feature` | Feature request mode |
+| `--enhance` | Enhancement mode |
+| `--debt` | Technical debt mode |
+| `--brainstorm` | Brainstorm continuation |
+| `--list` | List pending requests |
+| `--quick` | Quick mode (minimal questions) |
+
+### Request Types
+
+| Type | Emoji | Use Case |
+|------|-------|----------|
+| Bug | 🐛 | Something is broken |
+| Feature | ✨ | New functionality |
+| Enhancement | 🔧 | Improve existing feature |
+| Tech Debt | 🧹 | Code cleanup/refactor |
+| Brainstorm | 💡 | Explore new ideas |
+
+### Output
+- `.viepilot/requests/{TYPE}-{NUMBER}.md`
+- Updated `TRACKER.md` backlog
+
+### Workflow
+1. Select request type
+2. Gather details (questions vary by type)
+3. Create request file
+4. Add to backlog
+5. Offer routing options (fix now, add to phase, etc.)
+
+---
+
 ## /vp-task
 
 **Purpose**: Manual task management

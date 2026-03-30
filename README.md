@@ -15,6 +15,35 @@ ViePilot là một bộ skill framework cho phép AI assistant (Claude, GPT, etc
 - **Recovery** → Pause/Resume bất kỳ lúc nào
 - **Documentation** → Tự động generate docs
 
+## 🔄 Workflow Hoàn Chỉnh
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DỰ ÁN MỚI                                        │
+│                                                                     │
+│  /vp-brainstorm → /vp-crystallize → /vp-auto → /vp-docs            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DỰ ÁN ĐANG PHÁT TRIỂN                           │
+│                                                                     │
+│  /vp-request  ──────────────────────────────────────────────┐      │
+│       │                                                      │      │
+│       ├── 🐛 Bug Report ────────► Fix ngay hoặc thêm backlog │      │
+│       ├── ✨ Feature ───────────► Brainstorm → Add phase     │      │
+│       ├── 🔧 Enhancement ───────► Thêm vào milestone         │      │
+│       ├── 🧹 Tech Debt ─────────► Refactor phase             │      │
+│       └── 💡 Brainstorm tiếp ───► Explore → Decision         │      │
+│                                                              │      │
+│  /vp-evolve ─── Milestone mới / Nâng cấp lớn ───────────────┘      │
+│                                                                     │
+│  /vp-pause ←→ /vp-resume  (bất kỳ lúc nào)                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 ## 🚀 Cài đặt
 
 ```bash
@@ -79,13 +108,27 @@ AI tự động thực thi các phases với:
 /vp-status
 ```
 
-### 6. Nâng cấp/Mở rộng
+### 6. Tạo Request (Bug, Feature, Enhancement)
+
+Khi dự án đang chạy, sử dụng `/vp-request` để:
+
+```
+/vp-request              # Menu chọn loại request
+/vp-request --bug        # Report bug
+/vp-request --feature    # Yêu cầu feature mới
+/vp-request --enhance    # Đề xuất cải tiến
+/vp-request --debt       # Technical debt
+/vp-request --brainstorm # Brainstorm thêm ý tưởng
+/vp-request --list       # Xem danh sách requests
+```
+
+### 7. Nâng cấp lớn / Milestone mới
 
 ```
 /vp-evolve   # Thêm features hoặc milestone mới
 ```
 
-### 7. Generate Documentation
+### 8. Generate Documentation
 
 ```
 /vp-docs
@@ -102,6 +145,7 @@ viepilot/
 │   ├── vp-pause/
 │   ├── vp-resume/
 │   ├── vp-status/
+│   ├── vp-request/         # Bug/Feature/Enhancement
 │   ├── vp-evolve/
 │   ├── vp-docs/
 │   └── vp-task/
@@ -112,6 +156,8 @@ viepilot/
 │   ├── autonomous.md
 │   ├── pause-work.md
 │   ├── resume-work.md
+│   ├── request.md          # Bug/Feature/Enhancement
+│   ├── evolve.md
 │   └── documentation.md
 │
 ├── templates/              # File templates
@@ -156,13 +202,14 @@ viepilot/
 
 | Skill | Mô tả | Trigger |
 |-------|-------|---------|
-| `/vp-brainstorm` | Thu thập ý tưởng | "brainstorm", "ý tưởng" |
-| `/vp-crystallize` | Tạo artifacts | "crystallize", "setup" |
+| `/vp-brainstorm` | Thu thập ý tưởng (dự án mới) | "brainstorm", "ý tưởng" |
+| `/vp-crystallize` | Tạo artifacts từ brainstorm | "crystallize", "setup" |
 | `/vp-auto` | Chạy autonomous | "auto", "vibe", "chạy" |
 | `/vp-pause` | Lưu trạng thái | "pause", "dừng" |
 | `/vp-resume` | Tiếp tục | "resume", "tiếp tục" |
 | `/vp-status` | Xem tiến độ | "status", "tiến độ" |
-| `/vp-evolve` | Nâng cấp | "evolve", "thêm feature" |
+| `/vp-request` | **Bug/Feature/Enhancement** | "bug", "lỗi", "feature", "yêu cầu" |
+| `/vp-evolve` | Nâng cấp lớn / Milestone mới | "evolve", "milestone" |
 | `/vp-docs` | Generate docs | "docs", "tài liệu" |
 | `/vp-task` | Quản lý task | "task" |
 
