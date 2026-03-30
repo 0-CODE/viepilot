@@ -1,0 +1,30 @@
+{
+  "name": "viepilot",
+  "version": "1.0.0",
+  "description": "**Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0-CODE/viepilot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/0-CODE/viepilot/issues"
+  },
+  "homepage": "https://github.com/0-CODE/viepilot#readme",
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
+}
