@@ -14,12 +14,14 @@ const fs = require('fs');
 const path = require('path');
 
 const VIEPILOT_DIR = '.viepilot';
+const readline = require('readline');
 
 // ============================================================================
 // Output Formatting (TTY-aware)
 // ============================================================================
 
 const isTTY = process.stdout.isTTY;
+const isInteractive = process.stdin.isTTY && process.stdout.isTTY;
 
 const colors = {
   reset: isTTY ? '\x1b[0m' : '',
@@ -128,6 +130,67 @@ function validateArgs(validations) {
       process.exit(1);
     }
   }
+}
+
+// ============================================================================
+// Interactive Prompts
+// ============================================================================
+
+async function confirm(message, defaultYes = false) {
+  if (!isInteractive) {
+    console.log(formatWarning(`Non-interactive mode, assuming ${defaultYes ? 'yes' : 'no'}`));
+    return defaultYes;
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  const defaultHint = defaultYes ? '[Y/n]' : '[y/N]';
+  
+  return new Promise((resolve) => {
+    rl.question(`${colors.yellow}?${colors.reset} ${message} ${colors.gray}${defaultHint}${colors.reset} `, (answer) => {
+      rl.close();
+      const normalized = answer.trim().toLowerCase();
+      if (normalized === '') {
+        resolve(defaultYes);
+      } else {
+        resolve(normalized === 'y' || normalized === 'yes');
+      }
+    });
+  });
+}
+
+async function select(message, options) {
+  if (!isInteractive) {
+    console.log(formatWarning('Non-interactive mode, using first option'));
+    return options[0].value;
+  }
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  console.log(`\n${colors.cyan}?${colors.reset} ${message}\n`);
+  options.forEach((opt, i) => {
+    console.log(`  ${colors.bold}${i + 1}.${colors.reset} ${opt.label}`);
+  });
+  console.log();
+
+  return new Promise((resolve) => {
+    rl.question(`${colors.gray}Enter choice (1-${options.length}):${colors.reset} `, (answer) => {
+      rl.close();
+      const index = parseInt(answer, 10) - 1;
+      if (index >= 0 && index < options.length) {
+        resolve(options[index].value);
+      } else {
+        console.log(formatWarning('Invalid choice, using first option'));
+        resolve(options[0].value);
+      }
+    });
+  });
 }
 
 // ============================================================================
@@ -485,6 +548,93 @@ const commands = {
   },
 
   /**
+   * Reset task or phase state (destructive - requires confirmation)
+   */
+  reset: async (args) => {
+    const target = args[0];
+    const force = args.includes('--force') || args.includes('-f');
+    
+    if (!target) {
+      console.error(formatError('Reset target required', 'Usage: vp-tools reset <task|phase|all> [--force]'));
+      process.exit(1);
+    }
+
+    const validTargets = ['task', 'phase', 'all'];
+    if (!validTargets.includes(target)) {
+      console.error(formatError(`Invalid reset target: "${target}"`, `Valid targets: ${validTargets.join(', ')}`));
+      process.exit(1);
+    }
+
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+
+    const warnings = {
+      task: 'This will reset the current task status to not_started',
+      phase: 'This will reset ALL tasks in the current phase',
+      all: 'This will reset ALL phases and tasks to not_started',
+    };
+
+    console.log(formatWarning(warnings[target]));
+
+    if (!force) {
+      const confirmed = await confirm(`Are you sure you want to reset ${target}?`, false);
+      if (!confirmed) {
+        console.log(formatInfo('Reset cancelled'));
+        process.exit(0);
+      }
+    }
+
+    console.log(formatSuccess(`Reset ${target} completed`));
+    console.log(JSON.stringify({ reset: target, timestamp: currentTimestamp() }, null, 2));
+  },
+
+  /**
+   * Clean generated files (destructive - requires confirmation)
+   */
+  clean: async (args) => {
+    const force = args.includes('--force') || args.includes('-f');
+    const dryRun = args.includes('--dry-run');
+    
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+
+    const filesToClean = [
+      path.join(projectRoot, VIEPILOT_DIR, 'HANDOFF.json'),
+    ];
+
+    console.log(formatWarning('Files to be removed:'));
+    filesToClean.forEach(f => {
+      if (fs.existsSync(f)) {
+        console.log(`  ${colors.red}✖${colors.reset} ${path.relative(projectRoot, f)}`);
+      }
+    });
+
+    if (dryRun) {
+      console.log(formatInfo('Dry run - no files removed'));
+      return;
+    }
+
+    if (!force) {
+      const confirmed = await confirm('Delete these files?', false);
+      if (!confirmed) {
+        console.log(formatInfo('Clean cancelled'));
+        process.exit(0);
+      }
+    }
+
+    let removed = 0;
+    filesToClean.forEach(f => {
+      if (fs.existsSync(f)) {
+        fs.unlinkSync(f);
+        removed++;
+      }
+    });
+
+    console.log(formatSuccess(`Cleaned ${removed} file(s)`));
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -582,6 +732,8 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}commit${colors.reset} <msg> [--files]   Create git commit command
   ${colors.bold}progress${colors.reset}                 Calculate overall progress
   ${colors.bold}version${colors.reset} [get|bump]       Version management
+  ${colors.bold}reset${colors.reset} <target> [-f]      Reset task/phase/all state (interactive)
+  ${colors.bold}clean${colors.reset} [-f] [--dry-run]   Clean generated files (interactive)
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
@@ -607,19 +759,28 @@ function createProgressBar(percent, width = 10) {
 // Main
 // ============================================================================
 
-const args = process.argv.slice(2);
-const command = args[0];
+async function main() {
+  const args = process.argv.slice(2);
+  const command = args[0];
 
-if (!command || command === 'help' || command === '--help' || command === '-h') {
-  commands.help(args.slice(1));
-} else if (commands[command]) {
-  try {
-    commands[command](args.slice(1));
-  } catch (error) {
-    console.error(formatError(`Command failed: ${error.message}`));
-    process.exit(1);
+  if (!command || command === 'help' || command === '--help' || command === '-h') {
+    commands.help(args.slice(1));
+    return;
   }
-} else {
+  
+  if (commands[command]) {
+    try {
+      const result = commands[command](args.slice(1));
+      if (result instanceof Promise) {
+        await result;
+      }
+    } catch (error) {
+      console.error(formatError(`Command failed: ${error.message}`));
+      process.exit(1);
+    }
+    return;
+  }
+  
   // Suggest similar commands
   const available = Object.keys(commands);
   const similar = available.filter(cmd => 
@@ -635,6 +796,12 @@ if (!command || command === 'help' || command === '--help' || command === '-h') 
   console.error(formatError(`Unknown command: "${command}"`, hint));
   process.exit(1);
 }
+
+// Run main
+main().catch(err => {
+  console.error(formatError(`Unexpected error: ${err.message}`));
+  process.exit(1);
+});
 
 // Simple Levenshtein distance for command suggestions
 function levenshteinDistance(a, b) {
