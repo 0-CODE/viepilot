@@ -3,7 +3,7 @@
 ## Meta
 - **ID**: FEAT-001
 - **Type**: Feature
-- **Status**: in_progress
+- **Status**: done
 - **Priority**: high
 - **Created**: 2026-03-30
 - **Reporter**: User
@@ -51,4 +51,8 @@ Documentation drift - ARCHITECTURE.md, README.md không sync với code thực t
 - Dependencies: None
 
 ## Resolution
-_In progress_
+Implemented in commit a99b684:
+- Created skills/vp-audit/SKILL.md
+- Created workflows/audit.md
+- Updated ARCHITECTURE.md (13 skills, 11 workflows)
+- Auto-hook integration documented in skill file
