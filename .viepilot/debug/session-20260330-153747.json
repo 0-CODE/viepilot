@@ -1,0 +1,49 @@
+{
+  "id": "debug-20260330-153747",
+  "status": "resolved",
+  "created_at": "2026-03-30T15:37:47Z",
+  "updated_at": "2026-03-30T15:45:00Z",
+  "problem": {
+    "description": "docs/ files được tạo bởi vp-docs có thể không đồng bộ với thông tin thực tế của dự án trong .viepilot context (version, skill counts, workflow counts, file paths, project name, etc.)",
+    "symptoms": [
+      "docs/ được generate theo template, không đọc .viepilot context trực tiếp",
+      "Tương tự như bug README.md drift ở debug session trước"
+    ],
+    "error_messages": [],
+    "affected_files": ["docs/**/*.md"]
+  },
+  "investigation": {
+    "hypotheses": [
+      {"id": 1, "description": "docs/ files chứa hardcoded version cũ (0.1.0)", "status": "rejected", "note": "Các refs 0.1.0 là example YAML frontmatter trong contributing.md/advanced-usage.md và expected format example trong troubleshooting.md — không phải project version refs"},
+      {"id": 2, "description": "docs/ files chứa sai skills/workflow count", "status": "partial", "note": "skills-reference.md chỉ có 10 skills (thiếu vp-debug, vp-rollback, vp-audit). Counts trong docs/README.md và docs/dev/testing.md đúng (13, 11)"},
+      {"id": 3, "description": "docs/ files reference project name/path không đúng", "status": "confirmed", "note": "getting-started.md và contributing.md có placeholder 'your-org'/'YOUR_USERNAME' chưa thay bằng '0-CODE'"},
+      {"id": 4, "description": "docs/ files thiếu skills mới: vp-debug, vp-rollback, vp-audit", "status": "confirmed", "note": "skills-reference.md thiếu 3 skills này. docs/README.md skills table có đủ 13 skills."},
+      {"id": 5, "description": "docs/ files chứa placeholder text chưa được thay thế", "status": "partial", "note": "my-project trong quick-start.md và videos/01 là example code (legitimate), nhưng your-org/YOUR_USERNAME là repo URL placeholders (bug)"},
+      {"id": 6, "description": "docs/dev/cli-reference.md thiếu commands mới hoặc sai syntax", "status": "rejected", "note": "cli-reference.md có đủ 13 commands khớp với bin/vp-tools.cjs (init, current-timestamp, phase-info, task-status, commit, progress, version, reset, clean, checkpoints, conflicts, save-state, help)"}
+    ],
+    "tests_run": [
+      {"command": "grep -rn '0\\.1\\.0' docs/", "conclusion": "false positive — tất cả là example YAML/format docs"},
+      {"command": "grep '## /vp-' docs/skills-reference.md | wc -l", "output": "10", "conclusion": "confirmed gap — thiếu 3 skills"},
+      {"command": "grep -rn 'your-org|YOUR_USERNAME' docs/", "conclusion": "confirmed — 2 placeholder URLs chưa thay"},
+      {"command": "grep '### `' docs/dev/cli-reference.md", "output": "13 commands", "conclusion": "OK"}
+    ],
+    "findings": [
+      "skills-reference.md có 10/13 skills — thiếu vp-debug, vp-rollback, vp-audit",
+      "getting-started.md có placeholder 'your-org' thay vì '0-CODE'",
+      "contributing.md có placeholder 'YOUR_USERNAME' thay vì '0-CODE'",
+      "cli-reference.md đầy đủ 13 commands — không có gap",
+      "docs/README.md skills table đủ 13 skills — không có gap",
+      "Version refs trong docs là example code — không phải gap thực sự"
+    ]
+  },
+  "resolution": {
+    "root_cause": "vp-docs generate docs từ template nhưng (1) không update skills-reference.md khi có skill mới được thêm vào sau initial generation, (2) không thay placeholder GitHub URL với actual repo URL từ git remote",
+    "fix_applied": "1) Thêm 3 skill sections vào skills-reference.md (vp-debug, vp-rollback, vp-audit với đầy đủ flags/commands/output)\n2) Thay 'your-org' → '0-CODE' trong getting-started.md\n3) Thay 'YOUR_USERNAME' → '0-CODE' trong contributing.md",
+    "files_changed": [
+      "docs/skills-reference.md",
+      "docs/getting-started.md",
+      "docs/dev/contributing.md"
+    ],
+    "verification": "grep '## /vp-' docs/skills-reference.md | wc -l → 13. grep 'your-org\\|YOUR_USERNAME' docs/ → 0 results"
+  }
+}
