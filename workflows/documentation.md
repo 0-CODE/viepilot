@@ -4,6 +4,50 @@ Generate comprehensive documentation từ code và artifacts.
 
 <process>
 
+<step name="resolve_context">
+## 0. Resolve Project Context
+
+Before generating any file, collect actual project context from the environment:
+
+```bash
+# Get GitHub remote URL (supports both HTTPS and SSH formats)
+REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
+
+# Extract owner/repo slug
+# https://github.com/0-CODE/viepilot.git → 0-CODE/viepilot
+# git@github.com:0-CODE/viepilot.git → 0-CODE/viepilot
+GITHUB_SLUG=$(echo "$REMOTE_URL" | sed 's|.*github\.com[:/]||; s|\.git$||')
+GITHUB_OWNER=$(echo "$GITHUB_SLUG" | cut -d'/' -f1)
+GITHUB_REPO=$(echo "$GITHUB_SLUG" | cut -d'/' -f2)
+
+# Fallback if no remote
+if [ -z "$GITHUB_OWNER" ]; then
+  GITHUB_OWNER="{GITHUB_OWNER}"
+  GITHUB_REPO="{GITHUB_REPO}"
+fi
+
+# Count actual skills and workflows
+ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+
+# Get project name from package.json or directory name
+PROJECT_NAME=$(node -e "try{console.log(require('./package.json').description||require('./package.json').name)}catch(e){console.log(basename('$PWD'))}" 2>/dev/null || basename "$PWD")
+```
+
+Use `$GITHUB_OWNER`, `$GITHUB_REPO`, `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS` throughout all generated files.
+**Never hardcode** `your-org`, `YOUR_USERNAME`, `YOUR_ORG`, or static skill/workflow counts.
+
+Post-generation validation (run after all files generated):
+```bash
+PLACEHOLDERS=$(grep -r "your-org\|YOUR_USERNAME\|YOUR_ORG\|your-username" docs/ --include="*.md" -l 2>/dev/null)
+if [ -n "$PLACEHOLDERS" ]; then
+  echo "⚠️ WARNING: Placeholder URLs still found in:"
+  echo "$PLACEHOLDERS"
+  echo "Fix these before committing."
+fi
+```
+</step>
+
 <step name="ask_scope">
 ## 1. Ask Documentation Scope
 
@@ -382,6 +426,54 @@ Update docs/README.md:
 
 ---
 Last updated: {date}
+```
+</step>
+
+<step name="skills_reference">
+## 3B. Generate/Update skills-reference.md
+
+Always build `docs/skills-reference.md` by **scanning the actual `skills/` directory**, not from a hardcoded list.
+
+### Algorithm
+
+```bash
+# Get sorted list of skills from filesystem
+SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL.md||' | sort)
+```
+
+For each skill in `$SKILLS`:
+1. Read `skills/{skill}/SKILL.md`
+2. Extract from the file:
+   - `<objective>` first paragraph → **Purpose**
+   - `<context>` optional flags list → **Flags table**
+   - `Creates/Updates` list in `<objective>` → **Output**
+3. Write a section `## /{skill}` with Purpose, Flags, Output
+
+### Incremental update (if docs/skills-reference.md already exists)
+
+Do NOT overwrite the entire file. Instead:
+```bash
+# Find skills already documented
+DOCUMENTED=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
+# Find skills missing from docs
+MISSING=$(comm -23 <(echo "$SKILLS") <(echo "$DOCUMENTED"))
+```
+
+For each skill in `$MISSING`:
+- Append a new section at the end of `docs/skills-reference.md`
+- Commit: `docs: add {skill} section to skills-reference.md`
+
+This preserves any manual edits to existing sections.
+
+### Verification
+
+After generating/updating:
+```bash
+ACTUAL_COUNT=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+DOC_COUNT=$(grep "^## /vp-" docs/skills-reference.md | wc -l | tr -d ' ')
+if [ "$ACTUAL_COUNT" != "$DOC_COUNT" ]; then
+  echo "⚠️ skills-reference.md has $DOC_COUNT sections but $ACTUAL_COUNT skills exist"
+fi
 ```
 </step>
 

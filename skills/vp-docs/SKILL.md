@@ -38,8 +38,15 @@ docs/
 │   └── features/
 └── README.md (index)
 
+docs/skills-reference.md (incremental update — add missing skills by scanning skills/ dir)
+README.md (Documentation table, Project Structure section)
 CHANGELOG.md (updated)
 ```
+
+**Context resolved at runtime (never hardcoded):**
+- GitHub owner/repo from `git remote get-url origin`
+- Skills count from `ls skills/*/SKILL.md | wc -l`
+- Workflows count from `ls workflows/*.md | wc -l`
 </objective>
 
 <execution_context>
@@ -56,6 +63,24 @@ Optional flags:
 </context>
 
 <process>
+
+### Step 0: Resolve Project Context (ALWAYS first)
+```bash
+# Read actual GitHub URL — never use hardcoded placeholder
+REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
+GITHUB_SLUG=$(echo "$REMOTE_URL" | sed 's|.*github\.com[:/]||; s|\.git$||')
+GITHUB_OWNER=$(echo "$GITHUB_SLUG" | cut -d'/' -f1)
+GITHUB_REPO=$(echo "$GITHUB_SLUG" | cut -d'/' -f2)
+# Fallback: use searchable placeholder, not 'your-org'
+[ -z "$GITHUB_OWNER" ] && GITHUB_OWNER="{GITHUB_OWNER}" && GITHUB_REPO="{GITHUB_REPO}"
+
+ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+```
+
+> Use `$GITHUB_OWNER/$GITHUB_REPO` in all generated files.
+> Use `$ACTUAL_SKILLS` and `$ACTUAL_WORKFLOWS` for counts.
+> **Never write** `your-org`, `YOUR_USERNAME`, `YOUR_ORG` into generated files.
 
 ### Step 1: Ask Documentation Scope
 ```
@@ -180,11 +205,25 @@ process:
 ### Step 3: Generate Files
 Use templates and extracted content to generate markdown files.
 
+### Step 3B: Update skills-reference.md (incremental)
+```bash
+# Scan skills/ directory — source of truth
+SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL.md||' | sort)
+DOCUMENTED=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
+MISSING=$(comm -23 <(echo "$SKILLS") <(echo "$DOCUMENTED"))
+```
+For each skill in `$MISSING`: append section to `docs/skills-reference.md`.
+Do NOT overwrite existing sections (preserve manual edits).
+
 ### Step 4: Create Index
 Update `docs/README.md` with:
 - Documentation index
 - Quick links
 - Last updated date
+
+Also update root `README.md`:
+- Documentation table: add links to newly generated docs
+- Project Structure `docs/` tree: reflect actual subdirectories
 
 ### Step 5: Commit
 ```bash
@@ -212,5 +251,8 @@ View at: docs/README.md
 - [ ] Cross-references added between docs
 - [ ] Index updated
 - [ ] Changelog reflects recent changes
+- [ ] GitHub URLs use actual repo (no `your-org`/`YOUR_USERNAME` placeholders)
+- [ ] skills-reference.md has sections for all skills in skills/ directory
+- [ ] Root README.md Documentation table updated
 - [ ] Git committed
 </success_criteria>
