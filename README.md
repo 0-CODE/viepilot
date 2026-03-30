@@ -424,14 +424,32 @@ To report security vulnerabilities, please see [SECURITY.md](SECURITY.md).
 
 ---
 
+## Tác giả / Author
+
+| | |
+|---|---|
+| **Lead Developer** | Trần Thành Nhân |
+| **Organization** | Công Ty TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM |
+| **Repository** | [github.com/0-CODE/viepilot](https://github.com/0-CODE/viepilot) |
+
+Xem danh sách đóng góp tại / See all contributors at: [CONTRIBUTORS.md](CONTRIBUTORS.md)
+
+---
+
 ## Giấy phép / License
 
 MIT License - Xem [LICENSE](LICENSE) để biết chi tiết.
 
+Copyright © 2026 Công Ty TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM
+
 ---
 
 <p align="center">
-  <strong>ViePilot</strong> - <em>Vibe coding với sự kiểm soát / Vibe coding with control</em> 🚀
+  <strong>ViePilot</strong> - <em>Vibe coding với sự kiểm soát / Vibe coding with control</em>
   <br><br>
-  Được xây dựng với tâm huyết / Built with care
+  Developed by <strong>Trần Thành Nhân</strong>
+  <br>
+  <strong>Công Ty TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM</strong>
+  <br><br>
+  Copyright © 2026
 </p>

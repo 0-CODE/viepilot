@@ -35,7 +35,7 @@ Chúng tôi cam kết tạo môi trường thân thiện. Hãy tôn trọng và 
 ### Clone Repository
 
 ```bash
-git clone https://github.com/your-org/viepilot.git
+git clone https://github.com/0-CODE/viepilot.git
 cd viepilot
 ```
 

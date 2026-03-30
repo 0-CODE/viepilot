@@ -13,7 +13,7 @@
 If you discover a security vulnerability within ViePilot, please follow these steps:
 
 1. **Do NOT** create a public GitHub issue
-2. Email the security team at: [security@your-org.com]
+2. Email the security team at: security@creps.vn
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce
@@ -30,7 +30,7 @@ We will respond within **48 hours** and work with you to:
 Nếu bạn phát hiện lỗ hổng bảo mật trong ViePilot, vui lòng làm theo các bước sau:
 
 1. **KHÔNG** tạo issue công khai trên GitHub
-2. Gửi email đến đội bảo mật: [security@your-org.com]
+2. Gửi email đến đội bảo mật: security@creps.vn
 3. Bao gồm:
    - Mô tả lỗ hổng
    - Các bước tái hiện
