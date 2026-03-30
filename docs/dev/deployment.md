@@ -55,10 +55,10 @@ vp-tools version bump minor
 vp-tools version bump patch
 ```
 
-Release tags:
+Release tags (use current framework version from `vp-tools version get`):
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.8.1
+git push origin v0.8.1
 ```
 
 ---

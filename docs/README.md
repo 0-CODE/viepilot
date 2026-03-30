@@ -9,6 +9,7 @@
 | 🚀 [Quick Start](user/quick-start.md) | Bắt đầu trong 5 phút |
 | 🔧 [CLI Reference](dev/cli-reference.md) | `vp-tools` commands |
 | 🏗️ [Architecture](dev/architecture.md) | System design |
+| 🔌 [API / interfaces](api/README.md) | No HTTP API — CLI & file contracts |
 | ❓ [FAQ](user/faq.md) | Common questions |
 | 🐛 [Troubleshooting](troubleshooting.md) | Common issues |
 
@@ -33,11 +34,24 @@
 
 ---
 
+### API & machine interface
+
+| Document | Description |
+|----------|-------------|
+| [API index](api/README.md) | ViePilot has no REST stack; links to CLI/file model |
+| [REST / CLI model](api/rest-api.md) | Framework integration surface |
+| [GraphQL](api/graphql-schema.md) | N/A for this repo |
+| [Kafka](api/kafka-events.md) | N/A for this repo |
+| [WebSocket](api/websocket-api.md) | N/A for this repo |
+
+---
+
 ### Developer Guide
 
 | Document | Description |
 |----------|-------------|
 | [Getting Started](getting-started.md) | Installation and first steps |
+| [Getting Started (dev entry)](dev/getting-started.md) | Short link into dev guide |
 | [CLI Reference](dev/cli-reference.md) | All 13 `vp-tools` commands with examples |
 | [Architecture](dev/architecture.md) | System layers, data flow, design decisions |
 | [Contributing](dev/contributing.md) | How to add skills, workflows, CLI commands |
@@ -105,4 +119,4 @@
 
 ---
 
-*Last updated: 2026-03-30 — ViePilot v0.2.0*
+*Last updated: 2026-03-31 — ViePilot framework v0.8.1 (see `.viepilot/TRACKER.md`)*

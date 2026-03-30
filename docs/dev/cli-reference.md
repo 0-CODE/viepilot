@@ -192,10 +192,10 @@ vp-tools version bump [major|minor|patch]
 **Examples**:
 ```bash
 vp-tools version get
-# {"version":"0.2.0"}
+# {"version":"0.8.1"}
 
-vp-tools version bump minor
-# {"old_version":"0.2.0","new_version":"0.3.0","bump_type":"minor"}
+vp-tools version bump patch
+# {"old_version":"0.8.1","new_version":"0.8.2","bump_type":"patch"}
 ```
 
 **Bump rules** (SemVer):

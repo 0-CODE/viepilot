@@ -2,13 +2,15 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.8.1-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-13-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-11-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
 [![Tests](https://img.shields.io/badge/tests-194%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
+
+**Versioning:** Shield **0.8.1** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -345,6 +347,7 @@ viepilot/
 │   ├── skills-reference.md        # Chi tiết skills
 │   ├── advanced-usage.md          # Power user guide
 │   ├── troubleshooting.md         # Common issues
+│   ├── api/                       # API folder (N/A HTTP — see README there)
 │   ├── videos/                    # Video tutorial scripts
 │   ├── dev/                       # Developer guide
 │   └── user/                      # User guide
@@ -424,6 +427,7 @@ your-project/
 | Tài liệu / Document | Nội dung / Content |
 |---------------------|-------------------|
 | [Documentation Index](docs/README.md) | Tổng hợp tất cả tài liệu / Full docs index |
+| [API / interfaces](docs/api/README.md) | Không có REST — CLI & file contracts / No HTTP API |
 | [Getting Started](docs/getting-started.md) | Hướng dẫn bắt đầu / Quick start guide |
 | [Quick Start (User)](docs/user/quick-start.md) | 5-minute guide |
 | [Skills Reference](docs/skills-reference.md) | Chi tiết từng skill / Detailed skill docs |
