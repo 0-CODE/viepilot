@@ -260,6 +260,106 @@ CHANGELOG.md (updated)
 
 ---
 
+## /vp-debug
+
+**Purpose**: Systematic debugging với persistent state tracking qua nhiều sessions
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--new` | Force tạo debug session mới |
+| `--continue` | Tiếp tục session hiện tại |
+| `--list` | Liệt kê tất cả sessions |
+| `--close [resolved\|unresolved\|wontfix]` | Đóng session với resolution |
+| `--id <session_id>` | Làm việc với session cụ thể |
+
+### In-Session Commands
+| Command | Description |
+|---------|-------------|
+| `/hypothesis <desc>` | Thêm hypothesis mới |
+| `/test <id>` | Test hypothesis cụ thể |
+| `/finding <desc>` | Ghi nhận finding |
+| `/confirm <id>` | Mark hypothesis là confirmed |
+| `/reject <id>` | Mark hypothesis là rejected |
+| `/resolve` | Bắt đầu quá trình resolution |
+| `/close` | Đóng session |
+| `/status` | Xem trạng thái session hiện tại |
+
+### Session States
+- `active` — Đang investigate
+- `resolved` — Đã fix xong
+- `unresolved` — Tạm dừng chưa fix
+- `wontfix` — Quyết định không fix
+
+### Output
+- `.viepilot/debug/session-{YYYYMMDD-HHMMSS}.json`
+- `.viepilot/debug/CURRENT.json` (con trỏ session active)
+
+---
+
+## /vp-rollback
+
+**Purpose**: Rollback về bất kỳ checkpoint nào một cách an toàn với state preservation
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--list` | Liệt kê tất cả checkpoints |
+| `--to <tag>` | Rollback về tag cụ thể |
+| `--phase <N>` | Rollback về đầu phase N |
+| `--task <N.M>` | Rollback về trước task M của phase N |
+| `--dry-run` | Xem trước changes, không thực hiện |
+| `--force` | Bỏ qua confirmation |
+
+### Checkpoint Types
+| Tag Pattern | Created By | Meaning |
+|-------------|------------|---------|
+| `vp-p{N}-t{M}` | vp-auto | Task started |
+| `vp-p{N}-t{M}-done` | vp-auto | Task completed |
+| `vp-p{N}-complete` | vp-auto | Phase completed |
+| `v{semver}` | vp-auto | Version release |
+
+### Safety Guarantees
+- Lưu current state trước khi rollback
+- Tạo `vp-rollback-{timestamp}` branch backup
+- Cho phép xem diff trước khi confirm
+- Có thể undo rollback bằng cách checkout backup branch
+
+### Output
+- Git reset về target checkpoint
+- `vp-rollback-{timestamp}` backup branch
+- Updated `.viepilot/HANDOFF.json` và `TRACKER.md`
+
+---
+
+## /vp-audit
+
+**Purpose**: Kiểm tra documentation vs implementation — phát hiện và fix gaps
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--fix` | Auto-fix gaps tìm thấy |
+| `--report` | Chỉ report, không fix |
+| `--scope skills` | Chỉ audit skills |
+| `--scope workflows` | Chỉ audit workflows |
+| `--scope docs` | Chỉ audit docs/ directory |
+| `--scope root` | Chỉ audit ROOT documents (README, ROADMAP) |
+
+### Checks Performed
+1. **Skills completeness** — mỗi skill có đủ required sections không
+2. **Workflow completeness** — mỗi workflow có `<purpose>`, `<process>`, `<step>`, `<success_criteria>` không
+3. **Cross-references** — skill `<execution_context>` trỏ đến workflow tồn tại không
+4. **CLI coverage** — mỗi command có documentation không
+5. **docs/ sync** — docs/ có match với thực tế (skills count, workflows count) không
+6. **ROOT drift** — README.md badges, ROADMAP.md status có up-to-date không
+
+### Output
+- Audit report với danh sách gaps
+- Optional auto-fix với commit
+
+---
+
 ## /vp-task
 
 **Purpose**: Manual task management

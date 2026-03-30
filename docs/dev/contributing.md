@@ -7,7 +7,7 @@ Hướng dẫn đóng góp cho ViePilot framework.
 1. Fork repository trên GitHub
 2. Clone fork của bạn:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/viepilot
+   git clone https://github.com/0-CODE/viepilot
    cd viepilot
    ```
 3. Cài đặt development mode:

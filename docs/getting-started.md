@@ -20,7 +20,7 @@ ViePilot là một framework giúp bạn phát triển dự án với AI một c
 
 ```bash
 # Clone repository
-git clone https://github.com/your-org/viepilot.git
+git clone https://github.com/0-CODE/viepilot.git
 
 # Run installation
 cd viepilot
