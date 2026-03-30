@@ -1,7 +1,7 @@
 ---
 name: vp-audit
-description: "Audit documentation vs implementation - detect and fix gaps"
-version: 0.1.0
+description: "Audit ViePilot project state and documentation drift — works on any project"
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -10,35 +10,38 @@ version: 0.1.0
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Display audit results clearly with actionable suggestions.
+Display audit results clearly with actionable suggestions grouped by tier.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `Read`, `Write`, `Glob`, `Grep`
 </cursor_skill_adapter>
 
 <objective>
-Audit documentation để phát hiện gaps với implementation thực tế.
+Audit ViePilot project state và documentation để phát hiện drift.
+Hoạt động trên **bất kỳ project nào** đang dùng ViePilot (Java, Node, Python, v.v.).
+Auto-detect nếu đang chạy trong viepilot framework repo để thêm framework-specific checks.
 
-**Checks — ARCHITECTURE.md alignment:**
-- Skills count và list vs ARCHITECTURE.md
-- Workflows count và list vs ARCHITECTURE.md
-- CLI commands vs ARCHITECTURE.md
+**Tier 1 — ViePilot State Consistency (mọi project):**
+- `.viepilot/TRACKER.md` current state vs `.viepilot/phases/*/PHASE-STATE.md`
+- `.viepilot/ROADMAP.md` phase status vs PHASE-STATE.md
+- `.viepilot/HANDOFF.json` vs TRACKER.md (resume-state consistency)
+- Git tags `vp-p{N}-complete` vs completed phases in PHASE-STATE.md
 
-**Checks — ROOT document drift:**
-- `README.md` version badge vs actual version (from TRACKER.md)
-- `README.md` skills/workflows badge counts vs actual filesystem counts
-- `README.md` Skills Reference table vs `skills/` directory (missing skill rows)
-- `README.md` Workflows table vs `workflows/` directory
-- `.viepilot/ROADMAP.md` phase status vs each phase's `PHASE-STATE.md`
-- `.viepilot/ROADMAP.md` Progress Summary table vs actual completion
+**Tier 2 — Project Documentation Drift (mọi project):**
+- `README.md` version vs `package.json` / `pom.xml` / `pyproject.toml`
+- `CHANGELOG.md` vs recent git commits
+- Placeholder URLs trong `docs/` (`your-org`, `YOUR_USERNAME`, v.v.)
+- Features mới (từ phases gần đây) chưa có documentation
 
-**Checks — docs/ drift:**
-- `docs/skills-reference.md` sections vs `skills/` directory (missing skill sections)
-- Placeholder URLs in `docs/` (`your-org`, `YOUR_USERNAME`, `YOUR_ORG`) not replaced
+**Tier 3 — Framework Integrity (chỉ khi detect viepilot framework repo):**
+- Auto-detect: `skills/vp-*/SKILL.md` tồn tại → là viepilot framework repo
+- `ARCHITECTURE.md` counts vs `skills/`, `workflows/`, CLI thực tế
+- `README.md` viepilot-specific badges (version, skills-N, workflows-N)
+- `docs/skills-reference.md` sections vs `skills/` directory
 
 **Output:**
-- Gap report với severity, grouped by check category
-- Auto-fix option: update README.md, ROADMAP.md, skills-reference.md, replace placeholder URLs
+- Báo cáo theo 3 tiers, mỗi tier có status riêng
+- Auto-fix option theo tier
 - Suggestions cho complex gaps
 </objective>
 
@@ -48,115 +51,80 @@ Audit documentation để phát hiện gaps với implementation thực tế.
 
 <context>
 Optional flags:
-- `--docs` : Check documentation files only (ARCHITECTURE.md alignment)
-- `--arch` : Check architecture alignment only
-- `--drift` : Check ROOT + docs/ drift only (README, ROADMAP, skills-reference)
-- `--fix` : Auto-fix all detected gaps
-- `--report` : Generate report file without fixing
-- `--silent` : Only output if gaps found
-- `--scope skills` : Audit skills only
-- `--scope workflows` : Audit workflows only
-- `--scope docs` : Audit docs/ directory only
-- `--scope root` : Audit ROOT documents (README, ROADMAP) only
+- `--framework` : Force Tier 3 framework checks (even if not auto-detected)
+- `--project`   : Force project-only mode — skip Tier 3 framework checks
+- `--fix`       : Auto-fix all detected issues
+- `--report`    : Generate report file at `.viepilot/audit-report.md`
+- `--silent`    : Only output if issues found
+- `--tier1`     : Run Tier 1 (state consistency) only
+- `--tier2`     : Run Tier 2 (docs drift) only
+- `--tier3`     : Run Tier 3 (framework integrity) only
 </context>
 
 <process>
 Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
 
-### Audit Steps
+### Quick Summary
 
-1. **Collect Actual State**
-   ```bash
-   # Skills
-   ls -d skills/vp-*/ | wc -l
-   ls -d skills/vp-*/ | xargs -I{} basename {}
-   
-   # Workflows
-   ls workflows/*.md | wc -l
-   ls workflows/*.md | xargs -I{} basename {} .md
-   
-   # CLI Commands
-   node bin/vp-tools.cjs help | grep "^\s\s[a-z]"
-   ```
+**Step 0**: Detect project type (viepilot framework vs user project)
 
-2. **Parse ARCHITECTURE.md**
-   - Extract skills count from "SKILLS LAYER (N)"
-   - Extract workflows count from "WORKFLOWS LAYER (N)"
-   - Extract CLI commands count
-   - Extract listed items
+**Step 1 — Tier 1**: ViePilot State Consistency
+```bash
+# TRACKER.md vs PHASE-STATE.md
+# ROADMAP.md vs PHASE-STATE.md
+# HANDOFF.json vs TRACKER.md
+# Git tags vs completed phases
+```
 
-3. **Compare & Report**
-   ```
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    VIEPILOT ► AUDIT REPORT
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   
-    Skills:     12 actual, 12 documented  ✅
-    Workflows:  10 actual, 10 documented  ✅
-    CLI:        13 actual, 13 documented  ✅
-   
-    Gaps Found: 0
-    Status: All documentation in sync!
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ```
+**Step 2 — Tier 2**: Project Documentation Drift
+```bash
+# Detect version: package.json / pom.xml / pyproject.toml
+# README.md version mention
+# CHANGELOG.md vs recent commits
+# Placeholder URLs in docs/
+```
 
-4. **If Gaps Found**
-   ```
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    VIEPILOT ► AUDIT REPORT
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   
-    Skills:     14 actual, 12 documented  ⚠️ GAP
-      Missing in docs: vp-new1, vp-new2
-   
-    Workflows:  10 actual, 10 documented  ✅
-    CLI:        15 actual, 13 documented  ⚠️ GAP
-      Missing in docs: newcmd1, newcmd2
-   
-    Gaps Found: 2
-   
-    Options:
-    1. Auto-fix gaps (update ARCHITECTURE.md)
-    2. Generate detailed report
-    3. Show diff preview
-    4. Skip for now
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ```
+**Step 3 — Tier 3**: Framework Integrity (conditional)
+```bash
+if [ "$IS_VIEPILOT_FRAMEWORK" = "true" ]; then
+  # ARCHITECTURE.md counts vs actual
+  # README.md viepilot badges
+  # docs/skills-reference.md completeness
+fi
+```
 
-5. **Auto-fix (if --fix or user chooses)**
-   - Update counts in ARCHITECTURE.md
-   - Add missing items to diagrams
-   - Commit with standard message
+**Step 4**: Generate full report
+
+**Step 5**: Auto-fix (if requested)
 </process>
 
 <auto_hook>
 ## Integration with /vp-auto
 
 After each phase complete, /vp-auto should:
-1. Run quick audit (--silent mode)
-2. If gaps found → warn user
+1. Run quick audit (--silent mode, Tier 1 + Tier 2 only)
+2. If issues found → warn user
 3. Offer to fix before continuing
 
 ```
 Phase 2 complete!
 
-⚠️ Documentation audit found 2 gaps:
-   - Skills: 12 → 14
-   - CLI: 13 → 15
+⚠️ Audit found 2 issues:
+   Tier 1: ROADMAP.md phase 2 not marked ✅
+   Tier 2: README.md version not updated
 
 Fix now? (y/n)
 ```
 </auto_hook>
 
 <success_criteria>
-- [ ] Actual counts collected correctly from filesystem
-- [ ] ARCHITECTURE.md parsed correctly
-- [ ] ARCHITECTURE.md gaps detected and reported
-- [ ] README.md badge drift detected (version, skills, workflows counts)
-- [ ] README.md table drift detected (missing skill/workflow rows)
-- [ ] ROADMAP.md phase status drift detected vs PHASE-STATE.md
-- [ ] docs/skills-reference.md missing sections detected
-- [ ] docs/ placeholder URL drift detected
-- [ ] Auto-fix updates all drifted documents correctly
-- [ ] Clear actionable output grouped by check category
+- [ ] Runs on any project using ViePilot (Java, Node, Python, etc.) without errors
+- [ ] Tier 1 state consistency checks work for all projects
+- [ ] Tier 2 docs drift checks work for all project types (detects version from package.json/pom.xml/pyproject.toml)
+- [ ] Tier 3 only runs when `skills/vp-*/SKILL.md` detected OR `--framework` flag used
+- [ ] Results clearly labeled by tier
+- [ ] `--framework` flag forces Tier 3 checks
+- [ ] `--project` flag skips Tier 3 checks
+- [ ] Auto-fix applies correct fixes per tier
+- [ ] No mention of `skills/`, `workflows/`, `vp-tools.cjs` in Tier 1 or Tier 2 output for user projects
 </success_criteria>
