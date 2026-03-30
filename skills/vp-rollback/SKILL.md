@@ -13,7 +13,7 @@ version: 0.1.0
 Show available checkpoints and confirm before rollback.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `Read`, `Write`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
 
 <objective>

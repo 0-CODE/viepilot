@@ -10,7 +10,7 @@ version: 0.1.0
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. Tool Usage
-Use Cursor tools: `Shell`, `Read`, `Glob`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
 
 <objective>

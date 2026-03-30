@@ -13,7 +13,7 @@ version: 0.2.0
 Display audit results clearly with actionable suggestions grouped by tier.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `Read`, `Write`, `Glob`, `Grep`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
 
 <objective>

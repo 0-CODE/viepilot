@@ -13,7 +13,7 @@ version: 0.1.0
 Prompt user conversationally để gather state info.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `StrReplace`, `Read`, `Write`, `Glob`, `Grep`
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
 
 <objective>
