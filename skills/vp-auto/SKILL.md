@@ -33,11 +33,22 @@ Pauses at control points:
 - `.viepilot/phases/*/PHASE-STATE.md`
 - `.viepilot/HANDOFF.json`
 - `CHANGELOG.md` (if feature/fix)
+- `.viepilot/ROADMAP.md` when task completion changes phase progress/status
+
+**Mandatory task decomposition before implementation:**
+- Objective with concrete expected outcome
+- Exact file paths to create/modify
+- Per-file description (what + why)
+- Best practices to apply (stack + coding conventions)
+- Verification commands and expected output
+
+If required task details are missing, do not implement until task contract is refined.
 
 **Preflight before each task implementation:**
 - Read `.viepilot/STACKS.md` (if exists)
 - Read `~/.viepilot/stacks/{stack}/SUMMARY.md` for relevant stacks
 - Expand to detailed cache files only when needed (token-efficient)
+- If `.viepilot/audit-report.md` has Tier 3 stack guardrails, apply them before coding
 
 **Updates after each phase complete:**
 - `.viepilot/ROADMAP.md` — phase status row and Progress Summary table
@@ -114,6 +125,8 @@ Create git tag: `vp-p{phase}-t{task}`
 #### 3b. Execute Task
 - Implement according to objective
 - Follow acceptance criteria
+- Split large tasks into sub-tasks (30-90 minutes)
+- Record plan + files + best-practice checklist before each sub-task
 - Write tests if required
 - Atomic commits per sub-task
 - Log notes in task file
@@ -138,11 +151,14 @@ quality_gate:
 - **FAIL** → Control point (retry/skip/rollback/stop)
 
 ### 4. Update State
-After each task:
+After each PASS task and PASS sub-task:
 - Update PHASE-STATE.md
 - Update TRACKER.md
 - Update HANDOFF.json
+- Update ROADMAP.md if progress/status changed
 - Update CHANGELOG.md (if feature/fix)
+
+Rule: state-first then continue. Do not batch updates only at end of phase.
 
 ### 5. Phase Complete
 When all tasks done:

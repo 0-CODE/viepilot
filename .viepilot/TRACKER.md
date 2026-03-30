@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.8 - Stack Intelligence for Crystallize + Auto ✅ COMPLETE
+- **Milestone**: M1.11 - ROOT documentation alignment ✅ COMPLETE
 - **Current Phase**: All phases complete
 - **Current Task**: -
-- **Last Activity**: 2026-03-30 - M1.8 Complete v0.6.0
+- **Last Activity**: 2026-03-31 - M1.11 Complete v0.8.1 (ENH-011)
 
 ## Progress Overview
 ```
@@ -36,16 +36,34 @@ M1.8 ━━━━━━━━━━━━━━━━━━━━━━━━━
 Phase 11: Stack Intelligence Cache [██████████] 100% ✅
 ─────────────────────────────────────────────────
 M1.8 Overall:                   [██████████] 100% 🎉
+
+M1.9 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 12: Audit Stack Compliance [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.9 Overall:                   [██████████] 100% 🎉
+
+M1.10 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 13: Task Granularity + State Sync [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.10 Overall:                  [██████████] 100% 🎉
+
+M1.11 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 14: ROOT docs + drift     [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.11 Overall:                  [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.6.0
+0.8.1
 ```
 
 ### Released
+- **0.8.1** — M1.11 ROOT documentation alignment (ENH-011): README/CHANGELOG/audit tier copy + doc examples vs framework SemVer
+- **0.8.0** — M1.10 Execution Trace Reliability: detailed task decomposition contract + per-task state sync + audit anti-pattern detection
+- **0.7.0** — M1.9 Stack-Aware Audit: stack best-practice/code-quality checks + research fallback + vp-auto guardrails alignment
 - **0.6.0** — M1.8 Stack Intelligence: official stack research gate + global cache + vp-auto preflight lookup
 - **0.5.0** — M1.7 Brainstorm Intelligence: landing-page layout discovery + in-session research
 - **0.4.0** — M1.6 Generalize: vp-audit 3-tier + workflow framework guards (ENH-006, ENH-007)
@@ -64,7 +82,7 @@ Pending changes in [Unreleased]:
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.6.0
+Suggested next version: 0.8.2
 ```
 
 ## Decision Log
@@ -88,6 +106,9 @@ Suggested next version: 0.6.0
 | ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | ✅ done |
 | ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | ✅ done |
 | ENH-008 | 🔧 | vp-crystallize: Research official stack best practices + global cache for vp-auto | **critical** | ✅ done |
+| ENH-009 | 🔧 | vp-audit: Stack best-practice compliance + research fallback + vp-auto alignment | high | ✅ done |
+| ENH-010 | 🔧 | vp-auto/impl skills: detailed task decomposition + per-task realtime state sync | **critical** | ✅ done |
+| ENH-011 | 🔧 | ROOT docs sync + full-project drift cross-check | high | ✅ done |
 
 ## Blockers
 _None currently_
@@ -98,9 +119,10 @@ _None currently_
 ```
 
 ## Next Action
-**Milestone M1.8 Complete!** Next steps:
-- `/vp-docs` to generate full documentation
-- `/vp-evolve` to plan Milestone M2
+**Milestone M1.11 Complete!** Next steps:
+- `/vp-audit --report` to refresh guardrails snapshot after doc sweep
+- `/vp-docs` to regenerate derived docs if needed
+- `/vp-evolve` để plan milestone tiếp theo
 
 ## Quick Actions
 

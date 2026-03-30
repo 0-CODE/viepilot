@@ -90,6 +90,19 @@ read:
   - context_required files from task file
 ```
 
+#### Validate Task Contract (required before code)
+Task must include execution-grade details:
+- Objective (specific outcome)
+- Exact file paths to create/modify
+- Per-file implementation notes (what + why)
+- Best practices to apply (stack + code quality)
+- Verification commands with expected results
+
+If task file is missing required sections:
+- Mark task as `blocked`
+- Record missing sections in PHASE-STATE.md
+- Stop and request task refinement (do not start coding)
+
 #### Stack Preflight (token-efficient lookup)
 Before implementing, detect relevant stacks for the current task and load guidance in this order:
 1. `.viepilot/STACKS.md` (project stack map)
@@ -109,14 +122,19 @@ Update PHASE-STATE.md: task → in_progress
 2. Read SYSTEM-RULES.md for coding standards
 3. Apply stack cache guidance from preflight
 4. Load any required schemas
-5. Implement according to task specification
+5. Split into sub-tasks (30-90 minutes each) if scope is non-trivial
+6. Before each sub-task, write/update plan notes in task file:
+   - files touched
+   - implementation intent
+   - best-practice checklist
+7. Implement according to task specification
 6. Atomic commits per logical unit:
    ```bash
    git add {relevant files}
    git commit -m "{type}({scope}): {description}"
    git push
    ```
-7. Log notes in task file if needed
+8. Log notes in task file after each sub-task
 
 #### Verify Task
 ```yaml
@@ -138,8 +156,9 @@ quality_gate:
 
 **PASS:**
 - Create git tag: `vp-p{phase}-t{task}-done`
-- Update PHASE-STATE.md: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
-- Update TRACKER.md
+- Update PHASE-STATE.md immediately: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
+- Update TRACKER.md immediately
+- Update HANDOFF.json immediately
 - Update CHANGELOG.md if feature/fix
 - Move to next task
 
@@ -155,14 +174,19 @@ quality_gate:
 <step name="update_state">
 ## 4. Update State
 
-After each task:
+After each PASS task and PASS sub-task (state-first, then continue):
 ```yaml
 update:
   - PHASE-STATE.md: task status, timestamp
   - TRACKER.md: current state, progress
   - HANDOFF.json: latest position
+  - ROADMAP.md: sync when phase status/progress changed
   - CHANGELOG.md: if feature/fix completed
 ```
+
+Rule:
+- Never defer state updates to end-of-phase only.
+- If interrupted, HANDOFF.json must still point to exact in-progress task/sub-task.
 </step>
 
 <step name="phase_complete">

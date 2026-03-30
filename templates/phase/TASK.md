@@ -11,6 +11,18 @@
 
 {{TASK_OBJECTIVE}}
 
+## Paths
+```yaml
+files_to_create:
+  - {{NEW_FILE_PATH_1}}
+files_to_modify:
+  - {{MODIFIED_FILE_PATH_1}}
+```
+
+## File-Level Plan
+- `{{FILE_PATH}}`: {{WHAT_TO_CHANGE_AND_WHY}}
+- `{{FILE_PATH_2}}`: {{WHAT_TO_CHANGE_AND_WHY}}
+
 ## Context Required
 ```yaml
 files_to_read:
@@ -23,6 +35,20 @@ files_to_read:
 - [ ] {{CRITERIA_1}}
 - [ ] {{CRITERIA_2}}
 - [ ] {{CRITERIA_3}}
+
+## Best Practices to Apply
+- [ ] {{STACK_SPECIFIC_PRACTICE_1}}
+- [ ] {{CODE_QUALITY_PRACTICE_1}}
+- [ ] {{TESTING_OR_VERIFICATION_PRACTICE}}
+
+## Do / Don't
+### Do
+- {{DO_ITEM_1}}
+- {{DO_ITEM_2}}
+
+### Don't
+- {{DONT_ITEM_1}}
+- {{DONT_ITEM_2}}
 
 ## Implementation Notes
 ```
@@ -37,12 +63,20 @@ files_to_read:
 automated:
   - command: "{{VERIFY_COMMAND}}"
     expected: "{{EXPECTED_OUTPUT}}"
+  - command: "{{VERIFY_COMMAND_2}}"
+    expected: "{{EXPECTED_OUTPUT_2}}"
   {{ADDITIONAL_CHECKS}}
 
 manual:
   - description: "{{MANUAL_CHECK}}"
     required: {{REQUIRED}}
 ```
+
+## State Update Checklist
+- [ ] Update `.viepilot/phases/{{PHASE_NUMBER}}-{{PHASE_SLUG}}/PHASE-STATE.md` after each PASS sub-task
+- [ ] Update `.viepilot/TRACKER.md` with current task/progress
+- [ ] Update `.viepilot/HANDOFF.json` to exact resume point
+- [ ] Update `.viepilot/ROADMAP.md` if phase progress/status changed
 
 ## Files Changed
 ```

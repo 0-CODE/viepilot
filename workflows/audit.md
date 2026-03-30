@@ -15,10 +15,10 @@ IS_VIEPILOT_FRAMEWORK=false
 if [ -d "skills" ] && ls skills/vp-*/SKILL.md 2>/dev/null | head -1 > /dev/null; then
   IS_VIEPILOT_FRAMEWORK=true
   echo "→ Detected: ViePilot framework repository"
-  echo "  Will run all 3 tiers including framework integrity checks"
+  echo "  Will run Tier 1–4 (includes Tier 4 framework integrity when enabled)"
 else
   echo "→ Detected: User project using ViePilot"
-  echo "  Will run Tier 1 (state) + Tier 2 (docs) only"
+  echo "  Will run Tier 1–3; Tier 4 framework tier is skipped unless --framework"
 fi
 
 # Override with flags if provided
@@ -32,9 +32,10 @@ Display audit plan:
  VIEPILOT ► AUDIT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
- Tier 1: ViePilot State Consistency    [ALWAYS]
- Tier 2: Project Documentation Drift   [ALWAYS]
- Tier 3: Framework Integrity           [{FRAMEWORK_STATUS}]
+ Tier 1: ViePilot State Consistency           [ALWAYS]
+ Tier 2: Project Documentation Drift         [ALWAYS]
+ Tier 3: Stack Best Practices + Code Quality [ALWAYS]
+ Tier 4: Framework Integrity                 [{FRAMEWORK_STATUS}]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </step>
@@ -96,7 +97,18 @@ COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
 # Report any phase marked complete in PHASE-STATE.md without a git tag
 ```
 
-### 1e. Report Tier 1 results
+### 1e. Detect delayed/batch-only state updates (anti-pattern)
+```bash
+# Heuristic signals for poor traceability:
+# - PHASE-STATE has all tasks done but missing in_progress transitions
+# - HANDOFF/TRACKER timestamps only move at phase end
+# - no per-task done tags for multi-task phases
+#
+# Report as:
+# ⚠️  Phase N may use batch-only state updates (missing incremental trace)
+```
+
+### 1f. Report Tier 1 results
 ```
  TIER 1: ViePilot State Consistency
  ─────────────────────────────────────────────────
@@ -104,6 +116,7 @@ COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
  ROADMAP.md ↔ PHASE-STATE.md    {✅ Consistent | ⚠️ N phase(s) out of sync}
  HANDOFF.json ↔ TRACKER.md      {✅ Consistent | ⚠️ Mismatch | ℹ️ No HANDOFF.json}
  Git tags ↔ completed phases     {✅ All tagged | ⚠️ N phase(s) missing tags}
+ Incremental state traceability   {✅ Per-task updates found | ⚠️ Batch-only update pattern suspected}
 ```
 </step>
 
@@ -200,20 +213,113 @@ done
 ```
 </step>
 
+<step name="tier3_stack_practices">
+## 3. Tier 3: Stack Best Practices + Code Quality (always runs)
+
+Evaluate project code and architecture decisions against stack-specific guidance.
+This tier runs for any project, but only checks detected stacks.
+
+### 3a. Detect relevant stacks
+```bash
+# Source 1: .viepilot/STACKS.md (if present)
+# Source 2: project manifests (package.json, pom.xml, pyproject.toml, requirements.txt)
+# Source 3: common file patterns (e.g., mybatis xml, spring boot, next.config, fastapi imports)
+#
+# Build normalized stack list, e.g.:
+# java, spring-boot, mybatis, nodejs, express, react, python, fastapi
+```
+
+### 3b. Load stack cache summary first (token-efficient)
+```bash
+for stack in $DETECTED_STACKS; do
+  SUMMARY="$HOME/.viepilot/stacks/$stack/SUMMARY.md"
+  if [ -f "$SUMMARY" ]; then
+    echo "✅ Cache found for $stack (summary)"
+  else
+    echo "⚠️ No stack summary cache for $stack"
+  fi
+done
+```
+
+### 3c. Research fallback when cache missing or weak
+Fallback trigger conditions:
+- `SUMMARY.md` missing for detected stack
+- cache appears stale (missing update metadata)
+- summary too shallow for audit scope (no Do/Don't or checklist)
+
+Fallback action:
+- Use `WebSearch` to locate official docs first.
+- Use `WebFetch` to extract key guidance from official docs/reference pages.
+- Synthesize concise findings into:
+  - Do / Don't
+  - Common pitfalls
+  - Recommended structure
+  - Implementation checklist
+  - Code quality heuristics
+
+Source priority:
+1. Official documentation/specification
+2. Official maintainer org/reference repositories
+3. Reputable community references (only as supplemental)
+
+### 3d. Audit compliance by stack
+For each detected stack:
+- Compare code patterns with Do/Don't guidance.
+- Flag anti-patterns and structural violations.
+- Record findings with severity (`critical`, `high`, `medium`, `low`).
+- Tie each finding to path/module when possible.
+
+### 3e. Emit vp-auto-compatible guardrails
+Generate a reusable "guardrails contract" block:
+```yaml
+stack: {stack}
+summary_used: {cache|research}
+must_follow:
+  - ...
+avoid:
+  - ...
+preflight_checklist:
+  - ...
+needs_detail_lookup: {true|false}
+```
+
+This contract is intended for `/vp-auto` preflight so implementation uses the same stack policy as audit.
+
+### 3f. Cache update guidance
+When fallback research is used, suggest/update:
+- `~/.viepilot/stacks/{stack}/SUMMARY.md`
+- `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md`
+- `~/.viepilot/stacks/{stack}/ANTI-PATTERNS.md`
+- `~/.viepilot/stacks/{stack}/SOURCES.md`
+
+Include source links and last-updated timestamp.
+
+### 3g. Report Tier 3 results
+```
+ TIER 3: Stack Best Practices + Code Quality
+ ─────────────────────────────────────────────────
+ Stack detection                 {✅ N detected | ⚠️ none detected}
+ Cache coverage                  {✅ all cached | ⚠️ N stacks missing cache}
+ Research fallback               {✅ not needed | ℹ️ applied to N stacks}
+ Compliance findings             {✅ no issues | ⚠️ N findings by severity}
+ vp-auto guardrails contract     {✅ generated | ⚠️ partial}
+```
+</step>
+
 <step name="tier3_framework">
-## 3. Tier 3: Framework Integrity (viepilot framework only)
+## 4. Tier 4: Framework Integrity (viepilot framework only)
 
 > **Guard**: Only runs when `IS_VIEPILOT_FRAMEWORK=true` (or `--framework` flag).
 > Skip entirely for user projects.
 
 ```bash
 if [ "$IS_VIEPILOT_FRAMEWORK" != "true" ]; then
-  echo "→ Tier 3 skipped (not a viepilot framework repo)"
-  # Jump to step 4 (report)
+  echo "→ Tier 4 skipped (not a viepilot framework repo)"
+  # Jump to step 5 (report)
 fi
 ```
 
-### 3a. Collect actual framework state
+### 4a. Collect actual framework state
 ```bash
 SKILL_COUNT=$(ls -d skills/vp-*/ 2>/dev/null | wc -l | tr -d ' ')
 SKILL_LIST=$(ls -d skills/vp-*/ 2>/dev/null | xargs -I{} basename {} | sort)
@@ -223,7 +329,7 @@ CLI_OUTPUT=$(node bin/vp-tools.cjs help 2>/dev/null)
 CLI_COUNT=$(echo "$CLI_OUTPUT" | grep -E "^\s+[a-z]" | wc -l | tr -d ' ')
 ```
 
-### 3b. Parse ARCHITECTURE.md
+### 4b. Parse ARCHITECTURE.md
 Read `.viepilot/ARCHITECTURE.md` and extract documented counts:
 ```
 /SKILLS LAYER \((\d+)\)/
@@ -231,7 +337,7 @@ Read `.viepilot/ARCHITECTURE.md` and extract documented counts:
 /vp-tools\.cjs \((\d+) commands\)/
 ```
 
-### 3c. Compare and identify gaps
+### 4c. Compare and identify gaps
 ```javascript
 const gaps = [];
 if (actual.skills !== documented.skills) {
@@ -242,7 +348,7 @@ if (actual.skills !== documented.skills) {
 // Similar for workflows and CLI
 ```
 
-### 3d. Check README.md viepilot-specific badges
+### 4d. Check README.md viepilot-specific badges
 ```bash
 ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
 ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
@@ -251,16 +357,16 @@ README_SKILLS=$(grep -o 'skills-[0-9]\+' README.md 2>/dev/null | head -1 | sed '
 README_WORKFLOWS=$(grep -o 'workflows-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/workflows-//')
 ```
 
-### 3e. Check docs/skills-reference.md vs skills/
+### 4e. Check docs/skills-reference.md vs skills/
 ```bash
 ACTUAL_SKILLS_LIST=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL\.md||' | sort)
 DOCUMENTED_SKILLS=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
 MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTED_SKILLS"))
 ```
 
-### 3f. Report Tier 3 results
+### 4f. Report Tier 4 results
 ```
- TIER 3: Framework Integrity
+ TIER 4: Framework Integrity
  ─────────────────────────────────────────────────
  Skills count (ARCHITECTURE.md)  {✅ N in sync | ⚠️ N actual vs M documented}
  Workflows count                  {✅ N in sync | ⚠️ N actual vs M documented}
@@ -271,7 +377,7 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
 </step>
 
 <step name="report">
-## 4. Generate Full Report
+## 5. Generate Full Report
 
 ### All Clear
 ```
@@ -281,7 +387,8 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
 
  Tier 1: ViePilot State     ✅ All consistent
  Tier 2: Project Docs       ✅ No drift detected
- Tier 3: Framework          {✅ In sync | ℹ️ Skipped}
+ Tier 3: Stack Practices    {✅ In sync | ⚠️ N issues}
+ Tier 4: Framework          {✅ In sync | ℹ️ Skipped}
 
  Everything looks good!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -295,7 +402,8 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
 
  Tier 1: ViePilot State     {✅ | ⚠️ N issues}
  Tier 2: Project Docs       {✅ | ⚠️ N issues}
- Tier 3: Framework          {✅ | ⚠️ N issues | ℹ️ Skipped}
+ Tier 3: Stack Practices    {✅ | ⚠️ N issues}
+ Tier 4: Framework          {✅ | ⚠️ N issues | ℹ️ Skipped}
 
  ISSUES DETAIL:
  {list each issue with context}
@@ -311,19 +419,25 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
 </step>
 
 <step name="fix">
-## 5. Auto-Fix (if requested)
+## 6. Auto-Fix (if requested)
 
 ### Tier 1 fixes
 - Update ROADMAP.md phase statuses from PHASE-STATE.md files
 - Sync TRACKER.md current state with PHASE-STATE.md
 - Create missing git tags for completed phases
+- Add missing per-task trace entries/checkpoints when feasible
 
 ### Tier 2 fixes
 - Replace placeholder URLs in docs/ with actual git remote URL
 - Add version mention to README.md if missing
 - Add CHANGELOG.md [Unreleased] section if commits exist
 
-### Tier 3 fixes (framework only)
+### Tier 3 fixes (stack guidance)
+- Write/update stack cache guidance files when fallback research was used
+- Add/update "guardrails contract" section in generated audit report
+- Mark source confidence (official/reference/community)
+
+### Tier 4 fixes (framework only)
 - Update ARCHITECTURE.md counts (skills, workflows, CLI)
 - Add missing skills to ARCHITECTURE.md diagrams
 - Append missing skill sections to docs/skills-reference.md
@@ -340,7 +454,7 @@ git push
 </step>
 
 <step name="save_report">
-## 6. Save Report (if --report)
+## 7. Save Report (if --report)
 
 Create `.viepilot/audit-report.md`:
 ```markdown
@@ -358,7 +472,10 @@ Create `.viepilot/audit-report.md`:
 ## Tier 2: Project Documentation
 {results}
 
-## Tier 3: Framework Integrity
+## Tier 3: Stack Best Practices + Code Quality
+{results}
+
+## Tier 4: Framework Integrity
 {results or "Skipped — not a viepilot framework repo"}
 
 ## Recommendations
@@ -401,10 +518,15 @@ After marking phase complete:
 
 <success_criteria>
 - [ ] Tier 1 state consistency checks work for any project using ViePilot
+- [ ] Tier 1 can flag delayed/batch-only state-update anti-patterns
 - [ ] Tier 2 documentation drift checks work for Java/Node/Python/any project
-- [ ] Tier 3 framework checks only run when viepilot framework repo detected
-- [ ] `--framework` flag forces Tier 3 checks
-- [ ] `--project` flag skips Tier 3 checks
+- [ ] Tier 3 stack best-practice checks run for detected stacks
+- [ ] Tier 3 supports web research fallback when stack cache is missing/weak
+- [ ] Tier 3 output includes severity + file/module mapping
+- [ ] Tier 3 output emits vp-auto-compatible guardrails contract
+- [ ] Tier 4 framework checks only run when viepilot framework repo detected
+- [ ] `--framework` flag forces Tier 4 checks
+- [ ] `--project` flag skips Tier 4 checks
 - [ ] Report clearly shows which tier found issues
 - [ ] Auto-fix applies correct fixes per tier
 </success_criteria>

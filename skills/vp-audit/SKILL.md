@@ -1,7 +1,7 @@
 ---
 name: vp-audit
-description: "Audit ViePilot project state and documentation drift — works on any project"
-version: 0.2.0
+description: "Audit state, docs drift, and stack best-practice compliance — works on any project"
+version: 0.3.0
 ---
 
 <cursor_skill_adapter>
@@ -33,16 +33,24 @@ Auto-detect nếu đang chạy trong viepilot framework repo để thêm framewo
 - Placeholder URLs trong `docs/` (`your-org`, `YOUR_USERNAME`, v.v.)
 - Features mới (từ phases gần đây) chưa có documentation
 
-**Tier 3 — Framework Integrity (chỉ khi detect viepilot framework repo):**
+**Tier 3 — Stack Best Practices + Code Quality (mọi project, theo stack detect được):**
+- Detect stacks liên quan từ context/project manifests
+- So khớp code patterns với stack-specific Do/Don't + anti-patterns
+- Severity findings: `critical` / `high` / `medium` / `low` kèm file/module mapping
+- Fallback research bằng `WebSearch` + `WebFetch` khi cache stack thiếu/yếu
+- Sinh output guardrails/checklist để `vp-auto` tái sử dụng trong preflight
+
+**Tier 4 — Framework Integrity (chỉ khi detect viepilot framework repo):**
 - Auto-detect: `skills/vp-*/SKILL.md` tồn tại → là viepilot framework repo
 - `ARCHITECTURE.md` counts vs `skills/`, `workflows/`, CLI thực tế
 - `README.md` viepilot-specific badges (version, skills-N, workflows-N)
 - `docs/skills-reference.md` sections vs `skills/` directory
 
 **Output:**
-- Báo cáo theo 3 tiers, mỗi tier có status riêng
+- Báo cáo theo 4 tiers, mỗi tier có status riêng
 - Auto-fix option theo tier
 - Suggestions cho complex gaps
+- `vp-auto` compatible guardrails contract theo từng stack
 </objective>
 
 <execution_context>
@@ -84,18 +92,18 @@ Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
 # Placeholder URLs in docs/
 ```
 
-**Step 3 — Tier 3**: Framework Integrity (conditional)
+**Step 3 — Tier 3**: Stack Best Practices + Code Quality
 ```bash
-if [ "$IS_VIEPILOT_FRAMEWORK" = "true" ]; then
-  # ARCHITECTURE.md counts vs actual
-  # README.md viepilot badges
-  # docs/skills-reference.md completeness
-fi
+# detect stack(s), load cache summary first
+# if missing/weak cache -> run WebSearch/WebFetch fallback
+# emit severity findings + guardrails contract for vp-auto
 ```
 
-**Step 4**: Generate full report
+**Step 4 — Tier 4**: Framework Integrity (conditional)
 
-**Step 5**: Auto-fix (if requested)
+**Step 5**: Generate full report
+
+**Step 6**: Auto-fix (if requested)
 </process>
 
 <auto_hook>
@@ -121,10 +129,12 @@ Fix now? (y/n)
 - [ ] Runs on any project using ViePilot (Java, Node, Python, etc.) without errors
 - [ ] Tier 1 state consistency checks work for all projects
 - [ ] Tier 2 docs drift checks work for all project types (detects version from package.json/pom.xml/pyproject.toml)
-- [ ] Tier 3 only runs when `skills/vp-*/SKILL.md` detected OR `--framework` flag used
+- [ ] Tier 3 stack checks run for detected stacks with severity output
+- [ ] Tier 3 supports research fallback when stack cache is missing/weak
+- [ ] Tier 4 only runs when `skills/vp-*/SKILL.md` detected OR `--framework` flag used
 - [ ] Results clearly labeled by tier
-- [ ] `--framework` flag forces Tier 3 checks
-- [ ] `--project` flag skips Tier 3 checks
+- [ ] `--framework` flag forces Tier 4 checks
+- [ ] `--project` flag skips Tier 4 checks
 - [ ] Auto-fix applies correct fixes per tier
 - [ ] No mention of `skills/`, `workflows/`, `vp-tools.cjs` in Tier 1 or Tier 2 output for user projects
 </success_criteria>

@@ -1,61 +1,65 @@
 {
-  "milestone": "M1.8",
-  "milestone_name": "Stack Intelligence for Crystallize + Auto",
-  "phase": 11,
-  "phase_name": "Stack Intelligence Cache",
+  "milestone": "M1.11",
+  "milestone_name": "ROOT documentation alignment",
+  "phase": 14,
+  "phase_name": "ROOT documentation + drift cross-check (ENH-011)",
   "task": 0,
   "task_name": null,
   "status": "complete",
-  "last_activity": "2026-03-30T23:59:59Z",
+  "last_activity": "2026-03-31T12:00:00Z",
   "version": {
-    "current": "0.6.0",
-    "next": "0.7.0"
+    "current": "0.8.1",
+    "next": "0.8.2"
   },
   "progress": {
-    "phases_total": 11,
-    "phases_completed": 11,
-    "tasks_total": 35,
-    "tasks_completed": 35,
+    "phases_total": 14,
+    "phases_completed": 14,
+    "tasks_total": 43,
+    "tasks_completed": 43,
     "percentage": 100
   },
   "context": {
     "files_touched": [
-      "workflows/crystallize.md",
-      "skills/vp-crystallize/SKILL.md",
-      "workflows/autonomous.md",
-      "skills/vp-auto/SKILL.md",
-      ".viepilot/ROADMAP.md",
-      ".viepilot/TRACKER.md",
+      "README.md",
+      "workflows/audit.md",
       "CHANGELOG.md",
-      ".viepilot/phases/11-stack-intelligence/PHASE-STATE.md"
+      "docs/dev/cli-reference.md",
+      ".viepilot/TRACKER.md",
+      ".viepilot/HANDOFF.json",
+      ".viepilot/ROADMAP.md",
+      ".viepilot/audit-report.md",
+      ".viepilot/phases/14-root-documentation-alignment/PHASE-STATE.md",
+      ".viepilot/phases/14-root-documentation-alignment/SUMMARY.md",
+      ".viepilot/requests/ENH-011.md"
     ],
     "decisions": [
       {
-        "date": "2026-03-30",
-        "decision": "Require official stack research before crystallize decisions",
-        "rationale": "Avoid framework misuse and improve implementation quality"
-      },
-      {
-        "date": "2026-03-30",
-        "decision": "Use global stack cache for token-efficient vp-auto lookup",
-        "rationale": "Reuse best practices across projects and reduce context cost"
+        "date": "2026-03-31",
+        "decision": "Ship patch 0.8.1 for ENH-011: ROOT SemVer on README, consolidated CHANGELOG, 4-tier audit copy, doc examples",
+        "rationale": "Close audit drift findings and document dual-version policy before next milestone"
       }
     ],
     "blockers": [],
     "notes": [
-      "M1.8 complete - Stack Intelligence for Crystallize + Auto (Phase 11)",
-      "Crystallize now enforces official stack research gate",
-      "vp-auto preflight reads stack summaries before implementation"
+      "M1.11 complete — framework version source of truth: TRACKER/CHANGELOG; npm package.json may differ",
+      "Phase 14 artifacts under .viepilot/phases/14-root-documentation-alignment/"
     ]
   },
   "checkpoints": [
-    {"tag": "vp-p11-t1", "description": "Start Phase 11 task flow"},
-    {"tag": "vp-p11-t1-done", "description": "Crystallize research gate added"},
-    {"tag": "vp-p11-t2-done", "description": "Global stack cache structure defined"},
-    {"tag": "vp-p11-t3-done", "description": "vp-auto stack preflight lookup added"},
     {"tag": "vp-p11-complete", "description": "Phase 11 complete"},
-    {"tag": "v0.6.0", "description": "M1.8 complete"}
+    {"tag": "v0.6.0", "description": "M1.8 complete"},
+    {"tag": "vp-p12-complete", "description": "Phase 12 complete"},
+    {"tag": "v0.7.0", "description": "M1.9 complete"},
+    {"tag": "vp-p13-t1-done", "description": "Detailed task contract enforcement added"},
+    {"tag": "vp-p13-t2-done", "description": "Per-task state sync rules added"},
+    {"tag": "vp-p13-t3-done", "description": "Task template upgraded for detailed implementation"},
+    {"tag": "vp-p13-t4-done", "description": "Audit anti-pattern detection guidance added"},
+    {"tag": "vp-p13-complete", "description": "Phase 13 complete"},
+    {"tag": "v0.8.0", "description": "M1.10 complete"},
+    {"tag": "vp-p14-t1-done", "description": "ENH-011 ROOT + changelog + audit copy"},
+    {"tag": "vp-p14-complete", "description": "Phase 14 complete"},
+    {"tag": "v0.8.1", "description": "M1.11 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-30T23:59:59Z"
+  "updated_at": "2026-03-31T12:00:00Z"
 }

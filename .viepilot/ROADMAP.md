@@ -306,6 +306,134 @@
 
 ---
 
+---
+
+## Milestone: M1.9 - Stack-Aware Audit Intelligence
+
+### Overview
+- **Version**: 0.7.0
+- **Goal**: Nâng cấp vp-audit để kiểm tra best practices/code quality theo tech stack và tự research khi thiếu tri thức stack
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-31)
+
+---
+
+### Phase 12: vp-audit Stack Compliance + Research Fallback (ENH-009) ✅
+**Goal**: Biến vp-audit thành quality gate theo stack-specific best practices, đồng bộ policy với vp-auto và bổ sung research fallback
+**Estimated Tasks**: 3
+**Dependencies**: Phase 11
+**Directory**: `.viepilot/phases/12-audit-stack-compliance/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 12.1 | Extend audit workflow with stack best-practice + code quality checks | Report includes "Stack Best Practices" and "Code Quality by Stack" with severity mapping | ENH-009 |
+| 12.2 | Add web-research fallback for missing/weak stack cache | If stack cache is missing or stale, audit can gather official sources and synthesize structured guidance | ENH-009 |
+| 12.3 | Align vp-audit outputs with vp-auto stack preflight contract | Audit output can be consumed as guardrails/checklists by vp-auto before implementation | ENH-009 |
+
+**Verification**:
+- [ ] `workflows/audit.md` includes stack compliance checks and research fallback path
+- [ ] `skills/vp-audit/SKILL.md` objective/process/success criteria reflect stack-aware auditing
+- [ ] Result format includes severity-tagged findings tied to files/modules
+- [ ] Cache update guidance (`~/.viepilot/stacks/{stack}/`) is generated when new research is performed
+
+---
+
+## Progress Summary (M1.9)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 12. vp-audit Stack Compliance + Research Fallback | ✅ Complete | 3 | 3 | 100% |
+
+**Total**: 3 tasks, 3 completed, **100%** 🎉
+
+---
+
+---
+
+## Milestone: M1.10 - Execution Trace Reliability
+
+### Overview
+- **Version**: 0.8.0
+- **Goal**: Chuẩn hóa task decomposition chi tiết và state-sync theo từng task/sub-task để không mất dấu vết khi bị gián đoạn
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-31)
+
+---
+
+### Phase 13: Detailed Task Decomposition + Real-time State Sync (ENH-010) ✅
+**Goal**: Nâng cấp `vp-auto` và workflow liên quan để enforce kế hoạch task chi tiết (path/file/best-practices/verification) và cập nhật state ngay sau mỗi task
+**Estimated Tasks**: 4
+**Dependencies**: Phase 12
+**Directory**: `.viepilot/phases/13-task-granularity-state-sync/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 13.1 | Enforce detailed task contract in autonomous workflow | Each implementation task must include objective, file paths, file-level description, best practices, and verification checklist | ENH-010 |
+| 13.2 | Add per-task state-sync checkpoints | `PHASE-STATE`, `TRACKER`, `HANDOFF` are updated immediately after each PASS task/sub-task | ENH-010 |
+| 13.3 | Introduce reusable detailed task template | Template includes Paths, Implementation notes, Best practices, Do/Don't, Verification, State update checklist | ENH-010 |
+| 13.4 | Extend audit to detect late state-update anti-pattern | Audit can flag batch-only state updates and missing per-task traceability | ENH-010 |
+
+**Verification**:
+- [ ] `workflows/autonomous.md` explicitly requires detailed decomposition before coding
+- [ ] Task completion flow updates state files incrementally (not batch-only at phase end)
+- [ ] A concrete task template is available and referenced by implementation skills
+- [ ] `workflows/audit.md` can report missing per-task update traces
+
+---
+
+## Progress Summary (M1.10)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 13. Detailed Task Decomposition + Real-time State Sync | ✅ Complete | 4 | 4 | 100% |
+
+**Total**: 4 tasks, 4 completed, **100%** 🎉
+
+---
+
+---
+
+## Milestone: M1.11 - ROOT documentation alignment
+
+### Overview
+
+- **Version**: 0.8.1
+- **Goal**: Đồng bộ tài liệu ROOT và giảm drift giữa shield, TRACKER, CHANGELOG, wording audit tier
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-31)
+
+---
+
+### Phase 14: ROOT documentation + drift cross-check (ENH-011) ✅
+
+**Goal**: Khớp README/CHANGELOG/workflows với framework SemVer thực tế; quét drift mẫu (version cũ, ví dụ CLI)
+**Estimated Tasks**: 1
+**Dependencies**: Phase 13
+**Directory**: `.viepilot/phases/14-root-documentation-alignment/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 14.1 | ROOT + audit + changelog + selective docs | README shield = TRACKER framework version; dual-version note; audit banner 4 tiers; CHANGELOG có `[0.8.1]` ENH-011; grep sạch drift framework | ENH-011 |
+
+**Verification**:
+
+- [ ] `README.md` badge và đoạn Versioning khớp policy
+- [ ] `workflows/audit.md` không còn mismatch “3 tiers” vs implementation 4 tiers
+- [ ] `CHANGELOG.md` phản ánh release patch
+- [ ] Báo cáo audit cập nhật sau fix (PASS hoặc issues tối thiểu)
+
+---
+
+## Progress Summary (M1.11)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 14. ROOT documentation + drift cross-check | ✅ Complete | 1 | 1 | 100% |
+
+**Total**: 1 task, 1 completed, **100%** 🎉
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -324,5 +452,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-30
+- Last Updated: 2026-03-31 (M1.11 / ENH-011)
 - Estimated completion: M1 - 0.2.0 release
