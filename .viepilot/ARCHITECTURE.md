@@ -10,23 +10,24 @@
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                            SKILLS LAYER (10)                            │
+│                            SKILLS LAYER (12)                            │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
 │  │ brainstorm  │ │ crystallize │ │    auto     │ │   pause     │       │
 │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘       │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
 │  │   resume    │ │   status    │ │   request   │ │   evolve    │       │
 │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘       │
-│  ┌─────────────┐ ┌─────────────┐                                       │
-│  │    docs     │ │    task     │                                       │
-│  └─────────────┘ └─────────────┘                                       │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
+│  │    docs     │ │    task     │ │   debug     │ │  rollback   │       │
+│  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘       │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                          WORKFLOWS LAYER (8)                            │
+│                          WORKFLOWS LAYER (10)                           │
 │  brainstorm.md │ crystallize.md │ autonomous.md │ pause-work.md        │
-│  resume-work.md │ request.md │ evolve.md │ documentation.md             │
+│  resume-work.md │ request.md │ evolve.md │ documentation.md            │
+│  debug.md │ rollback.md                                                 │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -47,8 +48,10 @@
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                            CLI LAYER                                    │
-│                         vp-tools.cjs (12 commands)                      │
-│  init │ status │ phase │ task │ verify │ checkpoint │ version │ ...   │
+│                         vp-tools.cjs (13 commands)                      │
+│  init │ current-timestamp │ phase-info │ task-status │ commit          │
+│  progress │ version │ reset │ clean │ checkpoints │ conflicts          │
+│  save-state │ help                                                      │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
@@ -95,6 +98,8 @@ skills/vp-{name}/SKILL.md
 | Control | pause, resume | Session management |
 | Monitor | status | Progress tracking |
 | Develop | request, evolve | Ongoing development |
+| Debug | debug | Systematic debugging with state tracking |
+| Recovery | rollback | Checkpoint recovery and rollback |
 | Finalize | docs | Documentation generation |
 
 ## Workflows Layer Detail
@@ -127,6 +132,10 @@ pause-work.md  ←→  resume-work.md      documentation.md
                                             ▲
 request.md ────────────────────────────────┘
 evolve.md ─────────────────────────────────┘
+
+Debug & Recovery (can be invoked anytime):
+debug.md ──────► Track issues across sessions
+rollback.md ───► Recover to any checkpoint
 ```
 
 ## Templates Layer Detail
