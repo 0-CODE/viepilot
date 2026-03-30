@@ -395,7 +395,7 @@ Group by type:
 <step name="create_index">
 ## 3. Create Index
 
-Update docs/README.md:
+### Update docs/README.md
 ```markdown
 # {Project Name} Documentation
 
@@ -427,6 +427,26 @@ Update docs/README.md:
 ---
 Last updated: {date}
 ```
+
+### Update root README.md (sync Documentation section)
+
+After generating docs/, update the root `README.md` to reflect newly created documentation:
+
+1. **Documentation table** — scan `docs/` for all `.md` files and ensure they are linked:
+   ```bash
+   # Find all docs generated
+   find docs/ -name "*.md" | sort
+   ```
+   Add rows to Documentation table for any new files not yet listed.
+
+2. **Project Structure `docs/` tree** — update to reflect actual subdirectories:
+   ```bash
+   # Actual docs structure
+   find docs/ -type d | sort
+   ```
+   Rewrite the `docs/` section of Project Structure to match filesystem.
+
+3. Commit: `docs: sync README.md documentation links and project structure`
 </step>
 
 <step name="skills_reference">
