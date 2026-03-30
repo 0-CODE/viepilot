@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.5 - ENH Backlog Implementation
-- **Current Phase**: Phase 5 - vp-docs Enhancements
-- **Current Task**: 5.1 - ENH-004: Inject git remote URL
-- **Last Activity**: 2026-03-30 - Start M1.5 ENH backlog
+- **Milestone**: M1.5 - ENH Backlog Implementation ✅ COMPLETE
+- **Current Phase**: All phases complete
+- **Current Task**: -
+- **Last Activity**: 2026-03-30 - M1.5 Complete v0.3.0
 
 ## Progress Overview
 ```
@@ -15,21 +15,22 @@ Phase 3: Integration & Testing  [██████████] 100% ✅
 Phase 4: Documentation          [██████████] 100% ✅
 
 M1.5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Phase 5: vp-docs Enhancements   [░░░░░░░░░░]   0% 🔄
-Phase 6: ROOT Document Sync     [░░░░░░░░░░]   0% ⏳
-Phase 7: vp-audit Drift         [░░░░░░░░░░]   0% ⏳
+Phase 5: vp-docs Enhancements   [██████████] 100% ✅
+Phase 6: ROOT Document Sync     [██████████] 100% ✅
+Phase 7: vp-audit Drift         [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.5 Overall:                   [░░░░░░░░░░]   0%
+M1.5 Overall:                   [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.2.0
+0.3.0
 ```
 
 ### Released
+- **0.3.0** — M1.5 ENH Backlog: vp-docs/vp-auto/vp-audit drift prevention (ENH-001~005)
 - **0.2.0** — M1 Foundation Enhancement complete
 
 ### Version History

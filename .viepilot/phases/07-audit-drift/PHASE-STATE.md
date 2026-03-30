@@ -3,17 +3,17 @@
 ## Status
 - **Phase**: 7
 - **Title**: vp-audit Drift Detection
-- **Status**: not_started
-- **Started**: -
-- **Completed**: -
-- **Progress**: 0%
+- **Status**: complete
+- **Started**: 2026-03-30
+- **Completed**: 2026-03-30
+- **Progress**: 100%
 
 ## Tasks
 | Task | Description | Status |
 |------|-------------|--------|
-| 7.1 | ENH-003: Add ROOT + docs/ drift checks to workflows/audit.md | pending |
-| 7.2 | ENH-003: Add drift checks to skills/vp-audit/SKILL.md objective | pending |
-| 7.3 | ENH-003: Add placeholder URL check to audit workflow | pending |
+| 7.1 | ENH-003: Add ROOT drift checks to workflows/audit.md | ✅ done |
+| 7.2 | ENH-003: Add docs/ drift + placeholder checks to audit workflow | ✅ done |
+| 7.3 | ENH-003: Update vp-audit SKILL.md objective + success_criteria | ✅ done |
 
 ## Notes
 - Dependencies: Phase 5 & 6 (audit verifies what those phases implement)

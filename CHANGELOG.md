@@ -7,10 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- `docs/dev/` — Developer guide (CLI reference, architecture, contributing, testing, deployment)
-- `docs/user/` — User guide (quick start, features, FAQ)
-- `docs/README.md` — Documentation index
+## [0.3.0] - 2026-03-30 — M1.5 ENH Backlog: Drift Prevention
+
+### Enhanced
+
+#### vp-docs (ENH-004, ENH-005, ENH-002)
+- `workflows/documentation.md` — new Step 0 resolves GitHub owner/repo from `git remote` before generating any file; eliminates hardcoded `your-org`/`YOUR_USERNAME` placeholders
+- `workflows/documentation.md` — new Step 3B scans `skills/` directory to build `skills-reference.md` incrementally (append-only, preserves manual edits)
+- `workflows/documentation.md` — Step 3 (create_index) now also updates root `README.md` Documentation table and Project Structure tree after generating docs
+- `skills/vp-docs/SKILL.md` — Step 0 added, objective updated to declare all files updated including `skills-reference.md` and root `README.md`
+
+#### vp-auto (ENH-001)
+- `workflows/autonomous.md` — Step 5a: syncs `.viepilot/ROADMAP.md` phase status and Progress Summary after every phase completes
+- `workflows/autonomous.md` — Step 5b: detects new skill files in phase diff and appends to `docs/skills-reference.md`
+- `workflows/autonomous.md` — Step 6a: syncs `README.md` badges, counts, and tables on milestone complete
+- `skills/vp-auto/SKILL.md` — objective now declares all files updated (ROADMAP.md per-phase, README.md on milestone)
+
+#### vp-audit (ENH-003)
+- `workflows/audit.md` — new Step 6 drift_check: detects README.md badge drift, README.md table drift, ROADMAP.md phase status drift, docs/skills-reference.md missing sections, and placeholder URLs in docs/
+- `workflows/audit.md` — drift auto-fix option (option 1) updates all drifted files and commits
+- `skills/vp-audit/SKILL.md` — objective, flags, and success_criteria updated to declare all drift check capabilities
 
 ## [0.2.0] - 2026-03-30 — M1 Foundation Enhancement
 
