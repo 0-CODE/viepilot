@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.6 - Generalize for User Projects ✅ COMPLETE
+- **Milestone**: M1.7 - Brainstorm Intelligence Upgrade ✅ COMPLETE
 - **Current Phase**: All phases complete
 - **Current Task**: -
-- **Last Activity**: 2026-03-30 - M1.6 Complete v0.4.0
+- **Last Activity**: 2026-03-30 - M1.7 Complete v0.5.0
 
 ## Progress Overview
 ```
@@ -25,17 +25,23 @@ M1.6 ━━━━━━━━━━━━━━━━━━━━━━━━━
 Phase 8: Generalize Workflows   [██████████] 100% ✅
 Phase 9: Generalize vp-audit    [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.6 Overall:                   [██████████] 100% 🎉
+M1.6 Overall:                   [██████████] 100% ✅
+
+M1.7 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 10: Brainstorm Intelligence [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.7 Overall:                   [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.4.0
+0.5.0
 ```
 
 ### Released
+- **0.5.0** — M1.7 Brainstorm Intelligence: landing-page layout discovery + in-session research
 - **0.4.0** — M1.6 Generalize: vp-audit 3-tier + workflow framework guards (ENH-006, ENH-007)
 - **0.3.0** — M1.5 ENH Backlog: vp-docs/vp-auto/vp-audit drift prevention (ENH-001~005)
 - **0.2.0** — M1 Foundation Enhancement complete
@@ -48,11 +54,11 @@ M1.6 Overall:                   [██████████] 100% 🎉
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 0 features
+- 1 features
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.2.0 (after M1 complete)
+Suggested next version: 0.5.0
 ```
 
 ## Decision Log
@@ -85,9 +91,9 @@ _None currently_
 ```
 
 ## Next Action
-**Milestone M1 Complete!** Next steps:
+**Milestone M1.7 Complete!** Next steps:
 - `/vp-docs` to generate full documentation
-- `/vp-evolve` to start Milestone M2
+- `/vp-evolve` to plan Milestone M2
 
 ## Quick Actions
 

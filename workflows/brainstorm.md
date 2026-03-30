@@ -1,5 +1,6 @@
 <purpose>
 Interactive brainstorm session để thu thập ý tưởng, requirements, và quyết định cho dự án.
+Cho phép research ngay trong cùng phiên brainstorm khi cần.
 </purpose>
 
 <process>
@@ -81,6 +82,37 @@ Cho mỗi topic:
 4. Đề xuất alternatives nếu cần
 5. Ghi nhận decisions
 
+### Landing Page Deep-Dive (kích hoạt theo ngữ cảnh)
+Nếu user brainstorm về landing page / homepage / marketing page:
+
+1. Hỏi thêm để chốt bố cục:
+   - Goal chính của landing page? (signup, booking demo, download, contact)
+   - Audience chính?
+   - Tone visual? (minimal, modern, bold, enterprise, playful)
+   - CTA chính và CTA phụ?
+2. Đưa menu bố cục để user chọn:
+   - Layout A: Hero centric + trust logos + features + CTA
+   - Layout B: Problem/Solution + social proof + pricing + FAQ
+   - Layout C: Product storytelling + screenshots + testimonials + final CTA
+   - Layout D: SaaS conversion + integrations + comparison + onboarding steps
+3. Tham khảo `https://21st.dev` để đề xuất section/components phù hợp với layout đã chọn.
+4. Ghi rõ trong session:
+   - Layout user chọn
+   - Component candidates từ 21st.dev
+   - Lý do chọn theo objective + audience
+
+### In-session Research Mode
+User có thể yêu cầu research ngay trong brainstorm (không cần đổi skill):
+- Trigger phrases: "research cái này", "bạn research giúp", "cần research", "hãy tìm best practice"
+- Khi trigger:
+  1. Xác định scope research (1-3 câu)
+  2. Thu thập nhanh từ nguồn phù hợp (docs chính thức, reference sites, patterns)
+  3. Trả về tóm tắt ngắn: findings, trade-offs, recommendation
+  4. Quay lại topic brainstorm hiện tại với quyết định đề xuất
+
+Nếu assistant nhận thấy topic có độ mơ hồ cao hoặc rủi ro quyết định sai, assistant nên chủ động đề xuất:
+`Mục này nên research nhanh trước khi chốt, bạn muốn mình research luôn trong phiên này không?`
+
 ### Kết thúc mỗi topic
 - Tóm tắt decisions
 - List action items
@@ -115,6 +147,19 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
 **Open Questions**:
 - Question 1?
+
+**Research Notes**:
+- Query: {what was researched}
+- Sources: {links / docs}
+- Findings: {key points}
+- Recommendation: {recommended direction}
+
+**Landing Page Decisions** (if applicable):
+- Chosen layout: {A|B|C|D|Custom}
+- Section order: {hero -> proof -> features -> pricing -> faq -> cta}
+- 21st.dev references:
+  - {component/pattern 1}
+  - {component/pattern 2}
 
 ---
 
@@ -172,6 +217,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - `/save` - Lưu tiến độ ngay
 - `/end` - Kết thúc và lưu phiên
 - `/questions` - Xem danh sách open questions
+- `/research {topic}` - Research nhanh ngay trong phiên và quay lại topic hiện tại
 </commands>
 
 <success_criteria>
@@ -179,5 +225,8 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - [ ] Decisions có rationale
 - [ ] Open questions tracked
 - [ ] Action items captured
+- [ ] Landing page topics trigger layout follow-up questions
+- [ ] 21st.dev references được dùng khi thảo luận landing page
+- [ ] Research có thể chạy ngay trong brainstorm session khi user yêu cầu
 - [ ] Git committed
 </success_criteria>

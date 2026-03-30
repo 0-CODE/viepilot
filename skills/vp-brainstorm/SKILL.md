@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -23,6 +23,8 @@ Hỗ trợ:
 - Tạo session mới
 - Tiếp tục session cũ
 - Xem lại session trước đó
+- Landing page layout discovery (hỏi thêm để chốt bố cục)
+- In-session research (research ngay trong phiên brainstorm theo yêu cầu)
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -39,6 +41,8 @@ Optional flags:
 - `--new` : Force tạo session mới
 - `--continue` : Tiếp tục session gần nhất
 - `--list` : Liệt kê các sessions
+- `--landing` : Ưu tiên flow Landing Page layout discovery
+- `--research` : Bật proactive research suggestions trong phiên
 </context>
 
 <process>
@@ -49,8 +53,10 @@ Key steps:
 2. Ask user intent (new/continue/review)
 3. Load context if continuing
 4. Run interactive Q&A với topic-based structure
-5. Save session with structured format
-6. Suggest next action: `/vp-crystallize`
+5. Nếu topic là landing page: hỏi thêm bố cục + tham khảo `21st.dev` để đề xuất section/components
+6. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
+7. Save session with structured format (bao gồm research notes khi có)
+8. Suggest next action: `/vp-crystallize`
 </process>
 
 <success_criteria>
@@ -58,5 +64,8 @@ Key steps:
 - [ ] Decisions documented với rationale
 - [ ] Open questions listed
 - [ ] Action items captured
+- [ ] Landing page topics include explicit layout selection questions
+- [ ] 21st.dev references included when relevant
+- [ ] Research can be executed inside the same brainstorm session
 - [ ] Next steps suggested
 </success_criteria>

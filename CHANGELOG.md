@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Enhanced
+
+#### Brainstorm UX
+- `workflows/brainstorm.md` — added Landing Page deep-dive flow with explicit layout selection (A/B/C/D/custom), follow-up questions, and structure decisions capture
+- `workflows/brainstorm.md` — added in-session research mode so users can request research without leaving brainstorm
+- `workflows/brainstorm.md` — added `21st.dev` reference path for selecting suitable landing page sections/components
+- `skills/vp-brainstorm/SKILL.md` — updated objective and flags (`--landing`, `--research`) for landing-first and research-heavy brainstorm sessions
+
+#### Evolve Routing
+- `workflows/evolve.md` — add smart routing to enhanced brainstorm flow for landing page / research-heavy requests
+- `skills/vp-evolve/SKILL.md` — update process to route via `/vp-brainstorm --new --landing --research` when relevant
+
 ## [0.3.0] - 2026-03-30 — M1.5 ENH Backlog: Drift Prevention
 
 ### Enhanced

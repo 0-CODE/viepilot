@@ -1,64 +1,61 @@
 {
-  "milestone": "M1",
-  "milestone_name": "Foundation Enhancement",
-  "phase": 3,
-  "phase_name": "Integration & Testing",
+  "milestone": "M1.7",
+  "milestone_name": "Brainstorm Intelligence Upgrade",
+  "phase": 10,
+  "phase_name": "Brainstorm Landing + Research",
   "task": 0,
   "task_name": null,
-  "status": "not_started",
-  "last_activity": "2026-03-30T14:43:00Z",
+  "status": "complete",
+  "last_activity": "2026-03-30T23:59:00Z",
   "version": {
-    "current": "0.1.0",
-    "next": "0.2.0"
+    "current": "0.5.0",
+    "next": "0.6.0"
   },
   "progress": {
-    "phases_total": 4,
-    "phases_completed": 2,
-    "tasks_total": 17,
-    "tasks_completed": 9,
-    "percentage": 53
+    "phases_total": 10,
+    "phases_completed": 10,
+    "tasks_total": 32,
+    "tasks_completed": 32,
+    "percentage": 100
   },
   "context": {
     "files_touched": [
-      "bin/vp-tools.cjs",
-      "skills/vp-debug/SKILL.md",
-      "skills/vp-rollback/SKILL.md",
-      "workflows/debug.md",
-      "workflows/rollback.md"
+      "workflows/brainstorm.md",
+      "skills/vp-brainstorm/SKILL.md",
+      "workflows/evolve.md",
+      "skills/vp-evolve/SKILL.md",
+      ".viepilot/ROADMAP.md",
+      ".viepilot/TRACKER.md",
+      "CHANGELOG.md",
+      ".viepilot/phases/10-brainstorm-intelligence/PHASE-STATE.md"
     ],
     "decisions": [
       {
         "date": "2026-03-30",
-        "decision": "Self-apply ViePilot to develop itself",
-        "rationale": "Dogfooding - proves framework works"
+        "decision": "Landing page brainstorm must include layout selection",
+        "rationale": "Improve clarity before implementation"
       },
       {
         "date": "2026-03-30",
-        "decision": "Zero external dependencies for CLI",
-        "rationale": "Keep framework lightweight"
-      },
-      {
-        "date": "2026-03-30",
-        "decision": "Git tags for checkpoints",
-        "rationale": "Reliable, no external dependencies"
+        "decision": "Allow in-session research during brainstorm",
+        "rationale": "Reduce context switching and accelerate decisions"
       }
     ],
     "blockers": [],
     "notes": [
-      "Phase 1 complete - CLI Enhancement (4 tasks)",
-      "Phase 2 complete - Advanced Features (5 tasks)",
-      "Ready for Phase 3: Integration & Testing"
+      "M1.7 complete - Brainstorm Intelligence Upgrade (Phase 10)",
+      "Landing page layout discovery flow added",
+      "Research-in-session supported with /research command"
     ]
   },
   "checkpoints": [
-    {"tag": "vp-p1-t1", "description": "Start Phase 1"},
-    {"tag": "vp-p1-t1-done", "description": "Phase 1 CLI done"},
-    {"tag": "vp-p1-complete", "description": "Phase 1 complete"},
-    {"tag": "vp-p2-t1", "description": "Start Phase 2"},
-    {"tag": "vp-p2-t1-done", "description": "vp-debug done"},
-    {"tag": "vp-p2-t2-done", "description": "vp-rollback done"},
-    {"tag": "vp-p2-complete", "description": "Phase 2 complete"}
+    {"tag": "vp-p10-t1", "description": "Start Phase 10 task flow"},
+    {"tag": "vp-p10-t1-done", "description": "Landing deep-dive added"},
+    {"tag": "vp-p10-t2-done", "description": "In-session research mode added"},
+    {"tag": "vp-p10-t3-done", "description": "Evolve routing updated"},
+    {"tag": "vp-p10-complete", "description": "Phase 10 complete"},
+    {"tag": "v0.5.0", "description": "M1.7 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-30T14:43:00Z"
+  "updated_at": "2026-03-30T23:59:00Z"
 }

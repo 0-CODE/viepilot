@@ -234,6 +234,42 @@
 
 ---
 
+---
+
+## Milestone: M1.7 - Brainstorm Intelligence Upgrade
+
+### Overview
+- **Version**: 0.5.0
+- **Goal**: Nâng cấp brainstorm để hỗ trợ Landing Page layout selection và research ngay trong phiên
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-30)
+
+---
+
+### Phase 10: Brainstorm Landing + Research ✅
+**Goal**: Khi brainstorm về landing page, hỏi thêm bố cục và tham khảo 21st.dev; hỗ trợ research trực tiếp trong phiên brainstorm
+**Estimated Tasks**: 3
+**Dependencies**: Phase 9
+**Directory**: `.viepilot/phases/10-brainstorm-intelligence/`
+
+| Task | Description | Acceptance Criteria |
+|------|-------------|---------------------|
+| 10.1 | Add landing-page layout deep-dive flow | Brainstorm asks explicit layout questions (A/B/C/D/custom) |
+| 10.2 | Add in-session research mode | User can request research without leaving brainstorm session |
+| 10.3 | Update evolve routing to enhanced brainstorm | `/vp-evolve` routes landing/research-heavy requests to `/vp-brainstorm --landing --research` |
+
+---
+
+## Progress Summary (M1.7)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 10. Brainstorm Landing + Research | ✅ Complete | 3 | 3 | 100% |
+
+**Total**: 3 tasks, 3 completed, **100%** 🎉
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features

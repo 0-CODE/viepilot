@@ -50,6 +50,7 @@ Describe the new feature:
 3. Which services/modules affected?
 4. Dependencies on existing code?
 5. Estimated complexity? (S/M/L/XL)
+6. Có cần brainstorm chuyên sâu không? (landing page / UX / growth ideas / research-heavy)
 ```
 
 ### Check Architecture Compatibility
@@ -64,6 +65,13 @@ Questions:
 - Breaking changes?
 
 If incompatible → suggest refactor first or discuss alternative.
+
+### Smart Route to Brainstorm (khi phù hợp)
+Nếu feature có nội dung thiên về product discovery, UX, hoặc landing page:
+- Route qua brainstorm nâng cao thay vì chốt phase ngay:
+  - `/vp-brainstorm --new --landing --research` (nếu có landing page)
+  - `/vp-brainstorm --new --research` (nếu cần research decision)
+- Sau khi brainstorm xong, quay lại `/vp-evolve` để crystallize phase/tasks.
 
 ### Generate Phase
 Create new phase in ROADMAP.md:
@@ -147,6 +155,7 @@ New milestone details:
 
 Options:
 - Route to `/vp-brainstorm --new` for full brainstorm
+- Nếu milestone có landing page focus: `/vp-brainstorm --new --landing --research`
 - Quick setup with minimal questions
 
 ### Generate New ROADMAP.md
