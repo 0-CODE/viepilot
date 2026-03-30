@@ -24,6 +24,22 @@
     "url": "https://github.com/0-CODE/viepilot/issues"
   },
   "homepage": "https://github.com/0-CODE/viepilot#readme",
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/tests/unit/**/*.test.js",
+      "<rootDir>/tests/integration/**/*.test.js"
+    ],
+    "testTimeout": 30000,
+    "collectCoverageFrom": [
+      "bin/vp-tools.cjs"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 80
+      }
+    }
+  },
   "devDependencies": {
     "jest": "^30.3.0"
   }
