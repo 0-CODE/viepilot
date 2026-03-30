@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `docs/dev/` — Developer guide (CLI reference, architecture, contributing, testing, deployment)
+- `docs/user/` — User guide (quick start, features, FAQ)
+- `docs/README.md` — Documentation index
+
 ## [0.2.0] - 2026-03-30 — M1 Foundation Enhancement
 
 ### Added
@@ -74,5 +79,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/your-org/viepilot/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/your-org/viepilot/releases/tag/v0.1.0
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/0-CODE/viepilot/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/0-CODE/viepilot/releases/tag/v0.1.0

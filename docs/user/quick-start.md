@@ -1,0 +1,138 @@
+# Quick Start Guide
+
+Bắt đầu với ViePilot trong 5 phút.
+
+## What is ViePilot?
+
+ViePilot là framework giúp bạn phát triển phần mềm với AI một cách **có hệ thống và kiểm soát**. Thay vì chat với AI và copy-paste code, ViePilot tổ chức toàn bộ dự án thành phases, tasks, và checkpoints — với AI thực thi từng bước một.
+
+```
+Bạn: Mô tả ý tưởng
+  ↓
+ViePilot: Tạo roadmap, phases, tasks
+  ↓
+AI: Tự động code từng task
+  ↓
+Bạn: Review, approve, hoặc rollback
+```
+
+---
+
+## Step 1: Install
+
+```bash
+git clone https://github.com/0-CODE/viepilot
+cd viepilot
+./install.sh
+```
+
+Verify:
+```bash
+vp-tools help
+# Hiển thị: ViePilot CLI Tools với 13 commands
+```
+
+---
+
+## Step 2: Create a New Project
+
+```bash
+mkdir my-project && cd my-project
+git init
+```
+
+Mở thư mục trong **Cursor IDE**.
+
+---
+
+## Step 3: Brainstorm
+
+Trong Cursor Chat:
+
+```
+/vp-brainstorm Build a REST API for managing tasks
+```
+
+ViePilot sẽ hỏi bạn về:
+- Tech stack (Node.js? Python? Java?)
+- Features cần thiết
+- Constraints (deadline, team size, etc.)
+
+Trả lời tự nhiên — không cần format đặc biệt.
+
+---
+
+## Step 4: Crystallize
+
+```
+/vp-crystallize
+```
+
+ViePilot tạo `.viepilot/` directory với:
+- `ROADMAP.md` — Phases và tasks
+- `TRACKER.md` — Progress tracking
+- `ARCHITECTURE.md` — System design
+- `SYSTEM-RULES.md` — Coding standards
+
+---
+
+## Step 5: Run Autonomous Mode
+
+```
+/vp-auto
+```
+
+ViePilot sẽ:
+1. Đọc Phase 1 từ ROADMAP.md
+2. Tạo git checkpoint tag
+3. Implement từng task
+4. Verify acceptance criteria
+5. Commit và move to next task
+
+**Bạn không cần làm gì** — chỉ cần watch và approve tại control points.
+
+---
+
+## Step 6: Check Progress
+
+```
+/vp-status
+```
+
+Hiển thị:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► STATUS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Phase 1: Setup         [██████████] 100% ✅
+ Phase 2: Core API      [████░░░░░░]  40% 🔄
+ Phase 3: Tests         [░░░░░░░░░░]   0% ⏳
+
+ Overall:               [████░░░░░░]  47%
+```
+
+---
+
+## Common Commands
+
+| Command | When to Use |
+|---------|-------------|
+| `/vp-brainstorm` | Bắt đầu project mới hoặc feature mới |
+| `/vp-crystallize` | Sau brainstorm, tạo artifacts |
+| `/vp-auto` | Chạy autonomous execution |
+| `/vp-status` | Xem progress dashboard |
+| `/vp-pause` | Dừng và lưu state |
+| `/vp-resume` | Tiếp tục từ lần dừng |
+| `/vp-request --feature` | Thêm feature mới |
+| `/vp-rollback` | Quay lại checkpoint trước |
+| `/vp-debug` | Debug issue có hệ thống |
+
+---
+
+## Next Steps
+
+- [Skills Reference](../skills-reference.md) — Chi tiết tất cả commands
+- [Advanced Usage](../advanced-usage.md) — Power user features
+- [Troubleshooting](../troubleshooting.md) — Common issues
+- [Examples](../../examples/) — 3 example projects
