@@ -1,22 +1,25 @@
 # Phase 9: Generalize vp-audit (ENH-006)
 
 ## Overview
-- **Started**: -
-- **Status**: not_started
-- **Progress**: 0/2 tasks (0%)
+- **Started**: 2026-03-30
+- **Status**: complete
+- **Progress**: 2/2 tasks (100%)
 - **Current Task**: -
 
 ## Task Status
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 9.1 | workflows/audit.md: rewrite with 3-tier architecture (detect → state → docs → framework) | pending | - | - | - |
-| 9.2 | skills/vp-audit/SKILL.md: rewrite objective, flags, success_criteria for project-agnostic | pending | - | - | - |
+| 9.1 | workflows/audit.md: rewrite with 3-tier architecture (detect → state → docs → framework) | done | 2026-03-30 | 2026-03-30 | vp-p9-t1-done |
+| 9.2 | skills/vp-audit/SKILL.md: rewrite objective, flags, success_criteria for project-agnostic | done | 2026-03-30 | 2026-03-30 | vp-p9-t2-done |
 
 ## Files Changed
 
 | File | Action | Task |
 |------|--------|------|
+| workflows/audit.md | Modified | 9.1 |
+| skills/vp-audit/SKILL.md | Modified | 9.2 |
+| .viepilot/phases/09-generalize-audit/PHASE-STATE.md | Created | 9.1 |
 
 ## Blockers
 _None currently_

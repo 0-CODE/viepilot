@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.6 - Generalize for User Projects
-- **Current Phase**: Phase 8 - Generalize Workflows
-- **Current Task**: 8.1 - autonomous.md framework detection guards
-- **Last Activity**: 2026-03-30 - Start M1.6
+- **Milestone**: M1.6 - Generalize for User Projects ✅ COMPLETE
+- **Current Phase**: All phases complete
+- **Current Task**: -
+- **Last Activity**: 2026-03-30 - M1.6 Complete v0.4.0
 
 ## Progress Overview
 ```
@@ -19,17 +19,24 @@ Phase 5: vp-docs Enhancements   [██████████] 100% ✅
 Phase 6: ROOT Document Sync     [██████████] 100% ✅
 Phase 7: vp-audit Drift         [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.5 Overall:                   [██████████] 100% 🎉
+M1.5 Overall:                   [██████████] 100% ✅
+
+M1.6 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 8: Generalize Workflows   [██████████] 100% ✅
+Phase 9: Generalize vp-audit    [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.6 Overall:                   [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.3.0
+0.4.0
 ```
 
 ### Released
+- **0.4.0** — M1.6 Generalize: vp-audit 3-tier + workflow framework guards (ENH-006, ENH-007)
 - **0.3.0** — M1.5 ENH Backlog: vp-docs/vp-auto/vp-audit drift prevention (ENH-001~005)
 - **0.2.0** — M1 Foundation Enhancement complete
 
@@ -66,8 +73,8 @@ Suggested next version: 0.2.0 (after M1 complete)
 | ENH-003 | 🔧 | vp-audit: Add drift detection (ROOT + docs/) | medium | updated |
 | ENH-004 | 🔧 | vp-docs: Inject git remote URL when generating | medium | new |
 | ENH-005 | 🔧 | vp-docs: Keep skills-reference.md in sync with skills/ | high | new |
-| ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | new |
-| ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | new |
+| ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | ✅ done |
+| ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | ✅ done |
 
 ## Blockers
 _None currently_
