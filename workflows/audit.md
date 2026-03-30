@@ -165,8 +165,104 @@ Auto-fixed by /vp-audit"
 ```
 </step>
 
+<step name="drift_check">
+## 6. ROOT + docs/ Drift Check
+
+Run this check **after** the ARCHITECTURE.md comparison (steps 1-5). Detects drift in README.md, ROADMAP.md, and docs/ files.
+
+### 6a. Collect actual counts (reuse from step 1 if available)
+```bash
+ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_VERSION=$(node bin/vp-tools.cjs version get --raw 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | tail -1)
+```
+
+### 6b. Check README.md badges
+```bash
+README_VERSION=$(grep -o 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/version-//')
+README_SKILLS=$(grep -o 'skills-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/skills-//')
+README_WORKFLOWS=$(grep -o 'workflows-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/workflows-//')
+```
+
+Compare and build drift list:
+- If `$README_VERSION` != `$ACTUAL_VERSION` → version drift
+- If `$README_SKILLS` != `$ACTUAL_SKILLS` → skills badge drift
+- If `$README_WORKFLOWS` != `$ACTUAL_WORKFLOWS` → workflows badge drift
+
+### 6c. Check README.md tables vs filesystem
+```bash
+# Skills listed in README.md Skills Reference table
+README_SKILLS_LIST=$(grep "^| \`/vp-" README.md 2>/dev/null | sed 's/.*`\/\(vp-[^`]*\)`.*/\1/' | sort)
+# Actual skills
+ACTUAL_SKILLS_LIST=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL\.md||' | sort)
+MISSING_IN_README=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$README_SKILLS_LIST"))
+```
+
+### 6d. Check ROADMAP.md phase status vs PHASE-STATE.md
+```bash
+# For each phase directory that has PHASE-STATE.md
+for phase_dir in .viepilot/phases/*/; do
+  PHASE_STATUS=$(grep "^- \*\*Status\*\*:" "$phase_dir/PHASE-STATE.md" 2>/dev/null | sed 's/.*: //')
+  PHASE_NAME=$(basename "$phase_dir")
+  # Check if ROADMAP.md reflects this status
+done
+```
+
+### 6e. Check docs/skills-reference.md vs skills/
+```bash
+DOCUMENTED_SKILLS=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
+MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTED_SKILLS"))
+```
+
+### 6f. Check placeholder URLs in docs/
+```bash
+PLACEHOLDER_FILES=$(grep -rl "your-org\|YOUR_USERNAME\|YOUR_ORG" docs/ --include="*.md" 2>/dev/null)
+```
+
+### 6g. Report drift
+
+If any drift detected:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ DRIFT DETECTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ README.md:
+   ⚠️  version badge: {README_VERSION} → should be {ACTUAL_VERSION}
+   ⚠️  skills badge: {README_SKILLS} → should be {ACTUAL_SKILLS}
+   ⚠️  missing skills in table: {MISSING_IN_README}
+
+ ROADMAP.md:
+   ⚠️  Phase {N} status mismatch: ROADMAP says X, PHASE-STATE says Y
+
+ docs/skills-reference.md:
+   ⚠️  missing skills: {MISSING_IN_SKILLSREF}
+
+ docs/ placeholder URLs:
+   ⚠️  {PLACEHOLDER_FILES}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ OPTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Auto-fix all drift
+ 2. Show diff only
+ 3. Fix specific items
+ 4. Skip
+```
+
+### 6h. Auto-fix drift (if option 1 selected)
+
+Apply fixes in order:
+1. README.md: update badges, add missing skills/workflows to tables
+2. ROADMAP.md: sync phase status rows from PHASE-STATE.md files
+3. docs/skills-reference.md: append missing skill sections
+4. docs/ placeholder URLs: replace with actual git remote URL
+
+Commit: `docs: sync README.md, ROADMAP.md, skills-reference.md (audit auto-fix)`
+</step>
+
 <step name="save_report">
-## 6. Save Report (if --report)
+## 7. Save Report (if --report)
 
 Create `.viepilot/audit-report.md`:
 ```markdown
