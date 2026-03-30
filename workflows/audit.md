@@ -1,286 +1,365 @@
 <purpose>
-Audit documentation vs implementation để phát hiện và fix gaps.
-Có thể chạy manual hoặc auto-hook sau phase complete.
+Audit ViePilot project state và documentation để phát hiện drift.
+Hoạt động trên bất kỳ project nào đang dùng ViePilot.
+Auto-detect nếu đang chạy trong viepilot framework repo để thêm framework-specific checks.
 </purpose>
 
 <process>
 
-<step name="collect_actual">
-## 1. Collect Actual Implementation State
+<step name="detect_project_type">
+## 0. Detect Project Type
 
-### Skills
 ```bash
-# Count
+# Detect if this is the viepilot framework repo itself
+IS_VIEPILOT_FRAMEWORK=false
+if [ -d "skills" ] && ls skills/vp-*/SKILL.md 2>/dev/null | head -1 > /dev/null; then
+  IS_VIEPILOT_FRAMEWORK=true
+  echo "→ Detected: ViePilot framework repository"
+  echo "  Will run all 3 tiers including framework integrity checks"
+else
+  echo "→ Detected: User project using ViePilot"
+  echo "  Will run Tier 1 (state) + Tier 2 (docs) only"
+fi
+
+# Override with flags if provided
+# --framework : force framework checks even if not detected
+# --project   : force project-only checks (skip framework tier)
+```
+
+Display audit plan:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► AUDIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Tier 1: ViePilot State Consistency    [ALWAYS]
+ Tier 2: Project Documentation Drift   [ALWAYS]
+ Tier 3: Framework Integrity           [{FRAMEWORK_STATUS}]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</step>
+
+<step name="tier1_state">
+## 1. Tier 1: ViePilot State Consistency (always runs)
+
+Check that ViePilot's own tracking files are internally consistent.
+This is meaningful for **any project** using ViePilot.
+
+### 1a. TRACKER.md vs PHASE-STATE.md
+```bash
+# Read current phase from TRACKER.md
+TRACKER_PHASE=$(grep "Current Phase" .viepilot/TRACKER.md 2>/dev/null | sed 's/.*: //' | tr -d '*')
+TRACKER_TASK=$(grep "Current Task" .viepilot/TRACKER.md 2>/dev/null | sed 's/.*: //' | tr -d '*')
+
+# Check each phase directory for status
+for phase_dir in .viepilot/phases/*/; do
+  if [ -f "$phase_dir/PHASE-STATE.md" ]; then
+    PHASE_STATUS=$(grep "^\- \*\*Status\*\*:" "$phase_dir/PHASE-STATE.md" 2>/dev/null | sed 's/.*: //')
+    PHASE_NUM=$(basename "$phase_dir" | grep -o '^[0-9]*')
+    # Compare with TRACKER.md current state
+  fi
+done
+```
+
+### 1b. ROADMAP.md phase status vs PHASE-STATE.md
+```bash
+# For each completed PHASE-STATE.md, verify ROADMAP.md shows ✅
+for phase_dir in .viepilot/phases/*/; do
+  if [ -f "$phase_dir/PHASE-STATE.md" ]; then
+    PHASE_STATUS=$(grep "^\- \*\*Status\*\*:" "$phase_dir/PHASE-STATE.md" 2>/dev/null | sed 's/.*: //')
+    if echo "$PHASE_STATUS" | grep -qi "complete"; then
+      PHASE_NUM=$(basename "$phase_dir" | grep -o '^[0-9]*' | sed 's/^0*//')
+      # Check ROADMAP.md has ✅ for this phase
+      ROADMAP_STATUS=$(grep -i "Phase $PHASE_NUM" .viepilot/ROADMAP.md 2>/dev/null | head -1)
+      if ! echo "$ROADMAP_STATUS" | grep -q "✅"; then
+        echo "⚠️  Phase $PHASE_NUM: PHASE-STATE says complete but ROADMAP.md not marked ✅"
+      fi
+    fi
+  fi
+done
+```
+
+### 1c. HANDOFF.json vs TRACKER.md
+```bash
+if [ -f ".viepilot/HANDOFF.json" ]; then
+  HANDOFF_PHASE=$(node -e "try{const h=require('./.viepilot/HANDOFF.json');console.log(h.current_phase||'')}catch(e){}" 2>/dev/null)
+  HANDOFF_TASK=$(node -e "try{const h=require('./.viepilot/HANDOFF.json');console.log(h.current_task||'')}catch(e){}" 2>/dev/null)
+  # Compare with TRACKER.md values
+fi
+```
+
+### 1d. Git tags vs completed phases
+```bash
+# List completed phases (PHASE-STATE.md with status: complete)
+# List git tags matching vp-p{N}-complete
+COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
+# Report any phase marked complete in PHASE-STATE.md without a git tag
+```
+
+### 1e. Report Tier 1 results
+```
+ TIER 1: ViePilot State Consistency
+ ─────────────────────────────────────────────────
+ TRACKER.md ↔ PHASE-STATE.md    {✅ Consistent | ⚠️ Mismatch}
+ ROADMAP.md ↔ PHASE-STATE.md    {✅ Consistent | ⚠️ N phase(s) out of sync}
+ HANDOFF.json ↔ TRACKER.md      {✅ Consistent | ⚠️ Mismatch | ℹ️ No HANDOFF.json}
+ Git tags ↔ completed phases     {✅ All tagged | ⚠️ N phase(s) missing tags}
+```
+</step>
+
+<step name="tier2_docs">
+## 2. Tier 2: Project Documentation Drift (always runs)
+
+Check that project documentation reflects the current state of the codebase.
+Works for **any project type** (Java, Node, Python, etc.).
+
+### 2a. Detect project version
+```bash
+# Generic version detection
+if [ -f "package.json" ]; then
+  PROJECT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+  VERSION_SOURCE="package.json"
+elif [ -f "pom.xml" ]; then
+  PROJECT_VERSION=$(grep -m1 "<version>" pom.xml 2>/dev/null | sed 's/.*<version>//;s/<.*//' | tr -d ' ')
+  VERSION_SOURCE="pom.xml"
+elif [ -f "pyproject.toml" ]; then
+  PROJECT_VERSION=$(grep '^version' pyproject.toml 2>/dev/null | head -1 | cut -d'"' -f2)
+  VERSION_SOURCE="pyproject.toml"
+else
+  PROJECT_VERSION=""
+  VERSION_SOURCE="not found"
+fi
+```
+
+### 2b. README.md version drift
+```bash
+if [ -n "$PROJECT_VERSION" ] && [ -f "README.md" ]; then
+  # Check if README.md mentions the current version
+  if ! grep -q "$PROJECT_VERSION" README.md 2>/dev/null; then
+    echo "⚠️  README.md does not mention current version $PROJECT_VERSION (from $VERSION_SOURCE)"
+  fi
+fi
+```
+
+### 2c. CHANGELOG.md vs recent commits
+```bash
+if [ -f "CHANGELOG.md" ]; then
+  # Get last version tag
+  LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+  if [ -n "$LAST_TAG" ]; then
+    COMMITS_SINCE=$(git log --oneline "$LAST_TAG"..HEAD 2>/dev/null | wc -l | tr -d ' ')
+    CHANGELOG_UNRELEASED=$(grep -c "^\-" <(sed -n '/## \[Unreleased\]/,/## \[/p' CHANGELOG.md 2>/dev/null) 2>/dev/null || echo "0")
+    if [ "$COMMITS_SINCE" -gt 0 ] && [ "$CHANGELOG_UNRELEASED" -eq 0 ]; then
+      echo "⚠️  $COMMITS_SINCE commits since $LAST_TAG but CHANGELOG.md [Unreleased] is empty"
+    fi
+  fi
+fi
+```
+
+### 2d. Placeholder URLs in docs/
+```bash
+if [ -d "docs" ]; then
+  PLACEHOLDER_FILES=$(grep -rl "your-org\|YOUR_USERNAME\|YOUR_ORG\|your-username\|example\.com" docs/ --include="*.md" 2>/dev/null)
+  if [ -n "$PLACEHOLDER_FILES" ]; then
+    echo "⚠️  Placeholder URLs found in:"
+    echo "$PLACEHOLDER_FILES"
+  fi
+fi
+```
+
+### 2e. New features without docs (phases added recently)
+```bash
+# Check if recent phases added features without corresponding docs updates
+RECENT_PHASES=$(ls -t .viepilot/phases/*/PHASE-STATE.md 2>/dev/null | head -3)
+for phase_state in $RECENT_PHASES; do
+  PHASE_STATUS=$(grep "^\- \*\*Status\*\*:" "$phase_state" 2>/dev/null | sed 's/.*: //')
+  if echo "$PHASE_STATUS" | grep -qi "complete"; then
+    PHASE_DIR=$(dirname "$phase_state")
+    # Check if docs/ was updated in commits for this phase
+    PHASE_NUM=$(basename "$PHASE_DIR" | grep -o '^[0-9]*' | sed 's/^0*//')
+    PHASE_TAG="vp-p${PHASE_NUM}-complete"
+    PREV_TAG=$(git tag --sort=-version:refname 2>/dev/null | grep "vp-p.*-complete" | grep -A1 "^$PHASE_TAG$" | tail -1)
+    if [ -n "$PREV_TAG" ]; then
+      DOCS_CHANGED=$(git diff "$PREV_TAG"..HEAD --name-only 2>/dev/null | grep "^docs/" | wc -l | tr -d ' ')
+      if [ "$DOCS_CHANGED" -eq 0 ]; then
+        echo "ℹ️  Phase $PHASE_NUM complete but no docs/ changes detected"
+      fi
+    fi
+  fi
+done
+```
+
+### 2f. Report Tier 2 results
+```
+ TIER 2: Project Documentation Drift
+ ─────────────────────────────────────────────────
+ README.md version           {✅ v{version} mentioned | ⚠️ v{version} not found}
+ CHANGELOG.md freshness      {✅ Up to date | ⚠️ N commits not documented}
+ Placeholder URLs in docs/   {✅ None | ⚠️ Found in N files}
+ New features without docs   {✅ All documented | ℹ️ Phase N may need docs}
+```
+</step>
+
+<step name="tier3_framework">
+## 3. Tier 3: Framework Integrity (viepilot framework only)
+
+> **Guard**: Only runs when `IS_VIEPILOT_FRAMEWORK=true` (or `--framework` flag).
+> Skip entirely for user projects.
+
+```bash
+if [ "$IS_VIEPILOT_FRAMEWORK" != "true" ]; then
+  echo "→ Tier 3 skipped (not a viepilot framework repo)"
+  # Jump to step 4 (report)
+fi
+```
+
+### 3a. Collect actual framework state
+```bash
 SKILL_COUNT=$(ls -d skills/vp-*/ 2>/dev/null | wc -l | tr -d ' ')
-
-# List
 SKILL_LIST=$(ls -d skills/vp-*/ 2>/dev/null | xargs -I{} basename {} | sort)
-```
-
-### Workflows
-```bash
-# Count
 WORKFLOW_COUNT=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
-
-# List
 WORKFLOW_LIST=$(ls workflows/*.md 2>/dev/null | xargs -I{} basename {} .md | sort)
-```
-
-### CLI Commands
-```bash
-# Count and list from help output
 CLI_OUTPUT=$(node bin/vp-tools.cjs help 2>/dev/null)
 CLI_COUNT=$(echo "$CLI_OUTPUT" | grep -E "^\s+[a-z]" | wc -l | tr -d ' ')
 ```
 
-Store results for comparison.
-</step>
-
-<step name="parse_architecture">
-## 2. Parse ARCHITECTURE.md
-
-Read `.viepilot/ARCHITECTURE.md`
-
-Extract using patterns:
+### 3b. Parse ARCHITECTURE.md
+Read `.viepilot/ARCHITECTURE.md` and extract documented counts:
 ```
-# Skills count
 /SKILLS LAYER \((\d+)\)/
-
-# Workflows count
 /WORKFLOWS LAYER \((\d+)\)/
-
-# CLI count
 /vp-tools\.cjs \((\d+) commands\)/
 ```
 
-Extract listed items from diagrams and tables.
-</step>
-
-<step name="compare">
-## 3. Compare and Identify Gaps
-
+### 3c. Compare and identify gaps
 ```javascript
 const gaps = [];
-
 if (actual.skills !== documented.skills) {
-  gaps.push({
-    type: 'skills',
-    actual: actual.skills,
-    documented: documented.skills,
+  gaps.push({ type: 'skills', actual: actual.skills, documented: documented.skills,
     missing: actual.skillList.filter(s => !documented.skillList.includes(s)),
-    extra: documented.skillList.filter(s => !actual.skillList.includes(s))
-  });
+    extra: documented.skillList.filter(s => !actual.skillList.includes(s)) });
 }
-
 // Similar for workflows and CLI
 ```
 
-Categorize gaps:
-- **Count mismatch**: Numbers don't match
-- **Missing items**: In code but not docs
-- **Extra items**: In docs but not code (removed?)
+### 3d. Check README.md viepilot-specific badges
+```bash
+ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+README_VERSION=$(grep -o 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/version-//')
+README_SKILLS=$(grep -o 'skills-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/skills-//')
+README_WORKFLOWS=$(grep -o 'workflows-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/workflows-//')
+```
+
+### 3e. Check docs/skills-reference.md vs skills/
+```bash
+ACTUAL_SKILLS_LIST=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL\.md||' | sort)
+DOCUMENTED_SKILLS=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
+MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTED_SKILLS"))
+```
+
+### 3f. Report Tier 3 results
+```
+ TIER 3: Framework Integrity
+ ─────────────────────────────────────────────────
+ Skills count (ARCHITECTURE.md)  {✅ N in sync | ⚠️ N actual vs M documented}
+ Workflows count                  {✅ N in sync | ⚠️ N actual vs M documented}
+ CLI commands count               {✅ N in sync | ⚠️ N actual vs M documented}
+ README.md badges                 {✅ In sync | ⚠️ version/skills/workflows drift}
+ docs/skills-reference.md         {✅ Complete | ⚠️ N skills missing}
+```
 </step>
 
 <step name="report">
-## 4. Generate Report
+## 4. Generate Full Report
 
-### No Gaps
+### All Clear
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► AUDIT PASSED ✅
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
- Component        Actual  Documented  Status
- ─────────────────────────────────────────────────────────
- Skills           12      12          ✅ In sync
- Workflows        10      10          ✅ In sync
- CLI Commands     13      13          ✅ In sync
+ Tier 1: ViePilot State     ✅ All consistent
+ Tier 2: Project Docs       ✅ No drift detected
+ Tier 3: Framework          {✅ In sync | ℹ️ Skipped}
 
- All documentation is up to date!
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Everything looks good!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### Gaps Found
+### Issues Found
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► AUDIT REPORT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
- Component        Actual  Documented  Status
- ─────────────────────────────────────────────────────────
- Skills           14      12          ⚠️ +2 missing in docs
- Workflows        10      10          ✅ In sync
- CLI Commands     15      13          ⚠️ +2 missing in docs
+ Tier 1: ViePilot State     {✅ | ⚠️ N issues}
+ Tier 2: Project Docs       {✅ | ⚠️ N issues}
+ Tier 3: Framework          {✅ | ⚠️ N issues | ℹ️ Skipped}
 
- GAPS DETAIL:
- 
- Skills missing in documentation:
-   + vp-newskill1
-   + vp-newskill2
+ ISSUES DETAIL:
+ {list each issue with context}
 
- CLI commands missing in documentation:
-   + newcommand1
-   + newcommand2
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  OPTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
- 1. Auto-fix → Update ARCHITECTURE.md
- 2. Report   → Save to .viepilot/audit-report.md
- 3. Diff     → Show what would change
- 4. Skip     → Do nothing
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. Auto-fix all issues
+ 2. Report only → save to .viepilot/audit-report.md
+ 3. Fix specific items
+ 4. Skip
 ```
 </step>
 
 <step name="fix">
 ## 5. Auto-Fix (if requested)
 
-### Update Counts
-```markdown
-# Before
-SKILLS LAYER (12)
+### Tier 1 fixes
+- Update ROADMAP.md phase statuses from PHASE-STATE.md files
+- Sync TRACKER.md current state with PHASE-STATE.md
+- Create missing git tags for completed phases
 
-# After
-SKILLS LAYER (14)
-```
+### Tier 2 fixes
+- Replace placeholder URLs in docs/ with actual git remote URL
+- Add version mention to README.md if missing
+- Add CHANGELOG.md [Unreleased] section if commits exist
 
-### Update Diagrams
-Add missing skills to the skills diagram grid.
-Add missing workflows to workflow list.
-Update CLI command list.
+### Tier 3 fixes (framework only)
+- Update ARCHITECTURE.md counts (skills, workflows, CLI)
+- Add missing skills to ARCHITECTURE.md diagrams
+- Append missing skill sections to docs/skills-reference.md
+- Update README.md viepilot-specific badges
 
 ### Commit
 ```bash
-git add .viepilot/ARCHITECTURE.md
-git commit -m "docs(arch): sync with implementation (audit fix)
-
-- Skills: 12 → 14
-- CLI: 13 → 15
-- Added: vp-newskill1, vp-newskill2, newcommand1, newcommand2
+git add .viepilot/ARCHITECTURE.md .viepilot/ROADMAP.md .viepilot/TRACKER.md docs/ README.md CHANGELOG.md
+git commit -m "docs: sync project documentation (audit auto-fix)
 
 Auto-fixed by /vp-audit"
 git push
 ```
 </step>
 
-<step name="drift_check">
-## 6. ROOT + docs/ Drift Check
-
-Run this check **after** the ARCHITECTURE.md comparison (steps 1-5). Detects drift in README.md, ROADMAP.md, and docs/ files.
-
-### 6a. Collect actual counts (reuse from step 1 if available)
-```bash
-ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
-ACTUAL_VERSION=$(node bin/vp-tools.cjs version get --raw 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | tail -1)
-```
-
-### 6b. Check README.md badges
-```bash
-README_VERSION=$(grep -o 'version-[0-9]\+\.[0-9]\+\.[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/version-//')
-README_SKILLS=$(grep -o 'skills-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/skills-//')
-README_WORKFLOWS=$(grep -o 'workflows-[0-9]\+' README.md 2>/dev/null | head -1 | sed 's/workflows-//')
-```
-
-Compare and build drift list:
-- If `$README_VERSION` != `$ACTUAL_VERSION` → version drift
-- If `$README_SKILLS` != `$ACTUAL_SKILLS` → skills badge drift
-- If `$README_WORKFLOWS` != `$ACTUAL_WORKFLOWS` → workflows badge drift
-
-### 6c. Check README.md tables vs filesystem
-```bash
-# Skills listed in README.md Skills Reference table
-README_SKILLS_LIST=$(grep "^| \`/vp-" README.md 2>/dev/null | sed 's/.*`\/\(vp-[^`]*\)`.*/\1/' | sort)
-# Actual skills
-ACTUAL_SKILLS_LIST=$(ls skills/*/SKILL.md 2>/dev/null | sed 's|skills/||; s|/SKILL\.md||' | sort)
-MISSING_IN_README=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$README_SKILLS_LIST"))
-```
-
-### 6d. Check ROADMAP.md phase status vs PHASE-STATE.md
-```bash
-# For each phase directory that has PHASE-STATE.md
-for phase_dir in .viepilot/phases/*/; do
-  PHASE_STATUS=$(grep "^- \*\*Status\*\*:" "$phase_dir/PHASE-STATE.md" 2>/dev/null | sed 's/.*: //')
-  PHASE_NAME=$(basename "$phase_dir")
-  # Check if ROADMAP.md reflects this status
-done
-```
-
-### 6e. Check docs/skills-reference.md vs skills/
-```bash
-DOCUMENTED_SKILLS=$(grep "^## /vp-" docs/skills-reference.md 2>/dev/null | sed 's|## /||' | sort)
-MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTED_SKILLS"))
-```
-
-### 6f. Check placeholder URLs in docs/
-```bash
-PLACEHOLDER_FILES=$(grep -rl "your-org\|YOUR_USERNAME\|YOUR_ORG" docs/ --include="*.md" 2>/dev/null)
-```
-
-### 6g. Report drift
-
-If any drift detected:
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- DRIFT DETECTED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
- README.md:
-   ⚠️  version badge: {README_VERSION} → should be {ACTUAL_VERSION}
-   ⚠️  skills badge: {README_SKILLS} → should be {ACTUAL_SKILLS}
-   ⚠️  missing skills in table: {MISSING_IN_README}
-
- ROADMAP.md:
-   ⚠️  Phase {N} status mismatch: ROADMAP says X, PHASE-STATE says Y
-
- docs/skills-reference.md:
-   ⚠️  missing skills: {MISSING_IN_SKILLSREF}
-
- docs/ placeholder URLs:
-   ⚠️  {PLACEHOLDER_FILES}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- OPTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- 1. Auto-fix all drift
- 2. Show diff only
- 3. Fix specific items
- 4. Skip
-```
-
-### 6h. Auto-fix drift (if option 1 selected)
-
-Apply fixes in order:
-1. README.md: update badges, add missing skills/workflows to tables
-2. ROADMAP.md: sync phase status rows from PHASE-STATE.md files
-3. docs/skills-reference.md: append missing skill sections
-4. docs/ placeholder URLs: replace with actual git remote URL
-
-Commit and push:
-```bash
-git add README.md .viepilot/ROADMAP.md docs/skills-reference.md
-git commit -m "docs: sync README.md, ROADMAP.md, skills-reference.md (audit auto-fix)"
-git push
-```
-</step>
-
 <step name="save_report">
-## 7. Save Report (if --report)
+## 6. Save Report (if --report)
 
 Create `.viepilot/audit-report.md`:
 ```markdown
 # Audit Report - {timestamp}
 
 ## Summary
-- **Status**: {PASS|GAPS_FOUND}
-- **Gaps**: {count}
+- **Status**: {PASS|ISSUES_FOUND}
+- **Project Type**: {viepilot-framework|user-project}
+- **Issues**: {count}
 - **Generated**: {timestamp}
 
-## Details
-{full comparison table}
+## Tier 1: ViePilot State
+{results}
+
+## Tier 2: Project Documentation
+{results}
+
+## Tier 3: Framework Integrity
+{results or "Skipped — not a viepilot framework repo"}
 
 ## Recommendations
 {what to fix}
@@ -300,13 +379,13 @@ Add to `workflows/autonomous.md` after phase complete:
 
 After marking phase complete:
 
-1. Run silent audit
+1. Run silent audit (Tier 1 + Tier 2 only)
    ```bash
    # Conceptually:
    /vp-audit --silent
    ```
 
-2. If gaps found:
+2. If issues found:
    ```
    ⚠️ Documentation may be out of sync.
    
@@ -321,10 +400,11 @@ After marking phase complete:
 </integration>
 
 <success_criteria>
-- [ ] Actual state collected correctly
-- [ ] ARCHITECTURE.md parsed correctly
-- [ ] Gaps identified accurately
-- [ ] Report clear and actionable
-- [ ] Auto-fix works correctly
-- [ ] Integration hook documented
+- [ ] Tier 1 state consistency checks work for any project using ViePilot
+- [ ] Tier 2 documentation drift checks work for Java/Node/Python/any project
+- [ ] Tier 3 framework checks only run when viepilot framework repo detected
+- [ ] `--framework` flag forces Tier 3 checks
+- [ ] `--project` flag skips Tier 3 checks
+- [ ] Report clearly shows which tier found issues
+- [ ] Auto-fix applies correct fixes per tier
 </success_criteria>
