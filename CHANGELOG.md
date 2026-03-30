@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-30
+
+### Added
+
+#### Testing
+- Jest test suite with 194 tests across unit, integration, and AI compatibility categories
+- `tests/unit/validators.test.js` — 30 CLI unit tests (all 13 commands)
+- `tests/unit/ai-provider-compat.test.js` — 142 AI provider compatibility tests
+- `tests/integration/workflow.test.js` — 22 end-to-end workflow tests
+
+#### CI/CD
+- GitHub Actions pipeline (`.github/workflows/ci.yml`)
+  - Test job: Node.js 18/20/22 matrix
+  - Coverage job: lcov report with >80% threshold
+  - Lint job: syntax validation for CLI and test files
+
 ## [0.1.0] - 2026-03-30
 
 ### Added
