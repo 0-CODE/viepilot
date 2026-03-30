@@ -1,6 +1,6 @@
 {
   "id": "debug-20260330-152757",
-  "status": "active",
+  "status": "resolved",
   "created_at": "2026-03-30T15:27:57Z",
   "updated_at": "2026-03-30T15:27:57Z",
   "problem": {
@@ -38,5 +38,10 @@
       "vp-docs chỉ tạo docs/ directory mới, không sync ROOT documents"
     ]
   },
-  "resolution": null
+  "resolution": {
+    "root_cause": "vp-auto và vp-docs không có scope update README.md và ROADMAP.md Progress Summary — đây là static documents không nằm trong phase task definitions",
+    "fix_applied": "Manual sync: badges, counts, tables, skills list, workflows list, project structure, documentation links trong README.md; phase statuses và progress summary trong ROADMAP.md",
+    "files_changed": ["README.md", ".viepilot/ROADMAP.md"],
+    "verification": "grep confirms version-0.2.0, skills-13, workflows-11, CLI-13 trong README.md; ROADMAP.md shows 17/17 tasks 100%"
+  }
 }
