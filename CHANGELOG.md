@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - 2026-03-30
+## [0.2.0] - 2026-03-30 — M1 Foundation Enhancement
 
 ### Added
 
@@ -22,6 +22,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Test job: Node.js 18/20/22 matrix
   - Coverage job: lcov report with >80% threshold
   - Lint job: syntax validation for CLI and test files
+
+#### Documentation
+- `docs/videos/` — 3 video tutorial scripts (installation, first project, autonomous mode)
+- `docs/troubleshooting.md` — 15+ common issues with solutions
+- `docs/advanced-usage.md` — Power user guide (all flags, debug, CI/CD, custom skills)
+- `examples/` — 3 example projects (web-app, api-service, cli-tool)
 
 ## [0.1.0] - 2026-03-30
 
