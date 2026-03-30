@@ -139,6 +139,7 @@ Commit:
 mkdir -p docs/brainstorm
 git add docs/brainstorm/
 git commit -m "docs: brainstorm session {date}"
+git push
 ```
 </step>
 

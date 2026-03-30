@@ -100,7 +100,9 @@ Update PHASE-STATE.md: task → in_progress
 4. Implement according to task specification
 5. Atomic commits per logical unit:
    ```bash
+   git add {relevant files}
    git commit -m "{type}({scope}): {description}"
+   git push
    ```
 6. Log notes in task file if needed
 
@@ -124,7 +126,7 @@ quality_gate:
 
 **PASS:**
 - Create git tag: `vp-p{phase}-t{task}-done`
-- Update PHASE-STATE.md: task → done
+- Update PHASE-STATE.md: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
 - Update TRACKER.md
 - Update CHANGELOG.md if feature/fix
 - Move to next task
@@ -158,31 +160,40 @@ When all tasks in phase are done/skipped:
 
 1. Run phase-level verification
 2. Check phase quality gate
-3. Write SUMMARY.md:
-   ```markdown
-   # Phase {N}: {Name} - Summary
-   
-   ## Completed
-   - Task 1: {description}
-   - Task 2: {description}
-   
-   ## Skipped
-   - Task 3: {reason}
-   
-   ## Key Decisions
-   - {decision}
-   
-   ## Files Changed
-   - {file list}
-   
-   ## Notes
-   - {any notes}
+3. Write SUMMARY.md using `templates/phase/SUMMARY.md` as base.
+
+   Populate `{{CREATED_FILES}}`, `{{MODIFIED_FILES}}`, `{{DELETED_FILES}}` from git:
+   ```bash
+   # Get ALL individual files changed since phase start tag
+   git diff vp-p{phase}-t1..HEAD --name-status | sort
+   ```
+   List **every file individually** — do NOT use glob patterns or summarize.
+   Correct example:
+   ```
+   ### Created
+   | File | Task |
+   |------|------|
+   | pom.xml | 1.1 |
+   | smarttrack-api/pom.xml | 1.1 |
+   | smarttrack-common/pom.xml | 1.1 |
+   | smarttrack-common/src/main/java/Foo.java | 1.1 |
+   | docker-compose.yml | 1.2 |
+   ```
+   Incorrect (do not do this):
+   ```
+   | smarttrack-*/pom.xml (8 files) | 1.1 |   ← WRONG: glob pattern
+   | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
 4. Create git tag: `vp-p{phase}-complete`
 5. Check version bump needed:
    - Features added → MINOR
    - Fixes only → PATCH
 6. Update TRACKER.md
+7. Push all changes:
+   ```bash
+   git push
+   git push --tags
+   ```
 
 ### 5a. Sync ROADMAP.md (after every phase complete)
 

@@ -489,6 +489,7 @@ Commit:
 git add .viepilot/requests/
 git add .viepilot/TRACKER.md
 git commit -m "chore: add {TYPE}-{N} - {TITLE}"
+git push
 ```
 </step>
 

@@ -498,16 +498,17 @@ fi
 </step>
 
 <step name="commit">
-## 4. Commit
+## 4. Commit and Push
 
 ```bash
-git add docs/ CHANGELOG.md
+git add docs/ CHANGELOG.md README.md
 git commit -m "docs: update documentation
 
 - API documentation
 - Developer guide
 - User guide
 - Changelog update"
+git push
 ```
 </step>
 

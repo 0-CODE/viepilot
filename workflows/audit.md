@@ -162,6 +162,7 @@ git commit -m "docs(arch): sync with implementation (audit fix)
 - Added: vp-newskill1, vp-newskill2, newcommand1, newcommand2
 
 Auto-fixed by /vp-audit"
+git push
 ```
 </step>
 
@@ -258,7 +259,12 @@ Apply fixes in order:
 3. docs/skills-reference.md: append missing skill sections
 4. docs/ placeholder URLs: replace with actual git remote URL
 
-Commit: `docs: sync README.md, ROADMAP.md, skills-reference.md (audit auto-fix)`
+Commit and push:
+```bash
+git add README.md .viepilot/ROADMAP.md docs/skills-reference.md
+git commit -m "docs: sync README.md, ROADMAP.md, skills-reference.md (audit auto-fix)"
+git push
+```
 </step>
 
 <step name="save_report">

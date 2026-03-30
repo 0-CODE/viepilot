@@ -211,6 +211,7 @@ State saved for resume:
 - Status: {status}
 
 Resume with: /vp-resume"
+git push
 ```
 </step>
 

@@ -19,6 +19,13 @@ _None currently_
 | Decision | Rationale | Task |
 |----------|-----------|------|
 
+## Files Changed
+
+List **every file individually** — run `git diff vp-p{N}-t{M}..HEAD --name-status` to get actual list. Do NOT use glob patterns.
+
+| File | Action | Task |
+|------|--------|------|
+
 ## Quality Metrics
 - Tests written: 0
 - Tests passing: 0

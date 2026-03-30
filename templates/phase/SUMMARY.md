@@ -26,13 +26,22 @@
 
 ## Files Changed
 
+> Populate by running: `git diff vp-p{{PHASE_NUMBER}}-t1..HEAD --name-status | sort`
+> List every file individually. Do NOT use glob patterns or summarize groups.
+
 ### Created
+| File | Task |
+|------|------|
 {{CREATED_FILES}}
 
 ### Modified
+| File | Task |
+|------|------|
 {{MODIFIED_FILES}}
 
 ### Deleted
+| File | Task |
+|------|------|
 {{DELETED_FILES}}
 
 ## Metrics

@@ -275,6 +275,7 @@ git commit -m "feat: initialize project with ViePilot
 - Add architecture and coding standards
 - Add development roadmap
 - Add changelog and contributing guidelines"
+git push
 ```
 
 Display summary:
