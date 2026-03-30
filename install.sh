@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# ViePilot Installation Script
+# Installs ViePilot skills and tools to Cursor/Claude environment
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Default installation paths
+CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
+VIEPILOT_DIR="$HOME/.cursor/viepilot"
+
+echo -e "${BLUE}"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo " VIEPILOT INSTALLER"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e "${NC}"
+
+# Check if running from viepilot directory
+if [ ! -f "$SCRIPT_DIR/README.md" ] || [ ! -d "$SCRIPT_DIR/skills" ]; then
+    echo -e "${RED}Error: Please run this script from the viepilot directory${NC}"
+    exit 1
+fi
+
+echo -e "${YELLOW}Installation paths:${NC}"
+echo "  Skills: $CURSOR_SKILLS_DIR"
+echo "  ViePilot: $VIEPILOT_DIR"
+echo ""
+
+# Confirm installation
+read -p "Continue with installation? (y/n) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Installation cancelled."
+    exit 0
+fi
+
+echo ""
+echo -e "${BLUE}Installing...${NC}"
+
+# Create directories
+echo "  Creating directories..."
+mkdir -p "$CURSOR_SKILLS_DIR"
+mkdir -p "$VIEPILOT_DIR/workflows"
+mkdir -p "$VIEPILOT_DIR/templates/project"
+mkdir -p "$VIEPILOT_DIR/templates/phase"
+mkdir -p "$VIEPILOT_DIR/bin"
+
+# Install skills
+echo "  Installing skills..."
+for skill_dir in "$SCRIPT_DIR/skills"/*; do
+    if [ -d "$skill_dir" ]; then
+        skill_name=$(basename "$skill_dir")
+        cp -r "$skill_dir" "$CURSOR_SKILLS_DIR/"
+        echo "    ✓ $skill_name"
+    fi
+done
+
+# Install workflows
+echo "  Installing workflows..."
+cp -r "$SCRIPT_DIR/workflows"/* "$VIEPILOT_DIR/workflows/"
+echo "    ✓ workflows"
+
+# Install templates
+echo "  Installing templates..."
+cp -r "$SCRIPT_DIR/templates/project"/* "$VIEPILOT_DIR/templates/project/"
+cp -r "$SCRIPT_DIR/templates/phase"/* "$VIEPILOT_DIR/templates/phase/"
+echo "    ✓ templates"
+
+# Install CLI tools
+echo "  Installing CLI tools..."
+cp "$SCRIPT_DIR/bin/vp-tools.cjs" "$VIEPILOT_DIR/bin/"
+chmod +x "$VIEPILOT_DIR/bin/vp-tools.cjs"
+echo "    ✓ vp-tools.cjs"
+
+# Create symlink in PATH (optional)
+echo ""
+read -p "Add vp-tools to PATH? (creates symlink in /usr/local/bin) (y/n) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [ -w "/usr/local/bin" ]; then
+        ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
+        echo "    ✓ vp-tools added to PATH"
+    else
+        echo -e "${YELLOW}    Note: Need sudo to create symlink${NC}"
+        sudo ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
+        echo "    ✓ vp-tools added to PATH"
+    fi
+fi
+
+echo ""
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN} INSTALLATION COMPLETE ✓${NC}"
+echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+echo "Installed:"
+echo "  - Skills: $CURSOR_SKILLS_DIR/vp-*"
+echo "  - Workflows: $VIEPILOT_DIR/workflows/"
+echo "  - Templates: $VIEPILOT_DIR/templates/"
+echo "  - CLI: $VIEPILOT_DIR/bin/vp-tools.cjs"
+echo ""
+echo "Quick Start:"
+echo "  1. Open your project in Cursor"
+echo "  2. Run: /vp-brainstorm"
+echo "  3. After brainstorm: /vp-crystallize"
+echo "  4. Start coding: /vp-auto"
+echo ""
+echo "Documentation: $SCRIPT_DIR/docs/getting-started.md"
+echo ""

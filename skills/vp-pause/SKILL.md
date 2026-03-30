@@ -1,0 +1,150 @@
+---
+name: vp-pause
+description: "Pause work với context preservation để resume sau"
+version: 0.1.0
+---
+
+<cursor_skill_adapter>
+## A. Skill Invocation
+- Skill được gọi khi user mention `vp-pause`, `/vp-pause`, "pause", "dừng", "tạm nghỉ"
+- Treat all user text after the skill mention as `{{VP_ARGS}}`
+
+## B. User Prompting
+Prompt user conversationally để gather state info.
+
+## C. Tool Usage
+Use Cursor tools: `Shell`, `StrReplace`, `Read`, `Write`, `Glob`, `Grep`
+</cursor_skill_adapter>
+
+<objective>
+Save complete work state để có thể resume từ bất kỳ context nào.
+
+**Creates/Updates:**
+- `.viepilot/HANDOFF.json` - Machine-readable state
+- `.viepilot/phases/{current}/.continue-here.md` - Human-readable context
+- Git WIP commit
+
+**After:** Safe to close session. Resume với `/vp-resume`
+</objective>
+
+<execution_context>
+@$HOME/.cursor/viepilot/workflows/pause-work.md
+</execution_context>
+
+<process>
+Execute workflow from `@$HOME/.cursor/viepilot/workflows/pause-work.md`
+
+### Step 1: Detect Current Position
+```bash
+# Find current phase from TRACKER.md or recent files
+Read TRACKER.md → current_phase, current_task
+Check PHASE-STATE.md → task status
+```
+
+### Step 2: Gather State
+Collect:
+1. **Current position**: Phase, task, line
+2. **Work completed**: What got done this session
+3. **Work remaining**: What's left
+4. **Decisions made**: Key decisions and rationale
+5. **Blockers/issues**: Anything stuck
+6. **Human actions pending**: Manual interventions needed
+7. **Background processes**: Running servers/watchers
+8. **Uncommitted files**: Changes not yet committed
+
+Ask user for clarifications if needed.
+
+### Step 3: Write HANDOFF.json
+```json
+{
+  "version": "1.0",
+  "timestamp": "{ISO8601}",
+  "phase": "{phase_number}",
+  "phase_name": "{phase_name}",
+  "task": "{current_task}",
+  "total_tasks": "{total}",
+  "status": "paused",
+  "completed_tasks": [...],
+  "remaining_tasks": [...],
+  "blockers": [...],
+  "human_actions_pending": [...],
+  "decisions": [...],
+  "uncommitted_files": [...],
+  "next_action": "{specific first action when resuming}",
+  "context_notes": "{mental state, approach}"
+}
+```
+
+### Step 4: Write .continue-here.md
+```markdown
+---
+phase: {phase}
+task: {task}
+total_tasks: {total}
+status: in_progress
+last_updated: {timestamp}
+---
+
+<current_state>
+[Where exactly are we? Immediate context]
+</current_state>
+
+<completed_work>
+- Task 1: [name] - Done
+- Task 2: [name] - In progress, [what's done]
+</completed_work>
+
+<remaining_work>
+- Task 2: [what's left]
+- Task 3: Not started
+</remaining_work>
+
+<decisions_made>
+- Decided [X] because [reason]
+</decisions_made>
+
+<blockers>
+- [Blocker]: [status/workaround]
+</blockers>
+
+<context>
+[Mental state, what were you thinking]
+</context>
+
+<next_action>
+Start with: [specific first action when resuming]
+</next_action>
+```
+
+### Step 5: Git Commit
+```bash
+git add -A
+git commit -m "wip({phase}): paused at task {task}/{total}"
+```
+
+### Step 6: Confirm
+```
+✓ Work paused successfully
+
+Current state:
+- Phase: {phase_name}
+- Task: {task} of {total}
+- Status: {status}
+- Blockers: {count}
+
+Files saved:
+- .viepilot/HANDOFF.json
+- .viepilot/phases/{phase}/.continue-here.md
+
+To resume: /vp-resume
+```
+</process>
+
+<success_criteria>
+- [ ] HANDOFF.json created with complete state
+- [ ] .continue-here.md created in phase directory
+- [ ] All sections filled with specific content
+- [ ] Uncommitted changes identified
+- [ ] Git WIP commit created
+- [ ] User knows how to resume
+</success_criteria>
