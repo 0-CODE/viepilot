@@ -26,15 +26,29 @@ if [ -z "$GITHUB_OWNER" ]; then
   GITHUB_REPO="{GITHUB_REPO}"
 fi
 
-# Count actual skills and workflows
-ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
-ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
-
 # Get project name from package.json or directory name
 PROJECT_NAME=$(node -e "try{console.log(require('./package.json').description||require('./package.json').name)}catch(e){console.log(basename('$PWD'))}" 2>/dev/null || basename "$PWD")
+
+# Detect project version
+if [ -f "package.json" ]; then
+  PROJECT_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+elif [ -f "pom.xml" ]; then
+  PROJECT_VERSION=$(grep -m1 "<version>" pom.xml 2>/dev/null | sed 's/.*<version>//;s/<.*//' | tr -d ' ')
+elif [ -f "pyproject.toml" ]; then
+  PROJECT_VERSION=$(grep '^version' pyproject.toml 2>/dev/null | head -1 | cut -d'"' -f2)
+fi
+
+# Framework-specific counts — only if this is a viepilot framework repo
+IS_VIEPILOT_FRAMEWORK=false
+if [ -d "skills" ] && ls skills/vp-*/SKILL.md 2>/dev/null | head -1 > /dev/null; then
+  IS_VIEPILOT_FRAMEWORK=true
+  ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+  ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+fi
 ```
 
-Use `$GITHUB_OWNER`, `$GITHUB_REPO`, `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS` throughout all generated files.
+Use `$GITHUB_OWNER`, `$GITHUB_REPO` throughout all generated files.
+For viepilot framework repos, also use `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS`.
 **Never hardcode** `your-org`, `YOUR_USERNAME`, `YOUR_ORG`, or static skill/workflow counts.
 
 Post-generation validation (run after all files generated):
@@ -450,7 +464,18 @@ After generating docs/, update the root `README.md` to reflect newly created doc
 </step>
 
 <step name="skills_reference">
-## 3B. Generate/Update skills-reference.md
+## 3B. Generate/Update skills-reference.md (viepilot framework only)
+
+> **Guard**: Only run this step if `skills/` directory exists and contains `*/SKILL.md` files.
+> Skip entirely for non-framework projects (Java apps, Node services, Python projects, etc.).
+
+```bash
+# Check if this is a viepilot framework repo
+if [ ! -d "skills" ] || ! ls skills/*/SKILL.md 2>/dev/null | head -1 > /dev/null; then
+  echo "→ Skipping skills-reference.md (not a viepilot framework repo)"
+  # Jump to step 4
+fi
+```
 
 Always build `docs/skills-reference.md` by **scanning the actual `skills/` directory**, not from a hardcoded list.
 
