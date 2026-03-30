@@ -104,6 +104,86 @@
 
 ---
 
+---
+
+## Milestone: M1.5 - ENH Backlog Implementation
+
+### Overview
+- **Version**: 0.3.0
+- **Goal**: Implement 5 enhancement requests từ debug sessions — fix framework drift gaps
+- **Phases**: 3
+- **Status**: In Progress (2026-03-30)
+
+---
+
+### Phase 5: vp-docs Enhancements 🔄
+**Goal**: Fix vp-docs để không còn placeholder URLs và tự động sync skills-reference.md
+**Estimated Tasks**: 2
+**Dependencies**: None
+**Directory**: `.viepilot/phases/05-vp-docs-enhancements/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 5.1 | Inject git remote URL | No `your-org`/`YOUR_USERNAME` after `/vp-docs` | ENH-004 |
+| 5.2 | Scan skills/ for skills-reference.md | skills-reference.md always has N sections = N skills | ENH-005 |
+
+**Verification**:
+- [ ] `workflows/documentation.md` reads `git remote` before generating
+- [ ] `docs/skills-reference.md` built by scanning `skills/` directory
+- [ ] No placeholder URLs remain after generation
+
+---
+
+### Phase 6: ROOT Document Sync
+**Goal**: vp-auto và vp-docs tự động sync README.md và ROADMAP.md
+**Estimated Tasks**: 2
+**Dependencies**: Phase 5
+**Directory**: `.viepilot/phases/06-root-sync/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 6.1 | vp-auto sync ROADMAP.md + README.md | No drift after milestone complete | ENH-001 |
+| 6.2 | vp-docs sync README.md | Documentation table updated after `/vp-docs` | ENH-002 |
+
+**Verification**:
+- [ ] `workflows/autonomous.md` syncs ROADMAP.md per-phase
+- [ ] `workflows/autonomous.md` syncs README.md on milestone complete
+- [ ] `skills/vp-docs/SKILL.md` updates README.md Documentation table
+
+---
+
+### Phase 7: vp-audit Drift Detection
+**Goal**: vp-audit trở thành safety net detect mọi loại drift
+**Estimated Tasks**: 3
+**Dependencies**: Phase 5 & 6
+**Directory**: `.viepilot/phases/07-audit-drift/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 7.1 | Add ROOT drift checks to audit workflow | README.md + ROADMAP.md drift detected | ENH-003 |
+| 7.2 | Add docs/ drift checks to audit workflow | skills-reference.md + placeholder URLs detected | ENH-003 |
+| 7.3 | Update vp-audit SKILL.md objective | Skill declares all drift check capabilities | ENH-003 |
+
+**Verification**:
+- [ ] `/vp-audit` reports README.md badge drift
+- [ ] `/vp-audit` reports ROADMAP.md status drift
+- [ ] `/vp-audit` reports skills-reference.md missing skills
+- [ ] `/vp-audit` reports placeholder URLs in docs/
+
+---
+
+## Progress Summary (M1.5)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 5. vp-docs Enhancements | 🔄 In Progress | 2 | 0 | 0% |
+| 6. ROOT Document Sync | ⏳ Not Started | 2 | 0 | 0% |
+| 7. vp-audit Drift Detection | ⏳ Not Started | 3 | 0 | 0% |
+
+**Total**: 7 tasks, 0 completed, **0%**
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features

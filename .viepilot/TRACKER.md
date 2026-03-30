@@ -1,19 +1,25 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1 - Foundation Enhancement ✅ COMPLETE
-- **Current Phase**: All phases complete
-- **Current Task**: -
-- **Last Activity**: 2026-03-30 - Milestone M1 Complete
+- **Milestone**: M1.5 - ENH Backlog Implementation
+- **Current Phase**: Phase 5 - vp-docs Enhancements
+- **Current Task**: 5.1 - ENH-004: Inject git remote URL
+- **Last Activity**: 2026-03-30 - Start M1.5 ENH backlog
 
 ## Progress Overview
 ```
+M1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Phase 1: CLI Enhancement        [██████████] 100% ✅
 Phase 2: Advanced Features      [██████████] 100% ✅
 Phase 3: Integration & Testing  [██████████] 100% ✅
 Phase 4: Documentation          [██████████] 100% ✅
+
+M1.5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 5: vp-docs Enhancements   [░░░░░░░░░░]   0% 🔄
+Phase 6: ROOT Document Sync     [░░░░░░░░░░]   0% ⏳
+Phase 7: vp-audit Drift         [░░░░░░░░░░]   0% ⏳
 ─────────────────────────────────────────────────
-Overall:                        [██████████] 100% 🎉
+M1.5 Overall:                   [░░░░░░░░░░]   0%
 ```
 
 ## Version Info
