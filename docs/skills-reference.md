@@ -82,8 +82,11 @@ README.md
 |------|-------------|
 | `--from N` | Start từ phase N |
 | `--phase N` | Chỉ chạy phase N |
-| `--fast` | Skip optional verifications |
+| `--fast` | Skip optional verifications (fewer pauses; required checks in task docs remain) |
 | `--dry-run` | Plan only, no execution |
+
+### Không có flag thêm / No extra args
+Gọi `/vp-auto` đúng nghĩa là không bật các cờ trên — **không** phải rule “mỗi task phải stop” trong workflow. Trong thực tế chat, một turn thường hoàn thành ~một task hoặc dừng tại control point; chạy tiếp bằng lượt sau hoặc nhắc phase/task kế. Xem [Autonomous mode](../user/features/autonomous-mode.md).
 
 ### Execution Flow
 ```

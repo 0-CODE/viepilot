@@ -72,6 +72,8 @@ Optional flags:
 - `--phase N` : Chỉ chạy phase N
 - `--fast` : Skip optional verifications
 - `--dry-run` : Plan only, no execution
+
+No extra args: chỉ nghĩa các cờ trên **tắt** — **không** phải rule “dừng bắt buộc sau mỗi task”. Trong chat, một turn thường ~một task; tiếp tục bằng lượt sau hoặc `/vp-auto` lại. Doc: `docs/user/features/autonomous-mode.md`.
 </context>
 
 <process>

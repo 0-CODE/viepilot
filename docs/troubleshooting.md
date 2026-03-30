@@ -106,6 +106,20 @@ cat .viepilot/TRACKER.md
 
 ---
 
+### `/vp-auto` runs one task then the AI ends the turn
+
+**Cause**: In chat (Cursor, etc.), one invocation often spans **one task** (implement → verify → update state). Spec does **not** require “no extra args ⇒ stop after every task”; that is typical **session** behavior, not `VP_ARGS` parsing.
+
+**Fix**:
+
+1. Send another message: continue the same phase/task from `HANDOFF.json` / `PHASE-STATE.md`, or run `/vp-auto` again.
+2. Use `/vp-auto --fast` to skip **optional** verification steps (fewer pauses).
+3. If the task file defines **manual** verification, you will be prompted — that is intentional.
+
+See: [Autonomous mode](user/features/autonomous-mode.md).
+
+---
+
 ### Phase stuck at 0% for a long time
 
 **Cause**: AI model is not executing the task — just planning.

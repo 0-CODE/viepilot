@@ -83,13 +83,13 @@ ViePilot tạo `.viepilot/` directory với:
 ```
 
 ViePilot sẽ:
-1. Đọc Phase 1 từ ROADMAP.md
+1. Đọc phase đầu tiên (hoặc phase tiếp theo) từ ROADMAP.md / TRACKER
 2. Tạo git checkpoint tag
 3. Implement từng task
 4. Verify acceptance criteria
-5. Commit và move to next task
+5. Commit và cập nhật state; lặp task kế hoặc phase kế
 
-**Bạn không cần làm gì** — chỉ cần watch và approve tại control points.
+**Can thiệp của bạn:** Tại **control points** (lỗi, conflict, bước manual trong task, menu retry/skip). **Không arg** trên `/vp-auto` không có nghĩa bị “khóa” dừng sau mỗi task trong spec — nhưng trong chat một lượt AI thường xử lý một task; muốn chạy tiếp, gọi lại `/vp-auto` hoặc nhắc tiếp. Dùng `/vp-auto --fast` nếu muốn **bỏ qua verify tùy chọn** (ít dừng hơn). Chi tiết: [Autonomous mode](features/autonomous-mode.md).
 
 ---
 

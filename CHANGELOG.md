@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/api/*` — added framework-appropriate API index (no HTTP surface; points to CLI/file model)
 - `docs/dev/getting-started.md` — dev entry linking to canonical getting-started
 - `docs/README.md`, root `README.md` — index and `docs/` tree synced with `api/`
+- `README.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`, `docs/user/quick-start.md`, `docs/troubleshooting.md` — clarified `/vp-auto` with no extra args vs `--fast`, control points, and typical one-task-per-chat-turn behavior
 
 ## [0.8.1] - 2026-03-31 — ROOT documentation alignment (ENH-011)
 

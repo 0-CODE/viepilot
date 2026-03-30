@@ -28,7 +28,7 @@
 
 | Feature | Document |
 |---------|----------|
-| Autonomous Mode | [autonomous-mode.md](user/features/autonomous-mode.md) |
+| Autonomous Mode | [autonomous-mode.md](user/features/autonomous-mode.md) (flags, `--fast`, lượt chat) |
 | Checkpoint Recovery | [checkpoint-recovery.md](user/features/checkpoint-recovery.md) |
 | Debug Mode | [debug-mode.md](user/features/debug-mode.md) |
 
@@ -119,4 +119,4 @@
 
 ---
 
-*Last updated: 2026-03-31 — ViePilot framework v0.8.1 (see `.viepilot/TRACKER.md`)*
+*Last updated: 2026-03-31 — ViePilot framework v0.8.1 (see `.viepilot/TRACKER.md`); `/vp-auto` flags & chat behavior clarified in user + troubleshooting docs.*

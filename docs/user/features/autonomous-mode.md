@@ -1,6 +1,6 @@
 # Feature: Autonomous Mode (`/vp-auto`)
 
-Autonomous mode là tính năng cốt lõi của ViePilot — AI tự động thực thi toàn bộ project phases mà không cần bạn can thiệp từng bước.
+Autonomous mode điều phối **toàn bộ** phase và task theo `workflows/autonomous.md`. Bạn **ít can thiệp** so với làm tay từng file, nhưng vẫn có **control points** và (trong chat) thường **phải tiếp tục** qua nhiều lượt nếu một lượt AI chỉ kịp một task.
 
 ## Overview
 
@@ -22,12 +22,27 @@ Mỗi task:
 ## Flags
 
 ```bash
-/vp-auto                  # Bắt đầu từ phase chưa complete
+/vp-auto                  # Bắt đầu từ phase chưa complete (không bật --fast)
 /vp-auto --from 3         # Bắt đầu từ phase 3
 /vp-auto --phase 2        # Chỉ chạy phase 2
 /vp-auto --fast           # Skip optional verifications
 /vp-auto --dry-run        # Preview, không execute
 ```
+
+### `/vp-auto` không có thêm arg — hiểu đúng
+
+- **Không** có nghĩa “mỗi task bắt buộc dừng một lần” trong tài liệu workflow; đó không phải cờ ẩn.
+- Có nghĩa bạn không truyền `--fast`, `--from`, `--phase`, `--dry-run` — verify *tùy chọn* sẽ được xử lý đầy đủ hơn so với `--fast`.
+- Nếu **mọi phase** đã complete, workflow dừng ở banner “All phases complete” (không còn lặp task).
+
+### Tại sao vẫn thấy “dừng” sau mỗi task?
+
+1. **Chat / Cursor** — Một turn thường đủ cho một task (implement → verify → cập nhật state). Task tiếp theo: gọi lại `/vp-auto` hoặc nhắc tiếp trong cùng thread.
+2. **Control points** — Conflict, fail quality gate, blocker, hoặc menu retry/skip/rollback.
+3. **Manual verification** — Nếu `tasks/*.md` định nghĩa bước manual, AI được hướng dẫn hỏi bạn.
+4. **Task contract** — Task thiếu mục bắt buộc (ENH-010) thì phải refine task trước khi code (dừng có chủ đích).
+
+**Gợi ý:** Dùng `--fast` khi muốn giảm các bước verify *optional* (vẫn không bỏ gate bắt buộc đã mô tả trong task).
 
 ## Control Points
 
@@ -85,6 +100,8 @@ vp-tools checkpoints
 ## Tips
 
 - **Đừng interrupt** khi AI đang execute — đợi đến control point
+- **`/vp-auto` không arg** ≠ bắt buộc dừng từng task trong spec; **`--fast`** giúp ít dừng ở verify tùy chọn
+- **Sau mỗi task xong** — nếu AI kết thúc turn, chạy tiếp `/vp-auto` hoặc yêu cầu rõ task kế theo `PHASE-STATE.md`
 - **Dùng `--dry-run`** trước khi chạy phase mới để preview
 - **Mở terminal riêng** để chạy `vp-tools progress` theo dõi
 - **Commit thường xuyên** — mỗi task là một atomic commit
