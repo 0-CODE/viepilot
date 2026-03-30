@@ -19,16 +19,26 @@ Use Cursor tools: `Shell`, `Read`, `Write`, `Glob`, `Grep`
 <objective>
 Audit documentation để phát hiện gaps với implementation thực tế.
 
-**Checks:**
+**Checks — ARCHITECTURE.md alignment:**
 - Skills count và list vs ARCHITECTURE.md
 - Workflows count và list vs ARCHITECTURE.md
 - CLI commands vs ARCHITECTURE.md
-- Version sync across files
-- README badges accuracy
+
+**Checks — ROOT document drift:**
+- `README.md` version badge vs actual version (from TRACKER.md)
+- `README.md` skills/workflows badge counts vs actual filesystem counts
+- `README.md` Skills Reference table vs `skills/` directory (missing skill rows)
+- `README.md` Workflows table vs `workflows/` directory
+- `.viepilot/ROADMAP.md` phase status vs each phase's `PHASE-STATE.md`
+- `.viepilot/ROADMAP.md` Progress Summary table vs actual completion
+
+**Checks — docs/ drift:**
+- `docs/skills-reference.md` sections vs `skills/` directory (missing skill sections)
+- Placeholder URLs in `docs/` (`your-org`, `YOUR_USERNAME`, `YOUR_ORG`) not replaced
 
 **Output:**
-- Gap report với severity
-- Auto-fix option cho simple gaps
+- Gap report với severity, grouped by check category
+- Auto-fix option: update README.md, ROADMAP.md, skills-reference.md, replace placeholder URLs
 - Suggestions cho complex gaps
 </objective>
 
@@ -38,11 +48,16 @@ Audit documentation để phát hiện gaps với implementation thực tế.
 
 <context>
 Optional flags:
-- `--docs` : Check documentation files only
+- `--docs` : Check documentation files only (ARCHITECTURE.md alignment)
 - `--arch` : Check architecture alignment only
-- `--fix` : Auto-fix detected gaps
+- `--drift` : Check ROOT + docs/ drift only (README, ROADMAP, skills-reference)
+- `--fix` : Auto-fix all detected gaps
 - `--report` : Generate report file without fixing
 - `--silent` : Only output if gaps found
+- `--scope skills` : Audit skills only
+- `--scope workflows` : Audit workflows only
+- `--scope docs` : Audit docs/ directory only
+- `--scope root` : Audit ROOT documents (README, ROADMAP) only
 </context>
 
 <process>
@@ -134,9 +149,14 @@ Fix now? (y/n)
 </auto_hook>
 
 <success_criteria>
-- [ ] Actual counts collected correctly
+- [ ] Actual counts collected correctly from filesystem
 - [ ] ARCHITECTURE.md parsed correctly
-- [ ] Gaps detected and reported
-- [ ] Auto-fix updates docs correctly
-- [ ] Clear actionable output
+- [ ] ARCHITECTURE.md gaps detected and reported
+- [ ] README.md badge drift detected (version, skills, workflows counts)
+- [ ] README.md table drift detected (missing skill/workflow rows)
+- [ ] ROADMAP.md phase status drift detected vs PHASE-STATE.md
+- [ ] docs/skills-reference.md missing sections detected
+- [ ] docs/ placeholder URL drift detected
+- [ ] Auto-fix updates all drifted documents correctly
+- [ ] Clear actionable output grouped by check category
 </success_criteria>
