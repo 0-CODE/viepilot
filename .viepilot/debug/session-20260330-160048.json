@@ -1,0 +1,61 @@
+{
+  "id": "debug-20260330-160048",
+  "status": "resolved",
+  "created_at": "2026-03-30T16:00:48Z",
+  "updated_at": "2026-03-30T16:08:00Z",
+  "problem": {
+    "description": "Hai vấn đề trong workflows/skills: (1) Sau khi complete phase/task, chỉ git commit không git push. (2) PHASE-STATE.md Files Changed section dùng glob pattern tóm tắt thay vì liệt kê từng file cụ thể.",
+    "symptoms": [
+      "workflows/autonomous.md: execute task → git commit nhưng không push",
+      "skills/vp-auto/SKILL.md: không mention git push",
+      "PHASE-STATE.md Files Changed bị gộp: 'smarttrack-*/src/**' thay vì liệt kê từng file",
+      "Mất thông tin chi tiết về file changes khi review phase history"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      "workflows/autonomous.md",
+      "workflows/audit.md",
+      "workflows/documentation.md",
+      "workflows/request.md",
+      "workflows/crystallize.md",
+      "workflows/pause-work.md",
+      "workflows/brainstorm.md",
+      "templates/phase/PHASE-STATE.md",
+      "templates/phase/SUMMARY.md"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {"id": 1, "description": "workflows/autonomous.md step execute_task không có bước git push sau commit", "status": "confirmed"},
+      {"id": 2, "description": "PHASE-STATE.md template trong workflows/autonomous.md dùng {file list} placeholder không có instruction dùng git diff", "status": "confirmed"},
+      {"id": 3, "description": "Các workflow files khác cũng thiếu git push sau commit", "status": "confirmed"}
+    ],
+    "tests_run": [
+      {"command": "grep -n 'push|commit' workflows/autonomous.md", "conclusion": "confirmed — chỉ có git commit, không có git push"},
+      {"command": "grep -rn 'git push' workflows/", "conclusion": "confirmed — không có bất kỳ workflow nào có git push"},
+      {"command": "grep -n 'Files Changed' -A10 workflows/autonomous.md", "conclusion": "confirmed — chỉ '- {file list}', không hướng dẫn dùng git diff"}
+    ],
+    "findings": [
+      "8 workflow files đều thiếu git push sau git commit",
+      "workflows/autonomous.md SUMMARY.md template chỉ có '- {file list}', không có lệnh git diff để lấy file list thực tế",
+      "templates/phase/PHASE-STATE.md không có Files Changed section",
+      "templates/phase/SUMMARY.md có placeholders nhưng không có instruction không dùng glob patterns"
+    ]
+  },
+  "resolution": {
+    "root_cause": "(1) Không có bước git push trong bất kỳ workflow nào — chỉ commit locally. (2) SUMMARY.md generation instruction không chỉ định phải dùng `git diff --name-status` và không cấm glob patterns.",
+    "fix_applied": "1) Thêm `git push` sau mọi `git commit` trong 7 workflow files (autonomous, audit, documentation, request, crystallize, pause-work, brainstorm). Thêm `git push --tags` sau phase complete. 2) workflows/autonomous.md SUMMARY.md step: thêm lệnh `git diff vp-p{N}-t1..HEAD --name-status`, ví dụ đúng/sai về glob patterns. 3) templates/phase/PHASE-STATE.md: thêm Files Changed section với instruction. 4) templates/phase/SUMMARY.md: thêm git diff command và no-glob rule.",
+    "files_changed": [
+      "workflows/autonomous.md",
+      "workflows/audit.md",
+      "workflows/documentation.md",
+      "workflows/request.md",
+      "workflows/crystallize.md",
+      "workflows/pause-work.md",
+      "workflows/brainstorm.md",
+      "templates/phase/PHASE-STATE.md",
+      "templates/phase/SUMMARY.md"
+    ],
+    "verification": "git push thành công sau commit. grep 'git push' workflows/*.md → 8 files have git push. templates/phase/PHASE-STATE.md có Files Changed section với instruction no-glob."
+  }
+}
