@@ -49,6 +49,15 @@ Suggested next version: 0.2.0 (after M1 complete)
 | 2026-03-30 | 4 phases for M1 | Balanced scope for foundation enhancement | Setup |
 | 2026-03-30 | CLI first | Better DX foundation before advanced features | Setup |
 
+## Backlog
+
+### Pending Requests
+| ID | Type | Title | Priority | Status |
+|----|------|-------|----------|--------|
+| ENH-001 | 🔧 | vp-auto: Sync ROOT documents on milestone complete | high | new |
+| ENH-002 | 🔧 | vp-docs: Sync ROOT documents after doc generation | medium | new |
+| ENH-003 | 🔧 | vp-audit: Add ROOT document drift detection | medium | new |
+
 ## Blockers
 _None currently_
 
