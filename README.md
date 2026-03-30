@@ -2,11 +2,12 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-10-purple.svg)](#skills-reference)
-[![Workflows](https://img.shields.io/badge/workflows-8-orange.svg)](#workflows)
+[![Skills](https://img.shields.io/badge/skills-13-purple.svg)](#skills-reference)
+[![Workflows](https://img.shields.io/badge/workflows-11-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
+[![Tests](https://img.shields.io/badge/tests-194%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
@@ -19,41 +20,45 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **5,800+** |
-| Skills | 10 |
-| Workflows | 8 |
+| Total LOC | **8,500+** |
+| Skills | **13** |
+| Workflows | **11** |
 | Templates | 16 (Project: 11, Phase: 5) |
-| CLI Commands | 12 |
+| CLI Commands | **13** |
+| Tests | **194** (unit + integration + AI compat) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
 ### Phân bổ / Breakdown
 
 | Thành phần / Component | Số lượng / Count | Mô tả / Description |
 |------------------------|------------------|---------------------|
-| Skill Definitions | 10 | SKILL.md files với trigger, process, success criteria |
-| Workflow Files | 8 | Step-by-step execution guides |
+| Skill Definitions | **13** | SKILL.md files với trigger, process, success criteria |
+| Workflow Files | **11** | Step-by-step execution guides |
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
-| CLI Tools | 1 | vp-tools.cjs (12 commands) |
+| CLI Tools | 1 | vp-tools.cjs (**13** commands) |
+| Test Files | 3 | Jest unit, integration, AI compatibility (194 tests) |
 
 ---
 
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████░  95%
+Tổng thể / Overall:  ████████████████████  100% 🎉 M1 Complete
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
 |-----------------|------------|----------|
-| Core Skills (10) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, request, evolve, docs, task |
-| Workflows (8) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
-| Project Templates (10) | ✅ Hoàn thiện | Placeholders cho customization |
+| Core Skills (13) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, request, evolve, docs, task, debug, rollback, audit |
+| Workflows (11) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
+| Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
-| CLI Tools | ✅ Hoàn thiện | State management, progress, versioning |
-| Documentation | ✅ Hoàn thiện | Getting started, skills reference |
+| CLI Tools (13 commands) | ✅ Hoàn thiện | State management, progress, versioning, checkpoints |
+| Tests (194) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility |
+| CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
+| Documentation | ✅ Hoàn thiện | dev/, user/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
-| Installation | ✅ Hoàn thiện | install.sh với PATH setup |
+| Installation | ✅ Hoàn thiện | install.sh + dev-install.sh |
 
 ---
 
@@ -104,6 +109,9 @@ Tổng thể / Overall:  ██████████████████�
 | `/vp-evolve` | Milestone mới, nâng cấp lớn / New milestone, major upgrade | "evolve", "milestone" | Develop |
 | `/vp-docs` | Generate documentation / Tạo tài liệu | "docs", "tài liệu" | Finalize |
 | `/vp-task` | Quản lý task thủ công / Manual task control | "task" | Manual |
+| `/vp-debug` | Debug có hệ thống với state tracking / Systematic debugging | "debug", "gỡ lỗi" | Debug |
+| `/vp-rollback` | Khôi phục về checkpoint / Rollback to checkpoint | "rollback", "revert" | Recovery |
+| `/vp-audit` | Kiểm tra sync docs vs implementation | "audit", "kiểm tra" | Quality |
 
 ---
 
@@ -119,6 +127,9 @@ Tổng thể / Overall:  ██████████████████�
 | `request.md` | Detect type → Gather details → Triage → Track | 7 steps |
 | `evolve.md` | Add feature / New milestone / Refactor modes | 5 steps |
 | `documentation.md` | API / Dev / User docs generation | 5 steps |
+| `debug.md` | New/continue/close debug session với state tracking | 7 steps |
+| `rollback.md` | List checkpoints → Select → Revert safely | 5 steps |
+| `audit.md` | Collect actual state → Parse docs → Report gaps | 6 steps |
 
 ---
 
@@ -265,7 +276,7 @@ make help        # Xem tất cả lệnh
 
 ```
 viepilot/
-├── skills/                        # 10 Skill definitions
+├── skills/                        # 13 Skill definitions
 │   ├── vp-brainstorm/             # Thu thập ý tưởng
 │   │   └── SKILL.md
 │   ├── vp-crystallize/            # Tạo artifacts
@@ -276,9 +287,12 @@ viepilot/
 │   ├── vp-request/                # Bug/Feature/Enhancement
 │   ├── vp-evolve/                 # Milestone/Upgrade
 │   ├── vp-docs/                   # Documentation
-│   └── vp-task/                   # Manual task control
+│   ├── vp-task/                   # Manual task control
+│   ├── vp-debug/                  # Systematic debugging
+│   ├── vp-rollback/               # Checkpoint recovery
+│   └── vp-audit/                  # Documentation sync
 │
-├── workflows/                     # 8 Workflow definitions
+├── workflows/                     # 11 Workflow definitions
 │   ├── brainstorm.md              # Brainstorm session flow
 │   ├── crystallize.md             # Artifact generation flow
 │   ├── autonomous.md              # Execution loop
@@ -286,7 +300,10 @@ viepilot/
 │   ├── resume-work.md             # Context restoration
 │   ├── request.md                 # Request management
 │   ├── evolve.md                  # Evolution flow
-│   └── documentation.md           # Docs generation
+│   ├── documentation.md           # Docs generation
+│   ├── debug.md                   # Debug session workflow
+│   ├── rollback.md                # Rollback workflow
+│   └── audit.md                   # Audit workflow
 │
 ├── templates/                     # 16 Templates
 │   ├── project/                   # 11 Project-level templates
@@ -310,11 +327,32 @@ viepilot/
 │       └── SUMMARY.md
 │
 ├── bin/                           # CLI tools
-│   └── vp-tools.cjs               # 12 commands
+│   └── vp-tools.cjs               # 13 commands
+│
+├── tests/                         # Test suite (194 tests)
+│   ├── unit/                      # Unit tests
+│   │   ├── validators.test.js     # 30 CLI tests
+│   │   └── ai-provider-compat.test.js  # 142 AI compat tests
+│   └── integration/               # Integration tests
+│       └── workflow.test.js       # 22 E2E tests
+│
+├── .github/workflows/             # CI/CD
+│   └── ci.yml                     # Node 18/20/22 matrix
 │
 ├── docs/                          # Documentation
+│   ├── README.md                  # Documentation index
 │   ├── getting-started.md         # Hướng dẫn bắt đầu
-│   └── skills-reference.md        # Chi tiết skills
+│   ├── skills-reference.md        # Chi tiết skills
+│   ├── advanced-usage.md          # Power user guide
+│   ├── troubleshooting.md         # Common issues
+│   ├── videos/                    # Video tutorial scripts
+│   ├── dev/                       # Developer guide
+│   └── user/                      # User guide
+│
+├── examples/                      # Example projects
+│   ├── web-app/                   # Next.js example
+│   ├── api-service/               # Express + JWT example
+│   └── cli-tool/                  # Node.js CLI example
 │
 ├── install.sh                     # Installation script
 ├── Makefile                       # Developer commands
@@ -385,8 +423,17 @@ your-project/
 
 | Tài liệu / Document | Nội dung / Content |
 |---------------------|-------------------|
+| [Documentation Index](docs/README.md) | Tổng hợp tất cả tài liệu / Full docs index |
 | [Getting Started](docs/getting-started.md) | Hướng dẫn bắt đầu / Quick start guide |
+| [Quick Start (User)](docs/user/quick-start.md) | 5-minute guide |
 | [Skills Reference](docs/skills-reference.md) | Chi tiết từng skill / Detailed skill docs |
+| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 13 commands |
+| [Advanced Usage](docs/advanced-usage.md) | Power user features |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues & fixes |
+| [Architecture](docs/dev/architecture.md) | System design |
+| [Contributing Guide](docs/dev/contributing.md) | How to add skills/commands |
+| [Testing Guide](docs/dev/testing.md) | Test structure & patterns |
+| [Examples](examples/README.md) | 3 example projects |
 | [CHANGELOG](CHANGELOG.md) | Lịch sử thay đổi / Version history |
 | [CONTRIBUTING](CONTRIBUTING.md) | Hướng dẫn đóng góp / How to contribute |
 | [SECURITY](SECURITY.md) | Chính sách bảo mật / Security policy |
