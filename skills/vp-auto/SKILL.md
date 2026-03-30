@@ -28,10 +28,20 @@ Pauses at control points:
 - User decision needed
 - Blockers encountered
 
-**Updates:**
+**Updates after each task:**
 - `.viepilot/TRACKER.md`
 - `.viepilot/phases/*/PHASE-STATE.md`
 - `.viepilot/HANDOFF.json`
+- `CHANGELOG.md` (if feature/fix)
+
+**Updates after each phase complete:**
+- `.viepilot/ROADMAP.md` — phase status row and Progress Summary table
+
+**Updates after each phase (if new skills added):**
+- `docs/skills-reference.md` — append sections for new skills
+
+**Updates on milestone complete:**
+- `README.md` — version badge, skills/workflows counts, Skills Reference table, Workflows table, Project Structure, Completion Status
 
 **After:** Project built, or paused for user intervention.
 </objective>

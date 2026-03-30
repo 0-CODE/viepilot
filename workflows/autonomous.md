@@ -183,6 +183,32 @@ When all tasks in phase are done/skipped:
    - Features added → MINOR
    - Fixes only → PATCH
 6. Update TRACKER.md
+
+### 5a. Sync ROADMAP.md (after every phase complete)
+
+Update `.viepilot/ROADMAP.md` to reflect current phase status:
+
+```markdown
+# Find phase section and update:
+- Phase status line: "Not Started" → "✅ Complete"  (or "🔄 In Progress")
+- Progress Summary table row: 0% → 100%, Completed count → actual
+
+Example:
+  Before: | 5. vp-docs Enhancements | ⏳ Not Started | 2 | 0 | 0% |
+  After:  | 5. vp-docs Enhancements | ✅ Complete    | 2 | 2 | 100% |
+```
+
+Commit: `chore: update ROADMAP.md — phase {N} complete`
+
+### 5b. Update skills-reference.md if new skills added
+
+Check if this phase added any new skill files:
+```bash
+NEW_SKILLS=$(git diff vp-p{phase}-t1..HEAD --name-only | grep 'skills/.*/SKILL\.md' | sed 's|skills/||; s|/SKILL\.md||')
+```
+If `$NEW_SKILLS` is non-empty: append new sections to `docs/skills-reference.md` (same incremental logic as `workflows/documentation.md` step 3B).
+
+Commit: `docs: add {skill} to skills-reference.md`
 </step>
 
 <step name="iterate">
@@ -194,7 +220,32 @@ After phase complete:
 3. If more phases → loop to step 3
 4. If all complete → milestone complete
 
-Milestone complete:
+Milestone complete — Sync ROOT documents:
+
+### 6a. Sync README.md (milestone complete only)
+
+Read current `README.md` and update the following sections to match reality:
+
+```bash
+ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
+ACTUAL_VERSION=$(node bin/vp-tools.cjs version get --raw 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | tail -1)
+```
+
+Update in README.md:
+1. **Version badge**: `version-{old}` → `version-{ACTUAL_VERSION}`
+2. **Skills badge**: `skills-{old}` → `skills-{ACTUAL_SKILLS}`
+3. **Workflows badge**: `workflows-{old}` → `workflows-{ACTUAL_WORKFLOWS}`
+4. **Project Scale table**: Skills row, Workflows row, CLI Commands row counts
+5. **Skills Reference table**: add any missing `| /vp-{skill} | ... |` rows
+6. **Workflows table**: add any missing `| {workflow} | ... |` rows
+7. **Project Structure** `skills/` list: add missing skill directories
+8. **Completion Status**: update percentage
+
+Commit: `docs: sync README.md badges and counts to v{ACTUAL_VERSION}`
+
+### 6b. Display milestone complete banner
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► MILESTONE COMPLETE 🎉
@@ -203,6 +254,8 @@ Milestone complete:
  Milestone: {name}
  Phases: {count} complete
  Version: {version}
+ README.md: synced ✓
+ ROADMAP.md: synced ✓
 
  Next steps:
  - /vp-docs to generate documentation
@@ -268,5 +321,8 @@ git revert --no-commit $(git rev-list vp-p{phase}-t{task}..HEAD)
 - [ ] Quality gates enforced
 - [ ] CHANGELOG updated for features/fixes
 - [ ] Checkpoints created for recovery
+- [ ] ROADMAP.md synced after each phase complete
+- [ ] skills-reference.md updated when new skills added in a phase
+- [ ] README.md badges and counts synced on milestone complete
 - [ ] Clean stop with summary on pause/error
 </success_criteria>
