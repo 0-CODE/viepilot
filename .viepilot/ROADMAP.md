@@ -184,6 +184,56 @@
 
 ---
 
+---
+
+## Milestone: M1.6 - Generalize for User Projects
+
+### Overview
+- **Version**: 0.4.0
+- **Goal**: Làm cho vp-audit và workflows hoạt động đúng trên bất kỳ project nào, không chỉ viepilot
+- **Phases**: 2
+- **Status**: In Progress (2026-03-30)
+
+---
+
+### Phase 8: Generalize Workflows (ENH-007) 🔄
+**Goal**: Xóa viepilot framework assumptions khỏi autonomous.md và documentation.md
+**Estimated Tasks**: 3
+**Dependencies**: None
+**Directory**: `.viepilot/phases/08-generalize-workflows/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 8.1 | autonomous.md: guard Steps 5b + 6a | Steps skip gracefully on non-framework projects | ENH-007 |
+| 8.2 | documentation.md: remove framework counts from Step 0, guard Step 3B | No skills/workflows count for user projects | ENH-007 |
+| 8.3 | autonomous.md Step 6a: generic version sync | Uses package.json/pom.xml/pyproject.toml | ENH-007 |
+
+---
+
+### Phase 9: Generalize vp-audit (ENH-006)
+**Goal**: vp-audit hoạt động có ý nghĩa trên mọi project với 3-tier architecture
+**Estimated Tasks**: 2
+**Dependencies**: Phase 8
+**Directory**: `.viepilot/phases/09-generalize-audit/`
+
+| Task | Description | Acceptance Criteria | ENH |
+|------|-------------|---------------------|-----|
+| 9.1 | workflows/audit.md: 3-tier rewrite | Tier 1 (state) + Tier 2 (docs) always; Tier 3 (framework) conditional | ENH-006 |
+| 9.2 | skills/vp-audit/SKILL.md: rewrite objective + flags | Skill declares project-agnostic scope | ENH-006 |
+
+---
+
+## Progress Summary (M1.6)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 8. Generalize Workflows | 🔄 In Progress | 3 | 0 | 0% |
+| 9. Generalize vp-audit | ⏳ Not Started | 2 | 0 | 0% |
+
+**Total**: 5 tasks, 0 completed, **0%**
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features

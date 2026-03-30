@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.5 - ENH Backlog Implementation ✅ COMPLETE
-- **Current Phase**: All phases complete
-- **Current Task**: -
-- **Last Activity**: 2026-03-30 - M1.5 Complete v0.3.0
+- **Milestone**: M1.6 - Generalize for User Projects
+- **Current Phase**: Phase 8 - Generalize Workflows
+- **Current Task**: 8.1 - autonomous.md framework detection guards
+- **Last Activity**: 2026-03-30 - Start M1.6
 
 ## Progress Overview
 ```
