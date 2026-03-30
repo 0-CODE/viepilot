@@ -3,12 +3,132 @@
 /**
  * ViePilot CLI Tools
  * Helper utilities for state management and workflow operations
+ * 
+ * @package viepilot
+ * @author Trần Thành Nhân
+ * @license MIT
+ * @version 0.1.0
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const VIEPILOT_DIR = '.viepilot';
+
+// ============================================================================
+// Output Formatting (TTY-aware)
+// ============================================================================
+
+const isTTY = process.stdout.isTTY;
+
+const colors = {
+  reset: isTTY ? '\x1b[0m' : '',
+  red: isTTY ? '\x1b[31m' : '',
+  green: isTTY ? '\x1b[32m' : '',
+  yellow: isTTY ? '\x1b[33m' : '',
+  blue: isTTY ? '\x1b[34m' : '',
+  cyan: isTTY ? '\x1b[36m' : '',
+  gray: isTTY ? '\x1b[90m' : '',
+  bold: isTTY ? '\x1b[1m' : '',
+};
+
+function formatError(message, hint = null) {
+  let output = `${colors.red}✖ Error:${colors.reset} ${message}`;
+  if (hint) {
+    output += `\n${colors.gray}  Hint: ${hint}${colors.reset}`;
+  }
+  return output;
+}
+
+function formatSuccess(message) {
+  return `${colors.green}✔${colors.reset} ${message}`;
+}
+
+function formatWarning(message) {
+  return `${colors.yellow}⚠${colors.reset} ${message}`;
+}
+
+function formatInfo(message) {
+  return `${colors.blue}ℹ${colors.reset} ${message}`;
+}
+
+// ============================================================================
+// Validation Functions
+// ============================================================================
+
+const validators = {
+  isPositiveInteger(value, name = 'value') {
+    const num = parseInt(value, 10);
+    if (isNaN(num) || num < 1) {
+      return { valid: false, error: `${name} must be a positive integer`, hint: `Got: "${value}"` };
+    }
+    return { valid: true, value: num };
+  },
+
+  isValidStatus(value) {
+    const validStatuses = ['not_started', 'in_progress', 'done', 'skipped', 'blocked'];
+    if (!validStatuses.includes(value)) {
+      return { 
+        valid: false, 
+        error: `Invalid status: "${value}"`, 
+        hint: `Valid statuses: ${validStatuses.join(', ')}` 
+      };
+    }
+    return { valid: true, value };
+  },
+
+  isValidTimestampFormat(value) {
+    const validFormats = ['iso', 'date', 'full'];
+    if (!validFormats.includes(value)) {
+      return { 
+        valid: false, 
+        error: `Invalid timestamp format: "${value}"`, 
+        hint: `Valid formats: ${validFormats.join(', ')}` 
+      };
+    }
+    return { valid: true, value };
+  },
+
+  isValidBumpType(value) {
+    const validTypes = ['major', 'minor', 'patch'];
+    if (!validTypes.includes(value)) {
+      return { 
+        valid: false, 
+        error: `Invalid bump type: "${value}"`, 
+        hint: `Valid types: ${validTypes.join(', ')}` 
+      };
+    }
+    return { valid: true, value };
+  },
+
+  isNonEmptyString(value, name = 'value') {
+    if (!value || typeof value !== 'string' || value.trim() === '') {
+      return { valid: false, error: `${name} cannot be empty` };
+    }
+    return { valid: true, value: value.trim() };
+  },
+
+  requireProjectRoot() {
+    const root = findProjectRoot();
+    if (!root) {
+      return { 
+        valid: false, 
+        error: 'No ViePilot project found', 
+        hint: 'Run this command from a directory containing .viepilot/' 
+      };
+    }
+    return { valid: true, value: root };
+  }
+};
+
+function validateArgs(validations) {
+  for (const validation of validations) {
+    if (!validation.valid) {
+      console.error(formatError(validation.error, validation.hint));
+      process.exit(1);
+    }
+  }
+}
 
 // ============================================================================
 // Utility Functions
@@ -66,11 +186,9 @@ const commands = {
    * Initialize or get project state
    */
   init: (args) => {
-    const projectRoot = findProjectRoot();
-    if (!projectRoot) {
-      console.log(JSON.stringify({ error: 'No ViePilot project found' }));
-      return;
-    }
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
 
     const trackerPath = path.join(projectRoot, VIEPILOT_DIR, 'TRACKER.md');
     const roadmapPath = path.join(projectRoot, VIEPILOT_DIR, 'ROADMAP.md');
@@ -88,7 +206,8 @@ const commands = {
       result.handoff = readJson(handoffPath);
     }
 
-    console.log(JSON.stringify(result));
+    console.log(formatSuccess('Project found'));
+    console.log(JSON.stringify(result, null, 2));
   },
 
   /**
@@ -97,6 +216,12 @@ const commands = {
   'current-timestamp': (args) => {
     const format = args[0] || 'iso';
     const raw = args.includes('--raw');
+    
+    if (args[0] && !args.includes('--raw')) {
+      const formatCheck = validators.isValidTimestampFormat(format);
+      validateArgs([formatCheck]);
+    }
+    
     const ts = currentTimestamp(format);
     if (raw) {
       console.log(ts);
@@ -110,23 +235,28 @@ const commands = {
    */
   'phase-info': (args) => {
     const phaseNum = args[0];
-    if (!phaseNum) {
-      console.log(JSON.stringify({ error: 'Phase number required' }));
-      return;
-    }
-
-    const projectRoot = findProjectRoot();
-    if (!projectRoot) {
-      console.log(JSON.stringify({ error: 'No ViePilot project found' }));
-      return;
-    }
-
+    
+    // Validate phase number
+    const phaseCheck = validators.isPositiveInteger(phaseNum, 'Phase number');
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([
+      phaseNum ? phaseCheck : { valid: false, error: 'Phase number is required', hint: 'Usage: vp-tools phase-info <phase_number>' },
+      projectCheck
+    ]);
+    
+    const projectRoot = projectCheck.value;
     const phasesDir = path.join(projectRoot, VIEPILOT_DIR, 'phases');
-    const phaseDirs = fs.readdirSync(phasesDir).filter(d => d.startsWith(phaseNum.padStart(2, '0')));
+    
+    if (!fs.existsSync(phasesDir)) {
+      console.error(formatError('No phases directory found', 'Run /vp-crystallize first to create phases'));
+      process.exit(1);
+    }
+    
+    const phaseDirs = fs.readdirSync(phasesDir).filter(d => d.startsWith(String(phaseCheck.value).padStart(2, '0')));
 
     if (phaseDirs.length === 0) {
-      console.log(JSON.stringify({ error: `Phase ${phaseNum} not found` }));
-      return;
+      console.error(formatError(`Phase ${phaseNum} not found`, `Available phases in ${phasesDir}`));
+      process.exit(1);
     }
 
     const phaseDir = path.join(phasesDir, phaseDirs[0]);
@@ -135,7 +265,7 @@ const commands = {
     const tasksDir = path.join(phaseDir, 'tasks');
 
     const result = {
-      phase_number: phaseNum,
+      phase_number: phaseCheck.value,
       phase_dir: phaseDir,
       phase_slug: phaseDirs[0],
       has_spec: fs.existsSync(specPath),
@@ -153,7 +283,8 @@ const commands = {
       result.task_count = result.tasks.length;
     }
 
-    console.log(JSON.stringify(result));
+    console.log(formatSuccess(`Phase ${phaseCheck.value} found`));
+    console.log(JSON.stringify(result, null, 2));
   },
 
   /**
@@ -164,26 +295,27 @@ const commands = {
     const taskNum = args[1];
     const status = args[2];
 
-    if (!phaseNum || !taskNum || !status) {
-      console.log(JSON.stringify({ error: 'Usage: task-status <phase> <task> <status>' }));
-      return;
-    }
+    // Validate all inputs
+    const phaseCheck = validators.isPositiveInteger(phaseNum, 'Phase number');
+    const taskCheck = validators.isPositiveInteger(taskNum, 'Task number');
+    const statusCheck = status ? validators.isValidStatus(status) : { valid: false, error: 'Status is required', hint: 'Valid: not_started, in_progress, done, skipped, blocked' };
+    const projectCheck = validators.requireProjectRoot();
+    
+    validateArgs([
+      phaseNum ? phaseCheck : { valid: false, error: 'Phase number is required', hint: 'Usage: vp-tools task-status <phase> <task> <status>' },
+      taskNum ? taskCheck : { valid: false, error: 'Task number is required', hint: 'Usage: vp-tools task-status <phase> <task> <status>' },
+      statusCheck,
+      projectCheck
+    ]);
 
-    const projectRoot = findProjectRoot();
-    if (!projectRoot) {
-      console.log(JSON.stringify({ error: 'No ViePilot project found' }));
-      return;
-    }
-
-    // This would update the PHASE-STATE.md file
-    // For now, just acknowledge
+    console.log(formatSuccess(`Task ${phaseCheck.value}.${taskCheck.value} → ${statusCheck.value}`));
     console.log(JSON.stringify({
       updated: true,
-      phase: phaseNum,
-      task: taskNum,
-      status: status,
+      phase: phaseCheck.value,
+      task: taskCheck.value,
+      status: statusCheck.value,
       timestamp: currentTimestamp(),
-    }));
+    }, null, 2));
   },
 
   /**
@@ -198,60 +330,72 @@ const commands = {
       files = args.slice(filesArg + 1);
     }
 
-    if (!message) {
-      console.log(JSON.stringify({ error: 'Commit message required' }));
-      return;
-    }
+    // Validate commit message
+    const msgCheck = validators.isNonEmptyString(message, 'Commit message');
+    validateArgs([msgCheck]);
 
-    // Output command to be executed
+    console.log(formatInfo(`Commit: ${msgCheck.value.substring(0, 50)}${msgCheck.value.length > 50 ? '...' : ''}`));
     console.log(JSON.stringify({
       command: 'git',
-      args: ['commit', '-m', message],
+      args: ['commit', '-m', msgCheck.value],
       files: files,
-    }));
+    }, null, 2));
   },
 
   /**
    * Calculate progress
    */
   progress: (args) => {
-    const projectRoot = findProjectRoot();
-    if (!projectRoot) {
-      console.log(JSON.stringify({ error: 'No ViePilot project found' }));
-      return;
-    }
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
 
     const phasesDir = path.join(projectRoot, VIEPILOT_DIR, 'phases');
     if (!fs.existsSync(phasesDir)) {
+      console.log(formatWarning('No phases found'));
       console.log(JSON.stringify({ phases: [], overall: 0 }));
       return;
     }
 
     const phases = fs.readdirSync(phasesDir)
       .filter(d => fs.statSync(path.join(phasesDir, d)).isDirectory())
+      .sort()
       .map(d => {
         const statePath = path.join(phasesDir, d, 'PHASE-STATE.md');
+        const specPath = path.join(phasesDir, d, 'SPEC.md');
         const tasksDir = path.join(phasesDir, d, 'tasks');
         
         let taskCount = 0;
         let completedCount = 0;
         
-        if (fs.existsSync(tasksDir)) {
+        // Count tasks from SPEC.md table (more reliable)
+        if (fs.existsSync(specPath)) {
+          const content = readMarkdown(specPath);
+          const taskMatches = content.match(/\|\s*\d+\.\d+\s*\|/g);
+          taskCount = taskMatches ? taskMatches.length : 0;
+        }
+        
+        // Fallback to tasks directory
+        if (taskCount === 0 && fs.existsSync(tasksDir)) {
           taskCount = fs.readdirSync(tasksDir).filter(f => f.endsWith('.md')).length;
         }
         
         // Parse PHASE-STATE.md for completed tasks
         if (fs.existsSync(statePath)) {
           const content = readMarkdown(statePath);
-          const doneMatches = content.match(/✅ done/g);
+          const doneMatches = content.match(/✅\s*(Done|done|DONE)/gi);
           completedCount = doneMatches ? doneMatches.length : 0;
         }
+        
+        const progress = taskCount > 0 ? Math.round((completedCount / taskCount) * 100) : 0;
+        const progressBar = createProgressBar(progress);
         
         return {
           name: d,
           tasks: taskCount,
           completed: completedCount,
-          progress: taskCount > 0 ? Math.round((completedCount / taskCount) * 100) : 0,
+          progress,
+          progressBar,
         };
       });
 
@@ -259,32 +403,38 @@ const commands = {
     const totalCompleted = phases.reduce((sum, p) => sum + p.completed, 0);
     const overall = totalTasks > 0 ? Math.round((totalCompleted / totalTasks) * 100) : 0;
 
+    // Display formatted progress
+    console.log(`\n${colors.bold}Project Progress${colors.reset}\n`);
+    phases.forEach(p => {
+      const status = p.progress === 100 ? colors.green + '✅' : p.progress > 0 ? colors.yellow + '🔄' : colors.gray + '⏳';
+      console.log(`  ${status}${colors.reset} ${p.name.padEnd(30)} ${p.progressBar} ${String(p.progress).padStart(3)}%`);
+    });
+    console.log(`  ${'─'.repeat(55)}`);
+    console.log(`  ${colors.bold}Overall${colors.reset}${' '.repeat(24)} ${createProgressBar(overall)} ${String(overall).padStart(3)}%\n`);
+    
     console.log(JSON.stringify({
-      phases,
+      phases: phases.map(p => ({ name: p.name, tasks: p.tasks, completed: p.completed, progress: p.progress })),
       total_tasks: totalTasks,
       total_completed: totalCompleted,
       overall,
-    }));
+    }, null, 2));
   },
 
   /**
    * Version management
    */
   version: (args) => {
-    const action = args[0];
-    const projectRoot = findProjectRoot();
-    
-    if (!projectRoot) {
-      console.log(JSON.stringify({ error: 'No ViePilot project found' }));
-      return;
-    }
+    const action = args[0] || 'get';
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
 
     const trackerPath = path.join(projectRoot, VIEPILOT_DIR, 'TRACKER.md');
     const content = readMarkdown(trackerPath);
     
     if (!content) {
-      console.log(JSON.stringify({ error: 'Cannot read TRACKER.md' }));
-      return;
+      console.error(formatError('Cannot read TRACKER.md', 'File may be corrupted or missing'));
+      process.exit(1);
     }
 
     // Extract current version
@@ -292,15 +442,19 @@ const commands = {
     const currentVersion = versionMatch ? versionMatch[1] : '0.0.0';
 
     if (action === 'get') {
+      console.log(formatInfo(`Current version: ${colors.bold}${currentVersion}${colors.reset}`));
       console.log(JSON.stringify({ version: currentVersion }));
       return;
     }
 
     if (action === 'bump') {
       const type = args[1] || 'patch';
+      const typeCheck = validators.isValidBumpType(type);
+      validateArgs([typeCheck]);
+      
       const parts = currentVersion.replace(/-.*/, '').split('.').map(Number);
       
-      switch (type) {
+      switch (typeCheck.value) {
         case 'major':
           parts[0]++;
           parts[1] = 0;
@@ -316,43 +470,138 @@ const commands = {
       }
       
       const newVersion = parts.join('.');
+      console.log(formatSuccess(`Version bump: ${currentVersion} → ${colors.bold}${newVersion}${colors.reset} (${typeCheck.value})`));
       console.log(JSON.stringify({
         old_version: currentVersion,
         new_version: newVersion,
-        bump_type: type,
-      }));
+        bump_type: typeCheck.value,
+      }, null, 2));
       return;
     }
 
-    console.log(JSON.stringify({ version: currentVersion }));
+    // Unknown action
+    console.error(formatError(`Unknown action: "${action}"`, 'Valid actions: get, bump'));
+    process.exit(1);
   },
 
   /**
    * Help
    */
-  help: () => {
+  help: (args) => {
+    const command = args[0];
+    
+    const commandHelp = {
+      init: {
+        usage: 'vp-tools init',
+        description: 'Get project initialization state and verify .viepilot/ exists',
+        examples: ['vp-tools init'],
+      },
+      'current-timestamp': {
+        usage: 'vp-tools current-timestamp [format] [--raw]',
+        description: 'Get current timestamp in specified format',
+        options: [
+          'format: iso (default), date, full',
+          '--raw: Output only the timestamp string',
+        ],
+        examples: [
+          'vp-tools current-timestamp',
+          'vp-tools current-timestamp full --raw',
+        ],
+      },
+      'phase-info': {
+        usage: 'vp-tools phase-info <phase_number>',
+        description: 'Get information about a specific phase',
+        examples: [
+          'vp-tools phase-info 1',
+          'vp-tools phase-info 2',
+        ],
+      },
+      'task-status': {
+        usage: 'vp-tools task-status <phase> <task> <status>',
+        description: 'Update the status of a task',
+        options: [
+          'status: not_started, in_progress, done, skipped, blocked',
+        ],
+        examples: [
+          'vp-tools task-status 1 1 in_progress',
+          'vp-tools task-status 1 2 done',
+        ],
+      },
+      commit: {
+        usage: 'vp-tools commit "<message>" [--files <file1> <file2>...]',
+        description: 'Generate git commit command with standard format',
+        examples: [
+          'vp-tools commit "feat(cli): add validation"',
+          'vp-tools commit "fix(core): resolve bug" --files src/index.js',
+        ],
+      },
+      progress: {
+        usage: 'vp-tools progress',
+        description: 'Calculate and display overall project progress',
+        examples: ['vp-tools progress'],
+      },
+      version: {
+        usage: 'vp-tools version [get|bump] [major|minor|patch]',
+        description: 'Version management - get current or bump version',
+        examples: [
+          'vp-tools version',
+          'vp-tools version get',
+          'vp-tools version bump minor',
+        ],
+      },
+    };
+
+    if (command && commandHelp[command]) {
+      const help = commandHelp[command];
+      console.log(`\n${colors.bold}${command}${colors.reset}\n`);
+      console.log(`  ${help.description}\n`);
+      console.log(`  ${colors.cyan}Usage:${colors.reset} ${help.usage}\n`);
+      if (help.options) {
+        console.log(`  ${colors.cyan}Options:${colors.reset}`);
+        help.options.forEach(opt => console.log(`    ${opt}`));
+        console.log();
+      }
+      console.log(`  ${colors.cyan}Examples:${colors.reset}`);
+      help.examples.forEach(ex => console.log(`    ${colors.gray}$${colors.reset} ${ex}`));
+      console.log();
+      return;
+    }
+
     console.log(`
-ViePilot CLI Tools
+${colors.bold}ViePilot CLI Tools${colors.reset}
+${colors.gray}Helper utilities for state management and workflow operations${colors.reset}
 
-Commands:
-  init                    Get project initialization state
-  current-timestamp       Get current timestamp (iso|date|full) [--raw]
-  phase-info <N>          Get phase N information
-  task-status <P> <T> <S> Update task T in phase P to status S
-  commit <msg> [--files]  Create git commit
-  progress                Calculate overall progress
-  version [get|bump]      Version management
-  help                    Show this help
+${colors.cyan}Usage:${colors.reset}
+  vp-tools <command> [options]
 
-Examples:
-  vp-tools init
-  vp-tools current-timestamp full --raw
-  vp-tools phase-info 1
-  vp-tools progress
-  vp-tools version bump minor
+${colors.cyan}Commands:${colors.reset}
+  ${colors.bold}init${colors.reset}                     Get project initialization state
+  ${colors.bold}current-timestamp${colors.reset}        Get current timestamp (iso|date|full) [--raw]
+  ${colors.bold}phase-info${colors.reset} <N>           Get phase N information
+  ${colors.bold}task-status${colors.reset} <P> <T> <S>  Update task T in phase P to status S
+  ${colors.bold}commit${colors.reset} <msg> [--files]   Create git commit command
+  ${colors.bold}progress${colors.reset}                 Calculate overall progress
+  ${colors.bold}version${colors.reset} [get|bump]       Version management
+  ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
+
+${colors.cyan}Examples:${colors.reset}
+  ${colors.gray}$${colors.reset} vp-tools init
+  ${colors.gray}$${colors.reset} vp-tools phase-info 1
+  ${colors.gray}$${colors.reset} vp-tools progress
+  ${colors.gray}$${colors.reset} vp-tools version bump minor
+  ${colors.gray}$${colors.reset} vp-tools help phase-info
+
+${colors.gray}Run 'vp-tools help <command>' for detailed help on a specific command.${colors.reset}
 `);
   },
 };
+
+// Helper function for progress bars
+function createProgressBar(percent, width = 10) {
+  const filled = Math.round(percent / (100 / width));
+  const empty = width - filled;
+  return `[${colors.green}${'█'.repeat(filled)}${colors.gray}${'░'.repeat(empty)}${colors.reset}]`;
+}
 
 // ============================================================================
 // Main
@@ -362,10 +611,44 @@ const args = process.argv.slice(2);
 const command = args[0];
 
 if (!command || command === 'help' || command === '--help' || command === '-h') {
-  commands.help();
+  commands.help(args.slice(1));
 } else if (commands[command]) {
-  commands[command](args.slice(1));
+  try {
+    commands[command](args.slice(1));
+  } catch (error) {
+    console.error(formatError(`Command failed: ${error.message}`));
+    process.exit(1);
+  }
 } else {
-  console.log(JSON.stringify({ error: `Unknown command: ${command}` }));
+  // Suggest similar commands
+  const available = Object.keys(commands);
+  const similar = available.filter(cmd => 
+    cmd.includes(command) || command.includes(cmd) || 
+    levenshteinDistance(cmd, command) <= 2
+  );
+  
+  let hint = `Available commands: ${available.join(', ')}`;
+  if (similar.length > 0 && similar.length < available.length) {
+    hint = `Did you mean: ${similar.join(', ')}?`;
+  }
+  
+  console.error(formatError(`Unknown command: "${command}"`, hint));
   process.exit(1);
+}
+
+// Simple Levenshtein distance for command suggestions
+function levenshteinDistance(a, b) {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      matrix[i][j] = b.charAt(i - 1) === a.charAt(j - 1)
+        ? matrix[i - 1][j - 1]
+        : Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
+    }
+  }
+  return matrix[b.length][a.length];
 }
