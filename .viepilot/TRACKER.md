@@ -66,6 +66,8 @@ Suggested next version: 0.2.0 (after M1 complete)
 | ENH-003 | 🔧 | vp-audit: Add drift detection (ROOT + docs/) | medium | updated |
 | ENH-004 | 🔧 | vp-docs: Inject git remote URL when generating | medium | new |
 | ENH-005 | 🔧 | vp-docs: Keep skills-reference.md in sync with skills/ | high | new |
+| ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | new |
+| ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | new |
 
 ## Blockers
 _None currently_
