@@ -81,6 +81,7 @@ Suggested next version: 0.5.0
 | ENH-005 | 🔧 | vp-docs: Keep skills-reference.md in sync with skills/ | high | new |
 | ENH-006 | 🔧 | vp-audit: Generalize from viepilot-specific to project-agnostic | **critical** | ✅ done |
 | ENH-007 | 🔧 | autonomous+docs workflows: Remove viepilot framework assumptions | high | ✅ done |
+| ENH-008 | 🔧 | vp-crystallize: Research official stack best practices + global cache for vp-auto | **critical** | new |
 
 ## Blockers
 _None currently_
