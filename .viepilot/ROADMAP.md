@@ -434,6 +434,53 @@
 
 ---
 
+---
+
+## Milestone: M1.12 — Doc-first autonomous execution (BUG-001)
+
+### Overview
+
+- **Version**: 0.8.2 (target on completion)
+- **Goal**: Không cho `/vp-auto` âm thầm “code trước — tài liệu sau”; ép thứ tự validate → ghi nhận kế hoạch/docs gate → rồi mới implement.
+- **Phases**: 1
+- **Status**: 🔄 In progress (planned — execution via `/vp-auto --phase 15`)
+
+---
+
+### Phase 15: vp-auto doc-first gates (BUG-001) 🔄
+
+**Goal**: Đồng bộ `autonomous.md`, `vp-auto` skill, `TASK.md` template và `audit.md` để phát hiện / ngăn execute-first drift.
+
+**Estimated Tasks**: 4
+**Dependencies**: Phase 14
+**Directory**: `.viepilot/phases/15-vp-auto-doc-first-gates/`
+
+| Task | Description | Acceptance Criteria | Req |
+|------|-------------|---------------------|-----|
+| 15.1 | Doc-first gate trong `workflows/autonomous.md` | Thứ tự rõ: contract → pre-doc gate → (stack) → implement; STOP nếu gate fail | BUG-001 |
+| 15.2 | Mirror gate trong `skills/vp-auto/SKILL.md` | Skill forbid implement trước khi gate ghi nhận | BUG-001 |
+| 15.3 | Checklist pre-execution trong `templates/phase/TASK.md` | Section checklist bắt buộc / có template | BUG-001 |
+| 15.4 | Heuristic audit execute-first trong `workflows/audit.md` | Mục Tier có hướng dẫn heuristic + labeling | BUG-001 |
+
+**Verification**:
+
+- [ ] `workflows/autonomous.md` có subsection doc-first / pre-execution gate trước implementation
+- [ ] `skills/vp-auto/SKILL.md` khớp thứ tự
+- [ ] `templates/phase/TASK.md` có checklist
+- [ ] `workflows/audit.md` có heuristic BUG-001
+
+---
+
+## Progress Summary (M1.12)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 15. vp-auto doc-first gates (BUG-001) | 🔄 In progress | 4 | 0 | 0% |
+
+**Total**: 4 tasks, 0 completed, **0%** (planned)
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -452,5 +499,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-31 (M1.11 / ENH-011)
-- Estimated completion: M1 - 0.2.0 release
+- Last Updated: 2026-03-31 (M1.12 Phase 15 / BUG-001 via `/vp-evolve`)
+- Estimated completion: M1.x iterative releases (see TRACKER)

@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(none yet)_
 
+### Changed
+
+- Planning: **M1.12** / **Phase 15** (BUG-001) — doc-first execution gates for `/vp-auto` (`/vp-evolve`)
+
 ### Documentation
 
 - `README.md` — Project Scale LOC + M1.11 completion banner; Documentation row includes `api/`
