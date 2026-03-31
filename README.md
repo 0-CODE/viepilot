@@ -190,7 +190,7 @@ cd viepilot
 npx viepilot install
 ```
 
-Chọn target profile trong wizard:
+Chọn target profile trong wizard (phím mũi tên + space + enter):
 - Claude Code
 - Cursor Agent
 - Cursor IDE
@@ -198,6 +198,11 @@ Chọn target profile trong wizard:
 Non-interactive:
 ```bash
 npx viepilot install --target cursor-agent --yes
+```
+
+Gỡ cài đặt:
+```bash
+npx viepilot uninstall --target cursor-agent --yes
 ```
 
 ### Cách 2: Thủ công / Manual

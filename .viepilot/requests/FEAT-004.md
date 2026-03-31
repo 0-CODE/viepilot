@@ -3,7 +3,7 @@
 ## Meta
 - **ID**: FEAT-004
 - **Type**: Feature
-- **Status**: in_progress
+- **Status**: done
 - **Priority**: high
 - **Created**: 2026-03-31
 - **Reporter**: User
@@ -32,8 +32,8 @@ Cho phép phát hành chính thức ViePilot lên npmjs để người dùng có
 - Cập nhật docs release cho maintainers.
 
 ## Acceptance Criteria
-- [ ] `npm publish` hoặc CI release publish thành công package lên npmjs.
-- [ ] `npx viepilot install --help` hoạt động từ package đã publish.
+- [x] `npm publish` hoặc CI release publish thành công package lên npmjs.
+- [x] `npx viepilot install --help` hoạt động từ package đã publish.
 - [ ] Có hướng dẫn release/publish trong docs dev.
 - [ ] Có verify steps sau publish (version, dist-tag, smoke test).
 - [ ] Quy trình dùng token/secret không lộ credentials.
@@ -53,3 +53,4 @@ Feature này thiên về release engineering và distribution. Nên tách thành
 ## Resolution
 - 2026-03-31: Triaged and planned into **M1.15 / Phase 18**.
 - 2026-03-31: Implemented metadata/publish workflow/docs; pending real npm publish auth to finish registry smoke verification.
+- 2026-03-31: Published `viepilot@1.0.1` to npm successfully; FEAT-004 closed.

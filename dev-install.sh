@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ViePilot Development Installation Script
-# Creates symlinks to development version for instant updates
+# Installs development build without symlink dependency by default
 
 set -e
 
@@ -25,7 +25,7 @@ echo " VIEPILOT DEV INSTALLER"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
 
-echo -e "${YELLOW}Development mode installation${NC}"
+echo -e "${YELLOW}Development mode installation (copy-first for reliability)${NC}"
 echo "  Source: $SCRIPT_DIR"
 echo "  Target: $CURSOR_SKILLS_DIR, $VIEPILOT_DIR"
 echo "  Profile: $INSTALL_PROFILE"
@@ -33,7 +33,7 @@ echo ""
 
 # Confirm
 if [ "$AUTO_YES" != "1" ]; then
-    read -p "This will replace existing installation with symlinks. Continue? (y/n) " -n 1 -r
+    read -p "This will replace existing installation with dev files. Continue? (y/n) " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then
         echo "Installation cancelled."
@@ -61,26 +61,34 @@ if [ -d "$VIEPILOT_DIR" ] || [ -L "$VIEPILOT_DIR" ]; then
 fi
 
 echo ""
-echo -e "${BLUE}Creating skill symlinks...${NC}"
+echo -e "${BLUE}Installing skills...${NC}"
 
-# Create skill symlinks
+# Install skill copies (avoid symlink discovery issues)
 mkdir -p "$CURSOR_SKILLS_DIR"
 for skill in "$SCRIPT_DIR"/skills/vp-*/; do
     skill_name=$(basename "$skill")
-    ln -s "$skill" "$CURSOR_SKILLS_DIR/$skill_name"
+    cp -R "$skill" "$CURSOR_SKILLS_DIR/$skill_name"
     echo -e "  ${GREEN}✓${NC} $skill_name"
 done
 
 echo ""
-echo -e "${BLUE}Creating viepilot symlinks...${NC}"
+echo -e "${BLUE}Installing viepilot files...${NC}"
 
-# Create viepilot directory and symlinks
+# Install file copies (avoid symlink discovery issues)
 mkdir -p "$VIEPILOT_DIR"
-ln -s "$SCRIPT_DIR/workflows" "$VIEPILOT_DIR/workflows"
-ln -s "$SCRIPT_DIR/templates" "$VIEPILOT_DIR/templates"
-ln -s "$SCRIPT_DIR/bin" "$VIEPILOT_DIR/bin"
-ln -s "$SCRIPT_DIR/lib" "$VIEPILOT_DIR/lib"
-ln -s "$SCRIPT_DIR/ui-components" "$VIEPILOT_DIR/ui-components"
+mkdir -p "$VIEPILOT_DIR/workflows"
+mkdir -p "$VIEPILOT_DIR/templates"
+mkdir -p "$VIEPILOT_DIR/bin"
+mkdir -p "$VIEPILOT_DIR/lib"
+mkdir -p "$VIEPILOT_DIR/ui-components"
+
+cp -R "$SCRIPT_DIR/workflows/"* "$VIEPILOT_DIR/workflows/"
+cp -R "$SCRIPT_DIR/templates/"* "$VIEPILOT_DIR/templates/"
+cp -R "$SCRIPT_DIR/bin/"* "$VIEPILOT_DIR/bin/"
+cp -R "$SCRIPT_DIR/lib/"* "$VIEPILOT_DIR/lib/"
+if [ -d "$SCRIPT_DIR/ui-components" ]; then
+    cp -R "$SCRIPT_DIR/ui-components/"* "$VIEPILOT_DIR/ui-components/"
+fi
 
 echo -e "  ${GREEN}✓${NC} workflows"
 echo -e "  ${GREEN}✓${NC} templates"
@@ -97,13 +105,10 @@ echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━
 echo -e "${GREEN} DEV INSTALLATION COMPLETE ✓${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo "Installed (via symlinks):"
+echo "Installed (copy mode):"
 echo "  - Skills: $SKILL_COUNT"
 echo "  - Workflows: $WORKFLOW_COUNT"
 echo ""
-echo -e "${YELLOW}Development mode enabled!${NC}"
-echo "Any changes to $SCRIPT_DIR will be reflected immediately."
-echo ""
-echo "To switch back to stable installation:"
-echo "  ./install.sh"
+echo -e "${YELLOW}Development mode enabled (reliable copy mode).${NC}"
+echo "Re-run this script after local changes to refresh installed files."
 echo ""

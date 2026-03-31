@@ -586,12 +586,12 @@
 
 - **Version**: 0.11.0 (target on completion)
 - **Goal**: Publish chính thức ViePilot package lên npmjs với release flow an toàn để user dùng trực tiếp `npx viepilot install`.
-- **Phases**: 1
-- **Status**: 🔄 In progress (execution started; blocked at final publish verification)
+- **Phases**: 2
+- **Status**: ✅ Complete
 
 ---
 
-### Phase 18: npm publish distribution and release safety (FEAT-004) 🔄
+### Phase 18: npm publish distribution and release safety (FEAT-004) ✅
 
 **Goal**: Hoàn thiện package distribution pipeline cho npm registry và bảo đảm verify/rollback rõ ràng.
 
@@ -609,9 +609,34 @@
 
 **Verification**:
 
-- [ ] Publish flow chạy được (manual hoặc CI) với token secret.
-- [ ] `npx viepilot install --help` hoạt động từ npm package đã publish.
+- [x] Publish flow chạy được (manual hoặc CI) với token secret.
+- [x] `npx viepilot install --help` hoạt động từ npm package đã publish.
 - [x] Có docs release/rollback rõ ràng cho maintainers.
+
+---
+
+### Phase 19: installer UX + uninstall + symlink reliability (FEAT-005) ✅
+
+**Goal**: Nâng UX installer lên arrow/space select, loại bỏ rủi ro symlink làm mất skill discovery, và thêm command uninstall đầy đủ vòng đời cài đặt.
+
+**Estimated Tasks**: 5  
+**Dependencies**: Phase 17  
+**Directory**: `.viepilot/phases/19-installer-ux-and-uninstall/`
+
+| Task | Description | Acceptance Criteria | Req |
+|------|-------------|---------------------|-----|
+| 19.1 | Build arrow/space interactive selector (multi + radio) | Chọn target bằng keyboard, UX không cần nhập số thủ công | FEAT-005 |
+| 19.2 | Fix symlink install mode causing missing skill detection | Cài đặt không còn lỗi "install xong nhưng không nhận skills" | FEAT-005 |
+| 19.3 | Add `npx viepilot uninstall` command | Có uninstall với confirm, `--yes`, và summary rõ ràng | FEAT-005 |
+| 19.4 | Add selector/uninstall/regression tests | Test unit cover selector behavior + uninstall routing + regression symlink | FEAT-005 |
+| 19.5 | Update install/uninstall docs and troubleshooting | Docs user/dev cập nhật đầy đủ cho flow mới | FEAT-005 |
+
+**Verification**:
+
+- [x] Interactive selector chạy đúng (arrow/space, multi + radio mode).
+- [x] Install path không còn phụ thuộc symlink gây lỗi skill discovery.
+- [x] `npx viepilot uninstall` chạy an toàn và có summary.
+- [x] Test và docs cập nhật cho flow install/uninstall mới.
 
 ---
 
@@ -619,9 +644,10 @@
 
 | Phase | Status | Tasks | Completed | Progress |
 |-------|--------|-------|-----------|----------|
-| 18. npm publish distribution (FEAT-004) | 🔄 In progress (blocked) | 5 | 4 | 80% |
+| 18. npm publish distribution (FEAT-004) | ✅ Complete | 5 | 5 | 100% |
+| 19. installer UX + uninstall + symlink reliability (FEAT-005) | ✅ Complete | 5 | 5 | 100% |
 
-**Total**: 5 tasks, 4 completed, **80%** (blocked at publish credential step)
+**Total**: 10 tasks, 10 completed, **100%**
 
 ---
 
@@ -643,5 +669,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-31 (M1.15 in progress — FEAT-004 / Phase 18, blocker: npm publish auth)
+- Last Updated: 2026-03-31 (M1.15 complete — FEAT-004 and FEAT-005 delivered)
 - Estimated completion: M1.x iterative releases (see TRACKER)

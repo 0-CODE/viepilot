@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 
-- **M1.15 / Phase 18 (FEAT-004) in progress** — npm publish distribution scaffold: package publish metadata, release scripts, secure GitHub Actions `release-npm` workflow, and maintainer publish/rollback guide. Final registry smoke verify is blocked pending npm publish auth.
+- **M1.15 / Phase 18 (FEAT-004) completed** — npm distribution flow is now fully closed: publish pipeline passes and package released to npm as `viepilot@1.0.1`.
+- **M1.15 / Phase 19 (FEAT-005) completed** — installer now supports keyboard selector UX (arrow/space/enter), added `viepilot uninstall` command (`--target`, `--yes`, `--dry-run`), and switched dev installer to copy-first flow to avoid symlink-based skill discovery failures.
 
 ### Fixed
 
@@ -17,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- `README.md`, `docs/user/quick-start.md` — updated install wizard controls and uninstall command examples.
+- `docs/troubleshooting.md` — added selector TTY fallback guidance and uninstall/reinstall recovery flow for legacy symlink installs.
 - `README.md` — Project Scale LOC + M1.11 completion banner; Documentation row includes `api/`
 - `.viepilot/audit-report.md` — PASS after README metric sync (`/vp-audit`)
 - `docs/api/*` — added framework-appropriate API index (no HTTP surface; points to CLI/file model)

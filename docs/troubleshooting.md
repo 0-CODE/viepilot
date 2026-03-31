@@ -30,6 +30,17 @@ Use `--yes` for no prompt and `--target` to avoid interactive selection.
 
 ---
 
+### Interactive selector doesn't work (arrow/space keys)
+
+**Cause**: Terminal is non-TTY (CI, redirected stdin/out).  
+ViePilot tự fallback về mode nhập số trong môi trường non-TTY.
+
+```bash
+npx viepilot install --target cursor-agent --yes
+```
+
+---
+
 ### `./install.sh: Permission denied`
 
 **Cause**: Script not executable.
@@ -46,12 +57,9 @@ chmod +x install.sh
 **Cause**: ViePilot bin not in PATH.
 
 ```bash
-# Check if symlink exists
-ls -la ~/.local/bin/vp-tools
-
-# If missing, re-run dev install
+# Re-run installer to refresh local bin
 cd /path/to/viepilot
-./dev-install.sh
+npx viepilot install --target cursor-agent --yes
 ```
 
 ---
@@ -71,6 +79,12 @@ cp -r skills/vp-* ~/.cursor/skills/
 ```
 
 Then restart Cursor.
+
+If issue happens after old dev symlink installs:
+```bash
+npx viepilot uninstall --yes
+npx viepilot install --target cursor-agent --yes
+```
 
 ---
 

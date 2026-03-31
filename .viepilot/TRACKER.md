@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.15 - npm publish distribution 🔄 IN PROGRESS
+- **Milestone**: M1.15 - npm publish distribution ✅ COMPLETE
 - **Current Phase**: 18 - npm publish distribution
-- **Current Task**: 18.4 (blocked) — post-publish smoke verification from npm registry
-- **Last Activity**: 2026-03-31 - `/vp-auto --phase 18`: npm publish attempted; blocked by npm E403 (2FA/token policy)
+- **Current Task**: none
+- **Last Activity**: 2026-03-31 - npm publish completed (`viepilot@1.0.1`), Phase 18 closed
 
 ## Progress Overview
 ```
@@ -68,16 +68,17 @@ Phase 17: npx guided installer [██████████] 100% ✅
 M1.14 Overall:                  [██████████] 100% 🎉
 
 M1.15 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Phase 18: npm publish dist     [████████░░]  80% 🔄 (blocked)
+Phase 18: npm publish dist     [██████████] 100% ✅
+Phase 19: installer UX/uninstall [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.15 Overall:                  [████████░░]  80%
+M1.15 Overall:                  [██████████] 100% ✅
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.10.0
+1.0.1
 ```
 
 ### Released
@@ -101,11 +102,12 @@ M1.15 Overall:                  [████████░░]  80%
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 1 planned feature (FEAT-004 / Phase 18)
+- 0 in-progress features
+- 0 planned features
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.11.0 (minor after feature completion)
+Suggested next version: 1.0.2 (patch) or 1.1.0 (next feature milestone)
 ```
 
 ## Decision Log
@@ -122,6 +124,9 @@ Suggested next version: 0.11.0 (minor after feature completion)
 | 2026-03-31 | Deep-dive FEAT-003 via vp-request brainstorm | Refined installer CLI contract, target profiles, risks, and expanded acceptance criteria | M1.14 |
 | 2026-03-31 | Ship 0.10.0 after Phase 17 | Guided installer + NPX entrypoint + docs delivered | M1.14 |
 | 2026-03-31 | Open M1.15 Phase 18 for FEAT-004 | Publish ViePilot to npmjs with secure release and verification flow | Planning |
+| 2026-03-31 | Open M1.15 Phase 19 for FEAT-005 | Upgrade installer UX, add uninstall command, and remove symlink-driven skill discovery risk | Planning |
+| 2026-03-31 | Complete M1.15 Phase 19 for FEAT-005 | Delivered keyboard selector, uninstall command, copy-first dev installer, tests, and docs updates | M1.15 |
+| 2026-03-31 | Complete M1.15 Phase 18 for FEAT-004 | Published `viepilot@1.0.1` to npm and closed release verification gate | M1.15 |
 
 ## Backlog
 
@@ -130,7 +135,8 @@ Suggested next version: 0.11.0 (minor after feature completion)
 |----|------|-------|----------|--------|
 | FEAT-002 | ✨ | UI-first brainstorm HTML direction + UI component curation library | high | ✅ done |
 | FEAT-003 | ✨ | Guided `npx viepilot install` with Claude/Cursor target profiles | high | ✅ done |
-| FEAT-004 | ✨ | Publish ViePilot package lên npmjs (`npx viepilot install`) | high | in_progress (blocked: npm E403 2FA/token policy) |
+| FEAT-004 | ✨ | Publish ViePilot package lên npmjs (`npx viepilot install`) | high | ✅ done |
+| FEAT-005 | ✨ | Installer UX arrow/space select + fix symlink install + `npx viepilot uninstall` | high | ✅ done |
 | BUG-001 | 🐛 | vp-auto executes before full docs/state gate, causing drift risk | high | ✅ done |
 | ENH-001 | 🔧 | vp-auto: Sync ROOT documents on milestone complete | high | new |
 | ENH-002 | 🔧 | vp-docs: Sync ROOT documents after doc generation | medium | new |
@@ -145,7 +151,7 @@ Suggested next version: 0.11.0 (minor after feature completion)
 | ENH-011 | 🔧 | ROOT docs sync + full-project drift cross-check | high | ✅ done |
 
 ## Blockers
-- FEAT-004 / Phase 18: npm publish returns `E403` — requires 2FA publish flow or granular access token with bypass 2FA enabled.
+- None currently.
 
 ## Recent Commits
 ```
@@ -153,10 +159,10 @@ Suggested next version: 0.11.0 (minor after feature completion)
 ```
 
 ## Next Action
-**Milestone M1.15 — unblock Phase 18 (FEAT-004)**
+**Milestone M1.15 complete ✅**
 
-- Cấp quyền publish npm (token/owner) và chạy publish.
-- Sau đó chạy lại `/vp-auto --phase 18` để hoàn tất task 18.4 + close phase.
+- Optional next: `/vp-docs` to refresh release documentation snapshot.
+- Optional next: `/vp-evolve --feature` for next milestone scope.
 
 ## Quick Actions
 

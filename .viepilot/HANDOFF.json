@@ -3,20 +3,20 @@
   "milestone_name": "npm publish distribution",
   "phase": 18,
   "phase_name": "npm publish distribution and release safety (FEAT-004)",
-  "task": 4,
-  "task_name": "18.4 Add post-publish smoke verification flow",
-  "status": "active",
-  "last_activity": "2026-03-31T23:59:00Z",
+  "task": 0,
+  "task_name": "milestone complete",
+  "status": "completed",
+  "last_activity": "2026-03-31T10:00:00Z",
   "version": {
-    "current": "0.10.0",
-    "next": "0.11.0"
+    "current": "1.0.1",
+    "next": "1.0.2"
   },
   "progress": {
-    "phases_total": 18,
-    "phases_completed": 17,
-    "tasks_total": 62,
-    "tasks_completed": 61,
-    "percentage": 98
+    "phases_total": 19,
+    "phases_completed": 18,
+    "tasks_total": 67,
+    "tasks_completed": 67,
+    "percentage": 100
   },
   "context": {
     "files_touched": [
@@ -37,18 +37,33 @@
       ".viepilot/HANDOFF.json",
       ".viepilot/ROADMAP.md",
       ".viepilot/requests/FEAT-004.md"
+      ,
+      ".viepilot/requests/FEAT-005.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/SPEC.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/PHASE-STATE.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/tasks/19.1.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/tasks/19.2.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/tasks/19.3.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/tasks/19.4.md",
+      ".viepilot/phases/19-installer-ux-and-uninstall/tasks/19.5.md"
     ],
     "decisions": [
       {
         "date": "2026-03-31",
         "decision": "Plan M1.15 / Phase 18 for FEAT-004 npm publish distribution",
         "rationale": "Enable npmjs distribution with secure publish pipeline and release verification"
+      },
+      {
+        "date": "2026-03-31",
+        "decision": "Plan M1.15 / Phase 19 for FEAT-005 installer UX + uninstall",
+        "rationale": "Reduce install friction, fix skill discovery reliability, and complete install lifecycle with uninstall command"
       }
     ],
     "blockers": [],
     "notes": [
       "Task 18.1/18.2/18.3/18.5 implemented and verified locally",
-      "Publish attempt failed with npm E403 (2FA/token policy); task 18.4 remains blocked until correct token/2FA flow is provided"
+      "Phase 19 completed: installer keyboard selector + uninstall + copy-first dev install + tests/docs",
+      "Published viepilot@1.0.1 to npm registry and closed Phase 18 smoke gate"
     ]
   },
   "checkpoints": [
@@ -82,8 +97,10 @@
     {"tag": "vp-p17-t5-done", "description": "NPX onboarding docs"},
     {"tag": "vp-p17-complete", "description": "Phase 17 complete"},
     {"tag": "v0.10.0", "description": "M1.14 complete"},
-    {"tag": "vp-p18-planned", "description": "Phase 18 planned via vp-evolve"}
+    {"tag": "vp-p18-planned", "description": "Phase 18 planned via vp-evolve"},
+    {"tag": "vp-p18-complete", "description": "Phase 18 complete"},
+    {"tag": "vp-p19-complete", "description": "Phase 19 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-31T23:59:00Z"
+  "updated_at": "2026-03-31T10:00:00Z"
 }

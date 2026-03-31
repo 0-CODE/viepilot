@@ -1,8 +1,17 @@
 const path = require('path');
 const { spawnSync } = require('child_process');
+const os = require('os');
+const fs = require('fs');
 
 const CLI = path.join(__dirname, '../../bin/viepilot.cjs');
-const { parseInstallArgs, normalizeTargets } = require('../../bin/viepilot.cjs');
+const {
+  parseInstallArgs,
+  parseUninstallArgs,
+  normalizeTargets,
+  createSelectorState,
+  applySelectorKey,
+  computeUninstallPaths,
+} = require('../../bin/viepilot.cjs');
 
 describe('guided installer parser', () => {
   test('parses target and flags', () => {
@@ -17,6 +26,13 @@ describe('guided installer parser', () => {
     expect(opts.listTargets).toBe(true);
   });
 
+  test('parses uninstall flags', () => {
+    const opts = parseUninstallArgs(['--target', 'cursor-agent', '--yes', '--dry-run']);
+    expect(opts.targets).toBe('cursor-agent');
+    expect(opts.yes).toBe(true);
+    expect(opts.dryRun).toBe(true);
+  });
+
   test('normalizes all targets', () => {
     const targets = normalizeTargets('all');
     expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide']);
@@ -24,6 +40,21 @@ describe('guided installer parser', () => {
 
   test('throws on unsupported target', () => {
     expect(() => normalizeTargets('unknown')).toThrow('Unsupported target');
+  });
+});
+
+describe('interactive selector state machine', () => {
+  test('moves cursor and toggles selections in multi mode', () => {
+    const state0 = createSelectorState(
+      [{ id: 'a', label: 'A' }, { id: 'b', label: 'B' }, { id: 'c', label: 'C' }],
+      'multi'
+    );
+    const state1 = applySelectorKey(state0, 'down');
+    const state2 = applySelectorKey(state1, 'space');
+    const state3 = applySelectorKey(state2, 'up');
+    expect(state1.cursor).toBe(1);
+    expect(state2.selected.has(1)).toBe(true);
+    expect(state3.cursor).toBe(0);
   });
 });
 
@@ -47,5 +78,20 @@ describe('guided installer CLI', () => {
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('Selected targets: cursor-agent');
     expect(result.stdout).toContain('[dry-run]');
+  });
+
+  test('supports uninstall dry-run in non-interactive mode', () => {
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-home-'));
+    const result = spawnSync('node', [CLI, 'uninstall', '--yes', '--dry-run'], {
+      encoding: 'utf8',
+      env: { ...process.env, HOME: home, FORCE_COLOR: '0', NO_COLOR: '1' },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Uninstall summary:');
+  });
+
+  test('computeUninstallPaths includes root install dir', () => {
+    const paths = computeUninstallPaths(['cursor-agent']);
+    expect(paths.some((p) => p.endsWith('/.cursor/viepilot'))).toBe(true);
   });
 });
