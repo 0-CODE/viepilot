@@ -16,13 +16,19 @@ ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) ph�
 
 ViePilot is a skill framework that enables AI assistants to develop projects **autonomously**, with **control points**, and **recovery capability**. Built with professional standards: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
+### Support ViePilot
+
+Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
+- PayPal: [https://paypal.me/SATCODING](https://paypal.me/SATCODING)
+- MOMO: [https://me.momo.vn/aMINujUPTbIRtbTli6Fd](https://me.momo.vn/aMINujUPTbIRtbTli6Fd)
+
 ---
 
 ## Quy mô dự án / Project Scale
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~24,000+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Total LOC | **~22,384+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **14** |
 | Workflows | **12** |
 | Templates | **16** (Project: 11, Phase: 5) |
@@ -30,6 +36,8 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 | Tests | **202** (3 files: unit + integration + AI compat) |
 | ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
+
+> Metric `Total LOC` có thể được refresh tự động bằng `npm run readme:sync` (dùng `cloc`; nếu thiếu `cloc` script sẽ fallback an toàn).
 
 ### Phân bổ / Breakdown
 
