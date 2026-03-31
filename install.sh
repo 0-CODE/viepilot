@@ -18,6 +18,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Default installation paths
 CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
 VIEPILOT_DIR="$HOME/.cursor/viepilot"
+AUTO_YES="${VIEPILOT_AUTO_YES:-0}"
+INSTALL_PROFILE="${VIEPILOT_INSTALL_PROFILE:-cursor-ide}"
+ADD_PATH_CHOICE="${VIEPILOT_ADD_PATH:-0}"
 
 echo -e "${BLUE}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -34,14 +37,19 @@ fi
 echo -e "${YELLOW}Installation paths:${NC}"
 echo "  Skills: $CURSOR_SKILLS_DIR"
 echo "  ViePilot: $VIEPILOT_DIR"
+echo "  Profile: $INSTALL_PROFILE"
 echo ""
 
 # Confirm installation
-read -p "Continue with installation? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Installation cancelled."
-    exit 0
+if [ "$AUTO_YES" != "1" ]; then
+    read -p "Continue with installation? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Installation cancelled."
+        exit 0
+    fi
+else
+    echo "Auto-yes enabled via VIEPILOT_AUTO_YES=1"
 fi
 
 echo ""
@@ -88,22 +96,30 @@ fi
 # Install CLI tools
 echo "  Installing CLI tools..."
 cp "$SCRIPT_DIR/bin/vp-tools.cjs" "$VIEPILOT_DIR/bin/"
+cp "$SCRIPT_DIR/bin/viepilot.cjs" "$VIEPILOT_DIR/bin/"
 cp "$SCRIPT_DIR/lib/cli-shared.cjs" "$VIEPILOT_DIR/lib/"
 chmod +x "$VIEPILOT_DIR/bin/vp-tools.cjs"
-echo "    ✓ vp-tools.cjs + lib/cli-shared.cjs"
+chmod +x "$VIEPILOT_DIR/bin/viepilot.cjs"
+echo "    ✓ vp-tools.cjs + viepilot.cjs + lib/cli-shared.cjs"
 
 # Create symlink in PATH (optional)
 echo ""
-read -p "Add vp-tools to PATH? (creates symlink in /usr/local/bin) (y/n) " -n 1 -r
-echo
+if [ "$AUTO_YES" != "1" ]; then
+    read -p "Add vp-tools + viepilot to PATH? (creates symlink in /usr/local/bin) (y/n) " -n 1 -r
+    echo
+else
+    REPLY=$([ "$ADD_PATH_CHOICE" = "1" ] && echo "y" || echo "n")
+fi
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ -w "/usr/local/bin" ]; then
         ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
-        echo "    ✓ vp-tools added to PATH"
+        ln -sf "$VIEPILOT_DIR/bin/viepilot.cjs" "/usr/local/bin/viepilot"
+        echo "    ✓ vp-tools + viepilot added to PATH"
     else
         echo -e "${YELLOW}    Note: Need sudo to create symlink${NC}"
         sudo ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
-        echo "    ✓ vp-tools added to PATH"
+        sudo ln -sf "$VIEPILOT_DIR/bin/viepilot.cjs" "/usr/local/bin/viepilot"
+        echo "    ✓ vp-tools + viepilot added to PATH"
     fi
 fi
 

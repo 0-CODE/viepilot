@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 
-- _No unreleased enhancements currently._
+- **M1.15 / Phase 18 (FEAT-004) in progress** — npm publish distribution scaffold: package publish metadata, release scripts, secure GitHub Actions `release-npm` workflow, and maintainer publish/rollback guide. Final registry smoke verify is blocked pending npm publish auth.
 
 ### Fixed
 
@@ -23,6 +23,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/dev/getting-started.md` — dev entry linking to canonical getting-started
 - `docs/README.md`, root `README.md` — index and `docs/` tree synced with `api/`
 - `README.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`, `docs/user/quick-start.md`, `docs/troubleshooting.md` — clarified `/vp-auto` with no extra args vs `--fast`, control points, and typical one-task-per-chat-turn behavior
+
+## [0.10.0] - 2026-03-31 — M1.14 Guided NPX Installer (FEAT-003)
+
+### Added
+
+- `bin/viepilot.cjs` — new CLI entrypoint for guided install flow.
+- `tests/unit/guided-installer.test.js` — parser and CLI behavior tests for installer modes.
+- `.viepilot/phases/17-npx-guided-installer/` — phase artifacts, tasks, and summary.
+
+### Enhanced
+
+- `package.json` — `bin.viepilot` mapping for `npx viepilot`.
+- `install.sh`, `dev-install.sh` — support automation env vars (`VIEPILOT_AUTO_YES`, install profiles), install `viepilot.cjs`.
+- `README.md`, `docs/user/quick-start.md`, `docs/troubleshooting.md` — guided NPX onboarding and fallback instructions.
+- `.viepilot/TRACKER.md`, `.viepilot/ROADMAP.md`, `.viepilot/HANDOFF.json`, `.viepilot/requests/FEAT-003.md` — state/release synchronization for M1.14 completion.
 
 ## [0.8.2] - 2026-03-31 — M1.12 Doc-first execution gates (BUG-001)
 
@@ -200,7 +215,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/0-CODE/viepilot/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/0-CODE/viepilot/compare/v0.8.2...v0.9.0
 [0.8.2]: https://github.com/0-CODE/viepilot/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/0-CODE/viepilot/compare/v0.8.0...v0.8.1

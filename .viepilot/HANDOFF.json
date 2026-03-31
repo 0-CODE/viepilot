@@ -1,49 +1,54 @@
 {
-  "milestone": "M1.13",
-  "milestone_name": "UI direction + component curation",
-  "phase": 16,
-  "phase_name": "UI direction artifacts + reusable UI component library (FEAT-002)",
-  "task": 5,
-  "task_name": "16.5 Documentation for UI direction + component library",
-  "status": "completed",
-  "last_activity": "2026-03-31T21:30:00Z",
+  "milestone": "M1.15",
+  "milestone_name": "npm publish distribution",
+  "phase": 18,
+  "phase_name": "npm publish distribution and release safety (FEAT-004)",
+  "task": 4,
+  "task_name": "18.4 Add post-publish smoke verification flow",
+  "status": "active",
+  "last_activity": "2026-03-31T23:59:00Z",
   "version": {
-    "current": "0.9.0",
-    "next": "0.9.1"
+    "current": "0.10.0",
+    "next": "0.11.0"
   },
   "progress": {
-    "phases_total": 16,
-    "phases_completed": 16,
-    "tasks_total": 52,
-    "tasks_completed": 52,
-    "percentage": 100
+    "phases_total": 18,
+    "phases_completed": 17,
+    "tasks_total": 62,
+    "tasks_completed": 61,
+    "percentage": 98
   },
   "context": {
     "files_touched": [
-      ".viepilot/phases/16-ui-direction-and-component-library/SPEC.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/PHASE-STATE.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.1.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.2.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.3.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.4.md",
-      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.5.md",
+      ".viepilot/phases/18-npm-publish-distribution/SPEC.md",
+      ".viepilot/phases/18-npm-publish-distribution/PHASE-STATE.md",
+      ".viepilot/phases/18-npm-publish-distribution/tasks/18.1.md",
+      ".viepilot/phases/18-npm-publish-distribution/tasks/18.2.md",
+      ".viepilot/phases/18-npm-publish-distribution/tasks/18.3.md",
+      ".viepilot/phases/18-npm-publish-distribution/tasks/18.4.md",
+      ".viepilot/phases/18-npm-publish-distribution/tasks/18.5.md",
+      ".github/workflows/release-npm.yml",
+      "scripts/release-checklist.cjs",
+      "scripts/smoke-published.cjs",
+      "docs/dev/deployment.md",
+      "package.json",
       "CHANGELOG.md",
       ".viepilot/TRACKER.md",
       ".viepilot/HANDOFF.json",
       ".viepilot/ROADMAP.md",
-      ".viepilot/requests/FEAT-002.md"
+      ".viepilot/requests/FEAT-004.md"
     ],
     "decisions": [
       {
         "date": "2026-03-31",
-        "decision": "Plan M1.13 / Phase 16 for FEAT-002 UI-first brainstorm + component curation",
-        "rationale": "Make design intent explicit via HTML direction artifacts and reusable UI component libraries"
+        "decision": "Plan M1.15 / Phase 18 for FEAT-004 npm publish distribution",
+        "rationale": "Enable npmjs distribution with secure publish pipeline and release verification"
       }
     ],
     "blockers": [],
     "notes": [
-      "M1.13 complete — FEAT-002 delivered",
-      "UI direction + component curation flow is now available"
+      "Task 18.1/18.2/18.3/18.5 implemented and verified locally",
+      "Publish attempt failed with npm E403 (2FA/token policy); task 18.4 remains blocked until correct token/2FA flow is provided"
     ]
   },
   "checkpoints": [
@@ -68,8 +73,17 @@
     {"tag": "vp-p16-t4-done", "description": "Installer stock component bootstrap"},
     {"tag": "vp-p16-t5-done", "description": "UI direction/component docs"},
     {"tag": "vp-p16-complete", "description": "Phase 16 complete"},
-    {"tag": "v0.9.0", "description": "M1.13 complete"}
+    {"tag": "v0.9.0", "description": "M1.13 complete"},
+    {"tag": "vp-p17-planned", "description": "Phase 17 planned via vp-evolve"},
+    {"tag": "vp-p17-t1-done", "description": "NPX bin entrypoint"},
+    {"tag": "vp-p17-t2-done", "description": "Guided target selector"},
+    {"tag": "vp-p17-t3-done", "description": "Profile-specific install handlers"},
+    {"tag": "vp-p17-t4-done", "description": "Non-interactive flags + verification"},
+    {"tag": "vp-p17-t5-done", "description": "NPX onboarding docs"},
+    {"tag": "vp-p17-complete", "description": "Phase 17 complete"},
+    {"tag": "v0.10.0", "description": "M1.14 complete"},
+    {"tag": "vp-p18-planned", "description": "Phase 18 planned via vp-evolve"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-31T21:30:00Z"
+  "updated_at": "2026-03-31T23:59:00Z"
 }

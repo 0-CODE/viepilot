@@ -4,7 +4,19 @@ ViePilot là một local framework — không có server để deploy. "Deployme
 
 ## Distribution Methods
 
-### Method 1: Git Clone + Install Script (Recommended)
+### Method 1: npm distribution (recommended for users)
+
+```bash
+npx viepilot install
+```
+
+Direct target mode:
+
+```bash
+npx viepilot install --target cursor-agent --yes
+```
+
+### Method 2: Git Clone + Install Script (maintainers/dev)
 
 ```bash
 git clone https://github.com/0-CODE/viepilot
@@ -18,7 +30,7 @@ cd viepilot
 - `templates/` → `~/.cursor/viepilot/templates/`
 - `bin/vp-tools.cjs` → `~/.local/bin/vp-tools`
 
-### Method 2: Development Mode
+### Method 3: Development Mode
 
 Dùng khi đang develop ViePilot itself — symlinks thay vì copy:
 
@@ -59,6 +71,77 @@ Release tags (use current framework version from `vp-tools version get`):
 ```bash
 git tag v0.8.2
 git push origin v0.8.2
+```
+
+---
+
+## npm Publish Workflow
+
+### Preflight Checklist
+
+```bash
+npm run release:checklist
+npm run verify:release
+```
+
+This verifies:
+- CLI syntax (`vp-tools.cjs`, `viepilot.cjs`)
+- test suite pass
+- publish tarball preview (`npm pack --dry-run`)
+
+### Manual Publish
+
+```bash
+npm publish --access public
+```
+
+Required:
+- npm account with publish permission for package `viepilot`
+- `NPM_TOKEN` configured (for CI publish)
+
+### CI Publish (GitHub Actions)
+
+Workflow file: `.github/workflows/release-npm.yml`
+
+Triggers:
+- release published
+- manual workflow dispatch
+
+Secret required:
+- `NPM_TOKEN` (repository secret)
+
+### Post-publish Smoke Verification
+
+```bash
+npm run smoke:published
+# or explicitly:
+npx viepilot --help
+npx viepilot install --help
+```
+
+Optional version pin:
+
+```bash
+NPM_VERSION=1.0.0 npm run smoke:published
+```
+
+### Rollback / Mitigation
+
+If a bad release is published:
+
+```bash
+# Deprecate bad version
+npm deprecate viepilot@<bad_version> "Deprecated due to release issue; use latest stable version"
+
+# Publish hotfix version after fix
+npm version patch
+npm publish --access public
+```
+
+For dist-tag mitigation:
+
+```bash
+npm dist-tag add viepilot@<stable_version> latest
 ```
 
 ---

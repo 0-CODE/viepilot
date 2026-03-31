@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.13 - UI direction + component curation ✅ COMPLETE
-- **Current Phase**: none
-- **Current Task**: none
-- **Last Activity**: 2026-03-31 - `/vp-auto --phase 16`: completed FEAT-002 implementation + docs
+- **Milestone**: M1.15 - npm publish distribution 🔄 IN PROGRESS
+- **Current Phase**: 18 - npm publish distribution
+- **Current Task**: 18.4 (blocked) — post-publish smoke verification from npm registry
+- **Last Activity**: 2026-03-31 - `/vp-auto --phase 18`: npm publish attempted; blocked by npm E403 (2FA/token policy)
 
 ## Progress Overview
 ```
@@ -61,17 +61,28 @@ M1.13 ━━━━━━━━━━━━━━━━━━━━━━━━�
 Phase 16: UI direction + stock [██████████] 100% ✅
 ─────────────────────────────────────────────────
 M1.13 Overall:                  [██████████] 100% 🎉
+
+M1.14 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 17: npx guided installer [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.14 Overall:                  [██████████] 100% 🎉
+
+M1.15 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 18: npm publish dist     [████████░░]  80% 🔄 (blocked)
+─────────────────────────────────────────────────
+M1.15 Overall:                  [████████░░]  80%
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.9.0
+0.10.0
 ```
 
 ### Released
 - **0.8.2** — M1.12 Doc-first execution gates (BUG-001): autonomous workflow gate, vp-auto skill, TASK template checklist, audit heuristic
+- **0.10.0** — M1.14 Guided NPX Installer (FEAT-003): `npx viepilot install`, profile selector (Claude/Cursor), non-interactive flags, installer automation support, onboarding docs
 - **0.9.0** — M1.13 UI direction + component curation (FEAT-002): brainstorm UI artifacts, crystallize mapping, new vp-ui-components workflow/skill, stock component bootstrap
 - **0.8.1** — M1.11 ROOT documentation alignment (ENH-011): README/CHANGELOG/audit tier copy + doc examples vs framework SemVer
 - **0.8.0** — M1.10 Execution Trace Reliability: detailed task decomposition contract + per-task state sync + audit anti-pattern detection
@@ -90,11 +101,11 @@ M1.13 Overall:                  [██████████] 100% 🎉
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 0 planned features
+- 1 planned feature (FEAT-004 / Phase 18)
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.9.1 (patch for follow-up fixes)
+Suggested next version: 0.11.0 (minor after feature completion)
 ```
 
 ## Decision Log
@@ -107,6 +118,10 @@ Suggested next version: 0.9.1 (patch for follow-up fixes)
 | 2026-03-31 | M1.12 Phase 15 for BUG-001 | Harden doc-first ordering in autonomous flow to reduce execute-then-doc drift | Planning |
 | 2026-03-31 | Ship 0.8.2 after Phase 15 | Doc-first gate + audit heuristic merged; BUG-001 closed at workflow level | M1.12 |
 | 2026-03-31 | Open M1.13 Phase 16 for FEAT-002 | Add UI-first brainstorm with live HTML direction and reusable component curation workflow | Planning |
+| 2026-03-31 | Open M1.14 Phase 17 for FEAT-003 | Provide one-command NPX installer with guided target selection | Planning |
+| 2026-03-31 | Deep-dive FEAT-003 via vp-request brainstorm | Refined installer CLI contract, target profiles, risks, and expanded acceptance criteria | M1.14 |
+| 2026-03-31 | Ship 0.10.0 after Phase 17 | Guided installer + NPX entrypoint + docs delivered | M1.14 |
+| 2026-03-31 | Open M1.15 Phase 18 for FEAT-004 | Publish ViePilot to npmjs with secure release and verification flow | Planning |
 
 ## Backlog
 
@@ -114,6 +129,8 @@ Suggested next version: 0.9.1 (patch for follow-up fixes)
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | FEAT-002 | ✨ | UI-first brainstorm HTML direction + UI component curation library | high | ✅ done |
+| FEAT-003 | ✨ | Guided `npx viepilot install` with Claude/Cursor target profiles | high | ✅ done |
+| FEAT-004 | ✨ | Publish ViePilot package lên npmjs (`npx viepilot install`) | high | in_progress (blocked: npm E403 2FA/token policy) |
 | BUG-001 | 🐛 | vp-auto executes before full docs/state gate, causing drift risk | high | ✅ done |
 | ENH-001 | 🔧 | vp-auto: Sync ROOT documents on milestone complete | high | new |
 | ENH-002 | 🔧 | vp-docs: Sync ROOT documents after doc generation | medium | new |
@@ -128,7 +145,7 @@ Suggested next version: 0.9.1 (patch for follow-up fixes)
 | ENH-011 | 🔧 | ROOT docs sync + full-project drift cross-check | high | ✅ done |
 
 ## Blockers
-_None currently_
+- FEAT-004 / Phase 18: npm publish returns `E403` — requires 2FA publish flow or granular access token with bypass 2FA enabled.
 
 ## Recent Commits
 ```
@@ -136,10 +153,10 @@ _None currently_
 ```
 
 ## Next Action
-**M1.13 complete.**
+**Milestone M1.15 — unblock Phase 18 (FEAT-004)**
 
-- Run `/vp-docs` for a full documentation refresh if needed.
-- Review next pending request from backlog (`ENH-001`..`ENH-005`).
+- Cấp quyền publish npm (token/owner) và chạy publish.
+- Sau đó chạy lại `/vp-auto --phase 18` để hoàn tất task 18.4 + close phase.
 
 ## Quick Actions
 

@@ -122,4 +122,4 @@
 
 ---
 
-*Last updated: 2026-03-31 — ViePilot framework v0.9.0 (see `.viepilot/TRACKER.md`); UI direction + component curation flow added.*
+*Last updated: 2026-03-31 — ViePilot framework v0.10.0 (see `.viepilot/TRACKER.md`); guided NPX installer flow added.*

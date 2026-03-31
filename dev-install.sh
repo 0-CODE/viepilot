@@ -16,6 +16,8 @@ NC='\033[0m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
 VIEPILOT_DIR="$HOME/.cursor/viepilot"
+AUTO_YES="${VIEPILOT_AUTO_YES:-0}"
+INSTALL_PROFILE="${VIEPILOT_INSTALL_PROFILE:-cursor-agent}"
 
 echo -e "${BLUE}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -26,14 +28,19 @@ echo -e "${NC}"
 echo -e "${YELLOW}Development mode installation${NC}"
 echo "  Source: $SCRIPT_DIR"
 echo "  Target: $CURSOR_SKILLS_DIR, $VIEPILOT_DIR"
+echo "  Profile: $INSTALL_PROFILE"
 echo ""
 
 # Confirm
-read -p "This will replace existing installation with symlinks. Continue? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Installation cancelled."
-    exit 0
+if [ "$AUTO_YES" != "1" ]; then
+    read -p "This will replace existing installation with symlinks. Continue? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Installation cancelled."
+        exit 0
+    fi
+else
+    echo "Auto-yes enabled via VIEPILOT_AUTO_YES=1"
 fi
 
 echo ""

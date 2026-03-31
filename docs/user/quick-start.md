@@ -23,13 +23,24 @@ Bạn: Review, approve, hoặc rollback
 ```bash
 git clone https://github.com/0-CODE/viepilot
 cd viepilot
-./install.sh
+npx viepilot install
+```
+
+Chọn profile cài đặt trong wizard:
+- `claude-code`
+- `cursor-agent`
+- `cursor-ide`
+
+Non-interactive:
+```bash
+npx viepilot install --target cursor-agent --yes
 ```
 
 Verify:
 ```bash
+viepilot --list-targets
 vp-tools help
-# Hiển thị: ViePilot CLI Tools với 13 commands
+# Hiển thị targets + ViePilot CLI Tools
 ```
 
 ---

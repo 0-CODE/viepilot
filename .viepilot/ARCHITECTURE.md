@@ -51,7 +51,7 @@
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                            CLI LAYER                                    │
-│                         vp-tools.cjs (13 commands)                      │
+│             vp-tools.cjs (13 commands) + viepilot.cjs installer         │
 │  init │ current-timestamp │ phase-info │ task-status │ commit          │
 │  progress │ version │ reset │ clean │ checkpoints │ conflicts          │
 │  save-state │ help                                                      │

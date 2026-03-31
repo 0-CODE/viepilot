@@ -530,6 +530,101 @@
 
 ---
 
+---
+
+## Milestone: M1.14 — Guided NPX Installer (FEAT-003)
+
+### Overview
+
+- **Version**: 0.10.0 (target on completion)
+- **Goal**: Cho phép người dùng clone repo rồi chạy `npx viepilot install` với wizard chọn môi trường cài đặt (Claude Code, Cursor Agent, Cursor IDE).
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-31)
+
+---
+
+### Phase 17: npx guided installer with target profiles (FEAT-003) ✅
+
+**Goal**: Tạo one-command onboarding có interactive selector + non-interactive flags cho automation.
+
+**Estimated Tasks**: 5  
+**Dependencies**: Phase 16  
+**Directory**: `.viepilot/phases/17-npx-guided-installer/`
+
+| Task | Description | Acceptance Criteria | Req |
+|------|-------------|---------------------|-----|
+| 17.1 | Add npm bin entrypoint for `npx viepilot` | Package có `bin` mapping và CLI entrypoint hợp lệ | FEAT-003 |
+| 17.2 | Build guided install selector | `npx viepilot install` có menu chọn Claude/Cursor targets | FEAT-003 |
+| 17.3 | Implement profile handlers | Setup logic riêng theo target profile, giữ idempotent | FEAT-003 |
+| 17.4 | Add non-interactive flags | Hỗ trợ `--target`, `--yes`, `--dry-run` cho script/CI | FEAT-003 |
+| 17.5 | Update docs for onboarding | README/docs có flow NPX install và ví dụ target profile | FEAT-003 |
+
+**Verification**:
+
+- [x] `npx viepilot install` chạy được và hiển thị target selection.
+- [x] Install profile cho Claude Code, Cursor Agent, Cursor IDE hoạt động.
+- [x] Non-interactive flags hoạt động đúng cho automation.
+- [x] Tài liệu onboarding cập nhật đầy đủ.
+
+---
+
+## Progress Summary (M1.14)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 17. npx guided installer (FEAT-003) | ✅ Complete | 5 | 5 | 100% |
+
+**Total**: 5 tasks, 5 completed, **100%** 🎉
+
+---
+
+---
+
+## Milestone: M1.15 — npm Publish Distribution (FEAT-004)
+
+### Overview
+
+- **Version**: 0.11.0 (target on completion)
+- **Goal**: Publish chính thức ViePilot package lên npmjs với release flow an toàn để user dùng trực tiếp `npx viepilot install`.
+- **Phases**: 1
+- **Status**: 🔄 In progress (execution started; blocked at final publish verification)
+
+---
+
+### Phase 18: npm publish distribution and release safety (FEAT-004) 🔄
+
+**Goal**: Hoàn thiện package distribution pipeline cho npm registry và bảo đảm verify/rollback rõ ràng.
+
+**Estimated Tasks**: 5  
+**Dependencies**: Phase 17  
+**Directory**: `.viepilot/phases/18-npm-publish-distribution/`
+
+| Task | Description | Acceptance Criteria | Req |
+|------|-------------|---------------------|-----|
+| 18.1 | Harden package metadata for npm publish | Tarball chỉ chứa artifacts cần thiết, metadata chuẩn | FEAT-004 |
+| 18.2 | Add publish scripts and prepublish checks | Có prepublish guardrails + release scripts reproducible | FEAT-004 |
+| 18.3 | Add secure npm release workflow | Publish workflow dùng token secret an toàn, không lộ creds | FEAT-004 |
+| 18.4 | Add post-publish smoke verification flow | Verify được `npx viepilot install --help` sau publish | FEAT-004 |
+| 18.5 | Document npm release and rollback guide | Có checklist publish + rollback playbook cho maintainers | FEAT-004 |
+
+**Verification**:
+
+- [ ] Publish flow chạy được (manual hoặc CI) với token secret.
+- [ ] `npx viepilot install --help` hoạt động từ npm package đã publish.
+- [x] Có docs release/rollback rõ ràng cho maintainers.
+
+---
+
+## Progress Summary (M1.15)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 18. npm publish distribution (FEAT-004) | 🔄 In progress (blocked) | 5 | 4 | 80% |
+
+**Total**: 5 tasks, 4 completed, **80%** (blocked at publish credential step)
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -548,5 +643,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-31 (M1.13 completed — FEAT-002 / Phase 16)
+- Last Updated: 2026-03-31 (M1.15 in progress — FEAT-004 / Phase 18, blocker: npm publish auth)
 - Estimated completion: M1.x iterative releases (see TRACKER)

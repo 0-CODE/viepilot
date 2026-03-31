@@ -79,7 +79,16 @@ jobs:
       - name: Check CLI syntax
         run: node --check bin/vp-tools.cjs
 
+      - name: Check guided installer syntax
+        run: node --check bin/viepilot.cjs
+
+      - name: Check release scripts syntax
+        run: |
+          node --check scripts/release-checklist.cjs
+          node --check scripts/smoke-published.cjs
+
       - name: Check test syntax
         run: |
           node --check tests/unit/validators.test.js
           node --check tests/integration/workflow.test.js
+          node --check tests/unit/guided-installer.test.js

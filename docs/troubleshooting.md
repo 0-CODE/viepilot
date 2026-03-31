@@ -6,6 +6,30 @@ Common issues and solutions when using ViePilot.
 
 ## Installation Issues
 
+### `npx viepilot install` fails: "command not found" or "404"
+
+**Cause**: Package không có trong npm context hiện tại hoặc chưa publish phiên bản mới.
+
+```bash
+# Run from repository source as fallback
+cd /path/to/viepilot
+node bin/viepilot.cjs install --target all --yes
+```
+
+---
+
+### `npx viepilot install` asks too many prompts in CI
+
+**Cause**: Missing non-interactive flags.
+
+```bash
+npx viepilot install --target cursor-agent --yes --dry-run
+```
+
+Use `--yes` for no prompt and `--target` to avoid interactive selection.
+
+---
+
 ### `./install.sh: Permission denied`
 
 **Cause**: Script not executable.

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "**Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**",
   "main": "index.js",
+  "bin": {
+    "viepilot": "bin/viepilot.cjs"
+  },
   "directories": {
     "doc": "docs",
     "example": "examples"
@@ -10,16 +13,45 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "lint:cli": "node --check bin/vp-tools.cjs && node --check bin/viepilot.cjs",
+    "verify:release": "npm run lint:cli && npm test && npm pack --dry-run",
+    "prepublishOnly": "npm run verify:release",
+    "smoke:published": "node scripts/smoke-published.cjs",
+    "release:checklist": "node scripts/release-checklist.cjs"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/0-CODE/viepilot.git"
   },
-  "keywords": [],
+  "keywords": [
+    "cursor",
+    "claude",
+    "ai",
+    "autonomous",
+    "developer-tools",
+    "cli"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
+  "files": [
+    "bin/",
+    "lib/",
+    "skills/",
+    "workflows/",
+    "templates/",
+    "ui-components/",
+    "install.sh",
+    "dev-install.sh",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "docs/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/0-CODE/viepilot/issues"
   },
