@@ -109,9 +109,10 @@ AI pauses for user input when:
 - Blocker encountered
 
 ### Git Tags
-- `vp-p{phase}-t{task}` - Task started
-- `vp-p{phase}-t{task}-done` - Task completed
-- `vp-p{phase}-complete` - Phase completed
+- `{project}-vp-p{phase}-t{task}` - Task started
+- `{project}-vp-p{phase}-t{task}-done` - Task completed
+- `{project}-vp-p{phase}-complete` - Phase completed
+- Legacy `vp-p...` tags are still accepted for compatibility
 
 ---
 
@@ -337,9 +338,9 @@ CHANGELOG.md (updated)
 ### Checkpoint Types
 | Tag Pattern | Created By | Meaning |
 |-------------|------------|---------|
-| `vp-p{N}-t{M}` | vp-auto | Task started |
-| `vp-p{N}-t{M}-done` | vp-auto | Task completed |
-| `vp-p{N}-complete` | vp-auto | Phase completed |
+| `{project}-vp-p{N}-t{M}` | vp-auto | Task started |
+| `{project}-vp-p{N}-t{M}-done` | vp-auto | Task completed |
+| `{project}-vp-p{N}-complete` | vp-auto | Phase completed |
 | `v{semver}` | vp-auto | Version release |
 
 ### Safety Guarantees

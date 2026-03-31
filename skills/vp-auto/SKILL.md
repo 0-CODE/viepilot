@@ -47,7 +47,7 @@ If required task details are missing, do not implement until task contract is re
 **Doc-first gate before implementation (BUG-001):**
 - After contract validation and **before** any deliverable code/doc edits: the task `.md` MUST hold a real written plan (`Paths` + `File-Level Plan` or bullet **Implementation Notes**—no bare `{{PLACEHOLDER}}` rows).
 - `PHASE-STATE.md` MUST show the task `in_progress` **before** the first implementation commit for that task.
-- **Do not** create `vp-p{phase}-t{task}` or edit shipping files until both are satisfied (read-only exploration and editing the task file to record the plan are allowed).
+- **Do not** create `{projectPrefix}-vp-p{phase}-t{task}` or edit shipping files until both are satisfied (read-only exploration and editing the task file to record the plan are allowed).
 
 **Preflight before each task implementation:**
 - Read `.viepilot/STACKS.md` (if exists)
@@ -132,7 +132,7 @@ Stack preflight:
 1. Validate task contract (`workflows/autonomous.md`).
 2. Record plan in task file; set task `in_progress` in `PHASE-STATE.md`.
 3. Stack preflight.
-4. Create git tag `vp-p{phase}-t{task}` **only after** steps 1–3 pass.
+4. Create git tag `{projectPrefix}-vp-p{phase}-t{task}` **only after** steps 1–3 pass.
 
 #### 3b. Execute Task
 - Implement according to objective
@@ -177,7 +177,7 @@ When all tasks done:
 - Run phase verification
 - Check phase quality gate
 - Write SUMMARY.md
-- Create git tag: `vp-p{phase}-complete`
+- Create git tag: `{projectPrefix}-vp-p{phase}-complete`
 - Increment version if needed
 
 ### 6. Iterate

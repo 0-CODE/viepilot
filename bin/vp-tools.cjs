@@ -19,6 +19,8 @@ const {
   levenshteinDistance,
   findProjectRoot,
   VIEPILOT_DIR,
+  getCheckpointTagPrefix,
+  isCheckpointTag,
 } = require(path.join(__dirname, '../lib/cli-shared.cjs'));
 
 // ============================================================================
@@ -570,10 +572,10 @@ const commands = {
     const { execSync } = require('child_process');
     
     try {
-      const tags = execSync('git tag -l "vp-*" --sort=-creatordate', { 
+      const tags = execSync('git tag --sort=-creatordate', {
         cwd: projectRoot, 
         encoding: 'utf8' 
-      }).trim().split('\n').filter(t => t);
+      }).trim().split('\n').filter(t => t).filter(isCheckpointTag);
 
       if (tags.length === 0) {
         console.log(formatWarning('No checkpoints found'));
@@ -614,6 +616,22 @@ const commands = {
       console.error(formatError('Failed to list checkpoints', error.message));
       process.exit(1);
     }
+  },
+
+  /**
+   * Output deterministic project-scoped checkpoint tag prefix
+   */
+  'tag-prefix': (args) => {
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const raw = args.includes('--raw');
+    const prefix = getCheckpointTagPrefix(projectCheck.value);
+    if (raw) {
+      console.log(prefix);
+      return;
+    }
+    console.log(formatInfo(`Checkpoint tag prefix: ${colors.bold}${prefix}${colors.reset}`));
+    console.log(JSON.stringify({ prefix }));
   },
 
   /**
@@ -803,6 +821,14 @@ const commands = {
           'vp-tools version bump minor',
         ],
       },
+      'tag-prefix': {
+        usage: 'vp-tools tag-prefix [--raw]',
+        description: 'Return deterministic project-scoped checkpoint tag prefix',
+        examples: [
+          'vp-tools tag-prefix',
+          'vp-tools tag-prefix --raw',
+        ],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -839,6 +865,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}reset${colors.reset} <target> [-f]      Reset task/phase/all state (interactive)
   ${colors.bold}clean${colors.reset} [-f] [--dry-run]   Clean generated files (interactive)
   ${colors.bold}checkpoints${colors.reset}              List all ViePilot checkpoints (git tags)
+  ${colors.bold}tag-prefix${colors.reset} [--raw]       Show project-scoped checkpoint prefix
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)

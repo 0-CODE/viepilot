@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **M1.18 / Phase 22 (BUG-002) completed** — introduced project-scoped checkpoint tags (`{project}-vp-p...`) and kept backward compatibility with legacy `vp-p...` tags for list/rollback flows.
 - **CI coverage** — Jest chỉ instrument process hiện tại; test CLI qua `spawnSync` khiến `bin/vp-tools.cjs` báo **0%**. Đã tách `lib/cli-shared.cjs` (validators, `findProjectRoot`, Levenshtein) và đặt `collectCoverageFrom` trên file đó; bổ sung test in-process + `require.main === module` gate cho CLI; `install.sh` / `dev-install.sh` cài kèm `lib/`.
 
 ### Documentation

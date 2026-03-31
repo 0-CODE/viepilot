@@ -92,8 +92,8 @@ fi
 ### 1d. Git tags vs completed phases
 ```bash
 # List completed phases (PHASE-STATE.md with status: complete)
-# List git tags matching vp-p{N}-complete
-COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
+# List git tags matching legacy + project-scoped complete format
+COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '(^vp-p[0-9]+-complete$)|(^[a-z0-9-]+-vp-p[0-9]+-complete$)' | sort)
 # Report any phase marked complete in PHASE-STATE.md without a git tag
 ```
 
@@ -206,8 +206,9 @@ for phase_state in $RECENT_PHASES; do
     PHASE_DIR=$(dirname "$phase_state")
     # Check if docs/ was updated in commits for this phase
     PHASE_NUM=$(basename "$PHASE_DIR" | grep -o '^[0-9]*' | sed 's/^0*//')
-    PHASE_TAG="vp-p${PHASE_NUM}-complete"
-    PREV_TAG=$(git tag --sort=-version:refname 2>/dev/null | grep "vp-p.*-complete" | grep -A1 "^$PHASE_TAG$" | tail -1)
+    TAG_PREFIX=$(vp-tools tag-prefix --raw 2>/dev/null || echo "vp")
+    PHASE_TAG="${TAG_PREFIX}-p${PHASE_NUM}-complete"
+    PREV_TAG=$(git tag --sort=-version:refname 2>/dev/null | grep -E "(vp-p.*-complete|[a-z0-9-]+-vp-p.*-complete)" | grep -A1 "^$PHASE_TAG$" | tail -1)
     if [ -n "$PREV_TAG" ]; then
       DOCS_CHANGED=$(git diff "$PREV_TAG"..HEAD --name-only 2>/dev/null | grep "^docs/" | wc -l | tr -d ' ')
       if [ "$DOCS_CHANGED" -eq 0 ]; then

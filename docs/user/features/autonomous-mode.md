@@ -13,11 +13,11 @@ Autonomous mode điều phối **toàn bộ** phase và task theo `workflows/aut
 ```
 
 Mỗi task:
-1. Tạo git checkpoint tag (`vp-p{N}-t{T}`)
+1. Tạo git checkpoint tag (`{project}-vp-p{N}-t{T}`)
 2. Implement theo acceptance criteria
 3. Verify (automated + manual nếu cần)
 4. Commit với conventional commit message
-5. Tạo done tag (`vp-p{N}-t{T}-done`)
+5. Tạo done tag (`{project}-vp-p{N}-t{T}-done`)
 
 ## Flags
 
@@ -87,14 +87,16 @@ Nếu bất kỳ gate nào fail → control point.
 Mỗi task tạo 2 git tags:
 
 ```bash
-vp-p2-t3        # Bắt đầu task 3 của phase 2
-vp-p2-t3-done   # Hoàn thành task 3 của phase 2
+viepilot-vp-p2-t3        # Bắt đầu task 3 của phase 2
+viepilot-vp-p2-t3-done   # Hoàn thành task 3 của phase 2
 ```
 
 Khi phase complete:
 ```bash
-vp-p2-complete  # Phase 2 hoàn thành
+viepilot-vp-p2-complete  # Phase 2 hoàn thành
 ```
+
+Legacy tags `vp-p...` vẫn được hỗ trợ khi list/rollback để tương thích dự án cũ.
 
 Xem tất cả checkpoints:
 ```bash

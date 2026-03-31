@@ -8,7 +8,7 @@ Safe rollback to any ViePilot checkpoint với backup và state preservation.
 ## 1. List Available Checkpoints
 
 ```bash
-git tag -l "vp-*" --sort=-creatordate | head -20
+git tag --sort=-creatordate | rg "(^vp-p|^-*vp-backup|^[a-z0-9-]+-vp-p|^[a-z0-9-]+-vp-backup)" | head -20
 ```
 
 For each tag, get info:
@@ -41,7 +41,7 @@ If `--list` flag, stop here.
 Validate tag exists.
 
 **If --latest:**
-Select most recent vp-* tag.
+Select most recent checkpoint tag (project-scoped or legacy).
 
 **Otherwise:**
 Ask user to select from list or enter tag name.
@@ -98,7 +98,8 @@ Wait for confirmation.
 
 ```bash
 # Create backup tag
-BACKUP_TAG="vp-backup-$(date +%Y%m%d-%H%M%S)"
+TAG_PREFIX="$(vp-tools tag-prefix --raw)"
+BACKUP_TAG="${TAG_PREFIX}-backup-$(date +%Y%m%d-%H%M%S)"
 git tag $BACKUP_TAG
 
 # Backup state files
@@ -126,10 +127,10 @@ git log -1 --oneline
 <step name="update_state">
 ## 7. Update State Files
 
-Parse tag to determine phase/task:
-- `vp-p{N}-t{M}` → Phase N, Task M, status: in_progress
-- `vp-p{N}-t{M}-done` → Phase N, Task M+1, status: not_started
-- `vp-p{N}-complete` → Phase N+1, Task 1, status: not_started
+Parse tag to determine phase/task (support both legacy and project-scoped):
+- `vp-p{N}-t{M}` or `{project}-vp-p{N}-t{M}` → Phase N, Task M, status: in_progress
+- `vp-p{N}-t{M}-done` or `{project}-vp-p{N}-t{M}-done` → Phase N, Task M+1, status: not_started
+- `vp-p{N}-complete` or `{project}-vp-p{N}-complete` → Phase N+1, Task 1, status: not_started
 
 Update HANDOFF.json accordingly.
 Update TRACKER.md progress.

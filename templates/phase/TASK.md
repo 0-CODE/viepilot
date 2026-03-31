@@ -5,7 +5,7 @@
 - **Status**: not_started | in_progress | blocked | done | skipped
 - **Complexity**: {{COMPLEXITY}}
 - **Dependencies**: {{DEPENDENCIES}}
-- **Git Tag**: vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}
+- **Git Tag**: {projectPrefix}-vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}
 
 ## Objective
 
@@ -97,5 +97,6 @@ manual:
 ## Rollback
 ```bash
 # If need to undo this task:
-git revert --no-commit $(git rev-list vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}..vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}-done)
+TAG_PREFIX=$(vp-tools tag-prefix --raw)
+git revert --no-commit $(git rev-list "${TAG_PREFIX}-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}".."${TAG_PREFIX}-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}-done")
 ```

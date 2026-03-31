@@ -119,7 +119,7 @@ Canonical order for every task: **Validate contract → Doc-first gate → Stack
 
 If any check fails:
 - Mark task `blocked` in `PHASE-STATE.md` and list what is missing under **Notes**
-- **Do not** create `vp-p{phase}-t{task}`
+- **Do not** create `{projectPrefix}-vp-p{phase}-t{task}`
 - **Do not** proceed to **Execute Task**
 
 #### Stack Preflight (token-efficient lookup)
@@ -137,7 +137,7 @@ If stack cache is missing:
 
 Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
 
-Create git tag: `vp-p{phase}-t{task}`  
+Create git tag: `{projectPrefix}-vp-p{phase}-t{task}`  
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
 #### Execute Task
@@ -178,7 +178,7 @@ quality_gate:
 #### Handle Result
 
 **PASS:**
-- Create git tag: `vp-p{phase}-t{task}-done`
+- Create git tag: `{projectPrefix}-vp-p{phase}-t{task}-done`
 - Update PHASE-STATE.md immediately: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
 - Update TRACKER.md immediately
 - Update HANDOFF.json immediately
@@ -224,7 +224,8 @@ When all tasks in phase are done/skipped:
    Populate `{{CREATED_FILES}}`, `{{MODIFIED_FILES}}`, `{{DELETED_FILES}}` from git:
    ```bash
    # Get ALL individual files changed since phase start tag
-   git diff vp-p{phase}-t1..HEAD --name-status | sort
+   TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+   git diff "${TAG_PREFIX}-p{phase}-t1"..HEAD --name-status | sort
    ```
    List **every file individually** — do NOT use glob patterns or summarize.
    Correct example:
@@ -243,7 +244,7 @@ When all tasks in phase are done/skipped:
    | smarttrack-*/pom.xml (8 files) | 1.1 |   ← WRONG: glob pattern
    | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
-4. Create git tag: `vp-p{phase}-complete`
+4. Create git tag: `{projectPrefix}-vp-p{phase}-complete`
 5. Check version bump needed:
    - Features added → MINOR
    - Fixes only → PATCH
@@ -280,7 +281,8 @@ Commit: `chore: update ROADMAP.md — phase {N} complete`
 if [ ! -d "skills" ]; then
   echo "→ Skipping skills-reference update (not a viepilot framework repo)"
 else
-  NEW_SKILLS=$(git diff vp-p{phase}-t1..HEAD --name-only | grep 'skills/.*/SKILL\.md' | sed 's|skills/||; s|/SKILL\.md||')
+  TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+  NEW_SKILLS=$(git diff "${TAG_PREFIX}-p{phase}-t1"..HEAD --name-only | grep 'skills/.*/SKILL\.md' | sed 's|skills/||; s|/SKILL\.md||')
   if [ -n "$NEW_SKILLS" ]; then
     # Append new sections to docs/skills-reference.md
     # (same incremental logic as workflows/documentation.md step 3B)
@@ -392,7 +394,8 @@ Options:
 
 **Rollback:**
 ```bash
-git revert --no-commit $(git rev-list vp-p{phase}-t{task}..HEAD)
+TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+git revert --no-commit $(git rev-list "${TAG_PREFIX}-p{phase}-t{task}"..HEAD)
 ```
 - Reset task → not_started
 - Continue or stop

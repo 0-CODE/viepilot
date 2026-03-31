@@ -26,7 +26,7 @@
 
 ## Files Changed
 
-> Populate by running: `git diff vp-p{{PHASE_NUMBER}}-t1..HEAD --name-status | sort`
+> Populate by running: `TAG_PREFIX=$(vp-tools tag-prefix --raw) && git diff "${TAG_PREFIX}-p{{PHASE_NUMBER}}-t1"..HEAD --name-status | sort`
 > List every file individually. Do NOT use glob patterns or summarize groups.
 
 ### Created
@@ -64,4 +64,4 @@
 {{NOTES}}
 
 ---
-Git Tag: `vp-p{{PHASE_NUMBER}}-complete`
+Git Tag: `{projectPrefix}-vp-p{{PHASE_NUMBER}}-complete`

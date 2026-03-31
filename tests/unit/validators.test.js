@@ -20,6 +20,9 @@ const {
   validators: inProcValidators,
   levenshteinDistance,
   findProjectRoot: inProcFindRoot,
+  getProjectSlug,
+  getCheckpointTagPrefix,
+  isCheckpointTag,
 } = require('../../lib/cli-shared.cjs');
 
 function run(args, cwd = PROJECT_ROOT) {
@@ -292,6 +295,25 @@ describe('version', () => {
 });
 
 // ============================================================================
+// tag-prefix
+// ============================================================================
+
+describe('tag-prefix', () => {
+  test('returns project-scoped prefix', () => {
+    const { stdout, code } = run(['tag-prefix']);
+    expect(code).toBe(0);
+    const data = extractJson(stdout);
+    expect(data.prefix).toMatch(/^[a-z0-9-]+-vp$/);
+  });
+
+  test('returns raw prefix with --raw', () => {
+    const { stdout, code } = run(['tag-prefix', '--raw']);
+    expect(code).toBe(0);
+    expect(stdout.trim()).toMatch(/^[a-z0-9-]+-vp$/);
+  });
+});
+
+// ============================================================================
 // help
 // ============================================================================
 
@@ -443,5 +465,21 @@ describe('vp-tools validators (in-process)', () => {
     expect(levenshteinDistance('version', 'versoin')).toBeLessThanOrEqual(2);
     expect(levenshteinDistance('', 'a')).toBe(1);
     expect(levenshteinDistance('a', '')).toBe(1);
+  });
+
+  test('project slug + checkpoint prefix helpers', () => {
+    const slug = getProjectSlug(PROJECT_ROOT);
+    const prefix = getCheckpointTagPrefix(PROJECT_ROOT);
+    expect(slug).toMatch(/^[a-z0-9-]+$/);
+    expect(prefix).toBe(`${slug}-vp`);
+  });
+
+  test('checkpoint tag matcher supports legacy and project-scoped formats', () => {
+    expect(isCheckpointTag('vp-p2-t3')).toBe(true);
+    expect(isCheckpointTag('vp-p2-t3-done')).toBe(true);
+    expect(isCheckpointTag('vp-p2-complete')).toBe(true);
+    expect(isCheckpointTag('viepilot-vp-p2-t3')).toBe(true);
+    expect(isCheckpointTag('viepilot-vp-p2-complete')).toBe(true);
+    expect(isCheckpointTag('v1.2.0')).toBe(false);
   });
 });
