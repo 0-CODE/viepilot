@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.2.0
+version: 0.3.0
 ---
 
 <cursor_skill_adapter>
@@ -25,6 +25,7 @@ Hỗ trợ:
 - Xem lại session trước đó
 - Landing page layout discovery (hỏi thêm để chốt bố cục)
 - In-session research (research ngay trong phiên brainstorm theo yêu cầu)
+- UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/`
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -43,6 +44,7 @@ Optional flags:
 - `--list` : Liệt kê các sessions
 - `--landing` : Ưu tiên flow Landing Page layout discovery
 - `--research` : Bật proactive research suggestions trong phiên
+- `--ui` : Bật UI Direction mode (live HTML/CSS direction artifacts)
 </context>
 
 <process>
@@ -54,9 +56,10 @@ Key steps:
 3. Load context if continuing
 4. Run interactive Q&A với topic-based structure
 5. Nếu topic là landing page: hỏi thêm bố cục + tham khảo `21st.dev` để đề xuất section/components
-6. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
-7. Save session with structured format (bao gồm research notes khi có)
-8. Suggest next action: `/vp-crystallize`
+6. Nếu topic cần UI/UX: tạo/cập nhật UI Direction artifacts (`index.html`, `style.css`, `notes.md`) trong `.viepilot/ui-direction/{session-id}/`
+7. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
+8. Save session with structured format (bao gồm research notes + UI direction references khi có)
+9. Suggest next action: `/vp-crystallize`
 </process>
 
 <success_criteria>
@@ -67,5 +70,6 @@ Key steps:
 - [ ] Landing page topics include explicit layout selection questions
 - [ ] 21st.dev references included when relevant
 - [ ] Research can be executed inside the same brainstorm session
+- [ ] UI Direction artifacts created/updated when UI mode is active
 - [ ] Next steps suggested
 </success_criteria>

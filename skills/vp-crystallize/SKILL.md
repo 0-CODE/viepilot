@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.2.0
+version: 0.3.0
 ---
 
 <cursor_skill_adapter>
@@ -76,6 +76,11 @@ Ask user for:
 - Extract: decisions, architecture, schemas, features
 - Extract selected tech stacks
 - Validate completeness
+
+### Step 1A: Consume UI direction (if present)
+- Read `.viepilot/ui-direction/{session-id}/notes.md`, `index.html`, `style.css`
+- Carry approved layout/component decisions into architecture + roadmap artifacts
+- Mark assumptions explicitly if direction artifacts are missing
 
 ### Step 1B: Official stack research (mandatory)
 - For every selected stack, research official docs and authoritative sources
@@ -156,6 +161,7 @@ Ask user for:
 </process>
 
 <success_criteria>
+- [ ] UI direction artifacts consumed for UI/UX scopes (or assumptions documented)
 - [ ] Official stack research completed before architecture lock
 - [ ] Global cache created for all selected stacks
 - [ ] Project-local stack index (`.viepilot/STACKS.md`) created

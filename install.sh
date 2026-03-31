@@ -55,6 +55,7 @@ mkdir -p "$VIEPILOT_DIR/templates/project"
 mkdir -p "$VIEPILOT_DIR/templates/phase"
 mkdir -p "$VIEPILOT_DIR/bin"
 mkdir -p "$VIEPILOT_DIR/lib"
+mkdir -p "$VIEPILOT_DIR/ui-components"
 
 # Install skills
 echo "  Installing skills..."
@@ -76,6 +77,13 @@ echo "  Installing templates..."
 cp -r "$SCRIPT_DIR/templates/project"/* "$VIEPILOT_DIR/templates/project/"
 cp -r "$SCRIPT_DIR/templates/phase"/* "$VIEPILOT_DIR/templates/phase/"
 echo "    ✓ templates"
+
+# Install stock UI components
+echo "  Installing stock UI components..."
+if [ -d "$SCRIPT_DIR/ui-components" ]; then
+    cp -r "$SCRIPT_DIR/ui-components"/* "$VIEPILOT_DIR/ui-components/"
+    echo "    ✓ ui-components"
+fi
 
 # Install CLI tools
 echo "  Installing CLI tools..."

@@ -1,54 +1,49 @@
 {
-  "milestone": "M1.12",
-  "milestone_name": "Doc-first autonomous execution",
-  "phase": 15,
-  "phase_name": "vp-auto doc-first gates (BUG-001)",
-  "task": 0,
-  "task_name": null,
-  "status": "complete",
-  "last_activity": "2026-03-31T16:00:00Z",
+  "milestone": "M1.13",
+  "milestone_name": "UI direction + component curation",
+  "phase": 16,
+  "phase_name": "UI direction artifacts + reusable UI component library (FEAT-002)",
+  "task": 5,
+  "task_name": "16.5 Documentation for UI direction + component library",
+  "status": "completed",
+  "last_activity": "2026-03-31T21:30:00Z",
   "version": {
-    "current": "0.8.2",
-    "next": "0.8.3"
+    "current": "0.9.0",
+    "next": "0.9.1"
   },
   "progress": {
-    "phases_total": 15,
-    "phases_completed": 15,
-    "tasks_total": 47,
-    "tasks_completed": 47,
+    "phases_total": 16,
+    "phases_completed": 16,
+    "tasks_total": 52,
+    "tasks_completed": 52,
     "percentage": 100
   },
   "context": {
     "files_touched": [
-      "workflows/autonomous.md",
-      "skills/vp-auto/SKILL.md",
-      "templates/phase/TASK.md",
-      "workflows/audit.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/SPEC.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/PHASE-STATE.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.1.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.2.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.3.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.4.md",
+      ".viepilot/phases/16-ui-direction-and-component-library/tasks/16.5.md",
       "CHANGELOG.md",
-      "README.md",
-      "docs/advanced-usage.md",
-      "docs/dev/cli-reference.md",
-      "docs/dev/deployment.md",
       ".viepilot/TRACKER.md",
       ".viepilot/HANDOFF.json",
       ".viepilot/ROADMAP.md",
-      ".viepilot/audit-report.md",
-      ".viepilot/requests/BUG-001.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/PHASE-STATE.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/SPEC.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/SUMMARY.md"
+      ".viepilot/requests/FEAT-002.md"
     ],
     "decisions": [
       {
         "date": "2026-03-31",
-        "decision": "Enforce doc-first gate in autonomous workflow before implementation (BUG-001)",
-        "rationale": "Reduce execute-then-document drift; align skill, template, and audit"
+        "decision": "Plan M1.13 / Phase 16 for FEAT-002 UI-first brainstorm + component curation",
+        "rationale": "Make design intent explicit via HTML direction artifacts and reusable UI component libraries"
       }
     ],
     "blockers": [],
     "notes": [
-      "M1.12 complete — release 0.8.2",
-      "Tier 1 audit report row includes execute-first / docs-later heuristic"
+      "M1.13 complete — FEAT-002 delivered",
+      "UI direction + component curation flow is now available"
     ]
   },
   "checkpoints": [
@@ -65,8 +60,16 @@
     {"tag": "vp-p15-t3-done", "description": "TASK template gate"},
     {"tag": "vp-p15-t4-done", "description": "audit Tier 1f heuristic"},
     {"tag": "vp-p15-complete", "description": "Phase 15 complete"},
-    {"tag": "v0.8.2", "description": "M1.12 complete"}
+    {"tag": "v0.8.2", "description": "M1.12 complete"},
+    {"tag": "vp-p16-planned", "description": "Phase 16 planned via vp-evolve"},
+    {"tag": "vp-p16-t1-done", "description": "Brainstorm UI direction mode"},
+    {"tag": "vp-p16-t2-done", "description": "Crystallize UI direction consumption"},
+    {"tag": "vp-p16-t3-done", "description": "UI components workflow + skill"},
+    {"tag": "vp-p16-t4-done", "description": "Installer stock component bootstrap"},
+    {"tag": "vp-p16-t5-done", "description": "UI direction/component docs"},
+    {"tag": "vp-p16-complete", "description": "Phase 16 complete"},
+    {"tag": "v0.9.0", "description": "M1.13 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-31T16:00:00Z"
+  "updated_at": "2026-03-31T21:30:00Z"
 }

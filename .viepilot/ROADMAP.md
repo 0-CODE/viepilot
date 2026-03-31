@@ -481,6 +481,55 @@
 
 ---
 
+---
+
+## Milestone: M1.13 — UI Direction + Component Curation (FEAT-002)
+
+### Overview
+
+- **Version**: 0.9.0 (target on completion)
+- **Goal**: Brainstorm cho dự án design/UI có HTML preview sống (UI direction) và có workflow sưu tầm/tái dùng UI component từ 21st.dev (global + project-local stock).
+- **Phases**: 1
+- **Status**: ✅ Complete (2026-03-31)
+
+---
+
+### Phase 16: UI direction artifacts + reusable UI component library (FEAT-002) ✅
+
+**Goal**: Bổ sung pipeline UI-first từ brainstorm đến crystallize và thư viện component tái sử dụng.
+
+**Estimated Tasks**: 5  
+**Dependencies**: Phase 15  
+**Directory**: `.viepilot/phases/16-ui-direction-and-component-library/`
+
+| Task | Description | Acceptance Criteria | Req |
+|------|-------------|---------------------|-----|
+| 16.1 | Brainstorm UI mode tạo/cập nhật HTML direction | Có `ui-direction/{session}/index.html`, `style.css`, `notes.md` trong brainstorm flow | FEAT-002 |
+| 16.2 | Crystallize tham chiếu UI direction đã chốt | `crystallize` đọc UI direction và map lại theo tech stack đích | FEAT-002 |
+| 16.3 | Workflow/skill curation component từ 21st.dev | Có ingest + classify + metadata + lưu kho global/project | FEAT-002 |
+| 16.4 | Bootstrap stock components trong install scripts | `install.sh` / `dev-install.sh` cài/symlink baseline ui-components | FEAT-002 |
+| 16.5 | Docs cho quy trình UI direction + component library | Có docs usage, conventions, reuse flow | FEAT-002 |
+
+**Verification**:
+
+- [x] Brainstorm UI session tạo được preview artifact và update theo thay đổi
+- [x] Crystallize sử dụng artifact UI direction làm input bắt buộc
+- [x] Component curation lưu đúng cấu trúc global (`~/.viepilot/ui-components`) và local (`.viepilot/ui-components`)
+- [x] Install scripts có stock components cơ bản
+- [x] Docs có hướng dẫn tái sử dụng component library
+
+---
+
+## Progress Summary (M1.13)
+
+| Phase | Status | Tasks | Completed | Progress |
+|-------|--------|-------|-----------|----------|
+| 16. UI direction + component curation (FEAT-002) | ✅ Complete | 5 | 5 | 100% |
+
+**Total**: 5 tasks, 5 completed, **100%** 🎉
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -499,5 +548,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-31 (M1.12 complete — BUG-001 / Phase 15)
+- Last Updated: 2026-03-31 (M1.13 completed — FEAT-002 / Phase 16)
 - Estimated completion: M1.x iterative releases (see TRACKER)

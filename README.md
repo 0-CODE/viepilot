@@ -2,15 +2,15 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-0.8.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.9.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-13-purple.svg)](#skills-reference)
-[![Workflows](https://img.shields.io/badge/workflows-11-orange.svg)](#workflows)
+[![Skills](https://img.shields.io/badge/skills-14-purple.svg)](#skills-reference)
+[![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
 [![Tests](https://img.shields.io/badge/tests-202%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **0.8.2** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
+**Versioning:** Shield **0.9.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -23,8 +23,8 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
 | Total LOC | **~24,000+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
-| Skills | **13** |
-| Workflows | **11** |
+| Skills | **14** |
+| Workflows | **12** |
 | Templates | **16** (Project: 11, Phase: 5) |
 | CLI Commands | **13** (`vp-tools`) |
 | Tests | **202** (3 files: unit + integration + AI compat) |
@@ -35,8 +35,8 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 
 | Thành phần / Component | Số lượng / Count | Mô tả / Description |
 |------------------------|------------------|---------------------|
-| Skill Definitions | **13** | SKILL.md files với trigger, process, success criteria |
-| Workflow Files | **11** | Step-by-step execution guides |
+| Skill Definitions | **14** | SKILL.md files với trigger, process, success criteria |
+| Workflow Files | **12** | Step-by-step execution guides |
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 1 | vp-tools.cjs (**13** commands) |
@@ -47,13 +47,13 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  100% 🎉 M1.12 roadmap phases ✅ (v0.8.2)
+Tổng thể / Overall:  ████████████████████  100% 🎉 M1.13 roadmap phases ✅ (v0.9.0)
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
 |-----------------|------------|----------|
-| Core Skills (13) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, request, evolve, docs, task, debug, rollback, audit |
-| Workflows (11) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
+| Core Skills (14) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, request, evolve, docs, task, debug, rollback, audit, ui-components |
+| Workflows (12) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
 | Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (13 commands) | ✅ Hoàn thiện | State management, progress, versioning, checkpoints |
@@ -109,6 +109,7 @@ Tổng thể / Overall:  ██████████████████�
 | `/vp-resume` | Khôi phục context và tiếp tục / Restore and continue | "resume", "tiếp tục" | Control |
 | `/vp-status` | Dashboard tiến độ / Progress dashboard | "status", "tiến độ" | Monitor |
 | `/vp-request` | Bug/Feature/Enhancement/Debt / Ongoing requests | "bug", "feature", "yêu cầu" | Develop |
+| `/vp-ui-components` | Curation + reuse UI component library | "ui components", "21st.dev" | Develop |
 | `/vp-evolve` | Milestone mới, nâng cấp lớn / New milestone, major upgrade | "evolve", "milestone" | Develop |
 | `/vp-docs` | Generate documentation / Tạo tài liệu | "docs", "tài liệu" | Finalize |
 | `/vp-task` | Quản lý task thủ công / Manual task control | "task" | Manual |
@@ -133,6 +134,7 @@ Tổng thể / Overall:  ██████████████████�
 | `debug.md` | New/continue/close debug session với state tracking | 7 steps |
 | `rollback.md` | List checkpoints → Select → Revert safely | 5 steps |
 | `audit.md` | Collect actual state → Parse docs → Report gaps | 6 steps |
+| `ui-components.md` | Curate/classify/store reusable UI components | 6 steps |
 
 ---
 

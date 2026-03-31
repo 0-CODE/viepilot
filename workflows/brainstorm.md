@@ -113,6 +113,22 @@ User có thể yêu cầu research ngay trong brainstorm (không cần đổi sk
 Nếu assistant nhận thấy topic có độ mơ hồ cao hoặc rủi ro quyết định sai, assistant nên chủ động đề xuất:
 `Mục này nên research nhanh trước khi chốt, bạn muốn mình research luôn trong phiên này không?`
 
+### UI Direction Mode (design-in-the-loop; FEAT-002)
+Nếu user đang brainstorm cho dự án có UI/UX hoặc yêu cầu thiết kế trực quan:
+
+1. Tạo workspace direction cho phiên hiện tại:
+   - `.viepilot/ui-direction/{session-id}/index.html`
+   - `.viepilot/ui-direction/{session-id}/style.css`
+   - `.viepilot/ui-direction/{session-id}/notes.md`
+2. Mỗi lần user đổi requirement/layout/component:
+   - Cập nhật trực tiếp HTML/CSS direction
+   - Ghi decision + rationale vào `notes.md` (single source of truth)
+3. Nếu user gửi references/components (bao gồm 21st.dev prompt/link), ghi rõ:
+   - nguồn tham chiếu
+   - phần UI áp dụng
+   - điều chỉnh theo mục tiêu sản phẩm
+4. Giữ prototype ở mức mô tả định hướng (directional), không ép build production-ready code ở bước brainstorm.
+
 ### Kết thúc mỗi topic
 - Tóm tắt decisions
 - List action items
@@ -160,6 +176,15 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - 21st.dev references:
   - {component/pattern 1}
   - {component/pattern 2}
+
+**UI Direction Artifacts** (if applicable):
+- Session id: {session-id}
+- Files:
+  - `.viepilot/ui-direction/{session-id}/index.html`
+  - `.viepilot/ui-direction/{session-id}/style.css`
+  - `.viepilot/ui-direction/{session-id}/notes.md`
+- Preview focus:
+  - {layout/flow summary}
 
 ---
 

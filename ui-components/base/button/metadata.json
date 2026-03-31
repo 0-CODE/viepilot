@@ -1,0 +1,8 @@
+{
+  "id": "base-button-primary",
+  "category": "base",
+  "source": "viepilot-stock",
+  "tags": ["button", "cta", "base"],
+  "stack_notes": "Use semantic <button> and visible focus state.",
+  "status": "approved"
+}

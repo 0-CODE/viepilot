@@ -60,6 +60,14 @@ ViePilot sẽ hỏi bạn về:
 
 Trả lời tự nhiên — không cần format đặc biệt.
 
+Nếu dự án thiên về UI/UX:
+
+```text
+/vp-brainstorm --ui
+```
+
+Workflow sẽ duy trì direction artifacts tại `.viepilot/ui-direction/{session-id}/`.
+
 ---
 
 ## Step 4: Crystallize

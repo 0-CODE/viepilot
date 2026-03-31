@@ -10,7 +10,7 @@
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                            SKILLS LAYER (13)                            │
+│                            SKILLS LAYER (14)                            │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐       │
 │  │ brainstorm  │ │ crystallize │ │    auto     │ │   pause     │       │
 │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘       │
@@ -21,16 +21,16 @@
 │  │    docs     │ │    task     │ │   debug     │ │  rollback   │       │
 │  └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘       │
 │  ┌─────────────┐                                                       │
-│  │   audit     │  Documentation / drift audit                          │
-│  └─────────────┘                                                       │
+│  │   audit     │ │ui-components│  Documentation / drift audit         │
+│  └─────────────┘ └─────────────┘                                       │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                          WORKFLOWS LAYER (11)                           │
+│                          WORKFLOWS LAYER (12)                           │
 │  brainstorm.md │ crystallize.md │ autonomous.md │ pause-work.md        │
 │  resume-work.md │ request.md │ evolve.md │ documentation.md            │
-│  debug.md │ rollback.md │ audit.md                                      │
+│  debug.md │ rollback.md │ audit.md │ ui-components.md                   │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼

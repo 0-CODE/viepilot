@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 
-- _(none yet)_
+- _No unreleased enhancements currently._
 
 ### Fixed
 
@@ -25,6 +25,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `README.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`, `docs/user/quick-start.md`, `docs/troubleshooting.md` — clarified `/vp-auto` with no extra args vs `--fast`, control points, and typical one-task-per-chat-turn behavior
 
 ## [0.8.2] - 2026-03-31 — M1.12 Doc-first execution gates (BUG-001)
+
+## [0.9.0] - 2026-03-31 — M1.13 UI direction + component curation (FEAT-002)
+
+### Added
+
+- `workflows/ui-components.md` — component curation pipeline (global/local stores, metadata contract, index sync)
+- `skills/vp-ui-components/SKILL.md` — new skill to ingest/classify/store reusable UI components
+- `docs/user/features/ui-direction.md` — user guide for `/vp-brainstorm --ui`
+- `docs/dev/ui-components-library.md` — developer guide for curation taxonomy and artifact contract
+- `ui-components/` — baseline stock components bundled with the repo
+
+### Enhanced
+
+- `workflows/brainstorm.md`, `skills/vp-brainstorm/SKILL.md` — UI Direction mode with live `index.html`/`style.css`/`notes.md` artifact loop
+- `workflows/crystallize.md`, `skills/vp-crystallize/SKILL.md` — consume UI direction artifacts and map them into implementation plans
+- `install.sh`, `dev-install.sh` — install/symlink `ui-components` stock library
+- `README.md`, `docs/README.md`, `docs/skills-reference.md`, `docs/user/quick-start.md`, `docs/dev/architecture.md` — synced with new skill/workflow and UI-first flow
 
 ### Fixed
 
@@ -183,7 +200,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.8.2...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/0-CODE/viepilot/compare/v0.8.2...v0.9.0
 [0.8.2]: https://github.com/0-CODE/viepilot/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/0-CODE/viepilot/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/0-CODE/viepilot/compare/v0.7.0...v0.8.0

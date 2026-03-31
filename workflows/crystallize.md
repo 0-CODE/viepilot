@@ -90,6 +90,29 @@ Validate completeness:
 If gaps found → ask user to clarify or return to brainstorm.
 </step>
 
+<step name="consume_ui_direction">
+## Step 1A: Consume UI Direction Artifacts (for UI/UX projects)
+
+If brainstorm indicates frontend/UI scope, check for direction artifacts:
+
+```bash
+ls -la .viepilot/ui-direction/ 2>/dev/null
+```
+
+When available, for the selected/latest session:
+- Read `.viepilot/ui-direction/{session-id}/notes.md` first (source of design decisions)
+- Read `index.html` + `style.css` to extract:
+  - layout hierarchy
+  - component candidates
+  - interaction expectations
+- Record how each UI direction item maps into target tech stack implementation plan.
+
+If UI scope is present but artifacts are missing:
+- Warn user and request either:
+  1. generate UI direction via `/vp-brainstorm --ui`, or
+  2. explicitly continue with assumptions.
+</step>
+
 <step name="research_stack_official">
 ## Step 1B: Research Official Stack Guidance (mandatory)
 

@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.12 - Doc-first autonomous execution (BUG-001) ✅ COMPLETE
-- **Current Phase**: All phases complete
-- **Current Task**: -
-- **Last Activity**: 2026-03-31 - M1.12 Complete v0.8.2 (BUG-001 / Phase 15)
+- **Milestone**: M1.13 - UI direction + component curation ✅ COMPLETE
+- **Current Phase**: none
+- **Current Task**: none
+- **Last Activity**: 2026-03-31 - `/vp-auto --phase 16`: completed FEAT-002 implementation + docs
 
 ## Progress Overview
 ```
@@ -56,17 +56,23 @@ M1.12 ━━━━━━━━━━━━━━━━━━━━━━━━�
 Phase 15: Doc-first vp-auto    [██████████] 100% ✅
 ─────────────────────────────────────────────────
 M1.12 Overall:                  [██████████] 100% 🎉
+
+M1.13 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Phase 16: UI direction + stock [██████████] 100% ✅
+─────────────────────────────────────────────────
+M1.13 Overall:                  [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.8.2
+0.9.0
 ```
 
 ### Released
 - **0.8.2** — M1.12 Doc-first execution gates (BUG-001): autonomous workflow gate, vp-auto skill, TASK template checklist, audit heuristic
+- **0.9.0** — M1.13 UI direction + component curation (FEAT-002): brainstorm UI artifacts, crystallize mapping, new vp-ui-components workflow/skill, stock component bootstrap
 - **0.8.1** — M1.11 ROOT documentation alignment (ENH-011): README/CHANGELOG/audit tier copy + doc examples vs framework SemVer
 - **0.8.0** — M1.10 Execution Trace Reliability: detailed task decomposition contract + per-task state sync + audit anti-pattern detection
 - **0.7.0** — M1.9 Stack-Aware Audit: stack best-practice/code-quality checks + research fallback + vp-auto guardrails alignment
@@ -84,11 +90,11 @@ M1.12 Overall:                  [██████████] 100% 🎉
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 0 features
+- 0 planned features
 - 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.8.3
+Suggested next version: 0.9.1 (patch for follow-up fixes)
 ```
 
 ## Decision Log
@@ -100,12 +106,14 @@ Suggested next version: 0.8.3
 | 2026-03-30 | CLI first | Better DX foundation before advanced features | Setup |
 | 2026-03-31 | M1.12 Phase 15 for BUG-001 | Harden doc-first ordering in autonomous flow to reduce execute-then-doc drift | Planning |
 | 2026-03-31 | Ship 0.8.2 after Phase 15 | Doc-first gate + audit heuristic merged; BUG-001 closed at workflow level | M1.12 |
+| 2026-03-31 | Open M1.13 Phase 16 for FEAT-002 | Add UI-first brainstorm with live HTML direction and reusable component curation workflow | Planning |
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| FEAT-002 | ✨ | UI-first brainstorm HTML direction + UI component curation library | high | ✅ done |
 | BUG-001 | 🐛 | vp-auto executes before full docs/state gate, causing drift risk | high | ✅ done |
 | ENH-001 | 🔧 | vp-auto: Sync ROOT documents on milestone complete | high | new |
 | ENH-002 | 🔧 | vp-docs: Sync ROOT documents after doc generation | medium | new |
@@ -128,11 +136,10 @@ _None currently_
 ```
 
 ## Next Action
-**Milestone M1.12 Complete!** Next steps:
+**M1.13 complete.**
 
-- `/vp-audit --report` để xác nhận Tier 1f heuristic wording trong báo cáo
-- `/vp-docs` nếu cần refresh docs sinh tự động
-- `/vp-evolve` cho milestone tiếp theo
+- Run `/vp-docs` for a full documentation refresh if needed.
+- Review next pending request from backlog (`ENH-001`..`ENH-005`).
 
 ## Quick Actions
 

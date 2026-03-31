@@ -29,6 +29,7 @@
 | Feature | Document |
 |---------|----------|
 | Autonomous Mode | [autonomous-mode.md](user/features/autonomous-mode.md) (flags, `--fast`, lượt chat) |
+| UI Direction Mode | [ui-direction.md](user/features/ui-direction.md) |
 | Checkpoint Recovery | [checkpoint-recovery.md](user/features/checkpoint-recovery.md) |
 | Debug Mode | [debug-mode.md](user/features/debug-mode.md) |
 
@@ -54,6 +55,7 @@
 | [Getting Started (dev entry)](dev/getting-started.md) | Short link into dev guide |
 | [CLI Reference](dev/cli-reference.md) | All 13 `vp-tools` commands with examples |
 | [Architecture](dev/architecture.md) | System layers, data flow, design decisions |
+| [UI Components Library](dev/ui-components-library.md) | Curation taxonomy, storage contract, reuse flow |
 | [Contributing](dev/contributing.md) | How to add skills, workflows, CLI commands |
 | [Testing](dev/testing.md) | Test structure, running tests, writing new tests |
 | [Deployment](dev/deployment.md) | Distribution, versioning, CI/CD |
@@ -110,6 +112,7 @@
 | `/vp-resume` | "resume", "tiếp tục" | Restore and continue |
 | `/vp-status` | "status", "tiến độ" | Progress dashboard |
 | `/vp-request` | "request", "feature", "bug" | Add feature/bug |
+| `/vp-ui-components` | "ui components", "21st.dev" | Curate and reuse UI component library |
 | `/vp-evolve` | "evolve", "milestone mới" | New milestone |
 | `/vp-docs` | "docs", "documentation" | Generate docs |
 | `/vp-task` | "task", "manual" | Manual task control |
@@ -119,4 +122,4 @@
 
 ---
 
-*Last updated: 2026-03-31 — ViePilot framework v0.8.1 (see `.viepilot/TRACKER.md`); `/vp-auto` flags & chat behavior clarified in user + troubleshooting docs.*
+*Last updated: 2026-03-31 — ViePilot framework v0.9.0 (see `.viepilot/TRACKER.md`); UI direction + component curation flow added.*

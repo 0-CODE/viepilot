@@ -1,0 +1,8 @@
+{
+  "id": "base-card-elevated",
+  "category": "base",
+  "source": "viepilot-stock",
+  "tags": ["card", "container", "base"],
+  "stack_notes": "Keep spacing tokenized and radius consistent with design system.",
+  "status": "approved"
+}

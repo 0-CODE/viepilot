@@ -1,0 +1,8 @@
+{
+  "id": "base-input-text",
+  "category": "base",
+  "source": "viepilot-stock",
+  "tags": ["input", "form", "base"],
+  "stack_notes": "Always pair with label and validation message region.",
+  "status": "approved"
+}

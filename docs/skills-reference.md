@@ -300,6 +300,26 @@ CHANGELOG.md (updated)
 
 ---
 
+## /vp-ui-components
+
+**Purpose**: Quản lý thư viện UI components tái sử dụng (global + project-local)
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--add` | Add/capture component mới |
+| `--list` | Liệt kê components theo category |
+| `--sync` | Đồng bộ global ↔ local index |
+| `--from-21st` | Ưu tiên ingest từ 21st.dev references |
+| `--approve` | Mark component status thành approved |
+
+### Output
+- `~/.viepilot/ui-components/{category}/{component-id}/...`
+- `.viepilot/ui-components/{category}/{component-id}/...`
+- `INDEX.md` cho global + local stores
+
+---
+
 ## /vp-rollback
 
 **Purpose**: Rollback về bất kỳ checkpoint nào một cách an toàn với state preservation

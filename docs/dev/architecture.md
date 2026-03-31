@@ -12,17 +12,17 @@ ViePilot là một Markdown-native autonomous coding framework. Không có serve
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                            SKILLS LAYER (13)                            │
+│                            SKILLS LAYER (14)                            │
 │  brainstorm │ crystallize │ auto │ pause │ resume │ status │ request    │
-│  evolve │ docs │ task │ debug │ rollback │ audit                        │
+│  evolve │ docs │ task │ debug │ rollback │ audit │ ui-components        │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                          WORKFLOWS LAYER (11)                           │
+│                          WORKFLOWS LAYER (12)                           │
 │  brainstorm.md │ crystallize.md │ autonomous.md │ pause-work.md        │
 │  resume-work.md │ request.md │ evolve.md │ documentation.md            │
-│  debug.md │ rollback.md │ audit.md                                      │
+│  debug.md │ rollback.md │ audit.md │ ui-components.md                   │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
