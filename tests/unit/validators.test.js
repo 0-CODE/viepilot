@@ -10,6 +10,10 @@ const os = require('os');
 
 const CLI = path.join(__dirname, '../../bin/vp-tools.cjs');
 const PROJECT_ROOT = path.join(__dirname, '../..');
+const TEST_VP_DIR = path.join(PROJECT_ROOT, '.viepilot');
+const TEST_TRACKER = path.join(TEST_VP_DIR, 'TRACKER.md');
+const TEST_ROADMAP = path.join(TEST_VP_DIR, 'ROADMAP.md');
+const TEST_HANDOFF = path.join(TEST_VP_DIR, 'HANDOFF.json');
 
 // In-process coverage target: lib/cli-shared.cjs (CLI subprocess runs are not instrumented by Jest).
 const {
@@ -65,6 +69,45 @@ function extractJson(stdout) {
   }
   throw new Error(`No JSON found in output:\n${stdout}`);
 }
+
+let fixtureState = { existed: false, tracker: null, roadmap: null, handoff: null };
+
+beforeAll(() => {
+  fixtureState.existed = fs.existsSync(TEST_VP_DIR);
+  if (fixtureState.existed) {
+    fixtureState.tracker = fs.existsSync(TEST_TRACKER) ? fs.readFileSync(TEST_TRACKER, 'utf8') : null;
+    fixtureState.roadmap = fs.existsSync(TEST_ROADMAP) ? fs.readFileSync(TEST_ROADMAP, 'utf8') : null;
+    fixtureState.handoff = fs.existsSync(TEST_HANDOFF) ? fs.readFileSync(TEST_HANDOFF, 'utf8') : null;
+  }
+
+  fs.mkdirSync(TEST_VP_DIR, { recursive: true });
+  if (!fs.existsSync(TEST_TRACKER)) {
+    fs.writeFileSync(
+      TEST_TRACKER,
+      '# Tracker\n\n### Current Version\n```\n1.1.0\n```\n',
+      'utf8'
+    );
+  }
+  if (!fs.existsSync(TEST_ROADMAP)) {
+    fs.writeFileSync(TEST_ROADMAP, '# Roadmap\n', 'utf8');
+  }
+  if (!fs.existsSync(TEST_HANDOFF)) {
+    fs.writeFileSync(TEST_HANDOFF, '{}\n', 'utf8');
+  }
+});
+
+afterAll(() => {
+  if (fixtureState.existed) {
+    if (fixtureState.tracker !== null) fs.writeFileSync(TEST_TRACKER, fixtureState.tracker, 'utf8');
+    if (fixtureState.roadmap !== null) fs.writeFileSync(TEST_ROADMAP, fixtureState.roadmap, 'utf8');
+    if (fixtureState.handoff !== null) fs.writeFileSync(TEST_HANDOFF, fixtureState.handoff, 'utf8');
+    return;
+  }
+
+  if (fs.existsSync(TEST_VP_DIR)) {
+    fs.rmSync(TEST_VP_DIR, { recursive: true, force: true });
+  }
+});
 
 // ============================================================================
 // current-timestamp
