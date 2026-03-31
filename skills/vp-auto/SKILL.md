@@ -35,6 +35,15 @@ Pauses at control points:
 - `CHANGELOG.md` (if feature/fix)
 - `.viepilot/ROADMAP.md` when task completion changes phase progress/status
 
+**Git persistence gate before PASS (BUG-003):**
+- Task/phase cannot be marked PASS if git is not durably persisted.
+- Required checks:
+  - `git status --porcelain` must be empty
+  - upstream branch must exist (`git rev-parse ... @{u}`)
+  - no unpushed commits (`git rev-list --count @{u}..HEAD` equals `0`)
+- Recommended single check: `node bin/vp-tools.cjs git-persistence --strict`
+- On failure: route to control point (retry commit/push, rollback, or stop).
+
 **Mandatory task decomposition before implementation:**
 - Objective with concrete expected outcome
 - Exact file paths to create/modify

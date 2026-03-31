@@ -175,6 +175,28 @@ quality_gate:
   - no_lint_errors: true
 ```
 
+#### Git Persistence Gate (BUG-003)
+Before marking a task PASS, require durable git persistence:
+
+```bash
+# Must have no unstaged/staged residue for this task
+git status --porcelain
+
+# Must track an upstream branch
+git rev-parse --abbrev-ref --symbolic-full-name @{u}
+
+# Must have no unpushed commits
+git rev-list --count @{u}..HEAD
+
+# Consolidated check helper (recommended)
+node bin/vp-tools.cjs git-persistence --strict
+```
+
+If any check fails:
+- **Do not** mark task `done`
+- **Do not** advance phase progress/state files as PASS
+- Route to control point (retry commit/push, rollback, or stop)
+
 #### Handle Result
 
 **PASS:**
@@ -253,6 +275,7 @@ When all tasks in phase are done/skipped:
    ```bash
    git push
    git push --tags
+   node bin/vp-tools.cjs git-persistence --strict
    ```
 
 ### 5a. Sync ROADMAP.md (after every phase complete)

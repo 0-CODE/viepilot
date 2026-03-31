@@ -18,6 +18,7 @@ Mỗi task:
 3. Verify (automated + manual nếu cần)
 4. Commit với conventional commit message
 5. Tạo done tag (`{project}-vp-p{N}-t{T}-done`)
+6. Pass Git persistence gate (clean + pushed) trước khi mark done
 
 ## Flags
 
@@ -81,6 +82,21 @@ Trước khi mark task done, ViePilot kiểm tra:
 ```
 
 Nếu bất kỳ gate nào fail → control point.
+
+## Git Persistence Gate (BUG-003)
+
+Trước khi `/vp-auto` được phép mark task/phase là PASS:
+
+```bash
+node bin/vp-tools.cjs git-persistence --strict
+```
+
+Gate chỉ PASS khi:
+- Working tree sạch (không còn thay đổi chưa commit)
+- Nhánh hiện tại có upstream
+- Không còn commit local chưa push (`ahead_count = 0`)
+
+Nếu fail, workflow phải vào control point và **không được** cập nhật state sang `done/complete`.
 
 ## Checkpoints
 

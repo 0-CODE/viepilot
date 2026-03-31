@@ -314,6 +314,22 @@ describe('tag-prefix', () => {
 });
 
 // ============================================================================
+// git-persistence
+// ============================================================================
+
+describe('git-persistence', () => {
+  test('returns persistence gate status payload', () => {
+    const { stdout, code } = run(['git-persistence']);
+    expect(code).toBe(0);
+    const data = extractJson(stdout);
+    expect(typeof data.clean_worktree).toBe('boolean');
+    expect(typeof data.upstream_configured).toBe('boolean');
+    expect(data).toHaveProperty('ahead_count');
+    expect(typeof data.ready_for_persisted_pass).toBe('boolean');
+  });
+});
+
+// ============================================================================
 // help
 // ============================================================================
 

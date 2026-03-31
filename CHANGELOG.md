@@ -16,12 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **M1.19 / Phase 23 (BUG-003) completed** — enforced deterministic git persistence gates for `/vp-auto`: PASS transitions now require clean worktree, configured upstream, and zero unpushed commits (via `vp-tools git-persistence --strict` in workflow).
 - **M1.18 / Phase 22 (BUG-002) completed** — introduced project-scoped checkpoint tags (`{project}-vp-p...`) and kept backward compatibility with legacy `vp-p...` tags for list/rollback flows.
 - **CI coverage** — Jest chỉ instrument process hiện tại; test CLI qua `spawnSync` khiến `bin/vp-tools.cjs` báo **0%**. Đã tách `lib/cli-shared.cjs` (validators, `findProjectRoot`, Levenshtein) và đặt `collectCoverageFrom` trên file đó; bổ sung test in-process + `require.main === module` gate cho CLI; `install.sh` / `dev-install.sh` cài kèm `lib/`.
 
 ### Documentation
 
 - `README.md`, `docs/README.md` — refreshed framework version, skills/commands/test counts, and index notes after M1.18 checkpoint-tag rollout.
+- `workflows/autonomous.md`, `skills/vp-auto/SKILL.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md` — documented and standardized git persistence gate behavior for `/vp-auto`.
 - `README.md`, `docs/user/quick-start.md` — updated install wizard controls and uninstall command examples.
 - `README.md`, `docs/troubleshooting.md`, `docs/user/quick-start.md` — documented README metric sync flow, `cloc` fallback/install guidance, and maintainer usage.
 - `docs/troubleshooting.md` — added selector TTY fallback guidance and uninstall/reinstall recovery flow for legacy symlink installs.

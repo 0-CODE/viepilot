@@ -635,6 +635,66 @@ const commands = {
   },
 
   /**
+   * Validate git persistence readiness for PASS transitions
+   */
+  'git-persistence': (args) => {
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+    const strict = args.includes('--strict');
+    const { execSync } = require('child_process');
+
+    let cleanWorktree = false;
+    let upstreamConfigured = false;
+    let aheadCount = null;
+    let branch = '';
+
+    try {
+      branch = execSync('git branch --show-current', { cwd: projectRoot, encoding: 'utf8' }).trim();
+    } catch (_e) {
+      branch = '';
+    }
+
+    try {
+      const status = execSync('git status --porcelain', { cwd: projectRoot, encoding: 'utf8' }).trim();
+      cleanWorktree = status.length === 0;
+    } catch (_e) {
+      cleanWorktree = false;
+    }
+
+    try {
+      execSync('git rev-parse --abbrev-ref --symbolic-full-name @{u}', { cwd: projectRoot, encoding: 'utf8' });
+      upstreamConfigured = true;
+    } catch (_e) {
+      upstreamConfigured = false;
+    }
+
+    if (upstreamConfigured) {
+      try {
+        const output = execSync('git rev-list --count @{u}..HEAD', { cwd: projectRoot, encoding: 'utf8' }).trim();
+        aheadCount = parseInt(output, 10);
+      } catch (_e) {
+        aheadCount = null;
+      }
+    }
+
+    const readyForPersistedPass = cleanWorktree && upstreamConfigured && aheadCount === 0;
+    const result = {
+      branch,
+      clean_worktree: cleanWorktree,
+      upstream_configured: upstreamConfigured,
+      ahead_count: aheadCount,
+      ready_for_persisted_pass: readyForPersistedPass,
+    };
+
+    console.log(JSON.stringify(result, null, 2));
+
+    if (strict && !readyForPersistedPass) {
+      process.exit(1);
+    }
+  },
+
+  /**
    * Check for potential conflicts
    */
   conflicts: (args) => {
@@ -829,6 +889,14 @@ const commands = {
           'vp-tools tag-prefix --raw',
         ],
       },
+      'git-persistence': {
+        usage: 'vp-tools git-persistence [--strict]',
+        description: 'Check if commit/push persistence gate is satisfied',
+        examples: [
+          'vp-tools git-persistence',
+          'vp-tools git-persistence --strict',
+        ],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -866,6 +934,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}clean${colors.reset} [-f] [--dry-run]   Clean generated files (interactive)
   ${colors.bold}checkpoints${colors.reset}              List all ViePilot checkpoints (git tags)
   ${colors.bold}tag-prefix${colors.reset} [--raw]       Show project-scoped checkpoint prefix
+  ${colors.bold}git-persistence${colors.reset} [--strict] Check commit/push persistence readiness
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)

@@ -96,8 +96,9 @@ For each phase:
     2. Create git tag
     3. Execute implementation
     4. Verify results
-    5. Handle outcome (pass/fail)
-    6. Update state
+    5. Enforce git persistence gate (`vp-tools git-persistence --strict`)
+    6. Handle outcome (pass/fail)
+    7. Update state
   Mark phase complete
 ```
 
