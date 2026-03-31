@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-0.8.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.8.2-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-13-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-11-orange.svg)](#workflows)
@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-194%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **0.8.1** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
+**Versioning:** Shield **0.8.2** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -28,7 +28,7 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 | Templates | **16** (Project: 11, Phase: 5) |
 | CLI Commands | **13** (`vp-tools`) |
 | Tests | **194** (3 files: unit + integration + AI compat) |
-| ViePilot phases (repo) | **14** hoàn thành (xem `.viepilot/TRACKER.md`) |
+| ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
 ### Phân bổ / Breakdown
@@ -47,7 +47,7 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  100% 🎉 M1.11 + roadmap phases ✅ (v0.8.1)
+Tổng thể / Overall:  ████████████████████  100% 🎉 M1.12 roadmap phases ✅ (v0.8.2)
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |

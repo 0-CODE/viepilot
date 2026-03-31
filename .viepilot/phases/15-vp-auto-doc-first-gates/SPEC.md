@@ -6,7 +6,7 @@
 - **Milestone**: M1.12 — Doc-first autonomous execution
 - **Request**: BUG-001
 - **Priority**: high
-- **Status**: in_progress
+- **Status**: complete
 
 ## Objective
 

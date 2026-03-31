@@ -440,14 +440,14 @@
 
 ### Overview
 
-- **Version**: 0.8.2 (target on completion)
+- **Version**: 0.8.2
 - **Goal**: Không cho `/vp-auto` âm thầm “code trước — tài liệu sau”; ép thứ tự validate → ghi nhận kế hoạch/docs gate → rồi mới implement.
 - **Phases**: 1
-- **Status**: 🔄 In progress (planned — execution via `/vp-auto --phase 15`)
+- **Status**: ✅ Complete (2026-03-31)
 
 ---
 
-### Phase 15: vp-auto doc-first gates (BUG-001) 🔄
+### Phase 15: vp-auto doc-first gates (BUG-001) ✅
 
 **Goal**: Đồng bộ `autonomous.md`, `vp-auto` skill, `TASK.md` template và `audit.md` để phát hiện / ngăn execute-first drift.
 
@@ -464,10 +464,10 @@
 
 **Verification**:
 
-- [ ] `workflows/autonomous.md` có subsection doc-first / pre-execution gate trước implementation
-- [ ] `skills/vp-auto/SKILL.md` khớp thứ tự
-- [ ] `templates/phase/TASK.md` có checklist
-- [ ] `workflows/audit.md` có heuristic BUG-001
+- [x] `workflows/autonomous.md` có subsection doc-first / pre-execution gate trước implementation
+- [x] `skills/vp-auto/SKILL.md` khớp thứ tự
+- [x] `templates/phase/TASK.md` có checklist
+- [x] `workflows/audit.md` có heuristic BUG-001
 
 ---
 
@@ -475,9 +475,9 @@
 
 | Phase | Status | Tasks | Completed | Progress |
 |-------|--------|-------|-----------|----------|
-| 15. vp-auto doc-first gates (BUG-001) | 🔄 In progress | 4 | 0 | 0% |
+| 15. vp-auto doc-first gates (BUG-001) | ✅ Complete | 4 | 4 | 100% |
 
-**Total**: 4 tasks, 0 completed, **0%** (planned)
+**Total**: 4 tasks, 4 completed, **100%** 🎉
 
 ---
 
@@ -499,5 +499,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-03-31 (M1.12 Phase 15 / BUG-001 via `/vp-evolve`)
+- Last Updated: 2026-03-31 (M1.12 complete — BUG-001 / Phase 15)
 - Estimated completion: M1.x iterative releases (see TRACKER)

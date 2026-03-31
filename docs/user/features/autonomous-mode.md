@@ -29,6 +29,10 @@ Mỗi task:
 /vp-auto --dry-run        # Preview, không execute
 ```
 
+### Doc-first gate (v0.8.2 / BUG-001)
+
+Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** và **`PHASE-STATE` → `in_progress`** trước khi chỉnh sửa deliverable. Xem `workflows/autonomous.md` — *Pre-execution documentation gate*.
+
 ### `/vp-auto` không có thêm arg — hiểu đúng
 
 - **Không** có nghĩa “mỗi task bắt buộc dừng một lần” trong tài liệu workflow; đó không phải cờ ẩn.

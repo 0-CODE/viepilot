@@ -1,7 +1,7 @@
 ---
 name: vp-auto
 description: "Autonomous execution loop với control points và recovery"
-version: 0.2.0
+version: 0.2.1
 ---
 
 <cursor_skill_adapter>
@@ -43,6 +43,11 @@ Pauses at control points:
 - Verification commands and expected output
 
 If required task details are missing, do not implement until task contract is refined.
+
+**Doc-first gate before implementation (BUG-001):**
+- After contract validation and **before** any deliverable code/doc edits: the task `.md` MUST hold a real written plan (`Paths` + `File-Level Plan` or bullet **Implementation Notes**—no bare `{{PLACEHOLDER}}` rows).
+- `PHASE-STATE.md` MUST show the task `in_progress` **before** the first implementation commit for that task.
+- **Do not** create `vp-p{phase}-t{task}` or edit shipping files until both are satisfied (read-only exploration and editing the task file to record the plan are allowed).
 
 **Preflight before each task implementation:**
 - Read `.viepilot/STACKS.md` (if exists)
@@ -122,7 +127,11 @@ Stack preflight:
 - Apply stack do/don't rules during implementation
 ```
 
-Create git tag: `vp-p{phase}-t{task}`
+#### Doc-first gate + checkpoint order
+1. Validate task contract (`workflows/autonomous.md`).
+2. Record plan in task file; set task `in_progress` in `PHASE-STATE.md`.
+3. Stack preflight.
+4. Create git tag `vp-p{phase}-t{task}` **only after** steps 1–3 pass.
 
 #### 3b. Execute Task
 - Implement according to objective

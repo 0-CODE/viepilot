@@ -1,10 +1,10 @@
 # ViePilot - Tracker
 
 ## Current State
-- **Milestone**: M1.12 - Doc-first autonomous execution (BUG-001) 🔄 IN PROGRESS
-- **Current Phase**: 15 - vp-auto doc-first gates
-- **Current Task**: 15.1 (next) — see `PHASE-STATE.md`
-- **Last Activity**: 2026-03-31 - `/vp-evolve`: planned M1.12 / Phase 15
+- **Milestone**: M1.12 - Doc-first autonomous execution (BUG-001) ✅ COMPLETE
+- **Current Phase**: All phases complete
+- **Current Task**: -
+- **Last Activity**: 2026-03-31 - M1.12 Complete v0.8.2 (BUG-001 / Phase 15)
 
 ## Progress Overview
 ```
@@ -53,19 +53,20 @@ Phase 14: ROOT docs + drift     [██████████] 100% ✅
 M1.11 Overall:                  [██████████] 100% 🎉
 
 M1.12 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Phase 15: Doc-first vp-auto    [░░░░░░░░░░]   0% 🔄
+Phase 15: Doc-first vp-auto    [██████████] 100% ✅
 ─────────────────────────────────────────────────
-M1.12 Overall:                  [░░░░░░░░░░]   0%
+M1.12 Overall:                  [██████████] 100% 🎉
 ```
 
 ## Version Info
 
 ### Current Version
 ```
-0.8.1
+0.8.2
 ```
 
 ### Released
+- **0.8.2** — M1.12 Doc-first execution gates (BUG-001): autonomous workflow gate, vp-auto skill, TASK template checklist, audit heuristic
 - **0.8.1** — M1.11 ROOT documentation alignment (ENH-011): README/CHANGELOG/audit tier copy + doc examples vs framework SemVer
 - **0.8.0** — M1.10 Execution Trace Reliability: detailed task decomposition contract + per-task state sync + audit anti-pattern detection
 - **0.7.0** — M1.9 Stack-Aware Audit: stack best-practice/code-quality checks + research fallback + vp-auto guardrails alignment
@@ -83,10 +84,11 @@ M1.12 Overall:                  [░░░░░░░░░░]   0%
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- 1 planned fix (M1.12 / BUG-001 — doc-first gates for /vp-auto)
+- 0 features
+- 0 fixes
 - 0 breaking changes
 
-Suggested next version: 0.8.2 (ship when Phase 15 complete)
+Suggested next version: 0.8.3
 ```
 
 ## Decision Log
@@ -97,13 +99,14 @@ Suggested next version: 0.8.2 (ship when Phase 15 complete)
 | 2026-03-30 | 4 phases for M1 | Balanced scope for foundation enhancement | Setup |
 | 2026-03-30 | CLI first | Better DX foundation before advanced features | Setup |
 | 2026-03-31 | M1.12 Phase 15 for BUG-001 | Harden doc-first ordering in autonomous flow to reduce execute-then-doc drift | Planning |
+| 2026-03-31 | Ship 0.8.2 after Phase 15 | Doc-first gate + audit heuristic merged; BUG-001 closed at workflow level | M1.12 |
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-001 | 🐛 | vp-auto executes before full docs/state gate, causing drift risk | high | triaged → Phase 15 |
+| BUG-001 | 🐛 | vp-auto executes before full docs/state gate, causing drift risk | high | ✅ done |
 | ENH-001 | 🔧 | vp-auto: Sync ROOT documents on milestone complete | high | new |
 | ENH-002 | 🔧 | vp-docs: Sync ROOT documents after doc generation | medium | new |
 | ENH-003 | 🔧 | vp-audit: Add drift detection (ROOT + docs/) | medium | updated |
@@ -125,10 +128,11 @@ _None currently_
 ```
 
 ## Next Action
-**Milestone M1.12 — execute Phase 15 (BUG-001)**
+**Milestone M1.12 Complete!** Next steps:
 
-- `/vp-auto --phase 15` — hoặc `/vp-auto` từ phase đầu tiên chưa xong (sẽ vào Phase 15)
-- Theo dõi: `.viepilot/phases/15-vp-auto-doc-first-gates/PHASE-STATE.md`
+- `/vp-audit --report` để xác nhận Tier 1f heuristic wording trong báo cáo
+- `/vp-docs` nếu cần refresh docs sinh tự động
+- `/vp-evolve` cho milestone tiếp theo
 
 ## Quick Actions
 

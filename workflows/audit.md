@@ -108,7 +108,22 @@ COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
 # ⚠️  Phase N may use batch-only state updates (missing incremental trace)
 ```
 
-### 1f. Report Tier 1 results
+### 1f. Execute-first / docs-later ordering risk (heuristic; BUG-001)
+
+> **Heuristic only** — can produce false positives. Confirm manually before accusing a run of violating doc-first policy.
+
+Signals that implementation may have started **before** task documentation / state gates:
+
+1. **Git vs task file** — Commit introduces substantive changes under paths implied by a task, but the task `.md` still has only template placeholders in **Paths** / **File-Level Plan** at that commit (use `git log --follow` + blame on task file).
+2. **Git vs PHASE-STATE** — First implementation commit for a task predates the first edit that marks the task `in_progress` in `PHASE-STATE.md` for that task row.
+3. **Empty plan** — Task file lacks **Pre-execution documentation gate** checklist (template after Phase 15) yet commits exist on tracked deliverable files assigned to that task ID in tracker/notes.
+
+Report example:
+```
+⚠️  Task X.Y: possible execute-first pattern — verify doc-first gate in workflows/autonomous.md was satisfied
+```
+
+### 1g. Report Tier 1 results
 ```
  TIER 1: ViePilot State Consistency
  ─────────────────────────────────────────────────
@@ -117,6 +132,7 @@ COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '^vp-p[0-9]+-complete$' | sort)
  HANDOFF.json ↔ TRACKER.md      {✅ Consistent | ⚠️ Mismatch | ℹ️ No HANDOFF.json}
  Git tags ↔ completed phases     {✅ All tagged | ⚠️ N phase(s) missing tags}
  Incremental state traceability   {✅ Per-task updates found | ⚠️ Batch-only update pattern suspected}
+ Execute-first / docs-later risk   {✅ None suspected | ⚠️ N heuristic flag(s) — manual confirm}
 ```
 </step>
 
@@ -519,6 +535,7 @@ After marking phase complete:
 <success_criteria>
 - [ ] Tier 1 state consistency checks work for any project using ViePilot
 - [ ] Tier 1 can flag delayed/batch-only state-update anti-patterns
+- [ ] Tier 1 includes heuristic guidance for execute-first / docs-later ordering risk (BUG-001)
 - [ ] Tier 2 documentation drift checks work for Java/Node/Python/any project
 - [ ] Tier 3 stack best-practice checks run for detected stacks
 - [ ] Tier 3 supports web research fallback when stack cache is missing/weak

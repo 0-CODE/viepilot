@@ -11,6 +11,17 @@
 
 {{TASK_OBJECTIVE}}
 
+## Pre-execution documentation gate (doc-first; BUG-001)
+
+**Complete before any implementation commits** (see `workflows/autonomous.md`). Read-only research and editing *this task file* to fill the plan are allowed.
+
+- [ ] Task contract fields below are filled with **real** paths and intent (no literal `{{PLACEHOLDER}}` rows left in Paths / File-Level Plan).
+- [ ] `## Paths` lists every file/dir to create or modify for this task.
+- [ ] `## File-Level Plan` **or** `## Implementation Notes` explains *what* and *why* per path.
+- [ ] `.viepilot/phases/{{PHASE_NUMBER}}-{{PHASE_SLUG}}/PHASE-STATE.md` marks this task `in_progress` before the first implementation commit.
+
+If any box is unchecked when coding starts → **blocked**; finish the plan first.
+
 ## Paths
 ```yaml
 files_to_create:

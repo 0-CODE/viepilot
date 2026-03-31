@@ -3,46 +3,52 @@
   "milestone_name": "Doc-first autonomous execution",
   "phase": 15,
   "phase_name": "vp-auto doc-first gates (BUG-001)",
-  "task": 1,
-  "task_name": "15.1 Doc-first gate sequence in autonomous workflow",
-  "status": "active",
-  "last_activity": "2026-03-31T14:00:00Z",
+  "task": 0,
+  "task_name": null,
+  "status": "complete",
+  "last_activity": "2026-03-31T16:00:00Z",
   "version": {
-    "current": "0.8.1",
-    "next": "0.8.2"
+    "current": "0.8.2",
+    "next": "0.8.3"
   },
   "progress": {
     "phases_total": 15,
-    "phases_completed": 14,
+    "phases_completed": 15,
     "tasks_total": 47,
-    "tasks_completed": 43,
-    "percentage": 91
+    "tasks_completed": 47,
+    "percentage": 100
   },
   "context": {
     "files_touched": [
-      ".viepilot/ROADMAP.md",
+      "workflows/autonomous.md",
+      "skills/vp-auto/SKILL.md",
+      "templates/phase/TASK.md",
+      "workflows/audit.md",
+      "CHANGELOG.md",
+      "README.md",
+      "docs/advanced-usage.md",
+      "docs/dev/cli-reference.md",
+      "docs/dev/deployment.md",
       ".viepilot/TRACKER.md",
       ".viepilot/HANDOFF.json",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/SPEC.md",
+      ".viepilot/ROADMAP.md",
+      ".viepilot/audit-report.md",
+      ".viepilot/requests/BUG-001.md",
       ".viepilot/phases/15-vp-auto-doc-first-gates/PHASE-STATE.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/tasks/15.1.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/tasks/15.2.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/tasks/15.3.md",
-      ".viepilot/phases/15-vp-auto-doc-first-gates/tasks/15.4.md",
-      "CHANGELOG.md",
-      ".viepilot/requests/BUG-001.md"
+      ".viepilot/phases/15-vp-auto-doc-first-gates/SPEC.md",
+      ".viepilot/phases/15-vp-auto-doc-first-gates/SUMMARY.md"
     ],
     "decisions": [
       {
         "date": "2026-03-31",
-        "decision": "Open M1.12 with Phase 15 to fix BUG-001 (doc-first gates before /vp-auto implementation)",
-        "rationale": "Reduce execute-then-document drift; align skill, workflow, template, and audit"
+        "decision": "Enforce doc-first gate in autonomous workflow before implementation (BUG-001)",
+        "rationale": "Reduce execute-then-document drift; align skill, template, and audit"
       }
     ],
     "blockers": [],
     "notes": [
-      "Resume: /vp-auto --phase 15 or continue from task 15.1",
-      "Request: .viepilot/requests/BUG-001.md"
+      "M1.12 complete — release 0.8.2",
+      "Tier 1 audit report row includes execute-first / docs-later heuristic"
     ]
   },
   "checkpoints": [
@@ -50,16 +56,17 @@
     {"tag": "v0.6.0", "description": "M1.8 complete"},
     {"tag": "vp-p12-complete", "description": "Phase 12 complete"},
     {"tag": "v0.7.0", "description": "M1.9 complete"},
-    {"tag": "vp-p13-t1-done", "description": "Detailed task contract enforcement added"},
-    {"tag": "vp-p13-t2-done", "description": "Per-task state sync rules added"},
-    {"tag": "vp-p13-t3-done", "description": "Task template upgraded for detailed implementation"},
-    {"tag": "vp-p13-t4-done", "description": "Audit anti-pattern detection guidance added"},
     {"tag": "vp-p13-complete", "description": "Phase 13 complete"},
     {"tag": "v0.8.0", "description": "M1.10 complete"},
-    {"tag": "vp-p14-t1-done", "description": "ENH-011 ROOT + changelog + audit copy"},
     {"tag": "vp-p14-complete", "description": "Phase 14 complete"},
-    {"tag": "v0.8.1", "description": "M1.11 complete"}
+    {"tag": "v0.8.1", "description": "M1.11 complete"},
+    {"tag": "vp-p15-t1-done", "description": "autonomous.md doc-first gate"},
+    {"tag": "vp-p15-t2-done", "description": "vp-auto skill doc-first"},
+    {"tag": "vp-p15-t3-done", "description": "TASK template gate"},
+    {"tag": "vp-p15-t4-done", "description": "audit Tier 1f heuristic"},
+    {"tag": "vp-p15-complete", "description": "Phase 15 complete"},
+    {"tag": "v0.8.2", "description": "M1.12 complete"}
   ],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-03-31T14:00:00Z"
+  "updated_at": "2026-03-31T16:00:00Z"
 }

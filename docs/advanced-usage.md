@@ -321,7 +321,7 @@ Block merges if version wasn't bumped:
   run: |
     VERSION=$(node bin/vp-tools.cjs version get --raw 2>/dev/null || echo "0.0.0")
     # Set EXPECTED to `.viepilot/TRACKER.md` "Current Version" when pinning a release
-    EXPECTED="0.8.1"
+    EXPECTED="0.8.2"
     if [ "$VERSION" != "$EXPECTED" ]; then
       echo "Version mismatch: got $VERSION, expected $EXPECTED"
       exit 1

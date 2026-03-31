@@ -11,10 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(none yet)_
 
-### Changed
-
-- Planning: **M1.12** / **Phase 15** (BUG-001) — doc-first execution gates for `/vp-auto` (`/vp-evolve`)
-
 ### Documentation
 
 - `README.md` — Project Scale LOC + M1.11 completion banner; Documentation row includes `api/`
@@ -23,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/dev/getting-started.md` — dev entry linking to canonical getting-started
 - `docs/README.md`, root `README.md` — index and `docs/` tree synced with `api/`
 - `README.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`, `docs/user/quick-start.md`, `docs/troubleshooting.md` — clarified `/vp-auto` with no extra args vs `--fast`, control points, and typical one-task-per-chat-turn behavior
+
+## [0.8.2] - 2026-03-31 — M1.12 Doc-first execution gates (BUG-001)
+
+### Fixed
+
+- `workflows/autonomous.md` — **Pre-execution documentation gate** before implementation; task start checkpoint only after contract + gate + stack preflight
+- `skills/vp-auto/SKILL.md` — doc-first rule + checkpoint order (skill metadata **0.2.1**)
+- `templates/phase/TASK.md` — Pre-execution gate checklist (BUG-001)
+- `workflows/audit.md` — Tier **1f** heuristic for execute-first / docs-later (report row in **1g**)
 
 ## [0.8.1] - 2026-03-31 — ROOT documentation alignment (ENH-011)
 
@@ -174,7 +179,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.8.2...HEAD
+[0.8.2]: https://github.com/0-CODE/viepilot/compare/v0.8.1...v0.8.2
 [0.8.1]: https://github.com/0-CODE/viepilot/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/0-CODE/viepilot/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/0-CODE/viepilot/compare/v0.6.0...v0.7.0

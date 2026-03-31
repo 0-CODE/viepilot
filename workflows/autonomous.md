@@ -103,6 +103,25 @@ If task file is missing required sections:
 - Record missing sections in PHASE-STATE.md
 - Stop and request task refinement (do not start coding)
 
+#### Pre-execution documentation gate (doc-first; BUG-001)
+
+**Hard stop** before **any implementation work** (creating/modifying product code, configs, or docs that ship with the product—anything you would commit as “the task deliverable”):
+
+Canonical order for every task: **Validate contract → Doc-first gate → Stack preflight → Start checkpoint → Execute → Verify → State updates.**
+
+1. **Written plan in the task file** — The active `.viepilot/phases/{phase}/tasks/{task}.md` MUST already contain real, task-specific content (not template placeholders) in:
+   - `## Paths` (or equivalent), listing concrete files/dirs, and
+   - `## File-Level Plan` **or** `## Implementation Notes` with an explicit bullet list of paths + what will change and why.
+   If only `{{PLACEHOLDER}}` tokens remain → **blocked**; refine the task file first.
+2. **PHASE-STATE visibility** — Set the current task row to `in_progress` in `PHASE-STATE.md` **before** the first implementation commit for this task (timestamp/note optional but recommended).
+
+**Allowed before this gate passes:** Read-only exploration, contract checks, and **editing the task `.md`** to record the plan (that edit is not “implementation” of the deliverable).
+
+If any check fails:
+- Mark task `blocked` in `PHASE-STATE.md` and list what is missing under **Notes**
+- **Do not** create `vp-p{phase}-t{task}`
+- **Do not** proceed to **Execute Task**
+
 #### Stack Preflight (token-efficient lookup)
 Before implementing, detect relevant stacks for the current task and load guidance in this order:
 1. `.viepilot/STACKS.md` (project stack map)
@@ -114,8 +133,12 @@ If stack cache is missing:
 - warn and optionally run quick research
 - then continue with explicit assumptions noted in task logs
 
-Create git tag: `vp-p{phase}-t{task}`
-Update PHASE-STATE.md: task → in_progress
+#### Task start checkpoint (after doc-first gate + preflight)
+
+Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
+
+Create git tag: `vp-p{phase}-t{task}`  
+Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
 #### Execute Task
 1. Read task objective and acceptance criteria
