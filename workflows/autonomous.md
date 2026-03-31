@@ -323,6 +323,11 @@ fi
 Update README.md — **generic updates (all projects)**:
 1. Any version number mentions: update to `$ACTUAL_VERSION`
 2. Any "last updated" or "as of" date references
+3. If project contains `README` metrics table and `scripts/sync-readme-metrics.cjs`, run:
+   ```bash
+   npm run readme:sync || true
+   ```
+   - If `cloc` is unavailable, script must log guidance and continue (non-blocking).
 
 **viepilot framework only** (skip if `skills/` directory does not exist):
 ```bash

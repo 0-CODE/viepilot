@@ -40,6 +40,50 @@ echo "  ViePilot: $VIEPILOT_DIR"
 echo "  Profile: $INSTALL_PROFILE"
 echo ""
 
+install_cloc_best_effort() {
+    if command -v cloc >/dev/null 2>&1; then
+        echo "  ✓ cloc detected"
+        return 0
+    fi
+
+    echo -e "${YELLOW}  cloc not found.${NC}"
+    echo "  README metric auto-sync can still run with fallback, but LOC refresh will be skipped."
+    echo "  Suggested install:"
+    echo "    - macOS: brew install cloc"
+    echo "    - Ubuntu/Debian: sudo apt-get install -y cloc"
+    echo "    - Windows: choco install cloc"
+
+    if [ "$AUTO_YES" = "1" ]; then
+        return 0
+    fi
+
+    read -p "  Attempt automatic cloc install now (best effort)? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        return 0
+    fi
+
+    if command -v brew >/dev/null 2>&1; then
+        brew install cloc || true
+    elif command -v apt-get >/dev/null 2>&1; then
+        sudo apt-get update && sudo apt-get install -y cloc || true
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y cloc || true
+    elif command -v yum >/dev/null 2>&1; then
+        sudo yum install -y cloc || true
+    elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -Sy --noconfirm cloc || true
+    else
+        echo -e "${YELLOW}  Could not detect supported package manager. Install cloc manually.${NC}"
+    fi
+
+    if command -v cloc >/dev/null 2>&1; then
+        echo "  ✓ cloc installed"
+    else
+        echo -e "${YELLOW}  cloc is still unavailable; continuing without blocking installation.${NC}"
+    fi
+}
+
 # Confirm installation
 if [ "$AUTO_YES" != "1" ]; then
     read -p "Continue with installation? (y/n) " -n 1 -r
@@ -101,6 +145,9 @@ cp "$SCRIPT_DIR/lib/cli-shared.cjs" "$VIEPILOT_DIR/lib/"
 chmod +x "$VIEPILOT_DIR/bin/vp-tools.cjs"
 chmod +x "$VIEPILOT_DIR/bin/viepilot.cjs"
 echo "    ✓ vp-tools.cjs + viepilot.cjs + lib/cli-shared.cjs"
+
+echo "  Checking optional dependency for README metric sync..."
+install_cloc_best_effort
 
 # Create symlink in PATH (optional)
 echo ""

@@ -1,6 +1,6 @@
 {
   "name": "viepilot",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "**Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**",
   "main": "index.js",
   "bin": {
@@ -14,6 +14,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
+    "readme:sync": "node scripts/sync-readme-metrics.cjs",
     "lint:cli": "node --check bin/vp-tools.cjs && node --check bin/viepilot.cjs",
     "verify:release": "npm run lint:cli && npm test && npm pack --dry-run",
     "prepublishOnly": "npm run verify:release",

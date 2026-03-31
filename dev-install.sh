@@ -31,6 +31,20 @@ echo "  Target: $CURSOR_SKILLS_DIR, $VIEPILOT_DIR"
 echo "  Profile: $INSTALL_PROFILE"
 echo ""
 
+check_cloc_dependency() {
+    if command -v cloc >/dev/null 2>&1; then
+        echo -e "  ${GREEN}✓${NC} cloc detected"
+        return 0
+    fi
+
+    echo -e "${YELLOW}  cloc not found.${NC}"
+    echo "  README LOC auto-sync will fallback safely, but metrics won't refresh automatically."
+    echo "  Install suggestion:"
+    echo "    - macOS: brew install cloc"
+    echo "    - Ubuntu/Debian: sudo apt-get install -y cloc"
+    echo "    - Windows: choco install cloc"
+}
+
 # Confirm
 if [ "$AUTO_YES" != "1" ]; then
     read -p "This will replace existing installation with dev files. Continue? (y/n) " -n 1 -r
@@ -95,6 +109,7 @@ echo -e "  ${GREEN}✓${NC} templates"
 echo -e "  ${GREEN}✓${NC} bin"
 echo -e "  ${GREEN}✓${NC} lib"
 echo -e "  ${GREEN}✓${NC} ui-components"
+check_cloc_dependency
 
 # Count installed
 SKILL_COUNT=$(ls -d "$CURSOR_SKILLS_DIR"/vp-*/ 2>/dev/null | wc -l | tr -d ' ')

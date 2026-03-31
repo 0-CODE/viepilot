@@ -41,6 +41,22 @@ npx viepilot install --target cursor-agent --yes
 
 ---
 
+### README LOC metric is not updating
+
+**Cause**: `cloc` is not installed, so `readme:sync` skips update by design.
+
+```bash
+# Install cloc (macOS)
+brew install cloc
+
+# Then rerun metric sync
+npm run readme:sync
+```
+
+On Linux/Windows, use your package manager (`apt`, `dnf`, `choco`) to install `cloc`.
+
+---
+
 ### `./install.sh: Permission denied`
 
 **Cause**: Script not executable.

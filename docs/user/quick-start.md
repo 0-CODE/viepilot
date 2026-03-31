@@ -48,6 +48,12 @@ vp-tools help
 # Hiển thị targets + ViePilot CLI Tools
 ```
 
+Optional (maintainers):
+```bash
+npm run readme:sync
+# refresh README Total LOC metrics via cloc
+```
+
 ---
 
 ## Step 2: Create a New Project

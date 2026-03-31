@@ -63,6 +63,7 @@ If required task details are missing, do not implement until task contract is re
 
 **Updates on milestone complete:**
 - `README.md` — version badge, skills/workflows counts, Skills Reference table, Workflows table, Project Structure, Completion Status
+- `README.md` metrics — run `npm run readme:sync` when script exists; if `cloc` missing, continue with logged guidance (non-blocking)
 
 **After:** Project built, or paused for user intervention.
 </objective>
