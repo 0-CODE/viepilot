@@ -32,7 +32,7 @@
     ],
     "testTimeout": 30000,
     "collectCoverageFrom": [
-      "bin/vp-tools.cjs"
+      "lib/cli-shared.cjs"
     ],
     "coverageThreshold": {
       "global": {

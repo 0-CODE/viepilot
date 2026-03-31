@@ -7,7 +7,7 @@
 [![Skills](https://img.shields.io/badge/skills-13-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-11-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-194%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-202%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Shield **0.8.2** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
@@ -27,7 +27,7 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 | Workflows | **11** |
 | Templates | **16** (Project: 11, Phase: 5) |
 | CLI Commands | **13** (`vp-tools`) |
-| Tests | **194** (3 files: unit + integration + AI compat) |
+| Tests | **202** (3 files: unit + integration + AI compat) |
 | ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -40,7 +40,7 @@ ViePilot is a skill framework that enables AI assistants to develop projects **a
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 1 | vp-tools.cjs (**13** commands) |
-| Test Files | 3 | Jest unit, integration, AI compatibility (194 tests) |
+| Test Files | 3 | Jest unit, integration, AI compatibility (202 tests) |
 
 ---
 
@@ -57,7 +57,7 @@ Tổng thể / Overall:  ██████████████████�
 | Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (13 commands) | ✅ Hoàn thiện | State management, progress, versioning, checkpoints |
-| Tests (194) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility |
+| Tests (202) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
@@ -341,12 +341,15 @@ viepilot/
 │       ├── VERIFICATION.md
 │       └── SUMMARY.md
 │
-├── bin/                           # CLI tools
-│   └── vp-tools.cjs               # 13 commands
+├── lib/                           # Shared CLI logic (coverage target for Jest)
+│   └── cli-shared.cjs             # Validators, project root, Levenshtein helpers
 │
-├── tests/                         # Test suite (194 tests)
+├── bin/                           # CLI tools
+│   └── vp-tools.cjs               # 13 commands (requires ../lib/cli-shared.cjs)
+│
+├── tests/                         # Test suite (202 tests)
 │   ├── unit/                      # Unit tests
-│   │   ├── validators.test.js     # 30 CLI tests
+│   │   ├── validators.test.js     # CLI subprocess + in-process coverage tests
 │   │   └── ai-provider-compat.test.js  # 142 AI compat tests
 │   └── integration/               # Integration tests
 │       └── workflow.test.js       # 22 E2E tests

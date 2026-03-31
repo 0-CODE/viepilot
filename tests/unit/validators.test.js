@@ -11,6 +11,13 @@ const os = require('os');
 const CLI = path.join(__dirname, '../../bin/vp-tools.cjs');
 const PROJECT_ROOT = path.join(__dirname, '../..');
 
+// In-process coverage target: lib/cli-shared.cjs (CLI subprocess runs are not instrumented by Jest).
+const {
+  validators: inProcValidators,
+  levenshteinDistance,
+  findProjectRoot: inProcFindRoot,
+} = require('../../lib/cli-shared.cjs');
+
 function run(args, cwd = PROJECT_ROOT) {
   const result = spawnSync('node', [CLI, ...args], {
     cwd,
@@ -329,5 +336,69 @@ describe('clean --dry-run', () => {
     const { stdout, code } = run(['clean', '--dry-run']);
     expect(code).toBe(0);
     expect(stdout).toContain('Dry run');
+  });
+});
+
+// ============================================================================
+// In-process module paths (Jest coverage for bin/vp-tools.cjs)
+// ============================================================================
+
+describe('vp-tools validators (in-process)', () => {
+  test('isPositiveInteger', () => {
+    expect(inProcValidators.isPositiveInteger('3', 'n').valid).toBe(true);
+    expect(inProcValidators.isPositiveInteger('0', 'n').valid).toBe(false);
+    expect(inProcValidators.isPositiveInteger('x', 'n').valid).toBe(false);
+  });
+
+  test('isValidStatus', () => {
+    expect(inProcValidators.isValidStatus('done').valid).toBe(true);
+    expect(inProcValidators.isValidStatus('invalid').valid).toBe(false);
+  });
+
+  test('isValidTimestampFormat', () => {
+    expect(inProcValidators.isValidTimestampFormat('iso').valid).toBe(true);
+    expect(inProcValidators.isValidTimestampFormat('bad').valid).toBe(false);
+  });
+
+  test('isValidBumpType', () => {
+    expect(inProcValidators.isValidBumpType('patch').valid).toBe(true);
+    expect(inProcValidators.isValidBumpType('major').valid).toBe(true);
+    expect(inProcValidators.isValidBumpType('nope').valid).toBe(false);
+  });
+
+  test('isNonEmptyString', () => {
+    expect(inProcValidators.isNonEmptyString(' x ', 'm').valid).toBe(true);
+    expect(inProcValidators.isNonEmptyString('   ', 'm').valid).toBe(false);
+    expect(inProcValidators.isNonEmptyString('', 'm').valid).toBe(false);
+  });
+
+  test('requireProjectRoot when cwd is project', () => {
+    const prev = process.cwd();
+    try {
+      process.chdir(PROJECT_ROOT);
+      const r = inProcValidators.requireProjectRoot();
+      expect(r.valid).toBe(true);
+      expect(path.resolve(r.value)).toBe(path.resolve(PROJECT_ROOT));
+      expect(path.resolve(inProcFindRoot())).toBe(path.resolve(PROJECT_ROOT));
+    } finally {
+      process.chdir(prev);
+    }
+  });
+
+  test('requireProjectRoot fails outside project tree', () => {
+    const prev = process.cwd();
+    try {
+      process.chdir(os.tmpdir());
+      const r = inProcValidators.requireProjectRoot();
+      expect(r.valid).toBe(false);
+    } finally {
+      process.chdir(prev);
+    }
+  });
+
+  test('levenshteinDistance', () => {
+    expect(levenshteinDistance('version', 'versoin')).toBeLessThanOrEqual(2);
+    expect(levenshteinDistance('', 'a')).toBe(1);
+    expect(levenshteinDistance('a', '')).toBe(1);
   });
 });

@@ -72,10 +72,12 @@ mkdir -p "$VIEPILOT_DIR"
 ln -s "$SCRIPT_DIR/workflows" "$VIEPILOT_DIR/workflows"
 ln -s "$SCRIPT_DIR/templates" "$VIEPILOT_DIR/templates"
 ln -s "$SCRIPT_DIR/bin" "$VIEPILOT_DIR/bin"
+ln -s "$SCRIPT_DIR/lib" "$VIEPILOT_DIR/lib"
 
 echo -e "  ${GREEN}✓${NC} workflows"
 echo -e "  ${GREEN}✓${NC} templates"
 echo -e "  ${GREEN}✓${NC} bin"
+echo -e "  ${GREEN}✓${NC} lib"
 
 # Count installed
 SKILL_COUNT=$(ls -d "$CURSOR_SKILLS_DIR"/vp-*/ 2>/dev/null | wc -l | tr -d ' ')

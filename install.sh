@@ -54,6 +54,7 @@ mkdir -p "$VIEPILOT_DIR/workflows"
 mkdir -p "$VIEPILOT_DIR/templates/project"
 mkdir -p "$VIEPILOT_DIR/templates/phase"
 mkdir -p "$VIEPILOT_DIR/bin"
+mkdir -p "$VIEPILOT_DIR/lib"
 
 # Install skills
 echo "  Installing skills..."
@@ -79,8 +80,9 @@ echo "    ✓ templates"
 # Install CLI tools
 echo "  Installing CLI tools..."
 cp "$SCRIPT_DIR/bin/vp-tools.cjs" "$VIEPILOT_DIR/bin/"
+cp "$SCRIPT_DIR/lib/cli-shared.cjs" "$VIEPILOT_DIR/lib/"
 chmod +x "$VIEPILOT_DIR/bin/vp-tools.cjs"
-echo "    ✓ vp-tools.cjs"
+echo "    ✓ vp-tools.cjs + lib/cli-shared.cjs"
 
 # Create symlink in PATH (optional)
 echo ""
