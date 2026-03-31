@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-0.10.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-14-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-202%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **0.10.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.0.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
+**Versioning:** Shield **1.2.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.2.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -48,14 +48,14 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 2 | vp-tools.cjs (**13** commands) + viepilot.cjs (guided installer) |
-| Test Files | 3 | Jest unit, integration, AI compatibility (202 tests) |
+| Test Files | 4 | Jest unit + integration + AI compatibility + README metrics tests (231 tests) |
 
 ---
 
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  100% 🎉 M1.14 roadmap phases ✅ (v0.10.0)
+Tổng thể / Overall:  ████████████████████  100% 🎉 M1.18 roadmap phases ✅ (v1.2.0)
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
@@ -386,9 +386,9 @@ viepilot/
 │   └── cli-shared.cjs             # Validators, project root, Levenshtein helpers
 │
 ├── bin/                           # CLI tools
-│   └── vp-tools.cjs               # 13 commands (requires ../lib/cli-shared.cjs)
+│   └── vp-tools.cjs               # 14 commands (requires ../lib/cli-shared.cjs)
 │
-├── tests/                         # Test suite (202 tests)
+├── tests/                         # Test suite (231 tests)
 │   ├── unit/                      # Unit tests
 │   │   ├── validators.test.js     # CLI subprocess + in-process coverage tests
 │   │   └── ai-provider-compat.test.js  # 142 AI compat tests
@@ -488,7 +488,7 @@ your-project/
 | [Getting Started](docs/getting-started.md) | Hướng dẫn bắt đầu / Quick start guide |
 | [Quick Start (User)](docs/user/quick-start.md) | 5-minute guide |
 | [Skills Reference](docs/skills-reference.md) | Chi tiết từng skill / Detailed skill docs |
-| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 13 commands |
+| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 14 commands |
 | [Advanced Usage](docs/advanced-usage.md) | Power user features |
 | [Troubleshooting](docs/troubleshooting.md) | Common issues & fixes |
 | [Architecture](docs/dev/architecture.md) | System design |

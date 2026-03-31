@@ -53,7 +53,7 @@
 |----------|-------------|
 | [Getting Started](getting-started.md) | Installation and first steps |
 | [Getting Started (dev entry)](dev/getting-started.md) | Short link into dev guide |
-| [CLI Reference](dev/cli-reference.md) | All 13 `vp-tools` commands with examples |
+| [CLI Reference](dev/cli-reference.md) | All 14 `vp-tools` commands with examples |
 | [Architecture](dev/architecture.md) | System layers, data flow, design decisions |
 | [UI Components Library](dev/ui-components-library.md) | Curation taxonomy, storage contract, reuse flow |
 | [Contributing](dev/contributing.md) | How to add skills, workflows, CLI commands |
@@ -66,7 +66,7 @@
 
 | Document | Description |
 |----------|-------------|
-| [Skills Reference](skills-reference.md) | All 13 skills with flags and examples |
+| [Skills Reference](skills-reference.md) | All 14 skills with flags and examples |
 | [Advanced Usage](advanced-usage.md) | Power user features and patterns |
 
 ---
@@ -122,4 +122,4 @@
 
 ---
 
-*Last updated: 2026-03-31 — ViePilot framework v0.10.0 (see `.viepilot/TRACKER.md`); guided NPX installer flow added.*
+*Last updated: 2026-03-31 — ViePilot framework v1.2.0 (see `.viepilot/TRACKER.md`); project-scoped checkpoint tags delivered.*
