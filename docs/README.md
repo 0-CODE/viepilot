@@ -29,6 +29,7 @@
 | Feature | Document |
 |---------|----------|
 | Autonomous Mode | [autonomous-mode.md](user/features/autonomous-mode.md) (flags, `--fast`, lượt chat) |
+| Brainstorm & product horizon | [brainstorm.md](user/features/brainstorm.md) (MVP / Post-MVP tags, crystallize handoff) |
 | UI Direction Mode | [ui-direction.md](user/features/ui-direction.md) |
 | Checkpoint Recovery | [checkpoint-recovery.md](user/features/checkpoint-recovery.md) |
 | Debug Mode | [debug-mode.md](user/features/debug-mode.md) |

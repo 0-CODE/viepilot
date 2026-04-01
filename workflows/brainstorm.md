@@ -41,6 +41,7 @@ Nếu user chọn tiếp tục:
 2. Tóm tắt nội dung đã thảo luận
 3. Xác định các open questions / action items còn lại
 4. Tiếp tục từ điểm dừng
+5. Nếu session đã có section **`## Product horizon`**: tóm tắt nhanh MVP / Post-MVP / Future hiện có; mọi cập nhật sau đó phải **merge** vào section đó (không xóa im lặng, không làm mất tier tags) trừ khi user chủ động yêu cầu thu hẹp/mở rộng scope.
 </step>
 
 <step name="brainstorm_mode">
@@ -73,6 +74,13 @@ Gợi ý các topics để brainstorm:
    - Deployment strategy
    - Monitoring
    - Scaling
+
+6. **Product horizon (MVP vs Post-MVP vs Future)** — **bắt buộc duy trì trong session file** khi user thảo luận bất kỳ tính năng / milestone nào:
+   - **Mục tiêu**: tách rõ phạm vi ship đầu tiên với tầm nhìn sau MVP để `/vp-crystallize` không “mất” ý tưởng dài hạn.
+   - **Quy ước tag** (đặt ở cuối dòng bullet): `(MVP)` | `(Post-MVP)` | `(Future)`.
+   - **Non-goals for MVP**: những gì cố tình *không* làm ở bản đầu (tránh hiểu nhầm là quên).
+   - **Deferred capabilities**: tính năng đã thống nhất nhưng **lùi sau MVP** — ghi rõ để crystallize map vào roadmap horizon.
+   - Nếu sản phẩm **single-release** (không có post-MVP): ghi một dòng explicit trong session, ví dụ: `**Scope**: single-release only — no deferred epics.`
 
 ### Interactive Q&A
 Cho mỗi topic:
@@ -148,6 +156,7 @@ Tham chiếu user: `docs/user/features/ui-direction.md`.
 - Tóm tắt decisions
 - List action items
 - Note open questions
+- Nếu topic thêm/sửa capability: cập nhật **`## Product horizon`** trong bản nháp session (hoặc nhắc user lưu `/save`) với tag tier phù hợp
 </step>
 
 <step name="save_session">
@@ -162,6 +171,30 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - **Date**: {full date}
 - **Participants**: User, Claude
 - **Status**: In Progress | Completed
+
+## Product horizon
+
+> Single source for **MVP / Post-MVP / Future** scope. Bắt buộc giữ section này khi tiếp tục session; crystallize đọc để không bỏ sót post-MVP.
+
+### MVP (ship first)
+- Capability / theme — `(MVP)`
+- ...
+
+### Post-MVP (after first release)
+- Capability / theme — `(Post-MVP)`
+- ...
+
+### Future / exploratory
+- Idea — `(Future)`
+- ...
+
+### Non-goals for MVP
+- ...
+
+### Deferred capabilities (from MVP)
+- ...
+
+**Scope note (optional):** Nếu không có post-MVP: `Single-release product — no separate horizon epics.`
 
 ## Topics Discussed
 
@@ -245,7 +278,7 @@ Next step: /vp-crystallize
 This will transform your brainstorm into:
 - Project structure
 - Architecture documents
-- Development roadmap
+- Development roadmap (MVP phases + **Post-MVP / horizon** when documented above)
 ```
 </step>
 
@@ -264,6 +297,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 
 <success_criteria>
 - [ ] Session file created với đầy đủ sections
+- [ ] `## Product horizon` present với MVP / Post-MVP / Future (hoặc explicit single-release statement)
 - [ ] Decisions có rationale
 - [ ] Open questions tracked
 - [ ] Action items captured
