@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- None.
+- **M1.29 / Phase 35 (ENH-022)** — Crystallize ghi diagram kiến trúc ra `.viepilot/architecture/<diagram>.mermaid`; cập nhật `crystallize.md`, template `ARCHITECTURE.md`, `vp-crystallize`, `vp-audit` + Jest contracts; mục tiêu release **1.9.5**.
 
 ### Added
 
