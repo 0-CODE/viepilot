@@ -68,6 +68,28 @@ chmod +x install.sh
 
 ---
 
+### `npx viepilot install` vs dev clone — upgrade / cài lại có “conflict” không?
+
+**Không có** giao diện merge từng file. Hành vi phụ thuộc **script nào** chạy:
+
+| Cách cài | Script | Trước khi ghi file mới |
+|----------|--------|-------------------------|
+| **`npx viepilot install`** (mọi `--target`) | **`install.sh`** trong package npm | **Không** xóa `~/.cursor/skills/vp-*` hay `~/.cursor/viepilot`; dùng **`cp -r`** đè. File cùng tên bị ghi đè; file **chỉ còn ở bản cũ** có thể **vẫn nằm lại** (orphan). |
+| **`./dev-install.sh`** từ clone repo | `dev-install.sh` | **Có** xóa sạch `vp-*` skills + **`rm -rf ~/.cursor/viepilot`** rồi cài lại → gần như cài mới hoàn toàn. |
+
+`npx viepilot install` được `bin/viepilot.cjs` gọi bằng `bash install.sh` với `VIEPILOT_AUTO_YES=1` và `VIEPILOT_INSTALL_PROFILE` — **không** gọi `dev-install.sh`.
+
+**Muốn cài sạch sau bản cũ** (tránh sót file):
+
+```bash
+npx viepilot uninstall --yes
+npx viepilot install --target cursor-agent --yes
+```
+
+(Chọn lại `--target` đúng profile bạn dùng.)
+
+---
+
 ### `vp-tools: command not found`
 
 **Cause**: ViePilot bin not in PATH.

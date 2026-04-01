@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+
+- **ENH-016 (partial)** — `docs/troubleshooting.md`: clarify that **`npx viepilot install` always runs `install.sh`** (no pre-clean); contrast with `dev-install.sh`; clean reinstall via `uninstall` + `install`.
+
 ## [1.6.1] - 2026-04-01
 
 ### Enhanced
