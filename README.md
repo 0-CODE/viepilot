@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-1.9.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.9.2-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-297%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **1.9.1** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.1**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
+**Versioning:** Shield **1.9.2** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.2**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -34,7 +34,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
 | Tests | **297** (14 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + viepilot-info/update/install) |
-| ViePilot phases (local `.viepilot`) | **32** phase cycles — **M1.28** (**v1.9.1** FEAT-010); **M1.27** (**v1.9.0** FEAT-009); xem `CHANGELOG.md` |
+| ViePilot phases (local `.viepilot`) | **32** phase cycles — **M1.28** FEAT-010 (**v1.9.1**); patch **v1.9.2** (ENH-019~021); **M1.27** (**v1.9.0** FEAT-009); xem `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
 > Metric `Total LOC` có thể được refresh tự động bằng `npm run readme:sync` (dùng `cloc`; nếu thiếu `cloc` script sẽ fallback an toàn).
@@ -55,7 +55,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  ~98% ✅ Latest **v1.9.1** (M1.28 FEAT-010 — `/research-ui`); prior **v1.9.0** FEAT-009; **v1.8.1** BUG-004
+Tổng thể / Overall:  ████████████████████  ~98% ✅ Latest **v1.9.2** (ENH-019~021: `/research-ui` stress + **implementation routing guard**); **v1.9.1** FEAT-010; **v1.9.0** FEAT-009
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
