@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- **ENH-017 (partial)** — `docs/troubleshooting.md`: **Windows / multi-OS** — `install.sh` is Bash; `npx viepilot install` needs `bash` on PATH (Git Bash / WSL).
 - **ENH-016 (partial)** — `docs/troubleshooting.md`: clarify that **`npx viepilot install` always runs `install.sh`** (no pre-clean); contrast with `dev-install.sh`; clean reinstall via `uninstall` + `install`.
 
 ## [1.6.1] - 2026-04-01

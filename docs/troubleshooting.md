@@ -90,6 +90,20 @@ npx viepilot install --target cursor-agent --yes
 
 ---
 
+### Windows / đa OS: `install.sh` và `npx viepilot install` chạy thế nào?
+
+`install.sh` và `dev-install.sh` là **script Bash** (POSIX-style: `cp`, `mkdir`, `ln`, đường dẫn `$HOME/.cursor/...`).
+
+| OS | Kỳ vọng |
+|----|---------|
+| **macOS**, **Linux** | Chạy trực tiếp: `./install.sh` hoặc `bash install.sh`. `npx viepilot install` gọi `bash` → thường ổn nếu đã cài Node + Bash (mặc định có). |
+| **Windows (native CMD/PowerShell)** | **Không** chạy `.sh` trực tiếp. Dùng **Git Bash** hoặc **WSL**, hoặc chạy `npx viepilot install` trong môi trường có **`bash` trên PATH** (thường kèm Git for Windows). |
+| **PATH `/usr/local/bin`** | Bước tùy chọn thêm `vp-tools` / `viepilot` vào PATH là **kiểu Unix**; trên Windows có thể bỏ qua và gọi `node path/to/vp-tools.cjs` hoặc cấu hình PATH thủ công. |
+
+Nếu gặp lỗi kiểu **`bash: command not found`** khi chạy NPX: cài [Git for Windows](https://git-scm.com/download/win) (hoặc WSL) và mở terminal có `bash`, rồi chạy lại `npx viepilot install …`.
+
+---
+
 ### `vp-tools: command not found`
 
 **Cause**: ViePilot bin not in PATH.
