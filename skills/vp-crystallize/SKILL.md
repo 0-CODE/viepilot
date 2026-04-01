@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.4.0
+version: 0.5.0
 ---
 
 <cursor_skill_adapter>
@@ -47,6 +47,9 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 - `LICENSE`
 - Updated `README.md`
 
+**ViePilot profile (FEAT-009):**
+- Đọc `.viepilot/META.md` → file `~/.viepilot/profiles/<slug>.md` (contract: `docs/dev/global-profiles.md`); pre-fill Step 0; merge vào **ARCHITECTURE** (`## ViePilot organization context`), **PROJECT-CONTEXT** (`## ViePilot active profile`), **AI-GUIDE** quick context.
+
 **Stack intelligence (global cache):**
 - `~/.viepilot/stacks/{stack}/SUMMARY.md`
 - `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md`
@@ -68,7 +71,8 @@ Execute workflow from `@$HOME/.cursor/viepilot/workflows/crystallize.md`
 Key steps:
 
 ### Step 0: Collect Project Metadata
-Ask user for:
+- **FEAT-009:** Load `.viepilot/META.md` + global profile file first (`workflows/crystallize.md`); set `profile_resolved` or `none`; pre-fill org/website khi có profile.
+Ask user for (confirm proposals từ profile nếu có):
 - Project name, description
 - Organization name, website
 - Package Base ID (e.g., com.company.project)
@@ -110,6 +114,7 @@ Ask user for:
 - Quick lookup table
 - Context loading strategy
 - File relationships
+- **FEAT-009:** Quick context cho `profile_id` + path profile khi đã resolve
 
 ### Step 3: Generate PROJECT-META.md
 - Project info
@@ -117,9 +122,11 @@ Ask user for:
 - Package structure
 - Developer info
 - File headers template
+- **FEAT-009:** Align Organization với profile đã confirm (public only)
 
 ### Step 4: Generate ARCHITECTURE.md
 - System overview
+- **FEAT-009:** Section `## ViePilot organization context` khi có profile (hoặc dòng none)
 - Services definitions
 - Data flow
 - Technology decisions
@@ -132,6 +139,7 @@ Ask user for:
   - `N/A` => keep section heading + one-line rationale
 
 ### Step 5: Generate PROJECT-CONTEXT.md
+- **FEAT-009:** Block `## ViePilot active profile (FEAT-009)` khi có binding
 - Domain knowledge
 - Business rules
 - Conventions
@@ -192,4 +200,5 @@ Ask user for:
 - [ ] Project files created
 - [ ] Git committed
 - [ ] ARCHITECTURE diagram matrix is present and consistent (`required|optional|N/A`)
+- [ ] **FEAT-009:** Nếu có profile bound — ARCHITECTURE + PROJECT-CONTEXT ghi nguồn profile; nếu không — ghi rõ none / not configured
 </success_criteria>

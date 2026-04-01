@@ -52,6 +52,9 @@ Complete reference for all ViePilot skills.
 - `ROADMAP.md`: luôn có block **Post-MVP / Product horizon** (hoặc ghi rõ single-release); `PROJECT-CONTEXT.md`: khối **`<product_vision>`** từ `templates/project/PROJECT-CONTEXT.md`.
 - Hướng dẫn user tổng quan: [product-horizon.md](user/features/product-horizon.md). Thứ tự load cho AI: `templates/project/AI-GUIDE.md` (bản crystallize copy vào `.viepilot/AI-GUIDE.md`).
 
+### ViePilot global profile (FEAT-009)
+- Step 0: đọc `.viepilot/META.md` → `~/.viepilot/profiles/<slug>.md` (contract: `docs/dev/global-profiles.md`); pre-fill metadata; merge vào **ARCHITECTURE** (`## ViePilot organization context`) và **PROJECT-CONTEXT** (`## ViePilot active profile`).
+
 ### Metadata Collection
 - Project name, description
 - Organization name, website
@@ -229,6 +232,9 @@ AI pauses for user input when:
 ## /vp-docs
 
 **Purpose**: Generate documentation
+
+### ViePilot global profile (FEAT-009)
+- Sau resolve git/repo context: nếu có binding `.viepilot/META.md`, dùng profile global cho attribution/tone trong prose (không fail khi thiếu) — `workflows/documentation.md` §0A.
 
 ### Flags
 | Flag | Description |

@@ -1,7 +1,7 @@
 ---
 name: vp-docs
 description: "Generate comprehensive documentation cho dự án"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -54,6 +54,7 @@ CHANGELOG.md (updated)
 - GitHub owner/repo from `git remote get-url origin`
 - Skills count from `ls skills/*/SKILL.md | wc -l`
 - Workflows count from `ls workflows/*.md | wc -l`
+- **FEAT-009:** Optional ViePilot global profile từ `.viepilot/META.md` + `~/.viepilot/profiles/` cho attribution/tone (`workflows/documentation.md` §0A)
 </objective>
 
 <execution_context>
@@ -88,6 +89,10 @@ ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
 > Use `$GITHUB_OWNER/$GITHUB_REPO` in all generated files.
 > Use `$ACTUAL_SKILLS` and `$ACTUAL_WORKFLOWS` for counts.
 > **Never write** `your-org`, `YOUR_USERNAME`, `YOUR_ORG` into generated files.
+
+### Step 0A: ViePilot active profile (FEAT-009)
+
+Sau Step 0: resolve `.viepilot/META.md` → file profile global (cùng quy tắc `workflows/crystallize.md`). Giữ working notes (org, website, audience, branding) cho prose docs; **không** fail nếu thiếu. Chi tiết: `workflows/documentation.md` §0A.
 
 ### Step 1: Ask Documentation Scope
 ```
@@ -262,4 +267,5 @@ View at: docs/README.md
 - [ ] skills-reference.md has sections for all skills in skills/ directory
 - [ ] Root README.md Documentation table updated
 - [ ] Git committed
+- [ ] **FEAT-009:** Nếu có profile — dùng cho attribution khi phù hợp; nếu không — bỏ qua im lặng (không placeholder sai)
 </success_criteria>

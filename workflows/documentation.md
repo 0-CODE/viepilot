@@ -58,6 +58,14 @@ Use `$GITHUB_OWNER`, `$GITHUB_REPO` throughout all generated files.
 For viepilot framework repos, also use `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS`.
 **Never hardcode** `your-org`, `YOUR_USERNAME`, `YOUR_ORG`, or static skill/workflow counts.
 
+### 0A. ViePilot active profile (FEAT-009)
+
+Normative: **`docs/dev/global-profiles.md`**. Cùng **resolution** như `workflows/crystallize.md` Step 0 (đọc `.viepilot/META.md` → `viepilot_profile_path` hoặc `$HOME/.viepilot/profiles/<viepilot_profile_id>.md`).
+
+1. Nếu đọc được file profile, giữ **working notes** (display_name, org_tag, website, audience, branding) để dùng khi sinh README / contributing / bất kỳ prose **attribution** — chỉ nội dung **công khai**, không secrets.
+2. Nếu không có binding hoặc file thiếu → tiếp tục; **không** fail `/vp-docs`.
+3. Khi có profile, nhắc trong output (vd. footer README hoặc `docs/dev/architecture.md`) một dòng trích **profile_id** nếu phù hợp policy dự án.
+
 Post-generation validation (run after all files generated):
 ```bash
 PLACEHOLDERS=$(grep -r "your-org\|YOUR_USERNAME\|YOUR_ORG\|your-username" docs/ --include="*.md" -l 2>/dev/null)

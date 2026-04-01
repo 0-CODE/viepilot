@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`workflows/brainstorm.md`** + **`skills/vp-brainstorm/SKILL.md` (0.5.0)** — mandatory **Project meta intake** step after scope lock and before session complete when `.viepilot/META.md` lacks `viepilot_profile_id` (FEAT-009; normative `docs/dev/global-profiles.md`).
 - **`docs/skills-reference.md`** — `/vp-brainstorm` `/end` + output notes for FEAT-009 meta intake.
 - **`lib/viepilot-install.cjs`** — on install: `mkdir` `~/.viepilot/profiles` + seed `~/.viepilot/profile-map.md` if missing (`write_file_if_missing` step); **`docs/user/quick-start.md`** + **`docs/dev/global-profiles.md`** (installer pointer); Jest coverage in `viepilot-install.test.js`.
+- **`workflows/crystallize.md`**, **`workflows/documentation.md`**, **`skills/vp-crystallize/SKILL.md` (0.5.0)**, **`skills/vp-docs/SKILL.md` (0.2.0)**, **`docs/skills-reference.md`** — consume active ViePilot profile from `.viepilot/META.md` + global profile file for crystallize pre-fill and docs attribution (FEAT-009).
 
 ## [1.8.1] - 2026-04-01
 
