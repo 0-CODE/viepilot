@@ -30,6 +30,12 @@ Mỗi task:
 /vp-auto --dry-run        # Preview, không execute
 ```
 
+## ViePilot Scope Policy (BUG-004)
+
+- Mặc định, `/vp-auto` chỉ route/gợi ý các skill thuộc namespace `vp-*`.
+- Nếu môi trường runtime có skills ngoài framework, workflow sẽ bỏ qua và ưu tiên skill ViePilot tương đương.
+- Chỉ khi bạn ghi rõ yêu cầu mở rộng (explicit opt-in), agent mới được phép dùng external skills.
+
 ### Doc-first gate (v0.8.2 / BUG-001)
 
 Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** và **`PHASE-STATE` → `in_progress`** trước khi chỉnh sửa deliverable. Xem `workflows/autonomous.md` — *Pre-execution documentation gate*.

@@ -75,3 +75,4 @@ Active debug sessions:
 - Mô tả problem cụ thể: "X happens when Y" thay vì "something is broken"
 - Một session per issue — không mix nhiều bugs
 - Dùng `/vp-debug continue` sau context reset để không mất progress
+- Theo policy BUG-004, `/vp-debug` mặc định chỉ dùng hệ skill `vp-*`; external skills chỉ dùng khi bạn explicit opt-in.

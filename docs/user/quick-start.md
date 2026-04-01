@@ -182,6 +182,14 @@ Hiển thị:
 
 ---
 
+## Skill Scope (BUG-004)
+
+- Theo mặc định, ViePilot chỉ dùng hệ lệnh/skill `vp-*` trong toàn bộ workflow.
+- Nếu bạn thấy đề cập skill ngoài framework, hãy coi đó là out-of-scope trừ khi bạn đã explicit opt-in.
+- Ví dụ opt-in hợp lệ: "Cho phép dùng thêm external skills ngoài ViePilot trong bước research này."
+
+---
+
 ## Next Steps
 
 - [Skills Reference](../skills-reference.md) — Chi tiết tất cả commands

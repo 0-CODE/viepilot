@@ -8,6 +8,7 @@ Complete reference for all ViePilot skills.
 - **Out-of-scope by default**: skills outside the ViePilot namespace are ignored, even if present in the runtime environment.
 - **Explicit opt-in**: external skills are considered only when the user explicitly asks to expand beyond ViePilot scope.
 - **Routing fallback**: if an external skill is mentioned accidentally, prefer the closest built-in `vp-*` command instead.
+- **Opt-in example**: "Trong bước này, cho phép dùng thêm external skills ngoài ViePilot để tham khảo."
 
 ---
 
