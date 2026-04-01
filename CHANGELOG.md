@@ -9,20 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.24 / Phase 28 (ENH-017)** — **Node-native installer**: `npx viepilot install` via `lib/viepilot-install.cjs` (no `bash install.sh` for primary path); target **1.7.0** on complete.
 - **M1.25 / Phase 29 (ENH-018)** — **Crystallize + ARCHITECTURE**: Mermaid diagrams **complexity-gated** from brainstorm; six diagram kinds with required/optional/N/A; vp-audit / vp-auto / vp-debug alignment; target **1.8.0** on complete.
+
+## [1.7.0] - 2026-04-01
 
 ### Added
 
-- **M1.24 / Phase 28 — task 28.1** — `lib/viepilot-install.cjs`: `buildInstallPlan` / `formatPlanLines` (mirror `install.sh` steps as structured plan); `tests/unit/viepilot-install.test.js`.
-- **M1.24 / Phase 28 — task 28.2** — `applyInstallPlan` (mkdir, copy, symlink skills, chmod, cloc guidance, path_shim skip Windows); `buildInstallPlan(..., { overrideHomedir })` for tests.
-- **M1.24 / Phase 28 — task 28.3** — `npx viepilot install` runs **Node-native** installer (`buildInstallPlan` + `applyInstallPlan`); **no `bash install.sh`**. Uninstall paths use `os.homedir()` fallback when `HOME` unset.
-- **M1.24 / Phase 28 — task 28.4** — `install.sh` is a **thin bash wrapper** (cloc/PATH prompts + `exec node bin/viepilot.cjs install`); `VIEPILOT_INSTALL_DRY_RUN=1` adds `--dry-run`. Troubleshooting updated for Windows/NPX without bash.
+- **M1.24 / Phase 28 (ENH-017) completed** — Node-native installer flow shipped: `lib/viepilot-install.cjs` (`buildInstallPlan`/`applyInstallPlan`), `bin/viepilot.cjs install` no longer spawns `bash`, `install.sh` now thin wrapper to Node, and Jest coverage for dry-run/apply/wrapper paths.
 
 ### Documentation
 
-- **ENH-017 (partial)** — `docs/troubleshooting.md`: **Windows / multi-OS** — `npx viepilot install` is **Node-native** (no bash); `./install.sh` is a thin bash wrapper → `node bin/viepilot.cjs`.
-- **ENH-016 (partial)** — `docs/troubleshooting.md`: **`npx viepilot install`** vs **`dev-install.sh`** / clean reinstall via `uninstall` + `install` (NPX không pre-clean toàn bộ như dev-install).
+- `docs/troubleshooting.md`, `docs/dev/deployment.md` — updated install engine behavior (`npx viepilot install` Node-native, `install.sh` wrapper), Windows guidance, and reinstall semantics with `dev-install.sh`.
 
 ## [1.6.1] - 2026-04-01
 
