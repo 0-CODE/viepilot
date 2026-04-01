@@ -116,6 +116,13 @@ Ask user for:
 - Services definitions
 - Data flow
 - Technology decisions
+- Build **diagram applicability matrix** for:
+  - `system-overview`, `data-flow`, `event-flows`, `module-dependencies`, `deployment`, `user-use-case`
+- For each type assign status: `required` | `optional` | `N/A`
+- Apply generation policy:
+  - `required` => include concrete Mermaid block
+  - `optional` => allow lightweight/merged representation
+  - `N/A` => keep section heading + one-line rationale
 
 ### Step 5: Generate PROJECT-CONTEXT.md
 - Domain knowledge
@@ -177,4 +184,5 @@ Ask user for:
 - [ ] TRACKER.md initialized
 - [ ] Project files created
 - [ ] Git committed
+- [ ] ARCHITECTURE diagram matrix is present and consistent (`required|optional|N/A`)
 </success_criteria>

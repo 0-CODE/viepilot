@@ -32,6 +32,10 @@ Auto-detect nếu đang chạy trong viepilot framework repo để thêm framewo
 - `CHANGELOG.md` vs recent git commits
 - Placeholder URLs trong `docs/` (`your-org`, `YOUR_USERNAME`, v.v.)
 - Features mới (từ phases gần đây) chưa có documentation
+- `ARCHITECTURE.md` diagram applicability matrix consistency:
+  - `required` diagrams must have Mermaid content
+  - `optional` diagrams may be omitted/merged with explicit note
+  - `N/A` diagrams must have rationale line
 
 **Tier 3 — Stack Best Practices + Code Quality (mọi project, theo stack detect được):**
 - Detect stacks liên quan từ context/project manifests
@@ -66,7 +70,8 @@ Optional flags:
 - `--silent`    : Only output if issues found
 - `--tier1`     : Run Tier 1 (state consistency) only
 - `--tier2`     : Run Tier 2 (docs drift) only
-- `--tier3`     : Run Tier 3 (framework integrity) only
+- `--tier3`     : Run Tier 3 (stack best-practice) only
+- `--tier4`     : Run Tier 4 (framework integrity) only
 </context>
 
 <process>
@@ -90,6 +95,7 @@ Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
 # README.md version mention
 # CHANGELOG.md vs recent commits
 # Placeholder URLs in docs/
+# ARCHITECTURE.md diagram matrix consistency (required|optional|N/A)
 ```
 
 **Step 3 — Tier 3**: Stack Best Practices + Code Quality
