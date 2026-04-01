@@ -5,9 +5,15 @@
  */
 
 const path = require('path');
-const { spawnSync } = require('child_process');
 const readline = require('readline');
 const fs = require('fs');
+const os = require('os');
+const { buildInstallPlan, applyInstallPlan, resolveViepilotPackageRoot } = require(path.join(
+  __dirname,
+  '..',
+  'lib',
+  'viepilot-install.cjs',
+));
 
 const TARGETS = [
   { id: 'claude-code', label: 'Claude Code' },
@@ -28,7 +34,7 @@ Usage:
 Install options:
   --target <id|id,id|all>   Target profile(s): claude-code,cursor-agent,cursor-ide
   --yes                      Non-interactive mode (skip confirmations)
-  --dry-run                  Print actions only, do not execute installers
+  --dry-run                  Print actions only (Node installer; no bash)
   --list-targets             Print supported targets and exit
   --help                     Show help
 
@@ -239,28 +245,48 @@ async function interactiveTargetSelection() {
   return runKeyboardSelector(TARGETS, 'multi', 'Select install targets');
 }
 
-function handlerForTarget(target) {
-  const root = path.join(__dirname, '..');
-  return {
-    script: path.join(root, 'install.sh'),
-    env: { VIEPILOT_AUTO_YES: '1', VIEPILOT_INSTALL_PROFILE: target },
+/**
+ * One install applies the same file bundle for every target id (profiles are informational).
+ * @param {string[]} selectedTargets
+ * @param {boolean} dryRun
+ * @returns {{ ok: boolean, code: number }}
+ */
+function runInstallViaNode(selectedTargets, dryRun) {
+  const fallbackRoot = path.join(__dirname, '..');
+  const pkgRoot = resolveViepilotPackageRoot(fallbackRoot) || fallbackRoot;
+  const profile = selectedTargets[0] || 'cursor-ide';
+  const env = {
+    ...process.env,
+    VIEPILOT_AUTO_YES: '1',
+    VIEPILOT_INSTALL_PROFILE: profile,
   };
-}
+  const wantPathShim = env.VIEPILOT_ADD_PATH === '1';
 
-function runInstaller(target, dryRun) {
-  const config = handlerForTarget(target);
-  const commandLabel = `${config.script} [profile=${target}]`;
-  if (dryRun) {
-    console.log(`[dry-run] ${commandLabel}`);
-    return { ok: true, target, dryRun: true };
+  let plan;
+  try {
+    plan = buildInstallPlan(pkgRoot, env, { wantPathShim });
+  } catch (err) {
+    console.error(err.message);
+    return { ok: false, code: 1 };
   }
 
-  const result = spawnSync('bash', [config.script], {
-    stdio: 'inherit',
-    env: { ...process.env, ...config.env },
-    cwd: path.join(__dirname, '..'),
-  });
-  return { ok: result.status === 0, target, code: result.status ?? 1 };
+  console.log('');
+  console.log('ViePilot install (Node — no bash required)');
+  console.log(`  Package: ${pkgRoot}`);
+  console.log(`  Targets (informational): ${selectedTargets.join(', ')}`);
+
+  const applied = applyInstallPlan(plan, { dryRun });
+  if (applied.logs.length > 0) {
+    console.log('');
+    console.log(applied.logs.join('\n'));
+  }
+  if (!applied.ok && applied.errors.length > 0) {
+    const first = applied.errors[0];
+    const msg = first.error && first.error.message ? first.error.message : String(first.error);
+    console.error(msg);
+  }
+
+  return { ok: applied.ok, code: applied.ok ? 0 : 1 };
 }
 
 async function installCommand(rawArgs) {
@@ -290,7 +316,13 @@ async function installCommand(rawArgs) {
   }
 
   console.log(`\nSelected targets: ${selectedTargets.join(', ')}`);
-  const results = selectedTargets.map((target) => runInstaller(target, options.dryRun));
+  const run = runInstallViaNode(selectedTargets, options.dryRun);
+  const results = selectedTargets.map((target) => ({
+    ok: run.ok,
+    target,
+    dryRun: options.dryRun,
+    code: run.code,
+  }));
   const failed = results.filter((r) => !r.ok);
 
   console.log('\nInstall summary:');
@@ -307,7 +339,7 @@ async function installCommand(rawArgs) {
 }
 
 function computeUninstallPaths(targets) {
-  const home = process.env.HOME || '';
+  const home = process.env.HOME || os.homedir() || '';
   const cursorSkills = path.join(home, '.cursor', 'skills');
   const vpRoot = path.join(home, '.cursor', 'viepilot');
   const paths = [];
