@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+
+- **M1.21 / Phase 25 (ENH-014)** — Brainstorm sessions carry **MVP / Post-MVP / Future** structure; crystallize writes **horizon** into `ROADMAP.md` and **phased product vision** into `PROJECT-CONTEXT.md` (templates + skills + user docs).
+
 ### Enhanced
 
 - **M1.20 / Phase 24 (FEAT-007) completed** — multi-page UI Direction (`pages/*.html` + hub `index.html`), mandatory `## Pages inventory` in `notes.md` when `pages/` exists, crystallize workflow/skill reads every page + inventory for full site-map architecture, `npm run verify:ui-direction` helper, and docs refresh.

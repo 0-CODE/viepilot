@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.5.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-14-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-237%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **1.4.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.4.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
+**Versioning:** Shield **1.5.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.5.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -55,7 +55,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  100% 🎉 M1.20 roadmap phases ✅ (v1.4.0)
+Tổng thể / Overall:  ██████████████████░░  ~95% 🔄 M1.21 Phase 25 in progress (v1.5.0 target)
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
