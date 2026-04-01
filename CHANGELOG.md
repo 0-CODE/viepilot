@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+
+- **M1.24 / Phase 28 (ENH-017)** — **Node-native installer**: `npx viepilot install` via `lib/viepilot-install.cjs` (no `bash install.sh` for primary path); target **1.7.0** on complete.
+
 ### Documentation
 
 - **ENH-017 (partial)** — `docs/troubleshooting.md`: **Windows / multi-OS** — `install.sh` is Bash; `npx viepilot install` needs `bash` on PATH (Git Bash / WSL).
