@@ -13,11 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **FEAT-010** — UI Direction **UX walkthrough**: slash **`/research-ui`** and **`/research ui`** in `workflows/brainstorm.md` (3 phases: end-user simulation → designer + web research → update `notes.md` **`## UX walkthrough log`** and HTML/CSS); `skills/vp-brainstorm` **0.6.0**; `docs/user/features/ui-direction.md`, `docs/skills-reference.md`; `tests/unit/vp-fe010-ui-walkthrough-contracts.test.js`. *(semver patch **1.9.1** when released.)*
+- None yet.
 
-### Changed
+## [1.9.1] - 2026-04-02
 
-- Documentation index and README metrics: **v1.9.0**, 291 tests, 12 test files, 17 templates (`VIEPILOT-META`), `docs/README.md` links to global profiles + `/vp-info` / `/vp-update`.
+### Added
+
+- **M1.28 / Phase 32 (FEAT-010)** — UI Direction **UX walkthrough**: slash **`/research-ui`** and **`/research ui`** in `workflows/brainstorm.md` (3 phases: end-user simulation → designer + web research → update `notes.md` **`## UX walkthrough log`** and HTML/CSS); `skills/vp-brainstorm` **0.6.0**; `docs/user/features/ui-direction.md`, `docs/skills-reference.md`; `tests/unit/vp-fe010-ui-walkthrough-contracts.test.js`.
 
 ## [1.9.0] - 2026-04-01
 
@@ -308,7 +310,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.9.1...HEAD
+[1.9.1]: https://github.com/0-CODE/viepilot/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/0-CODE/viepilot/compare/v1.8.1...v1.9.0
 [1.8.1]: https://github.com/0-CODE/viepilot/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/0-CODE/viepilot/compare/v1.7.0...v1.8.0
