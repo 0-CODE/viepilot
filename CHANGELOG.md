@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
- - None.
+- **M1.27 / Phase 31 (FEAT-009)** — Project meta intake sau brainstorm (scope locked); lưu global `~/.viepilot/profiles/<slug>.md` + registry `~/.viepilot/profile-map.md`; project bind profile active; crystallize + vp-docs tiêu thụ profile đã chọn. Target ship: **1.9.0**.
 
 ### Added
 
