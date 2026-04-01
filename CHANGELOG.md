@@ -9,16 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.27 / Phase 31 (FEAT-009)** — Project meta intake sau brainstorm (scope locked); lưu global `~/.viepilot/profiles/<slug>.md` + registry `~/.viepilot/profile-map.md`; project bind profile active; crystallize + vp-docs tiêu thụ profile đã chọn. Target ship: **1.9.0**.
+- None.
 
 ### Added
 
-- `docs/dev/global-profiles.md` — normative FEAT-009 contract: `~/.viepilot/profiles/`, `profile-map.md`, `.viepilot/META.md` resolution.
-- `templates/project/VIEPILOT-META.md` — template for per-project ViePilot profile binding (separate from `PROJECT-META.md`).
-- **`workflows/brainstorm.md`** + **`skills/vp-brainstorm/SKILL.md` (0.5.0)** — mandatory **Project meta intake** step after scope lock and before session complete when `.viepilot/META.md` lacks `viepilot_profile_id` (FEAT-009; normative `docs/dev/global-profiles.md`).
-- **`docs/skills-reference.md`** — `/vp-brainstorm` `/end` + output notes for FEAT-009 meta intake.
-- **`lib/viepilot-install.cjs`** — on install: `mkdir` `~/.viepilot/profiles` + seed `~/.viepilot/profile-map.md` if missing (`write_file_if_missing` step); **`docs/user/quick-start.md`** + **`docs/dev/global-profiles.md`** (installer pointer); Jest coverage in `viepilot-install.test.js`.
-- **`workflows/crystallize.md`**, **`workflows/documentation.md`**, **`skills/vp-crystallize/SKILL.md` (0.5.0)**, **`skills/vp-docs/SKILL.md` (0.2.0)**, **`docs/skills-reference.md`** — consume active ViePilot profile from `.viepilot/META.md` + global profile file for crystallize pre-fill and docs attribution (FEAT-009).
+- None yet.
+
+## [1.9.0] - 2026-04-01
+
+### Added
+
+- **M1.27 / Phase 31 (FEAT-009) completed** — reusable global org context: `~/.viepilot/profiles/<slug>.md` + `~/.viepilot/profile-map.md`; project binding `.viepilot/META.md`; brainstorm **Project meta intake** after scope lock; Node installer seeds dirs/map; **crystallize** + **vp-docs** consume active profile for pre-fill and attribution.
+- `docs/dev/global-profiles.md` — normative contract (paths, schema, resolution).
+- `templates/project/VIEPILOT-META.md` — template for `.viepilot/META.md`.
+- `workflows/brainstorm.md` + `skills/vp-brainstorm/SKILL.md` (0.5.0) — meta intake step 5 + session sections.
+- `lib/viepilot-install.cjs` — `mkdir` `~/.viepilot/profiles` + `write_file_if_missing` for `profile-map.md`; plan paths `viepilotProfilesDir` / `viepilotProfileMapPath`.
+- `workflows/crystallize.md` + `skills/vp-crystallize/SKILL.md` (0.5.0) — Step 0 profile load; ARCHITECTURE / PROJECT-CONTEXT / AI-GUIDE merge rules.
+- `workflows/documentation.md` + `skills/vp-docs/SKILL.md` (0.2.0) — §0A profile resolution for generated docs.
+- `docs/user/quick-start.md`, `docs/user/features/brainstorm.md`, `docs/skills-reference.md` — user-facing FEAT-009 notes.
+- `tests/unit/vp-fe009-global-profiles-contracts.test.js` — regression tests for workflow/skill/installer/template contracts.
 
 ## [1.8.1] - 2026-04-01
 
@@ -295,7 +304,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.8.1...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.9.0...HEAD
+[1.9.0]: https://github.com/0-CODE/viepilot/compare/v1.8.1...v1.9.0
 [1.8.1]: https://github.com/0-CODE/viepilot/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/0-CODE/viepilot/compare/v1.7.0...v1.8.0
 [0.10.0]: https://github.com/0-CODE/viepilot/compare/v0.9.0...v0.10.0
