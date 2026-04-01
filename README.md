@@ -7,7 +7,7 @@
 [![Skills](https://img.shields.io/badge/skills-14-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-249%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-255%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Shield **1.5.1** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.5.1**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
@@ -28,12 +28,12 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~24,528+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Total LOC | **~24,779+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **14** |
 | Workflows | **12** |
 | Templates | **16** (Project: 11, Phase: 5) |
-| CLI Commands | **16** (`vp-tools` 15 subcommands + `viepilot` installer) |
-| Tests | **249** (8 suites: unit + integration + AI compat + README metrics + UI direction verify + ENH workflow contracts + viepilot-info) |
+| CLI Commands | **17** (`vp-tools` 16 subcommands + `viepilot` installer) |
+| Tests | **255** (9 suites: unit + integration + AI compat + README metrics + UI direction verify + ENH workflow contracts + viepilot-info + viepilot-update) |
 | ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -47,8 +47,8 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Workflow Files | **12** | Step-by-step execution guides |
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
-| CLI Tools | 2 | vp-tools.cjs (**15** subcommands) + viepilot.cjs (guided installer) |
-| Test Files | 5 | Jest unit + integration + AI compatibility + README metrics + ENH backlog contract tests |
+| CLI Tools | 2 | vp-tools.cjs (**16** subcommands) + viepilot.cjs (guided installer) |
+| Test Files | 6 | Jest unit + integration + AI compatibility + README metrics + ENH backlog + viepilot-info/update |
 
 ---
 
@@ -64,8 +64,8 @@ Tổng thể / Overall:  ██████████████████�
 | Workflows (12) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
 | Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
-| CLI Tools (16) | ✅ Hoàn thiện | vp-tools 15 subcommands + viepilot installer; bundle `info` |
-| Tests (249) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility, workflow contracts, viepilot-info |
+| CLI Tools (17) | ✅ Hoàn thiện | vp-tools 16 subcommands + viepilot installer; bundle `info` / `update` |
+| Tests (255) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility, workflow contracts, viepilot-info, viepilot-update |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
@@ -386,9 +386,9 @@ viepilot/
 │   └── cli-shared.cjs             # Validators, project root, Levenshtein helpers
 │
 ├── bin/                           # CLI tools
-│   └── vp-tools.cjs               # 15 subcommands (+ help); uses ../lib/cli-shared.cjs, ../lib/viepilot-info.cjs
+│   └── vp-tools.cjs               # 16 subcommands (+ help); uses ../lib/cli-shared.cjs, viepilot-info/update.cjs
 │
-├── tests/                         # Test suite (249 tests)
+├── tests/                         # Test suite (255 tests)
 │   ├── unit/                      # Unit tests
 │   │   ├── validators.test.js     # CLI subprocess + in-process coverage tests
 │   │   └── ai-provider-compat.test.js  # 142 AI compat tests
@@ -488,7 +488,7 @@ your-project/
 | [Getting Started](docs/getting-started.md) | Hướng dẫn bắt đầu / Quick start guide |
 | [Quick Start (User)](docs/user/quick-start.md) | 5-minute guide |
 | [Skills Reference](docs/skills-reference.md) | Chi tiết từng skill / Detailed skill docs |
-| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 15 subcommands |
+| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 16 subcommands |
 | [Advanced Usage](docs/advanced-usage.md) | Power user features |
 | [Troubleshooting](docs/troubleshooting.md) | Common issues & fixes |
 | [Architecture](docs/dev/architecture.md) | System design |

@@ -24,6 +24,7 @@ const {
 } = require(path.join(__dirname, '../lib/cli-shared.cjs'));
 
 const viepilotInfo = require(path.join(__dirname, '../lib/viepilot-info.cjs'));
+const viepilotUpdate = require(path.join(__dirname, '../lib/viepilot-update.cjs'));
 
 // ============================================================================
 // Output Formatting (TTY-aware)
@@ -754,6 +755,76 @@ const commands = {
   },
 
   /**
+   * Upgrade viepilot via npm (global, local dependency, or --global) — FEAT-008
+   */
+  update: async (args) => {
+    const dryRun = args.includes('--dry-run');
+    const yes = args.includes('--yes');
+    const globalFlag = args.includes('--global');
+    const startDir = path.join(__dirname, '..');
+    const plan = viepilotUpdate.buildUpdatePlan({ startDir, forceGlobal: globalFlag });
+
+    if (!plan.ok) {
+      console.error(formatError(plan.error));
+      process.exit(1);
+    }
+
+    if (plan.alreadyLatest) {
+      console.log(
+        formatSuccess(
+          `viepilot@${plan.installedVersion} is already up to date (npm latest: ${plan.latestVersion}).`
+        )
+      );
+      return;
+    }
+
+    if (plan.latestNpmError) {
+      console.log(formatWarning(`Could not read npm registry (continuing): ${plan.latestNpmError}`));
+    }
+    if (plan.ambiguous) {
+      console.log(
+        formatWarning(
+          'ViePilot install path looks like a source clone or unknown layout; using global npm install. Use --global to make this explicit.'
+        )
+      );
+    }
+
+    console.log(`\n${colors.cyan}Planned:${colors.reset} ${plan.displayCommand}\n`);
+    console.log(
+      `${colors.gray}Rollback (example): npm install -g viepilot@${plan.installedVersion || 'PREVIOUS'}${colors.reset}`
+    );
+
+    if (dryRun) {
+      console.log(`\n${formatInfo('Dry run — no changes applied.')}`);
+      return;
+    }
+
+    if (!isInteractive && !yes) {
+      console.error(
+        formatError(
+          'Non-interactive terminal: use --yes to run npm or --dry-run to preview only',
+          'Example: vp-tools update --dry-run && vp-tools update --yes'
+        )
+      );
+      process.exit(1);
+    }
+
+    if (isInteractive && !yes) {
+      const ok = await confirm('Run npm to apply this update?', false);
+      if (!ok) {
+        console.log(formatWarning('Aborted.'));
+        return;
+      }
+    }
+
+    const result = viepilotUpdate.runNpmUpdate(plan);
+    if (!result.ok) {
+      process.exit(result.code || 1);
+    }
+    console.log(formatSuccess('npm update completed.'));
+  },
+
+  /**
    * Check for potential conflicts
    */
   conflicts: (args) => {
@@ -962,6 +1033,20 @@ const commands = {
         options: ['--json: Machine-readable JSON output'],
         examples: ['vp-tools info', 'vp-tools info --json'],
       },
+      update: {
+        usage: 'vp-tools update [--dry-run] [--yes] [--global]',
+        description: 'Update viepilot to npm latest (local dependency, global install, or explicit --global)',
+        options: [
+          '--dry-run: Print planned npm command only',
+          '--yes: Run npm without confirmation (CI / scripts)',
+          '--global: Force npm install -g viepilot@latest',
+        ],
+        examples: [
+          'vp-tools update --dry-run',
+          'vp-tools update --yes',
+          'vp-tools update --global --dry-run',
+        ],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -1001,6 +1086,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}tag-prefix${colors.reset} [--raw]       Show project-scoped checkpoint prefix
   ${colors.bold}git-persistence${colors.reset} [--strict] Check commit/push persistence readiness
   ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
+  ${colors.bold}update${colors.reset} [--dry-run]       Update viepilot via npm (use --yes non-interactive)
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
