@@ -8,6 +8,8 @@
 | Tôi cần... | Đọc file | Section |
 |------------|----------|---------|
 | Hiểu project làm gì | `PROJECT-CONTEXT.md` | `<domain_knowledge>` |
+| Tầm nhìn & scope theo pha (MVP / Post-MVP / Future) | `PROJECT-CONTEXT.md` | `<product_vision>` |
+| Roadmap sau MVP & horizon (không chỉ task hiện tại) | `ROADMAP.md` | Sections Post-MVP / Future / product horizon |
 | Biết tech stack | `ARCHITECTURE.md` | `## Technology Decisions` |
 | Xem service nào làm gì | `ARCHITECTURE.md` | `## Services` |
 | Biết đang ở phase nào | `TRACKER.md` | `## Current State` |
@@ -36,19 +38,27 @@ Chỉ đọc:
 Đọc theo thứ tự:
 1. AI-GUIDE.md (file này)
 2. TRACKER.md → biết đang ở đâu
-3. ROADMAP.md → task hiện tại
-4. SYSTEM-RULES.md → coding rules
-5. Schema file nếu cần
+3. PROJECT-CONTEXT.md → <product_vision> + phased scope (đọc TRƯỚC khi khóa thiết kế chi tiết)
+4. ROADMAP.md → skim Post-MVP / Future / horizon, rồi task hiện tại
+5. SYSTEM-RULES.md → coding rules
+6. Schema file nếu cần
 ```
 
 ### Full Context (cho architecture decisions)
 ```
-Đọc thêm:
-1. Standard Context +
-2. ARCHITECTURE.md
-3. PROJECT-CONTEXT.md
-4. Brainstorm session gốc (nếu cần rationale)
+Đọc theo thứ tự:
+1. AI-GUIDE.md + TRACKER.md
+2. PROJECT-CONTEXT.md → domain + <product_vision> (đầy đủ)
+3. ROADMAP.md → MVP phases + Post-MVP / horizon blocks
+4. ARCHITECTURE.md
+5. SYSTEM-RULES.md
+6. Brainstorm session gốc (nếu cần rationale chi tiết, đặc biệt cho deferred capabilities)
 ```
+
+### Product vision & roadmap horizon (trước khi “lock” architecture)
+
+- **Không** để post-MVP chỉ tồn tại trong file brainstorm: sau `/vp-crystallize`, horizon phải nằm trong `ROADMAP.md` và vision theo pha trong `PROJECT-CONTEXT.md`.
+- Trước task implementation sâu hoặc quyết định kiến trúc lớn: đọc `<product_vision>` và các section horizon trong `ROADMAP.md` **cùng lúc** với task hiện tại — tránh code MVP làm bế tắc bản sau hoặc bỏ sót ràng buộc đã thống nhất.
 
 ## File Relationships
 
@@ -58,7 +68,10 @@ AI-GUIDE.md (đọc đầu tiên)
      ├── TRACKER.md (state hiện tại)
      │      └── points to → current phase in ROADMAP.md
      │
-     ├── ROADMAP.md (what to do)
+     ├── PROJECT-CONTEXT.md (domain + <product_vision> / phased scope)
+     │      └── read early with → ROADMAP.md horizon blocks
+     │
+     ├── ROADMAP.md (what to do + Post-MVP / Future)
      │      └── tasks reference → schemas/
      │
      ├── SYSTEM-RULES.md (how to code)
@@ -67,8 +80,7 @@ AI-GUIDE.md (đọc đầu tiên)
      ├── ARCHITECTURE.md (system design)
      │      └── decisions from → PROJECT-CONTEXT.md
      │
-     └── PROJECT-CONTEXT.md (domain knowledge)
-            └── extracted from → docs/brainstorm/
+     └── docs/brainstorm/ (session rationale; horizon đã mirror vào ROADMAP + PROJECT-CONTEXT)
 ```
 
 ## When Creating New Files

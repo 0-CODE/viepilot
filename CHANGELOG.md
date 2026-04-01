@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.21 / Phase 25 (ENH-014)** — Brainstorm sessions carry **MVP / Post-MVP / Future** structure; crystallize writes **horizon** into `ROADMAP.md` and **phased product vision** into `PROJECT-CONTEXT.md` (templates + skills + user docs).
+- _(none — M1.21 Phase 25 deliverables merged under Enhanced below)_
 
 ### Enhanced
 
+- **M1.21 / Phase 25 — task 25.5** — `docs/user/features/product-horizon.md` (end-to-end horizon handoff); `templates/project/AI-GUIDE.md` states **load order**: `<product_vision>` + `ROADMAP` horizon before deep implementation; `workflows/crystallize.md` Step 2 reminds to preserve that ordering; `docs/user/quick-start.md`, `docs/README.md`, `docs/skills-reference.md` cross-links.
 - **M1.21 / Phase 25 — task 25.4** — `skills/vp-brainstorm` and `skills/vp-crystallize` bumped to **0.4.0**; objectives/process/success criteria mirror ENH-014 horizon + crystallize gates; `docs/skills-reference.md` documents horizon output and crystallize intake.
 - **M1.21 / Phase 25 — task 25.3** — `templates/project/ROADMAP.md` adds mandatory **Post-MVP / Product horizon** with placeholders (`HORIZON_MODE_LINE`, epic lists, deferred/non-goals); `templates/project/PROJECT-CONTEXT.md` adds `<product_vision>` (**Product vision & phased scope**) aligned with MVP / Post-MVP / Future terminology.
 - **M1.21 / Phase 25 — task 25.2** — `workflows/crystallize.md` Step 1 now **extracts and validates** brainstorm product horizon (inventory, single-release mode, tier conflicts); Step 7 always emits **MVP phases** plus a mandatory **Post-MVP / horizon** block with a **no silent omission** gate before finalizing `ROADMAP.md`; success criteria updated.

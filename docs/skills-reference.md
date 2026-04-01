@@ -41,6 +41,7 @@ Complete reference for all ViePilot skills.
 ### Product horizon (brainstorm → ROADMAP / context)
 - Step 1: trích **`## Product horizon`** từ mọi session; **horizon inventory** + cổng single-release / thiếu section — `workflows/crystallize.md`.
 - `ROADMAP.md`: luôn có block **Post-MVP / Product horizon** (hoặc ghi rõ single-release); `PROJECT-CONTEXT.md`: khối **`<product_vision>`** từ `templates/project/PROJECT-CONTEXT.md`.
+- Hướng dẫn user tổng quan: [product-horizon.md](user/features/product-horizon.md). Thứ tự load cho AI: `templates/project/AI-GUIDE.md` (bản crystallize copy vào `.viepilot/AI-GUIDE.md`).
 
 ### Metadata Collection
 - Project name, description

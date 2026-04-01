@@ -195,7 +195,7 @@ Create `.viepilot/AI-GUIDE.md` using template:
 
 Customize with:
 - Project-specific file references
-- Context loading strategy based on project size
+- Context loading strategy based on project size — **preserve template ordering** where `PROJECT-CONTEXT.md` **`<product_vision>`** and **`ROADMAP.md` horizon** (Post-MVP / Future) are read **before** deep implementation / architecture lock; state this explicitly in the generated `AI-GUIDE.md` if you trim sections
 - Quick lookup for project-specific terms
 - Fast stack lookup section:
   - Read `.viepilot/STACKS.md`

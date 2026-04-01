@@ -103,6 +103,9 @@ ViePilot tạo `.viepilot/` directory với:
 - `TRACKER.md` — Progress tracking
 - `ARCHITECTURE.md` — System design
 - `SYSTEM-RULES.md` — Coding standards
+- `AI-GUIDE.md` — Thứ tự đọc context (kể cả **vision / horizon** trước khi khóa kiến trúc sâu)
+
+**Post-MVP không chỉ nằm trong brainstorm:** sau crystallize, horizon phải vào `ROADMAP.md` + vision theo pha trong `PROJECT-CONTEXT.md`. Tóm tắt cho user: [Product horizon end-to-end](features/product-horizon.md).
 
 ---
 
