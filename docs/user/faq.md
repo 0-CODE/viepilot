@@ -106,12 +106,13 @@ A: Dùng `/vp-resume` để tiếp tục từ điểm dừng. Nếu có lỗi, d
 
 ### Q: Làm sao thêm feature mới khi project đang chạy?
 
-A: Dùng `/vp-request --feature` — ViePilot sẽ insert phase mới vào roadmap mà không disrupt phases hiện tại.
+A: **`/vp-request --feature`** để **log** yêu cầu (file request + backlog). **`/vp-evolve`** (Add feature / New milestone) để **thêm phase + tasks** trên ROADMAP. **`/vp-auto`** để **implement** theo task plan. (ENH-021: không implement trực tiếp trong thread request/evolve trừ khi bạn explicit bypass.)
 
 ---
 
 ### Q: Khi nào nên dùng `/vp-evolve` vs `/vp-request`?
 
-A: 
-- `/vp-request --feature` — Thêm feature nhỏ vào milestone hiện tại
-- `/vp-evolve` — Bắt đầu milestone mới (M2, M3) với scope lớn hơn
+A:
+- **`/vp-request`** — Ghi nhận bug/feature/enhancement vào `.viepilot/requests/*` + TRACKER; **không** thay thế bước plan/implement.
+- **`/vp-evolve`** — **Planning**: thêm phase trên ROADMAP, tạo `SPEC`/tasks, cập nhật milestone; sau đó gọi **`/vp-auto`**.
+- Milestone **mới** (M2, M3…) hoặc scope lớn → thường bắt đầu bằng **`/vp-evolve`**; ý tưởng rời rạc → có thể **`/vp-request`** trước rồi evolve.

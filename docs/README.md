@@ -116,9 +116,9 @@
 | `/vp-status` | "status", "tiến độ" | Progress dashboard |
 | `/vp-info` | "version", "phiên bản" | Bundle version, npm latest, inventory |
 | `/vp-update` | "upgrade viepilot", "npm" | Upgrade ViePilot via npm |
-| `/vp-request` | "request", "feature", "bug" | Add feature/bug |
+| `/vp-request` | "request", "feature", "bug" | Log backlog; sau đó evolve + auto (ENH-021) |
 | `/vp-ui-components` | "ui components", "21st.dev" | Curate and reuse UI component library |
-| `/vp-evolve` | "evolve", "milestone mới" | New milestone |
+| `/vp-evolve` | "evolve", "milestone mới" | Planning (ROADMAP/phase); implement bằng `/vp-auto` |
 | `/vp-docs` | "docs", "documentation" | Generate docs |
 | `/vp-task` | "task", "manual" | Manual task control |
 | `/vp-debug` | "debug", "investigate" | Debug issues |
@@ -127,4 +127,4 @@
 
 ---
 
-*Last updated: 2026-04-01 — ViePilot framework **v1.9.0** (M1.27 FEAT-009: global profiles + docs workflow §0A); see `CHANGELOG.md` and `docs/dev/global-profiles.md`.*
+*Last updated: 2026-04-03 — ViePilot framework **v1.9.2** (ENH-021 request/evolve/auto routing; M1.27 FEAT-009 global profiles); see `CHANGELOG.md`, `docs/dev/global-profiles.md`, `docs/user/features/autonomous-mode.md`.*

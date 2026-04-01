@@ -201,7 +201,7 @@ AI pauses for user input when:
 
 ## /vp-evolve
 
-**Purpose**: Nâng cấp hoặc mở rộng dự án
+**Purpose**: Nâng cấp hoặc mở rộng dự án (**planning** — ROADMAP, phase, tasks; implement sau bằng **`/vp-auto`**; xem **Implementation routing (ENH-021)** ở đầu file).
 
 ### Modes
 | Mode | Description |
@@ -278,7 +278,7 @@ CHANGELOG.md (updated)
 
 ## /vp-request
 
-**Purpose**: Tạo và quản lý requests (Bug, Feature, Enhancement, Tech Debt, Brainstorm tiếp)
+**Purpose**: Tạo và quản lý requests (Bug, Feature, Enhancement, Tech Debt, Brainstorm tiếp). **Không** thay **`/vp-evolve`** (plan) hay **`/vp-auto`** (implement); chuỗi khuyến nghị: request → evolve → auto (**ENH-021**).
 
 ### Flags
 | Flag | Description |

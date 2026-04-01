@@ -36,6 +36,13 @@ Mỗi task:
 - Nếu môi trường runtime có skills ngoài framework, workflow sẽ bỏ qua và ưu tiên skill ViePilot tương đương.
 - Chỉ khi bạn ghi rõ yêu cầu mở rộng (explicit opt-in), agent mới được phép dùng external skills.
 
+### Implementation routing (ENH-021)
+
+- **`/vp-auto`** là **lane mặc định** để **implement** mã shipping sau khi đã có **phase/task plan** trên ROADMAP.
+- **`/vp-request`** chỉ **ghi backlog** (`.viepilot/requests/*`, TRACKER) — **không** thay evolve + auto.
+- **`/vp-evolve`** chỉ **planning** (ROADMAP, thư mục phase, SPEC/tasks) — **không** implement thay `/vp-auto`.
+- **Chuỗi khuyến nghị:** `vp-request` → `vp-evolve` → **`vp-auto`**. Ngoại lệ: user **explicit** (*hotfix*, *sửa trong chat này*) — phải nêu rõ bypass.
+
 ### Doc-first gate (v0.8.2 / BUG-001)
 
 Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** và **`PHASE-STATE` → `in_progress`** trước khi chỉnh sửa deliverable. Xem `workflows/autonomous.md` — *Pre-execution documentation gate*.

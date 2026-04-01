@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+### Changed
+
+- **Docs** — `docs/README.md`, `docs/user/faq.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`: làm rõ chuỗi **request → evolve → auto** (ENH-021) và footer bundle **v1.9.2**.
+
 ## [1.9.2] - 2026-04-03
 
 ### Changed
