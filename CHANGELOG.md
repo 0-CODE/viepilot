@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Enhanced
+
+- **ENH-015** — `dev-install.sh` và `install.sh` hỗ trợ **`VIEPILOT_SYMLINK_SKILLS=1`**: cài skills vào `~/.cursor/skills/` bằng symlink tuyệt đối tới repo (mặc định vẫn copy-first).
+
 ## [1.6.0] - 2026-04-01
 
 ### Added

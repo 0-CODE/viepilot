@@ -2,6 +2,8 @@
 
 # ViePilot Installation Script
 # Installs ViePilot skills and tools to Cursor/Claude environment
+#
+# Optional: VIEPILOT_SYMLINK_SKILLS=1 — symlink skills/* into ~/.cursor/skills/ (absolute paths)
 
 set -e
 
@@ -109,13 +111,23 @@ mkdir -p "$VIEPILOT_DIR/bin"
 mkdir -p "$VIEPILOT_DIR/lib"
 mkdir -p "$VIEPILOT_DIR/ui-components"
 
-# Install skills
+# Install skills (copy default; VIEPILOT_SYMLINK_SKILLS=1 for dev-style live links)
 echo "  Installing skills..."
 for skill_dir in "$SCRIPT_DIR/skills"/*; do
     if [ -d "$skill_dir" ]; then
         skill_name=$(basename "$skill_dir")
-        cp -r "$skill_dir" "$CURSOR_SKILLS_DIR/"
-        echo "    ✓ $skill_name"
+        if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
+            if command -v realpath >/dev/null 2>&1; then
+                skill_abs=$(realpath "$skill_dir")
+            else
+                skill_abs=$(cd "$skill_dir" && pwd)
+            fi
+            ln -sfn "$skill_abs" "$CURSOR_SKILLS_DIR/$skill_name"
+            echo "    ✓ $skill_name (symlink)"
+        else
+            cp -r "$skill_dir" "$CURSOR_SKILLS_DIR/"
+            echo "    ✓ $skill_name"
+        fi
     fi
 done
 

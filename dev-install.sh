@@ -2,6 +2,9 @@
 
 # ViePilot Development Installation Script
 # Installs development build without symlink dependency by default
+#
+# Optional: VIEPILOT_SYMLINK_SKILLS=1 — symlink each skills/vp-* into ~/.cursor/skills/
+# (live edits from this repo; default remains copy for reliability — see FEAT-005)
 
 set -e
 
@@ -25,7 +28,11 @@ echo " VIEPILOT DEV INSTALLER"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
 
-echo -e "${YELLOW}Development mode installation (copy-first for reliability)${NC}"
+if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
+    echo -e "${YELLOW}Development mode installation (skills: SYMLINK → repo)${NC}"
+else
+    echo -e "${YELLOW}Development mode installation (copy-first for reliability)${NC}"
+fi
 echo "  Source: $SCRIPT_DIR"
 echo "  Target: $CURSOR_SKILLS_DIR, $VIEPILOT_DIR"
 echo "  Profile: $INSTALL_PROFILE"
@@ -77,12 +84,22 @@ fi
 echo ""
 echo -e "${BLUE}Installing skills...${NC}"
 
-# Install skill copies (avoid symlink discovery issues)
+# Install skills: copy (default) or symlink when VIEPILOT_SYMLINK_SKILLS=1
 mkdir -p "$CURSOR_SKILLS_DIR"
 for skill in "$SCRIPT_DIR"/skills/vp-*/; do
     skill_name=$(basename "$skill")
-    cp -R "$skill" "$CURSOR_SKILLS_DIR/$skill_name"
-    echo -e "  ${GREEN}✓${NC} $skill_name"
+    if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
+        if command -v realpath >/dev/null 2>&1; then
+            skill_abs=$(realpath "$skill")
+        else
+            skill_abs=$(cd "$skill" && pwd)
+        fi
+        ln -sfn "$skill_abs" "$CURSOR_SKILLS_DIR/$skill_name"
+        echo -e "  ${GREEN}✓${NC} $skill_name (symlink)"
+    else
+        cp -R "$skill" "$CURSOR_SKILLS_DIR/$skill_name"
+        echo -e "  ${GREEN}✓${NC} $skill_name"
+    fi
 done
 
 echo ""
@@ -120,10 +137,14 @@ echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━
 echo -e "${GREEN} DEV INSTALLATION COMPLETE ✓${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo "Installed (copy mode):"
+if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
+    echo "Installed (skills symlink mode):"
+    echo -e "${YELLOW}Skills point at repo — edits in $SCRIPT_DIR/skills/ are live.${NC}"
+else
+    echo "Installed (copy mode):"
+    echo -e "${YELLOW}Development mode enabled (reliable copy mode).${NC}"
+    echo "Re-run this script after local changes to refresh installed files."
+fi
 echo "  - Skills: $SKILL_COUNT"
 echo "  - Workflows: $WORKFLOW_COUNT"
-echo ""
-echo -e "${YELLOW}Development mode enabled (reliable copy mode).${NC}"
-echo "Re-run this script after local changes to refresh installed files."
 echo ""

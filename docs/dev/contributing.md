@@ -14,6 +14,10 @@ Hướng dẫn đóng góp cho ViePilot framework.
    ```bash
    ./dev-install.sh
    ```
+   Để **symlink** toàn bộ `skills/vp-*` về repo (sửa skill là Cursor thấy ngay), dùng:
+   ```bash
+   VIEPILOT_SYMLINK_SKILLS=1 ./dev-install.sh
+   ```
 4. Tạo branch cho feature/fix:
    ```bash
    git checkout -b feat/my-new-skill
