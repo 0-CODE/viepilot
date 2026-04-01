@@ -4,6 +4,13 @@ Hoạt động trên bất kỳ project nào đang dùng ViePilot.
 Auto-detect nếu đang chạy trong viepilot framework repo để thêm framework-specific checks.
 </purpose>
 
+## ViePilot Skill Scope Policy (BUG-004)
+
+- Default behavior: only use and suggest skills under `vp-*`.
+- External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
+- If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
+
+
 <process>
 
 <step name="detect_project_type">

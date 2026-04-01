@@ -2,6 +2,13 @@
 Nâng cấp hoặc mở rộng dự án: thêm features, bắt đầu milestone mới, hoặc refactor.
 </purpose>
 
+## ViePilot Skill Scope Policy (BUG-004)
+
+- Default behavior: only use and suggest skills under `vp-*`.
+- External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
+- If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
+
+
 <process>
 
 <step name="detect_state">

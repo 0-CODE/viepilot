@@ -3,6 +3,13 @@ Systematic debugging workflow với persistent state tracking.
 Giúp organize debugging process và track progress qua nhiều sessions.
 </purpose>
 
+## ViePilot Skill Scope Policy (BUG-004)
+
+- Default behavior: only use and suggest skills under `vp-*`.
+- External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
+- If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
+
+
 <process>
 
 <step name="initialize">
