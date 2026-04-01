@@ -74,10 +74,11 @@ chmod +x install.sh
 
 | Cách cài | Script | Trước khi ghi file mới |
 |----------|--------|-------------------------|
-| **`npx viepilot install`** (mọi `--target`) | **`install.sh`** trong package npm | **Không** xóa `~/.cursor/skills/vp-*` hay `~/.cursor/viepilot`; dùng **`cp -r`** đè. File cùng tên bị ghi đè; file **chỉ còn ở bản cũ** có thể **vẫn nằm lại** (orphan). |
+| **`npx viepilot install`** (mọi `--target`) | **`bin/viepilot.cjs`** + `lib/viepilot-install.cjs` (Node, **không** bash) | **Không** xóa `~/.cursor/skills/vp-*` hay `~/.cursor/viepilot`; copy đè tương đương **`cp -r`**. File cùng tên bị ghi đè; file **chỉ còn ở bản cũ** có thể **vẫn nằm lại** (orphan). |
+| **`./install.sh`** từ clone / tarball | Thin **bash** wrapper → gọi `node bin/viepilot.cjs install` | Cùng engine Node như NPX; bash chỉ còn prompt (cloc, PATH) khi không `VIEPILOT_AUTO_YES=1`. |
 | **`./dev-install.sh`** từ clone repo | `dev-install.sh` | **Có** xóa sạch `vp-*` skills + **`rm -rf ~/.cursor/viepilot`** rồi cài lại → gần như cài mới hoàn toàn. |
 
-`npx viepilot install` được `bin/viepilot.cjs` gọi bằng `bash install.sh` với `VIEPILOT_AUTO_YES=1` và `VIEPILOT_INSTALL_PROFILE` — **không** gọi `dev-install.sh`.
+`npx viepilot install` chạy **trực tiếp** Node installer — **không** spawn `bash install.sh`. `install.sh` dùng khi bạn chạy tay từ repo và muốn prompt cloc/PATH giống trước.
 
 **Muốn cài sạch sau bản cũ** (tránh sót file):
 
@@ -92,15 +93,15 @@ npx viepilot install --target cursor-agent --yes
 
 ### Windows / đa OS: `install.sh` và `npx viepilot install` chạy thế nào?
 
-`install.sh` và `dev-install.sh` là **script Bash** (POSIX-style: `cp`, `mkdir`, `ln`, đường dẫn `$HOME/.cursor/...`).
+**`npx viepilot install`** dùng **Node** (`lib/viepilot-install.cjs`) — **không** cần Bash. **`./install.sh`** là wrapper Bash (prompt cloc/PATH) rồi gọi `node bin/viepilot.cjs install …`. **`dev-install.sh`** vẫn là Bash đầy đủ (xóa + copy).
 
-| OS | Kỳ vọng |
-|----|---------|
-| **macOS**, **Linux** | Chạy trực tiếp: `./install.sh` hoặc `bash install.sh`. `npx viepilot install` gọi `bash` → thường ổn nếu đã cài Node + Bash (mặc định có). |
-| **Windows (native CMD/PowerShell)** | **Không** chạy `.sh` trực tiếp. Dùng **Git Bash** hoặc **WSL**, hoặc chạy `npx viepilot install` trong môi trường có **`bash` trên PATH** (thường kèm Git for Windows). |
-| **PATH `/usr/local/bin`** | Bước tùy chọn thêm `vp-tools` / `viepilot` vào PATH là **kiểu Unix**; trên Windows có thể bỏ qua và gọi `node path/to/vp-tools.cjs` hoặc cấu hình PATH thủ công. |
+| OS | `npx viepilot install` | `./install.sh` |
+|----|------------------------|----------------|
+| **macOS**, **Linux** | Chỉ cần Node trên PATH | Bash → Node (cùng engine với NPX) |
+| **Windows (CMD/PowerShell)** | Chạy được với Node | Cần Git Bash / WSL cho file `.sh`, hoặc: `node bin\viepilot.cjs install --target cursor-agent --yes` |
+| **PATH `/usr/local/bin`** | Tùy chọn trong installer (Unix); Windows bỏ qua / PATH thủ công | |
 
-Nếu gặp lỗi kiểu **`bash: command not found`** khi chạy NPX: cài [Git for Windows](https://git-scm.com/download/win) (hoặc WSL) và mở terminal có `bash`, rồi chạy lại `npx viepilot install …`.
+Với ViePilot **Node-native install**, lỗi **`bash: command not found`** khi chạy **`npx viepilot install`** không còn điển hình — nếu vẫn gặp trên bản cũ, hãy nâng ViePilot hoặc dùng `node bin/viepilot.cjs install …` từ source.
 
 ---
 

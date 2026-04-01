@@ -24,11 +24,10 @@ cd viepilot
 ./install.sh
 ```
 
-`install.sh` copies:
+`install.sh` is a thin **bash** wrapper: optional **cloc** / **PATH** prompts, then **`node bin/viepilot.cjs install`** (same **Node** engine as `npx viepilot install`). It installs to:
 - `skills/vp-*/` → `~/.cursor/skills/`
-- `workflows/` → `~/.cursor/viepilot/workflows/`
-- `templates/` → `~/.cursor/viepilot/templates/`
-- `bin/vp-tools.cjs` → `~/.local/bin/vp-tools`
+- `workflows/`, `templates/`, `bin/`, `lib/` → `~/.cursor/viepilot/…`
+- Optional PATH symlinks (Unix) via `VIEPILOT_ADD_PATH=1`
 
 ### Method 3: Development Mode
 

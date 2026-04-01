@@ -17,11 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **M1.24 / Phase 28 — task 28.1** — `lib/viepilot-install.cjs`: `buildInstallPlan` / `formatPlanLines` (mirror `install.sh` steps as structured plan); `tests/unit/viepilot-install.test.js`.
 - **M1.24 / Phase 28 — task 28.2** — `applyInstallPlan` (mkdir, copy, symlink skills, chmod, cloc guidance, path_shim skip Windows); `buildInstallPlan(..., { overrideHomedir })` for tests.
 - **M1.24 / Phase 28 — task 28.3** — `npx viepilot install` runs **Node-native** installer (`buildInstallPlan` + `applyInstallPlan`); **no `bash install.sh`**. Uninstall paths use `os.homedir()` fallback when `HOME` unset.
+- **M1.24 / Phase 28 — task 28.4** — `install.sh` is a **thin bash wrapper** (cloc/PATH prompts + `exec node bin/viepilot.cjs install`); `VIEPILOT_INSTALL_DRY_RUN=1` adds `--dry-run`. Troubleshooting updated for Windows/NPX without bash.
 
 ### Documentation
 
-- **ENH-017 (partial)** — `docs/troubleshooting.md`: **Windows / multi-OS** — `install.sh` is Bash; `npx viepilot install` needs `bash` on PATH (Git Bash / WSL).
-- **ENH-016 (partial)** — `docs/troubleshooting.md`: clarify that **`npx viepilot install` always runs `install.sh`** (no pre-clean); contrast with `dev-install.sh`; clean reinstall via `uninstall` + `install`.
+- **ENH-017 (partial)** — `docs/troubleshooting.md`: **Windows / multi-OS** — `npx viepilot install` is **Node-native** (no bash); `./install.sh` is a thin bash wrapper → `node bin/viepilot.cjs`.
+- **ENH-016 (partial)** — `docs/troubleshooting.md`: **`npx viepilot install`** vs **`dev-install.sh`** / clean reinstall via `uninstall` + `install` (NPX không pre-clean toàn bộ như dev-install).
 
 ## [1.6.1] - 2026-04-01
 

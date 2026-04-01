@@ -5,6 +5,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const {
   validateViepilotPackageRoot,
   buildInstallPlan,
@@ -118,5 +119,32 @@ describe('viepilot-install apply (28.2)', () => {
     const plan = buildInstallPlan(REPO_ROOT, { VIEPILOT_AUTO_YES: '1' }, { overrideHomedir: fakeHome });
     expect(plan.home).toBe(path.resolve(fakeHome));
     expect(plan.paths.viepilotDir.startsWith(path.resolve(fakeHome))).toBe(true);
+  });
+});
+
+describe('install.sh wrapper (28.4)', () => {
+  const itBash = process.platform === 'win32' ? test.skip : test;
+
+  itBash('delegates dry-run to Node when VIEPILOT_AUTO_YES and VIEPILOT_INSTALL_DRY_RUN', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-ish-'));
+    const installSh = path.join(REPO_ROOT, 'install.sh');
+    const result = spawnSync('bash', [installSh], {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+      env: {
+        ...process.env,
+        HOME: fakeHome,
+        VIEPILOT_AUTO_YES: '1',
+        VIEPILOT_INSTALL_DRY_RUN: '1',
+        FORCE_COLOR: '0',
+        NO_COLOR: '1',
+      },
+    });
+    if (result.error) {
+      throw result.error;
+    }
+    expect(result.status).toBe(0);
+    const out = `${result.stdout}\n${result.stderr}`;
+    expect(out).toMatch(/viepilot\.cjs|Node|dry-run|\[dry-run\]/i);
   });
 });

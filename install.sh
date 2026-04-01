@@ -1,23 +1,22 @@
 #!/bin/bash
 
-# ViePilot Installation Script
-# Installs ViePilot skills and tools to Cursor/Claude environment
+# ViePilot installation — thin wrapper around the Node installer (bin/viepilot.cjs).
+# Implements prompts + optional cloc install here; file copy/symlink/chmod/path is in lib/viepilot-install.cjs.
 #
-# Optional: VIEPILOT_SYMLINK_SKILLS=1 — symlink skills/* into ~/.cursor/skills/ (absolute paths)
+# Optional: VIEPILOT_SYMLINK_SKILLS=1 — passed through to Node (symlink skills into ~/.cursor/skills/)
+# Optional: VIEPILOT_INSTALL_DRY_RUN=1 — runs `viepilot install --dry-run` (for CI/tests)
 
 set -e
 
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR" || exit 1
 
-# Default installation paths
 CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
 VIEPILOT_DIR="$HOME/.cursor/viepilot"
 AUTO_YES="${VIEPILOT_AUTO_YES:-0}"
@@ -30,7 +29,6 @@ echo " VIEPILOT INSTALLER"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "${NC}"
 
-# Check if running from viepilot directory
 if [ ! -f "$SCRIPT_DIR/README.md" ] || [ ! -d "$SCRIPT_DIR/skills" ]; then
     echo -e "${RED}Error: Please run this script from the viepilot directory${NC}"
     exit 1
@@ -40,6 +38,7 @@ echo -e "${YELLOW}Installation paths:${NC}"
 echo "  Skills: $CURSOR_SKILLS_DIR"
 echo "  ViePilot: $VIEPILOT_DIR"
 echo "  Profile: $INSTALL_PROFILE"
+echo "  Engine: Node (bin/viepilot.cjs) — no bash copy logic"
 echo ""
 
 install_cloc_best_effort() {
@@ -86,7 +85,6 @@ install_cloc_best_effort() {
     fi
 }
 
-# Confirm installation
 if [ "$AUTO_YES" != "1" ]; then
     read -p "Continue with installation? (y/n) " -n 1 -r
     echo
@@ -99,105 +97,29 @@ else
 fi
 
 echo ""
-echo -e "${BLUE}Installing...${NC}"
-
-# Create directories
-echo "  Creating directories..."
-mkdir -p "$CURSOR_SKILLS_DIR"
-mkdir -p "$VIEPILOT_DIR/workflows"
-mkdir -p "$VIEPILOT_DIR/templates/project"
-mkdir -p "$VIEPILOT_DIR/templates/phase"
-mkdir -p "$VIEPILOT_DIR/bin"
-mkdir -p "$VIEPILOT_DIR/lib"
-mkdir -p "$VIEPILOT_DIR/ui-components"
-
-# Install skills (copy default; VIEPILOT_SYMLINK_SKILLS=1 for dev-style live links)
-echo "  Installing skills..."
-for skill_dir in "$SCRIPT_DIR/skills"/*; do
-    if [ -d "$skill_dir" ]; then
-        skill_name=$(basename "$skill_dir")
-        if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
-            if command -v realpath >/dev/null 2>&1; then
-                skill_abs=$(realpath "$skill_dir")
-            else
-                skill_abs=$(cd "$skill_dir" && pwd)
-            fi
-            ln -sfn "$skill_abs" "$CURSOR_SKILLS_DIR/$skill_name"
-            echo "    ✓ $skill_name (symlink)"
-        else
-            cp -r "$skill_dir" "$CURSOR_SKILLS_DIR/"
-            echo "    ✓ $skill_name"
-        fi
-    fi
-done
-
-# Install workflows
-echo "  Installing workflows..."
-cp -r "$SCRIPT_DIR/workflows"/* "$VIEPILOT_DIR/workflows/"
-echo "    ✓ workflows"
-
-# Install templates
-echo "  Installing templates..."
-cp -r "$SCRIPT_DIR/templates/project"/* "$VIEPILOT_DIR/templates/project/"
-cp -r "$SCRIPT_DIR/templates/phase"/* "$VIEPILOT_DIR/templates/phase/"
-echo "    ✓ templates"
-
-# Install stock UI components
-echo "  Installing stock UI components..."
-if [ -d "$SCRIPT_DIR/ui-components" ]; then
-    cp -r "$SCRIPT_DIR/ui-components"/* "$VIEPILOT_DIR/ui-components/"
-    echo "    ✓ ui-components"
-fi
-
-# Install CLI tools
-echo "  Installing CLI tools..."
-cp "$SCRIPT_DIR/bin/vp-tools.cjs" "$VIEPILOT_DIR/bin/"
-cp "$SCRIPT_DIR/bin/viepilot.cjs" "$VIEPILOT_DIR/bin/"
-cp "$SCRIPT_DIR/lib/cli-shared.cjs" "$VIEPILOT_DIR/lib/"
-chmod +x "$VIEPILOT_DIR/bin/vp-tools.cjs"
-chmod +x "$VIEPILOT_DIR/bin/viepilot.cjs"
-echo "    ✓ vp-tools.cjs + viepilot.cjs + lib/cli-shared.cjs"
-
-echo "  Checking optional dependency for README metric sync..."
+echo -e "${BLUE}Preparing Node installer...${NC}"
 install_cloc_best_effort
 
-# Create symlink in PATH (optional)
 echo ""
 if [ "$AUTO_YES" != "1" ]; then
-    read -p "Add vp-tools + viepilot to PATH? (creates symlink in /usr/local/bin) (y/n) " -n 1 -r
+    read -p "Add vp-tools + viepilot to PATH? (symlinks via Node installer, often /usr/local/bin) (y/n) " -n 1 -r
     echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        export VIEPILOT_ADD_PATH=1
+    fi
 else
-    REPLY=$([ "$ADD_PATH_CHOICE" = "1" ] && echo "y" || echo "n")
-fi
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if [ -w "/usr/local/bin" ]; then
-        ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
-        ln -sf "$VIEPILOT_DIR/bin/viepilot.cjs" "/usr/local/bin/viepilot"
-        echo "    ✓ vp-tools + viepilot added to PATH"
-    else
-        echo -e "${YELLOW}    Note: Need sudo to create symlink${NC}"
-        sudo ln -sf "$VIEPILOT_DIR/bin/vp-tools.cjs" "/usr/local/bin/vp-tools"
-        sudo ln -sf "$VIEPILOT_DIR/bin/viepilot.cjs" "/usr/local/bin/viepilot"
-        echo "    ✓ vp-tools + viepilot added to PATH"
+    if [ "$ADD_PATH_CHOICE" = "1" ]; then
+        export VIEPILOT_ADD_PATH=1
     fi
 fi
 
+export VIEPILOT_AUTO_YES=1
+
+NODE_ARGS=(install --target "$INSTALL_PROFILE" --yes)
+if [ "${VIEPILOT_INSTALL_DRY_RUN:-0}" = "1" ]; then
+    NODE_ARGS+=(--dry-run)
+fi
+
 echo ""
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN} INSTALLATION COMPLETE ✓${NC}"
-echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo ""
-echo "Installed:"
-echo "  - Skills: $CURSOR_SKILLS_DIR/vp-*"
-echo "  - Workflows: $VIEPILOT_DIR/workflows/"
-echo "  - Templates: $VIEPILOT_DIR/templates/"
-echo "  - CLI: $VIEPILOT_DIR/bin/vp-tools.cjs"
-echo ""
-echo "Quick Start:"
-echo "  1. Open your project in Cursor"
-echo "  2. Run: /vp-brainstorm"
-echo "  3. After brainstorm: /vp-crystallize"
-echo "  4. Start coding: /vp-auto"
-echo ""
-echo "Documentation: $SCRIPT_DIR/docs/getting-started.md"
-echo ""
+echo -e "${BLUE}Running: node bin/viepilot.cjs ${NODE_ARGS[*]}${NC}"
+exec node "$SCRIPT_DIR/bin/viepilot.cjs" "${NODE_ARGS[@]}"
