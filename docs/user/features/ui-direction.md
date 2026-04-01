@@ -76,9 +76,9 @@ Sau khi có prototype trong `.viepilot/ui-direction/{session-id}/`, bạn có th
 
 **Pipeline (3 phase)** — normative: `workflows/brainstorm.md` (mục *UI Direction — UX walkthrough & upgrade*):
 
-1. **End-user simulation** — AI đóng vai người dùng cuối: đi qua 3–8 scenario trên UI hiện tại, ghi pain (mơ hồ, thiếu feedback, quá nhiều bước, …) và mức độ.
-2. **Designer + research** — Đổi vai UX/UI designer: ưu tiên P0/P1/P2, **web search** khi cần benchmark/pattern, đề xuất cải tiến theo từng page/slug.
-3. **Cập nhật artifact** — Sửa HTML/CSS, và trong **`notes.md`** thêm section **`## UX walkthrough log`** (entry: ngày, scenario, pain, link research, tóm tắt thay đổi). Multi-page: vẫn giữ **hub** + **`## Pages inventory`** khớp `pages/*`.
+1. **End-user simulation** — AI đóng vai người dùng cuối: đi qua 3–8 scenario trên UI hiện tại, ghi pain (mơ hồ, thiếu feedback, quá nhiều bước, …) và mức độ. **Sau đó** chạy **content stress pass** (ENH-019): copy dài, list/grid đầy, số & validation dài, empty vs max, viewport hẹp/rộng — phát hiện tràn layout / ellipsis / scroll / overlap; ghi **Stress findings** (có thể mô tả giả định nếu prototype chưa có data thật).
+2. **Designer + research** — Đổi vai UX/UI designer: ưu tiên P0/P1/P2 (**P0** nếu stress nội dung làm hỏng luồng), **web search** khi cần benchmark/pattern, đề xuất cải tiến theo từng page/slug.
+3. **Cập nhật artifact** — Sửa HTML/CSS, và trong **`notes.md`** thêm section **`## UX walkthrough log`** (entry: ngày, scenario, pain, **Stress findings**, link research, tóm tắt thay đổi; tùy chọn placeholder dài để minh họa). Multi-page: vẫn giữ **hub** + **`## Pages inventory`** khớp `pages/*`.
 
 Gợi ý: kèm tên sản phẩm hoặc ngữ cảnh trong cùng tin nhắn (vd. “Trips — ưu tiên luồng đặt chuyến”).
 

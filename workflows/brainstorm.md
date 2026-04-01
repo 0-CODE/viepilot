@@ -180,18 +180,27 @@ User có thể kèm ngữ cảnh một dòng (vd. tên sản phẩm **Trips**, p
 2. Liệt kê **3–8 scenario** cụ thể (vd. lần đầu mở app, hoàn tất task chính, lỗi edge case) — ưu tiên đúng page nếu multi-page (`pages/*.html`).
 3. Với từng scenario: mô tả **hành vi** (đọc/click tưởng tượng trên UI hiện tại) → ghi **pain**: mơ hồ, thiếu phản hồi, quá nhiều bước, không khớp mental model, khả năng mobile/a11y, v.v.
 4. Tổng hợp **Voice of pseudo-user** (bullet + mức độ **low / medium / high**).
+5. **Stress nội dung & tràn layout (content stress pass)** — *bắt buộc trong mỗi lần `/research-ui`*: sau happy/edge hành vi, mô phỏng **dữ liệu ở biên** trên từng màn/page quan trọng (hoặc toàn hub nếu single-screen). Tối thiểu xét **3–6 loại** sau (chọn đúng ngữ cảnh sản phẩm; bỏ qua mục không áp dụng nhưng **ghi rõ “N/A + lý do”**):
+   - **Copy dài**: tiêu đề, subtitle, CTA, placeholder ô nhập, tooltip, breadcrumb, tên địa điểm/người dài (Unicode), email/URL dài.
+   - **Khối lượng**: danh sách/grid **nhiều phần tử**, bảng nhiều cột/hàng, thẻ/tag/badge chồng, notification stack, lịch nhiều sự kiện.
+   - **Số & định dạng**: số tiền rất lớn/nhỏ, đơn vị dài, múi giờ/ngôn ngữ (nếu product có).
+   - **Trạng thái lỗi / validation**: message lỗi dài, nhiều lỗi cùng lúc, inline + banner.
+   - **Empty vs cực đầy**: không dữ liệu vs max items; skeleton vs flash of long content.
+   - **Viewport**: cùng stress trên **hẹp** (mobile) và **rộng** (desktop) nếu prototype nhắm đa kích thước.
+   Với prototype chỉ có nội dung mẫu ngắn: **không bắt buộc** sửa file ngay ở Phase 1 — hãy **mô tả giả định** (“nếu title 120 ký tự thì…”) và UI sẽ **tràn, ellipsis, scroll, overlap, wrap xấu** thế nào.
+6. Tổng hợp thêm **Stress findings** (bullet: loại stress → quan sát → severity **low/medium/high**) và merge vào tổng kết Phase 1 cho Phase 2.
 
 #### Phase 2 — UX designer + research
 
-1. Đổi vai: **UX/UI designer** nhận feedback từ Phase 1.
-2. Map pain → **nguyên nhân thiết kế** (heuristic ngắn, pattern thiếu/sai); **ưu tiên hóa** P0 / P1 / P2.
+1. Đổi vai: **UX/UI designer** nhận feedback từ Phase 1 (**gồm cả Stress findings**).
+2. Map pain → **nguyên nhân thiết kế** (heuristic ngắn, pattern thiếu/sai); **ưu tiên hóa** P0 / P1 / P2 — **ưu tiên P0** nếu stress nội dung gây **mất thông tin, click sai, hoặc không dùng được** (overflow che CTA, text cắt nghĩa, bảng tràn không đọc được).
 3. **Web research**: khi cần benchmark hoặc pattern chuẩn ngành, chạy **1–3 truy vấn** (search) → tóm tắt nguồn, takeaway, trade-off.
 4. **Đề xuất cải tiến** cụ thể (thành phần UI, copy, layout, luồng) gắn với file/page (`slug` nếu multi-page).
 
 #### Phase 3 — Cập nhật artifact
 
 1. Sửa **`index.html`**, **`pages/*.html`**, **`style.css`** theo P0 → P1 trong phạm vi phiên (prototype direction, không ép production).
-2. Trong **`notes.md`**, thêm hoặc append section **`## UX walkthrough log`** (một entry mỗi lần chạy lệnh): ngày/scenario đã mô phỏng, pain chính, link research (nếu có), **diff ý định** (bullet), file đã đổi.
+2. Trong **`notes.md`**, thêm hoặc append section **`## UX walkthrough log`** (một entry mỗi lần chạy lệnh): ngày/scenario đã mô phỏng, pain chính, **Stress findings** (tóm tắt), link research (nếu có), **diff ý định** (bullet), file đã đổi. *Tùy chọn:* chỉnh HTML với **placeholder/copy dài** hoặc thêm **demo row** để minh họa stress đã bàn (ghi trong log).
 3. **Multi-page**: sau chỉnh sửa page, giữ **`## Pages inventory`** và **hub** khớp 100% file trong `pages/*` (hook FEAT-007).
 
 **Quan hệ với `/research {topic}`**: lệnh **tự do** chỉ cần research ngắn và quay lại topic; **`/research-ui`** bắt buộc **3 phase** + **ghi log** + **chỉnh HTML/CSS khi có đề xuất hợp lý**.
@@ -373,8 +382,8 @@ _(Điền sau bước 5 — Project meta intake; xem `docs/dev/global-profiles.m
 - Preview focus:
   - {layout/flow summary; list each page slug if multi-page}
 
-**UX walkthrough log** (optional; FEAT-010 — khi đã chạy `/research-ui`):
-- {YYYY-MM-DD}: scenarios exercised → top pains → research links → HTML/CSS edits summary
+**UX walkthrough log** (optional; FEAT-010 + ENH-019 — khi đã chạy `/research-ui`):
+- {YYYY-MM-DD}: scenarios exercised → top pains → **Stress findings** (tóm tắt) → research links → HTML/CSS edits summary
 
 ---
 
@@ -446,7 +455,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - [ ] Landing page topics trigger layout follow-up questions
 - [ ] 21st.dev references được dùng khi thảo luận landing page
 - [ ] Research có thể chạy ngay trong brainstorm session khi user yêu cầu
-- [ ] **FEAT-010**: Trong UI Direction, `/research-ui` (hoặc `/research ui`) chạy đủ 3 phase và ghi **`## UX walkthrough log`** khi chỉnh prototype
+- [ ] **FEAT-010 + ENH-019**: Trong UI Direction, `/research-ui` (hoặc `/research ui`) chạy đủ 3 phase, gồm **content stress pass** + **`## UX walkthrough log`** (Stress findings) khi chỉnh prototype
 - [ ] Git committed
 - [ ] **FEAT-009**: Nếu binding thiếu và scope đã locked — đã chạy **Project meta intake** (bước 5) hoặc có **`## Meta intake waiver`** có lý do trước Completed
 - [ ] **`## Project meta intake (FEAT-009)`** trong session: `status` + `profile_id` khi completed (hoặc waiver nếu skipped)
