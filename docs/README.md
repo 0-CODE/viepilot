@@ -128,4 +128,4 @@
 
 ---
 
-*Last updated: 2026-04-02 — ViePilot framework **v1.9.3** (FEAT-001 Claude Code setup doc; ENH-021 request/evolve/auto routing; M1.27 FEAT-009 global profiles); see `CHANGELOG.md`, [Claude Code setup](user/claude-code-setup.md), `docs/user/features/autonomous-mode.md`.*
+*Last updated: 2026-04-02 — ViePilot framework **v1.9.4** (Claude Code installer → `~/.claude/skills`; FEAT-001 doc v1.9.3; ENH-021 routing; M1.27 FEAT-009 profiles); see `CHANGELOG.md`, [Claude Code setup](user/claude-code-setup.md), `docs/user/features/autonomous-mode.md`.*

@@ -80,6 +80,17 @@ describe('guided installer CLI', () => {
     expect(result.stdout).toContain('[dry-run]');
   });
 
+  test('dry-run with claude-code target plans ~/.claude/skills', () => {
+    const result = spawnSync('node', [CLI, 'install', '--target', 'claude-code', '--yes', '--dry-run'], {
+      encoding: 'utf8',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Selected targets: claude-code');
+    expect(result.stdout).toContain('.claude/skills');
+    expect(result.stdout).toContain('[dry-run]');
+  });
+
   test('supports uninstall dry-run in non-interactive mode', () => {
     const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-home-'));
     const result = spawnSync('node', [CLI, 'uninstall', '--yes', '--dry-run'], {
@@ -93,5 +104,20 @@ describe('guided installer CLI', () => {
   test('computeUninstallPaths includes root install dir', () => {
     const paths = computeUninstallPaths(['cursor-agent']);
     expect(paths.some((p) => p.endsWith('/.cursor/viepilot'))).toBe(true);
+  });
+
+  test('computeUninstallPaths lists ~/.claude/skills/vp-* when claude-code target', () => {
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-uninst-claude-'));
+    const skillDir = path.join(home, '.claude', 'skills', 'vp-ztest');
+    fs.mkdirSync(skillDir, { recursive: true });
+    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), '---\nname: vp-ztest\n---\n', 'utf8');
+    const prev = process.env.HOME;
+    process.env.HOME = home;
+    try {
+      const paths = computeUninstallPaths(['claude-code']);
+      expect(paths).toContain(path.join(home, '.claude', 'skills', 'vp-ztest'));
+    } finally {
+      process.env.HOME = prev;
+    }
   });
 });

@@ -16,6 +16,7 @@ describe('FEAT-001 Claude Code documentation contracts', () => {
     expect(md).toMatch(/code\.claude\.com\/docs\/en\/claude-directory/);
     expect(md).toMatch(/~\/\.cursor\/skills/);
     expect(md).toMatch(/npx viepilot install/);
+    expect(md).toMatch(/~\/\.claude\/skills\/vp-/);
     expect(md).toMatch(/\/vp-request/);
     expect(md).toMatch(/\/vp-evolve/);
     expect(md).toMatch(/\/vp-auto/);

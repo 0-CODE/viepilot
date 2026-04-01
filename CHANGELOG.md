@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+## [1.9.4] - 2026-04-02
+
+### Fixed
+
+- **Installer / Claude Code** — `npx viepilot install --target claude-code` giờ **copy** (hoặc symlink nếu `VIEPILOT_SYMLINK_SKILLS=1`) toàn bộ `skills/vp-*` vào **`~/.claude/skills/`**, không chỉ `~/.cursor/skills/`. `uninstall --target claude-code` gỡ `~/.claude/skills/vp-*`. (`lib/viepilot-install.cjs`, `bin/viepilot.cjs`; tests + `docs/user/claude-code-setup.md`, FAQ).
+
 ## [1.9.3] - 2026-04-02
 
 ### Added

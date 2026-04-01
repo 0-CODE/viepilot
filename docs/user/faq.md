@@ -16,7 +16,7 @@ A: Skills được thiết kế cho Cursor IDE. Tuy nhiên, workflows và CLI (`
 
 ### Q: Làm sao dùng ViePilot với Claude Code?
 
-A: Cài bundle bằng `npx viepilot install --target claude-code`, sau đó map skills `vp-*` vào **`~/.claude/skills/`** (symlink hoặc copy từ `~/.cursor/skills/`) vì Claude Code không đọc thư mục Cursor. Chi tiết từng bước, verify `vp-tools info`, và chuỗi **`/vp-request` → `/vp-evolve` → `/vp-auto`**: xem [ViePilot trên Claude Code](claude-code-setup.md).
+A: Chạy `npx viepilot install --target claude-code --yes` (ViePilot **≥ 1.9.4**): installer **tự copy** `vp-*` vào **`~/.claude/skills/`**. Với bản cũ hoặc chỉ target Cursor, symlink/copy thủ công từ `~/.cursor/skills/`. Chi tiết, verify `vp-tools info`, và chuỗi **`/vp-request` → `/vp-evolve` → `/vp-auto`**: xem [ViePilot trên Claude Code](claude-code-setup.md).
 
 ---
 

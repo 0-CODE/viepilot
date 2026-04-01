@@ -112,6 +112,37 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
     expect(w.path).toBe(plan.paths.viepilotProfileMapPath);
     expect(w.content).toMatch(/profile_id/);
   });
+
+  test('buildInstallPlan without installTargets does not add ~/.claude/skills steps', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-no-claude-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    expect(plan.paths.claudeSkillsDir).toBeNull();
+    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.claude'))).toBe(false);
+  });
+
+  test('buildInstallPlan with installTargets claude-code mirrors vp-* into ~/.claude/skills', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-claude-skills-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const claudeSkills = path.join(path.resolve(fakeHome), '.claude', 'skills');
+    expect(plan.paths.claudeSkillsDir).toBe(claudeSkills);
+    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path === claudeSkills)).toBe(true);
+    const intoClaude = plan.steps.filter(
+      (s) =>
+        s.kind === 'copy_dir' &&
+        typeof s.to === 'string' &&
+        s.to.startsWith(claudeSkills + path.sep) &&
+        s.to.includes('vp-'),
+    );
+    expect(intoClaude.length).toBeGreaterThan(0);
+  });
 });
 
 describe('viepilot-install apply (28.2)', () => {
@@ -168,6 +199,19 @@ describe('viepilot-install apply (28.2)', () => {
     );
     applyInstallPlan(plan, { dryRun: false });
     expect(fs.readFileSync(mapPath, 'utf8')).toBe('USER_OWNED\n');
+  });
+
+  test('applyInstallPlan writes vp-info under ~/.claude/skills when installTargets includes claude-code', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-claude-apply-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const r = applyInstallPlan(plan, { dryRun: false });
+    expect(r.ok).toBe(true);
+    const vpInfoSkill = path.join(fakeHome, '.claude', 'skills', 'vp-info', 'SKILL.md');
+    expect(fs.existsSync(vpInfoSkill)).toBe(true);
   });
 });
 

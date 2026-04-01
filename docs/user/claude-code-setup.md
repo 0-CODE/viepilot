@@ -14,9 +14,9 @@ Bundled skill ViePilot dùng frontmatter `name: vp-*` — trên Claude Code bạ
 
 **Lưu ý:** Nội dung skill hiện nhắc tới công cụ kiểu Cursor (`ReadFile`, `ApplyPatch`, …). Trên Claude Code, agent sẽ map sang tool tương đương (đọc/ghi file, terminal, …). Phần **workflow** và **chuỗi lệnh** (`/vp-evolve` → `/vp-auto`) vẫn giữ nguyên ý nghĩa.
 
-## Bước 1 — Cài bundle ViePilot (CLI + mirror dưới `~/.cursor/`)
+## Bước 1 — Cài bundle ViePilot (CLI)
 
-Installer Node **hiện copy cùng một bộ file** cho mọi `--target` (kể cả `claude-code`); profile chỉ mang tính **ghi nhận lựa chọn** (xem comment trong `bin/viepilot.cjs`: *same file set for every target id*).
+Với **`--target claude-code`**, installer (ViePilot **≥ 1.9.4**) **tự copy** toàn bộ `skills/vp-*` vào **`~/.claude/skills/`** (Claude Code mới thấy lệnh `/vp-*`). Đồng thời vẫn mirror vào **`~/.cursor/skills/`** và **`~/.cursor/viepilot/`** (workflows, bin) như trước.
 
 ```bash
 npx viepilot install --target claude-code --yes
@@ -32,15 +32,18 @@ npx viepilot install --target claude-code --yes
 
 Kết quả điển hình:
 
-- Skills được copy tới **`~/.cursor/skills/vp-*/`**
+- **`~/.claude/skills/vp-*/SKILL.md`** — dùng trực tiếp trong Claude Code
+- **`~/.cursor/skills/vp-*/`** — giữ cho Cursor / tương thích
 - Workflows, templates, `bin/*.cjs` tới **`~/.cursor/viepilot/`**
 - Seed **`~/.viepilot/profiles/`** và `~/.viepilot/profile-map.md` (xem [Global profiles](../dev/global-profiles.md))
 
-**Cập nhật sau này:** chạy lại `npx viepilot install` từ bản npm/git mới để refresh `~/.cursor/`; nếu bạn đã **symlink** từ `~/.claude/skills` (mục dưới), skills phía Claude sẽ thấy bản mới cùng lúc với mục tiêu symlink.
+Sau khi cài: **khởi động lại / mở session Claude Code mới** nếu menu `/` chưa thấy `vp-*`.
 
-## Bước 2 — Gắn skills `vp-*` vào Claude Code
+**Cập nhật sau này:** chạy lại `npx viepilot install --target claude-code --yes` từ bản npm/git mới để refresh cả hai cây skills.
 
-Claude Code **không** đọc `~/.cursor/skills`. Bạn cần đặt từng skill tại **`~/.claude/skills/<tên-thư-mục>/SKILL.md`**.
+## Bước 2 — Tuỳ chọn: symlink / copy thủ công (bản cũ hoặc chỉ Cursor)
+
+Nếu bạn dùng ViePilot **&lt; 1.9.4** hoặc đã cài **`--target cursor-*`** mà **không** gồm `claude-code`, Claude Code **không** đọc `~/.cursor/skills` — khi đó đồng bộ thủ công vào **`~/.claude/skills/<tên-thư-mục>/SKILL.md`**.
 
 ### Cách A — Symlink (khuyến nghị cho máy cá nhân)
 

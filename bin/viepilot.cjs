@@ -32,14 +32,14 @@ Usage:
   viepilot --list-targets
 
 Install options:
-  --target <id|id,id|all>   Target profile(s): claude-code,cursor-agent,cursor-ide
+  --target <id|id,id|all>   Target profile(s): claude-code (mirrors vp-* to ~/.claude/skills), cursor-agent, cursor-ide
   --yes                      Non-interactive mode (skip confirmations)
   --dry-run                  Print actions only (Node installer; no bash)
   --list-targets             Print supported targets and exit
   --help                     Show help
 
 Uninstall options:
-  --target <id|id,id|all>   Remove installed assets for selected profile(s)
+  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; shared: ~/.cursor/viepilot)
   --yes                     Non-interactive mode (skip confirmations)
   --dry-run                 Print actions only, do not remove files
 `);
@@ -246,7 +246,7 @@ async function interactiveTargetSelection() {
 }
 
 /**
- * One install applies the same file bundle for every target id (profiles are informational).
+ * Core bundle (workflows, bin, ~/.cursor/viepilot) is shared; `claude-code` additionally mirrors vp-* skills into ~/.claude/skills.
  * @param {string[]} selectedTargets
  * @param {boolean} dryRun
  * @returns {{ ok: boolean, code: number }}
@@ -264,7 +264,7 @@ function runInstallViaNode(selectedTargets, dryRun) {
 
   let plan;
   try {
-    plan = buildInstallPlan(pkgRoot, env, { wantPathShim });
+    plan = buildInstallPlan(pkgRoot, env, { wantPathShim, installTargets: selectedTargets });
   } catch (err) {
     console.error(err.message);
     return { ok: false, code: 1 };
@@ -273,7 +273,10 @@ function runInstallViaNode(selectedTargets, dryRun) {
   console.log('');
   console.log('ViePilot install (Node — no bash required)');
   console.log(`  Package: ${pkgRoot}`);
-  console.log(`  Targets (informational): ${selectedTargets.join(', ')}`);
+  console.log(`  Targets: ${selectedTargets.join(', ')}`);
+  if (selectedTargets.includes('claude-code')) {
+    console.log('  (claude-code → also ~/.claude/skills/vp-*)');
+  }
 
   const applied = applyInstallPlan(plan, { dryRun });
   if (applied.logs.length > 0) {
@@ -332,7 +335,8 @@ async function installCommand(rawArgs) {
     else console.log(`- ${r.target}: failed (exit ${r.code})`);
   }
   console.log('\nNext actions:');
-  console.log('- Open project in Cursor/Claude and run /vp-status');
+  console.log('- Cursor: open project and run /vp-status');
+  console.log('- Claude Code: restart session if needed so ~/.claude/skills/vp-* is picked up; then /vp-status');
   console.log('- If needed, run /vp-brainstorm then /vp-crystallize');
 
   return failed.length === 0 ? 0 : 1;
@@ -353,6 +357,17 @@ function computeUninstallPaths(targets) {
       }
     } else {
       paths.push(path.join(cursorSkills, 'vp-*'));
+    }
+  }
+
+  if (targets.some((t) => t === 'claude-code')) {
+    const claudeSkills = path.join(home, '.claude', 'skills');
+    if (fs.existsSync(claudeSkills)) {
+      for (const entry of fs.readdirSync(claudeSkills)) {
+        if (entry.startsWith('vp-')) {
+          paths.push(path.join(claudeSkills, entry));
+        }
+      }
     }
   }
 
