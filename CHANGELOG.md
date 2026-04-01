@@ -5,24 +5,19 @@ All notable changes to ViePilot will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.6.0] - 2026-04-01
+
+### Added
+
+- **M1.23 / Phase 27 (FEAT-008)** — `vp-tools info` and `vp-tools info --json` with `lib/viepilot-info.cjs` (resolve `viepilot` package root without `.viepilot/`, npm latest, skills + workflows inventory); `vp-tools update` with `--dry-run`, `--yes`, `--global` and `lib/viepilot-update.cjs` (local vs global install classification, semver no-op when up to date); Cursor skills `skills/vp-info/SKILL.md` and `skills/vp-update/SKILL.md`; documentation in `docs/skills-reference.md`, `docs/dev/cli-reference.md`, `docs/user/quick-start.md`, and README metrics (16 skills, 18 CLI surface / 17 `vp-tools` subcommands); unit tests `tests/unit/viepilot-info.test.js` and `tests/unit/viepilot-update.test.js`.
+
 ## [1.5.1] - 2026-04-01
 
 ### Added
 
 - **M1.22 — ENH-001 ~ ENH-005 backlog closed (verification)** — Các enhancement doc-sync + audit drift đã được implement trong các milestone trước (`workflows/autonomous.md`, `workflows/documentation.md`, `workflows/audit.md`, skills `vp-auto` / `vp-docs` / `vp-audit`). Thêm `tests/unit/enh-backlog-workflow-contracts.test.js` để regression-guard contract.
-
-## [Unreleased]
-
-### Planned
-
-- **M1.23 / Phase 27 (FEAT-008)** — remaining: task **27.5** (verify:release, **1.6.0**, đóng FEAT-008)
-
-### Added
-
-- **M1.23 / Phase 27 — task 27.4** — `docs/dev/cli-reference.md` documents `vp-tools info` / `update`; `docs/user/quick-start.md` version check & upgrade; README CLI metrics (**18** surface, **17** `vp-tools` subcommands); `npm run readme:sync`; `docs/README.md` index copy.
-- **M1.23 / Phase 27 — task 27.3** — Cursor skills `skills/vp-info/SKILL.md` và `skills/vp-update/SKILL.md` mirror contract `vp-tools info` / `update`; `docs/skills-reference.md` sections `/vp-info`, `/vp-update`; README skills count **16** + Skills Reference table.
-- **M1.23 / Phase 27 — task 27.2** — `vp-tools update` with `--dry-run`, `--yes`, `--global`; `lib/viepilot-update.cjs` (classify local `node_modules` vs global install, semver no-op when installed ≥ npm latest); `tests/unit/viepilot-update.test.js`; README CLI counts.
-- **M1.23 / Phase 27 — task 27.1** — `vp-tools info` and `vp-tools info --json`; `lib/viepilot-info.cjs` (resolve package root without `.viepilot/`, npm latest, skills + workflows inventory); `tests/unit/viepilot-info.test.js`; README CLI/test counts.
 
 ### Enhanced
 
