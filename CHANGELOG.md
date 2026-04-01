@@ -15,10 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.23 / Phase 27 (FEAT-008)** — remaining: skills `vp-info` / `vp-update`, docs sweep, **1.6.0** release (see `.viepilot/phases/27-vp-info-vp-update/`)
+- **M1.23 / Phase 27 (FEAT-008)** — remaining: docs sweep (27.4), closure + **1.6.0** (27.5); skills `vp-info` / `vp-update` shipped (27.3)
 
 ### Added
 
+- **M1.23 / Phase 27 — task 27.3** — Cursor skills `skills/vp-info/SKILL.md` và `skills/vp-update/SKILL.md` mirror contract `vp-tools info` / `update`; `docs/skills-reference.md` sections `/vp-info`, `/vp-update`; README skills count **16** + Skills Reference table.
 - **M1.23 / Phase 27 — task 27.2** — `vp-tools update` with `--dry-run`, `--yes`, `--global`; `lib/viepilot-update.cjs` (classify local `node_modules` vs global install, semver no-op when installed ≥ npm latest); `tests/unit/viepilot-update.test.js`; README CLI counts.
 - **M1.23 / Phase 27 — task 27.1** — `vp-tools info` and `vp-tools info --json`; `lib/viepilot-info.cjs` (resolve package root without `.viepilot/`, npm latest, skills + workflows inventory); `tests/unit/viepilot-info.test.js`; README CLI/test counts.
 

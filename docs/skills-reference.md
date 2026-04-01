@@ -200,6 +200,23 @@ AI pauses for user input when:
 
 ---
 
+## /vp-info
+
+**Purpose**: Xem metadata bundle ViePilot — version đã cài, npm latest, danh sách skills/workflows (FEAT-008).
+
+### CLI
+| Invocation | Description |
+|------------|-------------|
+| `vp-tools info` | Bảng human-readable |
+| `vp-tools info --json` | JSON parse được: `packageRoot`, `packageName`, `installedVersion`, `latestNpm`, `gitHead`, `skills[]`, `workflows[]` |
+| `node node_modules/viepilot/bin/vp-tools.cjs info` | Từ project có dependency `viepilot` |
+
+### JSON fields (tóm tắt)
+- **`skills[]`**: `id`, `version`, `relativePath`
+- **`workflows[]`**: `id`, `relativePath`, `semverInFile`, `note`
+
+---
+
 ## /vp-docs
 
 **Purpose**: Generate documentation
@@ -409,3 +426,20 @@ CHANGELOG.md (updated)
 | `skip N --reason "..."` | Skip task N |
 | `retry N` | Retry failed task N |
 | `rollback N` | Rollback task N changes |
+
+---
+
+## /vp-update
+
+**Purpose**: Nâng cấp package `viepilot` qua npm — có dry-run và xác nhận non-interactive (FEAT-008).
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | In planned npm command, không chạy |
+| `--yes` | Bỏ qua prompt; **bắt buộc** trong non-interactive khi apply |
+| `--global` | Ép `npm install -g viepilot@latest` |
+
+### Lưu ý
+- Trong repo **application** có `node_modules/viepilot`, update mặc định có thể target **local** — dùng **`--global`** nếu chỉ muốn global.
+- Luồng an toàn: `vp-tools update --dry-run` → sau đó `vp-tools update --yes` (hoặc `--global --yes`).
