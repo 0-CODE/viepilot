@@ -80,12 +80,25 @@ For each session file:
 3. Extract database schemas
 4. Extract features/requirements
 5. Extract tech stack choices
+6. **Product horizon (mandatory)** — parse `## Product horizon` when present (contract: `workflows/brainstorm.md`):
+   - Classify bullets under **MVP (ship first)**, **Post-MVP (after first release)**, and **Future / exploratory** using trailing tags `(MVP)` / `(Post-MVP)` / `(Future)` when present.
+   - Capture **Non-goals for MVP** and **Deferred capabilities (from MVP)** as first-class lists (these feed roadmap horizon and architecture constraints).
+   - Record **extensibility / platform notes** that imply deferred work (e.g., plugin model later, multi-tenant after MVP) if written in horizon or architecture sections.
+   - If the session states **single-release only** / **no deferred epics** (see brainstorm scope note), record `horizon_mode: single_release` in working notes for Step 7.
+
+**Consolidate across sessions** into a single **horizon inventory** (dedupe by capability name; if the same capability appears under conflicting tiers → stop and ask the user which tier wins).
+
+**Horizon validation gate (before leaving Step 1):**
+- [ ] Every brainstorm file was checked for `## Product horizon` **or** an explicit in-session single-release / no-deferred statement.
+- [ ] If `## Product horizon` is missing and the session still discusses releases beyond MVP without a single-release statement → stop and ask the user to update the session (e.g. `/vp-brainstorm` save) or confirm **single-release only** for the whole project.
+- [ ] Either **horizon inventory is non-empty** (Post-MVP/Future/deferred items captured) **or** **single-release** is explicitly recorded — no silent default.
 
 Validate completeness:
 - [ ] Tech stack defined
 - [ ] Core features identified
 - [ ] Database schema exists
 - [ ] API requirements clear
+- [ ] Product horizon processed per gate above (inventory or explicit single-release)
 
 If gaps found → ask user to clarify or return to brainstorm.
 </step>
@@ -260,14 +273,22 @@ Create `.viepilot/ROADMAP.md` using template:
 `@$HOME/.cursor/viepilot/templates/project/ROADMAP.md`
 
 From brainstorm features/MVP breakdown:
-1. Create phases
+1. Create **executable MVP phases** (what `/vp-auto` can run next; near-term delivery only).
 2. For each phase:
    - Define goal
    - Break into tasks
    - Set acceptance criteria
    - Add verification checkpoints
    - Estimate complexity (S/M/L/XL)
-3. Define dependencies between phases
+3. Define dependencies between MVP phases.
+4. **Post-MVP / product horizon (mandatory section in `.viepilot/ROADMAP.md`):**
+   - After MVP phases, always add a dedicated block (heading e.g. `## Post-MVP / Product horizon` or match the project template’s equivalent) that is **never omitted**:
+     - If Step 1 recorded **single-release** / no deferred epics: state explicitly *e.g.* **Single-release scope — no separate post-MVP epics** and that deferred capabilities are none by confirmation (do not invent future work).
+     - Otherwise: summarize **horizon inventory** items as **epic-level** entries (dependencies, rough sequencing OK; full task breakdown optional).
+   - Where a future epic depends on MVP deliverables, note **dependency links** back to the MVP phase(s) that unlock it.
+5. **ROADMAP self-check before finalize:**
+   - If Step 1 **horizon inventory** is non-empty but the draft ROADMAP **drops** those items or lacks the horizon block → **stop** and ask the user to reconcile (do not ship a roadmap that silently omits post-MVP content from brainstorm).
+   - If brainstorm contained Post-MVP ideas only in free text without `## Product horizon` → you should already have stopped in Step 1; do not proceed to commit ROADMAP.
 </step>
 
 <step name="generate_schemas">
@@ -413,10 +434,11 @@ Note: global stack cache at `~/.viepilot/stacks/` is machine-level knowledge and
 - [ ] All metadata collected
 - [ ] Official research completed for each selected stack
 - [ ] Global stack cache written under ~/.viepilot/stacks/{stack}/
+- [ ] Step 1: product horizon extracted **or** explicit single-release recorded; validation gate satisfied
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md complete
 - [ ] SYSTEM-RULES.md has all standards
-- [ ] ROADMAP.md has phases with tasks
+- [ ] ROADMAP.md has MVP phases with tasks **and** mandatory Post-MVP / horizon block (or explicit single-release statement)
 - [ ] Phase directories created
 - [ ] Project files created
 - [ ] Git committed
