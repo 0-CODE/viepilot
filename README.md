@@ -28,11 +28,11 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~24,779+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Total LOC | **~24,971+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **16** |
 | Workflows | **12** |
 | Templates | **16** (Project: 11, Phase: 5) |
-| CLI Commands | **17** (`vp-tools` 16 subcommands + `viepilot` installer) |
+| CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
 | Tests | **267** (9 suites: unit + integration + AI compat + README metrics + UI direction verify + ENH workflow contracts + viepilot-info + viepilot-update) |
 | ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
@@ -47,7 +47,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Workflow Files | **12** | Step-by-step execution guides |
 | Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
-| CLI Tools | 2 | vp-tools.cjs (**16** subcommands) + viepilot.cjs (guided installer) |
+| CLI Tools | 2 | vp-tools.cjs (**17** subcommands) + viepilot.cjs (guided installer) |
 | Test Files | 6 | Jest unit + integration + AI compatibility + README metrics + ENH backlog + viepilot-info/update |
 
 ---
@@ -64,7 +64,7 @@ Tổng thể / Overall:  ██████████████████�
 | Workflows (12) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
 | Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
-| CLI Tools (17) | ✅ Hoàn thiện | vp-tools 16 subcommands + viepilot installer; bundle `info` / `update` |
+| CLI Tools (18) | ✅ Hoàn thiện | vp-tools 17 subcommands + viepilot installer; bundle `info` / `update` |
 | Tests (267) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility, workflow contracts, viepilot-info, viepilot-update |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
@@ -390,7 +390,7 @@ viepilot/
 │   └── cli-shared.cjs             # Validators, project root, Levenshtein helpers
 │
 ├── bin/                           # CLI tools
-│   └── vp-tools.cjs               # 16 subcommands (+ help); uses ../lib/cli-shared.cjs, viepilot-info/update.cjs
+│   └── vp-tools.cjs               # 17 subcommands; uses ../lib/cli-shared.cjs, viepilot-info/update.cjs
 │
 ├── tests/                         # Test suite (267 tests)
 │   ├── unit/                      # Unit tests
@@ -492,7 +492,7 @@ your-project/
 | [Getting Started](docs/getting-started.md) | Hướng dẫn bắt đầu / Quick start guide |
 | [Quick Start (User)](docs/user/quick-start.md) | 5-minute guide |
 | [Skills Reference](docs/skills-reference.md) | Chi tiết từng skill / Detailed skill docs |
-| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 16 subcommands |
+| [CLI Reference](docs/dev/cli-reference.md) | vp-tools 17 subcommands (`info`, `update`, …) |
 | [Advanced Usage](docs/advanced-usage.md) | Power user features |
 | [Troubleshooting](docs/troubleshooting.md) | Common issues & fixes |
 | [Architecture](docs/dev/architecture.md) | System design |

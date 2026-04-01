@@ -54,6 +54,25 @@ npm run readme:sync
 # refresh README Total LOC metrics via cloc
 ```
 
+### Version check & update
+
+Sau khi có `vp-tools` trên PATH (ví dụ `npm i -g viepilot` hoặc cài qua `npx viepilot install` copy bundle):
+
+```bash
+vp-tools info
+vp-tools info --json
+```
+
+Cập nhật ViePilot qua npm — nên xem trước bằng dry-run; trong script/CI thêm `--yes` khi apply:
+
+```bash
+vp-tools update --dry-run
+vp-tools update --yes
+vp-tools update --global --yes
+```
+
+Trong project có dependency `viepilot`, có thể chạy: `node node_modules/viepilot/bin/vp-tools.cjs info`.
+
 ---
 
 ## Step 2: Create a New Project

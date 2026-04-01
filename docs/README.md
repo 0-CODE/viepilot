@@ -55,7 +55,7 @@
 |----------|-------------|
 | [Getting Started](getting-started.md) | Installation and first steps |
 | [Getting Started (dev entry)](dev/getting-started.md) | Short link into dev guide |
-| [CLI Reference](dev/cli-reference.md) | All 14 `vp-tools` commands with examples |
+| [CLI Reference](dev/cli-reference.md) | All `vp-tools` subcommands (incl. `info`, `update`) with examples |
 | [Architecture](dev/architecture.md) | System layers, data flow, design decisions |
 | [UI Components Library](dev/ui-components-library.md) | Curation taxonomy, storage contract, reuse flow |
 | [Contributing](dev/contributing.md) | How to add skills, workflows, CLI commands |
@@ -68,7 +68,7 @@
 
 | Document | Description |
 |----------|-------------|
-| [Skills Reference](skills-reference.md) | All 14 skills with flags and examples |
+| [Skills Reference](skills-reference.md) | All skills with flags and examples |
 | [Advanced Usage](advanced-usage.md) | Power user features and patterns |
 
 ---

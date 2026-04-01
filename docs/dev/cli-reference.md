@@ -5,9 +5,11 @@
 ## Installation
 
 ```bash
-# Sau khi install ViePilot
+# Sau khi install ViePilot (global: npm i -g viepilot — có `vp-tools` trên PATH)
 vp-tools help
 ```
+
+Sau `npm i -g viepilot`, lệnh `vp-tools` (cùng bundle với `npx viepilot`) có sẵn để gọi `info` / `update` mà không cần clone repo.
 
 ---
 
@@ -288,6 +290,73 @@ Hiển thị help.
 vp-tools help
 vp-tools help version
 ```
+
+---
+
+### `info [--json]`
+
+Hiển thị metadata bundle ViePilot: thư mục gốc package đã resolve, version đã cài, (nếu có mạng) version mới nhất trên npm, optional `git HEAD`, danh sách **skills** và **workflows** kèm semver trong frontmatter (skills).
+
+**Không cần** project có `.viepilot/` — CLI resolve gói `viepilot` từ vị trí `vp-tools.cjs` hoặc từ `process.cwd()`.
+
+```bash
+vp-tools info
+vp-tools info --json
+```
+
+**Flags**:
+
+| Flag | Description |
+|------|-------------|
+| `--json` | In một object JSON duy nhất (parse-friendly) |
+
+**JSON shape** (`vp-tools info --json`, rút gọn):
+
+```json
+{
+  "packageRoot": "/path/to/viepilot",
+  "packageName": "viepilot",
+  "installedVersion": "1.5.1",
+  "latestNpm": { "ok": true, "version": "1.5.1" },
+  "gitHead": "abc1234…",
+  "skills": [
+    { "id": "vp-auto", "version": "0.1.0", "relativePath": "skills/vp-auto/SKILL.md" }
+  ],
+  "workflows": [
+    { "id": "autonomous", "relativePath": "workflows/autonomous.md", "semverInFile": null, "note": "no semver in workflow markdown" }
+  ]
+}
+```
+
+**Errors**:
+- `Could not locate viepilot package root` — Cài global, thêm dependency `viepilot`, hoặc chạy `node path/to/viepilot/bin/vp-tools.cjs info` từ clone.
+
+---
+
+### `update [--dry-run] [--yes] [--global]`
+
+Nâng cấp package `viepilot` qua **npm** (local `node_modules`, global install, hoặc ép global).
+
+```bash
+vp-tools update --dry-run
+vp-tools update --yes
+vp-tools update --global --dry-run
+vp-tools update --global --yes
+```
+
+**Flags**:
+
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Chỉ in lệnh npm dự kiến và hướng dẫn rollback, **không** chạy npm |
+| `--yes` | Bỏ qua prompt; **bắt buộc** trong môi trường non-interactive khi thực sự apply |
+| `--global` | Ép `npm install -g viepilot@latest` |
+
+**Lưu ý**:
+- Trong repo **ứng dụng** có `node_modules/viepilot`, bản mặc định có thể cập nhật **dependency local** — dùng `--global` nếu chỉ muốn nâng bản global.
+- Non-interactive: dùng `vp-tools update --dry-run` trước, sau đó `vp-tools update --yes` (hoặc `--global --yes`).
+
+**Success**: Thông báo `npm update completed` hoặc `already up to date` (no-op).
 
 ---
 
