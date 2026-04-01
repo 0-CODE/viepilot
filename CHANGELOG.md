@@ -5,11 +5,17 @@ All notable changes to ViePilot will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2026-04-01
+
+### Added
+
+- **M1.22 — ENH-001 ~ ENH-005 backlog closed (verification)** — Các enhancement doc-sync + audit drift đã được implement trong các milestone trước (`workflows/autonomous.md`, `workflows/documentation.md`, `workflows/audit.md`, skills `vp-auto` / `vp-docs` / `vp-audit`). Thêm `tests/unit/enh-backlog-workflow-contracts.test.js` để regression-guard contract.
+
 ## [Unreleased]
 
 ### Planned
 
-- _(none — M1.21 Phase 25 deliverables merged under Enhanced below)_
+- **FEAT-008** — `vp-info` + `vp-update` (not yet scheduled in ROADMAP)
 
 ### Enhanced
 
