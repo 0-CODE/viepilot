@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **M1.25 / Phase 29 — task 29.1** — `workflows/brainstorm.md` now records architecture diagram applicability inputs; `workflows/crystallize.md` Step 4 adds required/optional/N/A matrix rules for six diagram types.
 - **M1.25 / Phase 29 — task 29.3** — `skills/vp-crystallize/SKILL.md` now requires architecture diagram applicability matrix output; `skills/vp-audit/SKILL.md` now audits matrix consistency (`required|optional|N/A`) instead of hard 6-diagram enforcement.
+- **M1.25 / Phase 29 — task 29.4** — `skills/vp-debug/SKILL.md` and `workflows/autonomous.md` now consume `ARCHITECTURE.md` diagram matrix context, prioritizing `required`, opportunistically using `optional`, and respecting `N/A` rationale without forcing full-diagram refresh.
 
 ## [1.7.0] - 2026-04-01
 

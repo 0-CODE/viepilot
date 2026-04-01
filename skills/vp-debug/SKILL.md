@@ -28,6 +28,12 @@ Systematic debugging với persistent state tracking. Giúp track vấn đề qu
 - `continue` - Continue current session
 - `list` - List all sessions
 - `close` - Close current session with resolution
+
+**Architecture diagram intake (ENH-018):**
+- If `.viepilot/ARCHITECTURE.md` has diagram applicability matrix, consume it before deep debugging.
+- Prioritize investigation context from diagrams marked `required`.
+- For `optional` diagrams: use when available; do not block debug flow if missing.
+- For `N/A` diagrams: respect rationale and avoid forcing diagram creation during debug.
 </objective>
 
 <execution_context>
@@ -79,11 +85,12 @@ Execute workflow from `@$HOME/.cursor/viepilot/workflows/debug.md`
 
 ### Key Steps
 1. **Start Session**: Gather problem description
-2. **Hypothesize**: Generate possible causes
-3. **Test**: Run tests to confirm/reject hypotheses
-4. **Track**: Log all findings
-5. **Resolve**: Document fix and root cause
-6. **Close**: Mark session complete
+2. **Load Architecture Context**: Read `.viepilot/ARCHITECTURE.md` matrix status (`required|optional|N/A`) and relevant Mermaid diagrams if present
+3. **Hypothesize**: Generate possible causes
+4. **Test**: Run tests to confirm/reject hypotheses
+5. **Track**: Log all findings
+6. **Resolve**: Document fix and root cause
+7. **Close**: Mark session complete
 </process>
 
 <success_criteria>
