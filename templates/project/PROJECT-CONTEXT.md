@@ -20,6 +20,28 @@
 {{DATA_RELATIONSHIPS}}
 </domain_knowledge>
 
+<product_vision>
+## Product vision & phased scope
+
+> Aligns with **`ROADMAP.md` → Post-MVP / Product horizon** and brainstorm tier tags `(MVP)` / `(Post-MVP)` / `(Future)`.
+
+### MVP boundary (ship first)
+
+{{MVP_BOUNDARY}}
+
+### Post-MVP themes
+
+{{POST_MVP_VISION}}
+
+### Future / exploratory north star
+
+{{FUTURE_VISION}}
+
+### Anti-goals & explicit non-scope
+
+{{VISION_NON_GOALS}}
+</product_vision>
+
 <conventions>
 ## Naming Conventions
 
