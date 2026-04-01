@@ -90,6 +90,12 @@ read:
   - context_required files from task file
 ```
 
+### ViePilot Skill Scope Policy (BUG-004 baseline)
+- **Default mode**: only reference/route skills in the ViePilot namespace (`vp-*`).
+- **External skills** (`non vp-*`) are out of scope by default and must not be suggested implicitly.
+- **Opt-in rule**: external skills are allowed only when user explicitly requests expansion outside ViePilot scope.
+- **Fallback behavior**: if an external skill appears in environment context, ignore it and continue with nearest `vp-*` equivalent.
+
 Architecture context rule (ENH-018):
 - If `.viepilot/ARCHITECTURE.md` includes a diagram applicability matrix, load only diagrams relevant to current task:
   - `required`: must be consulted before implementation/debug decisions.

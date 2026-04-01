@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 
 - **M1.25 / Phase 29 (ENH-018)** — **Crystallize + ARCHITECTURE**: Mermaid diagrams **complexity-gated** from brainstorm; six diagram kinds with required/optional/N/A; vp-audit / vp-auto / vp-debug alignment; target **1.8.0** on complete.
+- **M1.26 / Phase 30 (BUG-004)** — Enforce ViePilot scope guard: default responses/workflows reference only `vp-*` skills; external skills require explicit opt-in; align skills/workflows/docs/tests; target **1.8.1**.
 
 ### Added
+
+- **M1.26 / Phase 30 — task 30.1** — added canonical ViePilot scope policy baseline: default `vp-*` only, external skills require explicit opt-in, and fallback routing to nearest built-in `vp-*` command (`workflows/autonomous.md`, `docs/skills-reference.md`).
 
 ## [1.8.0] - 2026-04-01
 
