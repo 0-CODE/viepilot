@@ -59,6 +59,12 @@ Gợi ý các topics để brainstorm:
    - System components
    - Data flow
    - Technology stack
+   - Diagram applicability signals (for crystallize):
+     - Service/module count and boundaries
+     - Event-driven usage (queues, webhooks, async jobs)
+     - Deployment topology (single node vs multi-env / distributed)
+     - User journey complexity (single actor/simple flow vs multi-actor)
+     - External integration surface (few vs many protocols/services)
 
 3. **Data Model**
    - Core entities
@@ -195,6 +201,18 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - ...
 
 **Scope note (optional):** Nếu không có post-MVP: `Single-release product — no separate horizon epics.`
+
+## Architecture diagram applicability inputs
+
+> Input contract for `/vp-crystallize` Step 4. Keep concise and explicit.
+
+- **Project complexity**: simple | moderate | complex
+- **Services/modules**: {single | multiple} + boundaries
+- **Event-driven**: yes/no + channels (queue/webhook/cron)
+- **Deployment shape**: local-only | single-env cloud | multi-env/distributed
+- **User flow complexity**: simple | multi-step | multi-actor
+- **Integration surface**: low | medium | high
+- **Initial diagram hints** (optional): required / optional / N/A candidates
 
 ## Topics Discussed
 

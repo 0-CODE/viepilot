@@ -229,6 +229,23 @@ Extract from brainstorm:
 - Data flow
 - Technology decisions with rationale
 - Integration points
+
+Before writing diagrams, create a **diagram applicability matrix** from brainstorm signals (complexity, service boundaries, event usage, deployment shape, user-flow complexity, integration surface):
+
+| Diagram type | Status | Rule |
+|--------------|--------|------|
+| `system-overview` | required/optional/N/A | Required if >1 major component or integration boundary |
+| `data-flow` | required/optional/N/A | Required when request/response or data pipeline is central |
+| `event-flows` | required/optional/N/A | Required when async events/webhooks/queues exist |
+| `module-dependencies` | required/optional/N/A | Required when multi-module/layer boundaries matter |
+| `deployment` | required/optional/N/A | Required for multi-env/distributed deployment concerns |
+| `user-use-case` | required/optional/N/A | Required when user journey/actor interactions drive design |
+
+Generation rules:
+- `required`: include explicit ` ```mermaid ` block in `.viepilot/ARCHITECTURE.md`
+- `optional`: may be simplified or merged with a nearby section, but keep section heading discoverable
+- `N/A`: keep heading and add one-line rationale (`Not applicable: ...`) so `vp-audit` and `vp-auto` can interpret intent
+- Never default to “all six detailed diagrams”; diagram depth must scale with project complexity from brainstorm.
 </step>
 
 <step name="generate_context">

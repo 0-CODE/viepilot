@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **M1.25 / Phase 29 (ENH-018)** — **Crystallize + ARCHITECTURE**: Mermaid diagrams **complexity-gated** from brainstorm; six diagram kinds with required/optional/N/A; vp-audit / vp-auto / vp-debug alignment; target **1.8.0** on complete.
 
+### Added
+
+- **M1.25 / Phase 29 — task 29.1** — `workflows/brainstorm.md` now records architecture diagram applicability inputs; `workflows/crystallize.md` Step 4 adds required/optional/N/A matrix rules for six diagram types.
+
 ## [1.7.0] - 2026-04-01
 
 ### Added
