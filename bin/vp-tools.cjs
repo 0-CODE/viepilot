@@ -23,6 +23,8 @@ const {
   isCheckpointTag,
 } = require(path.join(__dirname, '../lib/cli-shared.cjs'));
 
+const viepilotInfo = require(path.join(__dirname, '../lib/viepilot-info.cjs'));
+
 // ============================================================================
 // Output Formatting (TTY-aware)
 // ============================================================================
@@ -695,6 +697,63 @@ const commands = {
   },
 
   /**
+   * Show ViePilot package version, npm latest, skills/workflows inventory (FEAT-008)
+   */
+  info: (args) => {
+    const json = args.includes('--json');
+    const root = viepilotInfo.resolveViepilotPackageRoot(path.join(__dirname, '..'));
+    if (!root) {
+      console.error(
+        formatError(
+          'Could not locate viepilot package root',
+          'Install viepilot globally, use npx from a project with viepilot, or run from a viepilot clone'
+        )
+      );
+      process.exit(1);
+    }
+
+    const report = viepilotInfo.buildInfoReport(root);
+
+    if (json) {
+      console.log(JSON.stringify(report, null, 2));
+      return;
+    }
+
+    console.log(`\n${colors.bold}ViePilot bundle${colors.reset}\n`);
+    console.log(`  ${colors.cyan}Package root:${colors.reset} ${report.packageRoot}`);
+    console.log(`  ${colors.cyan}Installed:${colors.reset}   ${colors.bold}${report.installedVersion}${colors.reset} (${report.packageName})`);
+
+    if (report.latestNpm.ok) {
+      const upToDate = report.latestNpm.version === report.installedVersion;
+      const marker = upToDate ? colors.green : colors.yellow;
+      console.log(
+        `  ${colors.cyan}npm latest:${colors.reset}  ${marker}${report.latestNpm.version}${colors.reset}${upToDate ? ' (matches installed)' : ''}`
+      );
+    } else {
+      console.log(`  ${colors.cyan}npm latest:${colors.reset}  ${colors.gray}(unavailable: ${report.latestNpm.error})${colors.reset}`);
+    }
+
+    if (report.gitHead) {
+      console.log(`  ${colors.cyan}Git HEAD:${colors.reset}   ${report.gitHead.slice(0, 7)}`);
+    }
+
+    console.log(`\n${colors.bold}Skills (${report.skills.length})${colors.reset}`);
+    report.skills.forEach((s) => {
+      const verLabel =
+        s.version === 'unspecified'
+          ? `${colors.gray}unspecified${colors.reset}`
+          : `${colors.bold}v${s.version}${colors.reset}`;
+      console.log(`  ${colors.bold}${s.id.padEnd(22)}${colors.reset}  ${verLabel}  ${colors.gray}${s.relativePath}${colors.reset}`);
+    });
+
+    console.log(`\n${colors.bold}Workflows (${report.workflows.length})${colors.reset} ${colors.gray}— ${viepilotInfo.WORKFLOW_SEMVER_NOTE}${colors.reset}`);
+    report.workflows.forEach((w) => {
+      console.log(`  ${colors.bold}${w.id.padEnd(22)}${colors.reset} ${colors.gray}${w.relativePath}${colors.reset}`);
+    });
+    console.log();
+  },
+
+  /**
    * Check for potential conflicts
    */
   conflicts: (args) => {
@@ -897,6 +956,12 @@ const commands = {
           'vp-tools git-persistence --strict',
         ],
       },
+      info: {
+        usage: 'vp-tools info [--json]',
+        description: 'Show installed ViePilot version, latest npm version, skills & workflows inventory',
+        options: ['--json: Machine-readable JSON output'],
+        examples: ['vp-tools info', 'vp-tools info --json'],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -935,6 +1000,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}checkpoints${colors.reset}              List all ViePilot checkpoints (git tags)
   ${colors.bold}tag-prefix${colors.reset} [--raw]       Show project-scoped checkpoint prefix
   ${colors.bold}git-persistence${colors.reset} [--strict] Check commit/push persistence readiness
+  ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
