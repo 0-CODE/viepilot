@@ -22,6 +22,7 @@
 | Document | Description |
 |----------|-------------|
 | [Quick Start](user/quick-start.md) | Install, brainstorm, crystallize, auto — 5 min guide |
+| [Claude Code setup](user/claude-code-setup.md) | Cài ViePilot trên Claude Code (`~/.claude/skills`, CLI, workflows) |
 | [FAQ](user/faq.md) | Frequently asked questions |
 
 #### Features
@@ -127,4 +128,4 @@
 
 ---
 
-*Last updated: 2026-04-03 — ViePilot framework **v1.9.2** (ENH-021 request/evolve/auto routing; M1.27 FEAT-009 global profiles); see `CHANGELOG.md`, `docs/dev/global-profiles.md`, `docs/user/features/autonomous-mode.md`.*
+*Last updated: 2026-04-02 — ViePilot framework **v1.9.3** (FEAT-001 Claude Code setup doc; ENH-021 request/evolve/auto routing; M1.27 FEAT-009 global profiles); see `CHANGELOG.md`, [Claude Code setup](user/claude-code-setup.md), `docs/user/features/autonomous-mode.md`.*

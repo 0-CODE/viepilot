@@ -14,6 +14,12 @@ A: Skills được thiết kế cho Cursor IDE. Tuy nhiên, workflows và CLI (`
 
 ---
 
+### Q: Làm sao dùng ViePilot với Claude Code?
+
+A: Cài bundle bằng `npx viepilot install --target claude-code`, sau đó map skills `vp-*` vào **`~/.claude/skills/`** (symlink hoặc copy từ `~/.cursor/skills/`) vì Claude Code không đọc thư mục Cursor. Chi tiết từng bước, verify `vp-tools info`, và chuỗi **`/vp-request` → `/vp-evolve` → `/vp-auto`**: xem [ViePilot trên Claude Code](claude-code-setup.md).
+
+---
+
 ### Q: Tôi có cần biết code để dùng ViePilot không?
 
 A: Không nhất thiết. ViePilot giúp AI code cho bạn. Tuy nhiên, để review code và approve control points, hiểu biết cơ bản về programming sẽ hữu ích.

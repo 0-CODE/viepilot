@@ -17,7 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Docs** — `docs/README.md`, `docs/user/faq.md`, `docs/user/features/autonomous-mode.md`, `docs/skills-reference.md`: làm rõ chuỗi **request → evolve → auto** (ENH-021) và footer bundle **v1.9.2**.
+- None yet.
+
+## [1.9.3] - 2026-04-02
+
+### Added
+
+- **M1.29 / Phase 34 (FEAT-001)** — Hướng dẫn ViePilot trên **Claude Code**: `docs/user/claude-code-setup.md` (installer `npx viepilot install --target claude-code`, map `vp-*` → `~/.claude/skills`, `vp-tools info`, chuỗi request → evolve → auto); cross-links trong `docs/getting-started.md`, `docs/user/quick-start.md`, `docs/user/faq.md`, `docs/README.md`; `tests/unit/vp-feat001-claude-code-docs-contracts.test.js`; README test metrics **299** / **15** suites.
 
 ## [1.9.2] - 2026-04-03
 

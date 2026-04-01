@@ -27,6 +27,10 @@ cd viepilot
 ./install.sh
 ```
 
+### Claude Code
+
+Nếu bạn dùng **Claude Code** thay vì Cursor, làm theo [ViePilot trên Claude Code](user/claude-code-setup.md) (skills trong `~/.claude/skills`, installer `npx viepilot install --target claude-code`, và verify `vp-tools info`).
+
 ## Step 2: Brainstorm Your Project
 
 Start a new project by brainstorming:

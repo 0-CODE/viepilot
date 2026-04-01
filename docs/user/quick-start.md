@@ -31,6 +31,8 @@ Chọn profile cài đặt trong wizard (arrow keys + space + enter):
 - `cursor-agent`
 - `cursor-ide`
 
+Hướng dẫn đầy đủ cho **Claude Code** (symlink/copy skills sang `~/.claude/skills`, PATH, kiểm tra CLI): [ViePilot trên Claude Code](claude-code-setup.md).
+
 Non-interactive:
 ```bash
 npx viepilot install --target cursor-agent --yes
