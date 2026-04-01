@@ -29,7 +29,7 @@
 | Feature | Document |
 |---------|----------|
 | Autonomous Mode | [autonomous-mode.md](user/features/autonomous-mode.md) (flags, `--fast`, lượt chat) |
-| Brainstorm & product horizon | [brainstorm.md](user/features/brainstorm.md) (MVP / Post-MVP tags, crystallize handoff) |
+| Brainstorm & product horizon | [brainstorm.md](user/features/brainstorm.md) (MVP / Post-MVP, **meta intake** + global profiles) |
 | Product horizon end-to-end | [product-horizon.md](user/features/product-horizon.md) (brainstorm → ROADMAP / PROJECT-CONTEXT, AI load order) |
 | UI Direction Mode | [ui-direction.md](user/features/ui-direction.md) |
 | Checkpoint Recovery | [checkpoint-recovery.md](user/features/checkpoint-recovery.md) |
@@ -57,6 +57,7 @@
 | [Getting Started (dev entry)](dev/getting-started.md) | Short link into dev guide |
 | [CLI Reference](dev/cli-reference.md) | All `vp-tools` subcommands (incl. `info`, `update`) with examples |
 | [Architecture](dev/architecture.md) | System layers, data flow, design decisions |
+| [Global profiles (FEAT-009)](dev/global-profiles.md) | `~/.viepilot/profiles`, `profile-map.md`, `.viepilot/META.md` binding |
 | [UI Components Library](dev/ui-components-library.md) | Curation taxonomy, storage contract, reuse flow |
 | [Contributing](dev/contributing.md) | How to add skills, workflows, CLI commands |
 | [Testing](dev/testing.md) | Test structure, running tests, writing new tests |
@@ -113,6 +114,8 @@
 | `/vp-pause` | "pause", "dừng" | Save state and pause |
 | `/vp-resume` | "resume", "tiếp tục" | Restore and continue |
 | `/vp-status` | "status", "tiến độ" | Progress dashboard |
+| `/vp-info` | "version", "phiên bản" | Bundle version, npm latest, inventory |
+| `/vp-update` | "upgrade viepilot", "npm" | Upgrade ViePilot via npm |
 | `/vp-request` | "request", "feature", "bug" | Add feature/bug |
 | `/vp-ui-components` | "ui components", "21st.dev" | Curate and reuse UI component library |
 | `/vp-evolve` | "evolve", "milestone mới" | New milestone |
@@ -124,4 +127,4 @@
 
 ---
 
-*Last updated: 2026-03-31 — ViePilot framework v1.2.0 (see `.viepilot/TRACKER.md`); project-scoped checkpoint tags delivered.*
+*Last updated: 2026-04-01 — ViePilot framework **v1.9.0** (M1.27 FEAT-009: global profiles + docs workflow §0A); see `CHANGELOG.md` and `docs/dev/global-profiles.md`.*

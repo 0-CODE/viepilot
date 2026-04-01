@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
-[![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
+[![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
 [![Tests](https://img.shields.io/badge/tests-291%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
@@ -31,10 +31,10 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Total LOC | **~27,113+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **16** |
 | Workflows | **12** |
-| Templates | **16** (Project: 11, Phase: 5) |
+| Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
-| Tests | **267** (9 suites: unit + integration + AI compat + README metrics + UI direction verify + ENH workflow contracts + viepilot-info + viepilot-update) |
-| ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
+| Tests | **291** (12 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + viepilot-info/update/install) |
+| ViePilot phases (local `.viepilot`) | **31** phase cycles — **M1.27** hoàn thành (**v1.9.0** FEAT-009); xem `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
 > Metric `Total LOC` có thể được refresh tự động bằng `npm run readme:sync` (dùng `cloc`; nếu thiếu `cloc` script sẽ fallback an toàn).
@@ -45,27 +45,27 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 |------------------------|------------------|---------------------|
 | Skill Definitions | **16** | SKILL.md files với trigger, process, success criteria |
 | Workflow Files | **12** | Step-by-step execution guides |
-| Project Templates | 11 | AI-GUIDE, ARCHITECTURE, README, SYSTEM-RULES, etc. |
+| Project Templates | 12 | AI-GUIDE, ARCHITECTURE, VIEPILOT-META, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 2 | vp-tools.cjs (**17** subcommands) + viepilot.cjs (guided installer) |
-| Test Files | 6 | Jest unit + integration + AI compatibility + README metrics + ENH backlog + viepilot-info/update |
+| Test Files | 12 | Jest: 11 unit + 1 integration (contracts, installer, info/update, FEAT-009, scope policy, …) |
 
 ---
 
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  ~98% ✅ Latest **v1.6.1** (ENH-015 symlink skills opt-in); M1.23 FEAT-008 (v1.6.0); M1.22 (v1.5.1)
+Tổng thể / Overall:  ████████████████████  ~98% ✅ Latest **v1.9.0** (M1.27 FEAT-009 — global profiles + meta intake); prior **v1.8.1** BUG-004 scope guard
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
 |-----------------|------------|----------|
 | Core Skills (16) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, info, request, evolve, docs, update, task, debug, rollback, audit, ui-components |
 | Workflows (12) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
-| Project Templates (11) | ✅ Hoàn thiện | Placeholders cho customization |
+| Project Templates (12) | ✅ Hoàn thiện | Placeholders cho customization (+ `VIEPILOT-META` FEAT-009) |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (18) | ✅ Hoàn thiện | vp-tools 17 subcommands + viepilot installer; bundle `info` / `update` |
-| Tests (267) | ✅ Hoàn thiện | Unit, integration, AI provider compatibility, workflow contracts, viepilot-info, viepilot-update |
+| Tests (291) | ✅ Hoàn thiện | Unit, integration, AI compat, workflow contracts, installer, scope policy, FEAT-009, info/update |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
@@ -150,11 +150,12 @@ Tổng thể / Overall:  ██████████████████�
 
 ## Templates
 
-### Project Templates (11)
+### Project Templates (12)
 
 | Template | Mô tả / Description |
 |----------|---------------------|
 | `AI-GUIDE.md` | Navigation cho AI - quick lookup, context loading strategy |
+| `VIEPILOT-META.md` | Binding profile active: `viepilot_profile_id` / path (FEAT-009) |
 | `PROJECT-META.md` | Metadata: org, package, developer, headers |
 | `ARCHITECTURE.md` | System design, services, data flow, tech decisions |
 | `PROJECT-CONTEXT.md` | Domain knowledge, business rules, constraints |
@@ -365,8 +366,8 @@ viepilot/
 │   ├── rollback.md                # Rollback workflow
 │   └── audit.md                   # Audit workflow
 │
-├── templates/                     # 16 Templates
-│   ├── project/                   # 11 Project-level templates
+├── templates/                     # 17 Templates
+│   ├── project/                   # 12 Project-level templates
 │   │   ├── AI-GUIDE.md
 │   │   ├── PROJECT-META.md
 │   │   ├── ARCHITECTURE.md

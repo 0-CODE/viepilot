@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+### Changed
+
+- Documentation index and README metrics: **v1.9.0**, 291 tests, 12 test files, 17 templates (`VIEPILOT-META`), `docs/README.md` links to global profiles + `/vp-info` / `/vp-update`.
+
 ## [1.9.0] - 2026-04-01
 
 ### Added
