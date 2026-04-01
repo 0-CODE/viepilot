@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- None yet.
+- **FEAT-010 (in progress)** — UI Direction **UX walkthrough**: slash commands **`/research-ui`** and **`/research ui`** in `workflows/brainstorm.md` (3 phases: end-user simulation → designer + web research → update `notes.md` **`## UX walkthrough log`** and HTML/CSS); `skills/vp-brainstorm` **0.6.0**; `docs/user/features/ui-direction.md`, `docs/skills-reference.md`; `tests/unit/vp-fe010-ui-walkthrough-contracts.test.js`.
 
 ### Changed
 

@@ -65,11 +65,31 @@ Mẫu bảng (copy-paste và điền):
 
 Nếu **không** có thư mục `pages/`, không cần section `## Pages inventory` (layout legacy).
 
+## UX walkthrough — `/research-ui` (FEAT-010)
+
+Sau khi có prototype trong `.viepilot/ui-direction/{session-id}/`, bạn có thể **đánh giá và nâng cấp** bằng lệnh trong phiên brainstorm UI:
+
+| Lệnh | Ý nghĩa |
+|------|---------|
+| `/research-ui` | Pipeline đầy đủ (xem dưới) |
+| `/research ui` | Cùng nội dung (alias; có khoảng trắng sau `research`) |
+
+**Pipeline (3 phase)** — normative: `workflows/brainstorm.md` (mục *UI Direction — UX walkthrough & upgrade*):
+
+1. **End-user simulation** — AI đóng vai người dùng cuối: đi qua 3–8 scenario trên UI hiện tại, ghi pain (mơ hồ, thiếu feedback, quá nhiều bước, …) và mức độ.
+2. **Designer + research** — Đổi vai UX/UI designer: ưu tiên P0/P1/P2, **web search** khi cần benchmark/pattern, đề xuất cải tiến theo từng page/slug.
+3. **Cập nhật artifact** — Sửa HTML/CSS, và trong **`notes.md`** thêm section **`## UX walkthrough log`** (entry: ngày, scenario, pain, link research, tóm tắt thay đổi). Multi-page: vẫn giữ **hub** + **`## Pages inventory`** khớp `pages/*`.
+
+Gợi ý: kèm tên sản phẩm hoặc ngữ cảnh trong cùng tin nhắn (vd. “Trips — ưu tiên luồng đặt chuyến”).
+
+**Khác `/research {chủ đề}`**: lệnh tự do chỉ cần research ngắn và quay lại topic; **`/research-ui`** bắt buộc 3 phase + log + chỉnh prototype khi phù hợp.
+
 ## Flow khuyến nghị
 1. `/vp-brainstorm --ui`
 2. Chọn legacy hoặc multi-page theo số màn hình.
-3. Mỗi thay đổi page → cập nhật HTML + **hub + `## Pages inventory`** trong cùng một lượt.
-4. `/vp-crystallize` đọc `notes.md` trước, sau đó `index.html`, `style.css`, và **từng** `pages/*.html` (nếu có) để lên kiến trúc UI đủ page.
+3. (Optional) `/research-ui` để chạy walkthrough và nâng cấp prototype + `notes.md`.
+4. Mỗi thay đổi page → cập nhật HTML + **hub + `## Pages inventory`** trong cùng một lượt.
+5. `/vp-crystallize` đọc `notes.md` trước, sau đó `index.html`, `style.css`, và **từng** `pages/*.html` (nếu có) để lên kiến trúc UI đủ page.
 
 ## Kiểm tra nhanh (optional)
 

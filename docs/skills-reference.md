@@ -31,6 +31,9 @@ Complete reference for all ViePilot skills.
 | `/save` | Lưu tiến độ |
 | `/end` | Kết thúc và lưu (sau **Project meta intake** nếu thiếu `.viepilot/META.md` / `viepilot_profile_id` — FEAT-009) |
 | `/questions` | Xem open questions |
+| `/research {topic}` | Research nhanh trong phiên, quay lại topic hiện tại |
+| `/research-ui` | **UI Direction (FEAT-010)**: mô phỏng user → designer + web research → cập nhật HTML/CSS + **`## UX walkthrough log`** trong `notes.md` |
+| `/research ui` | Alias của `/research-ui` |
 
 ### Output
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
