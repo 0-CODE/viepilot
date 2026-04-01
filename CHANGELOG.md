@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **FEAT-008** — `vp-info` + `vp-update` (not yet scheduled in ROADMAP)
+- **M1.23 / Phase 27 (FEAT-008)** — `vp-tools info` / `info --json`, `vp-tools update` (`--dry-run`, `--yes`), skills `vp-info` + `vp-update`, docs, tests → target **1.6.0** (see `.viepilot/phases/27-vp-info-vp-update/`)
 
 ### Enhanced
 
