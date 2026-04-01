@@ -78,6 +78,7 @@ Complete reference for all ViePilot skills.
 ├── AI-GUIDE.md
 ├── PROJECT-META.md
 ├── ARCHITECTURE.md
+├── architecture/   (*.mermaid diagram sidecars — ENH-022, mirror fenced blocks)
 ├── PROJECT-CONTEXT.md
 ├── SYSTEM-RULES.md
 ├── ROADMAP.md
@@ -427,6 +428,7 @@ CHANGELOG.md (updated)
 4. **CLI coverage** — mỗi command có documentation không
 5. **docs/ sync** — docs/ có match với thực tế (skills count, workflows count) không
 6. **ROOT drift** — README.md badges, ROADMAP.md status có up-to-date không
+7. **ENH-022 (architecture sidecars)** — khi matrix có Mermaid thực tế, gợi ý kiểm `.viepilot/architecture/<type>.mermaid` khớp `ARCHITECTURE.md`
 
 ### Output
 - Audit report với danh sách gaps

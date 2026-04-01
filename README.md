@@ -2,15 +2,15 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-1.9.4-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.9.5-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-304%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-308%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **1.9.4** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.4**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
+**Versioning:** Shield **1.9.5** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.5**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -28,12 +28,12 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~27,779+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Total LOC | **~27,991+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **16** |
 | Workflows | **12** |
 | Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
-| Tests | **304** (15 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + FEAT-001 Claude Code docs + viepilot-info/update/install) |
+| Tests | **308** (16 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + FEAT-001 Claude Code + ENH-022 crystallize architecture files + viepilot-info/update/install) |
 | ViePilot phases (local `.viepilot`) | **34** phase cycles — **M1.29** FEAT-001 (**v1.9.3** doc); patch **v1.9.4** (Claude installer); **M1.28** FEAT-010 (**v1.9.1**); **v1.9.2** (ENH-019~021); **M1.27** (**v1.9.0** FEAT-009); xem `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -393,7 +393,7 @@ viepilot/
 ├── bin/                           # CLI tools
 │   └── vp-tools.cjs               # 17 subcommands; uses ../lib/cli-shared.cjs, viepilot-info/update.cjs
 │
-├── tests/                         # Test suite (267 tests)
+├── tests/                         # Test suite (308 tests)
 │   ├── unit/                      # Unit tests
 │   │   ├── validators.test.js     # CLI subprocess + in-process coverage tests
 │   │   └── ai-provider-compat.test.js  # 142 AI compat tests

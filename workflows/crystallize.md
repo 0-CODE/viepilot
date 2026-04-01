@@ -287,6 +287,27 @@ Generation rules:
 - `optional`: may be simplified or merged with a nearby section, but keep section heading discoverable
 - `N/A`: keep heading and add one-line rationale (`Not applicable: ...`) so `vp-audit` and `vp-auto` can interpret intent
 - Never default to “all six detailed diagrams”; diagram depth must scale with project complexity from brainstorm.
+
+### Architecture diagram source files on disk (ENH-022)
+
+When a diagram type is **`required`** or **`optional`** and you emit a **non-empty Mermaid diagram** for it, also persist the **same** diagram body (Mermaid source only — **no** markdown fences) under **`.viepilot/architecture/`** using the canonical filenames below. When status is **`N/A`** or the section has **no** real diagram (placeholder-only / rationale-only), **do not** create the matching `.mermaid` file (and remove a stale file if regenerating a project).
+
+| Diagram type (matrix key) | File (under `.viepilot/architecture/`) |
+|---------------------------|----------------------------------------|
+| `system-overview` | `system-overview.mermaid` |
+| `data-flow` | `data-flow.mermaid` |
+| `event-flows` | `event-flows.mermaid` |
+| `module-dependencies` | `module-dependencies.mermaid` |
+| `deployment` | `deployment.mermaid` |
+| `user-use-case` | `user-use-case.mermaid` |
+
+**Single source of truth (mirror policy):** the line-for-line Mermaid **inside** the ` ```mermaid ` fence in `.viepilot/ARCHITECTURE.md` must match the contents of the paired `.viepilot/architecture/<name>.mermaid` file. If you update one, update the other in the same crystallize pass.
+
+**System overview exception:** if the overview uses a non-Mermaid diagram (e.g. ASCII in a plain ` ``` ` block) and matrix marks `system-overview` as `required`, prefer converting to Mermaid for consistency; if you keep ASCII only, **omit** `system-overview.mermaid` and state that choice in the matrix reason column.
+
+**Discoverability:** in `.viepilot/ARCHITECTURE.md`, under each diagram section that has a sidecar file, add a line with bold label **Diagram source** and an inline-code path `.viepilot/architecture/<filename>.mermaid`.
+
+Create `.viepilot/architecture/` only when at least one `.mermaid` file will be written (empty directory otherwise is unnecessary).
 </step>
 
 <step name="generate_context">
@@ -480,6 +501,7 @@ Display summary:
  │   ├── AI-GUIDE.md
  │   ├── PROJECT-META.md
  │   ├── ARCHITECTURE.md
+ │   ├── architecture/   (*.mermaid sidecars when diagrams generated — ENH-022)
  │   ├── PROJECT-CONTEXT.md
  │   ├── SYSTEM-RULES.md
  │   ├── ROADMAP.md ({phase_count} phases)

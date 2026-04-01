@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.29 / Phase 35 (ENH-022)** — Crystallize ghi diagram kiến trúc ra `.viepilot/architecture/<diagram>.mermaid`; cập nhật `crystallize.md`, template `ARCHITECTURE.md`, `vp-crystallize`, `vp-audit` + Jest contracts; mục tiêu release **1.9.5**.
+- None.
 
 ### Added
 
@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - None yet.
+
+## [1.9.5] - 2026-04-02
+
+### Added
+
+- **M1.29 / Phase 35 (ENH-022)** — Crystallize **Step 4** ghi thêm **`.viepilot/architecture/<diagram>.mermaid`** (raw Mermaid, mirror khối fenced trong `ARCHITECTURE.md`); bảng tên canonical + policy trong `workflows/crystallize.md`; template `templates/project/ARCHITECTURE.md` có **Diagram source files** và dòng path từng section; **vp-crystallize** 0.5.2, **vp-audit** 0.3.2; `docs/skills-reference.md`; `tests/unit/vp-enh022-crystallize-architecture-files-contracts.test.js` (**308** tests).
 
 ## [1.9.4] - 2026-04-02
 

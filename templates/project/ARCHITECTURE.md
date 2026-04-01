@@ -4,6 +4,8 @@
 
 {{SYSTEM_OVERVIEW_DESCRIPTION}}
 
+**Diagram source (when Mermaid):** `.viepilot/architecture/system-overview.mermaid`
+
 ```
 {{SYSTEM_DIAGRAM}}
 ```
@@ -28,6 +30,12 @@
 | deployment | {{DIAGRAM_STATUS_DEPLOYMENT}} | {{DIAGRAM_REASON_DEPLOYMENT}} |
 | user-use-case | {{DIAGRAM_STATUS_USER_USE_CASE}} | {{DIAGRAM_REASON_USER_USE_CASE}} |
 
+## Diagram source files (ENH-022)
+
+When crystallize emits a real Mermaid diagram for a type, it also writes **`.viepilot/architecture/<type>.mermaid`** (raw Mermaid, no markdown fences). Canonical names: `system-overview.mermaid`, `data-flow.mermaid`, `event-flows.mermaid`, `module-dependencies.mermaid`, `deployment.mermaid`, `user-use-case.mermaid`. Types marked **N/A** or without a diagram must **not** get a sidecar file.
+
+Under each diagram section below, when applicable, include **Diagram source** pointing at the matching path. The fenced ` ```mermaid ` body in this file must **mirror** the `.mermaid` file line-for-line.
+
 ## Services
 
 {{#SERVICES}}
@@ -42,11 +50,15 @@
 
 ## Data Flow
 
+**Diagram source (when generated):** `.viepilot/architecture/data-flow.mermaid`
+
 ```
 {{DATA_FLOW_DIAGRAM}}
 ```
 
 ### Event Flows
+
+- **Diagram source (when generated):** `.viepilot/architecture/event-flows.mermaid`
 
 - **Status**: {{DIAGRAM_STATUS_EVENT_FLOWS}}
 - **Not applicable rationale**: {{DIAGRAM_NA_EVENT_FLOWS}}
@@ -58,6 +70,8 @@ flowchart LR
 
 ### Module Dependencies
 
+- **Diagram source (when generated):** `.viepilot/architecture/module-dependencies.mermaid`
+
 - **Status**: {{DIAGRAM_STATUS_MODULE_DEPENDENCIES}}
 - **Not applicable rationale**: {{DIAGRAM_NA_MODULE_DEPENDENCIES}}
 
@@ -67,6 +81,8 @@ flowchart LR
 ```
 
 ### User Use-Case Flows
+
+- **Diagram source (when generated):** `.viepilot/architecture/user-use-case.mermaid`
 
 - **Status**: {{DIAGRAM_STATUS_USER_USE_CASE}}
 - **Not applicable rationale**: {{DIAGRAM_NA_USER_USE_CASE}}
@@ -107,6 +123,8 @@ flowchart TD
 {{AUTHZ_DESCRIPTION}}
 
 ## Deployment Architecture
+
+**Diagram source (when generated):** `.viepilot/architecture/deployment.mermaid`
 
 ```
 {{DEPLOYMENT_DIAGRAM}}

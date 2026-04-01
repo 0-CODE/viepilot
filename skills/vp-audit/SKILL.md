@@ -1,7 +1,7 @@
 ---
 name: vp-audit
 description: "Audit state, docs drift, and stack best-practice compliance — works on any project"
-version: 0.3.1
+version: 0.3.2
 ---
 
 <cursor_skill_adapter>
@@ -49,6 +49,7 @@ Auto-detect nếu đang chạy trong viepilot framework repo để thêm framewo
   - `required` diagrams must have Mermaid content
   - `optional` diagrams may be omitted/merged with explicit note
   - `N/A` diagrams must have rationale line
+- **ENH-022 (recommended check):** when a diagram type is `required` (or `optional` with a real Mermaid block) and crystallize policy applies, verify **`.viepilot/architecture/<type>.mermaid`** exists and that **Diagram source** lines in `ARCHITECTURE.md` match; for `N/A`, sidecar file should be absent (no empty stubs)
 
 **Tier 3 — Stack Best Practices + Code Quality (mọi project, theo stack detect được):**
 - Detect stacks liên quan từ context/project manifests

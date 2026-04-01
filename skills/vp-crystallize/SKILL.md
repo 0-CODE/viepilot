@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.5.1
+version: 0.5.2
 ---
 
 <cursor_skill_adapter>
@@ -38,6 +38,7 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 ├── AI-GUIDE.md          # Navigation cho AI
 ├── PROJECT-META.md      # Metadata dự án
 ├── ARCHITECTURE.md      # System design
+├── architecture/        # ENH-022: *.mermaid sidecars (mirror fenced diagrams)
 ├── PROJECT-CONTEXT.md   # Domain knowledge + `<product_vision>` (phased scope)
 ├── SYSTEM-RULES.md      # Coding rules & standards
 ├── ROADMAP.md           # MVP phases & tasks + **Post-MVP / Product horizon** block (mandatory)
@@ -143,6 +144,7 @@ Ask user for (confirm proposals từ profile nếu có):
   - `required` => include concrete Mermaid block
   - `optional` => allow lightweight/merged representation
   - `N/A` => keep section heading + one-line rationale
+- **ENH-022:** For each diagram type with real Mermaid, write **`.viepilot/architecture/<type>.mermaid`** (raw source) and keep it **identical** to the body inside the fenced ` ```mermaid ` block in `ARCHITECTURE.md`; omit files for `N/A` or no diagram — see `workflows/crystallize.md` Step 4.
 
 ### Step 5: Generate PROJECT-CONTEXT.md
 - **FEAT-009:** Block `## ViePilot active profile (FEAT-009)` khi có binding
@@ -206,5 +208,6 @@ Ask user for (confirm proposals từ profile nếu có):
 - [ ] Project files created
 - [ ] Git committed
 - [ ] ARCHITECTURE diagram matrix is present and consistent (`required|optional|N/A`)
+- [ ] **ENH-022:** Mỗi diagram Mermaid được sinh có file `.viepilot/architecture/<canonical-name>.mermaid` đồng bộ nội dung với `ARCHITECTURE.md` (không tạo file thừa cho N/A)
 - [ ] **FEAT-009:** Nếu có profile bound — ARCHITECTURE + PROJECT-CONTEXT ghi nguồn profile; nếu không — ghi rõ none / not configured
 </success_criteria>
