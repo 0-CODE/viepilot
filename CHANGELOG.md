@@ -9,15 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **M1.25 / Phase 29 (ENH-018)** — **Crystallize + ARCHITECTURE**: Mermaid diagrams **complexity-gated** from brainstorm; six diagram kinds with required/optional/N/A; vp-audit / vp-auto / vp-debug alignment; target **1.8.0** on complete.
-- **M1.26 / Phase 30 (BUG-004)** — Enforce ViePilot scope guard: default responses/workflows reference only `vp-*` skills; external skills require explicit opt-in; align skills/workflows/docs/tests; target **1.8.1**.
+ - None.
 
 ### Added
 
-- **M1.26 / Phase 30 — task 30.1** — added canonical ViePilot scope policy baseline: default `vp-*` only, external skills require explicit opt-in, and fallback routing to nearest built-in `vp-*` command (`workflows/autonomous.md`, `docs/skills-reference.md`).
-- **M1.26 / Phase 30 — task 30.2** — injected namespace guard into all bundled `skills/vp-*/SKILL.md` (16 skills) so default ViePilot mode consistently avoids implicit external skill references.
-- **M1.26 / Phase 30 — task 30.3** — applied workflow-level scope filtering policy across 8 core workflows (`autonomous`, `request`, `debug`, `documentation`, `audit`, `evolve`, `crystallize`, `brainstorm`) to keep default routing inside `vp-*`.
-- **M1.26 / Phase 30 — task 30.4** — refreshed user-facing docs (`docs/skills-reference.md`, `docs/user/features/autonomous-mode.md`, `docs/user/features/debug-mode.md`, `docs/user/quick-start.md`) with explicit scope policy wording and opt-in examples.
+ - None yet.
+
+## [1.8.1] - 2026-04-01
+
+### Fixed
+
+- **M1.26 / Phase 30 (BUG-004) completed** — enforced vp-only namespace behavior across the framework: all `vp-*` skills include scope guard rules, core workflows default to `vp-*` routing only, and external skills are allowed only via explicit user opt-in.
+
+### Added
+
+- `tests/unit/vp-scope-policy-contracts.test.js` — regression tests to ensure all bundled skills/workflows retain the BUG-004 scope policy contract.
+
+### Documentation
+
+- `docs/skills-reference.md`, `docs/user/features/autonomous-mode.md`, `docs/user/features/debug-mode.md`, `docs/user/quick-start.md` — clarified default `vp-*` scope and added explicit opt-in examples for external skills.
 
 ## [1.8.0] - 2026-04-01
 
@@ -280,7 +290,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.8.1...HEAD
+[1.8.1]: https://github.com/0-CODE/viepilot/compare/v1.8.0...v1.8.1
 [1.8.0]: https://github.com/0-CODE/viepilot/compare/v1.7.0...v1.8.0
 [0.10.0]: https://github.com/0-CODE/viepilot/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/0-CODE/viepilot/compare/v0.8.2...v0.9.0
