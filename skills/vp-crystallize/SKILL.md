@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.3.0
+version: 0.4.0
 ---
 
 <cursor_skill_adapter>
@@ -25,9 +25,9 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 ├── AI-GUIDE.md          # Navigation cho AI
 ├── PROJECT-META.md      # Metadata dự án
 ├── ARCHITECTURE.md      # System design
-├── PROJECT-CONTEXT.md   # Domain knowledge
+├── PROJECT-CONTEXT.md   # Domain knowledge + `<product_vision>` (phased scope)
 ├── SYSTEM-RULES.md      # Coding rules & standards
-├── ROADMAP.md           # Phases & tasks
+├── ROADMAP.md           # MVP phases & tasks + **Post-MVP / Product horizon** block (mandatory)
 ├── TRACKER.md           # Progress tracking
 ├── HANDOFF.json         # Machine-readable state
 └── schemas/             # Database, API, Kafka schemas
@@ -75,7 +75,8 @@ Ask user for:
 - Load all brainstorm sessions
 - Extract: decisions, architecture, schemas, features
 - Extract selected tech stacks
-- Validate completeness
+- **Product horizon (ENH-014):** parse each session **`## Product horizon`**; build consolidated **horizon inventory**; record **single-release** mode when stated; run **validation gate** (missing section vs multi-release discussion → stop and ask; tier conflicts → stop) — full contract: `workflows/crystallize.md` Step 1
+- Validate completeness (tech stack, features, schema/API clarity, **horizon gate**)
 
 ### Step 1A: Consume UI direction (if present)
 - Read `.viepilot/ui-direction/{session-id}/notes.md` first, then `style.css`, then HTML:
@@ -121,6 +122,7 @@ Ask user for:
 - Business rules
 - Conventions
 - Constraints
+- Fill **`<product_vision>`** from template (`templates/project/PROJECT-CONTEXT.md`): MVP boundary, Post-MVP / Future themes, anti-goals — aligned with brainstorm horizon + Step 1 inventory
 
 ### Step 6: Generate SYSTEM-RULES.md
 - Architecture rules
@@ -133,10 +135,9 @@ Ask user for:
 - Stack-specific rules from cache
 
 ### Step 7: Generate ROADMAP.md
-- Break into phases
-- Define tasks per phase
-- Set acceptance criteria
-- Add verification checkpoints
+- Use `templates/project/ROADMAP.md` — **executable MVP phases** first (tasks, criteria, verification)
+- **Mandatory `## Post-MVP / Product horizon`:** epic-level deferred work from horizon inventory **or** explicit single-release statement (no silent omission)
+- **Self-check before finalize:** non-empty horizon inventory must appear in ROADMAP; if mismatch → stop and ask user — see `workflows/crystallize.md` Step 7
 
 ### Step 8: Generate schemas/
 - database-schema.sql
@@ -170,7 +171,9 @@ Ask user for:
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md has complete metadata
 - [ ] SYSTEM-RULES.md has all standards
-- [ ] ROADMAP.md has phases with tasks
+- [ ] Step 1 horizon extracted or explicit single-release recorded; validation gate satisfied
+- [ ] PROJECT-CONTEXT.md includes populated **`<product_vision>`** (template placeholders filled from brainstorm)
+- [ ] ROADMAP.md has MVP phases with tasks **and** mandatory Post-MVP / horizon block (or explicit single-release statement)
 - [ ] TRACKER.md initialized
 - [ ] Project files created
 - [ ] Git committed

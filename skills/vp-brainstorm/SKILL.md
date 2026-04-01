@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.3.1
+version: 0.4.0
 ---
 
 <cursor_skill_adapter>
@@ -26,6 +26,7 @@ Hỗ trợ:
 - Landing page layout discovery (hỏi thêm để chốt bố cục)
 - In-session research (research ngay trong phiên brainstorm theo yêu cầu)
 - UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/` — hỗ trợ **multi-page** (`pages/{slug}.html` + hub `index.html`) và hook **`## Pages inventory`** trong `notes.md` khi có `pages/` (FEAT-007)
+- **Product horizon (ENH-014):** mọi session phải duy trì **`## Product horizon`** khi thảo luận capability/milestone — tier tags `(MVP)` / `(Post-MVP)` / `(Future)`, non-goals, deferred capabilities; hoặc ghi rõ **single-release / no deferred epics** (contract: `workflows/brainstorm.md`)
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -58,8 +59,9 @@ Key steps:
 5. Nếu topic là landing page: hỏi thêm bố cục + tham khảo `21st.dev` để đề xuất section/components
 6. Nếu topic cần UI/UX: tạo/cập nhật UI Direction artifacts trong `.viepilot/ui-direction/{session-id}/` — legacy: `index.html` + `style.css` + `notes.md`; multi-page: thêm `pages/*.html`, `index.html` làm hub, và sau mỗi thay đổi page cập nhật **`## Pages inventory`** trong `notes.md` (xem `docs/user/features/ui-direction.md`)
 7. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
-8. Save session with structured format (bao gồm research notes + UI direction references khi có)
-9. Suggest next action: `/vp-crystallize`
+8. Khi topic thêm/sửa capability hoặc release scope: cập nhật **`## Product horizon`** trong session (merge, không xóa tier tags im lặng) theo `workflows/brainstorm.md`
+9. Save session with structured format (bao gồm research notes + UI direction references + **Product horizon** khi có)
+10. Suggest next action: `/vp-crystallize`
 </process>
 
 <success_criteria>
@@ -72,5 +74,6 @@ Key steps:
 - [ ] Research can be executed inside the same brainstorm session
 - [ ] UI Direction artifacts created/updated when UI mode is active
 - [ ] Multi-page sessions: hub links + `## Pages inventory` stay in sync with `pages/*.html`
+- [ ] `## Product horizon` present với MVP / Post-MVP / Future (hoặc explicit single-release statement) khi scope được thảo luận
 - [ ] Next steps suggested
 </success_criteria>

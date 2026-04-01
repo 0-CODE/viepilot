@@ -26,6 +26,7 @@ Complete reference for all ViePilot skills.
 
 ### Output
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
+- **Product horizon:** session file giữ **`## Product horizon`** (MVP / Post-MVP / Future tags, deferred capabilities, hoặc single-release statement) để `/vp-crystallize` không bỏ sót post-MVP — xem `workflows/brainstorm.md`.
 - UI Direction (optional): `.viepilot/ui-direction/{session-id}/` — legacy (`index.html`) hoặc multi-page (`pages/*.html` + hub + `## Pages inventory` trong `notes.md`). Chi tiết: [UI Direction](user/features/ui-direction.md).
 
 ---
@@ -36,6 +37,10 @@ Complete reference for all ViePilot skills.
 
 ### UI direction intake
 - Nếu có `.viepilot/ui-direction/{session-id}/` với `pages/*.html`: đọc `notes.md` (**Pages inventory**), từng file page, và hub `index.html` để architecture UI không bỏ sót màn hình.
+
+### Product horizon (brainstorm → ROADMAP / context)
+- Step 1: trích **`## Product horizon`** từ mọi session; **horizon inventory** + cổng single-release / thiếu section — `workflows/crystallize.md`.
+- `ROADMAP.md`: luôn có block **Post-MVP / Product horizon** (hoặc ghi rõ single-release); `PROJECT-CONTEXT.md`: khối **`<product_vision>`** từ `templates/project/PROJECT-CONTEXT.md`.
 
 ### Metadata Collection
 - Project name, description
