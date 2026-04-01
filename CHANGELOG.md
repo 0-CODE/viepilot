@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **M1.26 / Phase 30 — task 30.1** — added canonical ViePilot scope policy baseline: default `vp-*` only, external skills require explicit opt-in, and fallback routing to nearest built-in `vp-*` command (`workflows/autonomous.md`, `docs/skills-reference.md`).
+- **M1.26 / Phase 30 — task 30.2** — injected namespace guard into all bundled `skills/vp-*/SKILL.md` (16 skills) so default ViePilot mode consistently avoids implicit external skill references.
 
 ## [1.8.0] - 2026-04-01
 

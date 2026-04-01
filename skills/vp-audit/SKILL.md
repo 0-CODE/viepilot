@@ -15,6 +15,13 @@ Display audit results clearly with actionable suggestions grouped by tier.
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
 </cursor_skill_adapter>
+<scope_policy>
+## ViePilot Namespace Guard (BUG-004)
+- Default mode: only use and reference  skills in ViePilot workflows.
+- External skills () are out of framework scope unless user explicitly opts in.
+- If external skills appear in runtime context, ignore them and route with the closest built-in  skill.
+</scope_policy>
+
 
 <objective>
 Audit ViePilot project state và documentation để phát hiện drift.
