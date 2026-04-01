@@ -172,8 +172,76 @@ Tham chiếu user: `docs/user/features/ui-direction.md`.
 - Nếu topic thêm/sửa capability: cập nhật **`## Product horizon`** trong bản nháp session (hoặc nhắc user lưu `/save`) với tag tier phù hợp
 </step>
 
+<step name="project_meta_intake">
+## 5. Project meta intake (FEAT-009)
+
+Normative contract: **`docs/dev/global-profiles.md`** (`~/.viepilot/profiles/`, `~/.viepilot/profile-map.md`, `.viepilot/META.md`).
+
+### 5.1 When this step runs
+
+Chạy **trước** khi ghi session ở trạng thái **`Completed`** hoặc khi user gõ **`/end`**, **nếu**:
+
+1. **Scope locked**: `## Product horizon` trong bản nháp session đã có nội dung thật (không chỉ placeholder) **hoặc** user vừa xác nhận bằng lời đã chốt scope MVP / horizon.
+2. **Binding thiếu**: không tồn tại `.viepilot/META.md` **hoặc** frontmatter thiếu `viepilot_profile_id` hợp lệ (slug `kebab-case` theo contract).
+
+**Bỏ qua mặc định** (skip intake) khi `.viepilot/META.md` đã có `viepilot_profile_id` hợp lệ — chỉ hỏi nhanh: *“Giữ profile `{id}`? Đổi profile?”*; nếu giữ → sang bước Save.
+
+### 5.2 Chuẩn bị registry
+
+1. `mkdir -p "$HOME/.viepilot/profiles"` nếu cần.
+2. Đọc `~/.viepilot/profile-map.md` nếu có để liệt kê profile hiện có (profile_id, display_name, org_tag).
+
+### 5.3 Disambiguation (nhiều profile / nhiều org)
+
+- Nếu brainstorm cho thấy **nhiều org/client** hoặc **≥2 dòng trong profile-map** khớp gợi ý (cùng `org_tag` hoặc tag): **bắt buộc** user chọn **một** `profile_id` **hoặc** chọn **Tạo profile mới** (slug mới, chưa tồn tại).
+
+### 5.4 Q&A tuần tự (một câu mỗi lượt)
+
+Với mỗi câu hỏi:
+
+1. Đưa **Proposal** ngắn (1–2 câu) suy ra từ session + Product horizon.
+2. User trả lời **Accept proposal** / **Edit** (ghi nhận bản user).
+3. Sang câu tiếp.
+
+**Tối thiểu** phải làm rõ trước khi ghi file (khớp body sections trong global contract):
+
+| Thứ tự | Câu hỏi (gợi ý) | Map tới |
+|--------|------------------|---------|
+| 1 | Tên hiển thị org/client hoặc “cá nhân”? | `display_name` |
+| 2 | `org_tag` ngắn (vd. `acme`, `personal`)? | `org_tag` |
+| 3 | Branding / giọng văn (audience, tone)? | body `## Branding & voice` |
+| 4 | Legal / attribution công khai (nếu có)? | body `## Legal & attribution` |
+| 5 | Website công khai (optional)? | frontmatter `website` |
+
+Sau đó: chốt **`profile_id`** = slug filename (`kebab-case`).
+
+### 5.5 Ghi artifact (machine + project)
+
+1. **`~/.viepilot/profiles/<slug>.md`**: YAML frontmatter đủ key bắt buộc (`profile_id`, `display_name`, `org_tag`, `tags`, `last_updated`) + body sections đã thu thập. **Không** ghi secrets.
+2. **`~/.viepilot/profile-map.md`**: thêm hoặc cập nhật dòng bảng (cột theo contract); cập nhật `last_used` = ngày hiện tại.
+3. **`.viepilot/META.md`**: tạo/cập nhật từ `templates/project/VIEPILOT-META.md` với `viepilot_profile_id: <slug>`.
+
+### 5.6 Ghi nhận trong session file
+
+Trong bản nháp / file session, thêm section:
+
+```markdown
+## Project meta intake (FEAT-009)
+- **status**: completed | skipped
+- **profile_id**: {slug}
+- **profile_path**: ~/.viepilot/profiles/{slug}.md
+- **binding**: .viepilot/META.md
+```
+
+Nếu skipped (hiếm): phải có **`## Meta intake waiver`** trong cùng file session kèm **lý do** do user cung cấp.
+
+### 5.7 Tiếp tục
+
+Sau khi intake **completed** hoặc **hợp lệ skip** (META đã có profile) → chuyển sang **bước 6 — Save Session**.
+</step>
+
 <step name="save_session">
-## 5. Save Session
+## 6. Save Session
 
 Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
@@ -208,6 +276,17 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - ...
 
 **Scope note (optional):** Nếu không có post-MVP: `Single-release product — no separate horizon epics.`
+
+## Project meta intake (FEAT-009)
+
+- **status**: not_started | completed | skipped
+- **profile_id**:
+- **profile_path**:
+- **binding** (.viepilot/META.md):
+
+_(Điền sau bước 5 — Project meta intake; xem `docs/dev/global-profiles.md`.)_
+
+<!-- Nếu skipped: ## Meta intake waiver + lý do -->
 
 ## Architecture diagram applicability inputs
 
@@ -289,7 +368,7 @@ git push
 </step>
 
 <step name="suggest_next">
-## 6. Suggest Next Action
+## 7. Suggest Next Action
 
 ```
 ✓ Brainstorm session saved
@@ -315,7 +394,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - `/topic {name}` - Chuyển sang topic mới
 - `/summary` - Xem tóm tắt phiên hiện tại
 - `/save` - Lưu tiến độ ngay
-- `/end` - Kết thúc và lưu phiên
+- `/end` - Kết thúc và lưu phiên (sau **bước 5 — Project meta intake** khi binding thiếu; xem workflow)
 - `/questions` - Xem danh sách open questions
 - `/research {topic}` - Research nhanh ngay trong phiên và quay lại topic hiện tại
 </commands>
@@ -330,4 +409,6 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - [ ] 21st.dev references được dùng khi thảo luận landing page
 - [ ] Research có thể chạy ngay trong brainstorm session khi user yêu cầu
 - [ ] Git committed
+- [ ] **FEAT-009**: Nếu binding thiếu và scope đã locked — đã chạy **Project meta intake** (bước 5) hoặc có **`## Meta intake waiver`** có lý do trước Completed
+- [ ] **`## Project meta intake (FEAT-009)`** trong session: `status` + `profile_id` khi completed (hoặc waiver nếu skipped)
 </success_criteria>

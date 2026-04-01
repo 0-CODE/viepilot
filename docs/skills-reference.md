@@ -29,11 +29,12 @@ Complete reference for all ViePilot skills.
 | `/topic {name}` | Chuyển sang topic mới |
 | `/summary` | Xem tóm tắt hiện tại |
 | `/save` | Lưu tiến độ |
-| `/end` | Kết thúc và lưu |
+| `/end` | Kết thúc và lưu (sau **Project meta intake** nếu thiếu `.viepilot/META.md` / `viepilot_profile_id` — FEAT-009) |
 | `/questions` | Xem open questions |
 
 ### Output
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
+- **Project meta intake (FEAT-009):** khi scope đã chốt và chưa bind profile — Q&A tuần tự; ghi `~/.viepilot/profiles/<slug>.md`, cập nhật `~/.viepilot/profile-map.md`, tạo `.viepilot/META.md` — normative: `docs/dev/global-profiles.md`.
 - **Product horizon:** session file giữ **`## Product horizon`** (MVP / Post-MVP / Future tags, deferred capabilities, hoặc single-release statement) để `/vp-crystallize` không bỏ sót post-MVP — xem `workflows/brainstorm.md`.
 - UI Direction (optional): `.viepilot/ui-direction/{session-id}/` — legacy (`index.html`) hoặc multi-page (`pages/*.html` + hub + `## Pages inventory` trong `notes.md`). Chi tiết: [UI Direction](user/features/ui-direction.md).
 

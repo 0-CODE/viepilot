@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.4.0
+version: 0.5.0
 ---
 
 <cursor_skill_adapter>
@@ -34,6 +34,7 @@ Hỗ trợ:
 - In-session research (research ngay trong phiên brainstorm theo yêu cầu)
 - UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/` — hỗ trợ **multi-page** (`pages/{slug}.html` + hub `index.html`) và hook **`## Pages inventory`** trong `notes.md` khi có `pages/` (FEAT-007)
 - **Product horizon (ENH-014):** mọi session phải duy trì **`## Product horizon`** khi thảo luận capability/milestone — tier tags `(MVP)` / `(Post-MVP)` / `(Future)`, non-goals, deferred capabilities; hoặc ghi rõ **single-release / no deferred epics** (contract: `workflows/brainstorm.md`)
+- **Project meta intake (FEAT-009):** sau khi **scope locked**, **trước** `Completed` / `/end`, nếu thiếu `.viepilot/META.md` (`viepilot_profile_id`) — chạy Q&A **tuần tự** có proposal; đọc/ghi `~/.viepilot/profile-map.md`; tạo `~/.viepilot/profiles/<slug>.md` + binding theo **`docs/dev/global-profiles.md`**. Nếu đã có profile bound — skip intake mặc định (hỏi đổi nếu cần).
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -67,8 +68,9 @@ Key steps:
 6. Nếu topic cần UI/UX: tạo/cập nhật UI Direction artifacts trong `.viepilot/ui-direction/{session-id}/` — legacy: `index.html` + `style.css` + `notes.md`; multi-page: thêm `pages/*.html`, `index.html` làm hub, và sau mỗi thay đổi page cập nhật **`## Pages inventory`** trong `notes.md` (xem `docs/user/features/ui-direction.md`)
 7. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
 8. Khi topic thêm/sửa capability hoặc release scope: cập nhật **`## Product horizon`** trong session (merge, không xóa tier tags im lặng) theo `workflows/brainstorm.md`
-9. Save session with structured format (bao gồm research notes + UI direction references + **Product horizon** khi có)
-10. Suggest next action: `/vp-crystallize`
+9. Trước khi hoàn tất phiên: **bước 5 — Project meta intake (FEAT-009)** trong `workflows/brainstorm.md` khi binding thiếu; sequential Q&A + profile-map disambiguation + ghi global profile + `.viepilot/META.md`
+10. Save session with structured format (bao gồm **`## Project meta intake (FEAT-009)`**, research notes + UI direction references + **Product horizon** khi có)
+11. Suggest next action: `/vp-crystallize`
 </process>
 
 <success_criteria>
@@ -82,5 +84,6 @@ Key steps:
 - [ ] UI Direction artifacts created/updated when UI mode is active
 - [ ] Multi-page sessions: hub links + `## Pages inventory` stay in sync with `pages/*.html`
 - [ ] `## Product horizon` present với MVP / Post-MVP / Future (hoặc explicit single-release statement) khi scope được thảo luận
+- [ ] **FEAT-009**: intake hoàn tất hoặc binding đã có **hoặc** waiver có lý do trước Completed; session ghi **`## Project meta intake (FEAT-009)`**
 - [ ] Next steps suggested
 </success_criteria>
