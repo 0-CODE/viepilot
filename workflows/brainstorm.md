@@ -187,6 +187,19 @@ User có thể kèm ngữ cảnh một dòng (vd. tên sản phẩm **Trips**, p
    - **Trạng thái lỗi / validation**: message lỗi dài, nhiều lỗi cùng lúc, inline + banner.
    - **Empty vs cực đầy**: không dữ liệu vs max items; skeleton vs flash of long content.
    - **Viewport**: cùng stress trên **hẹp** (mobile) và **rộng** (desktop) nếu prototype nhắm đa kích thước.
+
+   **Stress recipes theo archetype (ENH-020)** — sau khi áp checklist trên, **chốt 1–2 archetype** khớp sản phẩm (từ `notes.md` / HTML / user) và áp **ít nhất hai recipe** trong mỗi hàng đã chọn (có thể diễn đạt lại bằng ngôn ngữ session; **ghi rõ archetype** trong Stress findings):
+
+   | Archetype | Ưu tiên stress (recipe gợi ý) | Ghi chú |
+   |-----------|------------------------------|---------|
+   | **Landing / marketing** | Hero **headline** cực ngắn vs cực dài; **pricing** 3–5 tier + feature list dài mỗi tier; **FAQ** 10–20 mục (accordion/stack); **logo / social proof** hàng 8–15 logo + tên dài | Sticky CTA vs nội dung dài; section order khi overflow |
+   | **App shell / SaaS admin** | **Bảng** nhiều cột + nhiều hàng; **filter bar** chip + dropdown tràn; **sidebar** nhiều cấp; **notification** stack / toast chồng | Trạng thái dense vs comfortable; frozen column |
+   | **Form-heavy / wizard** | **Label + hint** dài; **multi-step** 5–7 bước + breadcrumb dài; **lỗi** inline từng field + banner tổng; khối **optional fields** mở rộng | Tab order, submit disabled ambiguity |
+   | **Content / reader** | **Bài** cực dài; **code block** rộng; **TOC** 20–40 heading; **related** 8–15 thẻ | Max line length, sidenote, mobile đọc |
+   | **Commerce / booking / marketplace** | **Kết quả tìm** grid dày; **giá** + đơn vị + discount dài; **ngày giờ** + múi giờ + DST; **đặt chỗ** (ghế, phòng) + availability text dài | Giỏ / summary trên mobile |
+
+   Hybrid (vd. marketing + app): **gộp recipe** từ các hàng liên quan; tránh lặp cùng một stress vô nghĩa trên hai màn giống nhau.
+
    Với prototype chỉ có nội dung mẫu ngắn: **không bắt buộc** sửa file ngay ở Phase 1 — hãy **mô tả giả định** (“nếu title 120 ký tự thì…”) và UI sẽ **tràn, ellipsis, scroll, overlap, wrap xấu** thế nào.
 6. Tổng hợp thêm **Stress findings** (bullet: loại stress → quan sát → severity **low/medium/high**) và merge vào tổng kết Phase 1 cho Phase 2.
 
@@ -382,7 +395,7 @@ _(Điền sau bước 5 — Project meta intake; xem `docs/dev/global-profiles.m
 - Preview focus:
   - {layout/flow summary; list each page slug if multi-page}
 
-**UX walkthrough log** (optional; FEAT-010 + ENH-019 — khi đã chạy `/research-ui`):
+**UX walkthrough log** (optional; FEAT-010 + ENH-019 + ENH-020 — khi đã chạy `/research-ui`):
 - {YYYY-MM-DD}: scenarios exercised → top pains → **Stress findings** (tóm tắt) → research links → HTML/CSS edits summary
 
 ---
@@ -455,7 +468,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 - [ ] Landing page topics trigger layout follow-up questions
 - [ ] 21st.dev references được dùng khi thảo luận landing page
 - [ ] Research có thể chạy ngay trong brainstorm session khi user yêu cầu
-- [ ] **FEAT-010 + ENH-019**: Trong UI Direction, `/research-ui` (hoặc `/research ui`) chạy đủ 3 phase, gồm **content stress pass** + **`## UX walkthrough log`** (Stress findings) khi chỉnh prototype
+- [ ] **FEAT-010 + ENH-019 + ENH-020**: Trong UI Direction, `/research-ui` (hoặc `/research ui`) chạy đủ 3 phase, gồm **content stress pass** + **archetype stress recipes** + **`## UX walkthrough log`** (Stress findings) khi chỉnh prototype
 - [ ] Git committed
 - [ ] **FEAT-009**: Nếu binding thiếu và scope đã locked — đã chạy **Project meta intake** (bước 5) hoặc có **`## Meta intake waiver`** có lý do trước Completed
 - [ ] **`## Project meta intake (FEAT-009)`** trong session: `status` + `profile_id` khi completed (hoặc waiver nếu skipped)

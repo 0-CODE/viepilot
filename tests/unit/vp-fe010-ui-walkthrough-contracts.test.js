@@ -18,14 +18,17 @@ describe('FEAT-010 UI walkthrough contracts', () => {
     expect(md).toMatch(/UX designer \+ research/);
     expect(md).toMatch(/Stress nội dung & tràn layout/);
     expect(md).toMatch(/Stress findings/);
+    expect(md).toMatch(/Stress recipes theo archetype \(ENH-020\)/);
+    expect(md).toMatch(/\| \*\*Landing \/ marketing\*\*/);
   });
 
   test('vp-brainstorm skill references FEAT-010 and /research-ui', () => {
     const md = read('skills/vp-brainstorm/SKILL.md');
     expect(md).toMatch(/FEAT-010/);
     expect(md).toMatch(/ENH-019/);
+    expect(md).toMatch(/ENH-020/);
     expect(md).toMatch(/\/research-ui/);
-    expect(md).toMatch(/version:\s*0\.6\.1/);
+    expect(md).toMatch(/version:\s*0\.6\.2/);
   });
 
   test('ui-direction user doc documents /research-ui', () => {
@@ -33,6 +36,7 @@ describe('FEAT-010 UI walkthrough contracts', () => {
     expect(md).toMatch(/\/research-ui/);
     expect(md).toMatch(/FEAT-010/);
     expect(md).toMatch(/ENH-019/);
+    expect(md).toMatch(/ENH-020/);
     expect(md).toMatch(/Stress findings/);
     expect(md).toMatch(/## UX walkthrough log/);
   });

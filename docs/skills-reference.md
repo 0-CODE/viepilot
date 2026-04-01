@@ -32,7 +32,7 @@ Complete reference for all ViePilot skills.
 | `/end` | Kết thúc và lưu (sau **Project meta intake** nếu thiếu `.viepilot/META.md` / `viepilot_profile_id` — FEAT-009) |
 | `/questions` | Xem open questions |
 | `/research {topic}` | Research nhanh trong phiên, quay lại topic hiện tại |
-| `/research-ui` | **UI Direction (FEAT-010, ENH-019)**: user scenarios + **content stress pass** → designer + web research → HTML/CSS + **`## UX walkthrough log`** (Stress findings) |
+| `/research-ui` | **UI Direction (FEAT-010, ENH-019, ENH-020)**: scenarios + stress pass + **archetype recipes** → designer + research → HTML/CSS + **`## UX walkthrough log`** |
 | `/research ui` | Alias của `/research-ui` |
 
 ### Output

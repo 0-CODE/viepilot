@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.6.1
+version: 0.6.2
 ---
 
 <cursor_skill_adapter>
@@ -35,7 +35,7 @@ Hỗ trợ:
 - UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/` — hỗ trợ **multi-page** (`pages/{slug}.html` + hub `index.html`) và hook **`## Pages inventory`** trong `notes.md` khi có `pages/` (FEAT-007)
 - **Product horizon (ENH-014):** mọi session phải duy trì **`## Product horizon`** khi thảo luận capability/milestone — tier tags `(MVP)` / `(Post-MVP)` / `(Future)`, non-goals, deferred capabilities; hoặc ghi rõ **single-release / no deferred epics** (contract: `workflows/brainstorm.md`)
 - **Project meta intake (FEAT-009):** sau khi **scope locked**, **trước** `Completed` / `/end`, nếu thiếu `.viepilot/META.md` (`viepilot_profile_id`) — chạy Q&A **tuần tự** có proposal; đọc/ghi `~/.viepilot/profile-map.md`; tạo `~/.viepilot/profiles/<slug>.md` + binding theo **`docs/dev/global-profiles.md`**. Nếu đã có profile bound — skip intake mặc định (hỏi đổi nếu cần).
-- **UX walkthrough (FEAT-010 + ENH-019):** trong **`--ui`**, lệnh **`/research-ui`** hoặc **`/research ui`** chạy 3 phase — mô phỏng **end-user** (kèm **content stress pass**: copy dài, khối lượng, validation, viewport → **Stress findings**) → **UX designer + web research** → chỉnh `index.html` / `pages/*.html` / `style.css` và ghi **`## UX walkthrough log`** trong `notes.md` (đồng bộ hub + **Pages inventory** khi multi-page).
+- **UX walkthrough (FEAT-010 + ENH-019 + ENH-020):** trong **`--ui`**, lệnh **`/research-ui`** hoặc **`/research ui`** chạy 3 phase — mô phỏng **end-user** (kèm **content stress pass** + **stress recipes theo archetype** → **Stress findings**) → **UX designer + web research** → chỉnh `index.html` / `pages/*.html` / `style.css` và ghi **`## UX walkthrough log`** trong `notes.md` (đồng bộ hub + **Pages inventory** khi multi-page).
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -85,7 +85,7 @@ Key steps:
 - [ ] Research can be executed inside the same brainstorm session
 - [ ] UI Direction artifacts created/updated when UI mode is active
 - [ ] Multi-page sessions: hub links + `## Pages inventory` stay in sync with `pages/*.html`
-- [ ] **FEAT-010 + ENH-019**: `/research-ui` (khi `--ui`) chạy đủ 3 phase, gồm **content stress pass** + **`## UX walkthrough log`** (có **Stress findings**) khi có chỉnh prototype
+- [ ] **FEAT-010 + ENH-019 + ENH-020**: `/research-ui` (khi `--ui`) chạy đủ 3 phase, gồm **content stress pass** + **archetype recipes** + **`## UX walkthrough log`** (có **Stress findings**) khi có chỉnh prototype
 - [ ] `## Product horizon` present với MVP / Post-MVP / Future (hoặc explicit single-release statement) khi scope được thảo luận
 - [ ] **FEAT-009**: intake hoàn tất hoặc binding đã có **hoặc** waiver có lý do trước Completed; session ghi **`## Project meta intake (FEAT-009)`**
 - [ ] Next steps suggested

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **ENH-019** — `/research-ui`: Phase 1 thêm **content stress pass** (copy dài, khối lượng, validation, viewport…) và **Stress findings**; log + designer pass cập nhật tương ứng (`workflows/brainstorm.md`, `vp-brainstorm` 0.6.1, docs, tests).
+- **ENH-020** — `/research-ui`: bảng **stress recipes theo archetype** (landing, SaaS admin, form/wizard, reader, commerce/booking) + hybrid; `vp-brainstorm` **0.6.2**.
 
 ## [1.9.1] - 2026-04-02
 
