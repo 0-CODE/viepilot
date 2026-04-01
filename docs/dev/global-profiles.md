@@ -12,7 +12,7 @@ Same home as stack cache and UI components:
 | `~/.viepilot/profiles/<slug>.md` | Profile body + YAML frontmatter |
 | `~/.viepilot/profile-map.md` | Registry for lookup / disambiguation (human-editable) |
 
-Create dirs on install or first use:
+`npx viepilot install` (Node installer) creates `profiles/` and seeds `profile-map.md` when missing — see `lib/viepilot-install.cjs`. Manual equivalent:
 
 ```bash
 mkdir -p "$HOME/.viepilot/profiles"

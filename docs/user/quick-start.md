@@ -48,6 +48,8 @@ vp-tools help
 # Hiển thị targets + ViePilot CLI Tools
 ```
 
+Sau khi cài, ViePilot tạo (nếu chưa có) **`~/.viepilot/profiles/`** và file mẫu **`~/.viepilot/profile-map.md`** để đăng ký profile tái sử dụng (brainstorm meta intake — xem `docs/dev/global-profiles.md`).
+
 Optional (maintainers):
 ```bash
 npm run readme:sync

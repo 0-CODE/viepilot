@@ -85,6 +85,33 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
     expect(e.profile).toBe('cursor-ide');
     expect(e.autoYes).toBe(false);
   });
+
+  test('overrideHomedir paths appear in plan', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-home-'));
+    const plan = buildInstallPlan(REPO_ROOT, { VIEPILOT_AUTO_YES: '1' }, { overrideHomedir: fakeHome });
+    expect(plan.home).toBe(path.resolve(fakeHome));
+    expect(plan.paths.viepilotDir.startsWith(path.resolve(fakeHome))).toBe(true);
+  });
+
+  test('buildInstallPlan includes ~/.viepilot profiles + profile-map seed (FEAT-009)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-fe009-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const ud = path.join(path.resolve(fakeHome), '.viepilot');
+    expect(plan.paths.viepilotUserDataDir).toBe(ud);
+    expect(plan.paths.viepilotProfilesDir).toBe(path.join(ud, 'profiles'));
+    expect(plan.paths.viepilotProfileMapPath).toBe(path.join(ud, 'profile-map.md'));
+    expect(
+      plan.steps.some((s) => s.kind === 'mkdir' && s.path === plan.paths.viepilotProfilesDir),
+    ).toBe(true);
+    const w = plan.steps.find((s) => s.kind === 'write_file_if_missing');
+    expect(w).toBeDefined();
+    expect(w.path).toBe(plan.paths.viepilotProfileMapPath);
+    expect(w.content).toMatch(/profile_id/);
+  });
 });
 
 describe('viepilot-install apply (28.2)', () => {
@@ -114,11 +141,33 @@ describe('viepilot-install apply (28.2)', () => {
     expect(fs.readFileSync(bin, 'utf8').length).toBeGreaterThan(10);
   });
 
-  test('overrideHomedir paths appear in plan', () => {
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-home-'));
-    const plan = buildInstallPlan(REPO_ROOT, { VIEPILOT_AUTO_YES: '1' }, { overrideHomedir: fakeHome });
-    expect(plan.home).toBe(path.resolve(fakeHome));
-    expect(plan.paths.viepilotDir.startsWith(path.resolve(fakeHome))).toBe(true);
+  test('applyInstallPlan creates profile-map.md when missing (FEAT-009)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-map-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const r = applyInstallPlan(plan, { dryRun: false });
+    expect(r.ok).toBe(true);
+    const mapPath = path.join(fakeHome, '.viepilot', 'profile-map.md');
+    expect(fs.existsSync(mapPath)).toBe(true);
+    expect(fs.readFileSync(mapPath, 'utf8')).toMatch(/\| profile_id \|/);
+  });
+
+  test('applyInstallPlan does not overwrite existing profile-map.md', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-mapkeep-'));
+    const ud = path.join(fakeHome, '.viepilot');
+    fs.mkdirSync(path.join(ud, 'profiles'), { recursive: true });
+    const mapPath = path.join(ud, 'profile-map.md');
+    fs.writeFileSync(mapPath, 'USER_OWNED\n', 'utf8');
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    applyInstallPlan(plan, { dryRun: false });
+    expect(fs.readFileSync(mapPath, 'utf8')).toBe('USER_OWNED\n');
   });
 });
 

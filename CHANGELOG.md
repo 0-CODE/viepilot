@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `templates/project/VIEPILOT-META.md` — template for per-project ViePilot profile binding (separate from `PROJECT-META.md`).
 - **`workflows/brainstorm.md`** + **`skills/vp-brainstorm/SKILL.md` (0.5.0)** — mandatory **Project meta intake** step after scope lock and before session complete when `.viepilot/META.md` lacks `viepilot_profile_id` (FEAT-009; normative `docs/dev/global-profiles.md`).
 - **`docs/skills-reference.md`** — `/vp-brainstorm` `/end` + output notes for FEAT-009 meta intake.
+- **`lib/viepilot-install.cjs`** — on install: `mkdir` `~/.viepilot/profiles` + seed `~/.viepilot/profile-map.md` if missing (`write_file_if_missing` step); **`docs/user/quick-start.md`** + **`docs/dev/global-profiles.md`** (installer pointer); Jest coverage in `viepilot-install.test.js`.
 
 ## [1.8.1] - 2026-04-01
 
