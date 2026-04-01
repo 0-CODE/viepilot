@@ -1,7 +1,7 @@
 ---
 name: vp-evolve
 description: "Nâng cấp, thêm features, hoặc bắt đầu milestone mới"
-version: 0.2.0
+version: 0.3.0
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,14 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Skill này chỉ **planning**: ROADMAP, phase dir, SPEC/tasks, TRACKER, ghi chú version/CHANGELOG khi workflow quy định — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, sửa lớn `workflows/`/`skills/` ngoài plan artifact).
+- **Bước tiếp:** **`/vp-auto`**. Xem `workflows/evolve.md`.
+- **Ngoại lệ:** User **explicit** bypass — nêu rõ trong chat.
+</implementation_routing_guard>
 
 
 <objective>

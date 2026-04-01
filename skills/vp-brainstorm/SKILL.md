@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.6.2
+version: 0.6.3
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Trong phạm vi **session** (`docs/brainstorm/*`, `.viepilot/ui-direction/*`). **Không** implement thay **`/vp-auto`** cho `lib/`, `tests/`, thay đổi framework `workflows/`/`skills/` — sau brainstorm dùng **`/vp-crystallize`** / **`/vp-evolve`** → **`/vp-auto`** tùy giai đoạn. Override explicit — nêu rõ trong chat.
+</implementation_routing_guard>
 
 
 <objective>

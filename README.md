@@ -7,7 +7,7 @@
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-294%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-297%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Shield **1.9.1** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.1**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
@@ -33,7 +33,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Workflows | **12** |
 | Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
-| Tests | **294** (13 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + viepilot-info/update/install) |
+| Tests | **297** (14 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + viepilot-info/update/install) |
 | ViePilot phases (local `.viepilot`) | **32** phase cycles — **M1.28** (**v1.9.1** FEAT-010); **M1.27** (**v1.9.0** FEAT-009); xem `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -48,7 +48,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Project Templates | 12 | AI-GUIDE, ARCHITECTURE, VIEPILOT-META, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 2 | vp-tools.cjs (**17** subcommands) + viepilot.cjs (guided installer) |
-| Test Files | 13 | Jest: 12 unit + 1 integration (contracts, installer, info/update, FEAT-009, FEAT-010, scope policy, …) |
+| Test Files | 14 | Jest: 13 unit + 1 integration (contracts, installer, info/update, FEAT-009, FEAT-010, ENH-021, scope policy, …) |
 
 ---
 
@@ -65,7 +65,7 @@ Tổng thể / Overall:  ██████████████████�
 | Project Templates (12) | ✅ Hoàn thiện | Placeholders cho customization (+ `VIEPILOT-META` FEAT-009) |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (18) | ✅ Hoàn thiện | vp-tools 17 subcommands + viepilot installer; bundle `info` / `update` |
-| Tests (294) | ✅ Hoàn thiện | Unit, integration, AI compat, workflow contracts, installer, scope policy, FEAT-009/010, info/update |
+| Tests (297) | ✅ Hoàn thiện | Unit, integration, AI compat, workflow contracts, installer, scope policy, FEAT-009/010, ENH-021, info/update |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |

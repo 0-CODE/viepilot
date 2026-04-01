@@ -10,6 +10,10 @@ Complete reference for all ViePilot skills.
 - **Routing fallback**: if an external skill is mentioned accidentally, prefer the closest built-in `vp-*` command instead.
 - **Opt-in example**: "Trong bước này, cho phép dùng thêm external skills ngoài ViePilot để tham khảo."
 
+### Implementation routing (ENH-021)
+
+- **`/vp-request`** và **`/vp-evolve`** **không** implement mã shipping mặc định — chỉ backlog / plan (ROADMAP, phase, tasks). **`/vp-auto`** là lane implement sau khi có task plan (doc-first **BUG-001**). Mọi `skills/vp-*/SKILL.md` có block `<implementation_routing_guard>`; normative: `workflows/request.md`, `workflows/evolve.md`, `workflows/debug.md`, `workflows/autonomous.md`.
+
 ---
 
 ## /vp-brainstorm

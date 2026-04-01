@@ -9,6 +9,11 @@ Giúp organize debugging process và track progress qua nhiều sessions.
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
 - If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
 
+## Implementation routing guard (debug)
+
+- **`debug.md`**: ưu tiên **điều tra**, log session, chạy test — **không** sửa mã shipping mặc định cho đến khi (a) user **explicit** *sửa luôn* / *hotfix*, hoặc (b) đã route **`/vp-request`** + **`/vp-evolve`** + **`/vp-auto`** cho fix có cấu trúc.
+- Reproduce/minimal patch **chỉ để xác minh giả thuyết** được phép nếu nhỏ và user đồng ý ngầm trong phiên debug; merge fix thật vẫn nên qua **`/vp-auto`** khi có task plan.
+
 
 <process>
 

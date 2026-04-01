@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.5.0
+version: 0.5.1
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Tạo **artifact** trong `.viepilot/` (và template copy) từ brainstorm — **không** thay **`/vp-auto`** để implement mã ứng dụng / framework shipping. Backlog feature code: **`/vp-evolve`** + **`/vp-auto`**. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>

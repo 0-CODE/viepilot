@@ -1,7 +1,7 @@
 ---
 name: vp-resume
 description: "Resume work từ previous session với full context restoration"
-version: 0.1.0
+version: 0.1.1
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- **Khôi phục context** — không implement shipping mặc định; tiếp tục **`/vp-auto`** khi có task plan. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>

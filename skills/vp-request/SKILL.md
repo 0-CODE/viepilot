@@ -1,7 +1,7 @@
 ---
 name: vp-request
 description: "Tạo request mới: feature, bug fix, enhancement, hoặc brainstorm tiếp"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,15 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Skill này chỉ **tạo request**, **backlog**, **triage** (`.viepilot/requests/*`, `TRACKER`, đôi khi gợi ý ROADMAP) — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, `workflows/`, `skills/` của repo, v.v.).
+- **Sau request:** **`/vp-evolve`** (ROADMAP + phase + tasks + plan) → **`/vp-auto`** (thực thi). Xem `workflows/request.md`.
+- **Ngoại lệ:** User **explicit** (*hotfix ngay*, *sửa trong chat này*, *bypass planning*) — phải **nêu rõ** bypass trong chat.
+- **Không** đề xuất *“Start working now”* như implement trực tiếp trong thread này; thay bằng evolve → auto.
+</implementation_routing_guard>
 
 
 <objective>
@@ -199,7 +208,7 @@ Options:
 1. Add to current milestone backlog
 2. Brainstorm in detail first
 3. Schedule for next milestone
-4. Start working now
+4. Plan then execute: `/vp-evolve` → `/vp-auto` (not direct implement here unless explicit override)
 ```
 
 **Tech Debt:**
@@ -242,7 +251,8 @@ Update `.viepilot/TRACKER.md`:
 
  Next:
  - /vp-request --list    View all requests
- - /vp-auto              Start working on it
+ - /vp-evolve            Plan phase/tasks + ROADMAP (before code)
+ - /vp-auto              Implement per task plan (after evolve)
  - /vp-request           Create another request
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

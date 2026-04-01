@@ -1,7 +1,7 @@
 ---
 name: vp-audit
 description: "Audit state, docs drift, and stack best-practice compliance — works on any project"
-version: 0.3.0
+version: 0.3.1
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- **Báo cáo / gap** — **không** fix shipping mặc định; route **`/vp-request`** → **`/vp-evolve`** → **`/vp-auto`** hoặc user explicit. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>

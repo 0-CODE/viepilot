@@ -1,7 +1,7 @@
 ---
 name: vp-docs
 description: "Generate comprehensive documentation cho dự án"
-version: 0.2.0
+version: 0.2.1
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Skill này sửa **`docs/`**, index, README liên quan doc — **không** implement **`lib/`**, **`tests/`**, logic product mặc định; việc đó là **`/vp-auto`**. Override explicit. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>

@@ -9,6 +9,10 @@ Pauses at control points cho user decisions.
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
 - If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
 
+## Implementation entry (cross-skill)
+
+- **`/vp-auto`** + workflow này là **lane mặc định** để **implement** work đã có **phase/task plan** (và doc-first **BUG-001**). **`/vp-request`** và **`/vp-evolve`** **không** thay thế bước này trừ user explicit override — xem **Implementation routing guard** trong `workflows/request.md` và `workflows/evolve.md`.
+
 
 <process>
 

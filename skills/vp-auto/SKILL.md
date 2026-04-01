@@ -1,7 +1,7 @@
 ---
 name: vp-auto
 description: "Autonomous execution loop với control points và recovery"
-version: 0.2.1
+version: 0.2.2
 ---
 
 <cursor_skill_adapter>
@@ -24,6 +24,12 @@ Use `Task(subagent_type="generalPurpose", ...)` for parallel execution.
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Primary implementation lane (ENH-021)
+
+- **`/vp-auto`** + `workflows/autonomous.md` là **lane mặc định** để **implement** work đã có **phase/task plan** (doc-first **BUG-001**, git persistence **BUG-003**). **`/vp-request`** và **`/vp-evolve`** **không** thay thế lane này trừ user **explicit** override.
+</implementation_routing_guard>
 
 
 <objective>

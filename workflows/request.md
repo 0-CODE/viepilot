@@ -8,6 +8,12 @@ Tạo và quản lý requests cho dự án: bugs, features, enhancements, tech d
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
 - If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
 
+## Implementation routing guard (planning vs execution)
+
+- Workflow **`request.md`** chỉ **ghi nhận, backlog, triage** — **không** là lane mặc định để **implement** mã shipping (`lib/`, `tests/`, `bin/`, `src/` app, `workflows/`, `skills/` trong repo framework, v.v.).
+- **Chuỗi khuyến nghị sau khi có request:** `/vp-evolve` (ROADMAP, phase, SPEC/tasks, task plan; doc-first **BUG-001** khi áp dụng) → **`/vp-auto`** (thực thi + verify + git persistence **BUG-003**).
+- **Ngoại lệ:** User **explicit** (vd. *hotfix ngay*, *sửa file X trong chat này*, *bypass planning*) → được implement trực tiếp; assistant **phải nêu rõ** đang bypass guard.
+
 
 <process>
 
@@ -449,8 +455,8 @@ Current task: {task}
 
 If option 1:
 - Save current state (like /vp-pause)
-- Create emergency fix phase
-- Route to /vp-auto
+- Create emergency fix phase (minimal SPEC/tasks) **hoặc** user explicit hotfix
+- Route to **`/vp-auto`** — vẫn qua task plan ngắn khi có thể; **không** implement lặng trong thread `/vp-request` trừ user explicit bypass
 
 ### High Priority Feature
 ```
@@ -460,7 +466,7 @@ Options:
 1. Add to current milestone
 2. Brainstorm more first
 3. Schedule for next milestone
-4. Start working now
+4. **Plan then execute:** `/vp-evolve` → `/vp-auto` (không implement trực tiếp trong thread `/vp-request` trừ user explicit override)
 ```
 
 ### Regular Request
@@ -521,7 +527,8 @@ git push
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
  /vp-request --list    View all requests
- /vp-auto              Start working on requests
+ /vp-evolve            ROADMAP + phase/tasks (trước code)
+ /vp-auto              Implement theo task plan (sau evolve)
  /vp-request           Create another request
  /vp-status            See overall progress
 

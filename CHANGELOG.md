@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **ENH-019** — `/research-ui`: Phase 1 thêm **content stress pass** (copy dài, khối lượng, validation, viewport…) và **Stress findings**; log + designer pass cập nhật tương ứng (`workflows/brainstorm.md`, `vp-brainstorm` 0.6.1, docs, tests).
 - **ENH-020** — `/research-ui`: bảng **stress recipes theo archetype** (landing, SaaS admin, form/wizard, reader, commerce/booking) + hybrid; `vp-brainstorm` **0.6.2**.
+- **ENH-021** — **Implementation routing guard**: `vp-request` / `vp-evolve` / `vp-debug` không implement shipping mặc định; chuỗi **`/vp-evolve` → `/vp-auto`**; mọi `skills/vp-*/SKILL.md` + `workflows/request.md`, `evolve.md`, `debug.md`, `autonomous.md`; `docs/skills-reference.md`; `tests/unit/vp-en021-implementation-routing-contracts.test.js`.
 
 ## [1.9.1] - 2026-04-02
 

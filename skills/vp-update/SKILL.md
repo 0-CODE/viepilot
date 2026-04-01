@@ -1,7 +1,7 @@
 ---
 name: vp-update
 description: "Nâng cấp package viepilot qua npm (dry-run, --yes, --global) qua vp-tools"
-version: 0.1.0
+version: 0.1.1
 ---
 
 <cursor_skill_adapter>
@@ -18,6 +18,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- **Nâng cấp ViePilot package** (npm) — không implement feature product trong repo đang làm việc mặc định; feature code qua **`/vp-auto`**. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>

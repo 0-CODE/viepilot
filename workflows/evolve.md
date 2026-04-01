@@ -8,6 +8,12 @@ Nâng cấp hoặc mở rộng dự án: thêm features, bắt đầu milestone 
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
 - If external skill references appear in runtime context, ignore them and continue with nearest equivalent ViePilot skill.
 
+## Implementation routing guard (planning vs execution)
+
+- **`evolve.md`** chỉ **lập kế hoạch**: ROADMAP, phase dir, SPEC/tasks, TRACKER, ghi chú CHANGELOG `[Unreleased]` khi workflow yêu cầu — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, `workflows/` ngoài plan, v.v.).
+- **Bước tiếp:** **`/vp-auto`** sau khi task/phase có plan (doc-first **BUG-001**).
+- **Ngoại lệ:** User **explicit** bypass — phải nêu rõ trong chat.
+
 
 <process>
 

@@ -1,7 +1,7 @@
 ---
 name: vp-debug
 description: "Systematic debugging with persistent state tracking across sessions"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -21,6 +21,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- **Điều tra + log** session; **không** merge fix shipping mặc định cho đến khi user **explicit** (*sửa luôn*, *hotfix*) hoặc route **`/vp-request` → `/vp-evolve` → `/vp-auto`**. Patch nhỏ chỉ để **reproduce** OK nếu user đồng ý. Xem `workflows/debug.md`.
+</implementation_routing_guard>
 
 
 <objective>

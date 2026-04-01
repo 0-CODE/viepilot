@@ -1,7 +1,7 @@
 ---
 name: vp-task
 description: "Manual control over individual tasks"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <cursor_skill_adapter>
@@ -18,6 +18,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 - If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
 </scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- Skill này **chỉ** quản lý **state/tag/task** trong `.viepilot/` — **không** thay **`/vp-auto`** để implement shipping code. Implement: **`/vp-auto`** hoặc user **explicit** override. Chuỗi plan: **`/vp-evolve`** trước. Xem `workflows/request.md`.
+</implementation_routing_guard>
 
 
 <objective>
