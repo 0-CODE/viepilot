@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 
 - **M1.24 / Phase 28 (ENH-017)** — **Node-native installer**: `npx viepilot install` via `lib/viepilot-install.cjs` (no `bash install.sh` for primary path); target **1.7.0** on complete.
+- **M1.25 / Phase 29 (ENH-018)** — **Crystallize + ARCHITECTURE**: Mermaid diagrams **complexity-gated** from brainstorm; six diagram kinds with required/optional/N/A; vp-audit / vp-auto / vp-debug alignment; target **1.8.0** on complete.
 
 ### Added
 
