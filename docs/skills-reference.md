@@ -26,12 +26,16 @@ Complete reference for all ViePilot skills.
 
 ### Output
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
+- UI Direction (optional): `.viepilot/ui-direction/{session-id}/` — legacy (`index.html`) hoặc multi-page (`pages/*.html` + hub + `## Pages inventory` trong `notes.md`). Chi tiết: [UI Direction](user/features/ui-direction.md).
 
 ---
 
 ## /vp-crystallize
 
 **Purpose**: Chuyển đổi brainstorm thành executable artifacts
+
+### UI direction intake
+- Nếu có `.viepilot/ui-direction/{session-id}/` với `pages/*.html`: đọc `notes.md` (**Pages inventory**), từng file page, và hub `index.html` để architecture UI không bỏ sót màn hình.
 
 ### Metadata Collection
 - Project name, description

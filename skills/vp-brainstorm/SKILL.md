@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.3.0
+version: 0.3.1
 ---
 
 <cursor_skill_adapter>
@@ -25,7 +25,7 @@ Hỗ trợ:
 - Xem lại session trước đó
 - Landing page layout discovery (hỏi thêm để chốt bố cục)
 - In-session research (research ngay trong phiên brainstorm theo yêu cầu)
-- UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/`
+- UI Direction mode: tạo/cập nhật HTML prototype + notes trong `.viepilot/ui-direction/{session-id}/` — hỗ trợ **multi-page** (`pages/{slug}.html` + hub `index.html`) và hook **`## Pages inventory`** trong `notes.md` khi có `pages/` (FEAT-007)
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -56,7 +56,7 @@ Key steps:
 3. Load context if continuing
 4. Run interactive Q&A với topic-based structure
 5. Nếu topic là landing page: hỏi thêm bố cục + tham khảo `21st.dev` để đề xuất section/components
-6. Nếu topic cần UI/UX: tạo/cập nhật UI Direction artifacts (`index.html`, `style.css`, `notes.md`) trong `.viepilot/ui-direction/{session-id}/`
+6. Nếu topic cần UI/UX: tạo/cập nhật UI Direction artifacts trong `.viepilot/ui-direction/{session-id}/` — legacy: `index.html` + `style.css` + `notes.md`; multi-page: thêm `pages/*.html`, `index.html` làm hub, và sau mỗi thay đổi page cập nhật **`## Pages inventory`** trong `notes.md` (xem `docs/user/features/ui-direction.md`)
 7. Nếu user yêu cầu research hoặc cần làm rõ quyết định: research ngay trong session và quay lại topic
 8. Save session with structured format (bao gồm research notes + UI direction references khi có)
 9. Suggest next action: `/vp-crystallize`
@@ -71,5 +71,6 @@ Key steps:
 - [ ] 21st.dev references included when relevant
 - [ ] Research can be executed inside the same brainstorm session
 - [ ] UI Direction artifacts created/updated when UI mode is active
+- [ ] Multi-page sessions: hub links + `## Pages inventory` stay in sync with `pages/*.html`
 - [ ] Next steps suggested
 </success_criteria>

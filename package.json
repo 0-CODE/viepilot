@@ -16,6 +16,7 @@
     "test:watch": "jest --watch",
     "readme:sync": "node scripts/sync-readme-metrics.cjs",
     "lint:cli": "node --check bin/vp-tools.cjs && node --check bin/viepilot.cjs",
+    "verify:ui-direction": "node scripts/verify-ui-direction-pages.cjs",
     "verify:release": "npm run lint:cli && npm test && npm pack --dry-run",
     "prepublishOnly": "npm run verify:release",
     "smoke:published": "node scripts/smoke-published.cjs",

@@ -78,9 +78,11 @@ Ask user for:
 - Validate completeness
 
 ### Step 1A: Consume UI direction (if present)
-- Read `.viepilot/ui-direction/{session-id}/notes.md`, `index.html`, `style.css`
-- Carry approved layout/component decisions into architecture + roadmap artifacts
-- Mark assumptions explicitly if direction artifacts are missing
+- Read `.viepilot/ui-direction/{session-id}/notes.md` first, then `style.css`, then HTML:
+  - **Multi-page:** if `pages/*.html` exists → require `## Pages inventory` in `notes.md`, validate it lists every page file, read each `pages/*.html` plus hub `index.html` for navigation.
+  - **Legacy:** no `pages/` → read `index.html` + `style.css` as before.
+- Carry approved layout/component decisions into architecture + roadmap artifacts; **architecture must reference all pages** from inventory when multi-page.
+- Mark assumptions explicitly if direction artifacts are missing or inventory/files mismatch.
 
 ### Step 1B: Official stack research (mandatory)
 - For every selected stack, research official docs and authoritative sources

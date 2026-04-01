@@ -113,21 +113,36 @@ User có thể yêu cầu research ngay trong brainstorm (không cần đổi sk
 Nếu assistant nhận thấy topic có độ mơ hồ cao hoặc rủi ro quyết định sai, assistant nên chủ động đề xuất:
 `Mục này nên research nhanh trước khi chốt, bạn muốn mình research luôn trong phiên này không?`
 
-### UI Direction Mode (design-in-the-loop; FEAT-002)
+### UI Direction Mode (design-in-the-loop; FEAT-002 + FEAT-007)
 Nếu user đang brainstorm cho dự án có UI/UX hoặc yêu cầu thiết kế trực quan:
 
-1. Tạo workspace direction cho phiên hiện tại:
-   - `.viepilot/ui-direction/{session-id}/index.html`
-   - `.viepilot/ui-direction/{session-id}/style.css`
-   - `.viepilot/ui-direction/{session-id}/notes.md`
+**Layout — chọn một:**
+
+- **Legacy (một màn):** `.viepilot/ui-direction/{session-id}/index.html` + `style.css` + `notes.md`.
+- **Multi-page (nhiều màn):** cùng thư mục session, thêm `pages/{slug}.html` cho từng page; `index.html` là **hub** (liên kết tới mọi page). `style.css` shared.
+
+**Quy tắc chung**
+
+1. Tạo workspace direction cho phiên hiện tại (tối thiểu `style.css` + `notes.md`; HTML theo layout đã chọn).
 2. Mỗi lần user đổi requirement/layout/component:
    - Cập nhật trực tiếp HTML/CSS direction
-   - Ghi decision + rationale vào `notes.md` (single source of truth)
+   - Ghi decision + rationale vào `notes.md` (single source of truth cho design intent)
+
+**Hook bắt buộc (multi-page only)**
+
+Khi thư mục `pages/` tồn tại hoặc bất kỳ `pages/*.html` nào được thêm / đổi tên / xóa:
+
+- Cập nhật **hub** `index.html` (nav / danh sách link tới mọi page còn lại).
+- Cập nhật ngay section **`## Pages inventory`** trong `notes.md` (bảng: Slug | File | Title | Purpose | Key sections | Nav to) — phải khớp 100% tập file `pages/*.html` hiện có.
+- Không kết thúc topic / không coi session UI đã “sync” nếu inventory lệch với file trên disk.
+
 3. Nếu user gửi references/components (bao gồm 21st.dev prompt/link), ghi rõ:
    - nguồn tham chiếu
-   - phần UI áp dụng
+   - phần UI áp dụng (page slug nếu multi-page)
    - điều chỉnh theo mục tiêu sản phẩm
 4. Giữ prototype ở mức mô tả định hướng (directional), không ép build production-ready code ở bước brainstorm.
+
+Tham chiếu user: `docs/user/features/ui-direction.md`.
 
 ### Kết thúc mỗi topic
 - Tóm tắt decisions
@@ -179,12 +194,14 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
 **UI Direction Artifacts** (if applicable):
 - Session id: {session-id}
+- Layout: legacy (single `index.html`) | multi-page (`pages/*.html` + hub `index.html`)
 - Files:
-  - `.viepilot/ui-direction/{session-id}/index.html`
+  - `.viepilot/ui-direction/{session-id}/index.html` (hub hoặc single-screen)
   - `.viepilot/ui-direction/{session-id}/style.css`
-  - `.viepilot/ui-direction/{session-id}/notes.md`
+  - `.viepilot/ui-direction/{session-id}/notes.md` (must include `## Pages inventory` when `pages/` exists)
+  - `.viepilot/ui-direction/{session-id}/pages/*.html` (when multi-page)
 - Preview focus:
-  - {layout/flow summary}
+  - {layout/flow summary; list each page slug if multi-page}
 
 ---
 

@@ -101,11 +101,16 @@ ls -la .viepilot/ui-direction/ 2>/dev/null
 
 When available, for the selected/latest session:
 - Read `.viepilot/ui-direction/{session-id}/notes.md` first (source of design decisions)
-- Read `index.html` + `style.css` to extract:
-  - layout hierarchy
-  - component candidates
-  - interaction expectations
-- Record how each UI direction item maps into target tech stack implementation plan.
+- If `pages/` exists and contains `*.html`:
+  - Require section **`## Pages inventory`** in `notes.md`; treat it as the **site map** (page count, purpose, navigation).
+  - List all `pages/*.html` and confirm each file is represented in the inventory table (if mismatch → stop and ask user to fix brainstorm artifacts or document assumptions).
+  - Read **each** `pages/{slug}.html` for section structure, components, and interaction hints.
+  - Read hub `index.html` for cross-page navigation intent.
+- Else (legacy single-file layout):
+  - Read `index.html` + `style.css` only (no `pages/`).
+- Always read `style.css` for shared styling constraints.
+- Extract from HTML: layout hierarchy, component candidates, interaction expectations.
+- In architecture / UI plan output, **enumerate every page** from inventory (or state explicitly single-page legacy).
 
 If UI scope is present but artifacts are missing:
 - Warn user and request either:

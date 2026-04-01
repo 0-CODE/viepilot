@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 
-- **M1.20 / Phase 24 (FEAT-007) planned** — multi-page UI Direction (`pages/*.html` + hub `index.html`), mandatory notes/manifest inventory updates on page changes, and crystallize consumption of full page map for accurate UI architecture.
+- **M1.20 / Phase 24 (FEAT-007) completed** — multi-page UI Direction (`pages/*.html` + hub `index.html`), mandatory `## Pages inventory` in `notes.md` when `pages/` exists, crystallize workflow/skill reads every page + inventory for full site-map architecture, `npm run verify:ui-direction` helper, and docs refresh.
 - **M1.17 / Phase 21 (ENH-013) completed** — realigned README metrics (`npm run readme:sync` with `cloc`) and moved `.viepilot` to local-only (`.gitignore` + untracked index).
 - **M1.15 / Phase 18 (FEAT-004) completed** — npm distribution flow is now fully closed: publish pipeline passes and package released to npm as `viepilot@1.0.1`.
 - **M1.15 / Phase 19 (FEAT-005) completed** — installer now supports keyboard selector UX (arrow/space/enter), added `viepilot uninstall` command (`--target`, `--yes`, `--dry-run`), and switched dev installer to copy-first flow to avoid symlink-based skill discovery failures.

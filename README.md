@@ -7,7 +7,7 @@
 [![Skills](https://img.shields.io/badge/skills-14-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-16-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-202%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-237%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Shield **1.4.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.4.0**) is the Node package identifier for this repo and may differ; use the framework version for milestone releases and docs.
@@ -33,7 +33,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Workflows | **12** |
 | Templates | **16** (Project: 11, Phase: 5) |
 | CLI Commands | **14** (`vp-tools` + `viepilot install`) |
-| Tests | **202** (3 files: unit + integration + AI compat) |
+| Tests | **237** (6 suites: unit + integration + AI compat + README metrics + UI direction verify) |
 | ViePilot phases (repo) | **15** hoàn thành (xem `.viepilot/TRACKER.md`) |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -55,7 +55,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  100% 🎉 M1.18 roadmap phases ✅ (v1.2.0)
+Tổng thể / Overall:  ████████████████████  100% 🎉 M1.20 roadmap phases ✅ (v1.4.0)
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
