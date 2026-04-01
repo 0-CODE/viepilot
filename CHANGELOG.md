@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **M1.24 / Phase 28 — task 28.1** — `lib/viepilot-install.cjs`: `buildInstallPlan` / `formatPlanLines` (mirror `install.sh` steps as structured plan); `tests/unit/viepilot-install.test.js`.
+- **M1.24 / Phase 28 — task 28.2** — `applyInstallPlan` (mkdir, copy, symlink skills, chmod, cloc guidance, path_shim skip Windows); `buildInstallPlan(..., { overrideHomedir })` for tests.
 
 ### Documentation
 

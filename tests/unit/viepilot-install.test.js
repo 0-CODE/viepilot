@@ -11,6 +11,7 @@ const {
   formatPlanLines,
   normalizeInstallEnv,
   listSkillDirNames,
+  applyInstallPlan,
 } = require('../../lib/viepilot-install.cjs');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -82,5 +83,40 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
     const e = normalizeInstallEnv({});
     expect(e.profile).toBe('cursor-ide');
     expect(e.autoYes).toBe(false);
+  });
+});
+
+describe('viepilot-install apply (28.2)', () => {
+  test('applyInstallPlan dry-run does not create ~/.cursor under fake home', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-dry-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const r = applyInstallPlan(plan, { dryRun: true });
+    expect(r.ok).toBe(true);
+    expect(fs.existsSync(path.join(fakeHome, '.cursor'))).toBe(false);
+  });
+
+  test('applyInstallPlan copies CLI into fake HOME', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-apply-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const r = applyInstallPlan(plan, { dryRun: false });
+    expect(r.ok).toBe(true);
+    const bin = path.join(fakeHome, '.cursor', 'viepilot', 'bin', 'vp-tools.cjs');
+    expect(fs.existsSync(bin)).toBe(true);
+    expect(fs.readFileSync(bin, 'utf8').length).toBeGreaterThan(10);
+  });
+
+  test('overrideHomedir paths appear in plan', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-home-'));
+    const plan = buildInstallPlan(REPO_ROOT, { VIEPILOT_AUTO_YES: '1' }, { overrideHomedir: fakeHome });
+    expect(plan.home).toBe(path.resolve(fakeHome));
+    expect(plan.paths.viepilotDir.startsWith(path.resolve(fakeHome))).toBe(true);
   });
 });
