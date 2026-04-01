@@ -13,9 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **M1.25 / Phase 29 — task 29.1** — `workflows/brainstorm.md` now records architecture diagram applicability inputs; `workflows/crystallize.md` Step 4 adds required/optional/N/A matrix rules for six diagram types.
-- **M1.25 / Phase 29 — task 29.3** — `skills/vp-crystallize/SKILL.md` now requires architecture diagram applicability matrix output; `skills/vp-audit/SKILL.md` now audits matrix consistency (`required|optional|N/A`) instead of hard 6-diagram enforcement.
-- **M1.25 / Phase 29 — task 29.4** — `skills/vp-debug/SKILL.md` and `workflows/autonomous.md` now consume `ARCHITECTURE.md` diagram matrix context, prioritizing `required`, opportunistically using `optional`, and respecting `N/A` rationale without forcing full-diagram refresh.
+## [1.8.0] - 2026-04-01
+
+### Added
+
+- **M1.25 / Phase 29 (ENH-018) completed** — complexity-gated Mermaid architecture contract shipped: brainstorm inputs + crystallize matrix (`required|optional|N/A`) for six diagram types, architecture template sections with N/A rationale policy, and skill/workflow alignment across `vp-crystallize`, `vp-audit`, `vp-debug`, and `autonomous`.
 
 ## [1.7.0] - 2026-04-01
 
@@ -272,7 +274,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/0-CODE/viepilot/compare/v1.7.0...v1.8.0
 [0.10.0]: https://github.com/0-CODE/viepilot/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/0-CODE/viepilot/compare/v0.8.2...v0.9.0
 [0.8.2]: https://github.com/0-CODE/viepilot/compare/v0.8.1...v0.8.2
