@@ -51,12 +51,10 @@ Parse `{{VP_ARGS}}` for flags:
 - `--fast` : Skip optional verifications
 - `--dry-run` : Plan only
 
-Load context:
-```bash
-cat .viepilot/AI-GUIDE.md
-cat .viepilot/TRACKER.md
-cat .viepilot/ROADMAP.md
-```
+Load context (batch — call all Read tools simultaneously in 1 turn):
+- `.viepilot/TRACKER.md` — current phase + progress
+- `.viepilot/ROADMAP.md` — phase list
+- `.viepilot/AI-GUIDE.md` — static (cache after first read; do NOT re-read per task)
 
 Display startup banner:
 ```
@@ -121,15 +119,22 @@ Check if phase already has completed tasks → resume from next task.
 
 For each task in phase:
 
-#### Load Task Context
-```yaml
-read:
-  - .viepilot/AI-GUIDE.md
-  - .viepilot/TRACKER.md
-  - .viepilot/phases/{phase}/PHASE-STATE.md
-  - .viepilot/phases/{phase}/tasks/{task}.md
-  - context_required files from task file
-```
+#### Load Task Context (batch — call all Read tools simultaneously in 1 turn)
+
+Dynamic context (read every task):
+- `.viepilot/TRACKER.md`
+- `.viepilot/HANDOFF.json`
+- `.viepilot/phases/{phase}/PHASE-STATE.md`
+- `.viepilot/phases/{phase}/tasks/{task}.md`
+
+Static context (cached after first read — do NOT re-read per task):
+- `.viepilot/AI-GUIDE.md`
+- `.viepilot/SYSTEM-RULES.md`
+
+Conditional context (only when needed):
+- `.viepilot/logs/blockers.md` → only if `HANDOFF.json.recovery.recent_blocker == true`
+- `.viepilot/PROJECT-CONTEXT.md` → only if task involves architecture/scope decision
+- Additional `context_required` files listed in task file
 
 ### ViePilot Skill Scope Policy (BUG-004 baseline)
 - **Default mode**: only reference/route skills in the ViePilot namespace (`vp-*`).
