@@ -2,9 +2,9 @@
 
 ## Overview
 - **Started**: 2026-04-02
-- **Status**: in_progress
-- **Progress**: 6/11 tasks (55%)
-- **Current Task**: 4.4
+- **Status**: complete ✅
+- **Progress**: 11/11 tasks (100%)
+- **Current Task**: —
 
 ## Task Status
 
@@ -16,11 +16,11 @@
 | 4.1d | Integration test: compliance domain | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.1d |
 | 4.2 | Update autonomous-mode.md | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.2 |
 | 4.3 | Update quick-start.md | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.3 |
-| 4.4 | Update advanced-usage.md | in_progress | 2026-04-02 | — | — |
-| 4.5 | CHANGELOG.md v2.0.0 entry | not_started | — | — | — |
-| 4.6a | Stale reference audit: SKILL.md files | not_started | — | — | — |
-| 4.6b | Stale reference audit: workflow cross-references | not_started | — | — | — |
-| 4.7 | Version bump 1.x → 2.0.0 | not_started | — | — | — |
+| 4.4 | Update advanced-usage.md | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.4 |
+| 4.5 | CHANGELOG.md v2.0.0 entry | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.5 |
+| 4.6a | Stale reference audit: SKILL.md files | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.6a |
+| 4.6b | Stale reference audit: workflow cross-references | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.6b |
+| 4.7 | Version bump 1.x → 2.0.0 | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.7 |
 
 ## Blockers
 _None currently_
@@ -35,9 +35,9 @@ _None currently_
 |------|--------|------|
 
 ## Quality Metrics
-- Integration tests: 0/4 PASS
-- Docs updated: 2/3
-- Stale refs found: TBD
-- Version: 2.0.0-alpha → TBD
+- Integration tests: 4/4 PASS (static trace)
+- Docs updated: 3/3
+- Stale refs fixed: 27 (21 SKILL.md + 6 workflows/)
+- Version: 2.0.0-alpha → 2.0.0
 
 ## Notes
