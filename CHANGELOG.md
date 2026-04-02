@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None.
 
+## [1.9.11] - 2026-04-02
+
+### Fixed
+
+- **BUG-007**: `vp-tools info` crash "Could not locate viepilot package root" khi CWD không phải viepilot source repo. Fix: `buildInstallPlan()` claude-code block nay copy `package.json` → `~/.claude/viepilot/package.json`, cho phép `resolveViepilotPackageRoot()` tìm thấy root ngay cả khi install từ `~/.claude/viepilot/`. (+2 tests, 319 total pass)
+
 ## [1.9.10] - 2026-04-02
 
 ### Fixed

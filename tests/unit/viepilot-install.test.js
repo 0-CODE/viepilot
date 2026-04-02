@@ -342,6 +342,35 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
   });
 });
 
+describe('BUG-007: claude-code install includes package.json copy (41.2)', () => {
+  test('claude-code plan includes package.json copy_file step into ~/.claude/viepilot/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b007-claude-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const expectedTo = path.join(path.resolve(fakeHome), '.claude', 'viepilot', 'package.json');
+    const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === expectedTo);
+    expect(step).toBeDefined();
+    expect(step.from).toMatch(/package\.json$/);
+  });
+
+  test('cursor-only plan does NOT copy package.json into ~/.claude/viepilot/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b007-cursor-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const claudeViepilotDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
+    const step = plan.steps.find(
+      (s) => s.kind === 'copy_file' && typeof s.to === 'string' && s.to === path.join(claudeViepilotDir, 'package.json'),
+    );
+    expect(step).toBeUndefined();
+  });
+});
+
 describe('install.sh wrapper (28.4)', () => {
   const itBash = process.platform === 'win32' ? test.skip : test;
 
