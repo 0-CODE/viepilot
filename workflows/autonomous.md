@@ -14,6 +14,32 @@ Pauses at control points cho user decisions.
 - **`/vp-auto`** + workflow này là **lane mặc định** để **implement** work đã có **phase/task plan** (và doc-first **BUG-001**). **`/vp-request`** và **`/vp-evolve`** **không** thay thế bước này trừ user explicit override — xem **Implementation routing guard** trong `workflows/request.md` và `workflows/evolve.md`.
 
 
+<state_machine>
+## State Machine
+
+Each task in `.viepilot/phases/*/PHASE-STATE.md` `execution_state.status` holds one of 8 named states.
+Read `PHASE-STATE.md` alone to know exactly where execution is — no need to re-read this workflow.
+
+| State | Entry Action | Exit Condition | Transitions |
+|-------|-------------|----------------|-------------|
+| `not_started` | — | on_start | → `executing` |
+| `executing` | run sub-tasks per task spec | on_pass / on_fail | → `pass` or → `recovering_l1` |
+| `recovering_l1` | lint/format auto-fix (silent) | l1_used < l1_max? re-verify | → `pass` or → `recovering_l2` |
+| `recovering_l2` | targeted test fix (silent) | l2_used < l2_max? re-verify | → `pass` or → `recovering_l3` |
+| `recovering_l3` | scope reduction (silent; skip if L3.block) | l3_used < l3_max? re-verify | → `pass` (PARTIAL) or → `control_point` |
+| `control_point` | surface issue to user | user decision | → `executing` (fix+retry) or → `skip` |
+| `pass` | update state files + git persistence check | next task exists? | → `executing` (next task) or → `phase_complete` |
+| `skip` | document reason in PHASE-STATE.md | next task exists? | → `executing` (next task) or → `phase_complete` |
+
+**Resume rule:** On `/vp-auto` invocation, read `execution_state.status` from current PHASE-STATE.md first.
+- `not_started` → begin normally
+- `executing` → current task interrupted mid-run → re-read task file, re-verify, continue
+- `recovering_*` → resume recovery from logged attempt counts in HANDOFF.json
+- `control_point` → re-surface the blocker to user
+- `pass` / `skip` → advance to next task
+
+</state_machine>
+
 <process>
 
 <step name="initialize">
@@ -84,6 +110,10 @@ Display progress:
 cat .viepilot/phases/{phase}/SPEC.md
 cat .viepilot/phases/{phase}/PHASE-STATE.md
 ```
+
+Read `execution_state.status` from PHASE-STATE.md:
+- If block absent (v1 phase): treat as `not_started`, continue normally.
+- If present: resume from current state per State Machine table above.
 
 Check if phase already has completed tasks → resume from next task.
 

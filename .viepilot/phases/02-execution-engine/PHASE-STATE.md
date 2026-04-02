@@ -3,16 +3,16 @@
 ## Overview
 - **Started**: 2026-04-02
 - **Status**: in_progress
-- **Progress**: 1/9 tasks (11%)
-- **Current Task**: 2.2
+- **Progress**: 2/9 tasks (22%)
+- **Current Task**: 2.3
 
 ## Task Status
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
 | 2.1 | 3-layer silent recovery + Gap G pre-flight | done | 2026-04-02 | 2026-04-02 | vp2-p2-t2.1 |
-| 2.2 | Typed state transitions | in_progress | 2026-04-02 | — | vp2-p2-t2.2 |
-| 2.3 | Continuous HANDOFF.json + HANDOFF.log events | not_started | — | — | — |
+| 2.2 | Typed state transitions | done | 2026-04-02 | 2026-04-02 | vp2-p2-t2.2 |
+| 2.3 | Continuous HANDOFF.json + HANDOFF.log events | in_progress | 2026-04-02 | — | vp2-p2-t2.3 |
 | 2.4 | Parallel context loading | not_started | — | — | — |
 | 2.5 | Sub-task tracking update in PHASE-STATE.md | not_started | — | — | — |
 | 2.6 | 3-tier validation pipeline | not_started | — | — | — |
