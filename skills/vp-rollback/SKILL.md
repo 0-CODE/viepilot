@@ -44,7 +44,7 @@ Rollback đến bất kỳ checkpoint nào một cách an toàn, với backup v�
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/rollback.md
+@$HOME/.claude/viepilot/workflows/rollback.md
 </execution_context>
 
 <context>

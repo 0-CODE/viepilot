@@ -68,12 +68,12 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/crystallize.md
-@$HOME/.cursor/viepilot/templates/project/
+@$HOME/.claude/viepilot/workflows/crystallize.md
+@$HOME/.claude/viepilot/templates/project/
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/crystallize.md`
+Execute workflow from `@$HOME/.claude/viepilot/workflows/crystallize.md`
 
 Key steps:
 

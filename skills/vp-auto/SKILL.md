@@ -92,7 +92,7 @@ If required task details are missing, do not implement until task contract is re
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/autonomous.md
+@$HOME/.claude/viepilot/workflows/autonomous.md
 </execution_context>
 
 <context>
@@ -106,7 +106,7 @@ No extra args: chỉ nghĩa các cờ trên **tắt** — **không** phải rule
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/autonomous.md`
+Execute workflow from `@$HOME/.claude/viepilot/workflows/autonomous.md`
 
 ### 1. Initialize
 ```bash

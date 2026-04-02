@@ -50,7 +50,7 @@ Tạo và quản lý requests cho dự án đang phát triển:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/request.md
+@$HOME/.claude/viepilot/workflows/request.md
 </execution_context>
 
 <context>
@@ -65,7 +65,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/request.md`
+Execute workflow from `@$HOME/.claude/viepilot/workflows/request.md`
 
 ### Step 1: Detect Request Type
 

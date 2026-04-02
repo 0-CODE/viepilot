@@ -41,11 +41,11 @@ Save complete work state để có thể resume từ bất kỳ context nào.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/pause-work.md
+@$HOME/.claude/viepilot/workflows/pause-work.md
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/pause-work.md`
+Execute workflow from `@$HOME/.claude/viepilot/workflows/pause-work.md`
 
 ### Step 1: Detect Current Position
 ```bash

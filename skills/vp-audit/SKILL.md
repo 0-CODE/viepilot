@@ -72,7 +72,7 @@ Auto-detect nếu đang chạy trong viepilot framework repo để thêm framewo
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/audit.md
+@$HOME/.claude/viepilot/workflows/audit.md
 </execution_context>
 
 <context>
@@ -89,7 +89,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
+Execute workflow from `@$HOME/.claude/viepilot/workflows/audit.md`
 
 ### Quick Summary
 
