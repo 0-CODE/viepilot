@@ -181,6 +181,27 @@ If any check fails:
 - **Do not** create `{projectPrefix}-vp-p{phase}-t{task}`
 - **Do not** proceed to **Execute Task**
 
+#### Recovery Budget Parse (from task file)
+
+Parse `recovery_budget` and `recovery_overrides` from task file.
+Default to `M` if field is absent (v1 backward compat).
+
+```
+Budget table:
+  S:  {l1_max: 1, l2_max: 1, l3_max: 0}
+  M:  {l1_max: 1, l2_max: 2, l3_max: 0}  ← default
+  L:  {l1_max: 2, l2_max: 2, l3_max: 1}
+  XL: {l1_max: 2, l2_max: 3, l3_max: 1}
+
+Apply recovery_overrides (from TASK.md):
+  if recovery_overrides.L1.block == true → l1_max = 0
+  if recovery_overrides.L2.block == true → l2_max = 0
+  if recovery_overrides.L3.block == true → l3_max = 0
+
+Track attempts via HANDOFF.json.recovery.l1/l2/l3_attempts (persist after each attempt).
+Do NOT increment before attempting — increment after.
+```
+
 #### Stack Preflight (token-efficient lookup)
 Before implementing, detect relevant stacks for the current task and load guidance in this order:
 1. `.viepilot/STACKS.md` (project stack map)
@@ -247,12 +268,13 @@ If `write_scope` is empty or absent (v1 task): skip silently — no warning.
    git commit -m "{type}({scope}): {description}"
    git push
    ```
-9. After each sub-task PASS: update HANDOFF.json immediately (non-blocking):
-   ```json
-   position.sub_task = "{sub_task_id}"
-   meta.last_written = "<ISO8601>"
-   ```
-10. Log notes in task file after each sub-task
+9. After each sub-task PASS: update state immediately (non-blocking):
+   - HANDOFF.json: `position.sub_task = "{sub_task_id}"`, `meta.last_written = "<ISO8601>"`
+   - PHASE-STATE.md execution_state: `current = "{sub_task_id}"`, `status = executing`
+   - PHASE-STATE.md sub-task table: mark sub-task `pass`, add completed timestamp
+10. On sub-task FAIL (before recovery): update PHASE-STATE.md `execution_state.status = recovering_l1`
+11. On task PASS: update PHASE-STATE.md `execution_state.status = pass`; update task table row (status=done, git_tag=actual_tag)
+12. Log notes in task file after each sub-task
 
 #### Verify Task
 ```yaml
@@ -316,6 +338,32 @@ execute_with_recovery(task, budget):
 ```
 
 **Silent contract**: No user-visible message during L1/L2/L3 recovery. Only surface at control_point.
+
+#### Validation Pipeline (3 tiers — strict order, no skipping)
+
+Run after execution completes, before marking PASS. Tier order: contract → scope → git.
+
+**Tier 1 — Contract Check:**
+- Verify AI output contains `RESULT: PASS|FAIL|BLOCKED — {reason}` (or equivalent structured result)
+- Fail action: retry execution once (not recovery layer)
+- Max 1 retry; still fails → control_point
+
+**Tier 2 — Write Scope Lock (scope drift detection):**
+- If `write_scope` is empty/absent (v1 task): skip silently (backward compat)
+- Otherwise:
+  ```
+  modified_files = git diff --name-only HEAD
+  violations = [f for f in modified_files if not any(f.startswith(s) for s in task.write_scope)]
+  if violations:
+    Append to HANDOFF.log: {"event":"scope_drift","task":"{task}","violations":[...]}
+    → control_point immediately (NOT silent recovery)
+  ```
+- Tier 2 violation is always a control_point — never silently passed
+
+**Tier 3 — Git Gate:**
+- Verify commit message follows Conventional Commits format (`type(scope): description`)
+- Verify `git status --porcelain` is empty (no unstaged changes)
+- Fail action: AI fixes commit message and recommits (max 1 attempt)
 
 #### Git Persistence Gate (BUG-003)
 Before marking a task PASS, require durable git persistence:
@@ -565,13 +613,24 @@ git push
 </step>
 
 <step name="handle_blocker">
-## 7. Handle Blocker
+## 7. Handle Blocker / Control Point
 
-At any control point:
+### Enter Control Point Protocol (Task 2.7)
+
+**Before displaying to user — update HANDOFF.json first** (so vp-status can detect):
+```json
+control_point.active = true
+control_point.reason = "{why: budget exhausted / scope drift / tier1 fail / other}"
+control_point.ts = "<ISO8601>"
+recovery.recent_blocker = true
 ```
-⚠ Phase {N} ({Name}): Issue Encountered
+Write HANDOFF.json. Then display:
 
-{description of issue}
+```
+━━━ CONTROL POINT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Task: {task_id} — {task_name}
+ Reason: {reason}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Options:
 1. Fix and retry - Attempt to fix the issue
@@ -580,13 +639,27 @@ Options:
 4. Stop autonomous - Exit with progress summary
 ```
 
+### Exit Control Point Protocol
+
+After user chooses option 1 (fix+retry) or 2 (skip):
+```json
+control_point.active = false
+control_point.reason = null
+control_point.ts = null
+```
+Write HANDOFF.json. Then continue per user choice.
+
+### Options Detail
+
 **Fix and retry:**
 - Re-attempt the failed step
-- If still fails → re-present options
+- If still fails → re-present control point options
 
 **Skip task:**
 - Ask for skip reason
-- Log in PHASE-STATE.md
+- Update PHASE-STATE.md: task → skipped, reason documented
+- Clear control_point fields in HANDOFF.json
+- Append `task_skip` event to HANDOFF.log
 - Continue to next task
 
 **Rollback:**
@@ -594,10 +667,12 @@ Options:
 TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
 git revert --no-commit $(git rev-list "${TAG_PREFIX}-p{phase}-t{task}"..HEAD)
 ```
-- Reset task → not_started
+- Reset task → not_started in PHASE-STATE.md
+- Clear control_point fields in HANDOFF.json
 - Continue or stop
 
 **Stop:**
+- Clear control_point fields before exit
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► STOPPED
