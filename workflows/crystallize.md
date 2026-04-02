@@ -425,7 +425,8 @@ Create `.viepilot/logs/` directory with 3 log files from templates:
 - `templates/project/logs/blockers.md` → `.viepilot/logs/blockers.md` (empty)
 - `templates/project/logs/version-history.md` → `.viepilot/logs/version-history.md` (seed with {{INITIAL_VERSION}})
 
-Create empty `.viepilot/HANDOFF.json`
+Initialize `.viepilot/HANDOFF.json` from template `templates/project/HANDOFF.json` (v2 schema):
+populate `position.phase` with first phase slug from ROADMAP.md; all other fields remain null/0/false/[].
 </step>
 
 <step name="generate_phase_dirs">

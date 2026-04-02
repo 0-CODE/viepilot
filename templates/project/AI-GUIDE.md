@@ -18,16 +18,31 @@
 | Những gì KHÔNG được làm | `SYSTEM-RULES.md` | `<do_not>` |
 | Database schema | `schemas/database-schema.sql` | - |
 | API contracts | `schemas/api-contracts.yaml` | - |
-| Decisions đã quyết định | `TRACKER.md` | `## Decision Log` |
+| Decisions đã quyết định | `logs/decisions.md` | on-demand |
 | Resume công việc dở | `HANDOFF.json` | - |
 | Package structure | `PROJECT-META.md` | `## Package Structure` |
 | File headers | `PROJECT-META.md` | `## File Headers` |
 
 ## Context Loading Strategy
 
+> **QUAN TRỌNG:** Đọc tất cả files trong cùng 1 batch (multiple Read tool calls in 1 turn).
+> Không đọc sequential — luôn đọc parallel để tiết kiệm turns.
+
+### Static boundary (không cần đọc lại mỗi task)
+- `SYSTEM-RULES.md` framework rules → cache sau lần đầu
+- `ARCHITECTURE.md` module structure → cache sau lần đầu
+
+### Dynamic boundary (đọc mỗi task)
+- `TRACKER.md` + `HANDOFF.json` + `PHASE-STATE.md` + task file
+
+### Conditional load (chỉ khi cần)
+- `logs/decisions.md` → khi cần rationale cho decision
+- `logs/blockers.md` → khi `HANDOFF.json.recovery.recent_blocker == true`
+- `PROJECT-CONTEXT.md` → khi task liên quan đến scope/architecture
+
 ### Minimal Context (cho quick tasks)
 ```
-Chỉ đọc:
+Load in one batch simultaneously:
 1. AI-GUIDE.md (file này)
 2. TRACKER.md → Current State
 3. File cụ thể liên quan đến task
@@ -35,7 +50,7 @@ Chỉ đọc:
 
 ### Standard Context (cho coding tasks)
 ```
-Đọc theo thứ tự:
+Load in one batch simultaneously:
 1. AI-GUIDE.md (file này)
 2. TRACKER.md → biết đang ở đâu
 3. PROJECT-CONTEXT.md → <product_vision> + phased scope (đọc TRƯỚC khi khóa thiết kế chi tiết)
@@ -46,7 +61,7 @@ Chỉ đọc:
 
 ### Full Context (cho architecture decisions)
 ```
-Đọc theo thứ tự:
+Load in one batch simultaneously:
 1. AI-GUIDE.md + TRACKER.md
 2. PROJECT-CONTEXT.md → domain + <product_vision> (đầy đủ)
 3. ROADMAP.md → MVP phases + Post-MVP / horizon blocks

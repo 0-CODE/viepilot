@@ -6,13 +6,13 @@
 - **Version**: 2.0.0
 - **Goal**: Upgrade ViePilot execution layer với typed state machine, layered recovery, continuous state, và improved workflow integration
 - **Phases**: 4
-- **Status**: Not Started
+- **Status**: In Progress
 
 ---
 
-### Phase 1: Foundation — Templates & State Machine
+### Phase 1: Foundation — Templates & State Machine ✅
 **Goal**: Refactor tất cả core templates để support v2 metadata fields và kiến trúc mới
-**Estimated Tasks**: 6
+**Estimated Tasks**: 6 / 6 complete
 **Dependencies**: None
 
 | Task | Description | Acceptance Criteria | Complexity |

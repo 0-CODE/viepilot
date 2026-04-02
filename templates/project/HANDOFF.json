@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "position": {
+    "phase": null,
+    "task": null,
+    "sub_task": null,
+    "status": "not_started"
+  },
+  "recovery": {
+    "l1_attempts": 0,
+    "l2_attempts": 0,
+    "l3_attempts": 0,
+    "recent_blocker": false
+  },
+  "context": {
+    "active_stacks": [],
+    "last_decision": null
+  },
+  "control_point": {
+    "active": false,
+    "reason": null,
+    "ts": null
+  },
+  "meta": {
+    "last_written": null,
+    "last_archived": null
+  }
+}
