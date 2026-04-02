@@ -11,6 +11,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None.
 
+## [2.0.0] - 2026-04-02
+
+### Added
+
+- **v2 Execution Engine — 3-layer silent recovery**: L1 (lint/format auto-fix) → L2 (targeted test fix) → L3 (scope reduction). All layers run silently; control point surfaces only after budget exhaustion.
+- **Recovery budget enforcement**: S/M/L/XL complexity maps to fixed L1/L2/L3 attempt caps. Budget parsed from `TASK.md` field `recovery_budget`.
+- **`recovery_overrides` per task**: Block L1/L2/L3 individually with `block: true` + `reason`. `L3.block` auto-set to `true` for compliance paths (auth, payment, crypto, data/privacy) via Gap G detection.
+- **Gap G compliance pre-flight**: `vp-auto` scans `write_scope` before execution; warns + auto-blocks L3 for compliance domains.
+- **Typed state machine**: 8 states in `PHASE-STATE.md → execution_state` block — `not_started`, `executing`, `recovering_l1/l2/l3`, `control_point`, `pass`, `skip` — with declared `available_transitions`.
+- **Continuous HANDOFF.json write**: Updated after every sub-task PASS, not just at task boundary. Schema v2: `version`, `position.sub_task`, `recovery.*_attempts`, `context.active_stacks`, `control_point.*`, `meta.last_written`.
+- **HANDOFF.log**: Append-only JSONL audit trail at `.viepilot/HANDOFF.log`. Events: `task_start`, `l1/l2/l3_recovery`, `scope_drift`, `task_pass/skip`, `control_point_enter/exit`. Gitignored.
+- **Phase-boundary HANDOFF.log rotation**: Archived to `logs/handoff-phase-N.log` at phase complete; live log reset.
+- **Scope drift detection** (Tier 2 validation): `git diff --name-only HEAD` vs `write_scope` after each task execution. Violations → immediate control point + `scope_drift` HANDOFF.log event.
+- **3-tier validation pipeline**: Tier 1 (task contract check) → Tier 2 (scope lock + drift detection) → Tier 3 (git persistence gate).
+- **Control point state protocol**: `HANDOFF.json.control_point.active` set before prompting user; cleared on exit. `vp-status` can detect and display banner.
+- **vp-resume tiered context restore**: Quick (<30 min, 2 files) / Standard (30 min–4 h, 3 files) / Full (>4 h, HANDOFF.log tail + active_stacks + user confirmation).
+- **vp-status v2**: Control point banner shown before dashboard. Recovery stats (L1/L2/L3 attempt counts) shown when non-zero.
+- **Gap A crystallize auto-populate**: `crystallize` + `vp-evolve` auto-fill `type` (from description keywords), `write_scope` (from task Paths section), `recovery_budget` (from complexity). No manual entry needed.
+- **vp-request NLP intake rewrite**: Description-first flow with 2-band confidence routing (≥85% inline / 60–84% 1-question / <60% top-3 menu). Gap C UI direction route detection. Horizon-aware XL scope routing.
+- **Parallel context loading**: All context files read in 1 batch turn. Static/dynamic/conditional boundary documented in AI-GUIDE.md.
+- **`paths:` frontmatter for vp-* skills**: `vp-auto`, `vp-resume`, `vp-request`, `vp-evolve` declare `paths:` for conditional activation.
+- **Sub-task tracking in PHASE-STATE.md**: Table updated after each sub-task PASS/FAIL; `execution_state.status` reflects current recovery layer.
+
+### Changed
+
+- **TRACKER.md template**: Refactored to index-only format (≤30 lines). Decision Log, Version History, Blockers moved to on-demand `logs/` files.
+- **PHASE-STATE.md template**: Added `## Execution State` YAML block and `## Sub-task Tracking` table.
+- **TASK.md template**: Added `## Task Metadata` section with `type`, `complexity`, `write_scope`, `recovery_budget`, `can_parallel_with`, `recovery_overrides`.
+- **AI-GUIDE.md template**: Added static/dynamic/conditional context boundary labels and parallel batch instruction.
+- **HANDOFF.json template**: Upgraded to schema v2 with full position, recovery, context, control_point, and meta fields.
+- **`workflows/autonomous.md`**: Complete rewrite — typed state machine, 3-layer recovery, 3-tier validation, scope drift, continuous HANDOFF, control point protocol, compliance pre-flight.
+- **`workflows/crystallize.md`**: Updated to generate v2 templates; Gap A auto-populate; Gap G compliance detection; HANDOFF.json v2 initialization; template path fixed (`.cursor` → `.claude`).
+- **`workflows/evolve.md`**: Updated to generate v2 TASK.md with Gap A + Gap G auto-populate.
+- **`workflows/resume.md`**: Complete rewrite as tiered context restore workflow.
+- **`docs/user/features/autonomous-mode.md`**: Recovery layers, budget table, scope contract, HANDOFF.log, v2 control point format documented.
+- **`docs/user/quick-start.md`**: Crystallize artifact list updated (TRACKER.md index format, logs/, HANDOFF.log rotation, v2 task metadata).
+- **`docs/advanced-usage.md`**: New Section 2 — Task Configuration (v2) covering write_scope patterns, recovery_overrides, budget tuning, HANDOFF.log.
+
+### Fixed
+
+- **BUG-001 (doc-first gate)**: Task `.md` must hold a real written plan and `PHASE-STATE.md` must show `in_progress` before any implementation commit. Enforced in `autonomous.md`.
+- **BUG-003 (git persistence gate)**: Task/phase cannot be marked PASS unless working tree is clean, upstream branch exists, and no unpushed commits.
+
 ## [1.9.10] - 2026-04-02
 
 ### Fixed
