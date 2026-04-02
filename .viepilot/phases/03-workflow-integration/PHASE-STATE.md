@@ -3,8 +3,8 @@
 ## Overview
 - **Started**: 2026-04-02
 - **Status**: in_progress
-- **Progress**: 2/8 tasks (25%)
-- **Current Task**: 3.3
+- **Progress**: 3/8 tasks (38%)
+- **Current Task**: 3.4a
 
 ## Task Status
 
@@ -12,8 +12,8 @@
 |---|------|--------|---------|-----------|---------|
 | 3.1 | HANDOFF.log + gitignore + rotation | done | 2026-04-02 | 2026-04-02 | vp2-p3-t3.1 |
 | 3.2 | vp-resume tiered restore | done | 2026-04-02 | 2026-04-02 | vp2-p3-t3.2 |
-| 3.3 | vp-status control point + recovery stats | in_progress | 2026-04-02 | — | vp2-p3-t3.3 |
-| 3.4a | crystallize v2 + Gap A + Gap G | not_started | — | — | — |
+| 3.3 | vp-status control point + recovery stats | done | 2026-04-02 | 2026-04-02 | vp2-p3-t3.3 |
+| 3.4a | crystallize v2 + Gap A + Gap G | in_progress | 2026-04-02 | — | vp2-p3-t3.4a |
 | 3.4b | crystallize backward compat | not_started | — | — | — |
 | 3.5 | vp-evolve v2 template | not_started | — | — | — |
 | 3.6 | vp-request NLP intake rewrite | not_started | — | — | — |

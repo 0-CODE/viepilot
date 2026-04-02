@@ -1,7 +1,7 @@
 ---
 name: vp-status
-description: "Hiển thị progress dashboard và actionable insights"
-version: 0.1.1
+description: "Hiển thị progress dashboard, control point detection, và recovery stats"
+version: 2.0.0
 ---
 
 <cursor_skill_adapter>
@@ -28,23 +28,57 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 
 <objective>
 Hiển thị visual progress dashboard với actionable insights.
+Detects control point state và recovery activity từ HANDOFF.json.
 
-**Reads:**
+**Reads (batch in 1 turn):**
+- `.viepilot/HANDOFF.json` — control_point + recovery stats (always first)
 - `.viepilot/TRACKER.md`
 - `.viepilot/ROADMAP.md`
-- `.viepilot/phases/*/PHASE-STATE.md`
-- `CHANGELOG.md`
 
-**Output:** Dashboard display với next action suggestions.
+**Conditional:**
+- `.viepilot/phases/{current_phase}/PHASE-STATE.md` (when phase in progress)
+
+**Output:** Control point banner (if active) + dashboard display + next action suggestions.
 </objective>
 
 <process>
 
-### Step 1: Load State
+### Step 1: Load State (batch — call all Read tools simultaneously)
 ```bash
+cat .viepilot/HANDOFF.json    # FIRST — control point check
 cat .viepilot/TRACKER.md
 cat .viepilot/ROADMAP.md
 ```
+
+### Step 1b: Control Point Detection
+
+**Check HANDOFF.json.control_point.active BEFORE rendering dashboard.**
+
+If `control_point.active == true`, display prominently:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ⚠ CONTROL POINT ACTIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Task: {position.task}
+ Reason: {control_point.reason}
+ Since: {control_point.ts}
+
+ Run /vp-auto to resolve
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If `control_point.active == false` (or absent): skip banner, continue to dashboard.
+
+### Step 1c: Recovery Stats (from HANDOFF.json.recovery.*)
+
+Only show when any attempt count > 0 (don't clutter clean runs):
+```
+Recovery Activity:
+  L1 (lint/format):  {l1_attempts} attempts
+  L2 (test fix):     {l2_attempts} attempts
+  L3 (scope reduce): {l3_attempts} attempts
+```
+Display this section just below CURRENT STATE in dashboard.
 
 ### Step 2: Calculate Progress
 For each phase:
@@ -142,9 +176,13 @@ If blockers:
 </process>
 
 <success_criteria>
+- [ ] HANDOFF.json read first (before dashboard render)
+- [ ] control_point.active == true → banner displayed prominently, before all other output
+- [ ] control_point.active == false → no banner (no clutter)
+- [ ] Recovery stats shown when any l1/l2/l3_attempts > 0
+- [ ] Recovery stats NOT shown on clean runs (all counts = 0)
 - [ ] All progress calculated correctly
 - [ ] Visual dashboard displayed
 - [ ] Current state clearly shown
-- [ ] Quality metrics included
 - [ ] Actionable next steps suggested
 </success_criteria>
