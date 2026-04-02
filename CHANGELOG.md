@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None.
 
+## [1.9.10] - 2026-04-02
+
+### Fixed
+
+- **BUG-006**: Tất cả install targets (`cursor-ide`, `cursor-agent`, `claude-code`) thiếu 3 lib files trong `buildInstallPlan()`. Fix: cả 2 blocks (cursor `viepilotDir` và claude-code `claudeViepilotDir`) nay copy đủ 4 files: `cli-shared.cjs`, `viepilot-info.cjs`, `viepilot-update.cjs`, `viepilot-install.cjs`. Ngăn crash khi chạy `vp-tools info` / `vp-tools update` trên môi trường đã install. (+3 tests, 317 total pass)
+
 ### Added
 
 - None yet.

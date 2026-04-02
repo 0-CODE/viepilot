@@ -297,6 +297,51 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
   });
 });
 
+describe('BUG-006: all install targets have complete lib files (40.2)', () => {
+  const LIB_FILES = ['cli-shared.cjs', 'viepilot-info.cjs', 'viepilot-update.cjs', 'viepilot-install.cjs'];
+
+  test('cursor target has all 4 lib copy steps in ~/.cursor/viepilot/lib/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-cursor-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const libDir = path.join(path.resolve(fakeHome), '.cursor', 'viepilot', 'lib');
+    for (const f of LIB_FILES) {
+      const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === path.join(libDir, f));
+      expect(step).toBeDefined();
+      expect(step.from).toContain(path.join('lib', f));
+    }
+  });
+
+  test('claude-code target has all 4 lib copy steps in ~/.claude/viepilot/lib/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-claude-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const libDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot', 'lib');
+    for (const f of LIB_FILES) {
+      const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === path.join(libDir, f));
+      expect(step).toBeDefined();
+      expect(step.from).toContain(path.join('lib', f));
+    }
+  });
+
+  test('cursor target does NOT copy lib files into ~/.claude/viepilot/lib/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-nocc-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    const claudeLibDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot', 'lib');
+    expect(plan.steps.some((s) => s.kind === 'copy_file' && typeof s.to === 'string' && s.to.startsWith(claudeLibDir))).toBe(false);
+  });
+});
+
 describe('install.sh wrapper (28.4)', () => {
   const itBash = process.platform === 'win32' ? test.skip : test;
 
