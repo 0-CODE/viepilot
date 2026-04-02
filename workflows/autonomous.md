@@ -488,12 +488,22 @@ When all tasks in phase are done/skipped:
    | smarttrack-*/pom.xml (8 files) | 1.1 |   ← WRONG: glob pattern
    | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
-4. Create git tag: `{projectPrefix}-vp-p{phase}-complete`
-5. Check version bump needed:
+4. Rotate HANDOFF.log (phase-boundary rotation):
+   ```bash
+   # Archive current log to logs/ directory
+   if [ -f .viepilot/HANDOFF.log ]; then
+     mv .viepilot/HANDOFF.log .viepilot/logs/handoff-phase-{N}.log
+   fi
+   # Create fresh empty log for next phase
+   touch .viepilot/HANDOFF.log
+   ```
+   Update HANDOFF.json: `meta.last_archived = "handoff-phase-{N}.log"`
+5. Create git tag: `{projectPrefix}-vp-p{phase}-complete`
+6. Check version bump needed:
    - Features added → MINOR
    - Fixes only → PATCH
-6. Update TRACKER.md
-7. Push all changes:
+7. Update TRACKER.md
+8. Push all changes:
    ```bash
    git push
    git push --tags

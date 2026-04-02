@@ -1,17 +1,17 @@
 # Phase 3: Workflow Integration — State
 
 ## Overview
-- **Started**: —
-- **Status**: not_started
-- **Progress**: 0/8 tasks (0%)
-- **Current Task**: —
+- **Started**: 2026-04-02
+- **Status**: in_progress
+- **Progress**: 1/8 tasks (13%)
+- **Current Task**: 3.2
 
 ## Task Status
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 3.1 | HANDOFF.log + gitignore + rotation | not_started | — | — | — |
-| 3.2 | vp-resume tiered restore | not_started | — | — | — |
+| 3.1 | HANDOFF.log + gitignore + rotation | done | 2026-04-02 | 2026-04-02 | vp2-p3-t3.1 |
+| 3.2 | vp-resume tiered restore | in_progress | 2026-04-02 | — | vp2-p3-t3.2 |
 | 3.3 | vp-status control point + recovery stats | not_started | — | — | — |
 | 3.4a | crystallize v2 + Gap A + Gap G | not_started | — | — | — |
 | 3.4b | crystallize backward compat | not_started | — | — | — |
