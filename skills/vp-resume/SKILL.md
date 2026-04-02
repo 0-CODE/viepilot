@@ -41,11 +41,11 @@ Tier determined by time gap since last HANDOFF.json write:
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/workflows/resume.md
+@$HOME/.cursor/viepilot/workflows/resume.md
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.claude/viepilot/workflows/resume.md`
+Execute workflow from `@$HOME/.cursor/viepilot/workflows/resume.md`
 </process>
 
 <success_criteria>

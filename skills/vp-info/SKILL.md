@@ -40,7 +40,7 @@ Dùng **`vp-tools info --json`** khi cần parse hoặc so sánh phiên bản tr
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/bin/vp-tools.cjs
+@$HOME/.cursor/viepilot/bin/vp-tools.cjs
 </execution_context>
 
 <process>

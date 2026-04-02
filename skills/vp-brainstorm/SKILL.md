@@ -50,7 +50,7 @@ Hỗ trợ:
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/workflows/brainstorm.md
+@$HOME/.cursor/viepilot/workflows/brainstorm.md
 </execution_context>
 
 <context>
@@ -64,7 +64,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.claude/viepilot/workflows/brainstorm.md`
+Execute workflow from `@$HOME/.cursor/viepilot/workflows/brainstorm.md`
 
 Key steps:
 1. Detect existing sessions

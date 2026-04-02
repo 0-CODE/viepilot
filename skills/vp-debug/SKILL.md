@@ -50,7 +50,7 @@ Systematic debugging với persistent state tracking. Giúp track vấn đề qu
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/workflows/debug.md
+@$HOME/.cursor/viepilot/workflows/debug.md
 </execution_context>
 
 <context>
@@ -63,7 +63,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.claude/viepilot/workflows/debug.md`
+Execute workflow from `@$HOME/.cursor/viepilot/workflows/debug.md`
 
 ### Debug Session Structure
 ```json

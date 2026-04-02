@@ -64,7 +64,7 @@ CHANGELOG.md (updated)
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/workflows/documentation.md
+@$HOME/.cursor/viepilot/workflows/documentation.md
 </execution_context>
 
 <context>

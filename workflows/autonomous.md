@@ -310,7 +310,7 @@ execute_with_recovery(task, budget):
   while l1_used < budget.l1_max and not task.recovery_overrides.L1.block:
     run lint_autofix()                   # e.g., npm run lint:fix, black ., etc.
     l1_used++
-    append_handoff_log("L1_RECOVERY", {task, l1_used})
+    append to HANDOFF.log: {"ts":"<ISO8601>","event":"l1_recovery","task":"{task}","phase":"{phase}","attempt":{l1_used},"trigger":"lint_error"}
     update HANDOFF.json recovery.l1_attempts = l1_used
     if verify() == PASS: return PASS
 
@@ -318,7 +318,7 @@ execute_with_recovery(task, budget):
   while l2_used < budget.l2_max and not task.recovery_overrides.L2.block:
     analyze_failure() → minimal targeted_fix()   # fix only the failing assertion/file
     l2_used++
-    append_handoff_log("L2_RECOVERY", {task, l2_used})
+    append to HANDOFF.log: {"ts":"<ISO8601>","event":"l2_recovery","task":"{task}","phase":"{phase}","attempt":{l2_used},"trigger":"test_fail"}
     update HANDOFF.json recovery.l2_attempts = l2_used
     if verify() == PASS: return PASS
 
@@ -326,7 +326,7 @@ execute_with_recovery(task, budget):
   if budget.l3_max > 0 and not task.recovery_overrides.L3.block:
     reduce_scope()                       # defer lowest-priority acceptance criterion
     l3_used++
-    append_handoff_log("L3_RECOVERY", {task, l3_used})
+    append to HANDOFF.log: {"ts":"<ISO8601>","event":"l3_recovery","task":"{task}","phase":"{phase}","attempt":{l3_used},"trigger":"scope_reduction"}
     update HANDOFF.json recovery.l3_attempts = l3_used
     if verify() == PASS: return PARTIAL_PASS   # → note deferral in PHASE-STATE.md
   elif task.recovery_overrides.L3.block:
@@ -433,7 +433,7 @@ If any check fails:
   ```
 - Append to HANDOFF.log (non-blocking):
   ```
-  {"ts":"<ISO8601>","event":"control_point","task":"{task}","phase":"{phase}","reason":"{description}"}
+  {"ts":"<ISO8601>","event":"control_point_enter","task":"{task}","phase":"{phase}","reason":"{description}"}
   ```
 - → Go to handle_blocker
 </step>
@@ -657,6 +657,10 @@ control_point.active = false
 control_point.reason = null
 control_point.ts = null
 ```
+Append to HANDOFF.log (non-blocking):
+```
+{"ts":"<ISO8601>","event":"control_point_exit","task":"{task}","phase":"{phase}","resolution":"{retry|skip|rollback|stop}"}
+```
 Write HANDOFF.json. Then continue per user choice.
 
 ### Options Detail
@@ -669,7 +673,10 @@ Write HANDOFF.json. Then continue per user choice.
 - Ask for skip reason
 - Update PHASE-STATE.md: task → skipped, reason documented
 - Clear control_point fields in HANDOFF.json
-- Append `task_skip` event to HANDOFF.log
+- Append to HANDOFF.log:
+  ```
+  {"ts":"<ISO8601>","event":"task_skip","task":"{task}","phase":"{phase}","reason":"user_skip"}
+  ```
 - Continue to next task
 
 **Rollback:**

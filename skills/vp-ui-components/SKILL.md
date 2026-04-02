@@ -45,7 +45,7 @@ Nguồn có thể đến từ prompt/link/snippet (đặc biệt 21st.dev), sau 
 </objective>
 
 <execution_context>
-@$HOME/.claude/viepilot/workflows/ui-components.md
+@$HOME/.cursor/viepilot/workflows/ui-components.md
 </execution_context>
 
 <context>
@@ -58,7 +58,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.claude/viepilot/workflows/ui-components.md`
+Execute workflow from `@$HOME/.cursor/viepilot/workflows/ui-components.md`
 
 Key steps:
 1. Prepare global + local component stores
