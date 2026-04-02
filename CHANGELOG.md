@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **ENH-023**: Fix `workflows/autonomous.md` Step 3 PASS handler — thêm `ROADMAP.md` vào danh sách update sau mỗi task complete (Phase 36).
+- None.
 
 ### Added
 
@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - None yet.
+
+## [1.9.6] - 2026-04-02
+
+### Fixed
+
+- **ENH-023**: `workflows/autonomous.md` Step 3 Handle Result PASS — thêm `Update ROADMAP.md: sync phase progress % và task count nếu phase status/progress thay đổi` vào danh sách update sau `CHANGELOG.md`. Trước đây ROADMAP.md chỉ được sync tại phase-complete (Step 5a), bỏ sót task-level progress.
 
 ## [1.9.5] - 2026-04-02
 
