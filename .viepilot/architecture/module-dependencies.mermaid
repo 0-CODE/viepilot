@@ -1,0 +1,38 @@
+flowchart LR
+  subgraph Skills ["skills/vp-*/"]
+    S1[vp-brainstorm]
+    S2[vp-crystallize]
+    S3[vp-auto]
+    S4[vp-resume]
+    S5[vp-request]
+    S6[vp-evolve]
+  end
+  subgraph Workflows ["workflows/"]
+    W1[brainstorm.md]
+    W2[crystallize.md]
+    W3[autonomous.md]
+    W4[resume.md]
+    W5[request.md]
+    W6[evolve.md]
+  end
+  subgraph Templates ["templates/"]
+    T1[project/]
+    T2[phase/]
+  end
+  subgraph State [".viepilot/ per project"]
+    A1[TRACKER.md\nROADMAP.md\nAI-GUIDE.md]
+    A2[HANDOFF.json\nHANDOFF.log]
+    A3[phases/*/\nPHASE-STATE.md\ntasks/*.md]
+  end
+  subgraph Lib ["lib/ + bin/"]
+    L1[vp-tools\nshell helpers]
+  end
+  Skills --> Workflows
+  W2 --> Templates
+  W2 --> State
+  W3 --> State
+  W4 --> State
+  W6 --> Templates
+  W6 --> State
+  W3 --> Lib
+  State --> State

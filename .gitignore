@@ -1,2 +1,6 @@
 node_modules/
-.viepilot/
+
+# ViePilot runtime state (do not commit — local only)
+.viepilot/HANDOFF.json
+.viepilot/HANDOFF.log
+.viepilot/logs/handoff-*.log
