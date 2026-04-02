@@ -285,6 +285,26 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     expect(content).toContain('.claude/viepilot');
   });
 
+  test('buildInstallPlan with claude-code target has rewrite_paths_in_dir steps for workflows and templates (BUG-B)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-bugb-rw-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const claudeViepilot = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
+    const rewrites = plan.steps.filter((s) => s.kind === 'rewrite_paths_in_dir');
+    expect(rewrites.length).toBe(3);
+    const workflowsRewrite = rewrites.find((s) => s.dir === path.join(claudeViepilot, 'workflows'));
+    expect(workflowsRewrite).toBeDefined();
+    expect(workflowsRewrite.from).toBe('.cursor/viepilot');
+    expect(workflowsRewrite.to).toBe('.claude/viepilot');
+    const templatesRewrite = rewrites.find((s) => s.dir === path.join(claudeViepilot, 'templates'));
+    expect(templatesRewrite).toBeDefined();
+    expect(templatesRewrite.from).toBe('.cursor/viepilot');
+    expect(templatesRewrite.to).toBe('.claude/viepilot');
+  });
+
   test('buildInstallPlan without claude-code target has null claudeViepilotDir and no rewrite step', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-nocc-'));
     const plan = buildInstallPlan(

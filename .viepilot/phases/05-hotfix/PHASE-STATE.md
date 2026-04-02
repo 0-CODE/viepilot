@@ -1,10 +1,10 @@
 # Phase 5: Hotfix — Install Path Convention + Logic Gaps — State
 
 ## Overview
-- **Started**: —
-- **Status**: not_started
-- **Progress**: 0/5 tasks (0%)
-- **Current Task**: —
+- **Started**: 2026-04-03
+- **Status**: in_progress
+- **Progress**: 3/5 tasks (60%)
+- **Current Task**: 5.3
 
 ## Execution State
 ```yaml
@@ -27,10 +27,10 @@ recovery_budget:
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 5.1 | Revert SKILL.md source path convention | not_started | — | — | — |
-| 5.2 | Revert crystallize.md workflow path | not_started | — | — | — |
-| 5.3 | Fix install script — workflow rewrite step | not_started | — | — | — |
-| 5.4 | Fix HANDOFF.log event naming gaps | not_started | — | — | — |
+| 5.1 | Revert SKILL.md source path convention | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.1 |
+| 5.2 | Revert crystallize.md workflow path | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.2 |
+| 5.3 | Fix install script — workflow rewrite step | in_progress | 2026-04-03 | — | — |
+| 5.4 | Fix HANDOFF.log event naming gaps | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.4 |
 | 5.5 | Version bump 2.0.0 → 2.0.1 + CHANGELOG | not_started | — | — | — |
 
 ## Sub-task Tracking
