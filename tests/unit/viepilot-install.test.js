@@ -215,6 +215,88 @@ describe('viepilot-install apply (28.2)', () => {
   });
 });
 
+describe('BUG-005: claude-code install env path (38.3)', () => {
+  test('buildInstallPlan with claude-code target includes claudeViepilotDir in paths', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-paths-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const expected = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
+    expect(plan.paths.claudeViepilotDir).toBe(expected);
+  });
+
+  test('buildInstallPlan with claude-code target has mkdir steps for ~/.claude/viepilot subdirs', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-mkdir-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const cvd = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
+    for (const sub of ['workflows', path.join('templates', 'project'), path.join('templates', 'phase'), 'bin', 'lib']) {
+      expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path === path.join(cvd, sub))).toBe(true);
+    }
+  });
+
+  test('buildInstallPlan with claude-code target mirrors workflows to ~/.claude/viepilot/workflows', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-wf-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const cvd = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
+    const copySteps = plan.steps.filter(
+      (s) => (s.kind === 'copy_file' || s.kind === 'copy_dir') && typeof s.to === 'string' && s.to.startsWith(path.join(cvd, 'workflows')),
+    );
+    expect(copySteps.length).toBeGreaterThan(0);
+  });
+
+  test('buildInstallPlan with claude-code target has rewrite_paths_in_dir step for skill path fix', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-rw-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const claudeSkills = path.join(path.resolve(fakeHome), '.claude', 'skills');
+    const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
+    expect(rewrite).toBeDefined();
+    expect(rewrite.dir).toBe(claudeSkills);
+    expect(rewrite.from).toBe('.cursor/viepilot');
+    expect(rewrite.to).toBe('.claude/viepilot');
+  });
+
+  test('applyInstallPlan rewrites .cursor/viepilot to .claude/viepilot in skill SKILL.md files', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-apply-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
+    );
+    const r = applyInstallPlan(plan, { dryRun: false });
+    expect(r.ok).toBe(true);
+    const skillFile = path.join(fakeHome, '.claude', 'skills', 'vp-info', 'SKILL.md');
+    expect(fs.existsSync(skillFile)).toBe(true);
+    const content = fs.readFileSync(skillFile, 'utf8');
+    expect(content).not.toContain('.cursor/viepilot');
+    expect(content).toContain('.claude/viepilot');
+  });
+
+  test('buildInstallPlan without claude-code target has null claudeViepilotDir and no rewrite step', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-nocc-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false },
+    );
+    expect(plan.paths.claudeViepilotDir).toBeNull();
+    expect(plan.steps.some((s) => s.kind === 'rewrite_paths_in_dir')).toBe(false);
+  });
+});
+
 describe('install.sh wrapper (28.4)', () => {
   const itBash = process.platform === 'win32' ? test.skip : test;
 

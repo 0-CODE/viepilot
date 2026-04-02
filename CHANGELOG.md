@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+## [1.9.8] - 2026-04-02
+
+### Fixed
+
+- **BUG-005**: `claude-code` install target không mirror `workflows/`, `bin/`, `templates/` sang `~/.claude/viepilot/` dẫn đến tất cả skills bị broken trên máy không có Cursor. Fix: `buildInstallPlan` nay tạo `claudeViepilotDir = ~/.claude/viepilot/`, mirror toàn bộ artifacts, và thêm bước `rewrite_paths_in_dir` để replace `.cursor/viepilot` → `.claude/viepilot` trong SKILL.md files. Cursor targets không bị ảnh hưởng. (+6 tests, 314 total pass)
+
 ## [1.9.7] - 2026-04-02
 
 ### Fixed
