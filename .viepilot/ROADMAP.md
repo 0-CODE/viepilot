@@ -111,6 +111,28 @@
 
 ---
 
+### Phase 5: Hotfix — Install Path Convention + Logic Gaps
+**Goal**: Fix critical install path bugs (BUG-A, BUG-B) found by post-v2.0.0 audit + minor logic gaps
+**Estimated Tasks**: 5
+**Dependencies**: Phase 1, 2, 3, 4
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 5.1 | Revert SKILL.md source path convention | All 14 SKILL.md have `.cursor/viepilot/` (not `.claude/`); Cursor installs work | S |
+| 5.2 | Revert crystallize.md workflow path | crystallize.md has `.cursor/viepilot/templates/`; 0 `.claude/` refs | S |
+| 5.3 | Fix install script — workflow rewrite step | `buildInstallPlan` emits 3 rewrite_paths steps for claude-code target | M |
+| 5.4 | Fix HANDOFF.log event naming gaps | `control_point_enter/exit` events present; task_skip + recovery events in JSON format | S |
+| 5.5 | Version bump 2.0.0 → 2.0.1 + CHANGELOG | package.json = 2.0.1; CHANGELOG [2.0.1] entry; git tag v2.0.1 | S |
+
+**Verification**:
+- [ ] `grep -r '\.claude/viepilot/' skills/vp-*/SKILL.md` → 0 results
+- [ ] Cursor install simulation: skills dir contains `.cursor/viepilot/` paths
+- [ ] Claude Code install simulation: skills dir contains `.claude/viepilot/` paths AND workflows dir also rewritten
+- [ ] `control_point_enter` and `control_point_exit` in autonomous.md
+- [ ] git tag v2.0.1 created
+
+---
+
 ## Progress Summary
 
 | Phase | Status | Tasks | Completed | Progress |
@@ -119,8 +141,9 @@
 | 2. Execution Engine — vp-auto Rewrite | ✅ Complete | 9 | 9 | 100% |
 | 3. Workflow Integration — Skills & Commands | ✅ Complete | 8 | 8 | 100% |
 | 4. Verification & Documentation | ✅ Complete | 11 | 11 | 100% |
+| 5. Hotfix — Install Path Convention + Logic Gaps | 🔄 In Progress | 5 | 0 | 0% |
 
-**Overall**: 34 / 34 tasks (100%) 🎉
+**Overall**: 34 / 39 tasks (87%)
 
 ---
 
