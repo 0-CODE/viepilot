@@ -221,7 +221,7 @@ Also create project-local index for traceability:
 ## Step 2: Generate AI-GUIDE.md
 
 Create `.viepilot/AI-GUIDE.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/AI-GUIDE.md`
+`@$HOME/.claude/viepilot/templates/project/AI-GUIDE.md`
 
 Customize with:
 - Project-specific file references
@@ -238,7 +238,7 @@ Customize with:
 ## Step 3: Generate PROJECT-META.md
 
 Create `.viepilot/PROJECT-META.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/PROJECT-META.md`
+`@$HOME/.claude/viepilot/templates/project/PROJECT-META.md`
 
 Fill with collected metadata:
 - Project info
@@ -253,7 +253,7 @@ Fill with collected metadata:
 ## Step 4: Generate ARCHITECTURE.md
 
 Create `.viepilot/ARCHITECTURE.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/ARCHITECTURE.md`
+`@$HOME/.claude/viepilot/templates/project/ARCHITECTURE.md`
 
 Extract from brainstorm:
 - System overview diagram
@@ -320,7 +320,7 @@ Create `.viepilot/architecture/` only when at least one `.mermaid` file will be 
 ## Step 5: Generate PROJECT-CONTEXT.md
 
 Create `.viepilot/PROJECT-CONTEXT.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/PROJECT-CONTEXT.md`
+`@$HOME/.claude/viepilot/templates/project/PROJECT-CONTEXT.md`
 
 Extract:
 - Domain knowledge
@@ -351,7 +351,7 @@ Nếu không có profile: một dòng *Profile binding not configured (`META.md`
 ## Step 6: Generate SYSTEM-RULES.md
 
 Create `.viepilot/SYSTEM-RULES.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/SYSTEM-RULES.md`
+`@$HOME/.claude/viepilot/templates/project/SYSTEM-RULES.md`
 
 Include:
 - Architecture rules
@@ -372,7 +372,7 @@ Include:
 ## Step 7: Generate ROADMAP.md
 
 Create `.viepilot/ROADMAP.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/ROADMAP.md`
+`@$HOME/.claude/viepilot/templates/project/ROADMAP.md`
 
 From brainstorm features/MVP breakdown:
 1. Create **executable MVP phases** (what `/vp-auto` can run next; near-term delivery only).
