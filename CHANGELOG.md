@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+## [1.9.7] - 2026-04-02
+
+### Fixed
+
+- **ENH-024**: Fix chuỗi truyền tải ui-direction bị đứt qua crystallize → vp-auto:
+  - `crystallize.md` Step 1A: đổi trigger thành hard check mandatory khi `.viepilot/ui-direction/` exists (không còn soft heuristic "if indicates").
+  - `crystallize.md` Step 10: thêm "UI Direction context injection" — inject `context_required` trỏ vào `notes.md` + `style.css` + `pages/*.html` vào task files cho UI tasks.
+  - `autonomous.md` Step 3a: thêm "UI Direction safety check" — warn + auto-load latest session nếu UI task thiếu ui-direction trong context_required.
+  - `templates/project/AI-GUIDE.md`: thêm 2 rows ui-direction vào Quick Lookup table + footnote hướng dẫn resolve `{session}`.
+
 ## [1.9.6] - 2026-04-02
 
 ### Fixed
