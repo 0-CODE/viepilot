@@ -221,6 +221,11 @@ If `write_scope` is empty or absent (v1 task): skip silently — no warning.
 
 #### Execute Task
 
+0. Emit task_start event:
+   ```
+   Append to .viepilot/HANDOFF.log (non-blocking):
+   {"ts":"<ISO8601>","event":"task_start","task":"{task}","phase":"{phase}","complexity":"{complexity}"}
+   ```
 1. Read task objective and acceptance criteria
 2. Read SYSTEM-RULES.md for coding standards
 3. Apply stack cache guidance from preflight
@@ -237,7 +242,12 @@ If `write_scope` is empty or absent (v1 task): skip silently — no warning.
    git commit -m "{type}({scope}): {description}"
    git push
    ```
-9. Log notes in task file after each sub-task
+9. After each sub-task PASS: update HANDOFF.json immediately (non-blocking):
+   ```json
+   position.sub_task = "{sub_task_id}"
+   meta.last_written = "<ISO8601>"
+   ```
+10. Log notes in task file after each sub-task
 
 #### Verify Task
 ```yaml
@@ -330,17 +340,49 @@ If any check fails:
 - Create git tag: `{projectPrefix}-vp-p{phase}-t{task}-done`
 - Update PHASE-STATE.md immediately: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
 - Update TRACKER.md immediately
-- Update HANDOFF.json immediately
+- Update HANDOFF.json immediately:
+  ```json
+  position.task = "{next_task}"
+  position.sub_task = null
+  position.status = "not_started"
+  recovery.l1_attempts = 0
+  recovery.l2_attempts = 0
+  recovery.l3_attempts = 0
+  meta.last_written = "<ISO8601>"
+  ```
+- Append to HANDOFF.log (non-blocking):
+  ```
+  {"ts":"<ISO8601>","event":"task_pass","task":"{task}","phase":"{phase}"}
+  ```
 - Update CHANGELOG.md if feature/fix
 - Move to next task
+
+**SKIP:**
+- Update PHASE-STATE.md: task → skipped, document reason
+- Update HANDOFF.json: advance position.task
+- Append to HANDOFF.log (non-blocking):
+  ```
+  {"ts":"<ISO8601>","event":"task_skip","task":"{task}","phase":"{phase}","reason":"{reason}"}
+  ```
 
 **PARTIAL (some checks fail):**
 - Attempt auto-fix
 - Re-verify
 - If still fail → control point
 
-**FAIL:**
-→ Go to handle_blocker
+**FAIL / control_point:**
+- Update HANDOFF.json:
+  ```json
+  control_point.active = true
+  control_point.reason = "{description}"
+  control_point.ts = "<ISO8601>"
+  recovery.recent_blocker = true
+  ```
+- Append to HANDOFF.log (non-blocking):
+  ```
+  {"ts":"<ISO8601>","event":"control_point","task":"{task}","phase":"{phase}","reason":"{description}"}
+  ```
+- → Go to handle_blocker
 </step>
 
 <step name="update_state">
