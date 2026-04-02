@@ -2,7 +2,6 @@
 name: vp-resume
 description: "Resume work từ previous session với tiered context restore (quick/standard/full)"
 version: 2.0.0
-paths: [".viepilot/HANDOFF.json"]
 ---
 
 <cursor_skill_adapter>

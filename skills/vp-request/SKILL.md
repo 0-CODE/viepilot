@@ -2,7 +2,6 @@
 name: vp-request
 description: "Tạo request mới: feature, bug fix, enhancement, hoặc brainstorm tiếp"
 version: 0.2.0
-paths: [".viepilot/**"]
 ---
 
 <cursor_skill_adapter>
