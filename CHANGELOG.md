@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- None.
+- **ENH-023**: Fix `workflows/autonomous.md` Step 3 PASS handler — thêm `ROADMAP.md` vào danh sách update sau mỗi task complete (Phase 36).
 
 ### Added
 
