@@ -62,14 +62,83 @@ Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** 
 
 **Gợi ý:** Dùng `--fast` khi muốn giảm các bước verify *optional* (vẫn không bỏ gate bắt buộc đã mô tả trong task).
 
-## Control Points
+## Recovery Layers (v2)
+
+Khi verification fails, ViePilot **im lặng** thử recovery trước khi hỏi bạn:
+
+```
+Task fails verification
+  └── L1 (Lint/format auto-fix) → re-verify → PASS? ✅ done
+      └── L2 (Targeted test fix) → re-verify → PASS? ✅ done
+          └── L3 (Scope reduction*) → re-verify → PASS? ✅ done (PARTIAL)
+              └── Budget exhausted → Control Point ⚠ (bạn mới thấy)
+```
+
+**Silent contract**: Bạn **không thấy** L1/L2/L3 recovery đang chạy. Chỉ khi budget cạn → control point xuất hiện.
+
+### Recovery Budget
+
+| Complexity | L1 (lint) | L2 (test fix) | L3 (scope reduce) |
+|---|---|---|---|
+| S | 1 | 1 | 0 |
+| M | 1 | 2 | 0 |
+| L | 2 | 2 | 1 |
+| XL | 2 | 3 | 1 |
+
+Budget mặc định: M (khi task không khai báo `recovery_budget`).
+
+### Recovery Overrides
+
+```yaml
+# Trong TASK.md — Task Metadata:
+recovery_overrides:
+  L3:
+    block: true
+    reason: "auth domain — scope reduction tạo security holes"
+```
+
+*L3 scope reduction bị auto-block cho compliance paths (auth, payment, crypto).*
+
+## Scope Contract (v2)
+
+Mỗi task khai báo `write_scope` — danh sách files/dirs được phép sửa:
+
+```yaml
+write_scope:
+  - "src/feature-a/"
+  - "tests/feature-a/"
+```
+
+Sau mỗi execution, ViePilot chạy **scope drift detection** (Tier 2 validation):
+```bash
+git diff --name-only HEAD
+# so sánh với write_scope
+```
+
+Nếu có file ngoài `write_scope` → **control point ngay** (không recovery). HANDOFF.log sẽ có event `scope_drift`.
+
+## HANDOFF.log — Audit Trail
+
+`.viepilot/HANDOFF.log` là append-only JSONL log của mọi events:
+
+```jsonl
+{"ts":"...","event":"task_start","task":"2.3","phase":"02","complexity":"M"}
+{"ts":"...","event":"l1_recovery","task":"2.3","attempt":1,"trigger":"lint_error"}
+{"ts":"...","event":"scope_drift","task":"2.3","violations":["src/other/"]}
+{"ts":"...","event":"task_pass","task":"2.3","phase":"02"}
+```
+
+**HANDOFF.log không được commit** (gitignored). Rotate tự động ở cuối mỗi phase → `logs/handoff-phase-N.log`.
+
+## Control Points (v2)
 
 ViePilot tự động dừng và hỏi bạn khi:
 
 ```
-⚠ Phase 2 (Database): Issue Encountered
-
-Conflicting migration files detected.
+━━━ CONTROL POINT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Task: 2.3 — Continuous HANDOFF write
+ Reason: recovery budget exhausted after L1x1 L2x2 L3x0
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Options:
 1. Fix and retry
@@ -78,11 +147,24 @@ Options:
 4. Stop autonomous mode
 ```
 
+**State trong HANDOFF.json khi control point active:**
+```json
+{
+  "control_point": {
+    "active": true,
+    "reason": "recovery budget exhausted...",
+    "ts": "2026-04-02T14:30:00Z"
+  }
+}
+```
+
+Dùng `/vp-status` để xem control point banner bất cứ lúc nào.
+
 **Khi nào xảy ra**:
-- Conflicts với existing code
-- Quality gate failures (tests fail, lint errors)
-- Task cần user decision
-- Blockers không thể tự resolve
+- Recovery budget exhausted (sau L1/L2/L3 attempts)
+- Scope drift violation (file ngoài write_scope)
+- Task contract validation fail
+- Quality gate failures cần user decision
 
 ## Quality Gates
 

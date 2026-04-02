@@ -123,10 +123,14 @@ Workflow sẽ duy trì direction artifacts tại `.viepilot/ui-direction/{sessio
 
 ViePilot tạo `.viepilot/` directory với:
 - `ROADMAP.md` — Phases và tasks
-- `TRACKER.md` — Progress tracking
+- `TRACKER.md` — Progress index (≤30 dòng, pointer đến `logs/`)
+- `logs/decisions.md`, `logs/blockers.md`, `logs/version-history.md` — On-demand logs
 - `ARCHITECTURE.md` — System design
 - `SYSTEM-RULES.md` — Coding standards
-- `AI-GUIDE.md` — Thứ tự đọc context (kể cả **vision / horizon** trước khi khóa kiến trúc sâu)
+- `AI-GUIDE.md` — Context load strategy (static/dynamic boundary)
+- `HANDOFF.json` — Machine-readable state (auto-managed, đừng sửa tay)
+- `HANDOFF.log` — Append-only audit trail; tự xoay vòng cuối mỗi phase → `logs/handoff-phase-N.log` (gitignored)
+- `phases/*/tasks/*.md` — Task files với v2 metadata (type, write_scope, recovery_budget)
 
 **Post-MVP không chỉ nằm trong brainstorm:** sau crystallize, horizon phải vào `ROADMAP.md` + vision theo pha trong `PROJECT-CONTEXT.md`. Tóm tắt cho user: [Product horizon end-to-end](features/product-horizon.md).
 

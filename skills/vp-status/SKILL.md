@@ -2,6 +2,7 @@
 name: vp-status
 description: "Hiển thị progress dashboard, control point detection, và recovery stats"
 version: 2.0.0
+paths: [".viepilot/TRACKER.md"]
 ---
 
 <cursor_skill_adapter>
