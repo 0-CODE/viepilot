@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None yet.
 
+## [1.9.9] - 2026-04-02
+
+### Fixed
+
+- **ENH-025**: Thêm explicit READ-ONLY guard cho `.viepilot/ui-direction/` vào 3 workflows: `autonomous.md` (⛔ guard trong ENH-024 block), `crystallize.md` (Source of truth policy trong `consume_ui_direction` step), `request.md` (ui-direction guard redirect trong `brainstorm_continuation`). Design principle được enforce: ui-direction = frozen design contract — chỉ `vp-brainstorm` có quyền write; thay đổi ui-direction phải mở phiên brainstorm mới (session-id mới).
+
 ## [1.9.8] - 2026-04-02
 
 ### Fixed
