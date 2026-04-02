@@ -7,6 +7,28 @@
 - **Dependencies**: {{DEPENDENCIES}}
 - **Git Tag**: {projectPrefix}-vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}
 
+## Task Metadata
+
+```yaml
+type: "{{TASK_TYPE}}"              # build | fix | refactor | test | docs | infra
+complexity: "{{COMPLEXITY}}"       # S | M | L | XL (maps to recovery budget)
+write_scope:
+  - "{{WRITE_SCOPE_PATH_1}}"       # Files/dirs this task may modify
+  # - "{{WRITE_SCOPE_PATH_2}}"
+recovery_budget: "{{COMPLEXITY}}"  # S: L1x1,L2x1 | M: L1x1,L2x2 | L: L1x2,L2x2,L3x1 | XL: L1x2,L2x3,L3x1
+can_parallel_with: []              # Task IDs that can run concurrently (Post-MVP)
+recovery_overrides:
+  L1:
+    block: false                   # true = skip L1 recovery entirely
+  L2:
+    block: false                   # true = skip L2 recovery entirely
+  L3:
+    block: false                   # true = never attempt scope reduction for this task
+    reason: ""                     # Required when block: true — explain why (compliance, auth, payment, etc.)
+```
+
+> Optional — vp-auto populates during crystallize/evolve. Missing fields default to complexity-based budget.
+
 ## Objective
 
 {{TASK_OBJECTIVE}}
