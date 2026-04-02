@@ -417,9 +417,13 @@ Create `.viepilot/TRACKER.md` using template:
 Initialize:
 - Current state (all phases not_started)
 - Progress overview (0%)
-- Decision log (import from brainstorm)
 - Version info (0.1.0-alpha)
 - Next action
+
+Create `.viepilot/logs/` directory with 3 log files from templates:
+- `templates/project/logs/decisions.md` → `.viepilot/logs/decisions.md` (seed with brainstorm decisions)
+- `templates/project/logs/blockers.md` → `.viepilot/logs/blockers.md` (empty)
+- `templates/project/logs/version-history.md` → `.viepilot/logs/version-history.md` (seed with {{INITIAL_VERSION}})
 
 Create empty `.viepilot/HANDOFF.json`
 </step>
