@@ -164,7 +164,33 @@ Only after **Validate Task Contract**, **Pre-execution documentation gate**, and
 Create git tag: `{projectPrefix}-vp-p{phase}-t{task}`  
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
+#### Compliance Pre-flight (Gap G — runs before Execute Task)
+
+Before executing any task, scan `write_scope` paths against compliance domains:
+
+```
+COMPLIANCE_DOMAINS = [
+  "auth/", "authentication/", "login/", "session/",
+  "payment/", "billing/", "checkout/",
+  "crypto/", "encryption/", "cipher/",
+  "data/privacy", "gdpr/", "pii/"
+]
+
+compliance_preflight(task):
+  for path in task.write_scope:
+    for domain in COMPLIANCE_DOMAINS:
+      if domain in path:
+        log("[COMPLIANCE] Path '{path}' matches domain '{domain}'")
+        if not task.recovery_overrides.L3.block:
+          WARN: "⚠ Compliance path detected but L3.block not set in recovery_overrides"
+          WARN: "  Set L3.block: true + reason in task file to suppress this warning"
+        # Note: L3.block enforcement happens in recovery_layers step, not here
+```
+
+If `write_scope` is empty or absent (v1 task): skip silently — no warning.
+
 #### Execute Task
+
 1. Read task objective and acceptance criteria
 2. Read SYSTEM-RULES.md for coding standards
 3. Apply stack cache guidance from preflight
@@ -175,13 +201,13 @@ Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the
    - implementation intent
    - best-practice checklist
 7. Implement according to task specification
-6. Atomic commits per logical unit:
+8. Atomic commits per logical unit:
    ```bash
    git add {relevant files}
    git commit -m "{type}({scope}): {description}"
    git push
    ```
-8. Log notes in task file after each sub-task
+9. Log notes in task file after each sub-task
 
 #### Verify Task
 ```yaml
@@ -198,6 +224,53 @@ quality_gate:
   - automated_tests_pass: true
   - no_lint_errors: true
 ```
+
+#### Recovery Layers (runs when Verify Task fails — silent, no user message)
+
+Recovery budget by complexity (from SYSTEM-RULES.md quality_gates):
+| Complexity | L1 max | L2 max | L3 max |
+|---|---|---|---|
+| S | 1 | 1 | 0 |
+| M | 1 | 2 | 0 |
+| L | 2 | 2 | 1 |
+| XL | 2 | 3 | 1 |
+
+```
+execute_with_recovery(task, budget):
+  # Initial verify already failed — enter recovery silently
+
+  # L1: Lint/format auto-fix
+  while l1_used < budget.l1_max and not task.recovery_overrides.L1.block:
+    run lint_autofix()                   # e.g., npm run lint:fix, black ., etc.
+    l1_used++
+    append_handoff_log("L1_RECOVERY", {task, l1_used})
+    update HANDOFF.json recovery.l1_attempts = l1_used
+    if verify() == PASS: return PASS
+
+  # L2: Targeted test fix
+  while l2_used < budget.l2_max and not task.recovery_overrides.L2.block:
+    analyze_failure() → minimal targeted_fix()   # fix only the failing assertion/file
+    l2_used++
+    append_handoff_log("L2_RECOVERY", {task, l2_used})
+    update HANDOFF.json recovery.l2_attempts = l2_used
+    if verify() == PASS: return PASS
+
+  # L3: Scope reduction (compliance-blocked if L3.block = true)
+  if budget.l3_max > 0 and not task.recovery_overrides.L3.block:
+    reduce_scope()                       # defer lowest-priority acceptance criterion
+    l3_used++
+    append_handoff_log("L3_RECOVERY", {task, l3_used})
+    update HANDOFF.json recovery.l3_attempts = l3_used
+    if verify() == PASS: return PARTIAL_PASS   # → note deferral in PHASE-STATE.md
+  elif task.recovery_overrides.L3.block:
+    log("[L3 BLOCKED] reason: " + task.recovery_overrides.L3.reason)
+
+  # All layers exhausted → surface to user
+  update HANDOFF.json recovery.recent_blocker = true
+  control_point("recovery budget exhausted after L1x{l1_used} L2x{l2_used} L3x{l3_used}")
+```
+
+**Silent contract**: No user-visible message during L1/L2/L3 recovery. Only surface at control_point.
 
 #### Git Persistence Gate (BUG-003)
 Before marking a task PASS, require durable git persistence:
