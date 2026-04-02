@@ -2,9 +2,9 @@
 
 ## Overview
 - **Started**: 2026-04-03
-- **Status**: in_progress
-- **Progress**: 3/5 tasks (60%)
-- **Current Task**: 5.3
+- **Status**: complete ✅
+- **Progress**: 5/5 tasks (100%)
+- **Current Task**: —
 
 ## Execution State
 ```yaml
@@ -29,9 +29,9 @@ recovery_budget:
 |---|------|--------|---------|-----------|---------|
 | 5.1 | Revert SKILL.md source path convention | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.1 |
 | 5.2 | Revert crystallize.md workflow path | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.2 |
-| 5.3 | Fix install script — workflow rewrite step | in_progress | 2026-04-03 | — | — |
+| 5.3 | Fix install script — workflow rewrite step | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.3 |
 | 5.4 | Fix HANDOFF.log event naming gaps | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.4 |
-| 5.5 | Version bump 2.0.0 → 2.0.1 + CHANGELOG | not_started | — | — | — |
+| 5.5 | Version bump 2.0.0 → 2.0.1 + CHANGELOG | done | 2026-04-03 | 2026-04-03 | vp2-p5-t5.5 |
 
 ## Sub-task Tracking
 | Sub-task | Description | Status | Attempts |
@@ -51,10 +51,10 @@ _None currently_
 |------|--------|------|
 
 ## Quality Metrics
-- SKILL.md files fixed: 0/14
-- Workflow files fixed: 0/1
-- Install script: not fixed
-- Logic gaps: 0/2 addressed
+- SKILL.md files fixed: 14/14
+- Workflow files fixed: 1/1 (crystallize.md)
+- Install script: fixed (+2 rewrite steps, +1 test)
+- Logic gaps: 2/2 addressed (HANDOFF.log events)
 
 ## Notes
 Root cause of BUG-A: Task 4.6a changed the source-file convention from `.cursor/viepilot/` to `.claude/viepilot/`, reversing the install script's expected flow. The install script was designed with source=`.cursor/viepilot/` and rewrites to `.claude/viepilot/` only for Claude Code installs. BUG-B: No rewrite step existed for workflow files in the claude-mirrored directory.

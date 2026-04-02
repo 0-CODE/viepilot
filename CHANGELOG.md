@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None.
 
+## [2.0.1] - 2026-04-03
+
+### Fixed
+
+- **BUG-A (install path convention)**: Tasks 4.6a/4.6b inadvertently reversed the source path convention by changing `.cursor/viepilot/` → `.claude/viepilot/` in source files. The install script (`lib/viepilot-install.cjs`) is designed with source=`.cursor/viepilot/` and only rewrites to `.claude/viepilot/` when installing the `claude-code` target. After the regression, all Cursor-only installs received `.claude/viepilot/` `execution_context` references pointing to non-existent paths. Fix: reverted all 14 `skills/vp-*/SKILL.md` files and `workflows/crystallize.md` (7 template refs) back to `.cursor/viepilot/` source convention. Cursor installs are now correct again; Claude Code installs rewrite as before.
+- **BUG-B (install script missing workflow rewrite)**: `lib/viepilot-install.cjs` only applied `rewrite_paths_in_dir` to `~/.claude/skills/` when installing the `claude-code` target; `~/.claude/viepilot/workflows/` and `~/.claude/viepilot/templates/` were copied but never rewritten. Template and workflow path references in Claude Code installations retained stale `.cursor/viepilot/` references. Fix: added two additional `rewrite_paths_in_dir` steps targeting `claudeViepilotDir/workflows/` and `claudeViepilotDir/templates/`. New test validates all 3 rewrite steps are present for `claude-code` target.
+- **HANDOFF.log event naming**: Standardized event format in `workflows/autonomous.md`: (1) recovery layer calls now use explicit JSON format (`l1_recovery`, `l2_recovery`, `l3_recovery`) instead of pseudo-code `append_handoff_log()`; (2) `control_point` event split into `control_point_enter` (on entry) + `control_point_exit` (on resolution) for lifecycle traceability; (3) `task_skip` event in handle_blocker Skip path now has explicit JSON emit instruction.
+
 ## [2.0.0] - 2026-04-02
 
 ### Added
