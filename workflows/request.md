@@ -42,30 +42,81 @@ DEBT_COUNT=$(ls .viepilot/requests/DEBT-*.md 2>/dev/null | wc -l)
 </step>
 
 <step name="detect_type">
-## 2. Detect Request Type
+## 2. NLP Intake (description-first)
 
-Parse `{{VP_ARGS}}` for type flag:
-- `--bug` → Bug Report
-- `--feature` → Feature Request
-- `--enhance` → Enhancement
-- `--debt` → Technical Debt
-- `--brainstorm` → Brainstorm Continuation
-- `--list` → List Requests
+Parse `{{VP_ARGS}}` for explicit type flag first (backward compat):
+- `--bug` → Bug (confidence 100%, skip NLP)
+- `--feature` → Feature (confidence 100%, skip NLP)
+- `--enhance` → Enhancement (confidence 100%, skip NLP)
+- `--debt` → Technical Debt (confidence 100%, skip NLP)
+- `--brainstorm` → Brainstorm (confidence 100%, skip NLP)
+- `--list` → jump to List Requests step
 
-If no flag, ask user:
+If no explicit flag and `{{VP_ARGS}}` is non-empty (description provided):
+
+### Step 2a: Context boost
+Read `.viepilot/HANDOFF.json` (quick read):
+- If `control_point.active == true` → boost BUG confidence by +15 (likely fixing something broken)
+
+### Step 2b: Signal keyword scan
+
+```yaml
+BUG_signals:    ["lỗi", "bug", "error", "crash", "không hoạt động", "broken", "exception", "fail", "sai"]
+FEATURE_signals:["thêm", "tính năng", "add feature", "new feature", "cần có", "muốn có", "implement"]
+ENHANCE_signals:["cải thiện", "improve", "nâng cấp", "tốt hơn", "enhance", "optimize", "faster"]
+DEBT_signals:   ["refactor", "cleanup", "tech debt", "dọn dẹp", "reorganize", "restructure"]
+UI_signals:     ["UI", "UX", "giao diện", "landing", "prototype", "design", "layout", "màu sắc"]
+```
+
+Score each type: count matching signals in description. Normalize to confidence %.
+
+### Step 2c: Confidence routing
+
+**≥85% confidence:**
+```
+Nhận diện: 🐛 Bug — [Enter để tiếp / 'n' để đổi type]
+```
+Auto-proceed after confirmation. Do not ask more questions.
+
+**60–84% confidence:**
+Ask exactly 1 targeted question:
+```
+Có vẻ là Enhancement. Đây là bug đang xảy ra không? (y/n)
+```
+Re-classify based on answer. Then proceed.
+
+**<60% confidence (or no description in VP_ARGS):**
+Show top-3 options (not full 6-item menu):
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► REQUEST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mô tả ngắn yêu cầu của bạn, hoặc chọn:
+1. 🐛 Bug   2. ✨ Feature   3. 🔧 Enhancement
+(4. Debt  5. Brainstorm  6. List — type number)
+```
 
-What type of request?
+### Step 2d: Gap C — UI direction route detection
 
-1. 🐛 Bug Report - Something is broken
-2. ✨ Feature Request - New functionality
-3. 🔧 Enhancement - Improve existing feature
-4. 🧹 Technical Debt - Code cleanup/refactor
-5. 💡 Brainstorm - Explore new ideas
-6. 📋 List Requests - View pending requests
+After classification, scan description for UI_signals:
+```
+if any UI_signals matched:
+  "Nhận thấy yêu cầu liên quan đến UI/UX.
+  Route qua /vp-brainstorm --ui để direction trước? (y/n)"
+  → if y: Skill(skill="vp-brainstorm", args="--ui")
+  → if n: continue với request type đã classify
+```
+
+### Step 2e: Horizon-aware routing (XL scope check)
+
+After classification, if request scope appears large (XL or multi-phase):
+```
+Read .viepilot/ROADMAP.md Post-MVP section
+If request keywords match Post-MVP themes:
+  "Yêu cầu này có vẻ thuộc Post-MVP scope ({theme}).
+  Thêm vào backlog Post-MVP thay vì current milestone? (y/n)"
+  → if y: append to ROADMAP.md Post-MVP section
+  → if n: continue with current milestone
 ```
 </step>
 

@@ -2,6 +2,7 @@
 name: vp-evolve
 description: "Nâng cấp, thêm features, hoặc bắt đầu milestone mới"
 version: 0.3.0
+paths: [".viepilot/ROADMAP.md"]
 ---
 
 <cursor_skill_adapter>

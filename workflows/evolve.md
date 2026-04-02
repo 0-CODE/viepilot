@@ -109,9 +109,19 @@ mkdir -p .viepilot/phases/{NN}-{feature-slug}/tasks/
 ```
 
 Create:
-- SPEC.md
-- PHASE-STATE.md
-- Task files
+- `SPEC.md` — phase specification
+- `PHASE-STATE.md` — from `templates/phase/PHASE-STATE.md` v2 (includes execution_state block)
+- Task files — from `templates/phase/TASK.md` v2 (includes Task Metadata section)
+
+### Task Metadata Auto-populate (v2 — Gap A)
+
+For each generated task file, auto-populate the Task Metadata block:
+- `type: build` (default for new feature tasks)
+- `write_scope:` infer from feature description + affected modules (from Step 3A info)
+- `recovery_budget:` = task complexity estimate from Step 3A (S/M/L/XL)
+- Apply Gap G compliance detection: same logic as crystallize Step 10 — if write_scope paths match compliance domains, auto-set `recovery_overrides.L3.block = true`
+
+> Reference: see compliance domain detection in `workflows/crystallize.md` Step 10.
 
 ### Update State
 - Update ROADMAP.md

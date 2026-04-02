@@ -2,6 +2,7 @@
 name: vp-auto
 description: "Autonomous execution loop với control points và recovery"
 version: 0.2.2
+paths: [".viepilot/TRACKER.md"]
 ---
 
 <cursor_skill_adapter>

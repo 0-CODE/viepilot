@@ -2,7 +2,7 @@
 
 ## Current State
 - **Milestone**: v2 MVP
-- **Phase**: 03-workflow-integration (not_started)
+- **Phase**: 04-verification-docs (not_started)
 - **Task**: — (not started)
 - **Version**: 2.0.0-alpha
 - **Last Update**: 2026-04-02
@@ -13,10 +13,10 @@
 |-------|------|-------|--------|
 | 01 | Foundation — Templates & State Machine | 6 | complete ✅ |
 | 02 | Execution Engine — vp-auto Rewrite | 9 | complete ✅ |
-| 03 | Workflow Integration — Skills & Commands | 8 | not_started |
+| 03 | Workflow Integration — Skills & Commands | 8 | complete ✅ |
 | 04 | Verification & Documentation | 11 | not_started |
 
-**Overall**: 15 / 34 tasks (44%)
+**Overall**: 23 / 34 tasks (68%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -24,4 +24,4 @@
 - Version history → `logs/version-history.md`
 
 ## Next Action
-Run `/vp-auto` to begin Phase 03 — Workflow Integration.
+Run `/vp-auto` to begin Phase 04 — Verification & Documentation.

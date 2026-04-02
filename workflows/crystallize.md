@@ -1,5 +1,11 @@
 <purpose>
 Chuyển đổi brainstorm sessions thành structured artifacts để AI có thể autonomous execution.
+
+**v1 / v2 backward compatibility:**
+- crystallize v2 generates new artifacts using v2 templates (TRACKER.md index, TASK.md with Task Metadata, PHASE-STATE.md with execution_state block).
+- Existing v1 project files are NEVER modified by crystallize — only new files are created.
+- vp-auto gracefully handles v1 artifacts: missing `recovery_budget` → default M; missing `write_scope` → skip scope drift check; missing `execution_state` → legacy mode.
+- No migration scripts — v1→v2 upgrade is opt-in per task file.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -412,7 +418,7 @@ Create `.viepilot/schemas/`:
 ## Step 9: Initialize TRACKER.md
 
 Create `.viepilot/TRACKER.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/TRACKER.md`
+`@$HOME/.claude/viepilot/templates/project/TRACKER.md`
 
 Initialize:
 - Current state (all phases not_started)
@@ -430,7 +436,7 @@ populate `position.phase` with first phase slug from ROADMAP.md; all other field
 </step>
 
 <step name="generate_phase_dirs">
-## Step 10: Create Phase Directories
+## Step 10: Create Phase Directories + Generate v2 Task Files
 
 For each phase in ROADMAP.md:
 ```bash
@@ -439,8 +445,53 @@ mkdir -p .viepilot/phases/{NN}-{phase-slug}/tasks/
 
 Create:
 - `SPEC.md` - Phase specification
-- `PHASE-STATE.md` - Initial state (not_started)
-- `tasks/` directory with task files
+- `PHASE-STATE.md` - Initial state from `templates/phase/PHASE-STATE.md` (includes execution_state block)
+- `tasks/` directory with task files (v2 template)
+
+### Task File Generation (v2 — Gap A auto-populate)
+
+For each task row in ROADMAP.md phase table, generate task file from `templates/phase/TASK.md` and auto-populate the **Task Metadata** block:
+
+```
+type inference (from task description):
+  contains "create|add|implement|build"  → type: build
+  contains "fix|bug|repair"              → type: fix
+  contains "refactor|cleanup"            → type: refactor
+  contains "test|verify"                 → type: test
+  contains "doc|documentation|readme"    → type: docs
+  default                                → type: build
+
+write_scope inference (from Paths / description keywords):
+  "refactor TRACKER.md"     → ["templates/project/TRACKER.md"]
+  "update autonomous.md"    → ["workflows/autonomous.md"]
+  "create {Feature} service"→ ["src/{feature}/"]
+  General: extract file/dir names from task description
+
+recovery_budget:
+  = task complexity from ROADMAP.md table (S|M|L|XL)
+  default: M if not specified
+```
+
+### Gap G — Compliance Domain Auto-detection (runs after write_scope populated)
+
+```
+compliance_domains:
+  auth:    write_scope path contains /auth/, /authorization/, jwt, oauth, session, rbac
+  payment: write_scope path contains /payment/, /billing/, stripe, invoice, subscription
+  data:    write_scope path contains /migrations/, schema, foreign_key
+  crypto:  write_scope path contains /crypto/, encrypt, hash, password, bcrypt, tls
+
+For each generated task:
+  if any write_scope path matches a compliance_domain:
+    set recovery_overrides.L3.block = true
+    set recovery_overrides.L3.reason = "{domain} domain — scope reduction unsafe"
+  if write_scope empty or no compliance match:
+    leave recovery_overrides at template defaults (block: false)
+```
+
+> **Note:** Auto-populate is a proposal — AI generates best-guess values. Users should review task files before running /vp-auto. Uncertain fields left as `{{PLACEHOLDER}}` with a comment.
+
+> **v1 backward compat:** This step only runs when crystallize generates NEW task files. Existing `.viepilot/phases/*/tasks/*.md` from v1 projects are never touched by crystallize.
 </step>
 
 <step name="generate_project_files">
