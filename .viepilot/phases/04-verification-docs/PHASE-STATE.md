@@ -3,8 +3,8 @@
 ## Overview
 - **Started**: 2026-04-02
 - **Status**: in_progress
-- **Progress**: 4/11 tasks (36%)
-- **Current Task**: 4.2
+- **Progress**: 6/11 tasks (55%)
+- **Current Task**: 4.4
 
 ## Task Status
 
@@ -14,9 +14,9 @@
 | 4.1b | Integration test: large L/XL project | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.1b |
 | 4.1c | Integration test: context reset | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.1c |
 | 4.1d | Integration test: compliance domain | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.1d |
-| 4.2 | Update autonomous-mode.md | in_progress | 2026-04-02 | — | vp2-p4-t4.2 |
-| 4.3 | Update quick-start.md | not_started | — | — | — |
-| 4.4 | Update advanced-usage.md | not_started | — | — | — |
+| 4.2 | Update autonomous-mode.md | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.2 |
+| 4.3 | Update quick-start.md | done | 2026-04-02 | 2026-04-02 | vp2-p4-t4.3 |
+| 4.4 | Update advanced-usage.md | in_progress | 2026-04-02 | — | — |
 | 4.5 | CHANGELOG.md v2.0.0 entry | not_started | — | — | — |
 | 4.6a | Stale reference audit: SKILL.md files | not_started | — | — | — |
 | 4.6b | Stale reference audit: workflow cross-references | not_started | — | — | — |
@@ -36,7 +36,7 @@ _None currently_
 
 ## Quality Metrics
 - Integration tests: 0/4 PASS
-- Docs updated: 0/3
+- Docs updated: 2/3
 - Stale refs found: TBD
 - Version: 2.0.0-alpha → TBD
 

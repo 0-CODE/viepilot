@@ -54,7 +54,110 @@ Output shows: phases to run, tasks in each, verification steps.
 
 ---
 
-## 2. Mid-Project Changes
+## 2. Task Configuration (v2)
+
+### `write_scope` — Constrain which files a task may touch
+
+Khai báo trong `tasks/*.md → ## Task Metadata`:
+
+```yaml
+write_scope:
+  - "src/auth/"
+  - "tests/auth/"
+```
+
+Sau mỗi task execution, ViePilot chạy:
+```bash
+git diff --name-only HEAD
+```
+và so sánh với `write_scope`. Nếu có file ngoài scope → **control point ngay** + `scope_drift` event trong HANDOFF.log.
+
+**Patterns:**
+```yaml
+# Module cụ thể
+write_scope:
+  - "src/feature-a/"
+  - "tests/feature-a/"
+
+# Config + source cùng lúc
+write_scope:
+  - "src/api/"
+  - "config/api.yaml"
+  - "tests/api/"
+
+# Single file
+write_scope:
+  - "CHANGELOG.md"
+```
+
+---
+
+### `recovery_overrides` — Customization per task
+
+Override recovery behavior khi default budget không phù hợp:
+
+```yaml
+recovery_overrides:
+  L1:
+    block: false          # Cho phép lint auto-fix
+  L2:
+    block: false          # Cho phép targeted test fix
+  L3:
+    block: true           # Chặn scope reduction
+    reason: "auth domain — partial implementation tạo security holes"
+```
+
+**Khi nào dùng:**
+
+| Scenario | Override |
+|----------|----------|
+| Task auth/payment/crypto | `L3.block: true` (auto-set bởi Gap G cho write_scope chứa `/auth/`, `/payment/`, `/crypto/`) |
+| Task docs-only (không có test) | `L2.block: true` — không cần test fix loop |
+| Task generate code (lint expected messy) | Tăng L1 budget bằng cách đặt complexity lên L/XL |
+| Task critical path, không được partial | `L3.block: true, reason: "..."` |
+
+**Gap G auto-detection:** khi `crystallize` hoặc `vp-evolve` tạo task với `write_scope` chứa đường dẫn compliance (`/auth/`, `/payment/`, `/crypto/`, `/data/`, `/privacy/`) — `L3.block: true` tự động được set. Bạn không cần khai báo tay.
+
+---
+
+### Recovery budget tuning
+
+Budget mặc định theo complexity; thay đổi khi complexity thực tế không khớp:
+
+| Complexity | L1 (lint) | L2 (test fix) | L3 (scope) |
+|-----------|-----------|---------------|------------|
+| S         | 1         | 1             | 0          |
+| M         | 1         | 2             | 0          |
+| L         | 2         | 2             | 1          |
+| XL        | 2         | 3             | 1          |
+
+**Tip:** Task nhỏ nhưng codebase phức tạp → đặt `complexity: M` thay vì `S` để có thêm L2 attempt.
+
+---
+
+### HANDOFF.log — Audit trail
+
+Mỗi event quan trọng được ghi vào `.viepilot/HANDOFF.log` (append-only JSONL):
+
+```jsonl
+{"ts":"...","event":"task_start","task":"2.3","phase":"02","complexity":"M"}
+{"ts":"...","event":"l1_recovery","task":"2.3","attempt":1,"trigger":"lint_error"}
+{"ts":"...","event":"scope_drift","task":"2.3","violations":["src/other/"]}
+{"ts":"...","event":"task_pass","task":"2.3","phase":"02"}
+```
+
+**Rotation:** Cuối mỗi phase, HANDOFF.log tự xoay → `logs/handoff-phase-N.log`. File gốc được reset. HANDOFF.log gitignored (không commit).
+
+Xem events tích lũy:
+```bash
+cat .viepilot/HANDOFF.log
+# hoặc xem phase archive:
+cat .viepilot/logs/handoff-phase-2.log
+```
+
+---
+
+## 3. Mid-Project Changes
 
 ### Adding a feature (`/vp-request --feature`)
 
@@ -97,7 +200,7 @@ ViePilot:
 
 ---
 
-## 3. Checkpoint Management
+## 4. Checkpoint Management
 
 ### Listing all checkpoints
 
@@ -156,7 +259,7 @@ This updates `HANDOFF.json` with:
 
 ---
 
-## 4. Debugging Workflows
+## 5. Debugging Workflows
 
 ### Starting a debug session
 
@@ -197,7 +300,7 @@ Marks the session resolved and logs the fix in CHANGELOG.md.
 
 ---
 
-## 5. State Management CLI
+## 6. State Management CLI
 
 ### Progress overview
 
@@ -256,7 +359,7 @@ vp-tools clean --force
 
 ---
 
-## 6. Custom Skill Creation
+## 7. Custom Skill Creation
 
 Create your own ViePilot skill:
 
@@ -298,7 +401,7 @@ Then create `workflows/mycustom.md` with the implementation steps.
 
 ---
 
-## 7. CI/CD Integration
+## 8. CI/CD Integration
 
 ### Running ViePilot state checks in CI
 
@@ -330,7 +433,7 @@ Block merges if version wasn't bumped:
 
 ---
 
-## 8. Multi-Project Usage
+## 9. Multi-Project Usage
 
 Use ViePilot across multiple projects simultaneously:
 
