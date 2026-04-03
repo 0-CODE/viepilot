@@ -32,6 +32,10 @@ node bin/viepilot.cjs install --target cursor-agent --yes
 
 Nếu bạn dùng **Claude Code** thay vì Cursor, làm theo [ViePilot trên Claude Code](user/claude-code-setup.md) (skills trong `~/.claude/skills`, installer `npx viepilot install --target claude-code`, và verify `vp-tools info`).
 
+### Codex
+
+Nếu bạn dùng **Codex**, làm theo [ViePilot trên Codex](user/codex-setup.md) (skills trong `~/.codex/skills`, runtime bundle trong `~/.codex/viepilot`, installer `npx viepilot install --target codex`).
+
 ## Step 2: Brainstorm Your Project
 
 Start a new project by brainstorming:

@@ -4,7 +4,7 @@ description: "Systematic debugging with persistent state tracking across session
 version: 0.2.0
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-debug`, `/vp-debug`, "debug", "gỡ lỗi"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 0.2.0
 Prompt user conversationally. Guide through systematic debugging steps.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -50,7 +50,7 @@ Systematic debugging với persistent state tracking. Giúp track vấn đề qu
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/debug.md
+@workflows/debug.md
 </execution_context>
 
 <context>
@@ -63,7 +63,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/debug.md`
+Execute workflow from `@workflows/debug.md`
 
 ### Debug Session Structure
 ```json

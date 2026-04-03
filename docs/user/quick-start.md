@@ -28,10 +28,12 @@ npx viepilot install
 
 Chọn profile cài đặt trong wizard (arrow keys + space + enter):
 - `claude-code`
+- `codex`
 - `cursor-agent`
 - `cursor-ide`
 
 Hướng dẫn đầy đủ cho **Claude Code** (symlink/copy skills sang `~/.claude/skills`, PATH, kiểm tra CLI): [ViePilot trên Claude Code](claude-code-setup.md).
+Hướng dẫn đầy đủ cho **Codex** (`~/.codex/skills`, `~/.codex/viepilot`, verify `vp-tools info`): [ViePilot trên Codex](codex-setup.md).
 
 Non-interactive:
 ```bash

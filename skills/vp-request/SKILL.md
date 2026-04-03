@@ -4,7 +4,7 @@ description: "Tạo request mới: feature, bug fix, enhancement, hoặc brainst
 version: 0.2.0
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-request`, `/vp-request`, "request", "yêu cầu", "bug", "lỗi", "feature mới", "nâng cấp"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 0.2.0
 Prompt user conversationally với numbered list options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -49,7 +49,7 @@ Tạo và quản lý requests cho dự án đang phát triển:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/request.md
+@workflows/request.md
 </execution_context>
 
 <context>
@@ -64,7 +64,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/request.md`
+Execute workflow from `@workflows/request.md`
 
 ### Step 1: Detect Request Type
 

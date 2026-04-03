@@ -35,7 +35,7 @@ describe('guided installer parser', () => {
 
   test('normalizes all targets', () => {
     const targets = normalizeTargets('all');
-    expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide']);
+    expect(targets).toEqual(['claude-code', 'codex', 'cursor-agent', 'cursor-ide']);
   });
 
   test('throws on unsupported target', () => {
@@ -66,6 +66,7 @@ describe('guided installer CLI', () => {
     });
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('claude-code');
+    expect(result.stdout).toContain('codex');
     expect(result.stdout).toContain('cursor-agent');
     expect(result.stdout).toContain('cursor-ide');
   });
@@ -106,6 +107,17 @@ describe('guided installer CLI', () => {
     expect(paths.some((p) => p.endsWith('/.cursor/viepilot'))).toBe(true);
   });
 
+  test('dry-run with codex target plans ~/.codex paths', () => {
+    const result = spawnSync('node', [CLI, 'install', '--target', 'codex', '--yes', '--dry-run'], {
+      encoding: 'utf8',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Selected targets: codex');
+    expect(result.stdout).toContain('.codex/skills');
+    expect(result.stdout).toContain('.codex/viepilot');
+  });
+
   test('computeUninstallPaths lists ~/.claude/skills/vp-* when claude-code target', () => {
     const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-uninst-claude-'));
     const skillDir = path.join(home, '.claude', 'skills', 'vp-ztest');
@@ -116,6 +128,22 @@ describe('guided installer CLI', () => {
     try {
       const paths = computeUninstallPaths(['claude-code']);
       expect(paths).toContain(path.join(home, '.claude', 'skills', 'vp-ztest'));
+    } finally {
+      process.env.HOME = prev;
+    }
+  });
+
+  test('computeUninstallPaths lists ~/.codex/skills/vp-* when codex target', () => {
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-uninst-codex-'));
+    const skillDir = path.join(home, '.codex', 'skills', 'vp-ztest');
+    fs.mkdirSync(skillDir, { recursive: true });
+    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), '---\nname: vp-ztest\n---\n', 'utf8');
+    const prev = process.env.HOME;
+    process.env.HOME = home;
+    try {
+      const paths = computeUninstallPaths(['codex']);
+      expect(paths).toContain(path.join(home, '.codex', 'skills', 'vp-ztest'));
+      expect(paths).toContain(path.join(home, '.codex', 'viepilot'));
     } finally {
       process.env.HOME = prev;
     }

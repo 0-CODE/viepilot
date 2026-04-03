@@ -4,17 +4,17 @@ description: "Brainstorm session để thu thập ý tưởng, quyết định c
 version: 0.6.3
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-brainstorm`, `/vp-brainstorm`, hoặc yêu cầu "brainstorm"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với numbered list options.
+Prompt user conversationally; khi có terminal TTY phù hợp, ưu tiên `node bin/vp-tools.cjs ask` cho single/multi-select trước khi fallback về numbered list options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -50,7 +50,7 @@ Hỗ trợ:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/brainstorm.md
+@workflows/brainstorm.md
 </execution_context>
 
 <context>
@@ -64,7 +64,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/brainstorm.md`
+Execute workflow from `@workflows/brainstorm.md`
 
 Key steps:
 1. Detect existing sessions

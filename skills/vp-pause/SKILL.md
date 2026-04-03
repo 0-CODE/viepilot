@@ -4,7 +4,7 @@ description: "Pause work với context preservation để resume sau"
 version: 0.1.1
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-pause`, `/vp-pause`, "pause", "dừng", "tạm nghỉ"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 0.1.1
 Prompt user conversationally để gather state info.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -41,11 +41,11 @@ Save complete work state để có thể resume từ bất kỳ context nào.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/pause-work.md
+@workflows/pause-work.md
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/pause-work.md`
+Execute workflow from `@workflows/pause-work.md`
 
 ### Step 1: Detect Current Position
 ```bash

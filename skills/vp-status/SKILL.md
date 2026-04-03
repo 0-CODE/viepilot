@@ -4,15 +4,15 @@ description: "Hiển thị progress dashboard, control point detection, và reco
 version: 2.1.0
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-status`, `/vp-status`, "status", "tiến độ", "đang ở đâu"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 - Nếu `{{VP_ARGS}}` chứa token `--all` → **chỉ** chạy [Cross-project aggregate (`--all`)](#cross-project-aggregate-all); bỏ qua dashboard single-project bên dưới (trừ khi user yêu cầu cả hai — ưu tiên `--all` trước, rồi có thể hỏi có cần dashboard cwd không)
 
 ## B. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.

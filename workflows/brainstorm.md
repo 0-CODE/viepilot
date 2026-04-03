@@ -254,9 +254,10 @@ Chạy **trước** khi ghi session ở trạng thái **`Completed`** hoặc khi
 
 Với mỗi câu hỏi:
 
-1. Đưa **Proposal** ngắn (1–2 câu) suy ra từ session + Product horizon.
-2. User trả lời **Accept proposal** / **Edit** (ghi nhận bản user).
-3. Sang câu tiếp.
+1. Nếu đang có TTY tương tác, ưu tiên gọi `node bin/vp-tools.cjs ask --single --question "..." "A|Accept proposal" "B|Edit proposal"` cho câu hỏi 1-chọn; với câu hỏi nhiều lựa chọn dùng `--multi`. Nếu command unavailable hoặc không có TTY, fallback về numbered/text Q&A như cũ.
+2. Đưa **Proposal** ngắn (1–2 câu) suy ra từ session + Product horizon.
+3. User trả lời **Accept proposal** / **Edit** (ghi nhận bản user).
+4. Sang câu tiếp.
 
 **Tối thiểu** phải làm rõ trước khi ghi file (khớp body sections trong global contract):
 

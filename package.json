@@ -38,6 +38,9 @@
   "author": "",
   "license": "MIT",
   "type": "commonjs",
+  "dependencies": {
+    "@clack/prompts": "^0.11.0"
+  },
   "files": [
     "bin/",
     "lib/",

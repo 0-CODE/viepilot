@@ -8,6 +8,7 @@
  * Provider compatibility matrix:
  *   - Cursor AI  : reads SKILL.md with YAML frontmatter + XML-like tags
  *   - Claude CLI : reads SKILL.md as plain markdown, follows <process> blocks
+ *   - Codex      : reads SKILL.md as structured markdown and host-specific runtime bundles
  *   - Generic AI : reads any markdown with clear headings
  */
 
@@ -60,9 +61,9 @@ describe('Skill files: structure conformance', () => {
   test.each(skills)('$name: has required XML-like sections', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
 
-    // cursor_skill_adapter block required for Cursor AI
-    expect(content).toContain('<cursor_skill_adapter>');
-    expect(content).toContain('</cursor_skill_adapter>');
+    // host adapter block describes invocation/tool expectations across runtimes
+    expect(content).toContain('<host_skill_adapter>');
+    expect(content).toContain('</host_skill_adapter>');
 
     // objective block required — tells AI what the skill does
     expect(content).toContain('<objective>');
@@ -73,13 +74,13 @@ describe('Skill files: structure conformance', () => {
     expect(content).toContain('</success_criteria>');
   });
 
-  test.each(skills)('$name: cursor_skill_adapter has Skill Invocation section', ({ name, path: skillPath }) => {
+  test.each(skills)('$name: host_skill_adapter has Skill Invocation section', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
     // Must describe how the skill is triggered
     expect(content).toContain('Skill Invocation');
   });
 
-  test.each(skills)('$name: cursor_skill_adapter has Tool Usage section', ({ name, path: skillPath }) => {
+  test.each(skills)('$name: host_skill_adapter has Tool Usage section', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
     // Must list tools so AI knows what it can use
     expect(content).toContain('Tool Usage');
@@ -100,12 +101,14 @@ describe('Skill files: structure conformance', () => {
     const match = content.match(/workflows\/([\w-]+\.md)/);
     if (match) {
       const workflowName = match[1];
-      // May be in $HOME/.cursor/viepilot/workflows/ (installed) or local workflows/
+      // May be local source reference or installed host runtime bundle
       const localPath = path.join(WORKFLOWS_DIR, workflowName);
-      const installedPath = path.join(
-        process.env.HOME, '.cursor', 'viepilot', 'workflows', workflowName
-      );
-      const exists = fs.existsSync(localPath) || fs.existsSync(installedPath);
+      const installedPaths = [
+        path.join(process.env.HOME, '.cursor', 'viepilot', 'workflows', workflowName),
+        path.join(process.env.HOME, '.claude', 'viepilot', 'workflows', workflowName),
+        path.join(process.env.HOME, '.codex', 'viepilot', 'workflows', workflowName),
+      ];
+      const exists = fs.existsSync(localPath) || installedPaths.some((p) => fs.existsSync(p));
       expect(exists).toBe(true);
     }
   });
@@ -204,7 +207,7 @@ describe('Cross-provider markdown compatibility', () => {
     const skills = getSkillFiles();
     for (const { path: skillPath } of skills) {
       const content = readFile(skillPath);
-      // Should use $HOME variable pattern or relative workflow reference — not hardcoded absolute paths
+      // Should use relative source refs or host bundle refs — not hardcoded absolute user paths
       const execContext = content.match(/<execution_context>([\s\S]*?)<\/execution_context>/);
       if (execContext) {
         // Must not contain hardcoded /Users/ or /home/ absolute paths

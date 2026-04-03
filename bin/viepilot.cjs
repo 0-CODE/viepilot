@@ -17,6 +17,7 @@ const { buildInstallPlan, applyInstallPlan, resolveViepilotPackageRoot } = requi
 
 const TARGETS = [
   { id: 'claude-code', label: 'Claude Code' },
+  { id: 'codex', label: 'Codex' },
   { id: 'cursor-agent', label: 'Cursor Agent' },
   { id: 'cursor-ide', label: 'Cursor IDE' },
 ];
@@ -32,7 +33,7 @@ Usage:
   viepilot --list-targets
 
 Install options:
-  --target <id|id,id|all>   Target profile(s): claude-code (mirrors vp-* to ~/.claude/skills), cursor-agent, cursor-ide
+  --target <id|id,id|all>   Target profile(s): claude-code, codex, cursor-agent, cursor-ide
   --yes                      Non-interactive mode (skip confirmations)
   --dry-run                  Print actions only (Node installer)
   --list-targets             Print supported targets and exit
@@ -40,11 +41,11 @@ Install options:
 
 Environment (install, optional):
   VIEPILOT_SYMLINK_SKILLS=1  Symlink ~/.cursor/skills/vp-* to repo (dev; from clone)
-  VIEPILOT_INSTALL_PROFILE   Default target hint when using plan builder (cursor-ide | cursor-agent)
+  VIEPILOT_INSTALL_PROFILE   Default target hint when using plan builder (cursor-ide | cursor-agent | claude-code | codex)
   VIEPILOT_ADD_PATH=1        With --yes: add vp-tools + viepilot symlinks under /usr/local/bin (Unix)
 
 Uninstall options:
-  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; shared: ~/.cursor/viepilot)
+  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/*, codex: ~/.codex/*, cursor-*: ~/.cursor/*)
   --yes                     Non-interactive mode (skip confirmations)
   --dry-run                 Print actions only, do not remove files
 `);
@@ -251,7 +252,7 @@ async function interactiveTargetSelection() {
 }
 
 /**
- * Core bundle (workflows, bin, ~/.cursor/viepilot) is shared; `claude-code` additionally mirrors vp-* skills into ~/.claude/skills.
+ * Install selected host bundles and skill trees.
  * @param {string[]} selectedTargets
  * @param {boolean} dryRun
  * @returns {{ ok: boolean, code: number }}
@@ -280,7 +281,10 @@ function runInstallViaNode(selectedTargets, dryRun) {
   console.log(`  Package: ${pkgRoot}`);
   console.log(`  Targets: ${selectedTargets.join(', ')}`);
   if (selectedTargets.includes('claude-code')) {
-    console.log('  (claude-code → also ~/.claude/skills/vp-*)');
+    console.log('  (claude-code → ~/.claude/skills/vp-* + ~/.claude/viepilot)');
+  }
+  if (selectedTargets.includes('codex')) {
+    console.log('  (codex → ~/.codex/skills/vp-* + ~/.codex/viepilot)');
   }
 
   const applied = applyInstallPlan(plan, { dryRun });
@@ -340,8 +344,15 @@ async function installCommand(rawArgs) {
     else console.log(`- ${r.target}: failed (exit ${r.code})`);
   }
   console.log('\nNext actions:');
-  console.log('- Cursor: open project and run /vp-status');
-  console.log('- Claude Code: restart session if needed so ~/.claude/skills/vp-* is picked up; then /vp-status');
+  if (selectedTargets.some((t) => t === 'cursor-agent' || t === 'cursor-ide')) {
+    console.log('- Cursor: open project and run /vp-status');
+  }
+  if (selectedTargets.includes('claude-code')) {
+    console.log('- Claude Code: restart session if needed so ~/.claude/skills/vp-* is picked up; then /vp-status');
+  }
+  if (selectedTargets.includes('codex')) {
+    console.log('- Codex: restart session if needed so ~/.codex/skills/vp-* is picked up; then run vp-status from the Codex host workflow');
+  }
   console.log('- If needed, run /vp-brainstorm then /vp-crystallize');
 
   return failed.length === 0 ? 0 : 1;
@@ -351,6 +362,10 @@ function computeUninstallPaths(targets) {
   const home = process.env.HOME || os.homedir() || '';
   const cursorSkills = path.join(home, '.cursor', 'skills');
   const vpRoot = path.join(home, '.cursor', 'viepilot');
+  const claudeSkills = path.join(home, '.claude', 'skills');
+  const claudeRoot = path.join(home, '.claude', 'viepilot');
+  const codexSkills = path.join(home, '.codex', 'skills');
+  const codexRoot = path.join(home, '.codex', 'viepilot');
   const paths = [];
 
   if (targets.some((t) => t === 'cursor-agent' || t === 'cursor-ide')) {
@@ -366,17 +381,34 @@ function computeUninstallPaths(targets) {
   }
 
   if (targets.some((t) => t === 'claude-code')) {
-    const claudeSkills = path.join(home, '.claude', 'skills');
     if (fs.existsSync(claudeSkills)) {
       for (const entry of fs.readdirSync(claudeSkills)) {
         if (entry.startsWith('vp-')) {
           paths.push(path.join(claudeSkills, entry));
         }
       }
+    } else {
+      paths.push(path.join(claudeSkills, 'vp-*'));
     }
+    paths.push(claudeRoot);
   }
 
-  paths.push(vpRoot);
+  if (targets.some((t) => t === 'codex')) {
+    if (fs.existsSync(codexSkills)) {
+      for (const entry of fs.readdirSync(codexSkills)) {
+        if (entry.startsWith('vp-')) {
+          paths.push(path.join(codexSkills, entry));
+        }
+      }
+    } else {
+      paths.push(path.join(codexSkills, 'vp-*'));
+    }
+    paths.push(codexRoot);
+  }
+
+  if (targets.some((t) => t === 'cursor-agent' || t === 'cursor-ide')) {
+    paths.push(vpRoot);
+  }
   paths.push('/usr/local/bin/vp-tools');
   paths.push('/usr/local/bin/viepilot');
 

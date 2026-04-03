@@ -4,19 +4,25 @@
 
 ### Q: ViePilot có yêu cầu AI provider cụ thể không?
 
-A: ViePilot hoạt động với bất kỳ AI assistant nào có thể đọc Markdown và thực thi code. Được test tốt nhất với **Cursor + Claude**. Cũng hoạt động với Claude CLI và các AI assistants khác.
+A: ViePilot hoạt động với bất kỳ AI assistant nào có thể đọc Markdown và thực thi code. Hiện có host adapters rõ ràng cho **Cursor**, **Claude Code**, và **Codex**.
 
 ---
 
 ### Q: ViePilot có thể dùng với VS Code không?
 
-A: Skills được thiết kế cho Cursor IDE. Tuy nhiên, workflows và CLI (`vp-tools`) hoạt động với bất kỳ editor nào. Bạn có thể dùng Claude CLI để chạy skills trong terminal.
+A: Có. Phần workflow và CLI (`vp-tools`) hoạt động độc lập editor. Host bundles hiện hỗ trợ Cursor, Claude Code, và Codex.
 
 ---
 
 ### Q: Làm sao dùng ViePilot với Claude Code?
 
 A: Chạy `npx viepilot install --target claude-code --yes` (ViePilot **≥ 1.9.4**): installer **tự copy** `vp-*` vào **`~/.claude/skills/`**. Với bản cũ hoặc chỉ target Cursor, symlink/copy thủ công từ `~/.cursor/skills/`. Chi tiết, verify `vp-tools info`, và chuỗi **`/vp-request` → `/vp-evolve` → `/vp-auto`**: xem [ViePilot trên Claude Code](claude-code-setup.md).
+
+---
+
+### Q: Làm sao dùng ViePilot với Codex?
+
+A: Chạy `npx viepilot install --target codex --yes`. Installer sẽ copy `vp-*` vào `~/.codex/skills/` và mirror runtime bundle vào `~/.codex/viepilot/`. Chi tiết xem [ViePilot trên Codex](codex-setup.md).
 
 ---
 

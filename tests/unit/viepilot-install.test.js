@@ -129,7 +129,9 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     expect(plan.paths.claudeSkillsDir).toBeNull();
+    expect(plan.paths.codexSkillsDir).toBeNull();
     expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.claude'))).toBe(false);
+    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.codex'))).toBe(false);
   });
 
   test('buildInstallPlan with installTargets claude-code mirrors vp-* into ~/.claude/skills', () => {
@@ -224,6 +226,19 @@ describe('viepilot-install apply (28.2)', () => {
     const vpInfoSkill = path.join(fakeHome, '.claude', 'skills', 'vp-info', 'SKILL.md');
     expect(fs.existsSync(vpInfoSkill)).toBe(true);
   });
+
+  test('applyInstallPlan writes vp-info under ~/.codex/skills when installTargets includes codex', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-codex-apply-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['codex'] },
+    );
+    const r = applyInstallPlan(plan, { dryRun: false });
+    expect(r.ok).toBe(true);
+    const vpInfoSkill = path.join(fakeHome, '.codex', 'skills', 'vp-info', 'SKILL.md');
+    expect(fs.existsSync(vpInfoSkill)).toBe(true);
+  });
 });
 
 describe('BUG-005: claude-code install env path (38.3)', () => {
@@ -265,7 +280,7 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     expect(copySteps.length).toBeGreaterThan(0);
   });
 
-  test('buildInstallPlan with claude-code target has rewrite_paths_in_dir step for skill path fix', () => {
+  test('buildInstallPlan with claude-code target has rewrite_host_refs_in_dir step for skill path fix', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-rw-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -273,14 +288,13 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
       { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
     );
     const claudeSkills = path.join(path.resolve(fakeHome), '.claude', 'skills');
-    const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
+    const rewrite = plan.steps.find((s) => s.kind === 'rewrite_host_refs_in_dir');
     expect(rewrite).toBeDefined();
     expect(rewrite.dir).toBe(claudeSkills);
-    expect(rewrite.from).toBe('.cursor/viepilot');
-    expect(rewrite.to).toBe('.claude/viepilot');
+    expect(rewrite.runtimeDir).toBe(path.join(path.resolve(fakeHome), '.claude', 'viepilot'));
   });
 
-  test('applyInstallPlan rewrites .cursor/viepilot to .claude/viepilot in skill SKILL.md files', () => {
+  test('applyInstallPlan rewrites source-local refs to ~/.claude/viepilot in skill SKILL.md files', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-apply-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -292,31 +306,24 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     const skillFile = path.join(fakeHome, '.claude', 'skills', 'vp-info', 'SKILL.md');
     expect(fs.existsSync(skillFile)).toBe(true);
     const content = fs.readFileSync(skillFile, 'utf8');
-    expect(content).not.toContain('.cursor/viepilot');
+    expect(content).not.toContain('@bin/');
+    expect(content).not.toContain('@workflows/');
     expect(content).toContain('.claude/viepilot');
   });
 
-  test('buildInstallPlan with claude-code target has rewrite_paths_in_dir steps for workflows and templates (BUG-B)', () => {
+  test('buildInstallPlan with claude-code target rewrites skill refs only, not runtime docs', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-bugb-rw-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
       { VIEPILOT_AUTO_YES: '1' },
       { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
     );
-    const claudeViepilot = path.join(path.resolve(fakeHome), '.claude', 'viepilot');
-    const rewrites = plan.steps.filter((s) => s.kind === 'rewrite_paths_in_dir');
-    expect(rewrites.length).toBe(3);
-    const workflowsRewrite = rewrites.find((s) => s.dir === path.join(claudeViepilot, 'workflows'));
-    expect(workflowsRewrite).toBeDefined();
-    expect(workflowsRewrite.from).toBe('.cursor/viepilot');
-    expect(workflowsRewrite.to).toBe('.claude/viepilot');
-    const templatesRewrite = rewrites.find((s) => s.dir === path.join(claudeViepilot, 'templates'));
-    expect(templatesRewrite).toBeDefined();
-    expect(templatesRewrite.from).toBe('.cursor/viepilot');
-    expect(templatesRewrite.to).toBe('.claude/viepilot');
+    const rewrites = plan.steps.filter((s) => s.kind === 'rewrite_host_refs_in_dir');
+    expect(rewrites.length).toBe(1);
+    expect(rewrites[0].dir).toBe(path.join(path.resolve(fakeHome), '.claude', 'skills'));
   });
 
-  test('buildInstallPlan without claude-code target has null claudeViepilotDir and no rewrite step', () => {
+  test('buildInstallPlan without claude-code target has null claudeViepilotDir and no Claude rewrite step', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-nocc-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -324,7 +331,25 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     expect(plan.paths.claudeViepilotDir).toBeNull();
-    expect(plan.steps.some((s) => s.kind === 'rewrite_paths_in_dir')).toBe(false);
+    expect(
+      plan.steps.some(
+        (s) => s.kind === 'rewrite_host_refs_in_dir' && String(s.dir || '').includes('.claude'),
+      ),
+    ).toBe(false);
+  });
+
+  test('buildInstallPlan with codex target includes codex skill/runtime paths', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-codex-paths-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['codex'] },
+    );
+    expect(plan.paths.codexSkillsDir).toBe(path.join(path.resolve(fakeHome), '.codex', 'skills'));
+    expect(plan.paths.codexViepilotDir).toBe(path.join(path.resolve(fakeHome), '.codex', 'viepilot'));
+    expect(plan.paths.viepilotDir).toBeNull();
+    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.codex'))).toBe(true);
+    expect(plan.steps.some((s) => s.kind === 'rewrite_host_refs_in_dir' && s.dir.includes('.codex'))).toBe(true);
   });
 });
 
@@ -354,6 +379,21 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
       { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['claude-code'] },
     );
     const libDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot', 'lib');
+    for (const f of LIB_FILES) {
+      const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === path.join(libDir, f));
+      expect(step).toBeDefined();
+      expect(step.from).toContain(path.join('lib', f));
+    }
+  });
+
+  test('codex target has all 4 lib copy steps in ~/.codex/viepilot/lib/', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-codex-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['codex'] },
+    );
+    const libDir = path.join(path.resolve(fakeHome), '.codex', 'viepilot', 'lib');
     for (const f of LIB_FILES) {
       const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === path.join(libDir, f));
       expect(step).toBeDefined();

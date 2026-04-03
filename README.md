@@ -203,12 +203,13 @@ npx viepilot install
 
 Chọn target profile trong wizard (phím mũi tên + space + enter):
 - Claude Code
+- Codex
 - Cursor Agent
 - Cursor IDE
 
 Non-interactive:
 ```bash
-npx viepilot install --target cursor-agent --yes
+npx viepilot install --target codex --yes
 ```
 
 Gỡ cài đặt:
@@ -226,17 +227,17 @@ cd viepilot
 # Guided fallback from local source
 node bin/viepilot.cjs install --target all --yes
 
-# Copy skills to Cursor
-cp -r skills/* ~/.cursor/skills/
+# Copy skills to a host bundle
+cp -r skills/* ~/.codex/skills/
 
 # Copy workflows and templates
-mkdir -p ~/.cursor/viepilot
-cp -r workflows ~/.cursor/viepilot/
-cp -r templates ~/.cursor/viepilot/
-cp -r bin ~/.cursor/viepilot/
+mkdir -p ~/.codex/viepilot
+cp -r workflows ~/.codex/viepilot/
+cp -r templates ~/.codex/viepilot/
+cp -r bin ~/.codex/viepilot/
 
 # Make CLI executable
-chmod +x ~/.cursor/viepilot/bin/vp-tools.cjs
+chmod +x ~/.codex/viepilot/bin/vp-tools.cjs
 ```
 
 ### Makefile Commands

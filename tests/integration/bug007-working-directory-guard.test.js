@@ -46,6 +46,15 @@ describe('BUG-007 validateWriteTarget (integration)', () => {
     expect(r.code).toBe('install_path');
   });
 
+  test('absolute path under .codex/viepilot is blocked (install_path)', () => {
+    const project = path.join(fakeHome, 'my-project');
+    fs.mkdirSync(project, { recursive: true });
+    const installFile = path.join(fakeHome, '.codex', 'viepilot', 'skills', 'vp-auto', 'SKILL.md');
+    const r = validateWriteTarget(project, installFile, { homedir: fakeHome });
+    expect(r.ok).toBe(false);
+    expect(r.code).toBe('install_path');
+  });
+
   test('path outside project and not install root is outside_project', () => {
     const project = path.join(fakeHome, 'my-project');
     fs.mkdirSync(project, { recursive: true });
@@ -72,6 +81,7 @@ describe('BUG-007 workflow + template contracts', () => {
     expect(md).toMatch(/READ-ONLY/);
     expect(md).toMatch(/control_point|control point/i);
     expect(md).toMatch(/\.claude\/viepilot|~\/\.claude\/viepilot/);
+    expect(md).toMatch(/\.codex\/viepilot|~\/\.codex\/viepilot/);
     expect(md).toMatch(/\.cursor\/viepilot|~\/\.cursor\/viepilot/);
   });
 

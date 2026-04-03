@@ -376,20 +376,20 @@ description: "What my skill does"
 version: 0.1.0
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Triggered by: /vp-mycustom
 
 ## B. Tool Usage
-Use Cursor tools: Shell, Read, Write
-</cursor_skill_adapter>
+Use host-native shell, read, write/edit tools
+</host_skill_adapter>
 
 <objective>
 What this skill accomplishes.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/mycustom.md
+@workflows/mycustom.md
 </execution_context>
 
 <success_criteria>
@@ -435,12 +435,12 @@ Block merges if version wasn't bumped:
 
 ## 9. Project cwd vs install path (BUG-007)
 
-Khi phát triển **chính repo ViePilot** hoặc bất kỳ dự án nào có CLI đọc workflow từ `~/.cursor/viepilot/` hoặc `~/.claude/viepilot/`, agent **không** được coi đường đó là nơi ghi mã.
+Khi phát triển **chính repo ViePilot** hoặc bất kỳ dự án nào có CLI đọc workflow từ `~/.cursor/viepilot/`, `~/.claude/viepilot/`, hoặc `~/.codex/viepilot/`, agent **không** được coi đường đó là nơi ghi mã.
 
 | Vùng | Vai trò |
 |------|---------|
 | `{project_cwd}` (có `.viepilot/TRACKER.md`) | **Ghi** code, workflow nguồn, docs — đây là git repo bạn đang mở |
-| `~/.cursor/viepilot/`, `~/.claude/viepilot/` | **Chỉ đọc** — runtime bundle skills/workflows |
+| `~/.cursor/viepilot/`, `~/.claude/viepilot/`, `~/.codex/viepilot/` | **Chỉ đọc** — runtime bundle skills/workflows |
 
 Vi phạm → control point trong `/vp-auto`. Helper có thể tái sử dụng: `lib/project-write-guard.cjs` (`validateWriteTarget`).
 

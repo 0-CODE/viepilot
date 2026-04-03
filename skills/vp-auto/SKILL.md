@@ -4,7 +4,7 @@ description: "Autonomous execution loop với control points và recovery"
 version: 0.2.2
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-auto`, `/vp-auto`, "auto", "vibe", "chạy tự động"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,11 +13,11 @@ version: 0.2.2
 Prompt user conversationally với numbered list options tại control points.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
 
 ## D. Subagent Spawning
-Use `Task(subagent_type="generalPurpose", ...)` for parallel execution.
-</cursor_skill_adapter>
+Use host-native delegation only when the runtime explicitly supports it; otherwise follow ViePilot delegate-envelope flow.
+</host_skill_adapter>
 
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
@@ -37,7 +37,7 @@ Autonomous execution theo phase/task: analyze → execute → verify → iterate
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/autonomous.md
+@workflows/autonomous.md
 </execution_context>
 
 <context>

@@ -58,7 +58,7 @@ Validates skill and workflow files conform to structure required by AI providers
 
 **Covers**:
 - All 13 skill files have required XML-like sections
-- `<cursor_skill_adapter>` with Skill Invocation + Tool Usage
+- `<host_skill_adapter>` with Skill Invocation + Tool Usage
 - `<execution_context>` or inline `<process>` (both valid)
 - Referenced workflows exist on disk
 - `<success_criteria>` has at least one checkbox

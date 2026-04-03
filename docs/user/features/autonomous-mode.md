@@ -51,7 +51,7 @@ Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** 
 
 **`{project_cwd}`** = thư mục gốc nơi tồn tại `.viepilot/TRACKER.md` (project bạn đang phát triển). Mọi file **shipping** (code, workflow trong repo, docs dự án) phải nằm **bên trong** đường dẫn này.
 
-**Chỉ đọc, không ghi:** `~/.claude/viepilot/`, `~/.cursor/viepilot/` và các install path runtime của ViePilot — agent có thể đọc skill/workflow từ đó để hiểu spec, nhưng **không** được apply patch hay ghi file tại các đường dẫn đó (tránh sửa nhầm bundle cài đặt, không qua git của dự án).
+**Chỉ đọc, không ghi:** `~/.claude/viepilot/`, `~/.codex/viepilot/`, `~/.cursor/viepilot/` và các install path runtime của ViePilot — agent có thể đọc skill/workflow từ đó để hiểu spec, nhưng **không** được apply patch hay ghi file tại các đường dẫn đó (tránh sửa nhầm bundle cài đặt, không qua git của dự án).
 
 Trước **mỗi** lần tạo/sửa/xóa file, workflow yêu cầu: resolve path tuyệt đối → chỉ tiếp tục nếu target nằm trong `{project_cwd}`. Vi phạm → **control point** (retry sau khi chỉnh đúng target, hoặc stop).
 

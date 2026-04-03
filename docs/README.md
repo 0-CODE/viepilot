@@ -23,6 +23,7 @@
 |----------|-------------|
 | [Quick Start](user/quick-start.md) | Install, brainstorm, crystallize, auto — 5 min guide |
 | [Claude Code setup](user/claude-code-setup.md) | Cài ViePilot trên Claude Code (`~/.claude/skills`, CLI, workflows) |
+| [Codex setup](user/codex-setup.md) | Cài ViePilot trên Codex (`~/.codex/skills`, runtime bundle, CLI) |
 | [FAQ](user/faq.md) | Frequently asked questions |
 
 #### Features
@@ -128,4 +129,4 @@
 
 ---
 
-*Last updated: 2026-04-02 — ViePilot framework **v1.9.4** (Claude Code installer → `~/.claude/skills`; FEAT-001 doc v1.9.3; ENH-021 routing; M1.27 FEAT-009 profiles); see `CHANGELOG.md`, [Claude Code setup](user/claude-code-setup.md), `docs/user/features/autonomous-mode.md`.*
+*Last updated: 2026-04-04 — ViePilot framework host adapters cover Cursor, Claude Code, and Codex; see `CHANGELOG.md`, [Claude Code setup](user/claude-code-setup.md), [Codex setup](user/codex-setup.md), `docs/user/features/autonomous-mode.md`.*

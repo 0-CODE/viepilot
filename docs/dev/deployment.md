@@ -26,8 +26,8 @@ node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
 Same **Node** engine as `npx viepilot install` (`lib/viepilot-install.cjs`). Installs to:
-- `skills/vp-*/` → `~/.cursor/skills/` (copy or symlink — see below)
-- `workflows/`, `templates/`, `bin/`, `lib/` → `~/.cursor/viepilot/…`
+- `skills/vp-*/` → host skills dir (`~/.cursor/skills/`, `~/.claude/skills/`, `~/.codex/skills/`)
+- `workflows/`, `templates/`, `bin/`, `lib/` → host runtime bundle (`~/.cursor/viepilot/…`, `~/.claude/viepilot/…`, `~/.codex/viepilot/…`)
 - Optional PATH symlinks (Unix): `VIEPILOT_ADD_PATH=1 node bin/viepilot.cjs install --target cursor-agent --yes`
 
 ### Method 3: Development mode (symlink skills)

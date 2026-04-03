@@ -4,7 +4,7 @@ description: "Audit state, docs drift, and stack best-practice compliance — wo
 version: 0.3.2
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-audit`, `/vp-audit`, "audit", "kiểm tra", "check docs"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 0.3.2
 Display audit results clearly with actionable suggestions grouped by tier.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -72,7 +72,7 @@ Auto-detect nếu đang chạy trong viepilot framework repo để thêm framewo
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/audit.md
+@workflows/audit.md
 </execution_context>
 
 <context>
@@ -89,7 +89,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
+Execute workflow from `@workflows/audit.md`
 
 ### Quick Summary
 

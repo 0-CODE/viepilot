@@ -4,7 +4,7 @@ description: "Generate comprehensive documentation cho dự án"
 version: 0.2.1
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-docs`, `/vp-docs`, "docs", "documentation", "tài liệu"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 0.2.1
 Prompt user conversationally với options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -64,7 +64,7 @@ CHANGELOG.md (updated)
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/documentation.md
+@workflows/documentation.md
 </execution_context>
 
 <context>

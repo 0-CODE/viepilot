@@ -68,6 +68,29 @@ body`)
     }
   });
 
+  test('listSkillsWithVersions falls back to ~/.codex/skills when Cursor/Claude skills are absent', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-info-codex-fallback-'));
+    const homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tmp);
+    try {
+      fs.mkdirSync(path.join(tmp, '.codex', 'skills', 'vp-codex-test'), { recursive: true });
+      fs.writeFileSync(
+        path.join(tmp, '.codex', 'skills', 'vp-codex-test', 'SKILL.md'),
+        '---\nversion: 9.9.9\n---\n',
+        'utf8',
+      );
+      const bundle = fs.mkdtempSync(path.join(tmp, 'bundle-'));
+      fs.writeFileSync(
+        path.join(bundle, 'package.json'),
+        JSON.stringify({ name: 'viepilot', version: '0.0.0-test' }),
+        'utf8',
+      );
+      const skills = listSkillsWithVersions(bundle);
+      expect(skills.some((s) => s.id === 'vp-codex-test' && s.version === '9.9.9')).toBe(true);
+    } finally {
+      homedirSpy.mockRestore();
+    }
+  });
+
   test('listWorkflows uses semver policy note', () => {
     const wfs = listWorkflows(repoRoot);
     expect(wfs.length).toBeGreaterThan(0);

@@ -61,14 +61,14 @@ ViePilot là một Markdown-native autonomous coding framework. Không có serve
 
 ## Skills Layer
 
-Skills sống tại `skills/vp-{name}/SKILL.md` (installed: `~/.cursor/skills/`).
+Skills sống tại `skills/vp-{name}/SKILL.md` (installed per host: `~/.cursor/skills/`, `~/.claude/skills/`, `~/.codex/skills/`).
 
 ### Skill Structure
 
 ```
 skills/vp-{name}/SKILL.md
 ├── YAML Frontmatter (name, description, version)
-├── <cursor_skill_adapter>  ← Cursor AI invocation rules
+├── <host_skill_adapter>    ← host-neutral invocation rules
 ├── <objective>             ← What it does
 ├── <execution_context>     ← Workflow reference (or inline <process>)
 ├── <context>               ← Flags and options
@@ -92,7 +92,7 @@ skills/vp-{name}/SKILL.md
 
 ## Workflows Layer
 
-Workflows sống tại `workflows/*.md` (installed: `~/.cursor/viepilot/workflows/`).
+Workflows sống tại `workflows/*.md` (installed per host runtime: `~/.cursor/viepilot/workflows/`, `~/.claude/viepilot/workflows/`, `~/.codex/viepilot/workflows/`).
 
 ### Workflow Structure
 

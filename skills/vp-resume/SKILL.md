@@ -4,7 +4,7 @@ description: "Resume work từ previous session với tiered context restore (qu
 version: 2.0.0
 ---
 
-<cursor_skill_adapter>
+<host_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-resume`, `/vp-resume`, "resume", "tiếp tục", "where was i"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -13,8 +13,8 @@ version: 2.0.0
 Prompt user conversationally với options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edit, web fetch/search, and delegation when available.
+</host_skill_adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -40,11 +40,11 @@ Tier determined by time gap since last HANDOFF.json write:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/resume.md
+@workflows/resume.md
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/resume.md`
+Execute workflow from `@workflows/resume.md`
 </process>
 
 <success_criteria>
