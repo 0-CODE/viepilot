@@ -9,7 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **Phase 07 (BUG-007)**: Working Directory Guard — autonomous.md + AI-GUIDE.md template → v2.0.3
+- **Phase 08 (ENH-022)**: Crystallize domain entity extraction + dependency validation → v2.1.0
+
+## [2.0.3] - 2026-04-03
+
+### Fixed
+
+- **BUG-007 (Working Directory Guard)**: `autonomous.md` Initialize section now includes a mandatory "Working Directory Guard" block that asserts `{project_cwd}` as the only writable directory. Install paths (`~/.claude/viepilot/`, `~/.cursor/viepilot/`) are declared READ-ONLY — any file edit targeting a path outside project working directory triggers a hard stop and routes to a control point. `templates/project/AI-GUIDE.md` also includes a prominent install path READ-ONLY warning in the Static boundary section.
 - **Phase 08 (ENH-022)**: Crystallize domain entity extraction + dependency validation → v2.1.0
 - **Phase 09**: Brainstorm Artifact Manifest — manifest schema + crystallize Step 0A → v2.1.1
 - **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2

@@ -4,7 +4,7 @@
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 07-working-dir-guard (next)
 - **Task**: 7.3 — Version bump 2.0.2 → 2.0.3 + CHANGELOG
-- **Version**: 2.0.2 (→ 2.0.3 after Phase 07, → 2.1.0 after Phase 08)
+- **Version**: 2.0.3 (→ 2.1.0 after Phase 08)
 - **Last Update**: 2026-04-03
 
 ## Progress
@@ -40,7 +40,7 @@
 |----|------|-------|----------|--------|
 | [BUG-005](.viepilot/requests/BUG-005.md) | 🐛 Bug | vp-auto không update PHASE-STATE, task files, checklist sau mỗi task | high | ✅ done |
 | [BUG-006](.viepilot/requests/BUG-006.md) | 🐛 Bug | Git tags thiếu project prefix — collision khi chạy nhiều dự án | high | ✅ done |
-| [BUG-007](.viepilot/requests/BUG-007.md) | 🐛 Bug | vp-auto edit install path (~/.claude/viepilot/) thay vì codebase source | high | → Phase 07 |
+| [BUG-007](.viepilot/requests/BUG-007.md) | 🐛 Bug | vp-auto edit install path (~/.claude/viepilot/) thay vì codebase source | high | ✅ done |
 | [ENH-022](.viepilot/requests/ENH-022.md) | ✨ Enhancement | Crystallize bỏ sót core CRUD service phases — thiếu domain entity extraction step | high | → Phase 08 |
 
 ## Next Action
