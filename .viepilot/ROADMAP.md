@@ -3,7 +3,7 @@
 ## Milestone: v2.1 Post-MVP Core
 
 ### Overview
-- **Version target**: **2.2.0** (Phase 12 released); prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
+- **Version target**: **2.2.1** (Phase 20 ENH-031); **2.2.0** Phase 12 verify/docs release; prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
 - **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System + Phase 12 verify/docs
 - **Phases**: 6 (core v2.1 bundle) + Phase 12 verify; **13–20** planned next
 - **Status**: In Progress (Phase 12 ✅; Phase 20 ✅ ENH-031 v2.2.1; Phases 13–19 scaffolded)
