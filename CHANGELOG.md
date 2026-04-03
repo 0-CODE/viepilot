@@ -7,21 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+
+- **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
+- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
+
+## [2.1.2] - 2026-04-03
+
+Phase 10 complete — Gap E (cross-project status), Gap G Extended (compliance keyword scan), token budget awareness.
+
 ### Changed
 
 - **Repository policy**: Entire `.viepilot/` is **gitignored** and **removed from version control** in this repo — project state stays local; consumers still get scaffold from `templates/project/`.
 
 ### Added
 
-- **Gap G Extended (keyword scan)**: `COMPLIANCE_KEYWORDS_EXTENDED` trong `workflows/crystallize.md` (G2: gợi ý `L3.block`, bắt user xác nhận; không auto-set chỉ từ keyword khi G1 chưa bật) và `workflows/autonomous.md` (control point + optional HANDOFF.log `compliance_keyword_ack`); `workflows/evolve.md` tham chiếu G1/G2 (Phase 10.5)
-- **HANDOFF.log `token_budget_warning`**: Sau sub-task PASS, khi `used_pct > 70`, `workflows/autonomous.md` hướng dẫn append JSONL với `used_pct` + `severity` (`warn` / `critical`); ghi non-blocking (Phase 10.4)
-- **vp-status `--all`**: Cross-project aggregate từ `~/.viepilot/project-registry.json` — đọc HANDOFF rồi TRACKER mỗi project; bảng trạng thái với icon ● ⚠ ✓ ○; skill version 2.1.0
-
-### Planned
-
-- **Phase 10** (remaining): task 10.6 version bump 2.1.1 → 2.1.2
-- **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
-- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
+- **`~/.viepilot/project-registry.json`**: Schema template + `workflows/crystallize.md` auto-register project on first crystallize run (Phase 10.1)
+- **vp-status `--all`**: Aggregate status from registry — read HANDOFF then TRACKER per project; status table with icons ● ⚠ ✓ ○ (`skills/vp-status`, Phase 10.2)
+- **Token budget awareness**: `workflows/autonomous.md` sub-task check — heuristic `used_pct`; `>70%` warn/menu; `>90%` force pause + HANDOFF write (Phase 10.3)
+- **HANDOFF.log `token_budget_warning`**: Non-blocking JSONL with `used_pct`, `severity` `warn` | `critical` (Phase 10.4)
+- **Gap G Extended (keyword scan)**: `COMPLIANCE_KEYWORDS_EXTENDED` in `workflows/crystallize.md` (G2: suggest `L3.block`, mandatory user confirm when G1 did not fire) and `workflows/autonomous.md` (control point + optional `compliance_keyword_ack`); `workflows/evolve.md` references G1/G2 (Phase 10.5)
 
 ## [2.1.1] - 2026-04-03
 
