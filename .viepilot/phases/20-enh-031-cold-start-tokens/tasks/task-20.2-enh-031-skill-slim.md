@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 20-enh-031-cold-start-tokens
-- **Status**: in_progress
+- **Status**: done
 - **Complexity**: S
 - **Git Tag**: `viepilot-vp-p20-t20.2`
 
@@ -25,8 +25,8 @@ Reduce duplicate process text in `vp-auto` SKILL; keep routing + pointers to `wo
 
 ## File-Level Plan
 - Preserve YAML frontmatter, `cursor_skill_adapter`, `scope_policy`, `implementation_routing_guard` (BUG-004 / ENH-021).
-- Replace `<objective>` wall of duplicated workflow steps with 3–5 lines + bullet “state/git/recovery live in workflow”.
-- Drop inlined Initialize banner pseudo-code and step-by-step process mirror; link to `docs/user/features/autonomous-mode.md` for flags.
+- Keep required XML blocks for provider/tests: `<objective>`, `<execution_context>`, `<success_criteria>` with `- [ ]` checkboxes (`tests/unit/ai-provider-compat.test.js`).
+- Remove inlined multi-step process mirror; delegate via `<execution_context>` to `autonomous.md`.
 
 ## Best Practices to Apply
 - [x] English for new skill body sections where mixed with existing Vietnamese policy text.
@@ -37,9 +37,10 @@ Reduce duplicate process text in `vp-auto` SKILL; keep routing + pointers to `wo
 wc -l skills/vp-auto/SKILL.md
 grep -n 'workflows/autonomous.md' skills/vp-auto/SKILL.md | head -5
 ! grep -n '### 3. Execute Phase Loop' skills/vp-auto/SKILL.md
+npx jest tests/unit/ai-provider-compat.test.js tests/unit/enh-backlog-workflow-contracts.test.js
 npm run cold-start:manifest
 ```
-**Expected:** `SKILL.md` well under 120 lines; autonomous references present; third grep exits 1 (section removed); manifest updates SKILL byte count.
+**Expected:** `SKILL.md` well under 120 lines; autonomous references present; third grep exits 1; tests PASS; manifest updates SKILL byte count.
 
 ## Pre-execution documentation gate
 - [x] Written plan in this file
@@ -54,14 +55,18 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] SKILL is routing-focused; no long duplicate of autonomous steps
-- [ ] Install/template copy of skill stays consistent if mirrored from repo
+- [x] SKILL is routing-focused; no long duplicate of autonomous steps
+- [x] Install/template copy of skill stays consistent if mirrored from repo
 
 ## Implementation Notes
-_(post-completion)_
+- Replaced inline `<process>` with `<execution_context>` + short `<objective>`; retained `<success_criteria>` checklists for Cursor conformance tests.
+- Objective mentions `.viepilot/ROADMAP.md`, `docs/skills-reference.md`, `README.md` for milestone sync (ENH backlog contract).
 
 ## Files Changed
-_(post-completion)_
+```text
+M	.viepilot/cold-start-manifest.json
+M	skills/vp-auto/SKILL.md
+```
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol

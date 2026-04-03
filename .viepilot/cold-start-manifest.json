@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-04-03T16:33:46.240Z",
+  "generated_at": "2026-04-03T16:36:06.273Z",
   "repo_root": "/Users/sonicq12/DEV_PROJECTS/viepilot",
   "note": "Byte counts are from the working tree at generation time. Heuristic token estimate: divide bytes by ~3.5–4 for Latin/ASCII-heavy markdown. sum_bytes_all_listed_files follows workflow batches (may count the same path twice). deduped_union_bytes counts each relative path once.",
   "groups": {
@@ -18,7 +18,7 @@
       {
         "path": ".viepilot/ROADMAP-INDEX.md",
         "role": "Initialize — compact phase slice when present (replaces ROADMAP read for listing only)",
-        "bytes": null
+        "bytes": 977
       },
       {
         "path": ".viepilot/AI-GUIDE.md",
@@ -35,7 +35,7 @@
       {
         "path": "skills/vp-auto/SKILL.md",
         "role": "Skill routing + pointer to workflow (install or repo)",
-        "bytes": 7992
+        "bytes": 2879
       }
     ],
     "per_task_batch": [
@@ -52,8 +52,8 @@
     ]
   },
   "totals": {
-    "sum_bytes_all_listed_files": 89012,
-    "deduped_union_bytes": 84689,
+    "sum_bytes_all_listed_files": 84876,
+    "deduped_union_bytes": 80553,
     "sum_excludes_optional_missing": true
   }
 }
