@@ -97,6 +97,60 @@ Hỏi user các thông tin dự án:
 Store all metadata for template generation.
 </step>
 
+<step name="consume_manifest">
+## Step 0A: Consume Brainstorm Manifest (mandatory)
+
+Read `.viepilot/brainstorm-manifest.json` to load brainstorm artifacts into crystallize working context. This step runs **before** all other analysis steps.
+
+### 0A.1 Read manifest
+
+```
+if .viepilot/brainstorm-manifest.json exists:
+  manifest = JSON.parse(read file)
+  log "[manifest] Found brainstorm manifest v{schema_version} — {sessions.length} session(s)"
+else:
+  log "[manifest] No brainstorm manifest found — running crystallize without artifact context"
+  manifest = null
+  → skip to Step 1
+```
+
+### 0A.2 Load unconsumed artifacts
+
+For each artifact in `manifest.artifacts` where `consumed == false`:
+
+| Artifact Type | Action |
+|---------------|--------|
+| `ui_direction` | Load path into working context; pass to Step 4 (ARCHITECTURE.md) and Step 10 (phase dirs) for UI task context |
+| `product_horizon` | Load summary; pass to Step 7 (ROADMAP.md) for post-MVP section |
+| `research_notes` | Load path; pass to Step 2 (stack research) as additional input |
+| `architecture_inputs` | Load summary; pass to Step 4 (ARCHITECTURE.md) for design decisions |
+| `domain_entities` | Load `entities[]`; pass directly to Step 6A (Domain Entity Extraction) as pre-populated entity list — Step 6A validates rather than re-extracts |
+| `tech_stack` | Load `stacks[]`; pass to Step 2/3 (stack research + cache) as confirmed stack list |
+| `compliance_domains` | Load `domains[]`; pass to Step 10 (phase dirs) for auto-setting `recovery_overrides.L3.block` on matching tasks |
+
+### 0A.3 Load ui_task_context_hint
+
+If `manifest.ui_task_context_hint` is non-empty:
+- Store paths for use in Step 10 (generate_phase_dirs) when creating TASK.md files for UI pages
+- These paths will auto-populate `context_required` in TASK.md (see Task 9.4)
+
+### 0A.4 Post-crystallize: mark consumed
+
+**After all crystallize steps complete** (in Step 12 — commit_confirm), update the manifest:
+
+```
+for each artifact in manifest.artifacts:
+  if artifact.consumed == false and artifact.path != null:
+    artifact.consumed = true
+    artifact.consumed_at = "{today's date}"
+
+write manifest back to .viepilot/brainstorm-manifest.json
+git add .viepilot/brainstorm-manifest.json
+```
+
+This ensures the next crystallize run does not re-consume already-processed artifacts.
+</step>
+
 <step name="analyze_brainstorm">
 ## Step 1: Analyze Brainstorm
 
@@ -698,6 +752,14 @@ For each gap, present to user with options:
 
 <step name="commit_confirm">
 ## Step 12: Commit & Confirm
+
+### 12.1 Mark manifest artifacts consumed (Step 0A.4)
+
+If `.viepilot/brainstorm-manifest.json` exists and was loaded in Step 0A:
+- For each artifact where `consumed == false` and `path != null`: set `consumed = true`, `consumed_at = "{today}"`
+- Write updated manifest back to `.viepilot/brainstorm-manifest.json`
+
+### 12.2 Commit all artifacts
 
 ```bash
 git add .viepilot/ CHANGELOG.md CONTRIBUTING.md CONTRIBUTORS.md LICENSE README.md
