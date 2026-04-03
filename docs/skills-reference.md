@@ -191,6 +191,11 @@ AI pauses for user input when:
 
 **Purpose**: Display progress dashboard
 
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--all` | Đọc `~/.viepilot/project-registry.json`, gom HANDOFF + TRACKER từng project đã đăng ký; bảng icon ● ⚠ ✓ ○ (xem `skills/vp-status/SKILL.md`) |
+
 ### Display Includes
 - Phase progress bars
 - Current state

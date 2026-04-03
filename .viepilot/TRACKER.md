@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 10-gap-e-g-token-budget (next)
-- **Task**: 10.2 — vp-status skill --all flag aggregate from registry
+- **Task**: 10.3 — autonomous.md token budget awareness (sub-task check)
 - **Version**: 2.1.1
 - **Last Update**: 2026-04-03
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 17 / 30 tasks (56%)
+**v2.1 milestone**: 18 / 30 tasks (60%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -53,8 +53,8 @@
 
 ## Next Action
 
-Phase 08 complete (v2.1.0). Phase 09 next (Brainstorm Artifact Manifest).
+Phase 10 in progress — Gap E + Gap G Extended + Token Budget.
 
-- Phase directory: `.viepilot/phases/09-brainstorm-artifact-manifest/`
-- First task: **9.1** — task files not yet created (run `/vp-auto` to start)
-- Execution order: 9.1 → 9.2 → 9.3 → 9.4 → 9.5 → 9.6 → 9.7
+- Phase directory: `.viepilot/phases/10-gap-e-g-token-budget/`
+- Current task: **10.3** — `autonomous.md` token budget awareness (sub-task check)
+- Execution order: 10.3 → 10.4 → 10.5 → 10.6

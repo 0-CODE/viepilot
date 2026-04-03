@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **vp-status `--all`**: Cross-project aggregate từ `~/.viepilot/project-registry.json` — đọc HANDOFF rồi TRACKER mỗi project; bảng trạng thái với icon ● ⚠ ✓ ○; skill version 2.1.0
+
 ### Planned
 
-- **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
+- **Phase 10** (remaining): Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
 
 ## [2.1.1] - 2026-04-03
 
