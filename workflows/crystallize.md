@@ -646,6 +646,32 @@ For each generated task:
     leave recovery_overrides at template defaults (block: false)
 ```
 
+### Context Required Auto-population (from brainstorm manifest)
+
+If Step 0A loaded `manifest.ui_task_context_hint` (non-empty array):
+
+```
+UI_KEYWORDS = ["page", "screen", "component", "layout", "dashboard", "form", "view", "ui", "frontend", "widget", "modal", "sidebar", "navbar", "header", "footer"]
+
+for each task being generated:
+  task_desc_lower = task.description.toLowerCase()
+  if any keyword in UI_KEYWORDS appears in task_desc_lower:
+    # This task involves UI work — add ui-direction paths to context_required
+    for each path in manifest.ui_task_context_hint:
+      append path to task.context_required.files_to_read
+    log "[context_required] Task {task_id}: added {N} ui-direction paths from manifest"
+
+  # Also add relevant manifest artifact paths based on task type
+  if task.type == "build" and manifest.artifacts.architecture_inputs.path:
+    append manifest.artifacts.architecture_inputs.path to task.context_required.files_to_read
+  if task.description mentions domain entity names from manifest.artifacts.domain_entities.entities[]:
+    append manifest.artifacts.domain_entities.path to task.context_required.files_to_read
+```
+
+**Result**: UI page tasks get concrete file paths in `context_required` instead of placeholder-only rows. vp-auto loads these paths automatically during task execution.
+
+**Skip condition**: If `manifest.ui_task_context_hint` is empty or manifest was not loaded in Step 0A, skip this block silently — no error, no placeholder injection.
+
 > **Note:** Auto-populate is a proposal — AI generates best-guess values. Users should review task files before running /vp-auto. Uncertain fields left as `{{PLACEHOLDER}}` with a comment.
 
 > **v1 backward compat:** This step only runs when crystallize generates NEW task files. Existing `.viepilot/phases/*/tasks/*.md` from v1 projects are never touched by crystallize.
