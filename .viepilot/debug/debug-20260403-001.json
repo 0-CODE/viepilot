@@ -1,0 +1,33 @@
+{
+  "id": "debug-20260403-001",
+  "status": "resolved",
+  "created_at": "2026-04-03T00:00:00Z",
+  "updated_at": "2026-04-03T00:00:00Z",
+  "problem": {
+    "description": "vp-request skill không xuất hiện trong Claude Code skills list ngay cả khi project có .viepilot/",
+    "symptoms": [
+      "vp-request ẩn trong project có .viepilot/",
+      "vp-auto, vp-status, vp-evolve, vp-resume cũng ẩn"
+    ],
+    "affected_files": ["skills/vp-request/SKILL.md"]
+  },
+  "investigation": {
+    "hypotheses": [
+      {"id": 1, "description": "paths: [\".viepilot/\"] dùng trailing slash — invalid glob", "status": "confirmed"},
+      {"id": 2, "description": "Session cần restart sau khi install để load skill mới", "status": "confirmed"},
+      {"id": 3, "description": "paths: feature chưa được Claude Code support", "status": "rejected"}
+    ],
+    "findings": [
+      "paths: ['.viepilot/'] — trailing slash khớp directory object, không khớp file patterns. Claude Code dùng glob file matching.",
+      "Correct format: paths: ['.viepilot/**'] để match mọi file trong .viepilot/",
+      "vp-auto/vp-status dùng paths: ['.viepilot/TRACKER.md'] — format đúng, nhưng session phải restart sau install mới thấy",
+      "Claude Code: skills completely hidden khi path không match, nhưng vẫn invoke được thủ công qua /skill-name"
+    ]
+  },
+  "resolution": {
+    "root_cause": "paths: [\".viepilot/\"] trailing slash không phải valid glob cho file matching trong Claude Code",
+    "fix_applied": "Changed paths: [\".viepilot/\"] → paths: [\".viepilot/**\"] trong skills/vp-request/SKILL.md. Re-install để apply. Commit 42abab9.",
+    "files_changed": ["skills/vp-request/SKILL.md"],
+    "verification": "Installed to ~/.claude/skills/vp-request/SKILL.md. Session restart trong project có .viepilot/ sẽ hiện vp-request."
+  }
+}

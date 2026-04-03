@@ -1,0 +1,13 @@
+flowchart LR
+  User([Solo Dev]) --> BS["/vp-brainstorm\nsession-*.md"]
+  BS --> CRY["/vp-crystallize\n.viepilot/ artifacts"]
+  CRY --> AUTO["/vp-auto\nautonomous loop"]
+  AUTO --> PASS{Task result}
+  PASS -->|PASS| NEXT[Next Task\nHANDOFF update]
+  NEXT --> AUTO
+  PASS -->|fail| REC["Recovery Layers\nL1→L2→L3 (silent)"]
+  REC --> AUTO
+  PASS -->|exhausted| CP["Control Point\nuser input"]
+  CP --> AUTO
+  AUTO --> DONE["Phase Complete\ngit tag"]
+  DONE --> NEW["Next Phase\nor /vp-evolve"]
