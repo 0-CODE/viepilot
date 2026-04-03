@@ -1,17 +1,17 @@
 # Phase 07: Hotfix — Working Directory Guard — State
 
 ## Overview
-- **Started**: —
-- **Status**: not_started
-- **Progress**: 0/3 tasks (0%)
-- **Current Task**: —
+- **Started**: 2026-04-03
+- **Status**: in_progress
+- **Progress**: 1/3 tasks (33%)
+- **Current Task**: 7.2
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "—"
-  status: not_started
+  current: "7.2"
+  status: executing
   available_transitions:
     on_start:     "→ executing"
     on_pass:      "→ update_state → next_task"
@@ -29,7 +29,7 @@ execution_state:
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 7.1 | autonomous.md — Working Directory Guard block | not_started | — | — | — |
+| 7.1 | autonomous.md — Working Directory Guard block | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p7-t7.1-done |
 | 7.2 | AI-GUIDE.md template — Install path READ-ONLY note | not_started | — | — | — |
 | 7.3 | Version bump 2.0.2 → 2.0.3 + CHANGELOG | not_started | — | — | — |
 
@@ -52,6 +52,7 @@ _None currently_
 
 | File | Action | Task |
 |------|--------|------|
+| workflows/autonomous.md | Modified | 7.1 |
 
 ## Quality Metrics
 - Tests written: 0

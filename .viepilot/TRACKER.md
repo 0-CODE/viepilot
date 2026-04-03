@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 07-working-dir-guard (next)
-- **Task**: 7.1 — autonomous.md Working Directory Guard block
+- **Task**: 7.2 — AI-GUIDE.md template Install path READ-ONLY note
 - **Version**: 2.0.2 (→ 2.0.3 after Phase 07, → 2.1.0 after Phase 08)
 - **Last Update**: 2026-04-03
 
@@ -17,7 +17,7 @@
 | 04 | Verification & Documentation | 11 | complete ✅ |
 | 05 | Hotfix — Install Path Convention + Logic Gaps | 5 | complete ✅ |
 | 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | complete ✅ |
-| 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | not started 🔲 |
+| 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | in progress 🔄 |
 | 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | not started 🔲 |
 | 09 | Brainstorm Artifact Manifest | 7 | not started 🔲 |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | not started 🔲 |
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 0 / 30 tasks (0%)
+**v2.1 milestone**: 1 / 30 tasks (3%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`

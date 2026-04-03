@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 07-working-dir-guard
-- **Status**: not_started
+- **Status**: done
 - **Complexity**: M
 - **Dependencies**: None
 - **Git Tag**: `viepilot-vp-p7-t7.1`
@@ -37,10 +37,10 @@ Add explicit "Working Directory Guard" block to the Initialize section of `workf
 
 ## Pre-execution documentation gate (doc-first; BUG-001)
 
-- [ ] Task contract fields below are filled with real paths and intent
-- [ ] `## Paths` lists every file to create or modify
-- [ ] `## File-Level Plan` explains what and why per path
-- [ ] PHASE-STATE.md marks this task `in_progress` before first implementation commit
+- [x] Task contract fields below are filled with real paths and intent
+- [x] `## Paths` lists every file to create or modify
+- [x] `## File-Level Plan` explains what and why per path
+- [x] PHASE-STATE.md marks this task `in_progress` before first implementation commit
 
 ## Paths
 ```yaml
@@ -64,15 +64,15 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] `grep -n 'Working Directory Guard' workflows/autonomous.md` → match found in Initialize section
-- [ ] Guard block explicitly lists install paths as read-only
-- [ ] Guard block has detection condition (path outside project_cwd → control point)
-- [ ] Block position: within Initialize / Step 1, before first task execution
+- [x] `grep -n 'Working Directory Guard' workflows/autonomous.md` → match found in Initialize section
+- [x] Guard block explicitly lists install paths as read-only
+- [x] Guard block has detection condition (path outside project_cwd → control point)
+- [x] Block position: within Initialize / Step 1, before first task execution
 
 ## Best Practices to Apply
-- [ ] Guard is explicit instruction block, not just a comment
-- [ ] Detection condition uses concrete path comparison, not vague "be careful"
-- [ ] Does not break existing Initialize section structure
+- [x] Guard is explicit instruction block, not just a comment
+- [x] Detection condition uses concrete path comparison, not vague "be careful"
+- [x] Does not break existing Initialize section structure
 
 ## Do / Don't
 ### Do
@@ -84,12 +84,11 @@ files_to_read:
 - Don't add guard as a comment-only — must be actionable instruction
 
 ## Implementation Notes
-```
-(AI fills during implementation)
-- Decisions made:
-- Issues encountered:
-- Deviations from plan:
-```
+- Added "Working Directory Guard" block to Initialize section (Step 1) of `workflows/autonomous.md`
+- Guard declares `{project_cwd}` as sole write target and install paths as READ-ONLY
+- Pre-edit check: resolve path → confirm under `{project_cwd}/` → hard stop on violation
+- On violation: route to control_point with descriptive message, wait for user
+- Includes concrete examples distinguishing allowed vs blocked paths
 
 ## Verification
 ```yaml
@@ -105,14 +104,14 @@ manual:
 ```
 
 ## State Update Checklist
-- [ ] Update `.viepilot/phases/07-working-dir-guard/PHASE-STATE.md` after PASS
-- [ ] Update `.viepilot/TRACKER.md` with current task/progress
-- [ ] Update `.viepilot/HANDOFF.json` to exact resume point
-- [ ] Update `.viepilot/ROADMAP.md` if phase progress changed
+- [x] Update `.viepilot/phases/07-working-dir-guard/PHASE-STATE.md` after PASS
+- [x] Update `.viepilot/TRACKER.md` with current task/progress
+- [x] Update `.viepilot/HANDOFF.json` to exact resume point
+- [x] Update `.viepilot/ROADMAP.md` if phase progress changed
 
 ## Files Changed
 ```
-(Auto-populated after completion)
+M	workflows/autonomous.md
 ```
 
 ## Rollback
@@ -126,7 +125,11 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p7-t7.1".."${TAG_PREFIX}-p7
 > **AI fills this section after task PASS**
 
 ### Implementation Summary
-- (Replace with 2-5 bullets)
+- Added Working Directory Guard block to `workflows/autonomous.md` Initialize section
+- Guard asserts `{project_cwd}` as the only writable directory
+- Install paths (`~/.claude/viepilot/`, `~/.cursor/viepilot/`) declared READ-ONLY
+- Hard stop + control_point routing on any path outside `{project_cwd}`
+- Applies to all ViePilot projects, not just framework dev
 
 ### Files Changed
 | File | Action |
@@ -134,12 +137,12 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p7-t7.1".."${TAG_PREFIX}-p7
 | `workflows/autonomous.md` | modified |
 
 ### Checklist Verification
-- [ ] `## Meta → Status` set to `done`
-- [ ] All `## Pre-execution documentation gate` boxes ticked `[x]`
-- [ ] All `## Acceptance Criteria` boxes ticked `[x]`
-- [ ] PHASE-STATE.md task row: Status=`done`, Completed=today, Git Tag=actual tag
-- [ ] PHASE-STATE.md `execution_state.status` updated
-- [ ] PHASE-STATE.md Files Changed table: entry added
-- [ ] HANDOFF.json `position.task` → 7.2
-- [ ] HANDOFF.json `meta.last_written` → now
-- [ ] TRACKER.md current task line updated
+- [x] `## Meta → Status` set to `done`
+- [x] All `## Pre-execution documentation gate` boxes ticked `[x]`
+- [x] All `## Acceptance Criteria` boxes ticked `[x]`
+- [x] PHASE-STATE.md task row: Status=`done`, Completed=today, Git Tag=actual tag
+- [x] PHASE-STATE.md `execution_state.status` updated
+- [x] PHASE-STATE.md Files Changed table: entry added
+- [x] HANDOFF.json `position.task` → 7.2
+- [x] HANDOFF.json `meta.last_written` → now
+- [x] TRACKER.md current task line updated
