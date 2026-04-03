@@ -42,6 +42,36 @@
       "consumed_at": null,
       "summary": null,
       "_comment": "Architecture decisions, service boundaries, data flow choices from brainstorm"
+    },
+    "domain_entities": {
+      "path": null,
+      "type": "domain_entities",
+      "required": true,
+      "consumed": false,
+      "consumed_at": null,
+      "summary": null,
+      "entities": [],
+      "_comment": "Named domain entities from brainstorm — feeds crystallize Step 6A entity extraction. entities[]: {name, type, needs_crud_api}"
+    },
+    "tech_stack": {
+      "path": null,
+      "type": "tech_stack",
+      "required": true,
+      "consumed": false,
+      "consumed_at": null,
+      "summary": null,
+      "stacks": [],
+      "_comment": "Tech stack decisions from brainstorm — feeds STACKS.md generation. stacks[]: {name, category, version}"
+    },
+    "compliance_domains": {
+      "path": null,
+      "type": "compliance_domains",
+      "required": false,
+      "consumed": false,
+      "consumed_at": null,
+      "summary": null,
+      "domains": [],
+      "_comment": "Compliance-sensitive areas mentioned in brainstorm (auth, payment, crypto, PII). domains[]: {name, severity}"
     }
   },
   "ui_task_context_hint": [],

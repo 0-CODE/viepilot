@@ -416,10 +416,39 @@ _(Điền sau bước 5 — Project meta intake; xem `docs/dev/global-profiles.m
 - Unresolved questions
 ```
 
+### 6A. Generate Brainstorm Manifest (mandatory on /save and /end)
+
+After writing/updating the session file, generate or update `.viepilot/brainstorm-manifest.json`:
+
+1. **Initialize**: If `.viepilot/brainstorm-manifest.json` does not exist, copy from `templates/project/brainstorm-manifest.json` (via installed path).
+
+2. **Update sessions[]**: Add or update entry for current session:
+   ```json
+   {"id": "session-{date}", "date": "{date}", "file_path": "docs/brainstorm/session-{date}.md", "topics_count": {N}, "status": "completed"}
+   ```
+
+3. **Scan session for artifacts** — for each artifact type, check if session content contains relevant material:
+
+   | Artifact Type | Scan For | Path Value |
+   |---------------|----------|------------|
+   | `ui_direction` | `## UI Direction Artifacts` section or `.viepilot/ui-direction/` files | Path to ui-direction dir or notes.md |
+   | `product_horizon` | `## Product horizon` section | Session file path + `#product-horizon` |
+   | `research_notes` | `## Research Notes` blocks in any topic | Session file path + topic anchor |
+   | `architecture_inputs` | `## Architecture diagram applicability inputs` | Session file path + section anchor |
+   | `domain_entities` | Named nouns discussed as persisted objects (entities, models, tables) | Session file path; populate `entities[]` with `{name, type, needs_crud_api}` |
+   | `tech_stack` | Technology/framework decisions (language, DB, framework, cloud) | Session file path; populate `stacks[]` with `{name, category, version}` |
+   | `compliance_domains` | Mentions of auth, payment, encryption, PII, GDPR, HIPAA | Session file path; populate `domains[]` with `{name, severity}` |
+
+4. **For each found artifact**: Set `path`, `summary` (1-line), `consumed: false`. Do NOT overwrite artifacts already marked `consumed: true` from a previous crystallize run.
+
+5. **Populate `ui_task_context_hint[]`**: If `ui_direction` artifact found, list all file paths under `.viepilot/ui-direction/{session-id}/` (index.html, style.css, notes.md, pages/*.html).
+
+6. **Write** `.viepilot/brainstorm-manifest.json`.
+
 Commit:
 ```bash
 mkdir -p docs/brainstorm
-git add docs/brainstorm/
+git add docs/brainstorm/ .viepilot/brainstorm-manifest.json
 git commit -m "docs: brainstorm session {date}"
 git push
 ```
