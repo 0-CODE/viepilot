@@ -2,7 +2,7 @@
   "version": 1,
   "position": {
     "phase": "12",
-    "task": "12.2",
+    "task": "12.3",
     "status": "not_started"
   },
   "recovery": {
@@ -13,7 +13,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 12 task 12.1 PASS: lib/project-write-guard.cjs + tests/integration/bug007-working-directory-guard.test.js. Next: 12.2 ENH-022 integration test."
+    "last_decision": "Phase 12 task 12.2 PASS: lib/crystallize-dependency-validate.cjs + tests/fixtures/enh022-* + integration tests. Next: 12.3 docs (autonomous-mode, quick-start, advanced-usage)."
   },
   "control_point": {
     "active": false,
@@ -21,7 +21,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T18:30:00Z",
+    "last_written": "2026-04-03T19:15:00Z",
     "last_archived": null
   }
 }
