@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 10-gap-e-g-token-budget (next)
-- **Task**: 10.3 — autonomous.md token budget awareness (sub-task check)
+- **Task**: 10.4 — HANDOFF.log token_budget_warning event
 - **Version**: 2.1.1
 - **Last Update**: 2026-04-03
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 18 / 30 tasks (60%)
+**v2.1 milestone**: 19 / 30 tasks (63%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -56,5 +56,5 @@
 Phase 10 in progress — Gap E + Gap G Extended + Token Budget.
 
 - Phase directory: `.viepilot/phases/10-gap-e-g-token-budget/`
-- Current task: **10.3** — `autonomous.md` token budget awareness (sub-task check)
-- Execution order: 10.3 → 10.4 → 10.5 → 10.6
+- Current task: **10.4** — `HANDOFF.log` `token_budget_warning` event
+- Execution order: 10.4 → 10.5 → 10.6

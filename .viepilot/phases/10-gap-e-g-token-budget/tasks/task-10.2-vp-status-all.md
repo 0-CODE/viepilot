@@ -26,7 +26,7 @@ Khi `{{VP_ARGS}}` chứa `--all` (hoặc user nói rõ cross-project status): đ
 - [x] Task contract fields filled
 - [x] Paths listed
 - [x] File-Level Plan explains what and why
-- [x] PHASE-STATE.md marks this task `in_progress` before first implementation commit
+- [x] PHASE-STATE.md marked this task `in_progress` before first implementation commit
 
 ## Paths
 ```yaml

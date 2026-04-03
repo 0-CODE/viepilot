@@ -315,6 +315,27 @@ If `write_scope` is empty or absent (v1 task): skip silently — no warning.
    - HANDOFF.json: `position.sub_task = "{sub_task_id}"`, `meta.last_written = "<ISO8601>"`
    - PHASE-STATE.md execution_state: `current = "{sub_task_id}"`, `status = executing`
    - PHASE-STATE.md sub-task table: mark sub-task `pass`, add completed timestamp
+
+#### Token budget check (sub-task; `token_budget`)
+
+Run **immediately after** Execute Task **step 9** state writes for each sub-task **PASS**, **before** step 10 and **before** starting the next sub-task.
+
+1. **Estimate `used_pct`** (integer 0–100):
+   - Prefer platform-provided context or token utilization when the runtime exposes it.
+   - Otherwise apply a **conservative heuristic** (e.g. cumulative tool output volume, transcript depth, large file reads) and label the value an **estimate** in any user-visible banner.
+2. **If `used_pct > 90` (critical — not skippable, ignores `--fast`):**
+   - **Force pause**: do **not** continue to the next sub-task or advance Verify Task for remaining sub-tasks in this turn.
+   - **HANDOFF.json** (mandatory): update per project schema (**v1/v2** per **HANDOFF.json Schema Detection** above). At minimum set `meta.last_written` to ISO8601 now; keep `position` aligned with the sub-task just completed and the **next** queued sub-task (or explicit next id). Add a short persistence note (e.g. v1 `context.last_decision`, or equivalent v2 field): `token_budget force pause: used_pct≈{used_pct}`.
+   - Display stop banner + resume hint (`/vp-resume` or `/vp-auto`).
+   - **Exit** autonomous execution for this session (hard stop after writes).
+3. **Else if `used_pct > 70` (warn):**
+   - If `{{VP_ARGS}}` contains **`--fast`**: omit the menu; continue to the next sub-task (or step 10+ as applicable).
+   - Otherwise: show warning (include `used_pct`; mark *estimate* when heuristic), then numbered options:
+     1. **Continue** — next sub-task.
+     2. **Pause now** — `meta.last_written` + `position` sync as in (2), then stop.
+     3. **Stop autonomous** — progress summary (same spirit as **handle_blocker** stop).
+   - Wait for user choice before continuing.
+
 10. On sub-task FAIL (before recovery): update PHASE-STATE.md `execution_state.status = recovering_l1`
 11. On task PASS: update PHASE-STATE.md `execution_state.status = pass`; update task table row (status=done, git_tag=actual_tag)
 12. Log notes in task file after each sub-task
