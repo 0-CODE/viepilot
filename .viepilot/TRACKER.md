@@ -2,9 +2,9 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 11-diagram-profile-system (next)
-- **Task**: 11.5 — version bump 2.1.2 → 2.1.3 + CHANGELOG
-- **Version**: 2.1.2
+- **Phase**: 12 — Verification + Docs + Release (next)
+- **Task**: 12.1 — integration test BUG-007 guard
+- **Version**: 2.1.3
 - **Last Update**: 2026-04-03
 
 ## Progress
@@ -21,7 +21,7 @@
 | 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | complete ✅ |
 | 09 | Brainstorm Artifact Manifest | 7 | complete ✅ |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | complete ✅ |
-| 11 | Diagram Profile System | 5 | in progress 🔄 (4/5) |
+| 11 | Diagram Profile System | 5 | complete ✅ |
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 | 13 | Agent Orchestration — Tier A + B | 4 | not started 🔲 |
 | 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
@@ -32,7 +32,7 @@
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 26 / 40 tasks (65%) _(Phase 11 tasks 11.1–11.4 done 2026-04-03)_
+**v2.1 milestone**: 27 / 40 tasks (67.5%) _(Phase 11 complete 2026-04-03, release 2.1.3)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -60,11 +60,11 @@
 
 ## Next Action
 
-Phase 10 **complete** (release **2.1.2**). Next: Phase 11 — Diagram Profile System.
+Phase 11 **complete** (release **2.1.3**). Next: Phase 12 — Verification + Docs + v2.1.0 Final Release.
 
-- Phase directory: `.viepilot/phases/11-diagram-profile-system/`
-- Current task: **11.5** — version bump 2.1.2 → 2.1.3 + CHANGELOG (Phase 11 close)
-- Last done: `viepilot-vp-p11-t11.4-done`
+- Phase directory: see `ROADMAP.md` Phase 12 _(scaffold when starting 12.1)_
+- Current task: **12.1** — integration test: BUG-007 guard
+- Last done: `viepilot-vp-p11-complete`
 
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 

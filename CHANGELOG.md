@@ -7,17 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+
+- **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
+- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
+
+## [2.1.3] - 2026-04-03
+
+Phase 11 complete — Diagram Profile System (stack-aware diagram matrix, architecture profile folders, phase-complete stale diagram reconciliation).
+
 ### Added
 
 - **crystallize Step 1D** (`diagram_profile_selection`): stack/messaging/SQL/SPA/auth/state-heavy detection → normative diagram profile (`distributed-events`, `microservices-api`, `spa-sql-monolith`, `sql-monolith`, `spa-frontend`, `default-monolith`); Step 4 consumes `diagram_profile` when classifying the diagram applicability matrix (Phase 11.1)
 - **crystallize Step 4 — SPEC persistence**: after the diagram matrix is finalized, write or replace `## Diagram Applicability Matrix` in `.viepilot/SPEC.md` (HTML anchors `vp:diagram-applicability-matrix`); normative columns `diagram_type`, `applies_when`, `folder_path`, `status` plus Phase-11 folder map vs ENH-022 `.mermaid` sidecars (Phase 11.2)
 - **crystallize Step 4 — architecture profile folders**: after ENH-022 sidecars + SPEC matrix, create repo-root `architecture/{cross,backend,frontend,sequences,state-machines}/` as needed from non-`N/A` rows + Step 1D flags; stub `README.md` per dir (`vp:architecture-profile-stub`); skip if all diagrams `N/A` (Phase 11.3)
 - **autonomous Phase Complete — stale diagram pass**: after phase quality gate, diff since `${TAG_PREFIX}-p{phase}-t1`; if `architecture/`, `.viepilot/architecture/`, or `.viepilot/ARCHITECTURE.md` touched, reconcile diagram sources per ENH-018 matrix once at phase boundary; `SUMMARY.md` subsection **Stale diagram reconciliation** + `HANDOFF.log` event `stale_diagram_phase_complete` (Phase 11.4)
-
-### Planned
-
-- **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
-- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
 
 ## [2.1.2] - 2026-04-03
 
