@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 18 — ENH-024 — Fork state background (next)
-- **Task**: 18.1 — Fork State Updates (run_in_background)
+- **Phase**: 19 — ENH-025 — Worktree L/XL (next)
+- **Task**: 19.1 — Worktree isolation for L/XL tasks
 - **Version**: 2.2.2
 - **Last Update**: 2026-04-04
 
@@ -28,7 +28,7 @@
 | 15 | ENH-023 — handoff-sync + hooks | 1 | complete ✅ |
 | 16 | ENH-028 — crystallize Review Gate | 1 | complete ✅ |
 | 17 | ENH-026 — Plan mode doc-first | 1 | complete ✅ |
-| 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
+| 18 | ENH-024 — Fork state background | 1 | complete ✅ |
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
@@ -63,11 +63,11 @@
 
 ## Next Action
 
-Phase **17** **complete** — Plan Mode is now documented as an optional structural guard for the doc-first gate in both the workflow and user docs.
+Phase **18** **complete** — `autonomous.md` now documents the optional `run_in_background` state-update fork with a mandatory synchronous fallback.
 
-- Current task: **18.1** — Fork State Updates (run_in_background) (`ENH-024`)
-- Last done: **17.1** — Plan mode doc-first docs
+- Current task: **19.1** — Worktree isolation for L/XL tasks (`ENH-025`)
+- Last done: **18.1** — Fork State Updates (run_in_background)
 
-**Phase 18 (next)**: continue `/vp-auto --phase 18`.
+**Phase 19 (next)**: continue `/vp-auto --phase 19`.
 
 **Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

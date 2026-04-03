@@ -535,6 +535,22 @@ If any check fails:
   ```
 - Update CHANGELOG.md if feature/fix
 
+#### Fork State Update (optional — when background agent support exists)
+
+After task PASS, the coordinator **may** fork a background agent for housekeeping writes when the host supports async agent execution such as `run_in_background: true`.
+
+Suggested background payload:
+- update `TRACKER.md` to the next task / phase
+- update `PHASE-STATE.md` task row and execution state
+- update `HANDOFF.json` position + `meta.last_written`
+- update `ROADMAP.md` only if phase progress changed
+
+Guardrails:
+- Treat the fork as an optimization only — **not** the source of truth
+- Wait a short confirmation window (for example, about **10 seconds**) for the background completion notification / summary
+- If the host cannot spawn a background agent, or confirmation is missing / incomplete, fall back to the normal **synchronous** state update checklist below
+- Never advance the execution loop with ambiguous state ownership; synchronous writes win whenever there is doubt
+
 #### State Update Checklist (mandatory — complete ALL before advancing to next task)
 
 **Verify each item was written to disk. If any edit fails → `control_point("state update failed: {item}")`.**

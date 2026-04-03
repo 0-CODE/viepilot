@@ -1,8 +1,8 @@
 {
   "version": 1,
   "position": {
-    "phase": "18",
-    "task": "18.1",
+    "phase": "19",
+    "task": "19.1",
     "status": "not_started",
     "sub_task": null
   },
@@ -14,7 +14,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 17 complete: Plan Mode guidance now documents Option A/Option B enforcement for the doc-first gate. Next: Phase 18 ENH-024 Fork State Updates."
+    "last_decision": "Phase 18 complete: autonomous.md now documents the optional run_in_background state-update fork with a synchronous fallback. Next: Phase 19 ENH-025 Worktree isolation."
   },
   "control_point": {
     "active": false,
