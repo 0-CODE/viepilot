@@ -13,12 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Gap G Extended (keyword scan)**: `COMPLIANCE_KEYWORDS_EXTENDED` trong `workflows/crystallize.md` (G2: gợi ý `L3.block`, bắt user xác nhận; không auto-set chỉ từ keyword khi G1 chưa bật) và `workflows/autonomous.md` (control point + optional HANDOFF.log `compliance_keyword_ack`); `workflows/evolve.md` tham chiếu G1/G2 (Phase 10.5)
 - **HANDOFF.log `token_budget_warning`**: Sau sub-task PASS, khi `used_pct > 70`, `workflows/autonomous.md` hướng dẫn append JSONL với `used_pct` + `severity` (`warn` / `critical`); ghi non-blocking (Phase 10.4)
 - **vp-status `--all`**: Cross-project aggregate từ `~/.viepilot/project-registry.json` — đọc HANDOFF rồi TRACKER mỗi project; bảng trạng thái với icon ● ⚠ ✓ ○; skill version 2.1.0
 
 ### Planned
 
-- **Phase 10** (remaining): Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
+- **Phase 10** (remaining): task 10.6 version bump 2.1.1 → 2.1.2
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
 - **Phase 14** (scaffold): ENH-023–028 bundle — hooks/handoff-sync, vp-tools ask, crystallize review gate, Plan mode docs, fork state background, worktree L/XL (`vp-evolve --feature`)
 

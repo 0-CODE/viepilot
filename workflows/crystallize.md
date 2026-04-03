@@ -653,6 +653,8 @@ recovery_budget:
 
 ### Gap G — Compliance Domain Auto-detection (runs after write_scope populated)
 
+#### G1 — Path-based rules (auto-apply)
+
 ```
 compliance_domains:
   auth:    write_scope path contains /auth/, /authorization/, jwt, oauth, session, rbac
@@ -665,7 +667,46 @@ For each generated task:
     set recovery_overrides.L3.block = true
     set recovery_overrides.L3.reason = "{domain} domain — scope reduction unsafe"
   if write_scope empty or no compliance match:
-    leave recovery_overrides at template defaults (block: false)
+    leave recovery_overrides at template defaults (block: false) until G2 runs
+```
+
+#### G2 — Extended keyword scan (task text — suggest + user confirms; Phase 10.5)
+
+Use the same canonical list as autonomous mode (**substring match, case-insensitive** on concatenated task text):
+
+```
+COMPLIANCE_KEYWORDS_EXTENDED = [
+  "password", "token", "session", "encrypt", "stripe", "payment",
+  "bcrypt", "tls", "migration", "schema"
+]
+```
+
+For each generated task **after** G1:
+
+```
+text_to_scan = lowercase concat:
+  ROADMAP task Description (table row),
+  planned Objective + Acceptance Criteria bullets for this task file,
+  inferred task title / slug
+
+hits = { kw for kw in COMPLIANCE_KEYWORDS_EXTENDED if kw in text_to_scan }
+
+if hits is non-empty AND recovery_overrides.L3.block is still false:
+  Do NOT auto-set L3.block from keywords alone.
+  Surface in the crystallize session (mandatory pause before writing Task Metadata for this task):
+    "[Gap G Extended] Task {task_id} text matches: {sorted(hits)}"
+    "Recommend recovery_overrides.L3.block: true"
+    "  reason: \"sensitive keywords in task text: {comma-separated hits}\""
+  Numbered options — wait for user selection:
+    1. **Apply** — set recovery_overrides.L3.block = true with the recommended reason (or user-edited reason)
+    2. **Decline** — keep L3.block false; add under task ## Notes: "Gap G Extended: user declined L3.block; keywords seen: {hits}"
+    3. **Defer** — adjust ROADMAP/task wording and re-run G2 for this task
+
+if hits is non-empty AND L3.block is already true from G1:
+  No extra user prompt required (path-based rule already applied).
+
+if hits is empty:
+  Leave recovery_overrides as left by G1 (defaults or path-based).
 ```
 
 ### Context Required Auto-population (from brainstorm manifest)

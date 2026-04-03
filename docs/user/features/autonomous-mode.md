@@ -99,6 +99,19 @@ recovery_overrides:
 
 *L3 scope reduction bị auto-block cho compliance paths (auth, payment, crypto).*
 
+### Gap G Extended — keyword scan (task text)
+
+Trước **Execute Task**, workflow quét nội dung TASK.md (Objective, Acceptance Criteria, File-Level Plan, …) với **`COMPLIANCE_KEYWORDS_EXTENDED`**: `password`, `token`, `session`, `encrypt`, `stripe`, `payment`, `bcrypt`, `tls`, `migration`, `schema` (khớp chuỗi con, không phân biệt hoa thường).
+
+- Nếu có hit và **`recovery_overrides.L3.block` chưa `true`** → **control point**: gợi ý bật `L3.block` + lý do, hoặc **chấp nhận rủi ro** (ghi nhận trong log).
+- Khi user chọn tiếp tục **không** bật `L3.block`, append JSONL (non-blocking):
+
+```jsonl
+{"ts":"...","event":"compliance_keyword_ack","task":"2.3","phase":"02","hits":["stripe","payment"],"ack":"user_proceed_without_l3_block"}
+```
+
+Ở **crystallize** (sinh task mới): cùng danh sách từ khóa trên text mô tả task — **không tự động** set `L3.block` chỉ vì keyword nếu path-based (G1) chưa kích hoạt; bắt **user xác nhận** trước khi ghi Task Metadata (xem `workflows/crystallize.md` Step 10 G2).
+
 ## Scope Contract (v2)
 
 Mỗi task khai báo `write_scope` — danh sách files/dirs được phép sửa:
@@ -165,6 +178,7 @@ Dùng `/vp-status` để xem control point banner bất cứ lúc nào.
 - Recovery budget exhausted (sau L1/L2/L3 attempts)
 - Scope drift violation (file ngoài write_scope)
 - Task contract validation fail
+- Gap G Extended: task text có keyword nhạy cảm nhưng chưa `L3.block` (xem mục Gap G Extended)
 - Quality gate failures cần user decision
 
 ## Quality Gates

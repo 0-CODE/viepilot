@@ -130,7 +130,7 @@ For each generated task file, auto-populate the Task Metadata block:
 - `type: build` (default for new feature tasks)
 - `write_scope:` infer from feature description + affected modules (from Step 3A info)
 - `recovery_budget:` = task complexity estimate from Step 3A (S/M/L/XL)
-- Apply Gap G compliance detection: same logic as crystallize Step 10 — if write_scope paths match compliance domains, auto-set `recovery_overrides.L3.block = true`
+- Apply Gap G compliance detection: same logic as crystallize Step 10 — **G1** path-based rules auto-set `recovery_overrides.L3.block = true` when `write_scope` matches compliance domains; **G2** extended keyword scan on task text suggests `L3.block` with **mandatory user confirmation** when keywords hit but G1 did not fire (see `workflows/crystallize.md` Step 10)
 
 > Reference: see compliance domain detection in `workflows/crystallize.md` Step 10.
 

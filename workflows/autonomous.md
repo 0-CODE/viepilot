@@ -278,6 +278,40 @@ compliance_preflight(task):
 
 If `write_scope` is empty or absent (v1 task): skip silently — no warning.
 
+#### Gap G Extended — keyword scan (task body text; Phase 10.5)
+
+Run **after** path-based Compliance Pre-flight and **before** **Execute Task** step 0 (`task_start`).
+
+```
+COMPLIANCE_KEYWORDS_EXTENDED = [
+  "password", "token", "session", "encrypt", "stripe", "payment",
+  "bcrypt", "tls", "migration", "schema"
+]
+
+gap_g_extended_keyword_preflight(task):
+  if task.recovery_overrides.L3.block == true:
+    return OK  # already protected (path or prior edit)
+  text = lowercase(concatenate these sections from the active task .md when present):
+    ## Objective, ## Acceptance Criteria, ## File-Level Plan, ## Implementation Notes,
+    ## Paths (yaml block), Task Metadata / description fields
+  hits = unique list of kw in COMPLIANCE_KEYWORDS_EXTENDED where kw appears as substring in text
+  if hits is empty:
+    return OK
+  log "[GAP-G-EXTENDED] task {task_id} keyword hits: {hits}"
+  → control_point BEFORE Execute Task:
+     Reason: "Gap G Extended: task text matches sensitive keywords but recovery_overrides.L3.block is not true"
+     Show: hits + suggested YAML snippet for L3.block + reason
+     Options:
+       1. **Fix and retry** — user edits task file to set recovery_overrides.L3.block: true (and reason), then /vp-auto continues
+       2. **Acknowledge risk** — user explicitly accepts continuing without L3.block; append JSONL to .viepilot/HANDOFF.log (non-blocking):
+          {"ts":"<ISO8601>","event":"compliance_keyword_ack","task":"{task}","phase":"{phase}","hits":[...],"ack":"user_proceed_without_l3_block"}
+          then clear control_point and proceed to Execute Task
+       3. **Stop autonomous mode** — exit with progress summary
+  Do not emit task_start or modify shipping files until option 1 (after re-entry) or 2 is resolved.
+```
+
+If the task file has **no** `recovery_overrides` block, treat `L3.block` as false/absent for this scan.
+
 #### HANDOFF.json Schema Detection
 
 > **Schema note (BUG-006 fix)**: Before writing any HANDOFF.json fields, detect which schema the project uses:
