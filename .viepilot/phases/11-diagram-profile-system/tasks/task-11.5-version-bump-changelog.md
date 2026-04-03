@@ -108,6 +108,12 @@ automated:
 ## Files Changed
 
 ```
-M	.viepilot/phases/11-diagram-profile-system/SUMMARY.md
-M	.viepilot/phases/11-diagram-profile-system/tasks/task-11.5-version-bump-changelog.md
+M	.viepilot/HANDOFF.json
+M	.viepilot/ROADMAP.md
+M	.viepilot/TRACKER.md
+M	.viepilot/phases/11-diagram-profile-system/PHASE-STATE.md
+A	.viepilot/phases/11-diagram-profile-system/SUMMARY.md
+A	.viepilot/phases/11-diagram-profile-system/tasks/task-11.5-version-bump-changelog.md
+M	CHANGELOG.md
+M	package.json
 ```
