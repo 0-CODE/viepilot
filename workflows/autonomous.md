@@ -596,6 +596,33 @@ When all tasks in phase are done/skipped:
 
 1. Run phase-level verification
 2. Check phase quality gate
+2a. **Stale diagram detection + update trigger (Phase 11 — architecture profile)** — runs **only at phase complete**, not after each task.
+
+   **Purpose:** If this phase changed architecture or diagram sources, reconcile diagram artifacts once before `SUMMARY.md` finalization so **stale diagram** drift does not accumulate across phases.
+
+   **Diff since phase start (same scope as SUMMARY file inventory):**
+   ```bash
+   TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+   ARCH_PHASE_PATHS=$(git diff "${TAG_PREFIX}-p{phase}-t1"..HEAD --name-only)
+   ```
+
+   **Touch detection:** If **any** changed path matches one of these prefixes (string prefix match on each line):
+   - `architecture/` — repo-root profile folders from crystallize (Phase 11)
+   - `.viepilot/architecture/` — ENH-022 mermaid sidecars
+   - `.viepilot/ARCHITECTURE.md` — diagram applicability matrix + narrative
+
+   **If no match:** Skip the remainder of this step silently (no extra `SUMMARY.md` subsection required).
+
+   **If matched (stale diagram pass):**
+   1. Read `.viepilot/ARCHITECTURE.md` and apply **ENH-018**: consult the diagram applicability matrix — for rows marked `required` or `optional` (not `N/A`), resolve canonical diagram sources (paths per matrix / ENH-022 `.viepilot/architecture/*.mermaid` / profile `architecture/**` stubs).
+   2. **Reconcile:** Update existing mermaid or stub files minimally so they reflect phase deliverables; do not invent diagram types beyond the matrix. Skip rows explicitly `N/A`.
+   3. **`SUMMARY.md`:** Add subsection **Stale diagram reconciliation** listing files reviewed or updated, or state explicitly that review concluded no edits were needed.
+   4. **`HANDOFF.log` (non-blocking):**
+      ```
+      {"ts":"<ISO8601>","event":"stale_diagram_phase_complete","phase":"{phase}","architecture_touched":true,"paths_sample":["..."]}
+      ```
+      _(Truncate `paths_sample` if the list is large; full list may appear in `SUMMARY.md`.)_
+
 3. Write SUMMARY.md using `templates/phase/SUMMARY.md` as base.
 
    Populate `{{CREATED_FILES}}`, `{{MODIFIED_FILES}}`, `{{DELETED_FILES}}` from git:
