@@ -597,6 +597,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **README.md** - Project overview with links to docs
 </step>
 
+<step name="dependency_validation">
+## Step 11A: Dependency Validation (mandatory — ENH-022)
+
+After all phases and task files are generated, cross-check task descriptions against the entity manifest from Step 6A. This catches dependency gaps where a task references an entity's management service that was never planned as a phase.
+
+### Skip condition
+
+If Step 6A produced "No domain entities detected" → skip this step entirely.
+
+### 11A.1 Scan task descriptions for dependency patterns
+
+Scan **all** generated task descriptions (across all phases) for these patterns:
+
+```
+DEPENDENCY_PATTERNS = [
+  "resolve {entity}",
+  "create {entity}",
+  "update {entity}",
+  "delete {entity}",
+  "manage {entity}",
+  "lookup {entity}",
+  "enrich {entity}",
+  "fetch {entity}",
+  "{entity}Service",
+  "{entity}Repository"
+]
+```
+
+Where `{entity}` is any entity name from the Step 6A entity manifest.
+
+### 11A.2 Cross-reference with service phases
+
+For each match:
+1. Look up the entity in the Step 6A manifest
+2. If `needs_crud_api = yes` and `service_phase = MISSING` → this is a **dependency gap**
+3. If `needs_crud_api = no` → skip (entity is config/seed/internal)
+4. If entity has a service phase with a **higher** phase number than the referencing task → this is a **ordering gap** (dependency must come first)
+
+### 11A.3 Output dependency gap report
+
+```markdown
+## Dependency Validation Report
+
+### Gaps Found
+
+| Task | Pattern | Entity | Gap Type | Severity |
+|------|---------|--------|----------|----------|
+| 4.3 | "resolve tenant" | Tenant | MISSING service phase | ⚠ HIGH |
+| 6.2 | "enrich device" | Device | Service phase 8 > task phase 6 | ⚠ ORDERING |
+
+### No Gaps
+(If all dependencies resolved: "All entity dependencies validated — no gaps found.")
+```
+
+### 11A.4 Resolve gaps
+
+For each gap, present to user with options:
+
+1. **Auto-add phase stub**: Insert a `{EntityName} Management Service — CRUD API` phase at the appropriate position (before the first phase that depends on it). Re-number subsequent phases.
+2. **Reorder**: Move existing service phase to an earlier position (for ordering gaps only).
+3. **Confirm intentional**: User confirms entity is resolved from config, external API, or seed data — not via a management service. Record reason in entity manifest.
+
+**Do NOT auto-add phases without user confirmation.** Always present the gap report and wait for user decision.
+</step>
+
 <step name="commit_confirm">
 ## Step 12: Commit & Confirm
 
