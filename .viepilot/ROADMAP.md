@@ -141,12 +141,12 @@
 |-------|--------|-------|-----------|----------|
 | 7. Hotfix — Working Directory Guard (BUG-007) | ✅ Complete | 3 | 3 | 100% |
 | 8. ENH-022 — Crystallize Domain Entity Extraction | ✅ Complete | 4 | 4 | 100% |
-| 9. Brainstorm Artifact Manifest | 🔄 In Progress | 7 | 6 | 85% |
+| 9. Brainstorm Artifact Manifest | ✅ Complete | 7 | 7 | 100% |
 | 10. Gap E + Gap G Extended + Token Budget | 🔲 Not Started | 6 | 0 | 0% |
 | 11. Diagram Profile System | 🔲 Not Started | 5 | 0 | 0% |
 | 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 
-**Overall**: 15 / 30 tasks (50%)
+**Overall**: 16 / 30 tasks (53%)
 
 ---
 

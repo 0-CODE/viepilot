@@ -9,7 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **Phase 09**: Brainstorm Artifact Manifest — manifest schema + crystallize Step 0A → v2.1.1
+- **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
+
+## [2.1.1] - 2026-04-03
+
+### Added
+
+- **Brainstorm Artifact Manifest**: `brainstorm-manifest.json` schema v1 template with 7 artifact types (ui_direction, product_horizon, research_notes, architecture_inputs, domain_entities, tech_stack, compliance_domains — ENH-030)
+- **brainstorm.md Step 6A**: Auto-generate manifest on `/save` and `/end` — scans session content for artifacts, populates `ui_task_context_hint[]` from UI direction paths
+- **brainstorm.md Step 6B**: `vp:decision` HTML comment anchor injection — enables crystallize consumed drift tracking; backfills existing sessions
+- **crystallize.md Step 0A**: Mandatory manifest consume — reads brainstorm-manifest.json before all analysis steps; loads unconsumed artifacts into working context; marks consumed after crystallize completes
+- **crystallize.md Step 10**: Auto-populate TASK.md `context_required` from `ui_task_context_hint` — UI page tasks get concrete file paths instead of placeholder-only rows
+- **crystallize.md Step 4**: `vp:consumed` anchor tracking stub — tags ARCHITECTURE.md sections populated from brainstorm artifacts (drift check deferred to Post-v2.1)
 - **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
 - **Phase 11**: Diagram Profile System — stack-aware architecture diagram generation → v2.1.3
 - **Phase 12**: Verification + Docs + v2.1.0 Final Release
