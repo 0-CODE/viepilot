@@ -18,6 +18,7 @@ write_scope:
   # - "{{WRITE_SCOPE_PATH_2}}"
 recovery_budget: "{{COMPLEXITY}}"  # S: L1x1,L2x1 | M: L1x1,L2x2 | L: L1x2,L2x2,L3x1 | XL: L1x2,L2x3,L3x1
 can_parallel_with: []              # Task IDs that can run concurrently (Post-MVP)
+worktree_isolation: "auto"         # auto | always | never
 recovery_overrides:
   L1:
     block: false                   # true = skip L1 recovery entirely

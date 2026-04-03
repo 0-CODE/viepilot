@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 19 — ENH-025 — Worktree L/XL (next)
-- **Task**: 19.1 — Worktree isolation for L/XL tasks
+- **Phase**: complete ✅
+- **Task**: —
 - **Version**: 2.2.2
 - **Last Update**: 2026-04-04
 
@@ -29,11 +29,11 @@
 | 16 | ENH-028 — crystallize Review Gate | 1 | complete ✅ |
 | 17 | ENH-026 — Plan mode doc-first | 1 | complete ✅ |
 | 18 | ENH-024 — Fork state background | 1 | complete ✅ |
-| 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
+| 19 | ENH-025 — Worktree L/XL | 1 | complete ✅ |
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 42 / 43 tasks (~98%) _(Phase 16 **complete**; Phase 15 **complete**; Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
+**v2.1 milestone**: complete ✅ _(Phases 14–20 complete; final post-MVP core loop closed through ENH-025)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -63,11 +63,13 @@
 
 ## Next Action
 
-Phase **18** **complete** — `autonomous.md` now documents the optional `run_in_background` state-update fork with a mandatory synchronous fallback.
+All phases complete.
 
-- Current task: **19.1** — Worktree isolation for L/XL tasks (`ENH-025`)
-- Last done: **18.1** — Fork State Updates (run_in_background)
+- Last done: **19.1** — Worktree isolation for L/XL tasks
+- Last milestone closeout: **ENH-025** completed after ENH-024/026/028
 
-**Phase 19 (next)**: continue `/vp-auto --phase 19`.
+**Next steps**:
+- `/vp-docs` to refresh broader documentation if needed
+- `/vp-evolve` to start the next milestone or backlog slice
 
 **Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

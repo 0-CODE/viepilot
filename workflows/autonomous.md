@@ -284,6 +284,23 @@ git tag "${TAG_PREFIX}-p{phase}-t{task}" -m "Start Task {task}"
 ```
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
+#### Worktree Isolation (for `L` / `XL` tasks, or task override)
+
+Before in-place implementation begins, evaluate whether the task should run in an isolated git worktree:
+- Default offer when `task.complexity` is `L` or `XL`
+- Also honor task metadata `worktree_isolation` when present:
+  - `auto` → offer for `L` / `XL` only
+  - `always` → always offer / prefer worktree isolation
+  - `never` → skip the offer and continue in-place
+
+If the chosen path is **worktree isolation**:
+- Spawn the implementation agent in `isolation="worktree"` when the host/runtime supports it
+- Keep the main branch untouched until the isolated run completes
+- On completion, present a diff / change summary to the user before merge
+- If the worktree task fails or is discarded, the main working tree must remain unaffected
+
+If worktree support is unavailable, or the user declines the offer, continue with the existing in-place execution path.
+
 #### Compliance Pre-flight (Gap G — runs before Execute Task)
 
 Before executing any task, scan `write_scope` paths against compliance domains:

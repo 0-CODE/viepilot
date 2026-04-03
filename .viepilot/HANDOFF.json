@@ -3,7 +3,7 @@
   "position": {
     "phase": "19",
     "task": "19.1",
-    "status": "not_started",
+    "status": "pass",
     "sub_task": null
   },
   "recovery": {
@@ -14,7 +14,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 18 complete: autonomous.md now documents the optional run_in_background state-update fork with a synchronous fallback. Next: Phase 19 ENH-025 Worktree isolation."
+    "last_decision": "All tracked phases complete: ENH-025 adds worktree isolation guidance for L/XL tasks and the TASK template now defaults worktree_isolation to auto."
   },
   "control_point": {
     "active": false,
