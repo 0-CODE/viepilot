@@ -138,13 +138,13 @@
 | Phase | Status | Tasks | Completed | Progress |
 |-------|--------|-------|-----------|----------|
 | 7. Hotfix — Working Directory Guard (BUG-007) | ✅ Complete | 3 | 3 | 100% |
-| 8. ENH-022 — Crystallize Domain Entity Extraction | 🔄 In Progress | 4 | 1 | 25% |
+| 8. ENH-022 — Crystallize Domain Entity Extraction | 🔄 In Progress | 4 | 2 | 50% |
 | 9. Brainstorm Artifact Manifest | 🔲 Not Started | 7 | 0 | 0% |
 | 10. Gap E + Gap G Extended + Token Budget | 🔲 Not Started | 6 | 0 | 0% |
 | 11. Diagram Profile System | 🔲 Not Started | 5 | 0 | 0% |
 | 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 
-**Overall**: 4 / 30 tasks (13%)
+**Overall**: 5 / 30 tasks (16%)
 
 ---
 
