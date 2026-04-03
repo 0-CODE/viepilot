@@ -7,7 +7,7 @@
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-340%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-341%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Released **SemVer** is defined in `package.json` and `CHANGELOG.md`. When you run ViePilot on a project, progress lives in a **local** `.viepilot/TRACKER.md` (typically gitignored — not part of the published framework tree).
@@ -33,7 +33,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 | Workflows | **12** |
 | Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
-| Tests | **340** (19 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + FEAT-001 Claude Code + ENH-022 crystallize + BUG-007 write guard + viepilot-info/update/install) |
+| Tests | **341** (19 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009 + FEAT-010 + ENH-021 routing + FEAT-001 Claude Code + ENH-022 crystallize + BUG-007 write guard + viepilot-info/update/install) |
 | ViePilot phases (local `.viepilot`) | Framework repo roadmap **19** numbered phases (v2.x) + consumer projects unbounded; lịch sử v1.x → `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
@@ -65,7 +65,7 @@ Tổng thể / Overall:  ██████████████████�
 | Project Templates (12) | ✅ Hoàn thiện | Placeholders cho customization (+ `VIEPILOT-META` FEAT-009) |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (18) | ✅ Hoàn thiện | vp-tools 17 subcommands + viepilot installer; bundle `info` / `update` |
-| Tests (340) | ✅ Hoàn thiện | Unit, integration (workflow, BUG-007, ENH-022), AI compat, contracts, installer, scope policy, FEAT-009/010/001, ENH-021, info/update |
+| Tests (341) | ✅ Hoàn thiện | Unit, integration (workflow, BUG-007, ENH-022), AI compat, contracts, installer, scope policy, FEAT-009/010/001, ENH-021, info/update |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
@@ -395,7 +395,7 @@ viepilot/
 ├── bin/                           # CLI tools
 │   └── vp-tools.cjs               # 17 subcommands; uses ../lib/cli-shared.cjs, viepilot-info/update.cjs
 │
-├── tests/                         # Test suite (340 tests, 19 suites)
+├── tests/                         # Test suite (341 tests, 19 suites)
 │   ├── unit/                      # Unit tests + contract tests
 │   ├── integration/               # workflow.test.js, BUG-007, ENH-022 dependency checks, …
 │   └── fixtures/                  # Sample .viepilot snippets (e.g. ENH-022) — use git add -f if needed

@@ -50,6 +50,14 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
           s.to.includes('vp-tools.cjs'),
       ),
     ).toBe(true);
+    expect(
+      plan.steps.some(
+        (s) =>
+          s.kind === 'copy_file' &&
+          s.from.endsWith(`${path.sep}package.json`) &&
+          s.to.includes(`${path.sep}.cursor${path.sep}viepilot${path.sep}package.json`),
+      ),
+    ).toBe(true);
     expect(plan.steps.some((s) => s.kind === 'note' && s.id === 'cloc_optional')).toBe(true);
   });
 
@@ -170,6 +178,9 @@ describe('viepilot-install apply (28.2)', () => {
     const bin = path.join(fakeHome, '.cursor', 'viepilot', 'bin', 'vp-tools.cjs');
     expect(fs.existsSync(bin)).toBe(true);
     expect(fs.readFileSync(bin, 'utf8').length).toBeGreaterThan(10);
+    const pkg = path.join(fakeHome, '.cursor', 'viepilot', 'package.json');
+    expect(fs.existsSync(pkg)).toBe(true);
+    expect(JSON.parse(fs.readFileSync(pkg, 'utf8')).name).toBe('viepilot');
   });
 
   test('applyInstallPlan creates profile-map.md when missing (FEAT-009)', () => {

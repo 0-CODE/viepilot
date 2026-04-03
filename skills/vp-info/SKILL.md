@@ -1,7 +1,7 @@
 ---
 name: vp-info
 description: "Hiển thị phiên bản ViePilot, npm latest, danh sách skills/workflows qua vp-tools"
-version: 0.1.1
+version: 0.1.2
 ---
 
 <cursor_skill_adapter>
@@ -47,8 +47,15 @@ Dùng **`vp-tools info --json`** khi cần parse hoặc so sánh phiên bản tr
 
 ### Step 1: Resolve CLI
 Ưu tiên theo thứ tự:
-1. `vp-tools info` — khi ViePilot đã có trên `PATH` (npm global hoặc shim).
-2. `node <viepilot-package>/bin/vp-tools.cjs info` — từ repo clone hoặc `node_modules/viepilot`.
+1. `vp-tools info` — khi đã có trên `PATH` (xem Step 4 nếu thiếu).
+2. **Bundle Cursor Agent (mọi cwd):** nếu tồn tại `$HOME/.cursor/viepilot/bin/vp-tools.cjs` (sau `viepilot install --target cursor-agent`), gọi trực tiếp (không cần đứng trong repo viepilot):
+   ```bash
+   "$HOME/.cursor/viepilot/bin/vp-tools.cjs" info
+   # hoặc
+   node "$HOME/.cursor/viepilot/bin/vp-tools.cjs" info --json
+   ```
+   File có shebang `#!/usr/bin/env node` và chmod +x sau install.
+3. `node <viepilot-package>/bin/vp-tools.cjs info` — từ repo clone hoặc `node_modules/viepilot`.
 
 ### Step 2: Chạy lệnh
 ```bash
@@ -65,7 +72,12 @@ vp-tools info --json
 - **`workflows`**: file `workflows/*.md`.
 
 ### Step 4: Lỗi thường gặp
-Nếu báo không tìm thấy package root: cài global (`npm i -g viepilot`), hoặc chạy từ project có dependency `viepilot`, hoặc trỏ thẳng tới `bin/vp-tools.cjs` trong clone.
+- **`vp-tools: command not found`** (terminal hoặc agent Shell ngoài repo): thêm vào `~/.zshrc` (hoặc shell tương đương):
+  ```bash
+  export PATH="$HOME/.cursor/viepilot/bin:$PATH"
+  ```
+  Rồi `source ~/.zshrc` hoặc mở terminal mới. Hoặc: `VIEPILOT_ADD_PATH=1 node …/bin/viepilot.cjs install --target cursor-agent --yes` — shim vào `/usr/local/bin` (Unix, có thể cần sudo).
+- **Không tìm thấy package root** trong output `info`: cài global (`npm i -g viepilot`), hoặc project có dependency `viepilot`, hoặc luôn dùng đường dẫn bundle mục (2) ở Step 1.
 </process>
 
 <success_criteria>

@@ -1,3 +1,5 @@
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const {
   resolveViepilotPackageRoot,
@@ -41,6 +43,29 @@ body`)
       expect(s).toHaveProperty('relativePath');
       expect(s.version).toBeTruthy();
     });
+  });
+
+  test('listSkillsWithVersions falls back to ~/.cursor/skills when bundle has no vp-* skills', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-info-fallback-'));
+    const homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tmp);
+    try {
+      fs.mkdirSync(path.join(tmp, '.cursor', 'skills', 'vp-fallback-test'), { recursive: true });
+      fs.writeFileSync(
+        path.join(tmp, '.cursor', 'skills', 'vp-fallback-test', 'SKILL.md'),
+        '---\nversion: 8.8.8\n---\n',
+        'utf8',
+      );
+      const bundle = fs.mkdtempSync(path.join(tmp, 'bundle-'));
+      fs.writeFileSync(
+        path.join(bundle, 'package.json'),
+        JSON.stringify({ name: 'viepilot', version: '0.0.0-test' }),
+        'utf8',
+      );
+      const skills = listSkillsWithVersions(bundle);
+      expect(skills.some((s) => s.id === 'vp-fallback-test' && s.version === '8.8.8')).toBe(true);
+    } finally {
+      homedirSpy.mockRestore();
+    }
   });
 
   test('listWorkflows uses semver policy note', () => {
