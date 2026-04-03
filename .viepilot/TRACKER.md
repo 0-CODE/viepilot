@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 17 — ENH-026 — Plan mode doc-first (next)
-- **Task**: 17.1 — Plan mode doc-first docs
+- **Phase**: 18 — ENH-024 — Fork state background (next)
+- **Task**: 18.1 — Fork State Updates (run_in_background)
 - **Version**: 2.2.2
 - **Last Update**: 2026-04-04
 
@@ -27,7 +27,7 @@
 | 14 | ENH-027 — vp-tools ask | 1 | complete ✅ |
 | 15 | ENH-023 — handoff-sync + hooks | 1 | complete ✅ |
 | 16 | ENH-028 — crystallize Review Gate | 1 | complete ✅ |
-| 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
+| 17 | ENH-026 — Plan mode doc-first | 1 | complete ✅ |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
@@ -63,11 +63,11 @@
 
 ## Next Action
 
-Phase **16** **complete** — crystallize review gate shipped with two-phase extraction/generation flow, `--no-review`, `--extract-only`, and TTY-aware `vp-tools ask` guidance.
+Phase **17** **complete** — Plan Mode is now documented as an optional structural guard for the doc-first gate in both the workflow and user docs.
 
-- Current task: **17.1** — Plan mode doc-first docs (`ENH-026`)
-- Last done: **16.1** — crystallize review gate
+- Current task: **18.1** — Fork State Updates (run_in_background) (`ENH-024`)
+- Last done: **17.1** — Plan mode doc-first docs
 
-**Phase 17 (next)**: continue `/vp-auto --phase 17`.
+**Phase 18 (next)**: continue `/vp-auto --phase 18`.
 
 **Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

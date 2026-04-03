@@ -1,8 +1,8 @@
 {
   "version": 1,
   "position": {
-    "phase": "17",
-    "task": "17.1",
+    "phase": "18",
+    "task": "18.1",
     "status": "not_started",
     "sub_task": null
   },
@@ -14,7 +14,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 16 complete: crystallize review gate shipped with two-phase extraction/generation flow, --no-review, --extract-only, and TTY-aware vp-tools ask guidance. Next: Phase 17 ENH-026 Plan mode doc-first docs."
+    "last_decision": "Phase 17 complete: Plan Mode guidance now documents Option A/Option B enforcement for the doc-first gate. Next: Phase 18 ENH-024 Fork State Updates."
   },
   "control_point": {
     "active": false,

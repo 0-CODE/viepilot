@@ -47,6 +47,28 @@ Mỗi task:
 
 Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** và **`PHASE-STATE` → `in_progress`** trước khi chỉnh sửa deliverable. Xem `workflows/autonomous.md` — *Pre-execution documentation gate*.
 
+### Plan Mode for Task Contract Review (ENH-026)
+
+Plan Mode là lớp bảo vệ **tùy chọn** cho doc-first gate: agent vẫn đọc và rà soát task contract, nhưng host chặn write/execute cho tới khi bạn chuyển lại chế độ thực thi bình thường.
+
+**Nên dùng khi**
+- Task có độ phức tạp **L/XL**
+- Bạn vừa vào một phase mới và muốn rà lại contract trước khi sửa file
+- Task đụng `write_scope` nhạy cảm như auth, payment, migration, schema
+
+**Cách bật trong Claude Code**
+- Bật `permissionMode: "plan"` trong settings khi muốn review theo chế độ read-only
+- Hoặc khởi chạy với cờ `--plan` nếu bạn đang vào phiên mới
+- Hoặc dùng lệnh `/plan` nếu runtime hiện tại có đăng ký slash command đó
+
+**Trong Plan Mode, hãy kiểm tra**
+- `## Paths` có đúng file sẽ sửa không
+- `## File-Level Plan` đã mô tả rõ từng file sẽ đổi gì và vì sao chưa
+- `write_scope` có khớp với deliverable thực tế không
+- Acceptance criteria có đủ cụ thể để verify không
+
+Sau khi contract đã rõ: tắt Plan Mode, quay về mode thực thi bình thường, rồi tiếp tục `/vp-auto`.
+
 ### Project working directory guard (BUG-007)
 
 **`{project_cwd}`** = thư mục gốc nơi tồn tại `.viepilot/TRACKER.md` (project bạn đang phát triển). Mọi file **shipping** (code, workflow trong repo, docs dự án) phải nằm **bên trong** đường dẫn này.

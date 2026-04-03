@@ -225,6 +225,17 @@ Canonical order for every task: **Validate contract → Doc-first gate → Stack
 
 **Allowed before this gate passes:** Read-only exploration, contract checks, and **editing the task `.md`** to record the plan (that edit is not “implementation” of the deliverable).
 
+#### Doc-first gate enforcement options
+
+**Option A (recommended for L/XL or high-risk tasks):** switch the host to **Plan Mode** before implementation starts.
+- Use Plan Mode to read the active task, confirm `## Paths`, `## File-Level Plan`, and `write_scope`, and verify that no placeholders remain.
+- Because Plan Mode blocks destructive execution / write actions, it acts as a structural guard for BUG-001 before you return to normal execution mode.
+- After the contract is reviewed and the task file is ready, switch back to the normal edit/execute mode and continue `/vp-auto`.
+
+**Option B (existing behavior):** keep the workflow-only doc-first checklist.
+- Use the same validation steps above without switching modes.
+- This is more flexible, but it relies on the workflow contract rather than a host-enforced read-only state.
+
 If any check fails:
 - Mark task `blocked` in `PHASE-STATE.md` and list what is missing under **Notes**
 - **Do not** create the task start git tag (resolved at runtime: `TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)` → `${TAG_PREFIX}-p{phase}-t{task}`)
