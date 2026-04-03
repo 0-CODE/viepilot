@@ -5,7 +5,8 @@
 - **Status**: not_started | in_progress | blocked | done | skipped
 - **Complexity**: {{COMPLEXITY}}
 - **Dependencies**: {{DEPENDENCIES}}
-- **Git Tag**: {projectPrefix}-vp-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}
+- **Git Tag**: `${TAG_PREFIX}-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}`
+  _(resolved at runtime: `TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)`)_
 
 ## Task Metadata
 

@@ -178,7 +178,7 @@ Canonical order for every task: **Validate contract → Doc-first gate → Stack
 
 If any check fails:
 - Mark task `blocked` in `PHASE-STATE.md` and list what is missing under **Notes**
-- **Do not** create `{projectPrefix}-vp-p{phase}-t{task}`
+- **Do not** create the task start git tag (resolved at runtime: `TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)` → `${TAG_PREFIX}-p{phase}-t{task}`)
 - **Do not** proceed to **Execute Task**
 
 #### Recovery Budget Parse (from task file)
@@ -217,7 +217,11 @@ If stack cache is missing:
 
 Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
 
-Create git tag: `{projectPrefix}-vp-p{phase}-t{task}`  
+Create start git tag:
+```bash
+TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+git tag "${TAG_PREFIX}-p{phase}-t{task}" -m "Start Task {task}"
+```
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
 #### Compliance Pre-flight (Gap G — runs before Execute Task)
@@ -538,7 +542,11 @@ When all tasks in phase are done/skipped:
    touch .viepilot/HANDOFF.log
    ```
    Update HANDOFF.json: `meta.last_archived = "handoff-phase-{N}.log"`
-5. Create git tag: `{projectPrefix}-vp-p{phase}-complete`
+5. Create phase-complete git tag:
+   ```bash
+   TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+   git tag "${TAG_PREFIX}-p{phase}-complete" -m "Phase {phase} complete"
+   ```
 6. Check version bump needed:
    - Features added → MINOR
    - Fixes only → PATCH

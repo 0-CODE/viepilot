@@ -115,6 +115,17 @@ Create:
 
 ### Task Metadata Auto-populate (v2 — Gap A)
 
+**Before generating task files, resolve the project tag prefix (BUG-006 fix):**
+```bash
+TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+# Fallback if vp-tools unavailable:
+# TAG_PREFIX=$(basename $(git rev-parse --show-toplevel) | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')-vp
+```
+Use `${TAG_PREFIX}` when populating the `## Meta → Git Tag` field in each task file:
+```
+- **Git Tag**: ${TAG_PREFIX}-p{phase}-t{task}   e.g. "my-project-vp-p6-t6.1"
+```
+
 For each generated task file, auto-populate the Task Metadata block:
 - `type: build` (default for new feature tasks)
 - `write_scope:` infer from feature description + affected modules (from Step 3A info)
