@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 09-brainstorm-artifact-manifest
-- **Task**: 9.3 — crystallize.md Step 0A mandatory manifest consume
+- **Task**: 9.4 — crystallize.md Auto-populate TASK.md context_required
 - **Version**: 2.1.0
 - **Last Update**: 2026-04-03
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 11 / 30 tasks (36%)
+**v2.1 milestone**: 12 / 30 tasks (40%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
