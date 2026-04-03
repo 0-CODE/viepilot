@@ -10,14 +10,16 @@ Hướng dẫn đóng góp cho ViePilot framework.
    git clone https://github.com/0-CODE/viepilot
    cd viepilot
    ```
-3. Cài đặt development mode:
+3. Cài đặt development mode (Node installer):
    ```bash
-   ./dev-install.sh
+   npm install
+   node bin/viepilot.cjs install --target cursor-agent --yes
    ```
-   Để **symlink** toàn bộ `skills/vp-*` về repo (sửa skill là Cursor thấy ngay), dùng:
+   Để **symlink** toàn bộ `skills/vp-*` về repo (sửa skill là Cursor thấy ngay):
    ```bash
-   VIEPILOT_SYMLINK_SKILLS=1 ./dev-install.sh
+   VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes
    ```
+   Hoặc: `make dev-install`
 4. Tạo branch cho feature/fix:
    ```bash
    git checkout -b feat/my-new-skill

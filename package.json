@@ -44,8 +44,6 @@
     "workflows/",
     "templates/",
     "ui-components/",
-    "install.sh",
-    "dev-install.sh",
     "README.md",
     "CHANGELOG.md",
     "LICENSE",

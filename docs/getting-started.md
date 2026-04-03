@@ -22,9 +22,10 @@ ViePilot là một framework giúp bạn phát triển dự án với AI một c
 # Clone repository
 git clone https://github.com/0-CODE/viepilot.git
 
-# Run installation
+# Install (Node — same as npx viepilot install)
 cd viepilot
-./install.sh
+npm install
+node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
 ### Claude Code

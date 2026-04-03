@@ -18,7 +18,7 @@ Each example contains:
 
 ```bash
 # Install ViePilot
-git clone https://github.com/0-CODE/viepilot && cd viepilot && ./install.sh
+git clone https://github.com/0-CODE/viepilot && cd viepilot && npm install && node bin/viepilot.cjs install --target cursor-agent --yes
 
 # Pick an example, create project dir
 mkdir my-project && cd my-project && git init

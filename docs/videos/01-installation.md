@@ -28,16 +28,17 @@ git --version    # any recent version
 
 ## 1:00 — Installation
 
-> "Clone the repository and run the install script."
+> "Clone the repository and run the Node installer."
 
 ```bash
 git clone https://github.com/0-CODE/viepilot
 cd viepilot
-./install.sh
+npm install
+node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
 > "The installer copies skills to `~/.cursor/skills/` and workflows to
-> `~/.cursor/viepilot/`. You'll see confirmation for each file."
+> `~/.cursor/viepilot/` (same engine as `npx viepilot install`)."
 
 Show: installer output with ✔ checkmarks
 

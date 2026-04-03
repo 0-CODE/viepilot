@@ -34,9 +34,14 @@ Usage:
 Install options:
   --target <id|id,id|all>   Target profile(s): claude-code (mirrors vp-* to ~/.claude/skills), cursor-agent, cursor-ide
   --yes                      Non-interactive mode (skip confirmations)
-  --dry-run                  Print actions only (Node installer; no bash)
+  --dry-run                  Print actions only (Node installer)
   --list-targets             Print supported targets and exit
   --help                     Show help
+
+Environment (install, optional):
+  VIEPILOT_SYMLINK_SKILLS=1  Symlink ~/.cursor/skills/vp-* to repo (dev; from clone)
+  VIEPILOT_INSTALL_PROFILE   Default target hint when using plan builder (cursor-ide | cursor-agent)
+  VIEPILOT_ADD_PATH=1        With --yes: add vp-tools + viepilot symlinks under /usr/local/bin (Unix)
 
 Uninstall options:
   --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; shared: ~/.cursor/viepilot)

@@ -19,7 +19,7 @@ function extractLocFromClocJson(stdout) {
 }
 
 function buildTotalLocCell(loc) {
-  return `**~${formatLoc(loc)}+** (\`.md\`, \`.js\`, \`.cjs\`, \`.yml\`, \`.json\`, \`.sh\`; không gồm \`node_modules\`)`;
+  return `**~${formatLoc(loc)}+** (\`.md\`, \`.js\`, \`.cjs\`, \`.yml\`, \`.json\`; không gồm \`node_modules\`)`;
 }
 
 function updateReadmeTotalLoc(readmeContent, loc) {

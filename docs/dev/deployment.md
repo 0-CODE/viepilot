@@ -16,28 +16,30 @@ Direct target mode:
 npx viepilot install --target cursor-agent --yes
 ```
 
-### Method 2: Git Clone + Install Script (maintainers/dev)
+### Method 2: Git clone + Node installer (maintainers / dev)
 
 ```bash
 git clone https://github.com/0-CODE/viepilot
 cd viepilot
-./install.sh
+npm install
+node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
-`install.sh` is a thin **bash** wrapper: optional **cloc** / **PATH** prompts, then **`node bin/viepilot.cjs install`** (same **Node** engine as `npx viepilot install`). It installs to:
-- `skills/vp-*/` → `~/.cursor/skills/`
+Same **Node** engine as `npx viepilot install` (`lib/viepilot-install.cjs`). Installs to:
+- `skills/vp-*/` → `~/.cursor/skills/` (copy or symlink — see below)
 - `workflows/`, `templates/`, `bin/`, `lib/` → `~/.cursor/viepilot/…`
-- Optional PATH symlinks (Unix) via `VIEPILOT_ADD_PATH=1`
+- Optional PATH symlinks (Unix): `VIEPILOT_ADD_PATH=1 node bin/viepilot.cjs install --target cursor-agent --yes`
 
-### Method 3: Development Mode
+### Method 3: Development mode (symlink skills)
 
-Dùng khi đang develop ViePilot itself — symlinks thay vì copy:
+When hacking ViePilot itself — symlink `vp-*` skills back to the repo:
 
 ```bash
-./dev-install.sh
+VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes
+# or: make dev-install
 ```
 
-Changes to `skills/`, `workflows/`, `bin/` phản ánh ngay lập tức mà không cần reinstall.
+Edits under `skills/vp-*` are picked up immediately; **workflows/templates** are still copied into `~/.cursor/viepilot/` — re-run install after changing them.
 
 ---
 
@@ -45,8 +47,8 @@ Changes to `skills/`, `workflows/`, `bin/` phản ánh ngay lập tức mà khô
 
 | Environment | Purpose | Notes |
 |-------------|---------|-------|
-| Local dev | Developing ViePilot | Use `dev-install.sh` |
-| User machine | Using ViePilot | Use `install.sh` |
+| Local dev | Developing ViePilot | `make dev-install` or `VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes` |
+| User machine | Using ViePilot | `npx viepilot install` or `node bin/viepilot.cjs install --yes` |
 | CI | Running tests | `npm ci && npm test` |
 
 ---
@@ -152,7 +154,7 @@ Users cập nhật bằng cách pull và reinstall:
 ```bash
 cd /path/to/viepilot
 git pull
-./install.sh
+node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
 ---

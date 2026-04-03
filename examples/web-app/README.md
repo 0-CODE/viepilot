@@ -16,7 +16,7 @@ A Next.js todo application built with ViePilot autonomous mode.
 
 ```bash
 # 1. Clone ViePilot and install
-git clone https://github.com/0-CODE/viepilot && cd viepilot && ./install.sh
+git clone https://github.com/0-CODE/viepilot && cd viepilot && npm install && node bin/viepilot.cjs install --target cursor-agent --yes
 
 # 2. Create a new project directory
 mkdir my-todo-app && cd my-todo-app && git init

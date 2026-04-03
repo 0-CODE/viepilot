@@ -46,11 +46,11 @@ cd viepilot
 ### Install Locally
 
 ```bash
-# Install to test
+# Install to test (delegates to node bin/viepilot.cjs)
 make install
 
-# Or use install script
-./install.sh
+# Or explicitly:
+# node bin/viepilot.cjs install --target cursor-agent --yes
 ```
 
 ### Validate Structure
