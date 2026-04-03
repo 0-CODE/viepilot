@@ -1,20 +1,20 @@
 # Phase 16: ENH-028 — State
 
 ## Overview
-- **Status**: not_started
-- **Progress**: 0/1 tasks (0%)
+- **Status**: complete
+- **Progress**: 1/1 tasks (100%)
 
 ## Execution State
 ```yaml
 execution_state:
-  current: "16.1"
-  status: not_started
+  current: "—"
+  status: pass
 ```
 
 ## Task Status
 | # | Task | Status | Git Tag |
 |---|------|--------|---------|
-| 16.1 | crystallize review gate | not_started | — |
+| 16.1 | crystallize review gate | done | `viepilot-vp-p16-t16.1-done` |
 
 ## Blockers
 _None_

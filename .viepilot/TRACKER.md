@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 16 — ENH-028 — crystallize Review Gate (next)
-- **Task**: 16.1 — crystallize review gate
+- **Phase**: 17 — ENH-026 — Plan mode doc-first (next)
+- **Task**: 17.1 — Plan mode doc-first docs
 - **Version**: 2.2.2
 - **Last Update**: 2026-04-04
 
@@ -26,14 +26,14 @@
 | 13 | Agent Orchestration — Tier A + B | 4 | complete ✅ |
 | 14 | ENH-027 — vp-tools ask | 1 | complete ✅ |
 | 15 | ENH-023 — handoff-sync + hooks | 1 | complete ✅ |
-| 16 | ENH-028 — crystallize Review Gate | 1 | not started 🔲 |
+| 16 | ENH-028 — crystallize Review Gate | 1 | complete ✅ |
 | 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 41 / 43 tasks (~95%) _(Phase 15 **complete**; Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
+**v2.1 milestone**: 42 / 43 tasks (~98%) _(Phase 16 **complete**; Phase 15 **complete**; Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -63,11 +63,11 @@
 
 ## Next Action
 
-Phase **15** **complete** — `vp-tools handoff-sync` shipped with `--check|--force`, hooks guidance, workflow reinforcement, and subprocess coverage.
+Phase **16** **complete** — crystallize review gate shipped with two-phase extraction/generation flow, `--no-review`, `--extract-only`, and TTY-aware `vp-tools ask` guidance.
 
-- Current task: **16.1** — crystallize review gate (`ENH-028`)
-- Last done: **15.1** — `handoff-sync --check/--force` + template hooks
+- Current task: **17.1** — Plan mode doc-first docs (`ENH-026`)
+- Last done: **16.1** — crystallize review gate
 
-**Phase 16 (next)**: continue `/vp-auto --phase 16`.
+**Phase 17 (next)**: continue `/vp-auto --phase 17`.
 
-**Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.
+**Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

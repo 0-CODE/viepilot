@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **`vp-tools handoff-sync`**: new `--check` / `--force` safeguard to detect and repair stale `HANDOFF.json` position from `TRACKER.md` + active `PHASE-STATE.md`; project README template and Claude Code setup docs now include optional hooks wiring.
+- **Crystallize review gate (ENH-028)**: `workflows/crystallize.md` now splits extraction/review from generation with `Step 6B: Review Gate`, supports `--no-review` and `--extract-only`, and documents TTY-aware `vp-tools ask` section approval; `skills/vp-crystallize/SKILL.md` now advertises the same two-phase flow.
 
 ### Fixed
 

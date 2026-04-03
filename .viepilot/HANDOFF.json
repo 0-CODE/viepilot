@@ -1,8 +1,8 @@
 {
   "version": 1,
   "position": {
-    "phase": "16",
-    "task": "16.1",
+    "phase": "17",
+    "task": "17.1",
     "status": "not_started",
     "sub_task": null
   },
@@ -14,7 +14,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 15 complete: handoff-sync command, hooks guidance, and workflow reinforcement shipped. Next: Phase 16 ENH-028 crystallize review gate."
+    "last_decision": "Phase 16 complete: crystallize review gate shipped with two-phase extraction/generation flow, --no-review, --extract-only, and TTY-aware vp-tools ask guidance. Next: Phase 17 ENH-026 Plan mode doc-first docs."
   },
   "control_point": {
     "active": false,
@@ -22,7 +22,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T17:48:15.075Z",
+    "last_written": "2026-04-03T17:54:48Z",
     "last_archived": null
   }
 }

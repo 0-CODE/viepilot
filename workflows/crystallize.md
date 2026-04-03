@@ -1,6 +1,10 @@
 <purpose>
 Chuyển đổi brainstorm sessions thành structured artifacts để AI có thể autonomous execution.
 
+Default flow is **two-phase**:
+- **Extraction / review**: Step 0A → Step 6B
+- **Generation**: Step 7 → Step 12 after review approval (unless `--no-review`)
+
 **v1 / v2 backward compatibility:**
 - crystallize v2 generates new artifacts using v2 templates (TRACKER.md index, TASK.md with Task Metadata, PHASE-STATE.md with execution_state block).
 - Existing v1 project files are NEVER modified by crystallize — only new files are created.
@@ -690,6 +694,73 @@ If brainstorm contains **no named domain entities** (e.g., pure CLI tool, static
 No domain entities detected — project type does not require CRUD management services.
 ```
 Then continue to Step 7.
+</step>
+
+<step name="review_gate">
+## Step 6B: Review Gate (mandatory unless `--no-review`)
+
+This step is the boundary between **extraction** and **generation**. Before entering Step 6B, crystallize must already have enough extraction output for user review:
+- Domain Entity Manifest from Step 6A
+- Diagram applicability / selected diagrams from Step 1D + Step 4 reasoning
+- Draft phase skeleton that will feed Step 7 ROADMAP generation
+
+### Flags
+
+- `--no-review`: skip Step 6B and continue directly to Step 7 for backward-compatible one-pass behavior.
+- `--extract-only`: stop after showing the review bundle; do **not** run Step 7 onward and do **not** write generation artifacts.
+
+### Plan Mode / read-only guidance
+
+Prefer a **Plan Mode / read-only** mindset for Step 0A → Step 6B when the host supports it:
+- analyze brainstorm + manifest inputs
+- derive extraction outputs
+- present the review bundle before generation writes
+
+If the host cannot enforce Plan Mode, still follow the same behavioral contract: **no generation-file writes before review resolution**.
+
+### Review bundle (required)
+
+Present a compact review summary:
+
+```text
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ CRYSTALLIZE ► REVIEW GATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Extraction complete. Review before generation:
+
+[1] Entity Manifest
+    └─ {entity rows or "No domain entities detected"}
+
+[2] Architecture Diagrams
+    └─ {diagram types marked required/optional with key rationale}
+
+[3] Phase Skeleton
+    └─ {planned MVP phases / epics in order}
+```
+
+### Approval flow
+
+Allow whole-run or section-by-section decisions:
+- `A` Approve all → proceed to Step 7
+- `E` Modify entity manifest → revisit Step 6A, then return to Step 6B
+- `D` Modify diagram list → revisit Step 1D / Step 4 reasoning, then return to Step 6B
+- `P` Modify phase skeleton → revisit Step 7 draft inputs, then return to Step 6B
+- `X` Abort → stop crystallize without generation writes
+
+### Interaction mode
+
+- If the terminal is interactive / TTY, prefer `vp-tools ask` for structured section approval.
+- If TTY is unavailable, fall back to the same choices in numbered conversational form.
+- A section-specific modification should trigger a targeted re-run of the relevant extraction step(s), not a blind full restart.
+
+### `--extract-only` exit
+
+After showing the review bundle:
+- if `--extract-only` is set, print a concise extraction summary
+- instruct the user to re-run crystallize without `--extract-only` (or with `--no-review` if intentionally bypassing the gate)
+- exit cleanly before Step 7
+
 </step>
 
 <step name="generate_roadmap">

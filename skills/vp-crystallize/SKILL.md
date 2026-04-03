@@ -32,6 +32,10 @@ Use the host's native tools for terminal/shell, file reads, glob/`rg`, patch/edi
 <objective>
 Chuyển đổi brainstorm sessions thành structured artifacts để AI có thể autonomous execution.
 
+Default flow is **two-phase**:
+- **Extraction / review** before generation writes
+- **Generation** after approval (unless `--no-review`)
+
 **Creates:**
 ```
 .viepilot/
@@ -71,6 +75,12 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 @workflows/crystallize.md
 @templates/project/
 </execution_context>
+
+<context>
+Optional flags:
+- `--no-review` — skip review gate and keep one-pass behavior
+- `--extract-only` — stop after extraction outputs / review bundle, without generation writes
+</context>
 
 <process>
 Execute workflow from `@workflows/crystallize.md`
@@ -164,6 +174,16 @@ Ask user for (confirm proposals từ profile nếu có):
 - Quality gates
 - Stack-specific rules from cache
 
+### Step 6B: Review Gate (ENH-028)
+- Present extraction outputs before generation:
+  - entity manifest
+  - architecture diagram list / applicability
+  - phase skeleton
+- Prefer Plan Mode / read-only behavior for extraction steps
+- Use `vp-tools ask` for section approval when TTY is available; otherwise use conversational numbered options
+- `--no-review` skips the gate
+- `--extract-only` exits after the review bundle
+
 ### Step 7: Generate ROADMAP.md
 - Use `templates/project/ROADMAP.md` — **executable MVP phases** first (tasks, criteria, verification)
 - **Mandatory `## Post-MVP / Product horizon`:** epic-level deferred work from horizon inventory **or** explicit single-release statement (no silent omission)
@@ -203,6 +223,7 @@ Ask user for (confirm proposals từ profile nếu có):
 - [ ] SYSTEM-RULES.md has all standards
 - [ ] Step 1 horizon extracted or explicit single-release recorded; validation gate satisfied
 - [ ] PROJECT-CONTEXT.md includes populated **`<product_vision>`** (template placeholders filled from brainstorm)
+- [ ] Review gate runs between extraction and generation unless `--no-review`
 - [ ] ROADMAP.md has MVP phases with tasks **and** mandatory Post-MVP / horizon block (or explicit single-release statement)
 - [ ] TRACKER.md initialized
 - [ ] Project files created
