@@ -7,9 +7,9 @@
 | Phase | Name | Summary status |
 |-------|------|------------------|
 | 13 | Agent Orchestration — Tier A + B | Complete ✅ (v2.2.2) |
-| 14 | ENH-027 — vp-tools ask | Next (see TRACKER) |
-| 15 | ENH-023 — handoff-sync + hooks | Planned |
-| 16 | ENH-028 — crystallize Review Gate | Planned |
+| 14 | ENH-027 — vp-tools ask | Complete ✅ |
+| 15 | ENH-023 — handoff-sync + hooks | Complete ✅ |
+| 16 | ENH-028 — crystallize Review Gate | Next (see TRACKER) |
 | 17 | ENH-026 — Plan mode doc-first | Planned |
 | 18 | ENH-024 — Fork state background | Planned |
 | 19 | ENH-025 — Worktree L/XL | Planned |

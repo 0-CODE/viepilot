@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 15 — ENH-023 — handoff-sync + hooks (in_progress)
-- **Task**: 15.1 — `handoff-sync --check/--force` + template hooks
+- **Phase**: 16 — ENH-028 — crystallize Review Gate (next)
+- **Task**: 16.1 — crystallize review gate
 - **Version**: 2.2.2
 - **Last Update**: 2026-04-04
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.2.0 Release | 5 | complete ✅ |
 | 13 | Agent Orchestration — Tier A + B | 4 | complete ✅ |
 | 14 | ENH-027 — vp-tools ask | 1 | complete ✅ |
-| 15 | ENH-023 — handoff-sync + hooks | 1 | in progress 🔄 |
+| 15 | ENH-023 — handoff-sync + hooks | 1 | complete ✅ |
 | 16 | ENH-028 — crystallize Review Gate | 1 | not started 🔲 |
 | 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
@@ -33,7 +33,7 @@
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 40 / 43 tasks (~93%) _(Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
+**v2.1 milestone**: 41 / 43 tasks (~95%) _(Phase 15 **complete**; Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -63,11 +63,11 @@
 
 ## Next Action
 
-Phase **15** is at a **control point** — implementation and local verification for `vp-tools handoff-sync` are complete, but git persistence gate is blocked by a dirty worktree.
+Phase **15** **complete** — `vp-tools handoff-sync` shipped with `--check|--force`, hooks guidance, workflow reinforcement, and subprocess coverage.
 
-- Current task: **15.1** — `handoff-sync --check/--force` + template hooks (`ENH-023`)
-- Last done: **14.1** — `bin/vp-tools.cjs` ask subcommand + brainstorm integration
+- Current task: **16.1** — crystallize review gate (`ENH-028`)
+- Last done: **15.1** — `handoff-sync --check/--force` + template hooks
 
-**Phase 15 (control point)**: persist or isolate the current worktree changes, then continue `/vp-auto --phase 15` to complete PASS state updates.
+**Phase 16 (next)**: continue `/vp-auto --phase 16`.
 
 **Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

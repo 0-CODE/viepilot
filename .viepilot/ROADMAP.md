@@ -278,15 +278,15 @@ Wave E:            Phase 19 (ENH-025)
 | 11. Diagram Profile System | ✅ Complete | 5 | 5 | 100% |
 | 12. Verification + Docs + Release | ✅ Complete | 5 | 5 | 100% |
 | 13. Agent Orchestration Tier A + B | ✅ Complete | 4 | 4 | 100% |
-| 14. ENH-027 — vp-tools ask | 🔲 Not Started | 1 | 0 | 0% |
-| 15. ENH-023 — handoff-sync + hooks | 🔲 Not Started | 1 | 0 | 0% |
+| 14. ENH-027 — vp-tools ask | ✅ Complete | 1 | 1 | 100% |
+| 15. ENH-023 — handoff-sync + hooks | ✅ Complete | 1 | 1 | 100% |
 | 16. ENH-028 — crystallize Review Gate | 🔲 Not Started | 1 | 0 | 0% |
 | 17. ENH-026 — Plan mode doc-first | 🔲 Not Started | 1 | 0 | 0% |
 | 18. ENH-024 — Fork state background | 🔲 Not Started | 1 | 0 | 0% |
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 | 20. ENH-031 — cold start token reduction | ✅ Complete | 3 | 3 | 100% |
 
-**Overall**: 39 / 43 tasks (~90.7%)
+**Overall**: 41 / 43 tasks (~95.3%)
 
 ---
 

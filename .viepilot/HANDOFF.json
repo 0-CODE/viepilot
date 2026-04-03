@@ -1,9 +1,9 @@
 {
   "version": 1,
   "position": {
-    "phase": "15",
-    "task": "15.1",
-    "status": "control_point",
+    "phase": "16",
+    "task": "16.1",
+    "status": "not_started",
     "sub_task": null
   },
   "recovery": {
@@ -14,15 +14,15 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Task 15.1 implementation + local verification complete; git persistence gate failed because the worktree is dirty, so execution paused at a control point before PASS."
+    "last_decision": "Phase 15 complete: handoff-sync command, hooks guidance, and workflow reinforcement shipped. Next: Phase 16 ENH-028 crystallize review gate."
   },
   "control_point": {
-    "active": true,
-    "reason": "Git persistence gate failed: clean_worktree=false on branch v2. Commit/push or isolate the worktree before marking task 15.1 PASS.",
-    "ts": "2026-04-03T17:41:12.117Z"
+    "active": false,
+    "reason": null,
+    "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T17:41:12.117Z",
+    "last_written": "2026-04-03T17:48:15.075Z",
     "last_archived": null
   }
 }

@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 15-enh-023-handoff-hooks
-- **Status**: in_progress
+- **Status**: done
 - **Complexity**: M
 - **Git Tag**: `viepilot-vp-p15-t15.1`
 
@@ -64,7 +64,10 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] Per ENH-023 acceptance criteria
+- [x] `vp-tools handoff-sync --check` exits non-zero when HANDOFF.json position != PHASE-STATE current task/status.
+- [x] `vp-tools handoff-sync --force` updates HANDOFF.json from PHASE-STATE + TRACKER.
+- [x] Hooks config example documented in project template/docs for Claude Code usage.
+- [x] `autonomous.md` notes hooks integration as optional reinforcement.
 
 ## Verification
 - `node bin/vp-tools.cjs handoff-sync --check` returns success when state is already in sync.
@@ -73,4 +76,19 @@ files_to_read:
 - Inspect generated or documented hooks examples for `PostToolUse` and `Stop` commands using `handoff-sync`.
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol
+
+## Files Changed
+```text
+M	.viepilot/HANDOFF.json
+M	.viepilot/TRACKER.md
+M	.viepilot/phases/15-enh-023-handoff-hooks/PHASE-STATE.md
+M	.viepilot/phases/15-enh-023-handoff-hooks/tasks/task-15.1-enh-023-handoff-sync-hooks.md
+M	CHANGELOG.md
+M	bin/vp-tools.cjs
+M	docs/user/claude-code-setup.md
+M	templates/project/README.md
+M	tests/unit/validators.test.js
+M	workflows/autonomous.md
+M	workflows/crystallize.md
+```
