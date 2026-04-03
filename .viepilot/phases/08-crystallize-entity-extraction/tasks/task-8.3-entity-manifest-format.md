@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 08-crystallize-entity-extraction
-- **Status**: not_started
+- **Status**: done
 - **Complexity**: S
 - **Dependencies**: Tasks 8.1, 8.2
 - **Git Tag**: `viepilot-vp-p8-t8.3`
@@ -56,14 +56,15 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] crystallize.md instructs writing entity manifest table to SPEC.md
-- [ ] Table format: Entity | Type | needs_crud_api | Service Phase
-- [ ] "MISSING" sentinel value documented for entities without service phase
+- [x] crystallize.md instructs writing entity manifest table to SPEC.md
+- [x] Table format: Entity | Type | needs_crud_api | Service Phase
+- [x] "MISSING" sentinel value documented for entities without service phase
 
 ## Implementation Notes
-```
-(AI fills during implementation)
-```
+- Added Step 6A.5 to crystallize.md: persist entity manifest to SPEC.md
+- Table includes Entity, Type, needs_crud_api, Service Phase, Status columns
+- MISSING sentinel value with warning icon documented
+- Referenced by Step 11A dependency validation and vp-auto task context
 
 ## Verification
 ```yaml
@@ -75,14 +76,14 @@ automated:
 ```
 
 ## State Update Checklist
-- [ ] Update PHASE-STATE.md after PASS
-- [ ] Update TRACKER.md
-- [ ] Update HANDOFF.json
-- [ ] Update ROADMAP.md if progress changed
+- [x] Update PHASE-STATE.md after PASS
+- [x] Update TRACKER.md
+- [x] Update HANDOFF.json
+- [x] Update ROADMAP.md if progress changed
 
 ## Files Changed
 ```
-(Auto-populated after completion)
+M	workflows/crystallize.md
 ```
 
 ## Rollback
@@ -96,7 +97,10 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p8-t8.3".."${TAG_PREFIX}-p8
 > **AI fills this section after task PASS**
 
 ### Implementation Summary
-- (Replace with 2-5 bullets)
+- Added Step 6A.5: persist finalized entity manifest to SPEC.md as `## Domain Entity Manifest`
+- Table with 5 columns: Entity, Type, needs_crud_api, Service Phase, Status
+- MISSING sentinel with warning icon for entities without service phase
+- Used by Step 11A dependency validation and vp-auto preflight
 
 ### Files Changed
 | File | Action |
@@ -104,8 +108,8 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p8-t8.3".."${TAG_PREFIX}-p8
 | `workflows/crystallize.md` | modified |
 
 ### Checklist Verification
-- [ ] `## Meta → Status` set to `done`
-- [ ] All `## Acceptance Criteria` boxes ticked `[x]`
-- [ ] PHASE-STATE.md task row updated
-- [ ] HANDOFF.json `position.task` → 8.4
-- [ ] TRACKER.md updated
+- [x] `## Meta → Status` set to `done`
+- [x] All `## Acceptance Criteria` boxes ticked `[x]`
+- [x] PHASE-STATE.md task row updated
+- [x] HANDOFF.json `position.task` → 8.4
+- [x] TRACKER.md updated
