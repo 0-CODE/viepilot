@@ -134,6 +134,148 @@ async function select(message, options) {
   });
 }
 
+function parseAskOption(raw) {
+  const normalized = String(raw || '').trim();
+  if (!normalized) return null;
+
+  const separator = normalized.includes('|') ? '|' : normalized.includes('=') ? '=' : null;
+  if (!separator) {
+    return { value: normalized, label: normalized };
+  }
+
+  const [valuePart, ...labelParts] = normalized.split(separator);
+  const value = valuePart.trim();
+  const label = labelParts.join(separator).trim();
+  if (!value || !label) return null;
+  return { value, label };
+}
+
+function parseAskArgs(args) {
+  const mode = args.includes('--multi') ? 'multi' : 'single';
+  const questionIndex = args.indexOf('--question');
+  const question = questionIndex !== -1 ? String(args[questionIndex + 1] || '').trim() : '';
+  const options = [];
+
+  for (let i = 0; i < args.length; i++) {
+    const token = args[i];
+    if (token === '--single' || token === '--multi') continue;
+    if (token === '--question') {
+      i++;
+      continue;
+    }
+    const parsed = parseAskOption(token);
+    if (parsed) options.push(parsed);
+  }
+
+  return { mode, question, options };
+}
+
+function createReadline() {
+  return readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+}
+
+function askSingleFallback(question, options) {
+  if (!process.stdin.isTTY) {
+    console.log(formatWarning('Non-interactive mode, using first option'));
+    return Promise.resolve(options[0].value);
+  }
+
+  const rl = createReadline();
+  console.log(`\n${colors.cyan}?${colors.reset} ${question}\n`);
+  options.forEach((opt, i) => {
+    console.log(`  ${colors.bold}${i + 1}.${colors.reset} ${opt.label} ${colors.gray}[${opt.value}]${colors.reset}`);
+  });
+  console.log();
+
+  return new Promise((resolve) => {
+    rl.question(`${colors.gray}Enter choice (1-${options.length}):${colors.reset} `, (answer) => {
+      rl.close();
+      const index = Number.parseInt(answer, 10) - 1;
+      if (index >= 0 && index < options.length) {
+        resolve(options[index].value);
+        return;
+      }
+      console.log(formatWarning('Invalid choice, using first option'));
+      resolve(options[0].value);
+    });
+  });
+}
+
+function askMultiFallback(question, options) {
+  if (!process.stdin.isTTY) {
+    console.log(formatWarning('Non-interactive mode, using first option'));
+    return Promise.resolve(options[0].value);
+  }
+
+  const rl = createReadline();
+  console.log(`\n${colors.cyan}?${colors.reset} ${question}\n`);
+  options.forEach((opt, i) => {
+    console.log(`  ${colors.bold}${i + 1}.${colors.reset} ${opt.label} ${colors.gray}[${opt.value}]${colors.reset}`);
+  });
+  console.log();
+
+  return new Promise((resolve) => {
+    rl.question(`${colors.gray}Enter choices (comma-separated numbers):${colors.reset} `, (answer) => {
+      rl.close();
+      const indexes = answer
+        .split(',')
+        .map((part) => Number.parseInt(part.trim(), 10) - 1)
+        .filter((index, position, arr) => index >= 0 && index < options.length && arr.indexOf(index) === position);
+
+      if (indexes.length === 0) {
+        console.log(formatWarning('Invalid choice, using first option'));
+        resolve(options[0].value);
+        return;
+      }
+
+      resolve(indexes.map((index) => options[index].value).join(','));
+    });
+  });
+}
+
+async function runAskPrompt({ mode, question, options }) {
+  if (!isInteractive) {
+    return mode === 'multi'
+      ? askMultiFallback(question, options)
+      : askSingleFallback(question, options);
+  }
+
+  let clack = null;
+  try {
+    clack = await import('@clack/prompts');
+  } catch (_error) {
+    return mode === 'multi'
+      ? askMultiFallback(question, options)
+      : askSingleFallback(question, options);
+  }
+
+  const promptOptions = {
+    message: question,
+    options: options.map((option) => ({
+      value: option.value,
+      label: option.label,
+      hint: option.value,
+    })),
+  };
+
+  if (mode === 'multi') {
+    const selected = await clack.multiselect(promptOptions);
+    if (clack.isCancel(selected)) {
+      throw new Error('Prompt cancelled');
+    }
+    return selected.join(',');
+  }
+
+  const selected = await clack.select(promptOptions);
+  if (clack.isCancel(selected)) {
+    throw new Error('Prompt cancelled');
+  }
+  return selected;
+}
+
 // ============================================================================
 // Utility Functions
 // ============================================================================
@@ -168,6 +310,131 @@ function currentTimestamp(format = 'iso') {
     return now.toISOString().replace('T', ' ').split('.')[0];
   }
   return now.toISOString();
+}
+
+function normalizeStateToken(value) {
+  const raw = String(value == null ? '' : value).trim();
+  if (!raw || raw === '—' || raw === '-' || raw.toLowerCase() === 'null') {
+    return null;
+  }
+  return raw;
+}
+
+function parsePhaseNumber(value) {
+  const match = String(value || '').match(/\b(\d+)\b/);
+  return match ? String(Number.parseInt(match[1], 10)) : null;
+}
+
+function parseTaskRef(value) {
+  const match = String(value || '').match(/\b(\d+(?:\.\d+[a-z]?)?)\b/i);
+  return match ? match[1] : null;
+}
+
+function parseTrackerState(content) {
+  const phaseLine = content.match(/^- \*\*(?:Phase|Current Phase)\*\*:\s*(.+)$/m);
+  const taskLine = content.match(/^- \*\*Task\*\*:\s*(.+)$/m);
+
+  return {
+    phase: parsePhaseNumber(phaseLine ? phaseLine[1] : ''),
+    task: parseTaskRef(taskLine ? taskLine[1] : ''),
+    raw_phase: normalizeStateToken(phaseLine ? phaseLine[1] : ''),
+    raw_task: normalizeStateToken(taskLine ? taskLine[1] : ''),
+  };
+}
+
+function parsePhaseExecutionState(content) {
+  const currentMatch = content.match(/^\s*current:\s*"?([^"\n]+)"?\s*$/m);
+  const statusMatch = content.match(/^\s*status:\s*"?([^"\n]+)"?\s*$/m);
+  return {
+    current: normalizeStateToken(currentMatch ? currentMatch[1] : ''),
+    status: normalizeStateToken(statusMatch ? statusMatch[1] : ''),
+  };
+}
+
+function findPhaseDir(projectRoot, phaseRef) {
+  const phaseNumber = parsePhaseNumber(phaseRef);
+  if (!phaseNumber) return null;
+
+  const phasesDir = path.join(projectRoot, VIEPILOT_DIR, 'phases');
+  if (!fs.existsSync(phasesDir)) return null;
+
+  const prefix = String(phaseNumber).padStart(2, '0');
+  const match = fs.readdirSync(phasesDir).find((entry) => entry.startsWith(`${prefix}-`));
+  return match ? path.join(phasesDir, match) : null;
+}
+
+function collectPositionDiffs(actual, expected) {
+  const diffs = [];
+  const fields = ['phase', 'task', 'status'];
+
+  for (const field of fields) {
+    const actualValue = normalizeStateToken(actual ? actual[field] : null);
+    const expectedValue = normalizeStateToken(expected ? expected[field] : null);
+    if ((actualValue || null) !== (expectedValue || null)) {
+      diffs.push({ field, actual: actualValue, expected: expectedValue });
+    }
+  }
+
+  return diffs;
+}
+
+function buildHandoffSyncState(projectRoot) {
+  const trackerPath = path.join(projectRoot, VIEPILOT_DIR, 'TRACKER.md');
+  const handoffPath = path.join(projectRoot, VIEPILOT_DIR, 'HANDOFF.json');
+  const trackerContent = readMarkdown(trackerPath);
+  const handoff = readJson(handoffPath);
+
+  if (!trackerContent) {
+    throw new Error('Cannot read TRACKER.md');
+  }
+  if (!handoff || typeof handoff !== 'object') {
+    throw new Error('Cannot read HANDOFF.json');
+  }
+
+  const trackerState = parseTrackerState(trackerContent);
+  const phaseDir = findPhaseDir(projectRoot, trackerState.phase);
+  if (!phaseDir) {
+    throw new Error(`Could not resolve phase directory for TRACKER phase "${trackerState.raw_phase || trackerState.phase || 'unknown'}"`);
+  }
+
+  const phaseStatePath = path.join(phaseDir, 'PHASE-STATE.md');
+  const phaseStateContent = readMarkdown(phaseStatePath);
+  if (!phaseStateContent) {
+    throw new Error(`Cannot read ${path.relative(projectRoot, phaseStatePath)}`);
+  }
+
+  const phaseState = parsePhaseExecutionState(phaseStateContent);
+  const sourceIssues = [];
+
+  if (trackerState.task && phaseState.current && trackerState.task !== phaseState.current) {
+    sourceIssues.push({
+      field: 'tracker_task',
+      tracker: trackerState.task,
+      phase_state: phaseState.current,
+      note: 'TRACKER.md task does not match PHASE-STATE execution_state.current',
+    });
+  }
+
+  const expectedPosition = {
+    phase: trackerState.phase,
+    task: parseTaskRef(phaseState.current) || trackerState.task,
+    status: phaseState.status || normalizeStateToken(handoff.position && handoff.position.status) || 'not_started',
+  };
+  const actualPosition = handoff.position && typeof handoff.position === 'object' ? handoff.position : {};
+  const differences = collectPositionDiffs(actualPosition, expectedPosition);
+
+  return {
+    handoff,
+    handoffPath,
+    trackerPath,
+    phaseStatePath,
+    trackerState,
+    phaseState,
+    expectedPosition,
+    differences,
+    sourceIssues,
+    stale: differences.length > 0 || sourceIssues.length > 0,
+  };
 }
 
 // ============================================================================
@@ -698,6 +965,94 @@ const commands = {
   },
 
   /**
+   * Check or repair HANDOFF.json from TRACKER.md + PHASE-STATE.md
+   */
+  'handoff-sync': (args) => {
+    const mode = args.includes('--force') ? 'force' : 'check';
+    const invalidArgs = args.filter((arg) => !['--check', '--force'].includes(arg));
+    const duplicateMode = args.includes('--check') && args.includes('--force');
+    const projectCheck = validators.requireProjectRoot();
+
+    validateArgs([
+      projectCheck,
+      duplicateMode
+        ? { valid: false, error: 'Choose only one mode', hint: 'Use either --check or --force' }
+        : { valid: true },
+      invalidArgs.length > 0
+        ? { valid: false, error: `Unknown option(s): ${invalidArgs.join(', ')}`, hint: 'Valid options: --check, --force' }
+        : { valid: true },
+    ]);
+
+    const projectRoot = projectCheck.value;
+    const syncState = buildHandoffSyncState(projectRoot);
+    const result = {
+      mode,
+      stale: syncState.stale,
+      expected_position: syncState.expectedPosition,
+      actual_position: syncState.handoff.position || {},
+      differences: syncState.differences,
+      source_issues: syncState.sourceIssues,
+      tracker_path: path.relative(projectRoot, syncState.trackerPath),
+      phase_state_path: path.relative(projectRoot, syncState.phaseStatePath),
+      handoff_path: path.relative(projectRoot, syncState.handoffPath),
+    };
+
+    if (mode === 'force') {
+      const nextHandoff = {
+        ...syncState.handoff,
+        position: {
+          ...(syncState.handoff.position || {}),
+          phase: syncState.expectedPosition.phase,
+          task: syncState.expectedPosition.task,
+          sub_task: null,
+          status: syncState.expectedPosition.status,
+        },
+        meta: {
+          ...(syncState.handoff.meta || {}),
+          last_written: currentTimestamp(),
+        },
+      };
+      writeJson(syncState.handoffPath, nextHandoff);
+      result.stale = false;
+      result.actual_position = nextHandoff.position;
+      result.synced = true;
+      console.log(formatSuccess('HANDOFF.json synchronized from TRACKER.md + PHASE-STATE.md'));
+      console.log(JSON.stringify(result, null, 2));
+      return;
+    }
+
+    if (syncState.stale) {
+      console.error(formatWarning('HANDOFF.json is stale relative to TRACKER.md and/or PHASE-STATE.md'));
+      console.log(JSON.stringify(result, null, 2));
+      process.exit(1);
+    }
+
+    console.log(formatSuccess('HANDOFF.json is in sync with TRACKER.md + PHASE-STATE.md'));
+    console.log(JSON.stringify(result, null, 2));
+  },
+
+  /**
+   * Ask an interactive single- or multi-select question
+   */
+  ask: async (args) => {
+    const parsed = parseAskArgs(args);
+    const modeCheck =
+      args.includes('--single') || args.includes('--multi')
+        ? { valid: true }
+        : { valid: false, error: 'Selection mode is required', hint: 'Use --single or --multi' };
+    const questionCheck = validators.isNonEmptyString(parsed.question, 'Question');
+    const optionsCheck =
+      parsed.options.length > 0
+        ? { valid: true }
+        : { valid: false, error: 'At least one option is required', hint: 'Pass options like "A|Label" or "A=Label"' };
+
+    validateArgs([modeCheck, questionCheck, optionsCheck]);
+
+    const answer = await runAskPrompt(parsed);
+    console.log(answer);
+  },
+
+  /**
    * Show ViePilot package version, npm latest, skills/workflows inventory (FEAT-008)
    */
   info: (args) => {
@@ -1027,6 +1382,32 @@ const commands = {
           'vp-tools git-persistence --strict',
         ],
       },
+      'handoff-sync': {
+        usage: 'vp-tools handoff-sync [--check|--force]',
+        description: 'Validate or repair HANDOFF.json position from TRACKER.md + PHASE-STATE.md',
+        options: [
+          '--check: Exit non-zero when HANDOFF.json does not match current tracker/phase state',
+          '--force: Rewrite HANDOFF.json position from current tracker/phase state',
+        ],
+        examples: [
+          'vp-tools handoff-sync --check',
+          'vp-tools handoff-sync --force',
+        ],
+      },
+      ask: {
+        usage: 'vp-tools ask --single|--multi --question "<prompt>" "<KEY|Label>" ...',
+        description: 'Run an interactive TUI question and print the selected key(s) to stdout',
+        options: [
+          '--single: Select exactly one option',
+          '--multi: Select one or more options',
+          '--question: Prompt text shown to the user',
+          'Options accept KEY|Label or KEY=Label format',
+        ],
+        examples: [
+          'vp-tools ask --single --question "Choose mode" "A|Fast" "B|Safe"',
+          'vp-tools ask --multi --question "Select items" "01|Docs" "02|Tests"',
+        ],
+      },
       info: {
         usage: 'vp-tools info [--json]',
         description: 'Show installed ViePilot version, latest npm version, skills & workflows inventory',
@@ -1085,6 +1466,8 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}checkpoints${colors.reset}              List all ViePilot checkpoints (git tags)
   ${colors.bold}tag-prefix${colors.reset} [--raw]       Show project-scoped checkpoint prefix
   ${colors.bold}git-persistence${colors.reset} [--strict] Check commit/push persistence readiness
+  ${colors.bold}handoff-sync${colors.reset} [--force]   Check or repair HANDOFF.json against tracker/state
+  ${colors.bold}ask${colors.reset} [--single|--multi]   Interactive TUI Q&A helper
   ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
   ${colors.bold}update${colors.reset} [--dry-run]       Update viepilot via npm (use --yes non-interactive)
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
@@ -1095,6 +1478,7 @@ ${colors.cyan}Examples:${colors.reset}
   ${colors.gray}$${colors.reset} vp-tools init
   ${colors.gray}$${colors.reset} vp-tools phase-info 1
   ${colors.gray}$${colors.reset} vp-tools progress
+  ${colors.gray}$${colors.reset} vp-tools ask --single --question "Choose mode" "A|Fast" "B|Safe"
   ${colors.gray}$${colors.reset} vp-tools version bump minor
   ${colors.gray}$${colors.reset} vp-tools help phase-info
 

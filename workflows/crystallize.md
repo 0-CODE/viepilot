@@ -355,7 +355,7 @@ Log one line to user: `[diagram_profile] selected <profile_id> (flags: …)`.
 ## Step 2: Generate AI-GUIDE.md
 
 Create `.viepilot/AI-GUIDE.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/AI-GUIDE.md`
+`@templates/project/AI-GUIDE.md`
 
 Customize with:
 - Project-specific file references
@@ -372,7 +372,7 @@ Customize with:
 ## Step 3: Generate PROJECT-META.md
 
 Create `.viepilot/PROJECT-META.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/PROJECT-META.md`
+`@templates/project/PROJECT-META.md`
 
 Fill with collected metadata:
 - Project info
@@ -387,7 +387,7 @@ Fill with collected metadata:
 ## Step 4: Generate ARCHITECTURE.md
 
 Create `.viepilot/ARCHITECTURE.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/ARCHITECTURE.md`
+`@templates/project/ARCHITECTURE.md`
 
 Extract from brainstorm:
 - System overview diagram
@@ -552,7 +552,7 @@ When crystallize writes sections to ARCHITECTURE.md that originated from brainst
 ## Step 5: Generate PROJECT-CONTEXT.md
 
 Create `.viepilot/PROJECT-CONTEXT.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/PROJECT-CONTEXT.md`
+`@templates/project/PROJECT-CONTEXT.md`
 
 Extract:
 - Domain knowledge
@@ -583,7 +583,7 @@ Nếu không có profile: một dòng *Profile binding not configured (`META.md`
 ## Step 6: Generate SYSTEM-RULES.md
 
 Create `.viepilot/SYSTEM-RULES.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/SYSTEM-RULES.md`
+`@templates/project/SYSTEM-RULES.md`
 
 Include:
 - Architecture rules
@@ -696,7 +696,7 @@ Then continue to Step 7.
 ## Step 7: Generate ROADMAP.md
 
 Create `.viepilot/ROADMAP.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/ROADMAP.md`
+`@templates/project/ROADMAP.md`
 
 From brainstorm features/MVP breakdown:
 1. Create **executable MVP phases** (what `/vp-auto` can run next; near-term delivery only).
@@ -743,7 +743,7 @@ Create `.viepilot/schemas/`:
 ## Step 9: Initialize TRACKER.md
 
 Create `.viepilot/TRACKER.md` using template:
-`@$HOME/.cursor/viepilot/templates/project/TRACKER.md`
+`@templates/project/TRACKER.md`
 
 Initialize:
 - Current state (all phases not_started)
@@ -939,6 +939,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **CONTRIBUTORS.md** - With lead developer
 **LICENSE** - Based on chosen license
 **README.md** - Project overview with links to docs
+- If the project uses Claude Code, keep the optional hooks example from `templates/project/README.md` so generated projects can wire `vp-tools handoff-sync --check|--force` without re-reading internal framework docs.
 </step>
 
 <step name="dependency_validation">

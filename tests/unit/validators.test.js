@@ -330,6 +330,132 @@ describe('git-persistence', () => {
 });
 
 // ============================================================================
+// handoff-sync
+// ============================================================================
+
+function createHandoffSyncProject() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-handoff-sync-'));
+  const vpDir = path.join(dir, '.viepilot');
+  const phaseDir = path.join(vpDir, 'phases', '15-enh-023-handoff-hooks');
+  fs.mkdirSync(path.join(phaseDir, 'tasks'), { recursive: true });
+
+  fs.writeFileSync(path.join(vpDir, 'TRACKER.md'), [
+    '# Tracker',
+    '',
+    '## Current State',
+    '- **Milestone**: Test',
+    '- **Phase**: 15 — Test phase',
+    '- **Task**: 15.1 — sync handoff',
+    '- **Version**: 0.1.0',
+    '- **Last Update**: 2026-04-04',
+  ].join('\n'));
+
+  fs.writeFileSync(path.join(phaseDir, 'PHASE-STATE.md'), [
+    '# Phase 15',
+    '',
+    '## Execution State',
+    '```yaml',
+    'execution_state:',
+    '  current: "15.1"',
+    '  status: executing',
+    '```',
+  ].join('\n'));
+
+  fs.writeFileSync(path.join(vpDir, 'HANDOFF.json'), JSON.stringify({
+    version: 2,
+    position: {
+      phase: '15',
+      task: '15.1',
+      sub_task: null,
+      status: 'executing',
+    },
+    recovery: {
+      l1_attempts: 0,
+      l2_attempts: 0,
+      l3_attempts: 0,
+      recent_blocker: false,
+    },
+    context: {
+      active_stacks: [],
+      last_decision: null,
+    },
+    control_point: {
+      active: false,
+      reason: null,
+      ts: null,
+    },
+    meta: {
+      last_written: null,
+      last_archived: null,
+    },
+  }, null, 2));
+
+  return dir;
+}
+
+describe('handoff-sync', () => {
+  test('--check passes when HANDOFF.json is aligned', () => {
+    const projectDir = createHandoffSyncProject();
+    try {
+      const { stdout, code } = run(['handoff-sync', '--check'], projectDir);
+      expect(code).toBe(0);
+      const data = extractJson(stdout);
+      expect(data.stale).toBe(false);
+      expect(data.expected_position.task).toBe('15.1');
+    } finally {
+      fs.rmSync(projectDir, { recursive: true, force: true });
+    }
+  });
+
+  test('--check fails when HANDOFF.json is stale', () => {
+    const projectDir = createHandoffSyncProject();
+    try {
+      const handoffPath = path.join(projectDir, '.viepilot', 'HANDOFF.json');
+      const handoff = JSON.parse(fs.readFileSync(handoffPath, 'utf8'));
+      handoff.position.task = '15.9';
+      fs.writeFileSync(handoffPath, JSON.stringify(handoff, null, 2));
+
+      const { stdout, stderr, code } = run(['handoff-sync', '--check'], projectDir);
+      expect(code).toBe(1);
+      expect(stderr).toContain('stale');
+      const data = extractJson(stdout);
+      expect(data.stale).toBe(true);
+      expect(data.differences).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ field: 'task', actual: '15.9', expected: '15.1' }),
+        ])
+      );
+    } finally {
+      fs.rmSync(projectDir, { recursive: true, force: true });
+    }
+  });
+
+  test('--force repairs HANDOFF.json from tracker/state', () => {
+    const projectDir = createHandoffSyncProject();
+    try {
+      const handoffPath = path.join(projectDir, '.viepilot', 'HANDOFF.json');
+      const handoff = JSON.parse(fs.readFileSync(handoffPath, 'utf8'));
+      handoff.position.task = '15.9';
+      handoff.position.status = 'not_started';
+      fs.writeFileSync(handoffPath, JSON.stringify(handoff, null, 2));
+
+      const { stdout, code } = run(['handoff-sync', '--force'], projectDir);
+      expect(code).toBe(0);
+      const data = extractJson(stdout);
+      expect(data.synced).toBe(true);
+
+      const repaired = JSON.parse(fs.readFileSync(handoffPath, 'utf8'));
+      expect(repaired.position.phase).toBe('15');
+      expect(repaired.position.task).toBe('15.1');
+      expect(repaired.position.status).toBe('executing');
+      expect(repaired.meta.last_written).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    } finally {
+      fs.rmSync(projectDir, { recursive: true, force: true });
+    }
+  });
+});
+
+// ============================================================================
 // help
 // ============================================================================
 

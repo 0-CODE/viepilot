@@ -107,6 +107,32 @@ Dự án này được phát triển với [ViePilot](https://github.com/0-CODE/
 
 Xem chi tiết tại / See details at: [.viepilot/TRACKER.md](.viepilot/TRACKER.md)
 
+### Claude Code Hooks (optional)
+
+Nếu bạn dùng Claude Code và muốn có safety rail cho state sync:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "node bin/vp-tools.cjs handoff-sync --check"
+      }]
+    }],
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "node bin/vp-tools.cjs handoff-sync --force"
+      }]
+    }]
+  }
+}
+```
+
+Hooks này chỉ là reinforcement để phát hiện hoặc sửa `HANDOFF.json` bị stale. `vp-auto` vẫn phải tự ghi state vào `TRACKER.md`, `PHASE-STATE.md`, và `HANDOFF.json`.
+
 ---
 
 ## API Documentation / Tài liệu API

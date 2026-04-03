@@ -12,11 +12,11 @@ Hướng dẫn cài đặt và kiểm tra ViePilot khi bạn dùng **Claude Code
 
 Bundled skill ViePilot dùng frontmatter `name: vp-*` — trên Claude Code bạn gọi tương đương **`/vp-auto`**, **`/vp-request`**, … như trong [Skills Reference](../skills-reference.md).
 
-**Lưu ý:** Nội dung skill hiện nhắc tới công cụ kiểu Cursor (`ReadFile`, `ApplyPatch`, …). Trên Claude Code, agent sẽ map sang tool tương đương (đọc/ghi file, terminal, …). Phần **workflow** và **chuỗi lệnh** (`/vp-evolve` → `/vp-auto`) vẫn giữ nguyên ý nghĩa.
+**Lưu ý:** Skill ViePilot giờ dùng host adapter trung lập; installer sẽ rewrite source-local refs (`@workflows/`, `@templates/`, `@bin/`) sang runtime bundle của Claude Code.
 
 ## Bước 1 — Cài bundle ViePilot (CLI)
 
-Với **`--target claude-code`**, installer (ViePilot **≥ 1.9.4**) **tự copy** toàn bộ `skills/vp-*` vào **`~/.claude/skills/`** (Claude Code mới thấy lệnh `/vp-*`). Đồng thời vẫn mirror vào **`~/.cursor/skills/`** và **`~/.cursor/viepilot/`** (workflows, bin) như trước.
+Với **`--target claude-code`**, installer **tự copy** toàn bộ `skills/vp-*` vào **`~/.claude/skills/`** và mirror runtime bundle vào **`~/.claude/viepilot/`**.
 
 ```bash
 npx viepilot install --target claude-code --yes
@@ -33,17 +33,16 @@ npx viepilot install --target claude-code --yes
 Kết quả điển hình:
 
 - **`~/.claude/skills/vp-*/SKILL.md`** — dùng trực tiếp trong Claude Code
-- **`~/.cursor/skills/vp-*/`** — giữ cho Cursor / tương thích
-- Workflows, templates, `bin/*.cjs` tới **`~/.cursor/viepilot/`**
+- Workflows, templates, `bin/*.cjs`, `lib/*.cjs` tới **`~/.claude/viepilot/`**
 - Seed **`~/.viepilot/profiles/`** và `~/.viepilot/profile-map.md` (xem [Global profiles](../dev/global-profiles.md))
 
 Sau khi cài: **khởi động lại / mở session Claude Code mới** nếu menu `/` chưa thấy `vp-*`.
 
-**Cập nhật sau này:** chạy lại `npx viepilot install --target claude-code --yes` từ bản npm/git mới để refresh cả hai cây skills.
+**Cập nhật sau này:** chạy lại `npx viepilot install --target claude-code --yes`.
 
 ## Bước 2 — Tuỳ chọn: symlink / copy thủ công (bản cũ hoặc chỉ Cursor)
 
-Nếu bạn dùng ViePilot **&lt; 1.9.4** hoặc đã cài **`--target cursor-*`** mà **không** gồm `claude-code`, Claude Code **không** đọc `~/.cursor/skills` — khi đó đồng bộ thủ công vào **`~/.claude/skills/<tên-thư-mục>/SKILL.md`**.
+Nếu bạn dùng bản cũ hoặc chỉ có bundle Cursor, Claude Code **không** đọc `~/.cursor/skills` — khi đó đồng bộ thủ công vào **`~/.claude/skills/<tên-thư-mục>/SKILL.md`**.
 
 ### Cách A — Symlink (khuyến nghị cho máy cá nhân)
 
@@ -83,16 +82,16 @@ Commit `.claude/skills/` nếu team cần dùng chung (xì [Where skills live](h
 
 ## Bước 3 — Workflows và `execution_context`
 
-Nhiều skill trỏ tới workflow qua đường dẫn kiểu **`~/.cursor/viepilot/workflows/...`**. Sau `npx viepilot install`, thư mục này đã có bản mirror — **giữ nguyên** và đảm bảo skill không bị sandbox chặn đọc `$HOME`.
+Sau `npx viepilot install`, runtime bundle của Claude nằm ở **`~/.claude/viepilot/`**. Installer đã rewrite các `execution_context` source-local (`@workflows/...`, `@templates/...`, `@bin/...`) sang runtime path này.
 
-Nếu bạn **không** dùng installer: từ clone, có thể đọc trực tiếp `workflows/*.md` trong repo hoặc tự mirror sang `~/.cursor/viepilot/workflows/` cho khớp văn bản skill.
+Nếu bạn **không** dùng installer: từ clone, có thể đọc trực tiếp `workflows/*.md` trong repo.
 
 ## Bước 4 — `vp-tools` trên PATH
 
 **Sau installer**, thử:
 
 ```bash
-~/.cursor/viepilot/bin/vp-tools.cjs info
+~/.claude/viepilot/bin/vp-tools.cjs info
 # hoặc nếu đã thêm vào PATH:
 vp-tools info
 vp-tools info --json
@@ -121,6 +120,37 @@ Trong thư mục project (không nhất thiết là repo `viepilot`):
 2. Chạy **`/vp-crystallize`** (hoặc tương đương theo skill) để sinh `.viepilot/` — hoặc copy thủ công từ [`templates/project/`](../../templates/project/) theo [Getting Started](../getting-started.md).
 
 Một số repo framework **gitignore** `.viepilot/`; với **ứng dụng của bạn** thường nên **commit** để cả team (và agent) cùng thấy ROADMAP/TRACKER.
+
+## Tuỳ chọn — Claude Code hooks cho `handoff-sync`
+
+Nếu bạn muốn Claude Code tự kiểm tra state sau các lần `Edit` / `Write`, có thể thêm hook config vào project:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "node bin/vp-tools.cjs handoff-sync --check"
+      }]
+    }],
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "node bin/vp-tools.cjs handoff-sync --force"
+      }]
+    }]
+  }
+}
+```
+
+Ý nghĩa:
+
+- `handoff-sync --check`: exit non-zero nếu `HANDOFF.json` không khớp `TRACKER.md` và `PHASE-STATE.md`
+- `handoff-sync --force`: đồng bộ lại `HANDOFF.json` từ state trên disk trước khi session dừng
+
+Đây là lớp bảo vệ phụ cho BUG-005 class. Nó **không** thay thế trách nhiệm của `/vp-auto` trong việc cập nhật state artifacts một cách tường minh.
 
 ## Kiểm tra nhanh
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`vp-tools handoff-sync`**: new `--check` / `--force` safeguard to detect and repair stale `HANDOFF.json` position from `TRACKER.md` + active `PHASE-STATE.md`; project README template and Claude Code setup docs now include optional hooks wiring.
+
 ### Fixed
 
 - **Cursor bundle `vp-tools info`**: copy **`package.json`** into `~/.cursor/viepilot/` on install (parity with Claude mirror) so `resolveViepilotPackageRoot` works from **any cwd**; **`listSkillsWithVersions`** reads `~/.cursor/skills/vp-*` when bundle has no `skills/` tree, including **symlinked** dev skills (`Dirent.isDirectory()` false); **`tryGitHead`** suppresses `git` stderr when bundle root is not a repo (clean `info --json`).

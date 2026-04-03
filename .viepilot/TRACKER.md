@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 14 — ENH-027 — vp-tools `ask` (next)
-- **Task**: 14.1 — TUI command + brainstorm hook (see ROADMAP)
+- **Phase**: 15 — ENH-023 — handoff-sync + hooks (in_progress)
+- **Task**: 15.1 — `handoff-sync --check/--force` + template hooks
 - **Version**: 2.2.2
-- **Last Update**: 2026-04-03
+- **Last Update**: 2026-04-04
 
 ## Progress
 
@@ -24,8 +24,8 @@
 | 11 | Diagram Profile System | 5 | complete ✅ |
 | 12 | Verification + Docs + v2.2.0 Release | 5 | complete ✅ |
 | 13 | Agent Orchestration — Tier A + B | 4 | complete ✅ |
-| 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
-| 15 | ENH-023 — handoff-sync + hooks | 1 | not started 🔲 |
+| 14 | ENH-027 — vp-tools ask | 1 | complete ✅ |
+| 15 | ENH-023 — handoff-sync + hooks | 1 | in progress 🔄 |
 | 16 | ENH-028 — crystallize Review Gate | 1 | not started 🔲 |
 | 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
@@ -33,7 +33,7 @@
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 39 / 43 tasks (~91%) _(Phase 13 **complete** **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
+**v2.1 milestone**: 40 / 43 tasks (~93%) _(Phase 14 **complete**; Phase 13 **v2.2.2**; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -55,7 +55,7 @@
 | [ENH-024](.viepilot/requests/ENH-024.md) | ✨ Enhancement | run_in_background Fork State Updates — fire-and-forget state writes after task PASS | high | → Phase 18 |
 | [ENH-025](.viepilot/requests/ENH-025.md) | ✨ Enhancement | Worktree isolation for L/XL tasks — Agent isolation: worktree for risky phases | medium | → Phase 19 |
 | [ENH-026](.viepilot/requests/ENH-026.md) | ✨ Enhancement | Plan Mode in vp-auto doc-first gate — structural enforcement via Claude Code plan mode | medium | → Phase 17 |
-| [ENH-027](.viepilot/requests/ENH-027.md) | ✨ Enhancement | vp-tools ask — interactive TUI Q&A command with @clack/prompts arrow-key selection | medium | → Phase 14 |
+| [ENH-027](.viepilot/requests/ENH-027.md) | ✨ Enhancement | vp-tools ask — interactive TUI Q&A command with @clack/prompts arrow-key selection | medium | ✅ done |
 | [ENH-028](.viepilot/requests/ENH-028.md) | ✨ Enhancement | crystallize Review Gate — extraction phase + per-section approval before generation | high | → Phase 16 |
 | [ENH-029](.viepilot/requests/ENH-029.md) | ✨ Enhancement | Remove MVP concept — full-arc ROADMAP with priority + release_target fields | high | new |
 | [ENH-030](.viepilot/requests/ENH-030.md) | ✨ Enhancement | Artifact Manifest — add domain_entities + tech_stack artifact types (required: true) | high | → Phase 09 |
@@ -63,12 +63,11 @@
 
 ## Next Action
 
-Phase **13** **complete** — shipped **v2.2.2** (`CHANGELOG` **[2.2.2]**): Tier A (13.1) + Tier B templates + crystallize seed (13.2) + docs (13.3) + contract tests (13.4). Tags `viepilot-vp-p13-t13.*`, `viepilot-vp-p13-complete`.
+Phase **15** is at a **control point** — implementation and local verification for `vp-tools handoff-sync` are complete, but git persistence gate is blocked by a dirty worktree.
 
-- Phase 14 directory: tạo khi `/vp-evolve` hoặc scaffold ROADMAP — xem `.viepilot/ROADMAP.md` § Phase 14
-- Current task: **14.1** — `vp-tools ask` TUI (`ENH-027`)
-- Last done: **13.4** — `tests/unit/vp-phase13-orchestration-contracts.test.js`
+- Current task: **15.1** — `handoff-sync --check/--force` + template hooks (`ENH-023`)
+- Last done: **14.1** — `bin/vp-tools.cjs` ask subcommand + brainstorm integration
 
-**Phase 14 (next)**: `/vp-auto --phase 14` hoặc `--from 14`.
+**Phase 15 (control point)**: persist or isolate the current worktree changes, then continue `/vp-auto --phase 15` to complete PASS state updates.
 
 **Phases 15–19 (planned, theo dependency)**: `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`.

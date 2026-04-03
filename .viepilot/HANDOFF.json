@@ -1,9 +1,10 @@
 {
   "version": 1,
   "position": {
-    "phase": "14",
-    "task": "14.1",
-    "status": "not_started"
+    "phase": "15",
+    "task": "15.1",
+    "status": "control_point",
+    "sub_task": null
   },
   "recovery": {
     "l1_attempts": 0,
@@ -13,15 +14,15 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 13 COMPLETE (v2.2.2): Tier A + Tier B + docs + contract tests. Next: Phase 14 ENH-027 vp-tools ask."
+    "last_decision": "Task 15.1 implementation + local verification complete; git persistence gate failed because the worktree is dirty, so execution paused at a control point before PASS."
   },
   "control_point": {
-    "active": false,
-    "reason": null,
-    "ts": null
+    "active": true,
+    "reason": "Git persistence gate failed: clean_worktree=false on branch v2. Commit/push or isolate the worktree before marking task 15.1 PASS.",
+    "ts": "2026-04-03T17:41:12.117Z"
   },
   "meta": {
-    "last_written": "2026-04-03T18:30:00Z",
+    "last_written": "2026-04-03T17:41:12.117Z",
     "last_archived": null
   }
 }

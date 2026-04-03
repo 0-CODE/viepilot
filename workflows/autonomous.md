@@ -74,6 +74,7 @@ Display startup banner:
 
 **Read-only paths** (context only — NEVER write):
 - `~/.claude/viepilot/` — installed skill/workflow runtime
+- `~/.codex/viepilot/` — installed skill/workflow runtime
 - `~/.cursor/viepilot/` — installed skill/workflow runtime
 - Any absolute path outside `{project_cwd}`
 
@@ -93,6 +94,7 @@ Display startup banner:
 **Examples**:
 - `{project_cwd}/workflows/autonomous.md` → allowed (project source)
 - `~/.claude/viepilot/workflows/autonomous.md` → BLOCKED (install path, read-only)
+- `~/.codex/viepilot/workflows/autonomous.md` → BLOCKED (install path, read-only)
 - `/tmp/scratch.md` → BLOCKED (outside project_cwd)
 
 This guard applies to ALL ViePilot projects — not only framework self-development sessions.
@@ -162,7 +164,7 @@ The **Initialize** batch-read (§1 — `.viepilot/TRACKER.md`, `ROADMAP-INDEX.md
 - `.viepilot/phases/{phase}/tasks/{task}.md` — the active task file
 - Every path listed in that task file under `## Context Required`, YAML `files_to_read`, or `context_required` (expand to concrete reads). If a listed file is missing, log the assumption in the task file / phase notes and continue only when the task spec allows.
 
-**Working Directory Guard (no regression):** All paths above MUST resolve under `{project_cwd}` per §1. Bundles under `~/.cursor/viepilot/` and `~/.claude/viepilot/` stay **read-only** — never substitute them for project `.viepilot/` task artifacts.
+**Working Directory Guard (no regression):** All paths above MUST resolve under `{project_cwd}` per §1. Bundles under `~/.cursor/viepilot/`, `~/.claude/viepilot/`, and `~/.codex/viepilot/` stay **read-only** — never substitute them for project `.viepilot/` task artifacts.
 
 #### Load Task Context (batch — call all Read tools simultaneously in 1 turn)
 
@@ -553,6 +555,7 @@ If any check fails:
 - `recovery.l2_attempts` → 0
 - `recovery.l3_attempts` → 0
 - `meta.last_written` → ISO8601 timestamp now
+- If Claude Code hooks are configured, `PostToolUse` may run `node bin/vp-tools.cjs handoff-sync --check` and `Stop` may run `node bin/vp-tools.cjs handoff-sync --force` as a safety net only; these hooks do **not** replace explicit state writes above.
 
 **4. TRACKER.md** (`.viepilot/TRACKER.md`):
 - Update current task/phase line to reflect next task
