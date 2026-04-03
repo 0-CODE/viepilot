@@ -1,3 +1,4 @@
 node_modules/
 
 # ViePilot project-local context (phases, tracker, handoff — not shipped in this repo)
+.viepilot/
