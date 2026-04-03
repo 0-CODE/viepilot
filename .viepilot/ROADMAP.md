@@ -133,6 +133,31 @@
 
 ---
 
+### Phase 6: Hotfix — State Update Enforcement (BUG-005)
+**Goal**: Fix vp-auto không update PHASE-STATE, task files, checklist boxes sau mỗi task PASS
+**Estimated Tasks**: 4
+**Dependencies**: Phase 5
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 6.1 | autonomous.md — State Update Checklist block | Block present; names Meta.Status, checkboxes, Files Changed, execution_state, HANDOFF fields, Gate enforcement | M |
+| 6.2 | autonomous.md — HANDOFF.json schema refs fix | All update blocks use v2 nested fields; schema detection note added | S |
+| 6.3 | TASK.md template — Post-Completion section | Section present with Implementation Summary + Files Changed + 10-item checklist | S |
+| 6.5 | Git tag prefix fix (BUG-006) | crystallize+evolve resolve TAG_PREFIX; autonomous.md 0 prose `{projectPrefix}`; TASK.md runtime note | M |
+| 6.4 | Version bump 2.0.1 → 2.0.2 + CHANGELOG | package.json=2.0.2; CHANGELOG [2.0.2] entry; BUG-005+BUG-006 resolved | S |
+
+**Execution order**: 6.1 → 6.2 → 6.3 → 6.5 → 6.4
+
+**Verification**:
+- [ ] `grep -n 'State Update Checklist' workflows/autonomous.md` → match found
+- [ ] `grep -n 'Meta.Status' workflows/autonomous.md` → match in new block
+- [ ] `grep -n 'Post-Completion' templates/phase/TASK.md` → match found
+- [ ] `grep -c '{projectPrefix}' workflows/autonomous.md` → 0 (all replaced)
+- [ ] `grep -n 'TAG_PREFIX' workflows/crystallize.md` → match found
+- [ ] `node -p "require('./package.json').version"` → `2.0.2`
+
+---
+
 ## Progress Summary
 
 | Phase | Status | Tasks | Completed | Progress |
@@ -142,8 +167,9 @@
 | 3. Workflow Integration — Skills & Commands | ✅ Complete | 8 | 8 | 100% |
 | 4. Verification & Documentation | ✅ Complete | 11 | 11 | 100% |
 | 5. Hotfix — Install Path Convention + Logic Gaps | ✅ Complete | 5 | 5 | 100% |
+| 6. Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | ✅ Complete | 5 | 5 | 100% |
 
-**Overall**: 39 / 39 tasks (100%) 🎉
+**Overall**: 44 / 44 tasks (100%) 🎉
 
 ---
 

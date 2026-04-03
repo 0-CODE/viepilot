@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2 MVP
-- **Phase**: 06-hotfix-state-updates (scaffolded — ready for /vp-auto)
-- **Task**: 6.1 (first task)
+- **Phase**: 06-hotfix-state-updates (complete ✅)
+- **Task**: — (all done)
 - **Version**: 2.0.2
 - **Last Update**: 2026-04-03
 
@@ -16,9 +16,9 @@
 | 03 | Workflow Integration — Skills & Commands | 8 | complete ✅ |
 | 04 | Verification & Documentation | 11 | complete ✅ |
 | 05 | Hotfix — Install Path Convention + Logic Gaps | 5 | complete ✅ |
-| 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | not_started ⏳ |
+| 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | complete ✅ |
 
-**Overall**: 39 / 44 tasks (89%)
+**Overall**: 44 / 44 tasks (100%) 🎉
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -36,7 +36,7 @@
 
 ## Next Action
 
-Start **Phase 06 — State Update Enforcement** via `/vp-auto --from 6`.
+v2.0.2 released. BUG-005 + BUG-006 fixed. Run `/vp-evolve` or `/vp-brainstorm` for next milestone.
 
 - Phase directory: `.viepilot/phases/06-hotfix-state-updates/`
 - First task: **6.1** — autonomous.md State Update Checklist block (M)
