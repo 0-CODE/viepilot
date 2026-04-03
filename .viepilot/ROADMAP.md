@@ -3,10 +3,10 @@
 ## Milestone: v2.1 Post-MVP Core
 
 ### Overview
-- **Version target**: 2.1.0
-- **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System
-- **Phases**: 6
-- **Status**: In Progress
+- **Version target**: **2.2.0** (Phase 12 released); prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
+- **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System + Phase 12 verify/docs
+- **Phases**: 6 (core v2.1 bundle) + Phase 12 verify; **13–20** planned next
+- **Status**: In Progress (Phase 12 ✅; Phases 13–20 scaffolded)
 
 ---
 
@@ -115,8 +115,8 @@
 
 ---
 
-### Phase 12: Verification + Docs + v2.1.0 Final Release
-**Goal**: Integration tests, doc updates, README sync, final version tag
+### Phase 12: Verification + Docs + v2.2.0 Release ✅ Complete (v2.2.0)
+**Goal**: Integration tests, doc updates, README sync, CHANGELOG cut + release tags
 **Estimated Tasks**: 5
 **Dependencies**: Phases 7-11
 
@@ -125,13 +125,13 @@
 | 12.1 | Integration test: BUG-007 guard triggers correctly | Attempt install path edit → control point; codebase edit passes | S |
 | 12.2 | Integration test: ENH-022 entity extraction on sample project | crystallize on sample with domain entities → entity manifest + dependency warning | S |
 | 12.3 | Update docs: autonomous-mode.md, quick-start.md, advanced-usage.md | Working directory guard, artifact manifest, diagram profiles documented | M |
-| 12.4 | README.md sync | Version badge 2.1.0; feature list updated; `npm run readme:sync` if exists | S |
-| 12.5 | Final version bump → 2.1.0 + git tag | package.json=2.1.0 (or already set); CHANGELOG [2.1.0] final; git tag viepilot-vp-v2.1.0 | S |
+| 12.4 | README.md sync | Version badge matches `package.json`; `npm run readme:sync` if exists | S |
+| 12.5 | Final CHANGELOG + git tags | `CHANGELOG.md` **[2.2.0]**; `package.json` **2.2.0**; tags **`viepilot-vp-p12-complete`**, **`viepilot-vp-v2.2.0`** _(supersedes draft v2.1.0 tag — semver follows shipped MINOR)_ | S |
 
 **Verification**:
-- [ ] All integration tests PASS
-- [ ] README version = 2.1.0
-- [ ] `git tag` → viepilot-vp-v2.1.0 present
+- [x] All integration tests PASS
+- [x] README version = **2.2.0** (matches `package.json`)
+- [x] `git tag` → `viepilot-vp-v2.2.0` + `viepilot-vp-p12-complete` present
 
 ---
 

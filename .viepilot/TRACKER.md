@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 12 — Verification + Docs + Release (next)
-- **Task**: 12.5 — final version + tag viepilot-vp-v2.1.0
+- **Phase**: 13 — Agent Orchestration — Tier A + B (next)
+- **Task**: 13.1 — autonomous task-boundary re-hydrate (see ROADMAP)
 - **Version**: 2.2.0
 - **Last Update**: 2026-04-03
 
@@ -22,7 +22,7 @@
 | 09 | Brainstorm Artifact Manifest | 7 | complete ✅ |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | complete ✅ |
 | 11 | Diagram Profile System | 5 | complete ✅ |
-| 12 | Verification + Docs + v2.1.0 Release | 5 | in progress 🔄 |
+| 12 | Verification + Docs + v2.2.0 Release | 5 | complete ✅ |
 | 13 | Agent Orchestration — Tier A + B | 4 | not started 🔲 |
 | 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
 | 15 | ENH-023 — handoff-sync + hooks | 1 | not started 🔲 |
@@ -33,7 +33,7 @@
 | 20 | ENH-031 — cold start token reduction | 3 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 31 / 43 tasks (~72%) _(Phase 12: 12.4 README sync done 2026-04-03; Phase 20 ENH-031)_
+**v2.1 milestone**: 32 / 43 tasks (~74%) _(Phase 12 complete **v2.2.0** 2026-04-03; Phase 20 ENH-031)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -62,11 +62,11 @@
 
 ## Next Action
 
-Phase 11 **complete** (release **2.1.3**). Next: Phase 12 — Verification + Docs + v2.1.0 Final Release.
+Phase **12** **complete** — shipped **v2.2.0** (CHANGELOG + tags `viepilot-vp-p12-complete`, `viepilot-vp-v2.2.0`). Next: **Phase 13** — Agent orchestration Tier A + B.
 
-- Phase directory: see `ROADMAP.md` Phase 12 _(scaffold when starting 12.1)_
-- Current task: **12.5** — final release version + git tag per ROADMAP
-- Last done: Phase 12 task **12.4** — README badges/metrics + `readme:sync` LOC
+- Phase directory: `.viepilot/phases/13-agent-orchestration-tier-ab/`
+- Current task: **13.1** — task-boundary re-hydrate (`autonomous.md`)
+- Last done: Phase 12 task **12.5** — CHANGELOG **[2.2.0]** + release tags
 
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 

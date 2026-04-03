@@ -7,26 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- **BUG-007 integration coverage**: `lib/project-write-guard.cjs` (`validateWriteTarget`) + `tests/integration/bug007-working-directory-guard.test.js` — blocks install-path targets and paths outside project cwd; contract checks on `workflows/autonomous.md` + `templates/project/AI-GUIDE.md` (Phase 12.1)
-- **ENH-022 integration coverage**: `lib/crystallize-dependency-validate.cjs` + fixtures `tests/fixtures/enh022-{gap,ok}/` + `tests/integration/enh022-entity-dependency.test.js` — manifest parse + Step 11A-style dependency gap detection; `crystallize.md` contract greps (Phase 12.2)
-- **User docs (Phase 12.3)**: `docs/user/features/autonomous-mode.md` — BUG-007 working-directory guard, token budget, diagram/stale reconciliation; `docs/user/quick-start.md` — brainstorm manifest + crystallize artifacts; `docs/advanced-usage.md` — sections install path guard, manifest lifecycle, diagram profiles
-- **README sync (Phase 12.4)**: badges + metrics aligned to `package.json` **2.2.0**, **334** tests / **18** suites, `npm run readme:sync` LOC (~32k+), project tree `lib/` + `tests/` notes
-
-### Removed
-
-- **`install.sh`** và **`dev-install.sh`** — cài đặt chỉ qua **Node**: `node bin/viepilot.cjs install …` / `npx viepilot install …`; dev symlink: `VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes` hoặc `make dev-install`
-
 ### Planned
 
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
 - **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
 - **Phase 20** (scaffold): ENH-031 — giảm token cold start `/vp-auto` (manifest đo, SKILL slim, ROADMAP-INDEX + Initialize) — planning via `/vp-evolve --feature`
 
-### Changed
+## [2.2.0] - 2026-04-03
 
-- **Version**: 2.1.3 → **2.2.0** (MINOR — planned Phase 20 / ENH-031 scaffold; shipping implementation qua `/vp-auto`)
+Phase 12 complete — verification (BUG-007 + ENH-022 integration tests), user docs (autonomous / quick-start / advanced), README metrics sync; **semver MINOR** **2.1.3 → 2.2.0** (`package.json`).
+
+### Added
+
+- **BUG-007 integration coverage**: `lib/project-write-guard.cjs` (`validateWriteTarget`) + `tests/integration/bug007-working-directory-guard.test.js` — blocks install-path targets and paths outside project cwd; contract checks on `workflows/autonomous.md` + `templates/project/AI-GUIDE.md` (Phase 12.1)
+- **ENH-022 integration coverage**: `lib/crystallize-dependency-validate.cjs` + fixtures `tests/fixtures/enh022-{gap,ok}/` + `tests/integration/enh022-entity-dependency.test.js` — manifest parse + Step 11A-style dependency gap detection; `crystallize.md` contract greps (Phase 12.2)
+- **User docs (Phase 12.3)**: `docs/user/features/autonomous-mode.md` — BUG-007 working-directory guard, token budget, diagram/stale reconciliation; `docs/user/quick-start.md` — brainstorm manifest + crystallize artifacts; `docs/advanced-usage.md` — sections install path guard, manifest lifecycle, diagram profiles
+- **README sync (Phase 12.4)**: badges + metrics aligned to **2.2.0**, **334** tests / **18** suites, `npm run readme:sync` LOC, project tree `lib/` + `tests/` notes
+
+### Removed
+
+- **`install.sh`** và **`dev-install.sh`** — cài đặt chỉ qua **Node**: `node bin/viepilot.cjs install …` / `npx viepilot install …`; dev symlink: `VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes` hoặc `make dev-install`
+
+### Git tags
+
+- `viepilot-vp-p12-complete` — Phase 12 checkpoint
+- `viepilot-vp-v2.2.0` — release marker aligned to this version
 
 ## [2.1.3] - 2026-04-03
 
