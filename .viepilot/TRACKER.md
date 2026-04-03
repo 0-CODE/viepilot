@@ -46,11 +46,14 @@
 | [ENH-024](.viepilot/requests/ENH-024.md) | ✨ Enhancement | run_in_background Fork State Updates — fire-and-forget state writes after task PASS | high | new |
 | [ENH-025](.viepilot/requests/ENH-025.md) | ✨ Enhancement | Worktree isolation for L/XL tasks — Agent isolation: worktree for risky phases | medium | new |
 | [ENH-026](.viepilot/requests/ENH-026.md) | ✨ Enhancement | Plan Mode in vp-auto doc-first gate — structural enforcement via Claude Code plan mode | medium | new |
+| [ENH-027](.viepilot/requests/ENH-027.md) | ✨ Enhancement | vp-tools ask — interactive TUI Q&A command with @clack/prompts arrow-key selection | medium | new |
+| [ENH-028](.viepilot/requests/ENH-028.md) | ✨ Enhancement | crystallize Review Gate — extraction phase + per-section approval before generation | high | new |
+| [ENH-029](.viepilot/requests/ENH-029.md) | ✨ Enhancement | Remove MVP concept — full-arc ROADMAP with priority + release_target fields | high | new |
 
 ## Next Action
 
-Phase 07 complete (v2.0.3). Phase 08 next (ENH-022).
+Phase 08 in progress (ENH-022). Tasks 8.1 + 8.2 done. Current: **8.3** → 8.4.
 
 - Phase directory: `.viepilot/phases/08-crystallize-entity-extraction/`
-- First task: **8.1** — crystallize.md Domain Entity Extraction step (M)
-- Execution order: **8.1 → 8.2 → 8.3 → 8.4**
+- Current task: **8.3** — crystallize.md Entity manifest output format (S)
+- Execution order: ~~8.1~~ ~~8.2~~ → **8.3** → 8.4

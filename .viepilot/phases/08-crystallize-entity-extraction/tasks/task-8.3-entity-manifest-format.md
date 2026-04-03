@@ -35,9 +35,9 @@ Add to crystallize.md: instruction to append entity manifest table to SPEC.md un
 
 ## Pre-execution documentation gate (doc-first; BUG-001)
 
-- [ ] Task contract fields filled
-- [ ] Paths listed
-- [ ] PHASE-STATE.md marks this task `in_progress` before commits
+- [x] Task contract fields filled
+- [x] Paths listed
+- [x] PHASE-STATE.md marks this task `in_progress` before commits
 
 ## Paths
 ```yaml

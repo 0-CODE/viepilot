@@ -11,7 +11,7 @@
 ```yaml
 execution_state:
   current: "8.3"
-  status: executing
+  status: in_progress
   available_transitions:
     on_start:     "→ executing"
     on_pass:      "→ update_state → next_task"
@@ -31,7 +31,7 @@ execution_state:
 |---|------|--------|---------|-----------|---------|
 | 8.1 | crystallize.md — Domain Entity Extraction step (Fix A) | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.1-done |
 | 8.2 | crystallize.md — Dependency Validation step (Fix C) | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.2-done |
-| 8.3 | crystallize.md — Entity manifest output format | not_started | — | — | — |
+| 8.3 | crystallize.md — Entity manifest output format | in_progress | 2026-04-03 | — | — |
 | 8.4 | Version bump 2.0.3 → 2.1.0 + CHANGELOG | not_started | — | — | — |
 
 ## Sub-task Tracking
