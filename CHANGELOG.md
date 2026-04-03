@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Phase 10** (remaining): task 10.6 version bump 2.1.1 → 2.1.2
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
-- **Phase 14** (scaffold): ENH-023–028 bundle — hooks/handoff-sync, vp-tools ask, crystallize review gate, Plan mode docs, fork state background, worktree L/XL (`vp-evolve --feature`)
+- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
 
 ## [2.1.1] - 2026-04-03
 
