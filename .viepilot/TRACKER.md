@@ -4,7 +4,7 @@
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: complete ✅
 - **Task**: —
-- **Version**: 2.2.2
+- **Version**: 2.2.3
 - **Last Update**: 2026-04-04
 
 ## Progress

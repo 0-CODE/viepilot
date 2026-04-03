@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.3] - 2026-04-04
+
+Phases **16–19** complete — crystallize review gate, Plan Mode doc-first guidance, optional background state-update fork, and worktree isolation guidance for `L` / `XL` tasks. **Semver PATCH** **2.2.2 → 2.2.3**.
+
 ### Added
 
 - **`vp-tools handoff-sync`**: new `--check` / `--force` safeguard to detect and repair stale `HANDOFF.json` position from `TRACKER.md` + active `PHASE-STATE.md`; project README template and Claude Code setup docs now include optional hooks wiring.
@@ -18,10 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Cursor bundle `vp-tools info`**: copy **`package.json`** into `~/.cursor/viepilot/` on install (parity with Claude mirror) so `resolveViepilotPackageRoot` works from **any cwd**; **`listSkillsWithVersions`** reads `~/.cursor/skills/vp-*` when bundle has no `skills/` tree, including **symlinked** dev skills (`Dirent.isDirectory()` false); **`tryGitHead`** suppresses `git` stderr when bundle root is not a repo (clean `info --json`).
-
-### Planned
-
-- **Phases 14–19** (scaffold): ENH-023–028 per dependency graph in `.viepilot/ROADMAP.md`
 
 ## [2.2.2] - 2026-04-03
 
@@ -565,7 +565,8 @@ Phase 10 complete — Gap E (cross-project status), Gap G Extended (compliance k
 
 ---
 
-[Unreleased]: https://github.com/0-CODE/viepilot/compare/v1.9.2...HEAD
+[Unreleased]: https://github.com/0-CODE/viepilot/compare/v2.2.3...HEAD
+[2.2.3]: https://github.com/0-CODE/viepilot/compare/v2.2.2...v2.2.3
 [1.9.2]: https://github.com/0-CODE/viepilot/compare/v1.9.1...v1.9.2
 [1.9.1]: https://github.com/0-CODE/viepilot/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/0-CODE/viepilot/compare/v1.8.1...v1.9.0
