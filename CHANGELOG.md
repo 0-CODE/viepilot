@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **BUG-007 integration coverage**: `lib/project-write-guard.cjs` (`validateWriteTarget`) + `tests/integration/bug007-working-directory-guard.test.js` — blocks install-path targets and paths outside project cwd; contract checks on `workflows/autonomous.md` + `templates/project/AI-GUIDE.md` (Phase 12.1)
+
 ### Removed
 
 - **`install.sh`** và **`dev-install.sh`** — cài đặt chỉ qua **Node**: `node bin/viepilot.cjs install …` / `npx viepilot install …`; dev symlink: `VIEPILOT_SYMLINK_SKILLS=1 node bin/viepilot.cjs install --target cursor-agent --yes` hoặc `make dev-install`
