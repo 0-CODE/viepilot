@@ -390,24 +390,54 @@ If any check fails:
 #### Handle Result
 
 **PASS:**
-- Create git tag: `{projectPrefix}-vp-p{phase}-t{task}-done`
-- Update PHASE-STATE.md immediately: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
-- Update TRACKER.md immediately
-- Update HANDOFF.json immediately:
-  ```json
-  position.task = "{next_task}"
-  position.sub_task = null
-  position.status = "not_started"
-  recovery.l1_attempts = 0
-  recovery.l2_attempts = 0
-  recovery.l3_attempts = 0
-  meta.last_written = "<ISO8601>"
+- Create done git tag:
+  ```bash
+  TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+  git tag "${TAG_PREFIX}-p{phase}-t{task}-done" -m "Task {task} complete"
   ```
 - Append to HANDOFF.log (non-blocking):
   ```
   {"ts":"<ISO8601>","event":"task_pass","task":"{task}","phase":"{phase}"}
   ```
 - Update CHANGELOG.md if feature/fix
+
+#### State Update Checklist (mandatory — complete ALL before advancing to next task)
+
+**Verify each item was written to disk. If any edit fails → `control_point("state update failed: {item}")`.**
+
+**1. Task file** (`.viepilot/phases/{phase}/tasks/{task}.md`):
+- Edit `## Meta → Status`: current value → `done`
+- Tick `## Pre-execution documentation gate` boxes: all `[ ]` → `[x]`
+- Tick `## Acceptance Criteria` boxes: each met criterion → `[x]`
+- Tick `## Best Practices to Apply` boxes: all applied → `[x]`
+- Tick `## State Update Checklist` boxes (if section present): all → `[x]`
+- Fill `## Implementation Notes` with 2–5 bullet summary of what was built (replace placeholder)
+- Fill `## Files Changed` (or `## Post-Completion → Files Changed`): run the command below and paste actual output (replace placeholder):
+  ```bash
+  TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
+  git diff "${TAG_PREFIX}-p{phase}-t{task}"..HEAD --name-status
+  ```
+
+**2. PHASE-STATE.md** (`.viepilot/phases/{phase}/PHASE-STATE.md`):
+- Task row: `Status` → `done`, `Completed` → today's date, `Git Tag` → actual done-tag used
+- `execution_state.current` → next task ID (or `"—"` if this was last task)
+- `execution_state.status` → `executing` (more tasks remain) or `pass` (phase complete)
+- Files Changed table: append each file from this task (use git diff output above, one row per file)
+
+**3. HANDOFF.json** (`.viepilot/HANDOFF.json`):
+- `position.task` → next task ID
+- `position.sub_task` → null
+- `position.status` → `"not_started"`
+- `recovery.l1_attempts` → 0
+- `recovery.l2_attempts` → 0
+- `recovery.l3_attempts` → 0
+- `meta.last_written` → ISO8601 timestamp now
+
+**4. TRACKER.md** (`.viepilot/TRACKER.md`):
+- Update current task/phase line to reflect next task
+
+**Gate**: Do not advance to next task until all 4 groups above are verified written to disk.
+
 - Move to next task
 
 **SKIP:**
