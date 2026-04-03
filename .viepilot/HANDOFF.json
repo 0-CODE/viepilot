@@ -2,7 +2,7 @@
   "version": 1,
   "position": {
     "phase": "12",
-    "task": "12.4",
+    "task": "12.5",
     "status": "not_started"
   },
   "recovery": {
@@ -13,7 +13,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 12 task 12.3 PASS: autonomous-mode + quick-start + advanced-usage (BUG-007, manifest, diagram profiles). Next: 12.4 README sync."
+    "last_decision": "Phase 12 task 12.4 PASS: README 2.2.0 badge, 334 tests/18 suites, LOC via readme:sync, lib/tests tree. Next: 12.5 final version + tag (reconcile vs package 2.2.0 vs ROADMAP v2.1.0)."
   },
   "control_point": {
     "active": false,
@@ -21,7 +21,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T20:00:00Z",
+    "last_written": "2026-04-03T21:00:00Z",
     "last_archived": null
   }
 }

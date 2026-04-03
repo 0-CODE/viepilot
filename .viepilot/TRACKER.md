@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 12 — Verification + Docs + Release (next)
-- **Task**: 12.4 — README.md sync
+- **Task**: 12.5 — final version + tag viepilot-vp-v2.1.0
 - **Version**: 2.2.0
 - **Last Update**: 2026-04-03
 
@@ -33,7 +33,7 @@
 | 20 | ENH-031 — cold start token reduction | 3 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 30 / 43 tasks (~70%) _(Phase 12: 12.3 docs done 2026-04-03; Phase 20 ENH-031)_
+**v2.1 milestone**: 31 / 43 tasks (~72%) _(Phase 12: 12.4 README sync done 2026-04-03; Phase 20 ENH-031)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -65,8 +65,8 @@
 Phase 11 **complete** (release **2.1.3**). Next: Phase 12 — Verification + Docs + v2.1.0 Final Release.
 
 - Phase directory: see `ROADMAP.md` Phase 12 _(scaffold when starting 12.1)_
-- Current task: **12.4** — README sync (`npm run readme:sync` nếu có)
-- Last done: Phase 12 task **12.3** — user docs (BUG-007, manifest, diagram profiles)
+- Current task: **12.5** — final release version + git tag per ROADMAP
+- Last done: Phase 12 task **12.4** — README badges/metrics + `readme:sync` LOC
 
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 
