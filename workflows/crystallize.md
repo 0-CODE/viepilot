@@ -368,6 +368,64 @@ Include:
   - Require official-source alignment for framework-specific implementation
 </step>
 
+<step name="domain_entity_extraction">
+## Step 6A: Domain Entity Extraction (mandatory — ENH-022)
+
+Before generating the roadmap, explicitly extract all domain entities from the brainstorm. This step is **tường minh** (explicit) — AI must list entities from brainstorm content, not infer or assume they are covered.
+
+### 6A.1 Scan brainstorm for named entities
+
+Read the brainstorm session(s) and list every **named domain entity** — nouns that represent persisted objects (stored in database, managed via API, referenced by other entities).
+
+For each entity, classify:
+
+| Field | Description |
+|-------|-------------|
+| `name` | Entity name (e.g., `Tenant`, `Vehicle`, `Device`) |
+| `type` | `core` (primary business object), `reference` (lookup/config), or `junction` (many-to-many link) |
+| `needs_crud_api` | `yes` if the entity requires a management service with Create/Read/Update/Delete endpoints; `no` if managed only via config, migration seed, or internal-only |
+
+### 6A.2 Check service phase coverage
+
+For each entity where `needs_crud_api = yes`:
+1. Scan the planned phases (from brainstorm MVP breakdown) for a management service phase
+2. A phase counts as coverage if its goal explicitly includes CRUD operations for that entity (e.g., "TenantService — CRUD API", "Vehicle Management")
+3. If **no** matching phase exists → mark `service_phase = MISSING`
+
+### 6A.3 Output entity manifest table
+
+Produce this table (include in SPEC.md / ARCHITECTURE.md `## Entity Manifest` section):
+
+```markdown
+## Entity Manifest
+
+| Entity | Type | needs_crud_api | Service Phase | Status |
+|--------|------|---------------|---------------|--------|
+| Tenant | core | yes | Phase 03: Tenant Management Service | OK |
+| Vehicle | core | yes | MISSING | ⚠ MISSING |
+| VehicleType | reference | no | — | N/A |
+| DriverVehicle | junction | no | — | N/A |
+```
+
+### 6A.4 Handle MISSING entities
+
+If any entity has `service_phase = MISSING`:
+1. **Do NOT silently continue** — this is a planning gap
+2. Present the MISSING entities to the user with options:
+   - **Auto-add**: Insert a management service phase stub for each MISSING entity (positioned before phases that depend on it)
+   - **Confirm skip**: User confirms entity is intentionally managed elsewhere (e.g., from config, external API, seed data). Record reason.
+3. After resolution: update the entity manifest table with final status
+
+### Skip condition
+
+If brainstorm contains **no named domain entities** (e.g., pure CLI tool, static site, utility library): output a single line in ARCHITECTURE.md:
+```
+## Entity Manifest
+No domain entities detected — project type does not require CRUD management services.
+```
+Then continue to Step 7.
+</step>
+
 <step name="generate_roadmap">
 ## Step 7: Generate ROADMAP.md
 
