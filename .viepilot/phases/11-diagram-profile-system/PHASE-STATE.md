@@ -31,7 +31,7 @@ execution_state:
 |---|------|--------|---------|-----------|---------|
 | 11.1 | crystallize.md — Stack detection → diagram profile | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p11-t11.1-done |
 | 11.2 | crystallize.md — Diagram applicability matrix in SPEC.md | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p11-t11.2-done |
-| 11.3 | crystallize.md — Architecture folder structure per profile | not_started | — | — | — |
+| 11.3 | crystallize.md — Architecture folder structure per profile | in_progress | 2026-04-03 | — | — |
 | 11.4 | autonomous.md — Stale diagram detection + update trigger | not_started | — | — | — |
 | 11.5 | Version bump 2.1.2 → 2.1.3 + CHANGELOG | not_started | — | — | — |
 

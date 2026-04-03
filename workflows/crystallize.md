@@ -496,6 +496,35 @@ When a diagram type is **`required`** or **`optional`** and you emit a **non-emp
 
 Create `.viepilot/architecture/` only when at least one `.mermaid` file will be written (empty directory otherwise is unnecessary).
 
+### Architecture profile folders on disk (Phase 11 — task 11.3)
+
+After ENH-022 sidecars and **after** `.viepilot/SPEC.md` **Diagram Applicability Matrix** is written, ensure **repo-root** `architecture/` subfolders exist for the **Phase 11 profile layout**. **ENH-022** `.viepilot/architecture/*.mermaid` files remain the canonical **mirror** of fences in `.viepilot/ARCHITECTURE.md`; these directories are the **structural** home for the same logical diagrams when organized by layer (cross / backend / frontend / sequences / state-machines).
+
+**When to skip:** If **all six** Step 4 matrix rows are **`N/A`**, skip this entire subsection — do not create `architecture/`.
+
+**Directory set (union, de-duplicated, idempotent `mkdir` semantics):**
+
+1. **From matrix rows** with status **`required`** or **`optional`**, add the profile folder using the same normative map as SPEC **folder_path** (ignore parenthetical ENH-022 paths):
+   - `system-overview` → `architecture/cross/`
+   - `data-flow` → `architecture/cross/`
+   - `event-flows` → `architecture/backend/` when Step 1D `kafka_or_messaging` is **true**, else `architecture/cross/`
+   - `module-dependencies` → `architecture/backend/`
+   - `deployment` → `architecture/cross/`
+   - `user-use-case` → `architecture/frontend/` by default — use **`architecture/sequences/`** when the primary flow is **auth, OAuth, SSO, webhooks, or third-party integration** (reflect this in SPEC **applies_when** and matrix **Rule**)
+
+2. **Cross-cutting** (add when Step 1D flags are true, even if a diagram row is still optional):
+   - `state_heavy_entities` **true** → add `architecture/state-machines/` (future per-entity files may use `architecture/state-machines/<entity>.mermaid`).
+   - `auth_module` **true** → add `architecture/sequences/` (auth-flow / integration sequences).
+
+3. **Stub files:** For every path in the set, create the directory if missing. In each such directory, if **`README.md` does not exist**, create it with:
+   - Title `# architecture/<leaf>/` where `<leaf>` is `cross`, `backend`, `frontend`, `sequences`, or `state-machines`.
+   - One short **Purpose** line (pick from: *cross* — system/context-level diagrams; *backend* — APIs, modules, messaging; *frontend* — UI/page/component flow; *sequences* — auth and integration flows; *state-machines* — entity lifecycles).
+   - A line stating that **ENH-022** may also hold `.viepilot/architecture/*.mermaid` mirrors and both should stay in sync when diagrams are emitted.
+   - Trailing HTML comment: `<!-- vp:architecture-profile-stub phase="11" -->`
+   - If **`README.md` already exists**, **do not overwrite** user edits.
+
+4. **Optional index:** If **`architecture/README.md`** is missing and at least one subdirectory was ensured, create **`architecture/README.md`** with a short bullet list of existing subfolders and the current Step 1D `diagram_profile.profile_id`.
+
 ### Consumed Anchor Tracking (`vp:consumed`) — stub
 
 When crystallize writes sections to ARCHITECTURE.md that originated from brainstorm artifacts (via Step 0A manifest), tag those sections with a `vp:consumed` HTML comment anchor:
