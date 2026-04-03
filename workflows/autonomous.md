@@ -245,6 +245,16 @@ compliance_preflight(task):
 
 If `write_scope` is empty or absent (v1 task): skip silently — no warning.
 
+#### HANDOFF.json Schema Detection
+
+> **Schema note (BUG-006 fix)**: Before writing any HANDOFF.json fields, detect which schema the project uses:
+> - **v2** (nested): `version` field = `2` — use `position.task`, `position.status`, `recovery.l1_attempts`, `control_point.active`, `meta.last_written`
+> - **v1** (flat): `version` absent or `1` — use `task`, `status`, `lastUpdated`, `blockers[]`
+>
+> New projects use v2 (from template). If a project has v1, update the equivalent flat fields.
+> Recommend creating a `DEBT` request to migrate v1 → v2 before running vp-auto on that project.
+> All field references in this workflow assume **v2 schema**.
+
 #### Execute Task
 
 0. Emit task_start event:
