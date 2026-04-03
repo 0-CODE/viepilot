@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **crystallize Step 1D** (`diagram_profile_selection`): stack/messaging/SQL/SPA/auth/state-heavy detection → normative diagram profile (`distributed-events`, `microservices-api`, `spa-sql-monolith`, `sql-monolith`, `spa-frontend`, `default-monolith`); Step 4 consumes `diagram_profile` when classifying the diagram applicability matrix (Phase 11.1)
+- **crystallize Step 4 — SPEC persistence**: after the diagram matrix is finalized, write or replace `## Diagram Applicability Matrix` in `.viepilot/SPEC.md` (HTML anchors `vp:diagram-applicability-matrix`); normative columns `diagram_type`, `applies_when`, `folder_path`, `status` plus Phase-11 folder map vs ENH-022 `.mermaid` sidecars (Phase 11.2)
 
 ### Planned
 

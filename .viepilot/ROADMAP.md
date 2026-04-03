@@ -255,7 +255,7 @@ Wave E:            Phase 19 (ENH-025)
 | 8. ENH-022 — Crystallize Domain Entity Extraction | ✅ Complete | 4 | 4 | 100% |
 | 9. Brainstorm Artifact Manifest | ✅ Complete | 7 | 7 | 100% |
 | 10. Gap E + Gap G Extended + Token Budget | ✅ Complete | 6 | 6 | 100% |
-| 11. Diagram Profile System | 🔄 In Progress | 5 | 1 | 20% |
+| 11. Diagram Profile System | 🔄 In Progress | 5 | 2 | 40% |
 | 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 | 13. Agent Orchestration Tier A + B | 🔲 Not Started | 4 | 0 | 0% |
 | 14. ENH-027 — vp-tools ask | 🔲 Not Started | 1 | 0 | 0% |
@@ -265,7 +265,7 @@ Wave E:            Phase 19 (ENH-025)
 | 18. ENH-024 — Fork state background | 🔲 Not Started | 1 | 0 | 0% |
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 
-**Overall**: 23 / 40 tasks (57%)
+**Overall**: 24 / 40 tasks (60%)
 
 ---
 

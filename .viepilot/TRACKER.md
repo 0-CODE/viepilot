@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 11-diagram-profile-system (next)
-- **Task**: 11.2 — diagram applicability matrix in SPEC.md
+- **Task**: 11.3 — architecture folder structure per profile
 - **Version**: 2.1.2
 - **Last Update**: 2026-04-03
 
@@ -21,7 +21,7 @@
 | 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | complete ✅ |
 | 09 | Brainstorm Artifact Manifest | 7 | complete ✅ |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | complete ✅ |
-| 11 | Diagram Profile System | 5 | in progress 🔄 (1/5) |
+| 11 | Diagram Profile System | 5 | in progress 🔄 (2/5) |
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 | 13 | Agent Orchestration — Tier A + B | 4 | not started 🔲 |
 | 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
@@ -32,7 +32,7 @@
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 23 / 40 tasks (57%) _(Phase 11 task 11.1 done 2026-04-03)_
+**v2.1 milestone**: 24 / 40 tasks (60%) _(Phase 11 tasks 11.1–11.2 done 2026-04-03)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -63,8 +63,8 @@
 Phase 10 **complete** (release **2.1.2**). Next: Phase 11 — Diagram Profile System.
 
 - Phase directory: `.viepilot/phases/11-diagram-profile-system/`
-- Current task: **11.2** — diagram applicability matrix in SPEC.md
-- Last done: `viepilot-vp-p11-t11.1-done`
+- Current task: **11.3** — architecture folder structure per profile
+- Last done: `viepilot-vp-p11-t11.2-done`
 
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 
