@@ -1,215 +1,148 @@
-# ViePilot — Project Context
+# ViePilot - Project Context
 
 *Profile binding not configured (`META.md` or global profile file missing).*
 
 <domain_knowledge>
 ## What This System Does
 
-ViePilot là AI-powered framework giúp solo developer thực hiện các dự án phức tạp (thường đòi hỏi cả team) thông qua structured workflow: brainstorm → crystallize → autonomous execution với human-in-the-loop control points.
-
-**Core promise**: Một solo dev với ViePilot có thể execute dự án enterprise-scale mà bình thường cần 5–15 người.
-
-**Core loop**:
-1. `/vp-brainstorm` — Thu thập ideas, decisions, architecture qua Q&A
-2. `/vp-crystallize` — Chuyển brainstorm thành `.viepilot/` artifacts (ROADMAP, tasks, state)
-3. `/vp-auto` — Thực thi autonomous với recovery layers + control points
+ViePilot is a local-first workflow framework for AI-assisted software delivery. The current shipping line is v2.2.3, but the active crystallize output now defines a v3 refactor in which planning artifacts are compiled into structured runtime truth instead of being reread as prose during `/vp-auto`.
 
 ## Key Concepts
 
 | Term | Definition |
 |------|------------|
-| Control Point | Thời điểm AI dừng, hỏi user trước khi tiếp tục (human-in-the-loop gate) |
-| Recovery Layer | Tầng tự động sửa lỗi trước khi surface cho user (L1: lint, L2: test, L3: scope reduce) |
-| Recovery Budget | Số lần tối đa mỗi recovery layer được thử, xác định theo task complexity (S/M/L/XL) |
-| write_scope | Danh sách files/dirs mà 1 task được phép modify (scope contract) |
-| recovery_overrides | Per-task override của recovery behavior (ví dụ: block L3 cho compliance tasks) |
-| HANDOFF.json | Machine-readable state: vị trí hiện tại, recovery attempts, active context stacks |
-| HANDOFF.log | Append-only audit trail mỗi event (task start/pass/fail, recovery attempts) |
-| PHASE-STATE.md | Runtime state machine cho phase đang chạy (typed transitions + sub-task tracking) |
-| Typed transition | State thay đổi có tên cụ thể (executing, recovering_l1, control_point, pass) thay vì prose |
-| Scope contract | Fork boilerplate buộc AI chỉ execute trong defined scope + output PASS/FAIL/BLOCKED |
-| Scope drift | AI write ra ngoài write_scope đã khai báo — phát hiện post-task |
-| vp-auto | Autonomous execution skill — chạy tasks liên tục với recovery |
-| vp-resume | Resume từ interrupted session (3 tiers: quick/standard/full restore) |
-| active_stacks | Context stacks đang active trong HANDOFF.json (ví dụ: ["auth-service", "migrations"]) |
-| compliance domain | Domain mà L3 scope reduction unsafe (auth, payment, data migrations, crypto) |
-| horizon-aware routing | vp-request check ROADMAP Post-MVP trước khi route request |
+| Compiler layer | Stage that turns brainstorm and planning outputs into runtime-ready artifacts |
+| Runtime executor | Narrow execution loop that reads structured runtime artifacts only |
+| Runtime truth | Canonical machine-readable state replacing prose inference during execution |
+| Projection artifact | Human-facing markdown view rendered from canonical structured state |
+| `runtime-state.json` | Main execution state machine artifact for v3 |
+| `execution-graph.json` | Planned task/phase dependency graph for executor decisions |
+| `active-packet.json` | Current work packet delivered to the runtime executor |
+| Planning source | Upstream structured source replacing ad hoc roadmap prose as execution input |
 
-## Business Rules (Framework)
+## Business Rules
 
-1. **Doc-first**: Mọi task phải có plan (Paths + File-Level Plan) trước khi implementation commits
-2. **Git persistence**: Mọi task complete = git commit + tag; state luôn recoverable từ git
-3. **Non-breaking v1→v2**: v2 artifacts backward-compatible; v1 projects skip unknown TASK.md fields
-4. **Skill namespace**: Chỉ dùng `vp-*` skills trong ViePilot workflows (BUG-004)
-5. **Planning vs execution separation**: `/vp-brainstorm`, `/vp-evolve`, `/vp-request` = plan only; `/vp-auto` = execute
-6. **Control point protocol**: AI không tự quyết định khi uncertain — surface to user via control point
-7. **Compliance safety**: write_scope paths matching auth/payment/data/crypto → auto-block L3 recovery
+1. Preserve the visible user journey: `/vp-request -> /vp-brainstorm -> /vp-crystallize -> /vp-auto`.
+2. Runtime must not depend on rereading brainstorm prose after compile succeeds.
+3. Planning and runtime concerns stay separated: brainstorm discovers, crystallize compiles, auto executes.
+4. Local-first remains a hard constraint: no mandatory server or network control plane.
+5. The v3 effort must reduce token waste, state drift, and host-specific fragility for Claude Code and Cursor.
 
 ## Data Relationships
 
-```
-HANDOFF.json ──► PHASE-STATE.md (position reference)
-     │
-     └──► HANDOFF.log (event append per sub-task)
-
-TASK.md
-  ├── write_scope → scope drift detection
-  ├── recovery_budget → L1/L2/L3 attempt caps
-  └── recovery_overrides → per-task compliance blocks
-
-TRACKER.md (index ≤30 dòng)
-  ├── logs/decisions.md (on-demand)
-  ├── logs/blockers.md (on-demand)
-  └── logs/version-history.md (on-demand)
+```text
+brainstorm sessions
+  -> extraction / normalization
+  -> planning source
+  -> compiler outputs
+      -> runtime-state.json
+      -> execution-graph.json
+      -> active-packet.json
+      -> human projections (TRACKER, ROADMAP, HANDOFF-compatible views)
 ```
 </domain_knowledge>
 
 <product_vision>
-## Product Vision & Phased Scope
+## Product vision & phased scope
 
-> Aligns với **`ROADMAP.md` → Post-MVP / Product horizon** và brainstorm tier tags.
+> Aligns with `ROADMAP.md -> Post-MVP / Product horizon` and the approved 2026-04-04 brainstorm session.
 
-### MVP boundary (ship first — v2.0.0)
+### MVP boundary (ship first)
 
-**Execution layer**:
-- Typed state machine trong vp-auto (PHASE-STATE.md execution_state block)
-- 3-layer silent recovery (L1 lint, L2 test fix, L3 scope reduce) với recovery budget
-- recovery_overrides per-task (Gap B) — L1/L2/L3 block boolean
-- Compliance domain detection auto-block L3 (Gap G) — auth/payment/data/crypto paths
-- Scope drift detection post-task
-- 3-tier validation pipeline: contract → write_scope lock → git gate
-- Control point state protocol (HANDOFF.json flag + vp-status detection)
-
-**State management**:
-- Continuous HANDOFF.json write sau mỗi sub-task
-- HANDOFF.log append-only JSONL + phase-boundary rotation (Gap D)
-- vp-resume 3-tier restore (quick/standard/full)
-- Parallel context loading (batch read instruction)
-- Static/dynamic boundary trong AI-GUIDE.md
-
-**Templates**:
-- TRACKER.md → index ≤30 dòng + logs/ directory
-- TASK.md → type, write_scope, recovery_budget, can_parallel_with, recovery_overrides
-- PHASE-STATE.md → execution_state YAML + sub-task tracking table
-- HANDOFF.json v2 schema (position.sub_task, recovery.*, context.active_stacks, control_point.*)
-
-**Workflow integration**:
-- crystallize auto-populate write_scope/type/recovery_budget (Gap A)
-- crystallize Gap G compliance domain detection từ write_scope paths
-- vp-request NLP intake — description-first, 2-band confidence threshold
-- vp-request horizon-aware routing + UI direction route detection (Gap C)
-- vp-evolve generate v2 TASK.md template
-- paths: frontmatter cho vp-* skills
+- Define a v3 refactor thesis that keeps the existing command journey intact.
+- Move runtime execution to a state-machine-first, compiler-driven model.
+- Compile enough structured runtime truth that `/vp-auto` no longer needs planning prose.
+- Prioritize solving token waste, workflow duplication, state drift, and host-limit pain for Claude Code and Cursor.
 
 ### Post-MVP themes
 
-- Fork state updates — background bookkeeping sau task PASS (non-blocking TRACKER/CHANGELOG update)
-- Parallel task execution dựa trên dependency graph (can_parallel_with field)
-- AutoDream consolidation cho project knowledge → STACKS.md (post-phase trigger)
-- Gap G extended: description keyword scan + vp-auto pre-flight warning
-- Gap G extended: consensus/contract compliance domains
+- One-shot migration from v2 artifacts into v3 runtime/compiler artifacts.
+- Dedicated compiler layer for extraction, normalization, and project compilation.
+- Adaptive `vp-request` front door for fuzzy intent routing.
+- Two-stage `vp-crystallize` pipeline with explicit extract/review then compile/project behavior.
+- `vp-evolve` as a planning workspace with delta authoring and impact preview.
 
 ### Future / exploratory north star
 
-- Multi-agent coordinator cho complex phases (AI điều phối AI)
-- ML-based auto-approval cho low-risk tasks
-- Token budget awareness trong vp-auto
-- Team memory sync cho multi-developer projects
-- Gap E: /vp-status --all cross-project aggregation (multi-project consultants)
-- Gap F: Career documentation export từ logs/decisions.md across projects
+- Final schema and granularity for `execution-graph.json`.
+- Final ownership model for `active-packet.json` generation.
+- Decide whether compile remains inside `vp-crystallize` Stage B or becomes its own module.
+- Finalize eager vs lazy projection rendering.
 
-### Anti-goals & explicit non-scope (MVP v2)
+### Anti-goals & explicit non-scope
 
-- Thay đổi skill file format (SKILL.md giữ nguyên)
-- Breaking changes với ViePilot v1 projects
-- Rewrite vp-tools CLI
-- Parallel task execution (cần dependency graph infrastructure trước)
-- AutoDream (cần layered context architecture trước)
+- No long-lived dual runtime between v2 and v3.
+- No server-first redesign.
+- No superficial rewrite that preserves prose-heavy execution inference.
 </product_vision>
 
 <conventions>
 ## Naming Conventions
 
-### Framework files
-- Skill dirs: `vp-{name}/` (kebab-case, always `vp-` prefixed)
-- Workflow files: `{verb}.md` (lowercase, no prefix)
-- Template vars: `{{UPPER_SNAKE_CASE}}` (double braces)
-- Phase dirs: `{NN}-{slug}/` (zero-padded number + kebab slug)
-- Task files: `{N}.{M}.md` or `{N}.{M}{letter}.md` for sub-variants
-- State files: UPPER-CASE.md or UPPER-CASE.json (project state)
+### Project Specific
 
-### Git
-- Commit types: feat/fix/docs/refactor/chore/style/test (Conventional Commits)
-- Scopes: `(workflows)`, `(templates)`, `(skills)`, `(lib)`, `(install)`, `(docs)`
-- Tags: `{prefix}-p{N}-t{M}` (per-task) và `{prefix}-p{N}-t{M}-done` (task complete)
-- Version tags: `vN.M.P`
-
-### Documentation
-- User docs: `docs/user/`
-- Dev docs: `docs/dev/`
-- Brainstorm: `docs/brainstorm/session-{YYYY-MM-DD}.md`
-- Requests: `.viepilot/requests/{TYPE}-{N}.md`
+- Structured runtime artifacts: `kebab-case.json`
+- Human-facing projections: existing `.md` files remain stable names where possible
+- Compiler phases: zero-padded directory prefixes (`21-`, `22-`, ...)
+- Stack cache ids: lowercase kebab-case (`nodejs-commonjs`, `clack-prompts`)
 
 ## Code Patterns
 
 ### Preferred Patterns
-- Markdown với XML process tags (`<step name="...">`) cho structured workflows
-- YAML frontmatter cho skill metadata
-- Bash heredoc cho multi-line prompts trong workflow instructions
-- Flat file structure trong `.viepilot/` — không nest quá 3 levels
+
+- Explicit compile boundaries between discovery, normalization, and execution
+- Machine-readable schemas before markdown explanations
+- Deterministic phase/task ownership and write scope
+- Small adapter surfaces for host-specific capabilities
 
 ### Anti-patterns to Avoid
-- Prose-only workflows (không structured steps)
-- Monolithic state files (blob TRACKER.md > 30 lines)
-- Sequential context loading trong vp-auto (phải batch parallel)
-- Hardcoded file paths trong skills (dùng relative từ project root)
+
+- Runtime steps that "remember" architecture from earlier turns instead of loading structured state
+- Duplicated truth across roadmap, tracker, handoff, and task files
+- Eager migration of CommonJS CLI code without a separate compatibility decision
 </conventions>
 
 <constraints>
 ## Must Have
 
-- Mọi thay đổi workflow/skill/template có git commit riêng với conventional commit message
-- vp-auto phải verify write_scope sau mỗi sub-task (scope drift detection)
-- HANDOFF.json phải được ghi sau mỗi sub-task complete (không chỉ on stop)
-- Recovery layers phải silent (không surface cho user trừ khi budget exhausted)
-- control_point.active flag trong HANDOFF.json phải sync với actual control point state
+- Backward-compatible command journey for existing users
+- Local-first execution and file-based state
+- Official-doc alignment for any Node/Jest/npm/Clack behavior change
+- One-shot migration planning before deleting v2-compatible projections
 
 ## Must NOT
 
-- Không implement application code trực tiếp trong `/vp-request`, `/vp-brainstorm`, `/vp-evolve`
-- Không breaking changes với v1 project structure
-- Không thay đổi SKILL.md format (frontmatter schema giữ nguyên)
-- Không commit HANDOFF.log (local audit trail only)
-- Không L3 scope reduction cho tasks với compliance write_scope (auth/payment/data/crypto)
+- Introduce network service assumptions into the core runtime
+- Make `/vp-auto` depend on prose fallback as a normal path
+- Treat projections as canonical runtime state
 
 ## Performance Requirements
 
-- Context loading: tất cả files cho 1 task phải đọc trong ≤1 batch turn
-- TRACKER.md: phải ≤30 dòng sau v2 refactor (index only)
-- HANDOFF.log: không cần đọc trong normal flow; chỉ tail 20 events trên full restore
+- Compiler output should reduce repeated context loading during execution
+- Runtime read set should be bounded to active packet + runtime state + targeted task context
+- Projection refresh should be deterministic and cheap enough to run after compile or phase transitions
 
 ## Security Requirements
 
-- Không hardcode credentials trong bất kỳ workflow/skill/template file nào
-- HANDOFF.log và HANDOFF.json không được commit (gitignore)
-- write_scope verification phải chạy post-task (không bypass)
+- No secrets in profiles, artifacts, or generated schemas
+- Host adapters must not widen write scope implicitly
+- Migration flow must preserve auditability of old state
 </constraints>
 
 <external_dependencies>
 ## Third-party Services
 
-| Service | Purpose | Notes |
-|---------|---------|-------|
-| Claude Code CLI | Runtime environment | Skills execution platform |
-| Git | Version control + state persistence | Required |
-| GitHub | Remote repository | https://github.com/0-CODE/viepilot |
+| Service | Purpose | Documentation |
+|---------|---------|---------------|
+| GitHub | Source hosting, issues, releases | https://github.com/0-CODE/viepilot |
+| Git | Persistence and recovery backbone | https://git-scm.com/doc |
 
 ## Libraries & Frameworks
 
-| Library | Purpose |
-|---------|---------|
-| Bash | Shell scripts trong lib/ + bin/ |
-| Markdown | Skill/workflow/template format |
-| YAML | Frontmatter + structured data blocks |
-| JSON | HANDOFF.json + HANDOFF.log (JSONL) |
+| Library | Version | Purpose |
+|---------|---------|---------|
+| Node.js CommonJS | current repo runtime | CLI execution and local utilities |
+| npm package.json | current repo packaging | scripts, publish config, metadata |
+| Jest | `^30.3.0` | contract and integration tests |
+| `@clack/prompts` | `^0.11.0` | interactive CLI prompts |
 </external_dependencies>

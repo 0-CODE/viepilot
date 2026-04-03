@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Re-crystallized `.viepilot/` planning artifacts around the approved 2026-04-04 v3 compiler-runtime refactor thesis, including new phases 21-24, stack cache index, schemas, and architecture inventory.
+
 ## [2.2.3] - 2026-04-04
 
 Phases **16–19** complete — crystallize review gate, Plan Mode doc-first guidance, optional background state-update fork, and worktree isolation guidance for `L` / `XL` tasks. **Semver PATCH** **2.2.2 → 2.2.3**.

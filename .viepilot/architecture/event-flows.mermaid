@@ -1,0 +1,7 @@
+flowchart LR
+  Edit[planning input changed] --> Extract[extract + normalize]
+  Extract --> Compile[compile]
+  Compile --> Packet[active packet emitted]
+  Packet --> Execute[runtime execute]
+  Execute --> Refresh[projection refresh]
+  Refresh --> Review[user or next task]

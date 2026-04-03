@@ -1,0 +1,5 @@
+version: 1
+notes:
+  - ViePilot is local-first and does not require Kafka or another message broker in the current v3 plan.
+  - This file exists so future phases can record broker topics explicitly if that decision changes.
+topics: []

@@ -3,11 +3,18 @@
   "_comment": "Brainstorm Artifact Manifest — updated on Part 5 save (Agent orchestration). Consumed by /vp-crystallize Step 0A.",
   "sessions": [
     {
+      "id": "session-2026-04-04",
+      "date": "2026-04-04",
+      "file_path": "docs/brainstorm/session-2026-04-04.md",
+      "topics_count": 6,
+      "status": "completed"
+    },
+    {
       "id": "session-2026-04-03",
       "date": "2026-04-03",
       "file_path": "docs/brainstorm/session-2026-04-03.md",
       "topics_count": 20,
-      "status": "active"
+      "status": "completed"
     }
   ],
   "artifacts": {
@@ -20,47 +27,99 @@
       "_comment": "UI/UX direction doc — wireframes, layout decisions, component hierarchy"
     },
     "product_horizon": {
-      "path": "docs/brainstorm/session-2026-04-03.md#product-horizon",
+      "path": "docs/brainstorm/session-2026-04-04.md#product-horizon",
       "type": "product_horizon",
-      "consumed": false,
-      "consumed_at": null,
-      "summary": "Part 5 draft: cross-host orchestration spec + orchestrator layer above vp-auto (Future)",
+      "consumed": true,
+      "consumed_at": "2026-04-04",
+      "summary": "V3 refactor horizon: state-machine-first compiler-driven runtime, one-shot migration, adaptive vp-request, two-stage crystallize, planning-workspace evolve",
       "_comment": "Post-MVP / future features — deferred epics, tier 2/3 items"
     },
     "research_notes": {
-      "path": "docs/brainstorm/session-2026-04-03.md",
+      "path": "docs/brainstorm/session-2026-04-04.md",
       "type": "research_notes",
-      "consumed": false,
-      "consumed_at": null,
-      "summary": "4-tier roadmap A re-hydrate B delegates/ C Claude fork D async; Topic 20 recommendations",
+      "consumed": true,
+      "consumed_at": "2026-04-04",
+      "summary": "Deep-dive pain mapping for Claude Code + Cursor: token waste, runtime truth fragmentation, docs duplication, state artifact overload, v3 compiler/runtime thesis",
       "_comment": "Stack research, API investigation, feasibility notes"
     },
     "architecture_inputs": {
-      "path": "docs/brainstorm/session-2026-04-03.md",
+      "path": "docs/brainstorm/session-2026-04-04.md",
       "type": "architecture_inputs",
-      "consumed": false,
-      "consumed_at": null,
-      "summary": "Tier A–D orchestration; delegates under .viepilot/delegates/; sync fork before async",
+      "consumed": true,
+      "consumed_at": "2026-04-04",
+      "summary": "V3 architecture: State Core + Compiler, runtime never reads planning prose, TRACKER projection, HANDOFF minimal compatibility, PHASE-STATE removed after migration",
       "_comment": "Architecture decisions, service boundaries, data flow choices from brainstorm"
     },
     "domain_entities": {
-      "path": null,
+      "path": "docs/brainstorm/session-2026-04-04.md#runtime-artifact-model",
       "type": "domain_entities",
       "required": true,
-      "consumed": false,
-      "consumed_at": null,
-      "summary": null,
-      "entities": [],
+      "consumed": true,
+      "consumed_at": "2026-04-04",
+      "summary": "Canonical v3 entities: PlanningSource, RuntimeState, ExecutionGraph, ActivePacket, ProjectionArtifact, HostAdapterContract",
+      "entities": [
+        {
+          "name": "PlanningSource",
+          "type": "core",
+          "needs_crud_api": false
+        },
+        {
+          "name": "RuntimeState",
+          "type": "core",
+          "needs_crud_api": false
+        },
+        {
+          "name": "ExecutionGraph",
+          "type": "core",
+          "needs_crud_api": false
+        },
+        {
+          "name": "ActivePacket",
+          "type": "core",
+          "needs_crud_api": false
+        },
+        {
+          "name": "ProjectionArtifact",
+          "type": "reference",
+          "needs_crud_api": false
+        },
+        {
+          "name": "HostAdapterContract",
+          "type": "reference",
+          "needs_crud_api": false
+        }
+      ],
       "_comment": "Named domain entities from brainstorm — feeds crystallize Step 6A entity extraction. entities[]: {name, type, needs_crud_api}"
     },
     "tech_stack": {
-      "path": null,
+      "path": "package.json",
       "type": "tech_stack",
       "required": true,
-      "consumed": false,
-      "consumed_at": null,
-      "summary": null,
-      "stacks": [],
+      "consumed": true,
+      "consumed_at": "2026-04-04",
+      "summary": "Node.js CommonJS CLI repo with npm packaging, Jest tests, and @clack/prompts for TUI flows",
+      "stacks": [
+        {
+          "name": "nodejs-commonjs",
+          "category": "runtime",
+          "version": "repo-current"
+        },
+        {
+          "name": "npm-package-json",
+          "category": "packaging",
+          "version": "v11 docs checked"
+        },
+        {
+          "name": "jest",
+          "category": "testing",
+          "version": "^30.3.0"
+        },
+        {
+          "name": "clack-prompts",
+          "category": "cli",
+          "version": "^0.11.0"
+        }
+      ],
       "_comment": "Tech stack decisions from brainstorm — feeds STACKS.md generation. stacks[]: {name, category, version}"
     },
     "compliance_domains": {

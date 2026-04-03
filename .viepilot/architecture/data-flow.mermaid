@@ -1,16 +1,16 @@
 flowchart TD
-  START([Task Start]) --> LOAD["Batch Context Load\nTRACKER + HANDOFF + PHASE-STATE + TASK\n(parallel, 1 turn)"]
-  LOAD --> STATIC["Static Context\nAI-GUIDE + SYSTEM-RULES\n(cached after first read)"]
-  STATIC --> CONTRACT["Scope Contract\nwrite_scope lock + type check"]
-  CONTRACT --> EXEC["Execute Sub-tasks\n(AI generates + applies changes)"]
-  EXEC --> VALID["3-Tier Validation\n1. contract check\n2. write_scope lock verify\n3. git gate"]
-  VALID -->|pass| HANDOFF["Update State\nHANDOFF.json + PHASE-STATE.md"]
-  VALID -->|fail L1| L1["L1: Lint/Format\n(silent, max attempts per budget)"]
-  L1 --> VALID
-  VALID -->|fail L2| L2["L2: Targeted Test Fix\n(silent, max attempts per budget)"]
-  L2 --> VALID
-  VALID -->|fail L3| L3["L3: Scope Reduce\n(silent, 1 attempt)\nBlocked if recovery_overrides.L3.block=true"]
-  L3 --> VALID
-  VALID -->|budget exhausted| CP["Control Point\n(first user-visible failure)"]
-  HANDOFF --> LOG["HANDOFF.log\nappend event\n(non-blocking)"]
-  LOG --> DONE([Task PASS])
+  B[Brainstorm sessions] --> N[Normalize decisions]
+  N --> P[Planning source]
+  P --> C[Compile runtime artifacts]
+  C --> RS[runtime-state.json]
+  C --> EG[execution-graph.json]
+  C --> AP[active-packet.json]
+  RS --> X[/vp-auto/]
+  EG --> X
+  AP --> X
+  X --> O[Execution outcome]
+  O --> RS
+  O --> PR[Projection refresh]
+  PR --> T[TRACKER.md]
+  PR --> R[ROADMAP.md]
+  PR --> H[HANDOFF.json compatible view]

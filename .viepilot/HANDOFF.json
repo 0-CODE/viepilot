@@ -1,9 +1,9 @@
 {
   "version": 1,
   "position": {
-    "phase": "19",
-    "task": "19.1",
-    "status": "pass",
+    "phase": "21",
+    "task": "21.1",
+    "status": "not_started",
     "sub_task": null
   },
   "recovery": {
@@ -13,8 +13,13 @@
     "recent_blocker": false
   },
   "context": {
-    "active_stacks": [],
-    "last_decision": "All tracked phases complete: ENH-025 adds worktree isolation guidance for L/XL tasks and the TASK template now defaults worktree_isolation to auto."
+    "active_stacks": [
+      "nodejs-commonjs",
+      "npm-package-json",
+      "jest",
+      "clack-prompts"
+    ],
+    "last_decision": "Crystallize approved the v3 compiler-runtime refactor milestone and seeded phases 21-24 from the 2026-04-04 brainstorm thesis."
   },
   "control_point": {
     "active": false,
@@ -22,7 +27,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T17:54:48Z",
+    "last_written": "2026-04-04T00:00:00Z",
     "last_archived": null
   }
 }

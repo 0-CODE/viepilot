@@ -1,112 +1,102 @@
-# ViePilot v2 — AI Navigation Guide
+# ViePilot - AI Navigation Guide
 
-> **Đọc file này TRƯỚC KHI làm bất kỳ task nào.**
-> File này giúp tìm đúng context mà không cần load tất cả.
+> Read this first. This crystallize run seeds the **v3 compiler-runtime refactor** while the published baseline remains **v2.2.3**.
 
-*Profile binding: not configured (framework dev session — no global profile).*
+## Quick Context
+
+- ViePilot global profile: not bound (`.viepilot/META.md` missing)
+- Baseline release: `2.2.3`
+- Planning target: `3.0.0-alpha`
+- Diagram profile: `default-monolith`
+- Stack index: `.viepilot/STACKS.md`
 
 ## Quick Lookup
 
-| Tôi cần... | Đọc file | Section |
-|------------|----------|---------|
-| Hiểu ViePilot làm gì | `PROJECT-CONTEXT.md` | `<domain_knowledge>` |
-| Tầm nhìn v2 MVP / Post-MVP / Future | `PROJECT-CONTEXT.md` | `<product_vision>` |
-| Roadmap + horizon | `ROADMAP.md` | Post-MVP / Product horizon |
-| Kiến trúc framework | `ARCHITECTURE.md` | `## Module Architecture` |
-| Đang ở phase nào | `TRACKER.md` | `## Current State` |
-| Task tiếp theo | `ROADMAP.md` | Phase đang In Progress |
-| Coding conventions (Markdown/YAML) | `SYSTEM-RULES.md` | `<coding_rules>` |
-| Những gì KHÔNG được làm | `SYSTEM-RULES.md` | `<do_not>` |
-| Decisions đã quyết định | `logs/decisions.md` | on-demand |
-| Resume công việc dở | `HANDOFF.json` | - |
-| Blocker history | `logs/blockers.md` | on-demand |
+| Need | Read | Section |
+|------|------|---------|
+| Project purpose and constraints | `PROJECT-CONTEXT.md` | `<domain_knowledge>` |
+| v3 thesis and phased scope | `PROJECT-CONTEXT.md` | `<product_vision>` |
+| Near-term phases plus horizon | `ROADMAP.md` | milestone phases + horizon block |
+| Current execution position | `TRACKER.md` | `## Current State` |
+| Resume point | `HANDOFF.json` | `position`, `context` |
+| Architecture and diagram inventory | `ARCHITECTURE.md` | overview + applicability matrix |
+| Machine-readable diagram scope | `SPEC.md` | `## Diagram Applicability Matrix` |
+| Runtime/logical schemas | `schemas/` | all files |
+| Coding and process rules | `SYSTEM-RULES.md` | all rule blocks |
+| Metadata and attribution | `PROJECT-META.md` | project/org/developer tables |
+| Original rationale | `docs/brainstorm/session-2026-04-04.md` | thesis + horizon |
 
 ## Context Loading Strategy
 
-### Minimal Context (quick tasks — S complexity)
-```
-Batch read (parallel, 1 turn):
-1. AI-GUIDE.md (file này)
-2. TRACKER.md → Current State
-3. phases/{N}-{slug}/tasks/{task}.md
-```
+> Load related files in one batch. Do not read them sequentially unless a previous read changes the next decision.
 
-### Standard Context (coding tasks — M complexity)
-```
-Batch read (parallel, 1 turn):
-1. AI-GUIDE.md + TRACKER.md
-2. HANDOFF.json (position + recovery state)
-3. phases/{N}-{slug}/PHASE-STATE.md
-4. phases/{N}-{slug}/tasks/{task}.md
-5. SYSTEM-RULES.md#coding_rules
-```
+### Static boundary
 
-### Full Context (architecture decisions — L/XL)
-```
-Batch read (parallel, 1 turn):
-1. AI-GUIDE.md + TRACKER.md + HANDOFF.json
-2. PROJECT-CONTEXT.md → <product_vision> (đọc TRƯỚC khi lock thiết kế)
-3. ROADMAP.md → Post-MVP / Future horizon
-4. ARCHITECTURE.md
-5. SYSTEM-RULES.md
-6. phases/{N}-{slug}/PHASE-STATE.md + task file
-```
+- `SYSTEM-RULES.md`
+- `ARCHITECTURE.md`
+- `PROJECT-META.md`
+- `.viepilot/STACKS.md`
 
-> **QUAN TRỌNG:** Đọc tất cả files trong cùng 1 batch (multiple Read tool calls in 1 turn).
-> Không đọc sequential — luôn đọc parallel để tiết kiệm turns.
+### Dynamic boundary
 
-### Static boundary (không cần đọc lại mỗi task)
-- `SYSTEM-RULES.md` framework rules → cache sau lần đầu
-- `ARCHITECTURE.md` module structure → cache sau lần đầu
+- `TRACKER.md`
+- `HANDOFF.json`
+- current `PHASE-STATE.md`
+- current task file
 
-### Dynamic boundary (đọc mỗi task)
-- `TRACKER.md` + `HANDOFF.json` + `PHASE-STATE.md` + task file
+### Read before locking implementation decisions
 
-### Conditional load (chỉ khi cần)
-- `logs/decisions.md` → khi cần rationale cho decision
-- `logs/blockers.md` → khi `HANDOFF.json.recovery.recent_blocker == true`
-- `PROJECT-CONTEXT.md` → khi task liên quan đến scope/architecture
+1. `PROJECT-CONTEXT.md` `<product_vision>`
+2. `ROADMAP.md` current phase + horizon
+3. `ARCHITECTURE.md` relevant sections
 
-## File Relationships
+This refactor specifically exists to remove runtime dependence on planning prose. Treat prose as rationale or projection unless a file is explicitly marked canonical.
 
-```
-AI-GUIDE.md (đọc đầu tiên)
-     │
-     ├── TRACKER.md (state index ≤30 dòng)
-     │      └── logs/ (on-demand detail)
-     │
-     ├── HANDOFF.json (exact position + recovery state)
-     │      └── HANDOFF.log (audit trail, không cần đọc thường)
-     │
-     ├── PROJECT-CONTEXT.md (domain + product_vision / phased scope)
-     │      └── đọc sớm với ROADMAP.md horizon
-     │
-     ├── ROADMAP.md (what to do + Post-MVP / Future)
-     │      └── phases/{N}/ → PHASE-STATE.md → tasks/
-     │
-     ├── SYSTEM-RULES.md (how to write framework code)
-     │
-     └── ARCHITECTURE.md (module dependencies + data flow)
-            └── architecture/*.mermaid (diagram sources)
-```
+### Stack cache lookup
 
-## ViePilot-Specific Rules (lưu ý cho AI)
+1. Read `.viepilot/STACKS.md`
+2. Read each stack `SUMMARY.md` first
+3. Expand to `BEST-PRACTICES.md` and `ANTI-PATTERNS.md` only if the task changes that layer
+4. Use `SOURCES.md` when a behavior decision needs official-doc verification
 
-| Rule | Why |
-|------|-----|
-| Không implement mã shipping trong `/vp-request`, `/vp-evolve`, `/vp-brainstorm` | Chỉ planning/doc; execution = `/vp-auto` |
-| Mọi thay đổi workflow/skill/template = commit riêng | Git history as audit trail |
-| Không breaking changes với v1 projects | Non-goal của v2 |
-| Skill file format (SKILL.md) giữ nguyên | Non-goal của v2 |
-| Test verify: manual skill invocation sau mỗi Phase | Framework không có automated test runner |
+## Install Path Warning
+
+`~/.claude/viepilot/`, `~/.cursor/viepilot/`, and `~/.codex/viepilot/` are read-only runtime mirrors. All edits must happen in this repository working tree.
+
+## Minimal Read Sets
+
+### Quick task
+
+1. `AI-GUIDE.md`
+2. `TRACKER.md`
+3. target file
+
+### Execution task
+
+1. `AI-GUIDE.md`
+2. `TRACKER.md`
+3. `PROJECT-CONTEXT.md`
+4. `ROADMAP.md`
+5. current task file
+6. `SYSTEM-RULES.md`
+
+### Architecture or compiler task
+
+1. `AI-GUIDE.md`
+2. `PROJECT-CONTEXT.md`
+3. `ROADMAP.md`
+4. `ARCHITECTURE.md`
+5. `SPEC.md`
+6. `schemas/`
+7. referenced stack cache entries
 
 ## Commands Reference
 
-| Command | Dùng khi |
-|---------|----------|
-| `/vp-status` | Xem progress nhanh |
-| `/vp-auto` | Chạy autonomous |
-| `/vp-pause` | Dừng, lưu state |
-| `/vp-resume` | Tiếp tục từ pause |
-| `/vp-evolve` | Thêm features/milestone mới |
-| `/vp-request` | Log bug/feature/enhancement |
+| Command | Use |
+|---------|-----|
+| `/vp-status` | Inspect progress and control points |
+| `/vp-auto` | Start phases 21-24 |
+| `/vp-pause` | Persist execution state |
+| `/vp-resume` | Rehydrate current phase/task |
+| `/vp-evolve` | Change milestone or add planning deltas |
+| `/vp-docs` | Refresh public docs after milestone work |

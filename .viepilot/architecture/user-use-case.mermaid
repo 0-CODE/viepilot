@@ -1,0 +1,8 @@
+flowchart TD
+  User --> Intent["/vp-request"]
+  Intent --> Explore["/vp-brainstorm"]
+  Explore --> Review["/vp-crystallize review gate"]
+  Review --> Compile["/vp-crystallize generate"]
+  Compile --> Execute["/vp-auto"]
+  Execute -->|needs change| Explore
+  Execute -->|delivers progress| User

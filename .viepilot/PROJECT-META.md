@@ -1,82 +1,103 @@
-# ViePilot — Project Meta
+# ViePilot - Project Metadata
 
 ## Project Info
 
 | Field | Value |
 |-------|-------|
 | Name | ViePilot |
-| Short description | Autonomous vibe coding framework cho solo developers |
-| Full description | ViePilot là framework giúp solo developer thực hiện các dự án lớn thông qua structured brainstorm → crystallize → autonomous execution loop. Doc-first, git-tracked, human-in-the-loop. |
-| Version | 2.0.0-alpha |
-| Status | In Development |
-| Inception | 2026 |
+| Description | State-machine-first, compiler-driven AI workflow framework preserving the `vp-request -> vp-brainstorm -> vp-crystallize -> vp-auto` journey |
+| Inception Year | 2026 |
 | License | MIT |
+| Baseline Release | 2.2.3 |
+| Planning Target | 3.0.0-alpha |
 
-## Organization Info
+## Organization
 
 | Field | Value |
 |-------|-------|
-| Organization | CÔNG TY TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM |
-| Repository | https://github.com/0-CODE/viepilot |
-| Issue Tracker | https://github.com/0-CODE/viepilot/issues |
+| Name | CÔNG TY TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM |
+| Website | https://viepilot.creps.vn |
 
-*No ViePilot global profile bound — organization context from metadata above.*
+*No ViePilot global profile bound — organization context comes from Step 0 metadata only.*
 
-## Lead Developer
+## Package Structure
+
+| Field | Value |
+|-------|-------|
+| Base Package | `io.github.zero-code.viepilot` |
+| Group ID | `io.github.zero-code.viepilot` |
+| Artifact ID | `viepilot` |
+
+### Module Packages
+
+This repository ships as a Node/CommonJS CLI and markdown-first framework, so the package IDs are attribution coordinates rather than a Java source tree contract.
+
+```text
+viepilot/
+├── bin/                 # CLI entrypoints
+├── lib/                 # shared Node utilities
+├── skills/              # vp-* skills
+├── workflows/           # execution guides
+├── templates/           # project and phase scaffolds
+├── docs/                # user and developer documentation
+├── tests/               # contract + integration tests
+└── .viepilot/           # local project state for this framework repo
+```
+
+## Developers
+
+### Lead Developer
 
 | Field | Value |
 |-------|-------|
 | Name | Trần Thành Nhân |
-| Username | Nhan.TT |
 | Email | nhan.tt@mig.com.vn |
-| GitHub | 0-CODE |
+| GitHub | [@0-CODE](https://github.com/0-CODE) |
+| Role | Project Lead, Core Developer |
 
-## Package Structure
+### Contributors
 
-ViePilot là shell/Markdown framework, không dùng Java package structure.
+See [CONTRIBUTORS.md](/Users/sonicq12/DEV_PROJECTS/viepilot/CONTRIBUTORS.md).
 
-```
-viepilot/
-├── skills/           # Skill definitions (vp-* namespaced)
-│   └── vp-{name}/
-│       └── SKILL.md
-├── workflows/        # Process workflow definitions
-│   └── {name}.md
-├── templates/        # Artifact templates
-│   ├── project/      # .viepilot/ project templates
-│   └── phase/        # Phase + task templates
-├── lib/              # Shell library functions
-├── bin/              # CLI tools (vp-tools)
-├── docs/             # User + developer documentation
-│   ├── user/
-│   ├── dev/
-│   └── brainstorm/
-└── .viepilot/        # Framework's own project state (this directory)
-```
+## Repository
+
+| Field | Value |
+|-------|-------|
+| URL | https://github.com/0-CODE/viepilot |
+| Issues | https://github.com/0-CODE/viepilot/issues |
+| CI/CD | GitHub Actions |
 
 ## File Headers
 
-For shell scripts (`lib/`, `bin/`):
+### Shell Script Header
+
 ```bash
 #!/usr/bin/env bash
-# =============================================================================
-# ViePilot — {component name}
+# ViePilot
 # Copyright (c) 2026 CÔNG TY TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM
-# Lead Developer: Trần Thành Nhân <nhan.tt@mig.com.vn>
-# License: MIT — https://github.com/0-CODE/viepilot/blob/main/LICENSE
-# =============================================================================
+# Licensed under the MIT License
 ```
 
-For Markdown files (optional header comment):
+### JavaScript / CommonJS Header
+
+```js
+/**
+ * ViePilot
+ * Copyright (c) 2026 CÔNG TY TNHH TMDV CÔNG NGHỆ & GIẢI PHÁP CREPS VIỆT NAM
+ * License: MIT
+ */
+```
+
+### Markdown Header
+
 ```markdown
-<!-- ViePilot v2 | {file purpose} | MIT License -->
+<!-- ViePilot | {file purpose} | MIT -->
 ```
 
-## Version History Reference
+## Author Tag
 
-See `logs/version-history.md` for full version history.
-
-| Version | Branch | Notes |
-|---------|--------|-------|
-| 1.9.10 | main | Latest stable (v1) |
-| 2.0.0-alpha | v2 | In development |
+```js
+/**
+ * @author Trần Thành Nhân
+ */
+```

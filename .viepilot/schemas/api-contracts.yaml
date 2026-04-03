@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: ViePilot Local Control Contracts
+  version: 3.0.0-alpha
+  description: >
+    Reference-only contract for local command-style interactions. ViePilot does not
+    currently expose a deployed HTTP API; these paths document semantic command inputs.
+servers:
+  - url: local://viepilot
+paths:
+  /commands/request:
+    post:
+      summary: Route a user intent into the correct planning or execution path
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message:
+                  type: string
+      responses:
+        "200":
+          description: Routed intent
+  /commands/crystallize:
+    post:
+      summary: Run extraction and compile stages for a planning set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode:
+                  type: string
+                  enum: [extract, generate]
+      responses:
+        "200":
+          description: Artifacts generated or extraction bundle returned
+  /commands/auto:
+    post:
+      summary: Execute the current active packet
+      responses:
+        "200":
+          description: Execution outcome with refreshed runtime state
+x-local-only: true

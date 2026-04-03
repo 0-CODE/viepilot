@@ -2,6 +2,8 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
+Project website: https://viepilot.creps.vn
+
 [![Version](https://img.shields.io/badge/version-2.2.3-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
@@ -15,6 +17,8 @@
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
 ViePilot is a skill framework that enables AI assistants to develop projects **autonomously**, with **control points**, and **recovery capability**. Built with professional standards: Semantic Versioning, Conventional Commits, Keep a Changelog.
+
+Current planning focus: the `.viepilot/` workspace is now seeded for a **v3 compiler-runtime refactor** while the published package baseline remains **v2.2.3**.
 
 ### Support ViePilot
 
