@@ -47,6 +47,24 @@ Mỗi task:
 
 Workflow `autonomous.md` yêu cầu **ghi nhận kế hoạch trong file task** và **`PHASE-STATE` → `in_progress`** trước khi chỉnh sửa deliverable. Xem `workflows/autonomous.md` — *Pre-execution documentation gate*.
 
+### Project working directory guard (BUG-007)
+
+**`{project_cwd}`** = thư mục gốc nơi tồn tại `.viepilot/TRACKER.md` (project bạn đang phát triển). Mọi file **shipping** (code, workflow trong repo, docs dự án) phải nằm **bên trong** đường dẫn này.
+
+**Chỉ đọc, không ghi:** `~/.claude/viepilot/`, `~/.cursor/viepilot/` và các install path runtime của ViePilot — agent có thể đọc skill/workflow từ đó để hiểu spec, nhưng **không** được apply patch hay ghi file tại các đường dẫn đó (tránh sửa nhầm bundle cài đặt, không qua git của dự án).
+
+Trước **mỗi** lần tạo/sửa/xóa file, workflow yêu cầu: resolve path tuyệt đối → chỉ tiếp tục nếu target nằm trong `{project_cwd}`. Vi phạm → **control point** (retry sau khi chỉnh đúng target, hoặc stop).
+
+**Tham chiếu code:** `lib/project-write-guard.cjs` (`validateWriteTarget`) và `tests/integration/bug007-working-directory-guard.test.js` giữ invariant này trong CI.
+
+### Token budget awareness (Phase 10)
+
+Sau **mỗi sub-task**, `autonomous.md` khuyến nghị ước lượng mức dùng context (heuristic `used_pct`). Trên **~70%** → cảnh báo + gợi ý pause/handoff; trên **~90%** → buộc pause và cập nhật HANDOFF để tránh cắt ngang giữa chừng không có điểm nối. Sự kiện JSONL tùy chọn: `token_budget_warning` trong `HANDOFF.log` (xem ví dụ mục HANDOFF.log phía dưới).
+
+### Diagram profiles & stale diagrams (Phase 11)
+
+Trong **crystallize**, bước chọn **diagram profile** (theo stack: microservices, Kafka, SQL, SPA, …) quyết định ma trận diagram trong `.viepilot/SPEC.md` và cấu trúc thư mục `architecture/*` (stub + README). Trong **`/vp-auto`**, sau khi **phase complete**, nếu phase vừa chạm vào `architecture/`, `.viepilot/architecture/`, hoặc `.viepilot/ARCHITECTURE.md`, workflow kích hoạt **một lần** bước đối chiếu diagram/stale reconciliation ở ranh giới phase (không lặp từng task). Chi tiết normative: `workflows/crystallize.md` (Step 1D / Step 4) và `workflows/autonomous.md` (phase complete).
+
 ### `/vp-auto` không có thêm arg — hiểu đúng
 
 - **Không** có nghĩa “mỗi task bắt buộc dừng một lần” trong tài liệu workflow; đó không phải cờ ẩn.
@@ -178,6 +196,7 @@ Dùng `/vp-status` để xem control point banner bất cứ lúc nào.
 - Recovery budget exhausted (sau L1/L2/L3 attempts)
 - Scope drift violation (file ngoài write_scope)
 - Task contract validation fail
+- **Working directory guard:** mục tiêu ghi ngoài `{project_cwd}` hoặc dưới install path (BUG-007)
 - Gap G Extended: task text có keyword nhạy cảm nhưng chưa `L3.block` (xem mục Gap G Extended)
 - Quality gate failures cần user decision
 

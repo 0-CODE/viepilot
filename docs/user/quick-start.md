@@ -113,6 +113,10 @@ Nếu dự án thiên về UI/UX:
 
 Workflow sẽ duy trì direction artifacts tại `.viepilot/ui-direction/{session-id}/`.
 
+### Brainstorm artifact manifest (Phase 9)
+
+Trong quá trình brainstorm, ViePilot có thể ghi **`.viepilot/brainstorm-manifest.json`** (schema template trong `templates/project/brainstorm-manifest.json`): theo dõi session, artifact types (`ui_direction`, `product_horizon`, `domain_entities`, `tech_stack`, …), cờ `consumed`, và gợi ý `ui_task_context_hint`. File này được cập nhật khi `/save` / kết thúc session theo `workflows/brainstorm.md`. **`/vp-crystallize`** đọc manifest ở **Step 0A** trước các bước khác và đánh dấu consumed sau khi load — tránh mất ngữ cảnh giữa brainstorm → crystallize → `/vp-auto`.
+
 ---
 
 ## Step 4: Crystallize
@@ -130,6 +134,8 @@ ViePilot tạo `.viepilot/` directory với:
 - `AI-GUIDE.md` — Context load strategy (static/dynamic boundary)
 - `HANDOFF.json` — Machine-readable state (auto-managed, đừng sửa tay)
 - `HANDOFF.log` — Append-only audit trail; tự xoay vòng cuối mỗi phase → `logs/handoff-phase-N.log` (gitignored)
+- `brainstorm-manifest.json` — (nếu đã brainstorm) tiêu thụ ở crystallize Step 0A; artifact **`domain_entities`** / **`tech_stack`** (ENH-030) bắt buộc khi có trong schema dự án
+- `SPEC.md` / ma trận diagram — sau crystallize có thể có **Domain Entity Manifest** (ENH-022) và **Diagram Applicability Matrix** (Phase 11) tùy stack
 - `phases/*/tasks/*.md` — Task files với v2 metadata (type, write_scope, recovery_budget)
 
 **Post-MVP không chỉ nằm trong brainstorm:** sau crystallize, horizon phải vào `ROADMAP.md` + vision theo pha trong `PROJECT-CONTEXT.md`. Tóm tắt cho user: [Product horizon end-to-end](features/product-horizon.md).

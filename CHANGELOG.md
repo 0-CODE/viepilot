@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **BUG-007 integration coverage**: `lib/project-write-guard.cjs` (`validateWriteTarget`) + `tests/integration/bug007-working-directory-guard.test.js` — blocks install-path targets and paths outside project cwd; contract checks on `workflows/autonomous.md` + `templates/project/AI-GUIDE.md` (Phase 12.1)
 - **ENH-022 integration coverage**: `lib/crystallize-dependency-validate.cjs` + fixtures `tests/fixtures/enh022-{gap,ok}/` + `tests/integration/enh022-entity-dependency.test.js` — manifest parse + Step 11A-style dependency gap detection; `crystallize.md` contract greps (Phase 12.2)
+- **User docs (Phase 12.3)**: `docs/user/features/autonomous-mode.md` — BUG-007 working-directory guard, token budget, diagram/stale reconciliation; `docs/user/quick-start.md` — brainstorm manifest + crystallize artifacts; `docs/advanced-usage.md` — sections install path guard, manifest lifecycle, diagram profiles
 
 ### Removed
 

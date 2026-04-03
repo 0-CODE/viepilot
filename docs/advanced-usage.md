@@ -433,7 +433,43 @@ Block merges if version wasn't bumped:
 
 ---
 
-## 9. Multi-Project Usage
+## 9. Project cwd vs install path (BUG-007)
+
+Khi phát triển **chính repo ViePilot** hoặc bất kỳ dự án nào có CLI đọc workflow từ `~/.cursor/viepilot/` hoặc `~/.claude/viepilot/`, agent **không** được coi đường đó là nơi ghi mã.
+
+| Vùng | Vai trò |
+|------|---------|
+| `{project_cwd}` (có `.viepilot/TRACKER.md`) | **Ghi** code, workflow nguồn, docs — đây là git repo bạn đang mở |
+| `~/.cursor/viepilot/`, `~/.claude/viepilot/` | **Chỉ đọc** — runtime bundle skills/workflows |
+
+Vi phạm → control point trong `/vp-auto`. Helper có thể tái sử dụng: `lib/project-write-guard.cjs` (`validateWriteTarget`).
+
+`templates/project/AI-GUIDE.md` nhắc install path **READ-ONLY** trong static context để giảm nhầm lẫn.
+
+---
+
+## 10. Brainstorm artifact manifest (Phase 9)
+
+- **File:** `.viepilot/brainstorm-manifest.json` (theo schema mẫu `templates/project/brainstorm-manifest.json`).
+- **Khi nào cập nhật:** lưu session brainstorm (`/save`, `/end`, …) theo `workflows/brainstorm.md`.
+- **Crystallize Step 0A:** đọc manifest trước các bước khác; sau khi load hợp lệ → đánh dấu `consumed` + timestamp.
+- **ENH-030:** các artifact type `domain_entities`, `tech_stack` (và tùy chọn `compliance_domains`) được khai báo **required** trong schema template — giúp crystallize không bỏ sót entity/stack khi sinh roadmap.
+
+Xem thêm: [Product horizon](user/features/product-horizon.md), [Quick Start — Step 3](user/quick-start.md).
+
+---
+
+## 11. Diagram profiles & architecture folders (Phase 11)
+
+**Crystallize** chọn **diagram profile** từ tín hiệu stack (microservices, messaging, SQL, SPA, auth, state-heavy entities, …), ghi **Diagram Applicability Matrix** vào `.viepilot/SPEC.md`, và tạo cây `architecture/{cross,backend,frontend,sequences,state-machines}/` với stub README khi diagram áp dụng được.
+
+**`/vp-auto`:** ở ranh giới **phase complete**, nếu diff phase chạm `architecture/`, `.viepilot/architecture/`, hoặc `.viepilot/ARCHITECTURE.md`, chạy **một lần** bước đối chiếu diagram/stale reconciliation (không lặp theo từng task).
+
+Normative: `workflows/crystallize.md` (Step 1D, Step 4), `workflows/autonomous.md` (phase complete).
+
+---
+
+## 12. Multi-Project Usage
 
 Use ViePilot across multiple projects simultaneously:
 

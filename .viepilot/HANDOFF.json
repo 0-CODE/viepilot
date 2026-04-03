@@ -2,7 +2,7 @@
   "version": 1,
   "position": {
     "phase": "12",
-    "task": "12.3",
+    "task": "12.4",
     "status": "not_started"
   },
   "recovery": {
@@ -13,7 +13,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 12 task 12.2 PASS: lib/crystallize-dependency-validate.cjs + tests/fixtures/enh022-* + integration tests. Next: 12.3 docs (autonomous-mode, quick-start, advanced-usage)."
+    "last_decision": "Phase 12 task 12.3 PASS: autonomous-mode + quick-start + advanced-usage (BUG-007, manifest, diagram profiles). Next: 12.4 README sync."
   },
   "control_point": {
     "active": false,
@@ -21,7 +21,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T19:15:00Z",
+    "last_written": "2026-04-03T20:00:00Z",
     "last_archived": null
   }
 }
