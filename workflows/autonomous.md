@@ -323,6 +323,11 @@ Run **immediately after** Execute Task **step 9** state writes for each sub-task
 1. **Estimate `used_pct`** (integer 0–100):
    - Prefer platform-provided context or token utilization when the runtime exposes it.
    - Otherwise apply a **conservative heuristic** (e.g. cumulative tool output volume, transcript depth, large file reads) and label the value an **estimate** in any user-visible banner.
+1b. **If `used_pct > 70` (audit — non-blocking):** append one JSONL line to `.viepilot/HANDOFF.log` (do not block execution if append fails):
+   ```
+   {"ts":"<ISO8601>","event":"token_budget_warning","task":"{task}","phase":"{phase}","sub_task":"{sub_task_id}","used_pct":<used_pct>,"severity":"warn|critical"}
+   ```
+   Use `severity`: `"critical"` when `used_pct > 90`, otherwise `"warn"`. Omit `sub_task` or use `null` when no sub-task id applies.
 2. **If `used_pct > 90` (critical — not skippable, ignores `--fast`):**
    - **Force pause**: do **not** continue to the next sub-task or advance Verify Task for remaining sub-tasks in this turn.
    - **HANDOFF.json** (mandatory): update per project schema (**v1/v2** per **HANDOFF.json Schema Detection** above). At minimum set `meta.last_written` to ISO8601 now; keep `position` aligned with the sub-task just completed and the **next** queued sub-task (or explicit next id). Add a short persistence note (e.g. v1 `context.last_decision`, or equivalent v2 field): `token_budget force pause: used_pct≈{used_pct}`.

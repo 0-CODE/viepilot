@@ -123,6 +123,7 @@ Nếu có file ngoài `write_scope` → **control point ngay** (không recovery)
 
 ```jsonl
 {"ts":"...","event":"task_start","task":"2.3","phase":"02","complexity":"M"}
+{"ts":"...","event":"token_budget_warning","task":"2.3","phase":"02","sub_task":"2.3a","used_pct":78,"severity":"warn"}
 {"ts":"...","event":"l1_recovery","task":"2.3","attempt":1,"trigger":"lint_error"}
 {"ts":"...","event":"scope_drift","task":"2.3","violations":["src/other/"]}
 {"ts":"...","event":"task_pass","task":"2.3","phase":"02"}

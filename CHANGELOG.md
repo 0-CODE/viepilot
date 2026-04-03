@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **HANDOFF.log `token_budget_warning`**: Sau sub-task PASS, khi `used_pct > 70`, `workflows/autonomous.md` hướng dẫn append JSONL với `used_pct` + `severity` (`warn` / `critical`); ghi non-blocking (Phase 10.4)
 - **vp-status `--all`**: Cross-project aggregate từ `~/.viepilot/project-registry.json` — đọc HANDOFF rồi TRACKER mỗi project; bảng trạng thái với icon ● ⚠ ✓ ○; skill version 2.1.0
 
 ### Planned
