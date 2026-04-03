@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 07-working-dir-guard (next)
-- **Task**: 7.3 — Version bump 2.0.2 → 2.0.3 + CHANGELOG
+- **Phase**: 08-crystallize-entity-extraction (next)
+- **Task**: 8.1 — crystallize.md Domain Entity Extraction step
 - **Version**: 2.0.3 (→ 2.1.0 after Phase 08)
 - **Last Update**: 2026-04-03
 
@@ -17,7 +17,7 @@
 | 04 | Verification & Documentation | 11 | complete ✅ |
 | 05 | Hotfix — Install Path Convention + Logic Gaps | 5 | complete ✅ |
 | 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | complete ✅ |
-| 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | in progress 🔄 |
+| 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | complete ✅ |
 | 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | not started 🔲 |
 | 09 | Brainstorm Artifact Manifest | 7 | not started 🔲 |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | not started 🔲 |
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 2 / 30 tasks (6%)
+**v2.1 milestone**: 3 / 30 tasks (10%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -49,8 +49,8 @@
 
 ## Next Action
 
-Phase 07 2/3 tasks done. Task 7.3 (version bump → 2.0.3) is next. Then Phase 08.
+Phase 07 complete (v2.0.3). Phase 08 next (ENH-022).
 
-- Phase directory: `.viepilot/phases/07-working-dir-guard/`
-- Current task: **7.3** — Version bump 2.0.2 → 2.0.3 + CHANGELOG (S)
-- After Phase 07: Phase 08 (ENH-022 crystallize entity extraction)
+- Phase directory: `.viepilot/phases/08-crystallize-entity-extraction/`
+- First task: **8.1** — crystallize.md Domain Entity Extraction step (M)
+- Execution order: **8.1 → 8.2 → 8.3 → 8.4**
