@@ -119,6 +119,31 @@ manual:
 ## Rollback
 ```bash
 # If need to undo this task:
-TAG_PREFIX=$(vp-tools tag-prefix --raw)
+TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)
 git revert --no-commit $(git rev-list "${TAG_PREFIX}-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}".."${TAG_PREFIX}-p{{PHASE_NUMBER}}-t{{TASK_NUMBER}}-done")
 ```
+
+## Post-Completion
+
+> **AI fills this section after task PASS** — replace all placeholders below with actual values.
+
+### Implementation Summary
+- (Replace with 2–5 bullets describing what was actually built/changed and why)
+
+### Files Changed
+| File | Action |
+|------|--------|
+| `(file path)` | created \| modified \| deleted |
+
+### Checklist Verification
+- [ ] `## Meta → Status` set to `done`
+- [ ] All `## Pre-execution documentation gate` boxes ticked `[x]`
+- [ ] All `## Acceptance Criteria` boxes ticked `[x]`
+- [ ] All `## Best Practices to Apply` boxes ticked `[x]`
+- [ ] `## Files Changed` table populated (above)
+- [ ] PHASE-STATE.md task row: Status=`done`, Completed=today, Git Tag=actual tag
+- [ ] PHASE-STATE.md `execution_state.status` updated
+- [ ] PHASE-STATE.md Files Changed table: entry added for each file
+- [ ] HANDOFF.json `position.task` → next task ID
+- [ ] HANDOFF.json `meta.last_written` → now
+- [ ] TRACKER.md current task line updated
