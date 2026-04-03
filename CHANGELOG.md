@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- None.
+- **Phase 07 (BUG-007)**: Working Directory Guard — autonomous.md + AI-GUIDE.md template → v2.0.3
+- **Phase 08 (ENH-022)**: Crystallize domain entity extraction + dependency validation → v2.1.0
+- **Phase 09**: Brainstorm Artifact Manifest — manifest schema + crystallize Step 0A → v2.1.1
+- **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
+- **Phase 11**: Diagram Profile System — stack-aware architecture diagram generation → v2.1.3
+- **Phase 12**: Verification + Docs + v2.1.0 Final Release
 
 ## [2.0.2] - 2026-04-03
 

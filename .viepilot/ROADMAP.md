@@ -1,160 +1,135 @@
 # ViePilot — Roadmap
 
-## Milestone: v2 MVP
+## Milestone: v2.1 Post-MVP Core
 
 ### Overview
-- **Version**: 2.0.0
-- **Goal**: Upgrade ViePilot execution layer với typed state machine, layered recovery, continuous state, và improved workflow integration
-- **Phases**: 4
+- **Version target**: 2.1.0
+- **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System
+- **Phases**: 6
 - **Status**: In Progress
 
 ---
 
-### Phase 1: Foundation — Templates & State Machine ✅
-**Goal**: Refactor tất cả core templates để support v2 metadata fields và kiến trúc mới
-**Estimated Tasks**: 6 / 6 complete
-**Dependencies**: None
+### Phase 7: Hotfix — Working Directory Guard (BUG-007)
+**Goal**: Prevent vp-auto from editing install paths (`~/.claude/viepilot/`, `~/.cursor/viepilot/`) instead of codebase source
+**Estimated Tasks**: 3
+**Dependencies**: None (critical safety fix)
 
 | Task | Description | Acceptance Criteria | Complexity |
 |------|-------------|---------------------|------------|
-| 1.1 | Refactor TRACKER.md template → index ≤30 dòng + logs/ structure | Template ≤30 lines; logs/ dir referenced; no inline Decision Log | S |
-| 1.2 | Tạo logs/ templates: decisions.md, blockers.md, version-history.md | 3 template files exist; crystallize generates them | S |
-| 1.3 | Refactor PHASE-STATE.md → execution_state YAML block + sub-task tracking | execution_state block với typed transitions; sub-task table present | M |
-| 1.4 | Refactor TASK.md → type, write_scope, recovery_budget, can_parallel_with, recovery_overrides | All 5 new fields present; recovery_overrides includes L3.block + reason | M |
-| 1.5 | Refactor AI-GUIDE.md → static/dynamic boundary comment | Static vs dynamic sections labeled; parallel batch instruction present | S |
-| 1.6 | Refactor HANDOFF.json schema v2 | Schema includes position.sub_task, recovery.*, context.active_stacks, control_point.*, meta | M |
+| 7.1 | autonomous.md — Working Directory Guard block | Guard block present in Initialize section; detects path outside `{project_cwd}` → control point; install path edit = hard stop | M |
+| 7.2 | AI-GUIDE.md template — Install path READ-ONLY note | Static Context section has explicit warning: "~/.*/viepilot/ = READ-ONLY, never write" | S |
+| 7.3 | Version bump 2.0.2 → 2.0.3 + CHANGELOG | package.json=2.0.3; CHANGELOG [2.0.3] entry; BUG-007 resolved; git tag viepilot-vp-p7-complete | S |
 
 **Verification**:
-- [ ] crystallize tạo được project với tất cả v2 templates
-- [ ] v1 project cũ vẫn compatible (kiểm tra optional field handling)
-- [ ] TRACKER.md ≤30 dòng sau khi populate
+- [ ] `grep -n 'Working Directory Guard' workflows/autonomous.md` → match found
+- [ ] `grep -n 'READ-ONLY' templates/project/AI-GUIDE.md` → match in install path warning
+- [ ] `node -p "require('./package.json').version"` → `2.0.3`
 
 ---
 
-### Phase 2: Execution Engine — vp-auto Rewrite ✅
-
-**Goal**: Refactor autonomous.md thành typed state machine với 3-layer recovery, continuous HANDOFF, parallel loading, và scope enforcement
-**Estimated Tasks**: 9
-**Dependencies**: Phase 1
-
-| Task | Description | Acceptance Criteria | Complexity |
-|------|-------------|---------------------|------------|
-| 2.1 | 3-layer silent recovery + Gap G compliance pre-flight | L1/L2/L3 layers implement; compliance paths auto-warn; budget enforced | L |
-| 2.2 | Typed state transitions thay thế prose workflow | States: executing/recovering_l1/l2/l3/control_point/pass/skip; no prose transitions | M |
-| 2.3 | Continuous HANDOFF.json write + Gap D HANDOFF.log events | HANDOFF.json written after each sub-task; log events emitted non-blocking | M |
-| 2.4 | Parallel context loading | All context reads in 1 batch instruction; static/dynamic split documented | S |
-| 2.5 | Sub-task tracking table update trong PHASE-STATE.md | PHASE-STATE.md updated after each sub-task PASS/FAIL | S |
-| 2.6 | 3-tier validation pipeline | Strict order: contract → write_scope lock → git gate; each tier documented | M |
-| 2.7 | Control point state protocol | HANDOFF.json.control_point.active set correctly; vp-status can detect | S |
-| 2.8 | Scope drift detection | Post-task: check AI writes vs write_scope; log violation; surface to control point | M |
-| 2.9 | Recovery budget enforcement | Parse recovery_budget + recovery_overrides; cap L1/L2/L3 attempts correctly | M |
-
-**Verification**:
-- [ ] Run vp-auto trên test project: silent recovery fires on lint error (không surface to user)
-- [ ] HANDOFF.json present sau mỗi sub-task complete
-- [ ] HANDOFF.log có events sau task complete
-- [ ] Compliance path task: L3 blocked (no scope reduction attempted)
-- [ ] Context load: all files read in 1 turn (check tool call count)
-
----
-
-### Phase 3: Workflow Integration — Skills & Commands ✅
-**Goal**: Update vp-resume, vp-status, vp-request, crystallize, và vp-evolve để support v2 artifacts
-**Estimated Tasks**: 8
-**Dependencies**: Phase 1, Phase 2
-
-| Task | Description | Acceptance Criteria | Complexity |
-|------|-------------|---------------------|------------|
-| 3.1 | HANDOFF.log implementation + gitignore + phase-boundary rotation | .gitignore entries; rotation hook in autonomous.md; archive to logs/ | S |
-| 3.2 | vp-resume tiered context restore | 3 tiers: <30min/30min-4h/>4h; active_stacks loaded on full tier | M |
-| 3.3 | vp-status: control point detection + recovery stats | Detects control_point.active; shows L1/L2/L3 attempt counts | S |
-| 3.4a | crystallize: v2 artifacts + Gap A auto-populate + Gap G compliance | New templates used; write_scope/type/recovery_budget auto-populated; compliance auto-blocked | M |
-| 3.4b | crystallize backward compat verification | v1 project structure not broken; old crystallize output still valid | S |
-| 3.5 | vp-evolve: generate v2 TASK.md template | New feature/phase tasks use v2 TASK.md with all new fields | S |
-| 3.6 | vp-request NLP intake rewrite + Gap C + horizon-aware routing | Description-first; 2-band confidence; UI direction detection; ROADMAP horizon check | L |
-| 3.7 | paths: frontmatter cho vp-* skills | vp-auto/vp-resume/vp-request/vp-evolve có paths: field | S |
-
-**Verification**:
-- [ ] vp-resume: gap <30min → quick restore (HANDOFF.json only)
-- [ ] vp-resume: gap >4h → full restore với active_stacks
-- [ ] vp-request: "có lỗi khi chạy task 2" → BUG auto-detect ≥85% confidence
-- [ ] crystallize: TASK.md có write_scope populated sau crystallize (không manual)
-- [ ] crystallize: task với write_scope "/auth/" → recovery_overrides.L3.block = true auto-set
-
----
-
-### Phase 4: Verification & Documentation ✅
-**Goal**: Integration testing, user docs update, stale ref cleanup, version bump
-**Estimated Tasks**: 11
-**Dependencies**: Phase 1, 2, 3
-
-| Task | Description | Acceptance Criteria | Complexity |
-|------|-------------|---------------------|------------|
-| 4.1a | Integration test: small S/M project | End-to-end: brainstorm → crystallize → auto → PASS; silent recovery fires once | M |
-| 4.1b | Integration test: large L/XL project | Multi-phase; HANDOFF continuity across context resets; scope lock enforced | M |
-| 4.1c | Integration test: context reset simulation | Kill session mid-task → vp-resume → continue from exact position | S |
-| 4.1d | Integration test: compliance domain | Auth task → L3 auto-blocked; verify via HANDOFF.log | S |
-| 4.2 | Update autonomous-mode.md | Recovery layers, control point protocol, scope contract documented | S |
-| 4.3 | Update quick-start.md | TASK.md new fields, TRACKER.md new structure, HANDOFF.log rotation | S |
-| 4.4 | Update advanced-usage.md | recovery_overrides customization patterns; write_scope examples | S |
-| 4.5 | CHANGELOG.md v2 entry | [Unreleased] → [2.0.0] với full feature list | S |
-| 4.6a | Stale reference audit: SKILL.md files | All skill files reference correct workflow paths | S |
-| 4.6b | Stale reference audit: workflow cross-references | All workflow files reference correct template/artifact paths | S |
-| 4.7 | Version bump 1.x → 2.0.0 | TRACKER, README, CHANGELOG all reflect 2.0.0 | S |
-
-**Verification**:
-- [ ] All 4 integration tests PASS
-- [ ] Docs review: quick-start runnable by Day 1 user
-- [ ] No stale file references found (all paths resolve)
-- [ ] CHANGELOG.md has complete v2.0.0 entry
-- [ ] git tag v2.0.0 created
-
----
-
-### Phase 5: Hotfix — Install Path Convention + Logic Gaps
-**Goal**: Fix critical install path bugs (BUG-A, BUG-B) found by post-v2.0.0 audit + minor logic gaps
-**Estimated Tasks**: 5
-**Dependencies**: Phase 1, 2, 3, 4
-
-| Task | Description | Acceptance Criteria | Complexity |
-|------|-------------|---------------------|------------|
-| 5.1 | Revert SKILL.md source path convention | All 14 SKILL.md have `.cursor/viepilot/` (not `.claude/`); Cursor installs work | S |
-| 5.2 | Revert crystallize.md workflow path | crystallize.md has `.cursor/viepilot/templates/`; 0 `.claude/` refs | S |
-| 5.3 | Fix install script — workflow rewrite step | `buildInstallPlan` emits 3 rewrite_paths steps for claude-code target | M |
-| 5.4 | Fix HANDOFF.log event naming gaps | `control_point_enter/exit` events present; task_skip + recovery events in JSON format | S |
-| 5.5 | Version bump 2.0.0 → 2.0.1 + CHANGELOG | package.json = 2.0.1; CHANGELOG [2.0.1] entry; git tag v2.0.1 | S |
-
-**Verification**:
-- [ ] `grep -r '\.claude/viepilot/' skills/vp-*/SKILL.md` → 0 results
-- [ ] Cursor install simulation: skills dir contains `.cursor/viepilot/` paths
-- [ ] Claude Code install simulation: skills dir contains `.claude/viepilot/` paths AND workflows dir also rewritten
-- [ ] `control_point_enter` and `control_point_exit` in autonomous.md
-- [ ] git tag v2.0.1 created
-
----
-
-### Phase 6: Hotfix — State Update Enforcement (BUG-005)
-**Goal**: Fix vp-auto không update PHASE-STATE, task files, checklist boxes sau mỗi task PASS
+### Phase 8: ENH-022 — Crystallize Domain Entity Extraction
+**Goal**: Add explicit domain entity extraction step + dependency validation to crystallize.md — prevent skipping CRUD management service phases
 **Estimated Tasks**: 4
-**Dependencies**: Phase 5
+**Dependencies**: Phase 7
 
 | Task | Description | Acceptance Criteria | Complexity |
 |------|-------------|---------------------|------------|
-| 6.1 | autonomous.md — State Update Checklist block | Block present; names Meta.Status, checkboxes, Files Changed, execution_state, HANDOFF fields, Gate enforcement | M |
-| 6.2 | autonomous.md — HANDOFF.json schema refs fix | All update blocks use v2 nested fields; schema detection note added | S |
-| 6.3 | TASK.md template — Post-Completion section | Section present with Implementation Summary + Files Changed + 10-item checklist | S |
-| 6.5 | Git tag prefix fix (BUG-006) | crystallize+evolve resolve TAG_PREFIX; autonomous.md 0 prose `{projectPrefix}`; TASK.md runtime note | M |
-| 6.4 | Version bump 2.0.1 → 2.0.2 + CHANGELOG | package.json=2.0.2; CHANGELOG [2.0.2] entry; BUG-005+BUG-006 resolved | S |
-
-**Execution order**: 6.1 → 6.2 → 6.3 → 6.5 → 6.4
+| 8.1 | crystallize.md — Domain Entity Extraction step (Fix A) | Explicit step: scan brainstorm → list entities with needs_crud_api flag → check service phase exists | M |
+| 8.2 | crystallize.md — Dependency Validation step (Fix C) | Cross-check step: task descriptions scan for "resolve/create/manage {entity}" → warn if no service phase | M |
+| 8.3 | crystallize.md — Entity manifest output format | Entity manifest table in SPEC.md output: entity, type, service_phase or MISSING | S |
+| 8.4 | Version bump 2.0.3 → 2.1.0 + CHANGELOG | package.json=2.1.0; CHANGELOG [2.1.0] entry; ENH-022 resolved; first v2.1 feature | S |
 
 **Verification**:
-- [ ] `grep -n 'State Update Checklist' workflows/autonomous.md` → match found
-- [ ] `grep -n 'Meta.Status' workflows/autonomous.md` → match in new block
-- [ ] `grep -n 'Post-Completion' templates/phase/TASK.md` → match found
-- [ ] `grep -c '{projectPrefix}' workflows/autonomous.md` → 0 (all replaced)
-- [ ] `grep -n 'TAG_PREFIX' workflows/crystallize.md` → match found
-- [ ] `node -p "require('./package.json').version"` → `2.0.2`
+- [ ] `grep -n 'Domain Entity Extraction' workflows/crystallize.md` → match found
+- [ ] `grep -n 'Dependency Validation' workflows/crystallize.md` → match found
+- [ ] `node -p "require('./package.json').version"` → `2.1.0`
+
+---
+
+### Phase 9: Brainstorm Artifact Manifest
+**Goal**: Implement manifest schema + brainstorm auto-generation + crystallize mandatory consume — fix 4 brainstorm→crystallize→vp-auto drop points
+**Estimated Tasks**: 7
+**Dependencies**: Phase 8
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 9.1 | Define `brainstorm-manifest.json` schema v1 | Schema file at `templates/project/brainstorm-manifest.json`; all fields: sessions, artifacts (ui_direction, product_horizon, research_notes, architecture_inputs), ui_task_context_hint | M |
+| 9.2 | brainstorm.md — Auto-generate manifest on `/save` + `/end` | Manifest written to `.viepilot/brainstorm-manifest.json`; artifact entries auto-populated from session; `consumed: false` on new artifacts | M |
+| 9.3 | crystallize.md — Step 0A: mandatory manifest consume | Step 0A reads manifest before all other steps; fallback if manifest missing; marks `consumed: true` + `consumed_at` after reading | M |
+| 9.4 | crystallize.md — Auto-populate TASK.md `context_required` from `ui_task_context_hint` | Tasks for UI pages have correct ui-direction paths in `context_required`; no more placeholder-only rows | M |
+| 9.5 | brainstorm.md — Decision anchor syntax (`vp:decision`) | `/save` scans Decisions blocks → injects HTML comment anchors; backfill for existing bullets | M |
+| 9.6 | crystallize.md — Consumed anchor tracking (`vp:consumed`) | ARCHITECTURE.md consumed sections tagged; drift check stub (full drift = Post-v2.1) | S |
+| 9.7 | Version bump 2.1.0 → 2.1.1 + CHANGELOG | package.json=2.1.1; CHANGELOG [2.1.1] entry; Phase 9 complete | S |
+
+**Verification**:
+- [ ] `cat .viepilot/brainstorm-manifest.json` → valid JSON, consumed=false on fresh session
+- [ ] crystallize on project with manifest → ARCHITECTURE.md has consumed anchors
+- [ ] TASK.md for UI page task → context_required has ui-direction path auto-populated
+- [ ] `/save` in brainstorm session → manifest updated, `vp:decision` anchors present
+
+---
+
+### Phase 10: Gap E + Gap G Extended + Token Budget Awareness
+**Goal**: Three Tier 1 Post-MVP epics bundled — cross-project status, compliance keyword scan, context limit preemption
+**Estimated Tasks**: 6
+**Dependencies**: Phase 8
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 10.1 | `~/.viepilot/project-registry.json` schema + vp-crystallize auto-register | Schema defined; crystallize registers project on first run; manual add/remove documented | S |
+| 10.2 | vp-status skill — `--all` flag: aggregate from registry | `--all` reads registry → TRACKER.md + HANDOFF.json per project → table with status icons (● ⚠ ✓ ○) | M |
+| 10.3 | autonomous.md — Token budget awareness: sub-task check | After each sub-task: heuristic context estimate; >70% → warn + offer pause; >90% → force pause + HANDOFF write | M |
+| 10.4 | HANDOFF.log — `token_budget_warning` event | Event emitted with `used_pct` field; logged non-blocking | S |
+| 10.5 | crystallize.md + autonomous.md — Gap G Extended keyword scan | Compliance keywords list (password, token, session, encrypt, stripe, payment, bcrypt, tls, migration, schema); match → suggest `L3.block=true` + warn; user confirms | S |
+| 10.6 | Version bump 2.1.1 → 2.1.2 + CHANGELOG | package.json=2.1.2; CHANGELOG [2.1.2] entry; Phase 10 complete | S |
+
+**Verification**:
+- [ ] `cat ~/.viepilot/project-registry.json` → project entry after crystallize
+- [ ] `/vp-status --all` → table with all registered projects
+- [ ] `grep -n 'token_budget' workflows/autonomous.md` → match in sub-task section
+- [ ] crystallize on task with "stripe payment" description → L3.block suggested (not auto-set)
+
+---
+
+### Phase 11: Diagram Profile System
+**Goal**: Stack-aware architecture diagram generation — crystallize detects stacks → generates applicability matrix → folder structure; vp-auto updates stale diagrams at phase complete
+**Estimated Tasks**: 5
+**Dependencies**: Phase 8
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 11.1 | crystallize.md — Stack detection → diagram profile selection | Stack matrix table in crystallize.md; detects: microservices, Kafka, SQL, SPA, auth, state-heavy entities | M |
+| 11.2 | crystallize.md — Generate diagram applicability matrix in SPEC.md | SPEC.md includes diagram inventory table: diagram_type, applies_when, folder_path, status | M |
+| 11.3 | crystallize.md — Create architecture folder structure per profile | `architecture/cross/`, `architecture/backend/`, `architecture/frontend/`, `architecture/sequences/`, `architecture/state-machines/` created with stubs | S |
+| 11.4 | autonomous.md — Stale diagram detection + update trigger | After phase complete: check phase touches architecture subfolder → flag stale diagrams → update at phase end (not per task) | M |
+| 11.5 | Version bump 2.1.2 → 2.1.3 + CHANGELOG | package.json=2.1.3; CHANGELOG [2.1.3] entry; Phase 11 complete | S |
+
+**Verification**:
+- [ ] crystallize on microservice + Kafka project → `architecture/cross/`, `architecture/backend/` dirs created
+- [ ] crystallize output includes diagram applicability matrix in SPEC.md
+- [ ] `grep -n 'stale diagram' workflows/autonomous.md` → match in phase complete section
+- [ ] vp-auto phase complete → relevant diagrams updated
+
+---
+
+### Phase 12: Verification + Docs + v2.1.0 Final Release
+**Goal**: Integration tests, doc updates, README sync, final version tag
+**Estimated Tasks**: 5
+**Dependencies**: Phases 7-11
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 12.1 | Integration test: BUG-007 guard triggers correctly | Attempt install path edit → control point; codebase edit passes | S |
+| 12.2 | Integration test: ENH-022 entity extraction on sample project | crystallize on sample with domain entities → entity manifest + dependency warning | S |
+| 12.3 | Update docs: autonomous-mode.md, quick-start.md, advanced-usage.md | Working directory guard, artifact manifest, diagram profiles documented | M |
+| 12.4 | README.md sync | Version badge 2.1.0; feature list updated; `npm run readme:sync` if exists | S |
+| 12.5 | Final version bump → 2.1.0 + git tag | package.json=2.1.0 (or already set); CHANGELOG [2.1.0] final; git tag viepilot-vp-v2.1.0 | S |
+
+**Verification**:
+- [ ] All integration tests PASS
+- [ ] README version = 2.1.0
+- [ ] `git tag` → viepilot-vp-v2.1.0 present
 
 ---
 
@@ -162,55 +137,42 @@
 
 | Phase | Status | Tasks | Completed | Progress |
 |-------|--------|-------|-----------|----------|
-| 1. Foundation — Templates & State Machine | ✅ Complete | 6 | 6 | 100% |
-| 2. Execution Engine — vp-auto Rewrite | ✅ Complete | 9 | 9 | 100% |
-| 3. Workflow Integration — Skills & Commands | ✅ Complete | 8 | 8 | 100% |
-| 4. Verification & Documentation | ✅ Complete | 11 | 11 | 100% |
-| 5. Hotfix — Install Path Convention + Logic Gaps | ✅ Complete | 5 | 5 | 100% |
-| 6. Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | ✅ Complete | 5 | 5 | 100% |
+| 7. Hotfix — Working Directory Guard (BUG-007) | 🔲 Not Started | 3 | 0 | 0% |
+| 8. ENH-022 — Crystallize Domain Entity Extraction | 🔲 Not Started | 4 | 0 | 0% |
+| 9. Brainstorm Artifact Manifest | 🔲 Not Started | 7 | 0 | 0% |
+| 10. Gap E + Gap G Extended + Token Budget | 🔲 Not Started | 6 | 0 | 0% |
+| 11. Diagram Profile System | 🔲 Not Started | 5 | 0 | 0% |
+| 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 
-**Overall**: 44 / 44 tasks (100%) 🎉
+**Overall**: 0 / 30 tasks (0%)
 
 ---
 
-## Post-MVP / Product Horizon
+## Post-v2.1 / Product Horizon
 
-### Horizon mode
-Multi-release — Post-MVP and Future epics captured from brainstorm session-2026-04-02.
+### Tier 2 (v2.2 candidates)
+- **AutoDream → STACKS.md** — Phase complete hook → extract patterns → append STACKS.md. Depends on: Phase 9 (Artifact Manifest) proven stable.
+- **Fork State Updates** — Background Agent pattern for state writes after task PASS. Risk: medium (state drift potential). Depends on: Phase 12 baseline stable.
+- **Brainstorm doc-drift detection** — Full drift report UI (per-item action). Depends on: Phase 9 (anchor syntax).
+- **Multi-session manifest merge** — oldest→newest per artifact type strategy. Depends on: Phase 9.
 
-### Post-MVP themes (epic-level)
+### Tier 3 (Future / Defer)
+- **Parallel task execution** — dependency graph + concurrent agents. Depends on: Fork State Updates proven.
+- **Team memory sync** — shared TRACKER + decision log. Needs server infra decision.
+- **ML-based auto-approval** — bypass control point for low-risk tasks. Needs historical data.
+- **Multi-agent coordinator** — AI orchestrating AI for complex phases.
+- **Gap F: Career documentation** — Export `logs/decisions.md` across projects.
 
-- **Fork state updates** — Background bookkeeping sau task PASS: fire-and-forget fork để update TRACKER/CHANGELOG/ROADMAP mà không block execution loop. Depends on: Phase 2 (HANDOFF continuity).
-- **Parallel task execution** — Dựa trên `can_parallel_with` dependency graph trong TASK.md. Spawn concurrent workers cho independent tasks. Depends on: Phase 1 (TASK.md schema) + Phase 2 (typed state machine).
-- **AutoDream consolidation** — Post-phase-complete trigger để consolidate project knowledge → STACKS.md. Depends on: layered context architecture (Phase 1 + Phase 2).
-- **Gap G extended** — Description keyword scan cho compliance detection (beyond write_scope paths); vp-auto pre-flight warning UI; consensus/contract compliance domains. Depends on: Phase 2 Task 2.1.
-- **Conditional skill activation** — `paths:` frontmatter execution support khi Claude Code tool thêm support. Task 3.7 thêm field; Post-MVP = runtime conditional loading.
-
-### Future / exploratory
-
-- **Multi-agent coordinator** — AI điều phối AI cho complex phases; plan approval gate giữa coordinator và worker agents.
-- **ML-based auto-approval** — Low-risk task auto-approval (bypass control point) dựa trên historical pass rate.
-- **Token budget awareness** — vp-auto detect approaching context limit → preemptive HANDOFF write + graceful pause.
-- **Team memory sync** — Multi-developer projects: shared TRACKER + decision log sync.
-- **Gap E: Cross-project status** — `/vp-status --all` aggregation cho multi-project consultants (Year 2 use case).
-- **Gap F: Career documentation** — Export `logs/decisions.md` across projects → knowledge portfolio.
-
-### Deferred Capabilities (from MVP)
-
-- Parallel task execution — dependency graph infrastructure cần có trước (Post-MVP prerequisite)
-- AutoDream — layered context architecture cần stable trước (Post-MVP prerequisite)
-- Gap G description keyword scan — write_scope path scan đủ cho MVP; keyword NLP deferred
-
-### Non-goals for MVP (reference)
-
-- Breaking changes với ViePilot v1 projects
-- Thay đổi SKILL.md frontmatter format
+### Non-goals for v2.1
+- Breaking changes với v2.0.x projects
+- Server deployment / network service (keep local-first)
 - Rewrite vp-tools CLI
-- Server deployment / network service
+- Parallel task execution (Tier 3)
 
 ---
 
 ## Notes
-- Created: 2026-04-02
-- Last Updated: 2026-04-02
-- **Horizon:** Keep Post-MVP / Future in sync với `PROJECT-CONTEXT.md` *Product vision & phased scope*.
+- Created: 2026-04-03
+- Last Updated: 2026-04-03
+- Previous milestone archived at: `.viepilot/milestones/v2/`
+- **Horizon**: Keep Tier 2/3 in sync với `PROJECT-CONTEXT.md` Product vision.
