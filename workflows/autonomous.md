@@ -53,7 +53,8 @@ Parse `{{VP_ARGS}}` for flags:
 
 Load context (batch — call all Read tools simultaneously in 1 turn):
 - `.viepilot/TRACKER.md` — current phase + progress
-- `.viepilot/ROADMAP.md` — phase list
+- **Phase list (ENH-031):** If `.viepilot/ROADMAP-INDEX.md` exists → read it **instead of** loading the full `.viepilot/ROADMAP.md` **for Initialize / phase-discovery only** (compact slice). If `ROADMAP-INDEX.md` is missing → read full `.viepilot/ROADMAP.md` as before.
+- **Full ROADMAP still required when:** horizon / Post-MVP detail needed, `--phase` / `--from` ambiguity, reconciling progress, editing roadmap content, or **INDEX suspected stale** vs `.viepilot/TRACKER.md` or `.viepilot/HANDOFF.json` — batch-read `.viepilot/ROADMAP.md` (and prefer refreshing `ROADMAP-INDEX.md` from ROADMAP after substantive roadmap edits; see `workflows/crystallize.md` Step 7).
 - `.viepilot/AI-GUIDE.md` — static (cache after first read; do NOT re-read per task)
 
 Display startup banner:

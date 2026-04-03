@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-04-03T16:36:06.273Z",
+  "generated_at": "2026-04-03T16:38:05.646Z",
   "repo_root": "/Users/sonicq12/DEV_PROJECTS/viepilot",
   "note": "Byte counts are from the working tree at generation time. Heuristic token estimate: divide bytes by ~3.5–4 for Latin/ASCII-heavy markdown. sum_bytes_all_listed_files follows workflow batches (may count the same path twice). deduped_union_bytes counts each relative path once.",
   "groups": {
@@ -8,17 +8,17 @@
       {
         "path": ".viepilot/TRACKER.md",
         "role": "Initialize — current phase and task pointer",
-        "bytes": 5335
+        "bytes": 5083
       },
       {
         "path": ".viepilot/ROADMAP.md",
         "role": "Initialize — full roadmap (optional if ROADMAP-INDEX.md used; see workflows/autonomous.md Step 1)",
-        "bytes": 19307
+        "bytes": 19354
       },
       {
         "path": ".viepilot/ROADMAP-INDEX.md",
         "role": "Initialize — compact phase slice when present (replaces ROADMAP read for listing only)",
-        "bytes": 977
+        "bytes": 968
       },
       {
         "path": ".viepilot/AI-GUIDE.md",
@@ -30,7 +30,7 @@
       {
         "path": "workflows/autonomous.md",
         "role": "Normative vp-auto process (project copy under {project_cwd})",
-        "bytes": 37382
+        "bytes": 38018
       },
       {
         "path": "skills/vp-auto/SKILL.md",
@@ -52,8 +52,8 @@
     ]
   },
   "totals": {
-    "sum_bytes_all_listed_files": 84876,
-    "deduped_union_bytes": 80553,
+    "sum_bytes_all_listed_files": 85298,
+    "deduped_union_bytes": 80975,
     "sum_excludes_optional_missing": true
   }
 }

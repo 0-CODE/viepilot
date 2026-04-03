@@ -4,7 +4,7 @@
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 13 — Agent Orchestration — Tier A + B (next)
 - **Task**: 13.1 — autonomous task-boundary re-hydrate (see ROADMAP)
-- **Version**: 2.2.0
+- **Version**: 2.2.1
 - **Last Update**: 2026-04-03
 
 ## Progress
@@ -30,10 +30,10 @@
 | 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
-| 20 | ENH-031 — cold start token reduction | 3 | not started 🔲 |
+| 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 32 / 43 tasks (~74%) _(Phase 12 complete **v2.2.0** 2026-04-03; Phase 20 ENH-031)_
+**v2.1 milestone**: 35 / 43 tasks (~81%) _(Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1** 2026-04-03)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -58,18 +58,16 @@
 | [ENH-028](.viepilot/requests/ENH-028.md) | ✨ Enhancement | crystallize Review Gate — extraction phase + per-section approval before generation | high | → Phase 16 |
 | [ENH-029](.viepilot/requests/ENH-029.md) | ✨ Enhancement | Remove MVP concept — full-arc ROADMAP with priority + release_target fields | high | new |
 | [ENH-030](.viepilot/requests/ENH-030.md) | ✨ Enhancement | Artifact Manifest — add domain_entities + tech_stack artifact types (required: true) | high | → Phase 09 |
-| [ENH-031](.viepilot/requests/ENH-031.md) | ✨ Enhancement | Giảm token cold start `/vp-auto` sau clear context — điều tra >13K tokens | high | → Phase 20 |
+| [ENH-031](.viepilot/requests/ENH-031.md) | ✨ Enhancement | Giảm token cold start `/vp-auto` sau clear context — điều tra >13K tokens | high | ✅ done |
 
 ## Next Action
 
-Phase **12** **complete** — shipped **v2.2.0** (CHANGELOG + tags `viepilot-vp-p12-complete`, `viepilot-vp-v2.2.0`). Next: **Phase 13** — Agent orchestration Tier A + B.
+Phase **20** **complete** — shipped **ENH-031** **v2.2.1** (`CHANGELOG` **[2.2.1]**, tags `viepilot-vp-p20-complete`, tasks `p20-t20.*`). Next: **Phase 13** — Agent orchestration Tier A + B.
 
 - Phase directory: `.viepilot/phases/13-agent-orchestration-tier-ab/`
 - Current task: **13.1** — task-boundary re-hydrate (`autonomous.md`)
-- Last done: Phase 12 task **12.5** — CHANGELOG **[2.2.0]** + release tags
+- Last done: Phase 20 task **20.3** — `ROADMAP-INDEX.md` + Initialize lite (`autonomous.md` / `crystallize.md`)
 
-**Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
+**Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B. `/vp-auto --phase 13` hoặc `--from 13`.
 
 **Phases 14–19 (planned, theo dependency)**: `14-enh-027` → `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`. `/vp-auto --phase 14` … `--phase 19`.
-
-**Phase 20 (planned)**: `.viepilot/phases/20-enh-031-cold-start-tokens/` — ENH-031 cold-start token reduction; khuyến nghị sau Phase 12, tránh xung đột chỉnh `autonomous.md` với 13–19. `/vp-auto --phase 20`.

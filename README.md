@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.2.1-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
@@ -28,7 +28,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~32,123+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`; không gồm `node_modules`) |
+| Total LOC | **~32,369+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`; không gồm `node_modules`) |
 | Skills | **16** |
 | Workflows | **12** |
 | Templates | **17** (Project: 12, Phase: 5) |
@@ -55,7 +55,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  active **v2.2.0** (`package.json`); shipped **v2.1.3** diagram profiles + prior v2.1.x (manifest, token budget, BUG-007); lịch sử đầy đủ → `CHANGELOG.md`
+Tổng thể / Overall:  ████████████████████  active **v2.2.1** (`package.json`); shipped **v2.2.0** verify/docs + **v2.2.1** ENH-031 cold start; lịch sử đầy đủ → `CHANGELOG.md`
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |

@@ -715,6 +715,7 @@ From brainstorm features/MVP breakdown:
 5. **ROADMAP self-check before finalize:**
    - If Step 1 **horizon inventory** is non-empty but the draft ROADMAP **drops** those items or lacks the horizon block → **stop** and ask the user to reconcile (do not ship a roadmap that silently omits post-MVP content from brainstorm).
    - If brainstorm contained Post-MVP ideas only in free text without `## Product horizon` → you should already have stopped in Step 1; do not proceed to commit ROADMAP.
+6. **ROADMAP-INDEX.md (ENH-031 — cold start):** After `ROADMAP.md` is finalized, write or refresh `.viepilot/ROADMAP-INDEX.md` as a **short** companion (target **≤ ~40 lines**): milestone + version pointer, compact **table** of phases (id, name, status hint aligned with ROADMAP Progress Summary), explicit pointer that **all** narrative and verification live in `.viepilot/ROADMAP.md`, and one **stale-recovery** sentence: if INDEX disagrees with `TRACKER.md` / `HANDOFF.json` / `PHASE-STATE.md`, treat those execution files as source of truth and refresh INDEX from ROADMAP.
 </step>
 
 <step name="generate_schemas">

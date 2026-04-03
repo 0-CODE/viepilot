@@ -13,7 +13,7 @@
   },
   "context": {
     "active_stacks": [],
-    "last_decision": "Phase 12 COMPLETE: v2.2.0 released (CHANGELOG + tags viepilot-vp-p12-complete, viepilot-vp-v2.2.0). Next: Phase 13.1 Tier A re-hydrate."
+    "last_decision": "Phase 20 COMPLETE: ENH-031 v2.2.1 (cold-start manifest, slim vp-auto SKILL, ROADMAP-INDEX + Initialize). Resume Phase 13.1 Tier A re-hydrate."
   },
   "control_point": {
     "active": false,
@@ -21,7 +21,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-03T22:00:00Z",
+    "last_written": "2026-04-03T16:45:00Z",
     "last_archived": null
   }
 }

@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 20-enh-031-cold-start-tokens
-- **Status**: in_progress
+- **Status**: done
 - **Complexity**: M
 - **Git Tag**: `viepilot-vp-p20-t20.3`
 
@@ -59,14 +59,30 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] Index file format documented; fallback behavior explicit
-- [ ] No regression: agents still know current phase/task when index is stale — recovery path documented
+- [x] Index file format documented; fallback behavior explicit
+- [x] No regression: agents still know current phase/task when index is stale — recovery path documented
 
 ## Implementation Notes
-_(post-completion)_
+- Initialize reads `ROADMAP-INDEX.md` when present instead of full `ROADMAP.md` for phase-discovery; full `ROADMAP.md` required for horizon, `--phase` ambiguity, stale INDEX vs TRACKER/HANDOFF, and roadmap edits.
+- Crystallize Step 7 §6 mandates refreshing INDEX after ROADMAP finalize.
 
 ## Files Changed
-_(post-completion)_
+```text
+M	.viepilot/HANDOFF.json
+A	.viepilot/ROADMAP-INDEX.md
+M	.viepilot/ROADMAP.md
+M	.viepilot/TRACKER.md
+M	.viepilot/cold-start-manifest.json
+M	.viepilot/phases/20-enh-031-cold-start-tokens/PHASE-STATE.md
+A	.viepilot/phases/20-enh-031-cold-start-tokens/SUMMARY.md
+M	.viepilot/phases/20-enh-031-cold-start-tokens/tasks/task-20.3-enh-031-roadmap-index.md
+M	.viepilot/requests/ENH-031.md
+M	CHANGELOG.md
+M	README.md
+M	package.json
+M	workflows/autonomous.md
+M	workflows/crystallize.md
+```
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol

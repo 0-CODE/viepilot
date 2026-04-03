@@ -11,7 +11,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
 - **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
-- **Phase 20** (scaffold): ENH-031 — giảm token cold start `/vp-auto` (manifest đo, SKILL slim, ROADMAP-INDEX + Initialize) — planning via `/vp-evolve --feature`
+
+## [2.2.1] - 2026-04-03
+
+Phase 20 complete — **ENH-031** cold-start token reduction: measurable manifest, slim `vp-auto` skill, `ROADMAP-INDEX.md` + Initialize lite in `autonomous.md`; **semver PATCH** **2.2.0 → 2.2.1**.
+
+### Added
+
+- **`scripts/cold-start-manifest.cjs`** + **`npm run cold-start:manifest`** — byte totals for Initialize / workflow / per-task batches; writes `.viepilot/cold-start-manifest.json` (deduped union + batch sum)
+- **`.viepilot/ROADMAP-INDEX.md`** — compact phase table for `/vp-auto` Initialize when present (full `.viepilot/ROADMAP.md` still required for horizon, ambiguity, stale INDEX vs TRACKER/HANDOFF, roadmap edits)
+- **`docs/user/features/autonomous-mode.md`** — § Cold start context budget (ENH-031): read order, heuristics, caveats
+
+### Changed
+
+- **`skills/vp-auto/SKILL.md`** — routing + `<execution_context>` pointer to `workflows/autonomous.md` (no duplicated long process body; XML blocks retained for provider conformance tests)
+- **`workflows/autonomous.md`** — Step 1 Initialize: read `ROADMAP-INDEX.md` instead of full ROADMAP when file exists (phase-discovery only), with explicit full-ROADMAP triggers
+- **`workflows/crystallize.md`** — Step 7 §6: refresh `ROADMAP-INDEX.md` after `ROADMAP.md` finalize
+
+### Git tags
+
+- `viepilot-vp-p20-t20.1` … `viepilot-vp-p20-t20.3-done` — task checkpoints
+- `viepilot-vp-p20-complete` — Phase 20 checkpoint
 
 ## [2.2.0] - 2026-04-03
 
