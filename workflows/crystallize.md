@@ -758,6 +758,16 @@ Create `.viepilot/logs/` directory with 3 log files from templates:
 
 Initialize `.viepilot/HANDOFF.json` from template `templates/project/HANDOFF.json` (v2 schema):
 populate `position.phase` with first phase slug from ROADMAP.md; all other fields remain null/0/false/[].
+
+### Delegate envelopes (Tier B — Phase 13)
+
+Seed **`.viepilot/delegates/`** for optional worker handoff (see `templates/project/delegates/README.md`):
+
+1. `mkdir -p .viepilot/delegates/pending .viepilot/delegates/done .viepilot/delegates/examples`
+2. Copy `templates/project/delegates/README.md` → `.viepilot/delegates/README.md`
+3. Copy `templates/project/delegates/examples/pending.example.json` and `done.example.json` → `.viepilot/delegates/examples/` (same filenames)
+
+Leave `pending/` and `done/` empty except optional future JSON files. **Contract:** worker writes only under declared `write_scope` in the envelope; main agent merges **only** from `delegates/done/{id}.json` — never from `pending/` as final output.
 </step>
 
 <step name="generate_phase_dirs">

@@ -20,6 +20,7 @@
 | API contracts | `schemas/api-contracts.yaml` | - |
 | Decisions đã quyết định | `logs/decisions.md` | on-demand |
 | Resume công việc dở | `HANDOFF.json` | - |
+| Delegate worker handoff (Tier B) | `.viepilot/delegates/README.md` | Merge rules + `done/` only |
 | Package structure | `PROJECT-META.md` | `## Package Structure` |
 | File headers | `PROJECT-META.md` | `## File Headers` |
 
@@ -38,6 +39,15 @@
 
 ### Dynamic boundary (đọc mỗi task)
 - `TRACKER.md` + `HANDOFF.json` + `PHASE-STATE.md` + task file
+
+### Delegate handoff (Tier B)
+
+When using **delegate workers** (isolated sessions):
+
+- **Main agent** ingests results **only** from `.viepilot/delegates/done/{id}.json` — treat `pending/` as inbox, not approved merge input.
+- **Default read-only:** nếu envelope không có `write_scope` (hoặc rỗng), worker không được ghi file dự án; main chỉ đọc `summary` + `evidence_paths` từ `done/`.
+- **Writes:** khi có `write_scope`, mọi thay đổi của worker phải nằm trong các path đó; main **diff** và reconcile trước khi mark task PASS.
+- **Không** dán full transcript worker vào task context — chỉ tóm tắt + đường dẫn chứng cứ (tránh context rot). Chi tiết: `docs/user/features/autonomous-mode.md` (§ Delegate handoff).
 
 ### Conditional load (chỉ khi cần)
 - `logs/decisions.md` → khi cần rationale cho decision

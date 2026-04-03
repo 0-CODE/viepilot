@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 13-agent-orchestration-tier-ab
-- **Status**: not_started
+- **Status**: complete
 - **Complexity**: S
 - **Dependencies**: 13.2
 - **Git Tag**: `viepilot-vp-p13-t13.3`
@@ -35,8 +35,8 @@ files_to_modify:
 ```
 
 ## Acceptance Criteria
-- [ ] AI-GUIDE template contains a **Delegate handoff (Tier B)** subsection.
-- [ ] autonomous-mode.md cross-links templates and vp-auto behavior.
+- [x] AI-GUIDE template contains a **Delegate handoff (Tier B)** subsection.
+- [x] autonomous-mode.md cross-links templates and vp-auto behavior.
 
 ## Verification
 ```yaml
@@ -46,11 +46,11 @@ manual:
 ```
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol
 
 ## Implementation Notes
-```
-```
+- `AI-GUIDE.md`: Quick Lookup row → `.viepilot/delegates/README.md`; new subsection after Dynamic boundary with merge rules + transcript hygiene.
+- `autonomous-mode.md`: New § **Delegate handoff (Tier B — Phase 13)** before Diagram profiles; links `templates/project/delegates/README.md`, crystallize Step 9, Tier A re-hydrate.
 
 ## Post-Completion
-_(AI fills after PASS)_
+- Covered by `tests/unit/vp-phase13-orchestration-contracts.test.js` string guards.

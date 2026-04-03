@@ -77,6 +77,19 @@ Thứ tự đọc **chuẩn** nằm trong `workflows/autonomous.md` — **Step 1
 - Số liệu lệch khi `ROADMAP.md` / `autonomous.md` phình to — nên chạy lại script sau khi chỉnh docs lớn.
 - Khi có `ROADMAP-INDEX.md`, Initialize có thể **không** đọc full `ROADMAP.md`; nếu index **lệch** so với `TRACKER.md` hoặc `HANDOFF.json`, ưu tiên **TRACKER + HANDOFF + PHASE-STATE** cho điều phối và làm mới index từ `ROADMAP.md` (hoặc bước crystallize tương ứng).
 
+### Delegate handoff (Tier B — Phase 13)
+
+**Template contract:** `templates/project/delegates/README.md` (được seed vào `.viepilot/delegates/` khi **crystallize** Step 9 — xem `workflows/crystallize.md`). **Consumer `AI-GUIDE.md`** có subsection *Delegate handoff (Tier B)* với checklist merge.
+
+**Luật main agent**
+
+1. Chỉ merge / tin cậy kết quả từ **`.viepilot/delegates/done/{id}.json`** — không dùng file trong `pending/` làm bản chốt.
+2. **Mặc định read-only:** thiếu `write_scope` trong envelope ⇒ worker không ghi mã dự án; main đọc `status`, `summary`, `evidence_paths`, `errors`.
+3. **Có `write_scope`:** worker chỉ được sửa trong các path đã khai báo; main chạy `git diff` (và review) so với envelope trước khi tiếp tục task cha.
+4. **Tier A vẫn áp dụng:** trước mỗi task, `workflows/autonomous.md` bắt buộc **re-hydrate** từ `TRACKER` / `HANDOFF` / `PHASE-STATE` / task file — không thay thế bằng transcript delegate.
+
+**Khuyến nghị:** đừng nhét transcript dài của worker vào context; dùng `summary` ngắn + đường dẫn file trong `evidence_paths`.
+
 ### Diagram profiles & stale diagrams (Phase 11)
 
 Trong **crystallize**, bước chọn **diagram profile** (theo stack: microservices, Kafka, SQL, SPA, …) quyết định ma trận diagram trong `.viepilot/SPEC.md` và cấu trúc thư mục `architecture/*` (stub + README). Trong **`/vp-auto`**, sau khi **phase complete**, nếu phase vừa chạm vào `architecture/`, `.viepilot/architecture/`, hoặc `.viepilot/ARCHITECTURE.md`, workflow kích hoạt **một lần** bước đối chiếu diagram/stale reconciliation ở ranh giới phase (không lặp từng task). Chi tiết normative: `workflows/crystallize.md` (Step 1D / Step 4) và `workflows/autonomous.md` (phase complete).

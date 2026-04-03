@@ -3,10 +3,10 @@
 ## Milestone: v2.1 Post-MVP Core
 
 ### Overview
-- **Version target**: **2.2.1** (Phase 20 ENH-031); **2.2.0** Phase 12 verify/docs release; prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
-- **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System + Phase 12 verify/docs
-- **Phases**: 6 (core v2.1 bundle) + Phase 12 verify; **13–20** planned next
-- **Status**: In Progress (Phase 12 ✅; Phase 20 ✅ ENH-031 v2.2.1; Phase 13 🔄 1/4; Phases 14–19 scaffolded)
+- **Version target**: **2.2.2** (Phase 13 orchestration); **2.2.1** (Phase 20 ENH-031); **2.2.0** Phase 12 verify/docs; prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
+- **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics + Phase 12 verify/docs + Phase 13 agent orchestration (Tier A/B)
+- **Phases**: 6 (core v2.1 bundle) + Phase 12 verify + Phase 13 ✅; **14–20** tracked on this roadmap
+- **Status**: In Progress (Phase 12 ✅; Phase 13 ✅ v2.2.2; Phase 20 ✅ ENH-031 v2.2.1; Phases 14–19 scaffolded)
 
 ---
 
@@ -135,7 +135,7 @@
 
 ---
 
-### Phase 13: Agent Orchestration — Tier A + Tier B (context isolation)
+### Phase 13: Agent Orchestration — Tier A + Tier B (context isolation) ✅ Complete (v2.2.2)
 **Goal**: Giảm context rot trong vp-auto bằng **re-hydrate ranh giới task** (Tier A) và chuẩn **delegate envelope** file-based `.viepilot/delegates/` (Tier B), theo `docs/brainstorm/session-2026-04-03.md` Part 5 Topics 19–20. Tier C/D (host fork, async) tách sang Post-v2.1 / ENH-024–025.
 
 **Estimated Tasks**: 4
@@ -149,10 +149,10 @@
 | 13.4 | Unit tests — contract grep / JSON schema smoke | Test đảm bảo section Tier A tồn tại trong `autonomous.md` sau ship; optional validate mẫu delegate JSON | S |
 
 **Verification**:
-- [ ] `grep -n 're-hydrate\|rehydrate\|task-boundary'` workflows/autonomous.md → match (hoặc tên step tương đương đã thống nhất khi implement)
-- [ ] `templates/project/delegates/` tồn tại với mẫu `pending` + `done`
-- [ ] `templates/project/AI-GUIDE.md` có subsection delegate merge
-- [ ] `npm test` PASS (suite mới nếu có)
+- [x] `grep -n 're-hydrate\|rehydrate\|task-boundary'` workflows/autonomous.md → match (hoặc tên step tương đương đã thống nhất khi implement)
+- [x] `templates/project/delegates/` tồn tại với mẫu `pending` + `done`
+- [x] `templates/project/AI-GUIDE.md` có subsection delegate merge
+- [x] `npm test` PASS (suite mới nếu có)
 
 **Related**: ENH-023 (hooks — bổ trợ), ENH-024 (async state — Tier D overlap), brainstorm Topic 20 Related ENH table
 
@@ -277,7 +277,7 @@ Wave E:            Phase 19 (ENH-025)
 | 10. Gap E + Gap G Extended + Token Budget | ✅ Complete | 6 | 6 | 100% |
 | 11. Diagram Profile System | ✅ Complete | 5 | 5 | 100% |
 | 12. Verification + Docs + Release | ✅ Complete | 5 | 5 | 100% |
-| 13. Agent Orchestration Tier A + B | 🔄 In Progress | 4 | 1 | 25% |
+| 13. Agent Orchestration Tier A + B | ✅ Complete | 4 | 4 | 100% |
 | 14. ENH-027 — vp-tools ask | 🔲 Not Started | 1 | 0 | 0% |
 | 15. ENH-023 — handoff-sync + hooks | 🔲 Not Started | 1 | 0 | 0% |
 | 16. ENH-028 — crystallize Review Gate | 🔲 Not Started | 1 | 0 | 0% |
@@ -286,7 +286,7 @@ Wave E:            Phase 19 (ENH-025)
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 | 20. ENH-031 — cold start token reduction | ✅ Complete | 3 | 3 | 100% |
 
-**Overall**: 36 / 43 tasks (~83.7%)
+**Overall**: 39 / 43 tasks (~90.7%)
 
 ---
 

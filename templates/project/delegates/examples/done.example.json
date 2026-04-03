@@ -1,0 +1,13 @@
+{
+  "id": "del-example-pending",
+  "parent_task": "13.2",
+  "charter": "Survey error handling in payment module; read-only — no edits outside evidence note.",
+  "mode": "explore",
+  "write_scope": [".viepilot/notes/delegate-del-example-pending.md"],
+  "allowed_tools_hint": ["Read", "Glob", "Grep"],
+  "created_at": "2026-04-03T12:00:00Z",
+  "status": "complete",
+  "summary": "Three failure modes documented; recommendations listed in evidence file.",
+  "evidence_paths": [".viepilot/notes/delegate-del-example-pending.md"],
+  "errors": []
+}

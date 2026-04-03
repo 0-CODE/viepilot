@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 13-agent-orchestration-tier-ab
-- **Status**: not_started
+- **Status**: complete
 - **Complexity**: M
 - **Dependencies**: 13.1 (recommended: merge order after 13.1 to avoid autonomous churn)
 - **Git Tag**: `viepilot-vp-p13-t13.2`
@@ -44,13 +44,14 @@ files_to_modify:
 ## Context Required
 ```yaml
 files_to_read:
+  - .viepilot/ARCHITECTURE.md
   - docs/brainstorm/session-2026-04-03.md
-  - templates/project/
+  - workflows/autonomous.md
 ```
 
 ## Acceptance Criteria
-- [ ] `templates/project/delegates/` committed with README + two examples.
-- [ ] Contract states: worker writes only under allowed paths; main merges from `done/` only.
+- [x] `templates/project/delegates/` committed with README + two examples.
+- [x] Contract states: worker writes only under allowed paths; main merges from `done/` only.
 
 ## Verification
 ```yaml
@@ -63,11 +64,12 @@ manual:
 ```
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol
 
 ## Implementation Notes
-```
-```
+- Added `README.md` with field tables, merge rules (main reads **only** `done/{id}.json`), layout for `pending/` + `done/` + `examples/`.
+- Examples use shared `id` `del-example-pending` to show pending → done shape.
+- `crystallize.md` Step 9: mkdir `pending`/`done`/`examples`, copy README + examples into `.viepilot/delegates/` on new projects.
 
 ## Post-Completion
-_(AI fills after PASS)_
+- Installer mirrors `templates/project/*` recursively — `delegates/` ships with package without install.cjs changes.

@@ -7,14 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- **`workflows/autonomous.md`** — **Tier A** mandatory **Task-boundary context re-hydrate** (§3b): parallel batch re-read each task boundary of `TRACKER`, `HANDOFF`, `PHASE-STATE` slice, current task file, and task-declared `files_to_read`; Initialize read documented as insufficient for multi-task runs; Working Directory Guard unchanged (Phase 13.1)
-
 ### Planned
 
-- **Phase 13** (in progress): Tier B delegate templates (13.2) + docs (13.3) + tests (13.4) — Tier A (13.1) shipped
-- **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
+- **Phases 14–19** (scaffold): ENH-023–028 per dependency graph in `.viepilot/ROADMAP.md`
+
+## [2.2.2] - 2026-04-03
+
+Phase **13** complete — **Agent orchestration Tier A + B**: task-boundary re-hydrate in `autonomous.md`, delegate envelope templates + crystallize seed, consumer docs, contract tests. **Semver PATCH** **2.2.1 → 2.2.2**.
+
+### Added
+
+- **`templates/project/delegates/`** — `README.md` + `examples/pending.example.json` + `examples/done.example.json` (Tier B contract)
+- **`tests/unit/vp-phase13-orchestration-contracts.test.js`** — guards for Tier A/Tier B + example JSON keys
+
+### Changed
+
+- **`workflows/crystallize.md`** — Step 9: seed `.viepilot/delegates/` (`pending/`, `done/`, `examples/`, README) from template *(13.2)*
+- **`templates/project/AI-GUIDE.md`** — **Delegate handoff (Tier B)** subsection + quick lookup row *(13.3)*
+- **`docs/user/features/autonomous-mode.md`** — § **Delegate handoff (Tier B)** cross-linking template + Tier A *(13.3)*
+
+### Git tags
+
+- `viepilot-vp-p13-t13.2` … `viepilot-vp-p13-t13.4-done` — tasks 13.2–13.4 checkpoints *(13.1 tags predate this PATCH)*
+- `viepilot-vp-p13-complete` — Phase 13 checkpoint
 
 ## [2.2.1] - 2026-04-03
 
