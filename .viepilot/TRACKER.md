@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 12 — Verification + Docs + Release (next)
-- **Task**: 12.1 — integration test BUG-007 guard
+- **Task**: 12.2 — integration test ENH-022 entity extraction
 - **Version**: 2.1.3
 - **Last Update**: 2026-04-03
 
@@ -22,7 +22,7 @@
 | 09 | Brainstorm Artifact Manifest | 7 | complete ✅ |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | complete ✅ |
 | 11 | Diagram Profile System | 5 | complete ✅ |
-| 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
+| 12 | Verification + Docs + v2.1.0 Release | 5 | in progress 🔄 |
 | 13 | Agent Orchestration — Tier A + B | 4 | not started 🔲 |
 | 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
 | 15 | ENH-023 — handoff-sync + hooks | 1 | not started 🔲 |
@@ -32,7 +32,7 @@
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 27 / 40 tasks (67.5%) _(Phase 11 complete 2026-04-03, release 2.1.3)_
+**v2.1 milestone**: 28 / 40 tasks (70%) _(Phase 12 in progress; 12.1 done 2026-04-03)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -57,14 +57,15 @@
 | [ENH-028](.viepilot/requests/ENH-028.md) | ✨ Enhancement | crystallize Review Gate — extraction phase + per-section approval before generation | high | → Phase 16 |
 | [ENH-029](.viepilot/requests/ENH-029.md) | ✨ Enhancement | Remove MVP concept — full-arc ROADMAP with priority + release_target fields | high | new |
 | [ENH-030](.viepilot/requests/ENH-030.md) | ✨ Enhancement | Artifact Manifest — add domain_entities + tech_stack artifact types (required: true) | high | → Phase 09 |
+| [ENH-031](.viepilot/requests/ENH-031.md) | ✨ Enhancement | Giảm token cold start `/vp-auto` sau clear context — điều tra >13K tokens | high | new |
 
 ## Next Action
 
 Phase 11 **complete** (release **2.1.3**). Next: Phase 12 — Verification + Docs + v2.1.0 Final Release.
 
 - Phase directory: see `ROADMAP.md` Phase 12 _(scaffold when starting 12.1)_
-- Current task: **12.1** — integration test: BUG-007 guard
-- Last done: `viepilot-vp-p11-complete`
+- Current task: **12.2** — integration test: ENH-022 entity extraction
+- Last done: Phase 12 task **12.1** — BUG-007 `validateWriteTarget` + integration tests
 
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 
