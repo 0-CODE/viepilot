@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 08-crystallize-entity-extraction (next)
-- **Task**: 8.1 — crystallize.md Domain Entity Extraction step
+- **Task**: 8.2 — crystallize.md Dependency Validation step
 - **Version**: 2.0.3 (→ 2.1.0 after Phase 08)
 - **Last Update**: 2026-04-03
 
@@ -18,14 +18,14 @@
 | 05 | Hotfix — Install Path Convention + Logic Gaps | 5 | complete ✅ |
 | 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | complete ✅ |
 | 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | complete ✅ |
-| 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | not started 🔲 |
+| 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | in progress 🔄 |
 | 09 | Brainstorm Artifact Manifest | 7 | not started 🔲 |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | not started 🔲 |
 | 11 | Diagram Profile System | 5 | not started 🔲 |
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 3 / 30 tasks (10%)
+**v2.1 milestone**: 4 / 30 tasks (13%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`

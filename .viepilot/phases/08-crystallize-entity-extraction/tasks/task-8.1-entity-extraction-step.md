@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 08-crystallize-entity-extraction
-- **Status**: not_started
+- **Status**: done
 - **Complexity**: M
 - **Dependencies**: Phase 7 complete
 - **Git Tag**: `viepilot-vp-p8-t8.1`
@@ -39,10 +39,10 @@ This is a tường minh (explicit, non-inference) step — AI must list entities
 
 ## Pre-execution documentation gate (doc-first; BUG-001)
 
-- [ ] Task contract fields filled
-- [ ] Paths listed
-- [ ] File-Level Plan explains insertion point in crystallize.md
-- [ ] PHASE-STATE.md marks this task `in_progress` before first implementation commit
+- [x] Task contract fields filled
+- [x] Paths listed
+- [x] File-Level Plan explains insertion point in crystallize.md
+- [x] PHASE-STATE.md marks this task `in_progress` before first implementation commit
 
 ## Paths
 ```yaml
@@ -66,16 +66,16 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] `grep -n 'Domain Entity Extraction' workflows/crystallize.md` → match found
-- [ ] Step requires explicit entity list (type + needs_crud_api flag)
-- [ ] Step checks for service phase existence per entity
-- [ ] Step outputs entity manifest table format
-- [ ] Positioned after brainstorm analysis, before phase generation
+- [x] `grep -n 'Domain Entity Extraction' workflows/crystallize.md` → match found
+- [x] Step requires explicit entity list (type + needs_crud_api flag)
+- [x] Step checks for service phase existence per entity
+- [x] Step outputs entity manifest table format
+- [x] Positioned after brainstorm analysis, before phase generation
 
 ## Best Practices to Apply
-- [ ] Step is tường minh — AI must list entities explicitly, not infer
-- [ ] Entity manifest table is a concrete output, not prose
-- [ ] Backward compatible: projects without domain entities skip gracefully
+- [x] Step is tường minh — AI must list entities explicitly, not infer
+- [x] Entity manifest table is a concrete output, not prose
+- [x] Backward compatible: projects without domain entities skip gracefully
 
 ## Do / Don't
 ### Do
@@ -87,9 +87,10 @@ files_to_read:
 - Don't conflate with DB migration phase — CRUD API service phase is separate from schema migration
 
 ## Implementation Notes
-```
-(AI fills during implementation)
-```
+- Added Step 6A `<step name="domain_entity_extraction">` between generate_rules (Step 6) and generate_roadmap (Step 7)
+- Step has 4 sub-sections: 6A.1 entity scan, 6A.2 service phase coverage check, 6A.3 entity manifest table output, 6A.4 MISSING entity handling
+- Skip condition for projects without domain entities (CLI tools, static sites)
+- Entity manifest table includes example with OK/MISSING/N/A statuses
 
 ## Verification
 ```yaml
@@ -101,14 +102,14 @@ automated:
 ```
 
 ## State Update Checklist
-- [ ] Update `.viepilot/phases/08-crystallize-entity-extraction/PHASE-STATE.md` after PASS
-- [ ] Update `.viepilot/TRACKER.md`
-- [ ] Update `.viepilot/HANDOFF.json`
-- [ ] Update `.viepilot/ROADMAP.md` if progress changed
+- [x] Update `.viepilot/phases/08-crystallize-entity-extraction/PHASE-STATE.md` after PASS
+- [x] Update `.viepilot/TRACKER.md`
+- [x] Update `.viepilot/HANDOFF.json`
+- [x] Update `.viepilot/ROADMAP.md` if progress changed
 
 ## Files Changed
 ```
-(Auto-populated after completion)
+M	workflows/crystallize.md
 ```
 
 ## Rollback
@@ -122,7 +123,11 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p8-t8.1".."${TAG_PREFIX}-p8
 > **AI fills this section after task PASS**
 
 ### Implementation Summary
-- (Replace with 2-5 bullets)
+- Added Step 6A "Domain Entity Extraction" to crystallize.md (between Steps 6 and 7)
+- Requires explicit entity list: name, type (core/reference/junction), needs_crud_api flag
+- Checks service phase coverage — MISSING entities trigger user prompt
+- Outputs entity manifest table in ARCHITECTURE.md
+- Skip condition for projects without domain entities
 
 ### Files Changed
 | File | Action |
@@ -130,8 +135,8 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p8-t8.1".."${TAG_PREFIX}-p8
 | `workflows/crystallize.md` | modified |
 
 ### Checklist Verification
-- [ ] `## Meta → Status` set to `done`
-- [ ] All `## Acceptance Criteria` boxes ticked `[x]`
-- [ ] PHASE-STATE.md task row updated
-- [ ] HANDOFF.json `position.task` → 8.2
-- [ ] TRACKER.md current task line updated
+- [x] `## Meta → Status` set to `done`
+- [x] All `## Acceptance Criteria` boxes ticked `[x]`
+- [x] PHASE-STATE.md task row updated
+- [x] HANDOFF.json `position.task` → 8.2
+- [x] TRACKER.md current task line updated
