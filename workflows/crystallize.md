@@ -368,6 +368,28 @@ When a diagram type is **`required`** or **`optional`** and you emit a **non-emp
 **Discoverability:** in `.viepilot/ARCHITECTURE.md`, under each diagram section that has a sidecar file, add a line with bold label **Diagram source** and an inline-code path `.viepilot/architecture/<filename>.mermaid`.
 
 Create `.viepilot/architecture/` only when at least one `.mermaid` file will be written (empty directory otherwise is unnecessary).
+
+### Consumed Anchor Tracking (`vp:consumed`) — stub
+
+When crystallize writes sections to ARCHITECTURE.md that originated from brainstorm artifacts (via Step 0A manifest), tag those sections with a `vp:consumed` HTML comment anchor:
+
+```markdown
+<!-- vp:consumed artifact="architecture_inputs" session="session-2026-04-03" at="2026-04-03" -->
+## Technology Decisions
+...
+```
+
+**Anchor format**: `<!-- vp:consumed artifact="{type}" session="{session_id}" at="{date}" -->`
+
+**Where to place**: Before each major section in ARCHITECTURE.md that was populated from a brainstorm artifact. Typical sections:
+- `## Technology Decisions` ← from `architecture_inputs` artifact
+- `## System Overview` ← from `architecture_inputs` artifact
+- `## Domain Entity Manifest` ← from `domain_entities` artifact (Step 6A)
+
+**Drift check (stub — full implementation deferred to Post-v2.1)**:
+- Future `/vp-audit` will scan ARCHITECTURE.md for `vp:consumed` anchors and compare against current brainstorm session content
+- If brainstorm decisions changed after crystallize consumed them → drift warning
+- For now: just inject the anchors. No active drift detection in v2.1.
 </step>
 
 <step name="generate_context">
