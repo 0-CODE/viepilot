@@ -265,7 +265,7 @@ Wave E:            Phase 19 (ENH-025)
 | 18. ENH-024 — Fork state background | 🔲 Not Started | 1 | 0 | 0% |
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 
-**Overall**: 24 / 40 tasks (60%)
+**Overall**: 25 / 40 tasks (62.5%)
 
 ---
 
