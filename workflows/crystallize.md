@@ -820,6 +820,29 @@ git commit -m "feat: initialize project with ViePilot
 git push
 ```
 
+### 12.3 Auto-register project in global registry (Gap E)
+
+Register this project in `~/.viepilot/project-registry.json` for cross-project `/vp-status --all` dashboard:
+
+1. If `~/.viepilot/project-registry.json` does not exist, create it from template (empty projects array)
+2. Check if project already registered (match by `path` field = current `{project_cwd}`)
+3. If not found: append new entry:
+   ```json
+   {
+     "name": "{project_name}",
+     "path": "{project_cwd}",
+     "version": "{package.json version or 0.1.0}",
+     "registered_at": "{today}",
+     "last_crystallize": "{today}",
+     "tracker_path": ".viepilot/TRACKER.md",
+     "handoff_path": ".viepilot/HANDOFF.json",
+     "status": "active"
+   }
+   ```
+4. If found: update `last_crystallize` and `version` fields
+
+This step is **non-blocking** — if `~/.viepilot/` is not writable (e.g., restricted permissions), log a warning and continue.
+
 Display summary:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

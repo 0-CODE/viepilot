@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "_comment": "ViePilot Project Registry — stored at ~/.viepilot/project-registry.json. Auto-populated by /vp-crystallize on first run. Read by /vp-status --all for cross-project dashboard.",
+  "projects": [
+    {
+      "name": "example-project",
+      "path": "/absolute/path/to/project",
+      "version": "0.1.0",
+      "registered_at": "YYYY-MM-DD",
+      "last_crystallize": "YYYY-MM-DD",
+      "tracker_path": ".viepilot/TRACKER.md",
+      "handoff_path": ".viepilot/HANDOFF.json",
+      "status": "active",
+      "_comment": "status: active | archived | paused"
+    }
+  ],
+  "_manual_usage": "To add manually: append entry to projects[]. To remove: delete entry or set status=archived. vp-crystallize auto-registers on first run."
+}
