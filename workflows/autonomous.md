@@ -66,6 +66,35 @@ Display startup banner:
  Milestone: {milestone}
  Phases: {total} total, {completed} complete
 ```
+
+#### Working Directory Guard (mandatory — evaluate before ANY file edit)
+
+**Source of truth**: `{project_cwd}` = the current working directory where `.viepilot/TRACKER.md` lives. This is the ONLY directory you may write to.
+
+**Read-only paths** (context only — NEVER write):
+- `~/.claude/viepilot/` — installed skill/workflow runtime
+- `~/.cursor/viepilot/` — installed skill/workflow runtime
+- Any absolute path outside `{project_cwd}`
+
+**Pre-edit check** — before EVERY file create/modify/delete:
+1. Resolve the target path to absolute
+2. Confirm it starts with `{project_cwd}/`
+3. If target path is outside `{project_cwd}` → **HARD STOP** — do NOT proceed
+
+**On violation**:
+```
+→ Do NOT write the file
+→ Route to control_point immediately:
+  reason: "Edit target '{path}' is outside project working directory '{project_cwd}'. Install paths are READ-ONLY."
+→ Wait for user decision before continuing
+```
+
+**Examples**:
+- `{project_cwd}/workflows/autonomous.md` → allowed (project source)
+- `~/.claude/viepilot/workflows/autonomous.md` → BLOCKED (install path, read-only)
+- `/tmp/scratch.md` → BLOCKED (outside project_cwd)
+
+This guard applies to ALL ViePilot projects — not only framework self-development sessions.
 </step>
 
 <step name="discover_phases">
