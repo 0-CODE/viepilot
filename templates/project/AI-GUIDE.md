@@ -32,6 +32,10 @@
 - `SYSTEM-RULES.md` framework rules → cache sau lần đầu
 - `ARCHITECTURE.md` module structure → cache sau lần đầu
 
+> **Install path warning**: `~/.claude/viepilot/` and `~/.cursor/viepilot/` are **READ-ONLY** runtime paths.
+> All file edits must target files under this project's working directory only.
+> Writing to install paths bypasses version control and ships untested code to production.
+
 ### Dynamic boundary (đọc mỗi task)
 - `TRACKER.md` + `HANDOFF.json` + `PHASE-STATE.md` + task file
 
