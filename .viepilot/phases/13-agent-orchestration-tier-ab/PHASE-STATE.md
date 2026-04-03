@@ -2,15 +2,15 @@
 
 ## Overview
 - **Started**: 2026-04-03
-- **Status**: not_started
-- **Progress**: 0/4 tasks (0%)
-- **Current Task**: —
+- **Status**: in_progress
+- **Progress**: 1/4 tasks (25%)
+- **Current Task**: 13.2 — delegate envelope templates
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "13.1"
+  current: "13.2"
   status: not_started
   available_transitions:
     on_start:     "→ executing"
@@ -29,7 +29,7 @@ execution_state:
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 13.1 | autonomous.md — task-boundary re-hydrate (Tier A) | not_started | — | — | — |
+| 13.1 | autonomous.md — task-boundary re-hydrate (Tier A) | complete | 2026-04-03 | 2026-04-03 | `viepilot-vp-p13-t13.1-done` |
 | 13.2 | templates/project/delegates/ envelope + samples | not_started | — | — | — |
 | 13.3 | AI-GUIDE + autonomous-mode — delegate merge checklist | not_started | — | — | — |
 | 13.4 | Unit tests — contract / schema smoke | not_started | — | — | — |
@@ -50,6 +50,7 @@ _None currently_
 ## Files Changed
 | File | Action | Task |
 |------|--------|------|
+| `workflows/autonomous.md` | Tier A task-boundary re-hydrate subsection | 13.1 |
 
 ## Quality Metrics
 - Tests written: 0

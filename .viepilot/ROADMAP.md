@@ -6,7 +6,7 @@
 - **Version target**: **2.2.1** (Phase 20 ENH-031); **2.2.0** Phase 12 verify/docs release; prior v2.1.x shipped diagram profiles, manifest, token budget, Gap E/G
 - **Goal**: Fix critical framework gaps (BUG-007, ENH-022) + Tier 1 Post-MVP epics (Artifact Manifest, Gap E, Gap G Extended, Token Budget Awareness) + Diagram Profile System + Phase 12 verify/docs
 - **Phases**: 6 (core v2.1 bundle) + Phase 12 verify; **13–20** planned next
-- **Status**: In Progress (Phase 12 ✅; Phase 20 ✅ ENH-031 v2.2.1; Phases 13–19 scaffolded)
+- **Status**: In Progress (Phase 12 ✅; Phase 20 ✅ ENH-031 v2.2.1; Phase 13 🔄 1/4; Phases 14–19 scaffolded)
 
 ---
 
@@ -277,7 +277,7 @@ Wave E:            Phase 19 (ENH-025)
 | 10. Gap E + Gap G Extended + Token Budget | ✅ Complete | 6 | 6 | 100% |
 | 11. Diagram Profile System | ✅ Complete | 5 | 5 | 100% |
 | 12. Verification + Docs + Release | ✅ Complete | 5 | 5 | 100% |
-| 13. Agent Orchestration Tier A + B | 🔲 Not Started | 4 | 0 | 0% |
+| 13. Agent Orchestration Tier A + B | 🔄 In Progress | 4 | 1 | 25% |
 | 14. ENH-027 — vp-tools ask | 🔲 Not Started | 1 | 0 | 0% |
 | 15. ENH-023 — handoff-sync + hooks | 🔲 Not Started | 1 | 0 | 0% |
 | 16. ENH-028 — crystallize Review Gate | 🔲 Not Started | 1 | 0 | 0% |
@@ -286,7 +286,7 @@ Wave E:            Phase 19 (ENH-025)
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 | 20. ENH-031 — cold start token reduction | ✅ Complete | 3 | 3 | 100% |
 
-**Overall**: 35 / 43 tasks (~81.4%)
+**Overall**: 36 / 43 tasks (~83.7%)
 
 ---
 

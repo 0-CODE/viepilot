@@ -149,7 +149,24 @@ Check if phase already has completed tasks → resume from next task.
 
 For each task in phase:
 
+#### Task-boundary context re-hydrate (Tier A — mandatory)
+
+Before **Validate Task Contract** and any implementation work for this task iteration, reload authoritative state from disk. **Do not** rely on conversation memory alone across long `/vp-auto` runs.
+
+The **Initialize** batch-read (§1 — `.viepilot/TRACKER.md`, `ROADMAP-INDEX.md` / `.viepilot/ROADMAP.md`, `.viepilot/AI-GUIDE.md`) establishes session orientation only; it **does not** replace per-task file truth. At **every task boundary** — immediately after the previous task PASS (before the next task body), or when entering this loop for the first task of the phase — run the following.
+
+**Mandatory parallel batch (1 assistant turn — invoke all Read tools together):**
+- `.viepilot/TRACKER.md`
+- `.viepilot/HANDOFF.json`
+- `.viepilot/phases/{phase}/PHASE-STATE.md` — at minimum the `execution_state` block and the **Task Status** table (current task row + transitions); use the full file when practical
+- `.viepilot/phases/{phase}/tasks/{task}.md` — the active task file
+- Every path listed in that task file under `## Context Required`, YAML `files_to_read`, or `context_required` (expand to concrete reads). If a listed file is missing, log the assumption in the task file / phase notes and continue only when the task spec allows.
+
+**Working Directory Guard (no regression):** All paths above MUST resolve under `{project_cwd}` per §1. Bundles under `~/.cursor/viepilot/` and `~/.claude/viepilot/` stay **read-only** — never substitute them for project `.viepilot/` task artifacts.
+
 #### Load Task Context (batch — call all Read tools simultaneously in 1 turn)
+
+**After Tier A re-hydrate above**, complete context loading as follows.
 
 Dynamic context (read every task):
 - `.viepilot/TRACKER.md`

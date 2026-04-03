@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **`workflows/autonomous.md`** — **Tier A** mandatory **Task-boundary context re-hydrate** (§3b): parallel batch re-read each task boundary of `TRACKER`, `HANDOFF`, `PHASE-STATE` slice, current task file, and task-declared `files_to_read`; Initialize read documented as insufficient for multi-task runs; Working Directory Guard unchanged (Phase 13.1)
+
 ### Planned
 
-- **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
+- **Phase 13** (in progress): Tier B delegate templates (13.2) + docs (13.3) + tests (13.4) — Tier A (13.1) shipped
 - **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
 
 ## [2.2.1] - 2026-04-03

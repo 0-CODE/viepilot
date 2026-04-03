@@ -6,7 +6,7 @@
 
 | Phase | Name | Summary status |
 |-------|------|------------------|
-| 13 | Agent Orchestration — Tier A + B | Next (see TRACKER) |
+| 13 | Agent Orchestration — Tier A + B | In progress (13.1 ✅ → 13.2 next) |
 | 14 | ENH-027 — vp-tools ask | Planned |
 | 15 | ENH-023 — handoff-sync + hooks | Planned |
 | 16 | ENH-028 — crystallize Review Gate | Planned |

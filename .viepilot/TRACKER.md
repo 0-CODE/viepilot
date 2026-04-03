@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 13 — Agent Orchestration — Tier A + B (next)
-- **Task**: 13.1 — autonomous task-boundary re-hydrate (see ROADMAP)
+- **Phase**: 13 — Agent Orchestration — Tier A + B (in progress)
+- **Task**: 13.2 — delegate envelope templates (see ROADMAP)
 - **Version**: 2.2.1
 - **Last Update**: 2026-04-03
 
@@ -23,7 +23,7 @@
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | complete ✅ |
 | 11 | Diagram Profile System | 5 | complete ✅ |
 | 12 | Verification + Docs + v2.2.0 Release | 5 | complete ✅ |
-| 13 | Agent Orchestration — Tier A + B | 4 | not started 🔲 |
+| 13 | Agent Orchestration — Tier A + B | 4 | in progress 🔄 |
 | 14 | ENH-027 — vp-tools ask | 1 | not started 🔲 |
 | 15 | ENH-023 — handoff-sync + hooks | 1 | not started 🔲 |
 | 16 | ENH-028 — crystallize Review Gate | 1 | not started 🔲 |
@@ -33,7 +33,7 @@
 | 20 | ENH-031 — cold start token reduction | 3 | complete ✅ |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 35 / 43 tasks (~81%) _(Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1** 2026-04-03)_
+**v2.1 milestone**: 36 / 43 tasks (~84%) _(Phase 13.1 Tier A shipped 2026-04-03; Phase 12 **v2.2.0** + Phase 20 **ENH-031** **v2.2.1**)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -62,12 +62,12 @@
 
 ## Next Action
 
-Phase **20** **complete** — shipped **ENH-031** **v2.2.1** (`CHANGELOG` **[2.2.1]**, tags `viepilot-vp-p20-complete`, tasks `p20-t20.*`). Next: **Phase 13** — Agent orchestration Tier A + B.
+Phase **13** **in progress** — task **13.1** **complete** (Tier A task-boundary re-hydrate in `workflows/autonomous.md`); tags `viepilot-vp-p13-t13.1`, `viepilot-vp-p13-t13.1-done`.
 
 - Phase directory: `.viepilot/phases/13-agent-orchestration-tier-ab/`
-- Current task: **13.1** — task-boundary re-hydrate (`autonomous.md`)
-- Last done: Phase 20 task **20.3** — `ROADMAP-INDEX.md` + Initialize lite (`autonomous.md` / `crystallize.md`)
+- Current task: **13.2** — `templates/project/delegates/` envelope + samples
+- Last done: **13.1** — mandatory per-task parallel re-hydrate (TRACKER, HANDOFF, PHASE-STATE slice, task file, `files_to_read`)
 
-**Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B. `/vp-auto --phase 13` hoặc `--from 13`.
+**Phase 13 (active)**: resume with `/vp-auto --phase 13` (next: 13.2).
 
 **Phases 14–19 (planned, theo dependency)**: `14-enh-027` → `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`. `/vp-auto --phase 14` … `--phase 19`.
