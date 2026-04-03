@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 07-working-dir-guard (next)
-- **Task**: 7.2 — AI-GUIDE.md template Install path READ-ONLY note
+- **Task**: 7.3 — Version bump 2.0.2 → 2.0.3 + CHANGELOG
 - **Version**: 2.0.2 (→ 2.0.3 after Phase 07, → 2.1.0 after Phase 08)
 - **Last Update**: 2026-04-03
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 1 / 30 tasks (3%)
+**v2.1 milestone**: 2 / 30 tasks (6%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`

@@ -3,14 +3,14 @@
 ## Overview
 - **Started**: 2026-04-03
 - **Status**: in_progress
-- **Progress**: 1/3 tasks (33%)
-- **Current Task**: 7.2
+- **Progress**: 2/3 tasks (66%)
+- **Current Task**: 7.3
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "7.2"
+  current: "7.3"
   status: executing
   available_transitions:
     on_start:     "→ executing"
@@ -30,7 +30,7 @@ execution_state:
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
 | 7.1 | autonomous.md — Working Directory Guard block | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p7-t7.1-done |
-| 7.2 | AI-GUIDE.md template — Install path READ-ONLY note | not_started | — | — | — |
+| 7.2 | AI-GUIDE.md template — Install path READ-ONLY note | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p7-t7.2-done |
 | 7.3 | Version bump 2.0.2 → 2.0.3 + CHANGELOG | not_started | — | — | — |
 
 ## Sub-task Tracking
@@ -53,6 +53,7 @@ _None currently_
 | File | Action | Task |
 |------|--------|------|
 | workflows/autonomous.md | Modified | 7.1 |
+| templates/project/AI-GUIDE.md | Modified | 7.2 |
 
 ## Quality Metrics
 - Tests written: 0

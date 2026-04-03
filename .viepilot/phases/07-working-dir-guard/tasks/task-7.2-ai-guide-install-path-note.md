@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 07-working-dir-guard
-- **Status**: not_started
+- **Status**: done
 - **Complexity**: S
 - **Dependencies**: Task 7.1
 - **Git Tag**: `viepilot-vp-p7-t7.2`
@@ -33,10 +33,10 @@ Add an explicit install path READ-ONLY warning to `templates/project/AI-GUIDE.md
 
 ## Pre-execution documentation gate (doc-first; BUG-001)
 
-- [ ] Task contract fields below are filled with real paths and intent
-- [ ] `## Paths` lists every file to modify
-- [ ] `## File-Level Plan` explains what and why
-- [ ] PHASE-STATE.md marks this task `in_progress` before first implementation commit
+- [x] Task contract fields below are filled with real paths and intent
+- [x] `## Paths` lists every file to modify
+- [x] `## File-Level Plan` explains what and why
+- [x] PHASE-STATE.md marks this task `in_progress` before first implementation commit
 
 ## Paths
 ```yaml
@@ -59,13 +59,13 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] `grep -n 'READ-ONLY\|read-only' templates/project/AI-GUIDE.md` → match in install path note
-- [ ] Warning mentions `~/.claude/viepilot/` and `~/.cursor/viepilot/` explicitly
-- [ ] Warning explains consequence: bypasses version control
+- [x] `grep -n 'READ-ONLY\|read-only' templates/project/AI-GUIDE.md` → match in install path note
+- [x] Warning mentions `~/.claude/viepilot/` and `~/.cursor/viepilot/` explicitly
+- [x] Warning explains consequence: bypasses version control
 
 ## Best Practices to Apply
-- [ ] Note is clear and prominent — not buried in prose
-- [ ] Applies to all projects (not framed as "only for ViePilot development")
+- [x] Note is clear and prominent — not buried in prose
+- [x] Applies to all projects (not framed as "only for ViePilot development")
 
 ## Do / Don't
 ### Do
@@ -75,9 +75,9 @@ files_to_read:
 - Don't duplicate the guard from autonomous.md verbatim — this is a shorter reminder
 
 ## Implementation Notes
-```
-(AI fills during implementation)
-```
+- Added blockquote warning in Static boundary section of `templates/project/AI-GUIDE.md`
+- Warning names both install paths explicitly and explains version control bypass consequence
+- Positioned early in context loading so AI sees it before any edits
 
 ## Verification
 ```yaml
@@ -91,14 +91,14 @@ manual:
 ```
 
 ## State Update Checklist
-- [ ] Update `.viepilot/phases/07-working-dir-guard/PHASE-STATE.md` after PASS
-- [ ] Update `.viepilot/TRACKER.md`
-- [ ] Update `.viepilot/HANDOFF.json`
-- [ ] Update `.viepilot/ROADMAP.md` if progress changed
+- [x] Update `.viepilot/phases/07-working-dir-guard/PHASE-STATE.md` after PASS
+- [x] Update `.viepilot/TRACKER.md`
+- [x] Update `.viepilot/HANDOFF.json`
+- [x] Update `.viepilot/ROADMAP.md` if progress changed
 
 ## Files Changed
 ```
-(Auto-populated after completion)
+M	templates/project/AI-GUIDE.md
 ```
 
 ## Rollback
@@ -112,7 +112,9 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p7-t7.2".."${TAG_PREFIX}-p7
 > **AI fills this section after task PASS**
 
 ### Implementation Summary
-- (Replace with 2-5 bullets)
+- Added READ-ONLY install path warning as blockquote in Static boundary section
+- Warning explicitly names `~/.claude/viepilot/` and `~/.cursor/viepilot/`
+- Explains consequence: bypasses version control, ships untested code to production
 
 ### Files Changed
 | File | Action |
@@ -120,8 +122,8 @@ git revert --no-commit $(git rev-list "${TAG_PREFIX}-p7-t7.2".."${TAG_PREFIX}-p7
 | `templates/project/AI-GUIDE.md` | modified |
 
 ### Checklist Verification
-- [ ] `## Meta → Status` set to `done`
-- [ ] All `## Acceptance Criteria` boxes ticked `[x]`
-- [ ] PHASE-STATE.md task row updated
-- [ ] HANDOFF.json `position.task` → 7.3
-- [ ] TRACKER.md current task line updated
+- [x] `## Meta → Status` set to `done`
+- [x] All `## Acceptance Criteria` boxes ticked `[x]`
+- [x] PHASE-STATE.md task row updated
+- [x] HANDOFF.json `position.task` → 7.3
+- [x] TRACKER.md current task line updated
