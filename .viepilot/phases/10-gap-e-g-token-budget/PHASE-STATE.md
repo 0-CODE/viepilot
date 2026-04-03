@@ -3,14 +3,14 @@
 ## Overview
 - **Started**: 2026-04-03
 - **Status**: in_progress
-- **Progress**: 3/6 tasks (50%)
-- **Current Task**: 10.4
+- **Progress**: 4/6 tasks (67%)
+- **Current Task**: 10.5
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "10.4"
+  current: "10.5"
   status: executing
   available_transitions:
     on_start:     "→ executing"
@@ -32,7 +32,7 @@ execution_state:
 | 10.1 | project-registry.json schema + vp-crystallize auto-register | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p10-t10.1-done |
 | 10.2 | vp-status skill — --all flag aggregate from registry | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p10-t10.2-done |
 | 10.3 | autonomous.md — Token budget awareness sub-task check | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p10-t10.3-done |
-| 10.4 | HANDOFF.log — token_budget_warning event | in_progress | 2026-04-03 | — | — |
+| 10.4 | HANDOFF.log — token_budget_warning event | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p10-t10.4-done |
 | 10.5 | crystallize.md + autonomous.md — Gap G Extended keyword scan | not_started | — | — | — |
 | 10.6 | Version bump 2.1.1 → 2.1.2 + CHANGELOG | not_started | — | — | — |
 
@@ -56,6 +56,10 @@ _None currently_
 | skills/vp-status/SKILL.md | Modified | 10.2 |
 | workflows/autonomous.md | Modified | 10.3 |
 | .viepilot/phases/10-gap-e-g-token-budget/tasks/task-10.3-autonomous-token-budget.md | Created | 10.3 |
+| workflows/autonomous.md | Modified | 10.4 |
+| docs/user/features/autonomous-mode.md | Modified | 10.4 |
+| CHANGELOG.md | Modified | 10.4 |
+| .viepilot/phases/10-gap-e-g-token-budget/tasks/task-10.4-handoff-log-token-budget-warning.md | Created | 10.4 |
 
 ## Quality Metrics
 - Tests written: 0

@@ -2,10 +2,10 @@
 
 ## Meta
 - **Phase**: 10-gap-e-g-token-budget
-- **Status**: in_progress
+- **Status**: done
 - **Complexity**: S
 - **Dependencies**: Task 10.3
-- **Git Tag**: _(set on PASS)_
+- **Git Tag**: `viepilot-vp-p10-t10.4-done`
 
 ## Task Metadata
 
@@ -48,9 +48,9 @@ files_to_modify:
 
 ## Acceptance Criteria
 
-- [ ] Sau khi ước lượng `used_pct`, nếu `used_pct > 70`, workflow mô tả rõ lệnh append `token_budget_warning` kèm `used_pct`
-- [ ] Event ghi non-blocking (append JSONL, không chặn luồng)
-- [ ] `grep -n 'token_budget_warning' workflows/autonomous.md` có kết quả
+- [x] Sau khi ước lượng `used_pct`, nếu `used_pct > 70`, workflow mô tả rõ lệnh append `token_budget_warning` kèm `used_pct`
+- [x] Event ghi non-blocking (append JSONL, không chặn luồng)
+- [x] `grep -n 'token_budget_warning' workflows/autonomous.md` có kết quả
 
 ## Verification
 ```yaml
@@ -62,18 +62,30 @@ automated:
 ```
 
 ## State Update Checklist
-- [ ] Update PHASE-STATE.md after PASS
-- [ ] Update TRACKER.md (Next Action + task pointer)
-- [ ] Update HANDOFF.json
-- [ ] ROADMAP Progress Summary if task completes (optional — chỉ khi 10.4 là task cuối phase; hiện không)
+- [x] Update PHASE-STATE.md after PASS
+- [x] Update TRACKER.md (Next Action + task pointer)
+- [x] Update HANDOFF.json
+- [x] ROADMAP Progress Summary if task completes (optional — chỉ khi 10.4 là task cuối phase; hiện không)
 
 ## Post-Completion
 
 ### Implementation Summary
-_(fill after PASS)_
+
+- Thêm bước **1b** trong `Token budget check`: khi `used_pct > 70`, append JSONL `token_budget_warning` với `used_pct`, `severity` warn/critical, `task`, `phase`, optional `sub_task`; không fail nếu append lỗi.
+- Cập nhật ví dụ HANDOFF.log trong `autonomous-mode.md` và mục Added trong `CHANGELOG.md`.
 
 ### Files Changed
-_(git diff tag..HEAD --name-status)_
+
+```
+M	CHANGELOG.md
+M	docs/user/features/autonomous-mode.md
+M	workflows/autonomous.md
+```
+
+_(Deliverable diff từ tag `viepilot-vp-p10-t10.4`; commit doc-first + task file nằm trước tag start.)_
 
 ## Implementation Notes
-_(2–5 bullets after PASS)_
+
+- Step **1b** đặt sau ước lượng `used_pct` và trước nhánh force pause 90% / menu 70%, để mọi lần vượt 70% đều có audit trail trong log.
+- `severity` phân biệt cảnh báo thường (70–90) và critical (>90).
+- Task file + PHASE-STATE doc-first commit trước tag `viepilot-vp-p10-t10.4`.
