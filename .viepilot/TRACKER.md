@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 10-gap-e-g-token-budget (next)
-- **Task**: 10.1 — project-registry.json schema + vp-crystallize auto-register
+- **Task**: 10.2 — vp-status skill --all flag aggregate from registry
 - **Version**: 2.1.1
 - **Last Update**: 2026-04-03
 
@@ -20,12 +20,12 @@
 | 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | complete ✅ |
 | 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | complete ✅ |
 | 09 | Brainstorm Artifact Manifest | 7 | complete ✅ |
-| 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | not started 🔲 |
+| 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | in progress 🔄 |
 | 11 | Diagram Profile System | 5 | not started 🔲 |
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 16 / 30 tasks (53%)
+**v2.1 milestone**: 17 / 30 tasks (56%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
