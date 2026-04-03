@@ -2,9 +2,9 @@
 
 ## Overview
 - **Started**: 2026-04-03
-- **Status**: in_progress
-- **Progress**: 3/4 tasks (75%)
-- **Current Task**: 8.4
+- **Status**: complete
+- **Progress**: 4/4 tasks (100%)
+- **Current Task**: —
 
 ## Execution State
 
@@ -32,7 +32,7 @@ execution_state:
 | 8.1 | crystallize.md — Domain Entity Extraction step (Fix A) | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.1-done |
 | 8.2 | crystallize.md — Dependency Validation step (Fix C) | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.2-done |
 | 8.3 | crystallize.md — Entity manifest output format | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.3-done |
-| 8.4 | Version bump 2.0.3 → 2.1.0 + CHANGELOG | in_progress | 2026-04-03 | — | — |
+| 8.4 | Version bump 2.0.3 → 2.1.0 + CHANGELOG | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p8-t8.4-done |
 
 ## Sub-task Tracking
 

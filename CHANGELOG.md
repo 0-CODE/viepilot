@@ -9,7 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **Phase 08 (ENH-022)**: Crystallize domain entity extraction + dependency validation → v2.1.0
+- **Phase 09**: Brainstorm Artifact Manifest — manifest schema + crystallize Step 0A → v2.1.1
+- **Phase 10**: Gap E (/vp-status --all) + Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
+- **Phase 11**: Diagram Profile System — stack-aware architecture diagram generation → v2.1.3
+- **Phase 12**: Verification + Docs + v2.1.0 Final Release
+
+## [2.1.0] - 2026-04-03
+
+### Added
+
+- **ENH-022 (Fix A — Domain Entity Extraction)**: `crystallize.md` Step 6A `domain_entity_extraction` — mandatory explicit entity extraction step positioned after brainstorm analysis and before phase generation. Requires AI to list all named domain entities (nouns that are persisted objects), classify each as core/reference/junction, flag `needs_crud_api: yes/no`, and check for service phase coverage. MISSING entities trigger user prompt to auto-add stub phase or confirm intentional skip. Step is tường minh (explicit) — no inference.
+- **ENH-022 (Fix C — Dependency Validation)**: `crystallize.md` Step 11A `dependency_validation` — mandatory cross-check after all phases and task files are generated. Scans task descriptions for dependency call patterns (resolve/create/update/delete/manage/lookup/enrich/fetch + entity name). For each match: verifies a service phase with lower number exists. Produces gap report table with MISSING and ORDERING gap types. Resolution options: auto-add stub, reorder, or user-confirm intentional — never auto-adds without confirmation.
+- **ENH-022 (Entity Manifest Artifact)**: Entity manifest table written to `SPEC.md` under `## Domain Entity Manifest` section after finalization. Columns: Entity, Type, needs_crud_api, Service Phase, Status. MISSING sentinel with warning icon. Source of truth for Step 11A dependency validation and vp-auto preflight.
 
 ## [2.0.3] - 2026-04-03
 

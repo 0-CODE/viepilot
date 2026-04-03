@@ -2,9 +2,9 @@
 
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
-- **Phase**: 08-crystallize-entity-extraction (next)
-- **Task**: 8.4 — Version bump 2.0.3 → 2.1.0 + CHANGELOG
-- **Version**: 2.0.3 (→ 2.1.0 after Phase 08)
+- **Phase**: 09-brainstorm-artifact-manifest (next)
+- **Task**: 9.1 — first task of Phase 09
+- **Version**: 2.1.0
 - **Last Update**: 2026-04-03
 
 ## Progress
@@ -18,14 +18,14 @@
 | 05 | Hotfix — Install Path Convention + Logic Gaps | 5 | complete ✅ |
 | 06 | Hotfix — State Update + Tag Prefix (BUG-005 + BUG-006) | 5 | complete ✅ |
 | 07 | Hotfix — Working Directory Guard (BUG-007) | 3 | complete ✅ |
-| 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | in progress 🔄 |
+| 08 | ENH-022 — Crystallize Domain Entity Extraction | 4 | complete ✅ |
 | 09 | Brainstorm Artifact Manifest | 7 | not started 🔲 |
 | 10 | Gap E + Gap G Extended + Token Budget Awareness | 6 | not started 🔲 |
 | 11 | Diagram Profile System | 5 | not started 🔲 |
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 6 / 30 tasks (20%)
+**v2.1 milestone**: 9 / 30 tasks (30%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -52,8 +52,8 @@
 
 ## Next Action
 
-Phase 08 in progress (ENH-022). Tasks 8.1 + 8.2 done. Current: **8.3** → 8.4.
+Phase 08 complete (v2.1.0). Phase 09 next (Brainstorm Artifact Manifest).
 
-- Phase directory: `.viepilot/phases/08-crystallize-entity-extraction/`
-- Current task: **8.3** — crystallize.md Entity manifest output format (S)
-- Execution order: ~~8.1~~ ~~8.2~~ → **8.3** → 8.4
+- Phase directory: `.viepilot/phases/09-brainstorm-artifact-manifest/`
+- First task: **9.1** — task files not yet created (run `/vp-auto` to start)
+- Execution order: 9.1 → 9.2 → 9.3 → 9.4 → 9.5 → 9.6 → 9.7

@@ -10,7 +10,8 @@
 
 ---
 
-### Phase 7: Hotfix — Working Directory Guard (BUG-007)
+### Phase 7: Hotfix — Working Directory Guard (BUG-007) ✅ Complete (v2.0.3)
+
 **Goal**: Prevent vp-auto from editing install paths (`~/.claude/viepilot/`, `~/.cursor/viepilot/`) instead of codebase source
 **Estimated Tasks**: 3
 **Dependencies**: None (critical safety fix)
@@ -28,7 +29,8 @@
 
 ---
 
-### Phase 8: ENH-022 — Crystallize Domain Entity Extraction
+### Phase 8: ENH-022 — Crystallize Domain Entity Extraction ✅ Complete (v2.1.0)
+
 **Goal**: Add explicit domain entity extraction step + dependency validation to crystallize.md — prevent skipping CRUD management service phases
 **Estimated Tasks**: 4
 **Dependencies**: Phase 7
