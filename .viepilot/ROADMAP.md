@@ -158,6 +158,32 @@
 
 ---
 
+### Phase 14: ENH-023–028 — Hooks, TUI ask, Review Gate, Plan mode, Fork state, Worktree
+**Goal**: Gộp backlog enhancement đã có request file: **handoff-sync + hooks** (023), **vp-tools ask** (027), **crystallize Review Gate** (028), **Plan mode doc-first** (026), **run_in_background state fork** (024), **worktree L/XL** (025). Thứ tự triển khai giảm conflict và thỏa dependency 028→027.
+
+**Estimated Tasks**: 6
+**Dependencies**: Phase 8 complete; **khuyến nghị** xong Phase 10 (và cân nhắc xong Phase 13 nếu đụng `autonomous.md` dày)
+
+| Task | ENH | Description | Complexity |
+|------|-----|-------------|------------|
+| 14.1 | ENH-027 | `bin/vp-tools.cjs ask` + `@clack/prompts`; `--single` / `--multi`; TTY fallback; demo hook trong `workflows/brainstorm.md` | M |
+| 14.2 | ENH-023 | `handoff-sync --check` / `--force`; doc hooks trong template + crystallize/README; note trong `autonomous.md` | M |
+| 14.3 | ENH-028 | `crystallize.md` — `review_gate` step; `--no-review`, `--extract-only`; tích hợp `vp-tools ask` cho per-section | L |
+| 14.4 | ENH-026 | `autonomous.md` + `autonomous-mode.md` — Plan mode như tùy chọn enforcement doc-first | S |
+| 14.5 | ENH-024 | `autonomous.md` — Fork State Update pattern + `run_in_background`; fallback sync | M |
+| 14.6 | ENH-025 | `autonomous.md` + TASK template — worktree offer L/XL; `worktree_isolation` field | M |
+
+**Verification** (tối thiểu):
+- [ ] `vp-tools ask --single` hoạt động; `handoff-sync --check` exit code khi stale
+- [ ] `grep review_gate workflows/crystallize.md`
+- [ ] `grep -n 'run_in_background\|Fork State' workflows/autonomous.md`
+- [ ] `grep worktree_isolation templates/phase/TASK.md`
+- [ ] `npm test` PASS
+
+**Related requests**: `.viepilot/requests/ENH-023.md` … `ENH-028.md`
+
+---
+
 ## Progress Summary
 
 | Phase | Status | Tasks | Completed | Progress |
@@ -169,8 +195,9 @@
 | 11. Diagram Profile System | 🔲 Not Started | 5 | 0 | 0% |
 | 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 | 13. Agent Orchestration Tier A + B | 🔲 Not Started | 4 | 0 | 0% |
+| 14. ENH-023–028 bundle | 🔲 Not Started | 6 | 0 | 0% |
 
-**Overall**: 20 / 34 tasks (59%)
+**Overall**: 20 / 40 tasks (50%)
 
 ---
 
@@ -178,7 +205,7 @@
 
 ### Tier 2 (v2.2 candidates)
 - **AutoDream → STACKS.md** — Phase complete hook → extract patterns → append STACKS.md. Depends on: Phase 9 (Artifact Manifest) proven stable.
-- **Fork State Updates** — Background Agent pattern for state writes after task PASS. Risk: medium (state drift potential). Depends on: Phase 12 baseline stable.
+- **Fork State Updates** — Đã map vào **Phase 14.5** (ENH-024); còn risk/medium như request gốc.
 - **Brainstorm doc-drift detection** — Full drift report UI (per-item action). Depends on: Phase 9 (anchor syntax).
 - **Multi-session manifest merge** — oldest→newest per artifact type strategy. Depends on: Phase 9.
 

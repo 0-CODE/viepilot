@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Phase 10** (remaining): Gap G Extended (keyword scan) + Token Budget Awareness → v2.1.2
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
+- **Phase 14** (scaffold): ENH-023–028 bundle — hooks/handoff-sync, vp-tools ask, crystallize review gate, Plan mode docs, fork state background, worktree L/XL (`vp-evolve --feature`)
 
 ## [2.1.1] - 2026-04-03
 
