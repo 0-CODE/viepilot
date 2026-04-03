@@ -16,7 +16,7 @@ execution_state:
 |---|------|--------|---------|
 | 20.1 | Cold-start manifest + doc | done | viepilot-vp-p20-t20.1-done |
 | 20.2 | vp-auto SKILL slim | done | viepilot-vp-p20-t20.2-done |
-| 20.3 | ROADMAP-INDEX + Initialize | not_started | — |
+| 20.3 | ROADMAP-INDEX + Initialize | in_progress | — |
 
 ## Blockers
 _None_
