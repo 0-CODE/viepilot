@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None.
 
+## [2.0.2] - 2026-04-03
+
+### Fixed
+
+- **BUG-005 (vp-auto state updates)**: `autonomous.md` lacked explicit, verifiable instructions for state file updates after each task PASS. Added mandatory **State Update Checklist** block with 4 groups: (1) task file edits — `Meta.Status → done`, tick all checklist boxes, fill `Implementation Notes` + `Files Changed`; (2) PHASE-STATE.md — task row, `execution_state.status`, Files Changed table; (3) HANDOFF.json — 7 fields; (4) TRACKER.md current task line. Gate: control_point if any write fails before advancing. Also added HANDOFF.json schema detection note (v1 flat vs v2 nested) and `## Post-Completion` section to `templates/phase/TASK.md`.
+- **BUG-006 (git tag prefix collision)**: `autonomous.md`, `crystallize.md`, `evolve.md` generated tags without project slug prefix (`vp-p{N}-t{N}` instead of `{slug}-vp-p{N}-t{N}`), causing collision when multiple projects run vp-auto simultaneously. All `{projectPrefix}` prose placeholders replaced with `TAG_PREFIX=$(node bin/vp-tools.cjs tag-prefix --raw)` bash resolution. `templates/phase/TASK.md` Git Tag field updated with runtime resolution note.
+
 ## [2.0.1] - 2026-04-03
 
 ### Fixed
