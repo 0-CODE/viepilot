@@ -61,6 +61,22 @@ Trước **mỗi** lần tạo/sửa/xóa file, workflow yêu cầu: resolve pat
 
 Sau **mỗi sub-task**, `autonomous.md` khuyến nghị ước lượng mức dùng context (heuristic `used_pct`). Trên **~70%** → cảnh báo + gợi ý pause/handoff; trên **~90%** → buộc pause và cập nhật HANDOFF để tránh cắt ngang giữa chừng không có điểm nối. Sự kiện JSONL tùy chọn: `token_budget_warning` trong `HANDOFF.log` (xem ví dụ mục HANDOFF.log phía dưới).
 
+### Cold start context budget (ENH-031)
+
+Thứ tự đọc **chuẩn** nằm trong `workflows/autonomous.md` — **Step 1 (Initialize)** và **Step 3b (task batch)**. Sau **clear context**, một lượt `/vp-auto` thường kéo các khối sau (cộng thêm user rules, thread, output công cụ — không nằm trong manifest):
+
+1. **Skill** đính kèm (ví dụ `skills/vp-auto/SKILL.md`) — sau ENH-031 chỉ còn routing + pointer tới workflow.
+2. **`workflows/autonomous.md`** — một nguồn normative đầy đủ (state machine, recovery, git gate, …).
+3. **Initialize batch:** `.viepilot/TRACKER.md`, danh sách phase từ `.viepilot/ROADMAP.md` **hoặc** `.viepilot/ROADMAP-INDEX.md` khi file tồn tại, và `.viepilot/AI-GUIDE.md`.
+4. **Task batch đầu tiên** thêm: `.viepilot/HANDOFF.json`, `PHASE-STATE.md`, file `tasks/*.md` hiện tại, `.viepilot/SYSTEM-RULES.md`, và (theo workflow) **đọc lại** `AI-GUIDE.md` — tổng byte thực tế có thể **cao hơn** union đơn giản vì cùng một file xuất hiện ở nhiều bước batch.
+
+**Đo lường trong repo:** chạy `npm run cold-start:manifest` — cập nhật `.viepilot/cold-start-manifest.json` (byte theo từng nhóm, cộng `deduped_union_bytes` mỗi path một lần). Heuristic tokenizer tiếng Anh/markdown thường ~3.5–4 byte/token → **khoảng 15–25k token** cho tập file liệt kê là **bình thường**; báo cáo runtime >13k token chỉ với phần tài liệu là **nhất quán** với thiết kế hiện tại.
+
+**Lưu ý**
+
+- Số liệu lệch khi `ROADMAP.md` / `autonomous.md` phình to — nên chạy lại script sau khi chỉnh docs lớn.
+- Khi có `ROADMAP-INDEX.md`, Initialize có thể **không** đọc full `ROADMAP.md`; nếu index **lệch** so với `TRACKER.md` hoặc `HANDOFF.json`, ưu tiên **TRACKER + HANDOFF + PHASE-STATE** cho điều phối và làm mới index từ `ROADMAP.md` (hoặc bước crystallize tương ứng).
+
 ### Diagram profiles & stale diagrams (Phase 11)
 
 Trong **crystallize**, bước chọn **diagram profile** (theo stack: microservices, Kafka, SQL, SPA, …) quyết định ma trận diagram trong `.viepilot/SPEC.md` và cấu trúc thư mục `architecture/*` (stub + README). Trong **`/vp-auto`**, sau khi **phase complete**, nếu phase vừa chạm vào `architecture/`, `.viepilot/architecture/`, hoặc `.viepilot/ARCHITECTURE.md`, workflow kích hoạt **một lần** bước đối chiếu diagram/stale reconciliation ở ranh giới phase (không lặp từng task). Chi tiết normative: `workflows/crystallize.md` (Step 1D / Step 4) và `workflows/autonomous.md` (phase complete).

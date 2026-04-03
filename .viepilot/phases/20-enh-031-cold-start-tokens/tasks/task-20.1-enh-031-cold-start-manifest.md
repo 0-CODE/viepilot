@@ -2,7 +2,7 @@
 
 ## Meta
 - **Phase**: 20-enh-031-cold-start-tokens
-- **Status**: in_progress
+- **Status**: done
 - **Complexity**: S
 - **Git Tag**: `viepilot-vp-p20-t20.1`
 
@@ -44,6 +44,20 @@ Document which files are read on cold `/vp-auto` start, in order, with byte esti
 - [x] No new dependencies; English comments in code.
 - [x] Doc stays aligned with normative `workflows/autonomous.md` (cite Step 1 / task batch).
 
+## Implementation Notes
+- Added `scripts/cold-start-manifest.cjs` and npm `cold-start:manifest`; JSON snapshot at `.viepilot/cold-start-manifest.json` (force-tracked) with batch + deduped totals.
+- Documented cold-start read order and token heuristics in `autonomous-mode.md` (ENH-031).
+
+## Files Changed
+```text
+A	.viepilot/cold-start-manifest.json
+M	.viepilot/phases/20-enh-031-cold-start-tokens/PHASE-STATE.md
+M	.viepilot/phases/20-enh-031-cold-start-tokens/tasks/task-20.1-enh-031-cold-start-manifest.md
+M	docs/user/features/autonomous-mode.md
+M	package.json
+A	scripts/cold-start-manifest.cjs
+```
+
 ## Verification
 ```bash
 node --check scripts/cold-start-manifest.cjs
@@ -66,8 +80,8 @@ files_to_read:
 ```
 
 ## Acceptance Criteria
-- [ ] Manifest list + size estimates reproducible (doc + script)
-- [ ] `autonomous-mode.md` states expected cold-start budget and caveats
+- [x] Manifest list + size estimates reproducible (doc + script)
+- [x] `autonomous-mode.md` states expected cold-start budget and caveats
 
 ## State Update Checklist
-- [ ] PHASE-STATE / TRACKER / HANDOFF per protocol
+- [x] PHASE-STATE / TRACKER / HANDOFF per protocol
