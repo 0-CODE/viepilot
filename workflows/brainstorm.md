@@ -445,6 +445,27 @@ After writing/updating the session file, generate or update `.viepilot/brainstor
 
 6. **Write** `.viepilot/brainstorm-manifest.json`.
 
+### 6B. Decision Anchor Injection (`vp:decision`)
+
+After writing the session file and manifest, scan for decision bullets and inject HTML comment anchors for crystallize drift tracking.
+
+**Scan**: Find all `**Decisions**:` blocks in the session file. For each decision bullet (`- [x] {text}`):
+
+1. Generate a unique anchor ID: `{topic-slug}-d{N}` where `topic-slug` = slugified topic name, `N` = decision index within that topic
+2. If the bullet does NOT already have a `<!-- vp:decision -->` anchor, inject one:
+   ```markdown
+   <!-- vp:decision id="tech-stack-d1" -->
+   - [x] Use PostgreSQL for primary database
+   ```
+3. Add entry to `manifest.decisions[]`:
+   ```json
+   {"id": "tech-stack-d1", "text": "Use PostgreSQL for primary database", "anchor": "<!-- vp:decision id=\"tech-stack-d1\" -->", "session_id": "session-2026-04-03", "topic": "Tech Stack"}
+   ```
+
+**Backfill**: On `/save` of an existing session that has decision bullets without anchors, inject anchors for all existing decisions. This makes older sessions compatible with crystallize consumed tracking without requiring manual edits.
+
+**Skip**: If no `**Decisions**:` blocks found in session, skip silently.
+
 Commit:
 ```bash
 mkdir -p docs/brainstorm
