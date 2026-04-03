@@ -50,14 +50,14 @@
 ---
 
 ### Phase 9: Brainstorm Artifact Manifest
-**Goal**: Implement manifest schema + brainstorm auto-generation + crystallize mandatory consume — fix 4 brainstorm→crystallize→vp-auto drop points
+**Goal**: Implement manifest schema + brainstorm auto-generation + crystallize mandatory consume — fix 4 brainstorm→crystallize→vp-auto drop points. Includes ENH-030: domain_entities + tech_stack artifact types.
 **Estimated Tasks**: 7
 **Dependencies**: Phase 8
 
 | Task | Description | Acceptance Criteria | Complexity |
 |------|-------------|---------------------|------------|
-| 9.1 | Define `brainstorm-manifest.json` schema v1 | Schema file at `templates/project/brainstorm-manifest.json`; all fields: sessions, artifacts (ui_direction, product_horizon, research_notes, architecture_inputs), ui_task_context_hint | M |
-| 9.2 | brainstorm.md — Auto-generate manifest on `/save` + `/end` | Manifest written to `.viepilot/brainstorm-manifest.json`; artifact entries auto-populated from session; `consumed: false` on new artifacts | M |
+| 9.1 | Define `brainstorm-manifest.json` schema v1 | Schema file at `templates/project/brainstorm-manifest.json`; all fields: sessions, artifacts (ui_direction, product_horizon, research_notes, architecture_inputs), ui_task_context_hint ✅ done | M |
+| 9.2 | brainstorm.md — Auto-generate manifest on `/save` + `/end` + ENH-030 schema update | Manifest written to `.viepilot/brainstorm-manifest.json`; artifact entries auto-populated from session; `consumed: false` on new artifacts; **schema template updated** to include `domain_entities` (required:true) + `tech_stack` (required:true) + `compliance_domains` (required:false) | M |
 | 9.3 | crystallize.md — Step 0A: mandatory manifest consume | Step 0A reads manifest before all other steps; fallback if manifest missing; marks `consumed: true` + `consumed_at` after reading | M |
 | 9.4 | crystallize.md — Auto-populate TASK.md `context_required` from `ui_task_context_hint` | Tasks for UI pages have correct ui-direction paths in `context_required`; no more placeholder-only rows | M |
 | 9.5 | brainstorm.md — Decision anchor syntax (`vp:decision`) | `/save` scans Decisions blocks → injects HTML comment anchors; backfill for existing bullets | M |
