@@ -6,7 +6,7 @@
       "id": "session-2026-04-03",
       "date": "2026-04-03",
       "file_path": "docs/brainstorm/session-2026-04-03.md",
-      "topics_count": 18,
+      "topics_count": 19,
       "status": "active"
     }
   ],
@@ -32,7 +32,7 @@
       "type": "research_notes",
       "consumed": false,
       "consumed_at": null,
-      "summary": "Claude Code skills/subagents/batch vs Cursor agent+rules; orchestration adapter recommendation",
+      "summary": "Orchestration = background agents + isolated context vs vp-auto context rot; handoff via artifacts; host adapter",
       "_comment": "Stack research, API investigation, feasibility notes"
     },
     "architecture_inputs": {
@@ -40,7 +40,7 @@
       "type": "architecture_inputs",
       "consumed": false,
       "consumed_at": null,
-      "summary": "Semantic ViePilot workflows + per-host adapter; vp-auto as single-runner; optional parallel delegate",
+      "summary": "Structured handoff only; context isolation contract; fork/background maps Claude Code; Cursor via adapter",
       "_comment": "Architecture decisions, service boundaries, data flow choices from brainstorm"
     },
     "domain_entities": {
