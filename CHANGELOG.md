@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị
 - **Phases 14–19** (scaffold): ENH-023–028 **tách theo dependency** — P14 ENH-027, P15 ENH-023, P16 ENH-028 (sau P14), P17 ENH-026, P18 ENH-024, P19 ENH-025 (`vp-evolve --feature`)
+- **Phase 20** (scaffold): ENH-031 — giảm token cold start `/vp-auto` (manifest đo, SKILL slim, ROADMAP-INDEX + Initialize) — planning via `/vp-evolve --feature`
+
+### Changed
+
+- **Version**: 2.1.3 → **2.2.0** (MINOR — planned Phase 20 / ENH-031 scaffold; shipping implementation qua `/vp-auto`)
 
 ## [2.1.3] - 2026-04-03
 

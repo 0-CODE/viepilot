@@ -4,7 +4,7 @@
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 12 — Verification + Docs + Release (next)
 - **Task**: 12.2 — integration test ENH-022 entity extraction
-- **Version**: 2.1.3
+- **Version**: 2.2.0
 - **Last Update**: 2026-04-03
 
 ## Progress
@@ -30,9 +30,10 @@
 | 17 | ENH-026 — Plan mode doc-first | 1 | not started 🔲 |
 | 18 | ENH-024 — Fork state background | 1 | not started 🔲 |
 | 19 | ENH-025 — Worktree L/XL | 1 | not started 🔲 |
+| 20 | ENH-031 — cold start token reduction | 3 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 28 / 40 tasks (70%) _(Phase 12 in progress; 12.1 done 2026-04-03)_
+**v2.1 milestone**: 28 / 43 tasks (~65%) _(Phase 20 scaffold — ENH-031 2026-04-03)_
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
@@ -57,7 +58,7 @@
 | [ENH-028](.viepilot/requests/ENH-028.md) | ✨ Enhancement | crystallize Review Gate — extraction phase + per-section approval before generation | high | → Phase 16 |
 | [ENH-029](.viepilot/requests/ENH-029.md) | ✨ Enhancement | Remove MVP concept — full-arc ROADMAP with priority + release_target fields | high | new |
 | [ENH-030](.viepilot/requests/ENH-030.md) | ✨ Enhancement | Artifact Manifest — add domain_entities + tech_stack artifact types (required: true) | high | → Phase 09 |
-| [ENH-031](.viepilot/requests/ENH-031.md) | ✨ Enhancement | Giảm token cold start `/vp-auto` sau clear context — điều tra >13K tokens | high | new |
+| [ENH-031](.viepilot/requests/ENH-031.md) | ✨ Enhancement | Giảm token cold start `/vp-auto` sau clear context — điều tra >13K tokens | high | → Phase 20 |
 
 ## Next Action
 
@@ -70,3 +71,5 @@ Phase 11 **complete** (release **2.1.3**). Next: Phase 12 — Verification + Doc
 **Phase 13 (planned)**: `.viepilot/phases/13-agent-orchestration-tier-ab/` — Agent orchestration Tier A+B; chạy sau khi ổn định Phase 10 (tránh xung đột `autonomous.md`). Sau đó: `/vp-auto --phase 13` hoặc `--from 13`.
 
 **Phases 14–19 (planned, theo dependency)**: `14-enh-027` → `15-enh-023` → `16-enh-028` (sau 14) → `17-enh-026` → `18-enh-024` → `19-enh-025`. Xem graph trong `ROADMAP.md`. `/vp-auto --phase 14` … `--phase 19`.
+
+**Phase 20 (planned)**: `.viepilot/phases/20-enh-031-cold-start-tokens/` — ENH-031 cold-start token reduction; khuyến nghị sau Phase 12, tránh xung đột chỉnh `autonomous.md` với 13–19. `/vp-auto --phase 20`.

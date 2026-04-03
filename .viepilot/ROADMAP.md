@@ -247,6 +247,26 @@ Wave E:            Phase 19 (ENH-025)
 
 ---
 
+### Phase 20: ENH-031 — Giảm token cold start `/vp-auto`
+**Goal**: Sau **clear context**, một lượt khởi động vp-auto không còn buộc đọc **toàn bộ** `autonomous.md` + `ROADMAP.md` dài + `SYSTEM-RULES` cùng lúc nếu không cần — theo điều tra ENH-031.
+
+**Estimated Tasks**: 3 | **Dependencies**: Khuyến nghị sau Phase 12 (ổn định verify); tránh merge conflict với Phase 13–19 trên `autonomous.md` / skill.
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 20.1 | **Đo & tài liệu**: manifest file + ước lượng byte/token cold start; cập nhật `docs/user/features/autonomous-mode.md` (kỳ vọng budget) | S |
+| 20.2 | **Skill slim**: `skills/vp-auto/SKILL.md` chỉ routing + pointer; bỏ process trùng `autonomous.md` | S |
+| 20.3 | **Initialize tối giản**: `ROADMAP-INDEX.md` (hoặc tương đương ≤40 dòng) sinh/cập nhật từ crystallize hoặc script; `autonomous.md` Step 1 đọc index thay full ROADMAP khi file tồn tại; optional slice đọc `autonomous` (anchor) cho pass đầu | M |
+
+**Verification**:
+- [ ] Doc nêu rõ cold start đọc những file gì và thứ tự
+- [ ] SKILL không lặp dài luồng đã có trong workflow
+- [ ] Có `ROADMAP-INDEX.md` mẫu + fallback full ROADMAP nếu thiếu
+
+**Related**: `.viepilot/requests/ENH-031.md`
+
+---
+
 ## Progress Summary
 
 | Phase | Status | Tasks | Completed | Progress |
@@ -264,8 +284,9 @@ Wave E:            Phase 19 (ENH-025)
 | 17. ENH-026 — Plan mode doc-first | 🔲 Not Started | 1 | 0 | 0% |
 | 18. ENH-024 — Fork state background | 🔲 Not Started | 1 | 0 | 0% |
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
+| 20. ENH-031 — cold start token reduction | 🔲 Not Started | 3 | 0 | 0% |
 
-**Overall**: 27 / 40 tasks (67.5%)
+**Overall**: 27 / 43 tasks (~62.8%)
 
 ---
 
