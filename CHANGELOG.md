@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **crystallize Step 1D** (`diagram_profile_selection`): stack/messaging/SQL/SPA/auth/state-heavy detection → normative diagram profile (`distributed-events`, `microservices-api`, `spa-sql-monolith`, `sql-monolith`, `spa-frontend`, `default-monolith`); Step 4 consumes `diagram_profile` when classifying the diagram applicability matrix (Phase 11.1)
+
 ### Planned
 
 - **Phase 13** (scaffold): Agent orchestration Tier A (task-boundary re-hydrate) + Tier B (`.viepilot/delegates/` envelope) — planning via `/vp-evolve --feature`; ship sau Phase 10 khuyến nghị

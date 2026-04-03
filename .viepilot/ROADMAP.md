@@ -72,7 +72,7 @@
 
 ---
 
-### Phase 10: Gap E + Gap G Extended + Token Budget Awareness
+### Phase 10: Gap E + Gap G Extended + Token Budget Awareness ✅ Complete (v2.1.2)
 **Goal**: Three Tier 1 Post-MVP epics bundled — cross-project status, compliance keyword scan, context limit preemption
 **Estimated Tasks**: 6
 **Dependencies**: Phase 8
@@ -254,8 +254,8 @@ Wave E:            Phase 19 (ENH-025)
 | 7. Hotfix — Working Directory Guard (BUG-007) | ✅ Complete | 3 | 3 | 100% |
 | 8. ENH-022 — Crystallize Domain Entity Extraction | ✅ Complete | 4 | 4 | 100% |
 | 9. Brainstorm Artifact Manifest | ✅ Complete | 7 | 7 | 100% |
-| 10. Gap E + Gap G Extended + Token Budget | 🔄 In Progress | 6 | 5 | 83% |
-| 11. Diagram Profile System | 🔲 Not Started | 5 | 0 | 0% |
+| 10. Gap E + Gap G Extended + Token Budget | ✅ Complete | 6 | 6 | 100% |
+| 11. Diagram Profile System | 🔄 In Progress | 5 | 1 | 20% |
 | 12. Verification + Docs + Release | 🔲 Not Started | 5 | 0 | 0% |
 | 13. Agent Orchestration Tier A + B | 🔲 Not Started | 4 | 0 | 0% |
 | 14. ENH-027 — vp-tools ask | 🔲 Not Started | 1 | 0 | 0% |
@@ -265,7 +265,7 @@ Wave E:            Phase 19 (ENH-025)
 | 18. ENH-024 — Fork state background | 🔲 Not Started | 1 | 0 | 0% |
 | 19. ENH-025 — Worktree L/XL | 🔲 Not Started | 1 | 0 | 0% |
 
-**Overall**: 21 / 40 tasks (52%)
+**Overall**: 23 / 40 tasks (57%)
 
 ---
 

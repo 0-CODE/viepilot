@@ -271,6 +271,86 @@ Also create project-local index for traceability:
 - `.viepilot/STACKS.md` listing stacks used and cache paths.
 </step>
 
+<step name="diagram_profile_selection">
+## Step 1D: Stack Detection → Diagram Profile Selection
+
+**Purpose:** Derive a single **`diagram_profile`** from consolidated stack and architecture signals so diagram depth in Step 4 scales predictably. This step feeds the diagram applicability matrix (and later phase tasks that emit SPEC.md / `architecture/` layout).
+
+### 1D.1 Consolidate signal sources (priority order)
+
+Merge evidence from:
+
+1. Manifest `tech_stack.stacks[]` from Step 0A (when present)
+2. Tech stack bullets and architecture prose from Step 1
+3. Stack id list in `.viepilot/STACKS.md` after Step 1C
+4. Service boundary / messaging / DB / frontend / auth language anywhere in brainstorm + Step 1A UI artifacts
+5. Manifest `domain_entities` (Step 0A) when present — entity descriptions that imply lifecycles / workflows / state machines
+
+### 1D.2 Detection flags (boolean)
+
+Set each flag to `true` only with **clear evidence**; if ambiguous, default `false` and append a short note under `diagram_profile.notes`.
+
+| Flag | Set `true` when (examples) |
+|------|------------------------------|
+| `microservices` | Multiple deployable services, explicit service boundaries, API-per-service, "microservice(s)" in stack or architecture |
+| `kafka_or_messaging` | Kafka, RabbitMQ, NATS, SNS/SQS, Azure Service Bus, "message queue", "event bus", outbox pattern with broker |
+| `relational_sql` | PostgreSQL, MySQL, MariaDB, SQL Server, Oracle, SQLite as primary app store, or generic "SQL"/RDBMS for core persistence |
+| `spa_frontend` | React/Vue/Svelte/Angular SPA, Vite/webpack frontend app, separate FE repo, or Step 1A `pages/` + component hierarchy |
+| `auth_boundary` | Dedicated auth/login/session service, OAuth2/OIDC provider, JWT gateway, SSO — **security-sensitive** user/session boundary called out |
+| `state_heavy_entities` | Brainstorm or manifest `domain_entities` describes multi-step lifecycles (order status, ticket workflow, approval states) or explicit state-machine wording |
+
+### 1D.3 Diagram profile catalog (normative)
+
+| `profile_id` | Selection rule (first match in **1D.4** wins) | Primary diagram emphasis for Step 4 |
+|--------------|-----------------------------------------------|-------------------------------------|
+| `distributed-events` | `microservices` ∧ `kafka_or_messaging` | `data-flow`, `event-flows`, `deployment`, `module-dependencies` |
+| `microservices-api` | `microservices` ∧ ¬(`kafka_or_messaging`) | `module-dependencies`, `deployment`, `data-flow` |
+| `spa-sql-monolith` | ¬`microservices` ∧ `spa_frontend` ∧ `relational_sql` | `user-use-case`, `data-flow`, `module-dependencies` |
+| `sql-monolith` | ¬`microservices` ∧ `relational_sql` ∧ ¬`spa_frontend` | `data-flow`, `module-dependencies` |
+| `spa-frontend` | ¬`microservices` ∧ `spa_frontend` ∧ ¬`relational_sql` | `user-use-case`, `module-dependencies` |
+| `default-monolith` | Fallback when no row above matched | `system-overview` + targeted optional diagrams only |
+
+**Cross-cutting:** When `auth_boundary` is `true`, treat **`user-use-case`** (or a dedicated auth sequence in architecture prose) as **at least `optional`**, elevated to **`required`** if login/session flows are central to the MVP.
+
+**Cross-cutting:** When `state_heavy_entities` is `true`, ensure **state / lifecycle** is visible in architecture (diagram section or structured bullets) — prefer **`module-dependencies`** or a short **state lifecycle** Mermaid in the entity section; full per-entity state-machine diagrams are optional unless brainstorm demands them.
+
+### 1D.4 Selection algorithm (deterministic)
+
+```
+if microservices && kafka_or_messaging → profile_id = distributed-events
+else if microservices → profile_id = microservices-api
+else if !microservices && spa_frontend && relational_sql → profile_id = spa-sql-monolith
+else if !microservices && relational_sql → profile_id = sql-monolith
+else if !microservices && spa_frontend → profile_id = spa-frontend
+else → profile_id = default-monolith
+```
+
+Then apply **Cross-cutting** rules from 1D.3 to adjust Step 4 expectations (do not change `profile_id` unless brainstorm explicitly contradicts a flag — instead, add a `diagram_profile.notes` entry).
+
+### 1D.5 Working note output (required)
+
+Record for downstream steps (copy verbatim shape):
+
+```yaml
+diagram_profile:
+  profile_id: "<one of: distributed-events | microservices-api | spa-sql-monolith | sql-monolith | spa-frontend | default-monolith>"
+  flags:
+    microservices: false
+    kafka_or_messaging: false
+    relational_sql: false
+    spa_frontend: false
+    auth_boundary: false
+    state_heavy_entities: false
+  primary_emphasis:
+    - "<diagram category or matrix row name>"
+  notes:
+    - "<assumption or ambiguity, if any>"
+```
+
+Log one line to user: `[diagram_profile] selected <profile_id> (flags: …)`.
+
+</step>
+
 <step name="generate_ai_guide">
 ## Step 2: Generate AI-GUIDE.md
 
@@ -331,7 +411,15 @@ Sau đó **2–8 bullet** tóm tắt (không secrets) từ **Organization**, **B
 
 - Nếu **`profile_resolved: none`**: một dòng dưới overview: *No ViePilot global profile bound — organization context comes from Step 0 only.*
 
-Before writing diagrams, create a **diagram applicability matrix** from brainstorm signals (complexity, service boundaries, event usage, deployment shape, user-flow complexity, integration surface):
+### Diagram profile (Step 1D) → matrix
+
+Before writing diagrams, load the **`diagram_profile`** working note from **Step 1D** (`profile_id`, `flags`, `primary_emphasis`, `notes`). Use it together with brainstorm signals (complexity, service boundaries, event usage, deployment shape, user-flow complexity, integration surface):
+
+- For each diagram type in the matrix below, **start** from brainstorm-driven `required` / `optional` / `N/A` reasoning.
+- **Do not** assign `N/A` to a diagram category that Step 1D lists under `primary_emphasis` unless brainstorm (or manifest `architecture_inputs`) explicitly documents why that view is out of scope — if skipped, add a one-line rationale in the matrix **Rule** column.
+- If Step 1D `notes` flag ambiguity, prefer `optional` over `N/A` for profile-primary categories.
+
+Then create a **diagram applicability matrix** from the combined assessment:
 
 | Diagram type | Status | Rule |
 |--------------|--------|------|
