@@ -10,7 +10,7 @@
 [![Tests](https://img.shields.io/badge/tests-308%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **1.9.5** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.5**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
+**Versioning:** Released **SemVer** is defined in `package.json` and `CHANGELOG.md`. When you run ViePilot on a project, progress lives in a **local** `.viepilot/TRACKER.md` (typically gitignored — not part of the published framework tree).
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -448,7 +448,7 @@ Khi dùng ViePilot cho một dự án, cấu trúc được tạo ra:
 
 ```
 your-project/
-├── .viepilot/                     # ViePilot artifacts
+├── .viepilot/                     # ViePilot artifacts (local; gitignored in this repo)
 │   ├── AI-GUIDE.md                # AI navigation
 │   ├── PROJECT-META.md            # Project metadata
 │   ├── ARCHITECTURE.md            # System design

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Repository policy**: Entire `.viepilot/` is **gitignored** and **removed from version control** in this repo — project state stays local; consumers still get scaffold from `templates/project/`.
+
 ### Added
 
 - **HANDOFF.log `token_budget_warning`**: Sau sub-task PASS, khi `used_pct > 70`, `workflows/autonomous.md` hướng dẫn append JSONL với `used_pct` + `severity` (`warn` / `critical`); ghi non-blocking (Phase 10.4)

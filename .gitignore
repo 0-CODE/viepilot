@@ -1,6 +1,4 @@
 node_modules/
 
-# ViePilot runtime state (do not commit — local only)
-.viepilot/HANDOFF.json
-.viepilot/HANDOFF.log
-.viepilot/logs/handoff-*.log
+# ViePilot project-local context (phases, tracker, handoff — not shipped in this repo)
+.viepilot/
