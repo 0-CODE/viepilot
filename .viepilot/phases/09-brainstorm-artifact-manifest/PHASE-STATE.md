@@ -3,14 +3,14 @@
 ## Overview
 - **Started**: 2026-04-03
 - **Status**: in_progress
-- **Progress**: 4/7 tasks (57%)
-- **Current Task**: 9.5
+- **Progress**: 5/7 tasks (71%)
+- **Current Task**: 9.6
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "9.5"
+  current: "9.6"
   status: executing
   available_transitions:
     on_start:     "→ executing"
@@ -33,7 +33,7 @@ execution_state:
 | 9.2 | brainstorm.md — Auto-generate manifest on /save + /end | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p9-t9.2-done |
 | 9.3 | crystallize.md — Step 0A mandatory manifest consume | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p9-t9.3-done |
 | 9.4 | crystallize.md — Auto-populate TASK.md context_required | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p9-t9.4-done |
-| 9.5 | brainstorm.md — vp:decision anchor syntax | not_started | — | — | — |
+| 9.5 | brainstorm.md — vp:decision anchor syntax | done | 2026-04-03 | 2026-04-03 | viepilot-vp-p9-t9.5-done |
 | 9.6 | crystallize.md — vp:consumed anchor tracking stub | not_started | — | — | — |
 | 9.7 | Version bump 2.1.0 → 2.1.1 + CHANGELOG | not_started | — | — | — |
 
@@ -57,6 +57,7 @@ _None currently_
 | workflows/brainstorm.md | Modified | 9.2 |
 | templates/project/brainstorm-manifest.json | Modified | 9.2 |
 | workflows/crystallize.md | Modified | 9.3, 9.4 |
+| workflows/brainstorm.md | Modified | 9.2, 9.5 |
 
 ## Quality Metrics
 - Tests written: 0

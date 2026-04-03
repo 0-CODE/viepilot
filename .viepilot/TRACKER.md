@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: v2.1 Post-MVP Core
 - **Phase**: 09-brainstorm-artifact-manifest
-- **Task**: 9.5 — brainstorm.md vp:decision anchor syntax
+- **Task**: 9.6 — crystallize.md vp:consumed anchor tracking stub
 - **Version**: 2.1.0
 - **Last Update**: 2026-04-03
 
@@ -25,7 +25,7 @@
 | 12 | Verification + Docs + v2.1.0 Release | 5 | not started 🔲 |
 
 **v2 MVP (archived)**: 44 / 44 tasks (100%) ✅
-**v2.1 milestone**: 13 / 30 tasks (43%)
+**v2.1 milestone**: 14 / 30 tasks (46%)
 
 ## Logs (on-demand)
 - Decisions → `logs/decisions.md`
