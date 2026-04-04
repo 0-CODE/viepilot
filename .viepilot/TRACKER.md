@@ -27,4 +27,4 @@
 
 ## Next Action
 
-Continue Phase 21 with Task 21.2 via `/vp-auto`.
+Resolve Task 21.2 git persistence control point, then resume `/vp-auto`.

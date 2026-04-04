@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viepilot.local/schemas/runtime-state.schema.json",
+  "title": "ViePilot Runtime State",
+  "description": "Canonical mutable execution state consumed by the v3 runtime executor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact",
+    "planning_source_ref",
+    "executor",
+    "recovery",
+    "control_point",
+    "projection_sync",
+    "updated_at"
+  ],
+  "properties": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "path",
+        "generated_at"
+      ],
+      "properties": {
+        "kind": {
+          "const": "runtime-state"
+        },
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "const": ".viepilot/runtime-state.json"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "planning_source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "artifact_version"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": ".viepilot/planning-source.json"
+        },
+        "artifact_version": {
+          "type": "string"
+        }
+      }
+    },
+    "executor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "current_phase",
+        "current_task",
+        "current_packet_id"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "executing",
+            "recovering_l1",
+            "recovering_l2",
+            "recovering_l3",
+            "control_point",
+            "paused",
+            "complete"
+          ]
+        },
+        "current_phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_task": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_sub_task": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "current_packet_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_result": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "pass",
+            "fail",
+            "blocked",
+            "skip",
+            "partial",
+            null
+          ]
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "l1_attempts",
+        "l2_attempts",
+        "l3_attempts",
+        "recent_blocker"
+      ],
+      "properties": {
+        "l1_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "l2_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "l3_attempts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "recent_blocker": {
+          "type": "boolean"
+        }
+      }
+    },
+    "control_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "active",
+        "reason",
+        "opened_at"
+      ],
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "opened_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "projection_sync": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tracker",
+        "roadmap",
+        "handoff"
+      ],
+      "properties": {
+        "tracker": {
+          "$ref": "#/$defs/projectionStatus"
+        },
+        "roadmap": {
+          "$ref": "#/$defs/projectionStatus"
+        },
+        "handoff": {
+          "$ref": "#/$defs/projectionStatus"
+        }
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "projectionStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "last_rendered_at"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "current",
+            "stale",
+            "pending"
+          ]
+        },
+        "last_rendered_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

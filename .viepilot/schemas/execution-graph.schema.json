@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viepilot.local/schemas/execution-graph.schema.json",
+  "title": "ViePilot Execution Graph",
+  "description": "Canonical compile-time dependency graph used by the runtime executor to select valid next work.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact",
+    "planning_source_ref",
+    "graph",
+    "phases"
+  ],
+  "properties": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "path",
+        "generated_at"
+      ],
+      "properties": {
+        "kind": {
+          "const": "execution-graph"
+        },
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "const": ".viepilot/execution-graph.json"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "planning_source_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "artifact_version"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": ".viepilot/planning-source.json"
+        },
+        "artifact_version": {
+          "type": "string"
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "granularity",
+        "entry_phase",
+        "entry_task",
+        "packet_strategy"
+      ],
+      "properties": {
+        "granularity": {
+          "type": "string",
+          "enum": [
+            "task"
+          ]
+        },
+        "entry_phase": {
+          "type": "string"
+        },
+        "entry_task": {
+          "type": "string"
+        },
+        "packet_strategy": {
+          "type": "string",
+          "enum": [
+            "per-task"
+          ]
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/phase"
+      }
+    }
+  },
+  "$defs": {
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase_id",
+        "depends_on",
+        "tasks"
+      ],
+      "properties": {
+        "phase_id": {
+          "type": "string"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task"
+          }
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "title",
+        "depends_on",
+        "write_scope",
+        "verification"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "write_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "acceptance_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

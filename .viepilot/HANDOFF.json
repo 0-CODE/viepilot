@@ -3,7 +3,7 @@
   "position": {
     "phase": "21",
     "task": "21.2",
-    "status": "not_started",
+    "status": "control_point",
     "sub_task": null
   },
   "recovery": {
@@ -19,15 +19,15 @@
       "jest",
       "clack-prompts"
     ],
-    "last_decision": "Task 21.1 defined planning-source.json as the canonical planning artifact and advanced Phase 21 to runtime contract work."
+    "last_decision": "User requested a full commit for Task 21.2. After commit, PASS will still require a push because git persistence stays incomplete on local-only history."
   },
   "control_point": {
-    "active": false,
-    "reason": null,
-    "ts": null
+    "active": true,
+    "reason": "Git persistence gate is partially resolved by local commit, but PASS still requires pushing the resulting commit to the configured upstream.",
+    "ts": "2026-04-04T04:08:23Z"
   },
   "meta": {
-    "last_written": "2026-04-04T03:54:38.196Z",
+    "last_written": "2026-04-04T04:08:23Z",
     "last_archived": null
   }
 }

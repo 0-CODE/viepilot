@@ -40,10 +40,23 @@ paths:
       responses:
         "200":
           description: planning-source.json updated or runtime/projection artifacts generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  planning_source:
+                    type: string
+                    const: .viepilot/planning-source.json
+                  runtime_artifacts:
+                    type: array
+                    items:
+                      type: string
+                      enum: [runtime-state.json, execution-graph.json, active-packet.json, compat-map.json]
   /commands/auto:
     post:
-      summary: Execute the current active packet
+      summary: Execute the current active packet from runtime-state.json + execution-graph.json + active-packet.json
       responses:
         "200":
-          description: Execution outcome with refreshed runtime state
+          description: Execution outcome with refreshed runtime state and packet lifecycle
 x-local-only: true

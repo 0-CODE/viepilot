@@ -7,6 +7,8 @@ ViePilot v3 is planned as a compiler-driven, state-machine-first refactor of the
 
 The planning boundary now assumes a concrete canonical artifact, `.viepilot/planning-source.json`, which is compiled before runtime artifacts are emitted.
 
+The runtime artifact split is explicit: `runtime-state.json` owns mutable executor truth, `execution-graph.json` owns task-level topology, and `active-packet.json` owns the narrowed current-task bundle.
+
 **Diagram source:** `.viepilot/architecture/system-overview.mermaid`
 
 ```mermaid
@@ -74,6 +76,13 @@ No ViePilot global profile bound - organization context comes from Step 0 only.
 - **Outputs**: task execution, updated runtime state, refreshed projections
 - **Dependencies**: `/vp-auto`, host adapters, git
 
+### Runtime artifact contract split
+
+- `runtime-state.json`: mutable executor state for mode, current packet, recovery counters, and control-point status
+- `execution-graph.json`: compiler-owned task dependency graph and entry ordering
+- `active-packet.json`: current-task bundle with scoped reads, writes, acceptance targets, and verification directives
+- Projections: human-facing compatibility views only; never canonical ownership
+
 ### Projection Layer
 
 - **Purpose**: Render human-facing markdown and compatibility views from structured state
@@ -85,7 +94,7 @@ No ViePilot global profile bound - organization context comes from Step 0 only.
 
 **Diagram source:** `.viepilot/architecture/data-flow.mermaid`
 
-`planning-source.json` is the canonical compiler input at this layer. The markdown roadmap and tracker remain human-facing projections once v3 compile is in place.
+`planning-source.json` is the canonical compiler input at this layer. The markdown roadmap and tracker remain human-facing projections once v3 compile is in place, while runtime-state, execution-graph, and active-packet split mutable state, topology, and actionable packet scope.
 
 ```mermaid
 flowchart TD
@@ -165,6 +174,7 @@ flowchart TD
 | Compile boundary | Two-stage crystallize pipeline | Keeps extraction reviewable before generation | Single opaque pass |
 | Canonical state | Structured JSON artifacts | Better determinism and lower token cost | Markdown-only planning as source of truth |
 | Planning source artifact | `planning-source.json` under `.viepilot/` | Gives compiler a single canonical upstream input before runtime artifacts exist | Continue parsing roadmap/task prose directly |
+| Runtime artifact split | `runtime-state.json` + `execution-graph.json` + `active-packet.json` with non-overlapping ownership | Keeps executor state, topology, and current-task payload separated | One large runtime blob or projection-driven execution |
 | Projection strategy | Generated markdown views | Preserves familiar UX without runtime drift | Manual markdown maintenance |
 | Host support | Semantic workflow + thin adapters | Claude/Cursor differences stay isolated | Host-specific workflow forks |
 | CLI runtime | Node.js CommonJS baseline for now | Matches current published package and bin files | Immediate ESM migration |

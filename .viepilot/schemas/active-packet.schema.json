@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viepilot.local/schemas/active-packet.schema.json",
+  "title": "ViePilot Active Packet",
+  "description": "Canonical current-task execution packet delivered to the v3 runtime executor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact",
+    "runtime_state_ref",
+    "execution_graph_ref",
+    "task_ref",
+    "packet_scope",
+    "objective",
+    "instructions",
+    "lifecycle"
+  ],
+  "properties": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "path",
+        "generated_at"
+      ],
+      "properties": {
+        "kind": {
+          "const": "active-packet"
+        },
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "const": ".viepilot/active-packet.json"
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "runtime_state_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "packet_id"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": ".viepilot/runtime-state.json"
+        },
+        "packet_id": {
+          "type": "string"
+        }
+      }
+    },
+    "execution_graph_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "task_id"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "const": ".viepilot/execution-graph.json"
+        },
+        "task_id": {
+          "type": "string"
+        }
+      }
+    },
+    "task_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase_id",
+        "task_id",
+        "task_file"
+      ],
+      "properties": {
+        "phase_id": {
+          "type": "string"
+        },
+        "task_id": {
+          "type": "string"
+        },
+        "task_file": {
+          "type": "string"
+        }
+      }
+    },
+    "packet_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "files_to_read",
+        "write_scope",
+        "verification"
+      ],
+      "properties": {
+        "files_to_read": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "write_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "acceptance_criteria"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "instructions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "implementation_notes",
+        "best_practices"
+      ],
+      "properties": {
+        "implementation_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "best_practices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packet_strategy",
+        "status",
+        "issued_at"
+      ],
+      "properties": {
+        "packet_strategy": {
+          "type": "string",
+          "enum": [
+            "per-task"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "queued",
+            "active",
+            "superseded",
+            "done",
+            "blocked"
+          ]
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "superseded_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

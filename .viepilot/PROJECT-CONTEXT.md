@@ -16,9 +16,9 @@ ViePilot is a local-first workflow framework for AI-assisted software delivery. 
 | Runtime truth | Canonical machine-readable state replacing prose inference during execution |
 | Projection artifact | Human-facing markdown view rendered from canonical structured state |
 | `planning-source.json` | Canonical upstream planning artifact compiled from brainstorm and planning inputs before runtime artifacts are emitted |
-| `runtime-state.json` | Main execution state machine artifact for v3 |
-| `execution-graph.json` | Planned task/phase dependency graph for executor decisions |
-| `active-packet.json` | Current work packet delivered to the runtime executor |
+| `runtime-state.json` | Canonical mutable executor state: position, recovery, control-point, and projection-sync truth |
+| `execution-graph.json` | Canonical compile-time task dependency graph and packet issuance strategy |
+| `active-packet.json` | Canonical current-task packet delivered to the runtime executor with scoped reads, writes, and verification |
 
 ## Business Rules
 
@@ -121,6 +121,7 @@ brainstorm sessions
 
 - Compiler output should reduce repeated context loading during execution
 - Runtime read set should be bounded to active packet + runtime state + targeted task context
+- Runtime artifacts must keep singular ownership boundaries so graph topology, mutable state, and task packet payload do not drift into each other
 - Projection refresh should be deterministic and cheap enough to run after compile or phase transitions
 
 ## Security Requirements

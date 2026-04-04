@@ -2,3 +2,9 @@ node_modules/
 
 # ViePilot project-local context (phases, tracker, handoff — not shipped in this repo)
 .viepilot/
+!.viepilot/
+!.viepilot/schemas/
+!.viepilot/schemas/runtime-state.schema.json
+!.viepilot/schemas/execution-graph.schema.json
+!.viepilot/schemas/active-packet.schema.json
+!.viepilot/schemas/runtime-artifact-contracts.md
