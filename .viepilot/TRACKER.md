@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **45** — 🔲 Planned (**ENH-029** → target **1.13.0**)
-- **Last Completed Phase**: **44** — ✅ Complete (**ENH-027/028** → **1.12.0**)
+- **Current Phase**: **45** — ✅ Complete (**ENH-029** → **1.13.0**)
+- **Last Completed Phase**: **45** — ✅ Complete (**ENH-029** → **1.13.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-04 — Phase 44 shipped (ENH-027+ENH-028 → **v1.12.0**)
+- **Last Activity**: 2026-04-04 — Phase 45 shipped (ENH-029 → **v1.13.0**)
 
 ## Progress Overview
 ```
@@ -61,12 +61,13 @@ Suggested next version: per release checklist
 | 2026-04-04 | ENH-029 logged: Architect C4/Sequence/Deployment/APIs — Phase 45 | `/vp-request` | Backlog |
 | 2026-04-04 | Phase 45 planned: ENH-029 (11 tasks), target **1.13.0** | `/vp-evolve` | M1.29 |
 | 2026-04-04 | Phase 44 shipped: ENH-027 + ENH-028 (erd.html + user-use-cases.html + 9 nav updates + crystallize + tests) — **1.12.0** | `/vp-auto` | M1.29 |
+| 2026-04-04 | Phase 45 shipped: ENH-029 (sequence-diagram.html + deployment.html + apis.html + 12-page nav + style.css badges + brainstorm/crystallize/SKILL.md + tests) — **1.13.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 45 (ENH-029 → Architect C4/Sequence/Deployment/APIs → **1.13.0**)
+All planned phases complete. Consider `/vp-docs` or `/vp-request` for new features.
 
 ## Backlog
 

@@ -15,6 +15,7 @@
     <ul>
       <li><a href="index.html">🏠 Hub</a></li>
       <li><a href="architecture.html" class="active">🏗️ Architecture</a></li>
+      <li><a href="sequence-diagram.html">🎬 Sequence</a></li>
       <li><a href="data-flow.html">🔄 Data Flow</a></li>
       <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
       <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
@@ -22,6 +23,8 @@
       <li><a href="feature-map.html">🗺️ Feature Map</a></li>
       <li><a href="erd.html">🗄️ ERD</a></li>
       <li><a href="user-use-cases.html">👤 Use Cases</a></li>
+      <li><a href="deployment.html">🚀 Deployment</a></li>
+      <li><a href="apis.html">🔌 APIs</a></li>
     </ul>
   </nav>
 
@@ -32,6 +35,24 @@
         <p>Component boundaries and system structure</p>
       </div>
       <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>C4 Context Diagram</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+C4Context
+    title System Context for {project}
+    Person(user, "User", "A user of the system")
+    System(sys, "{project}", "The main system")
+    System_Ext(ext1, "{External System 1}", "{Description}")
+    System_Ext(ext2, "{External System 2}", "{Description}")
+
+    Rel(user, sys, "Uses")
+    Rel(sys, ext1, "Calls")
+    Rel(sys, ext2, "Integrates with")
+        </div>
+      </div>
     </div>
 
     <div class="card">
@@ -87,6 +108,40 @@ graph TD
     <div class="card">
       <h2>Service Boundaries</h2>
       <p style="color:var(--text-muted);font-size:13px;">{Describe service boundaries, communication protocols, data ownership}</p>
+    </div>
+
+    <div class="card">
+      <h2>External Systems</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Integration method</th>
+            <th>Owned by</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{External System 1}</td>
+            <td>{SaaS / Internal / 3rd party}</td>
+            <td>{What it does}</td>
+            <td>{REST / Webhook / SDK}</td>
+            <td>{Team / Vendor}</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td>{External System 2}</td>
+            <td>{SaaS / Internal / 3rd party}</td>
+            <td>{What it does}</td>
+            <td>{REST / Webhook / SDK}</td>
+            <td>{Team / Vendor}</td>
+            <td>{Notes}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </main>
 

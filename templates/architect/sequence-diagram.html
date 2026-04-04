@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence Diagram — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="sequence-diagram.html" class="active">🎬 Sequence</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+      <li><a href="erd.html">🗄️ ERD</a></li>
+      <li><a href="user-use-cases.html">👤 Use Cases</a></li>
+      <li><a href="deployment.html">🚀 Deployment</a></li>
+      <li><a href="apis.html">🔌 APIs</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>🎬 Sequence Diagrams</h1>
+        <p>Per-scenario step-by-step interactions</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card" style="border-left: 3px solid var(--accent); background: var(--surface-alt);">
+      <p style="color:var(--text-muted);font-size:13px;">
+        <strong>Note:</strong> Per-scenario detail. High-level service/event flows → <a href="data-flow.html">data-flow.html</a>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Scenario Index</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Scenario</th>
+            <th>Actors</th>
+            <th>Trigger</th>
+            <th>Related use case</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SEQ-01</td>
+            <td>{Scenario name}</td>
+            <td>{Actor A, Actor B}</td>
+            <td>{User action / Event}</td>
+            <td>{UC-ID}</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td>SEQ-02</td>
+            <td>{Scenario name}</td>
+            <td>{Actor A, Actor B}</td>
+            <td>{User action / Event}</td>
+            <td>{UC-ID}</td>
+            <td>{Notes}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>SEQ-01: {Scenario 1 Name}</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant Frontend
+    participant API
+    participant DB
+
+    User->>Frontend: {Action}
+    Frontend->>API: POST /resource
+    API->>DB: INSERT
+    DB-->>API: OK
+    API-->>Frontend: 200 {data}
+    Frontend-->>User: {Response}
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>SEQ-02: {Scenario 2 Name}</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant Frontend
+    participant API
+    participant Service
+
+    User->>Frontend: {Action}
+    Frontend->>API: GET /resource
+    API->>Service: fetch({params})
+    Service-->>API: {result}
+    API-->>Frontend: 200 {data}
+    Frontend-->>User: {Display}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+      mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
+    }
+  </script>
+</body>
+</html>

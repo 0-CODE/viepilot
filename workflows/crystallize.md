@@ -279,13 +279,33 @@ If `.viepilot/architect/` exists with at least one session directory:
    ### User Stories
    | ID | As a... | I want to... | So that... | Priority |
    ```
-5. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
-6. **Record in working notes**:
+5. **`deployment.html` / `notes.md ## deployment`** (if exists — ENH-029) → append to `.viepilot/ARCHITECTURE.md`:
+   ```markdown
+   ## Deployment & Infrastructure (from Architect Mode)
+   | Env | URL | Purpose | Services | Config notes |
+   ...
+   ### Infrastructure Components
+   | Component | Type | Provider | Sizing | Notes |
+   ```
+6. **`apis.html` / `notes.md ## apis`** (if exists — ENH-029) → append to `.viepilot/ARCHITECTURE.md`:
+   ```markdown
+   ## API Design (from Architect Mode)
+   ### API Style: {REST / GraphQL / gRPC / WebSocket}
+   | Service | Method | Path | Auth? | Notes |
+   ...
+   ### API Design Decisions
+   | Decision | Choice | Rationale |
+   ```
+   Note: `sequence-diagram.html` is intentionally excluded from crystallize extraction — per-scenario diagrams are not architecture artifacts (they live in Architect Mode workspace only).
+7. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
+8. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
    - `erd_entities_count`: {count if erd present, else "n/a"}
    - `use_cases_count`: {count if use_cases present, else "n/a"}
+   - `deployment_imported`: {true/false}
+   - `apis_imported`: {true/false}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):

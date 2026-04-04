@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APIs — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="sequence-diagram.html">🎬 Sequence</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+      <li><a href="erd.html">🗄️ ERD</a></li>
+      <li><a href="user-use-cases.html">👤 Use Cases</a></li>
+      <li><a href="deployment.html">🚀 Deployment</a></li>
+      <li><a href="apis.html" class="active">🔌 APIs</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>🔌 APIs</h1>
+        <p>Service API listing and design decisions</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>{Service 1} API</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>Path</th>
+            <th>Auth?</th>
+            <th>Request Body</th>
+            <th>Response</th>
+            <th>Status codes</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge method-get">GET</span></td>
+            <td>/api/resource</td>
+            <td>Yes</td>
+            <td>—</td>
+            <td>{ data: [...] }</td>
+            <td>200, 401, 500</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td><span class="badge method-post">POST</span></td>
+            <td>/api/resource</td>
+            <td>Yes</td>
+            <td>{ name, ... }</td>
+            <td>{ id, name, ... }</td>
+            <td>201, 400, 401</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td><span class="badge method-put">PUT</span></td>
+            <td>/api/resource/:id</td>
+            <td>Yes</td>
+            <td>{ name, ... }</td>
+            <td>{ id, name, ... }</td>
+            <td>200, 400, 404</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td><span class="badge method-delete">DELETE</span></td>
+            <td>/api/resource/:id</td>
+            <td>Yes</td>
+            <td>—</td>
+            <td>{ success: true }</td>
+            <td>200, 404</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td><span class="badge method-patch">PATCH</span></td>
+            <td>/api/resource/:id</td>
+            <td>Yes</td>
+            <td>{ field: value }</td>
+            <td>{ id, field, ... }</td>
+            <td>200, 400, 404</td>
+            <td>{Notes}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>API Design Decisions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Decision</th>
+            <th>Choice</th>
+            <th>Rationale</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>API Style</td>
+            <td>
+              <span class="badge method-get">REST</span>
+              <span class="badge" style="background:#8b5cf620;color:#c4b5fd;">GraphQL</span>
+              <span class="badge" style="background:#0ea5e920;color:#38bdf8;">gRPC</span>
+              <span class="badge" style="background:#f59e0b20;color:#fbbf24;">WebSocket</span>
+            </td>
+            <td>{Rationale}</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td>Authentication</td>
+            <td>{JWT / Session / OAuth2 / API Key}</td>
+            <td>{Rationale}</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td>Versioning</td>
+            <td>{URL path / Header / None}</td>
+            <td>{Rationale}</td>
+            <td>{Notes}</td>
+          </tr>
+          <tr>
+            <td>Rate limiting</td>
+            <td>{Strategy}</td>
+            <td>{Rationale}</td>
+            <td>{Notes}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    }
+  </script>
+</body>
+</html>

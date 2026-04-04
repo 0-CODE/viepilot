@@ -1462,9 +1462,9 @@
 | 42. brainstorm UI extraction + crystallize hard gate (ENH-026) | ✅ Complete | 6 | 6 | 100% |
 | 43. Architect Design Mode + crystallize Step 1C (FEAT-011) | ✅ Complete | 8 | 8 | 100% |
 | 44. Architect ERD + User Use Cases (ENH-027 + ENH-028) | ✅ Complete | 9 | 9 | 100% |
-| 45. Architect System/Sequence/Deployment/APIs (ENH-029) | 🔲 Planned | 11 | 0 | 0% |
+| 45. Architect System/Sequence/Deployment/APIs (ENH-029) | ✅ Complete | 11 | 11 | 100% |
 
-**Total (to date)**: 50 tasks done (phases 33–44); 11 tasks planned (phase 45)
+**Total (to date)**: 61 tasks done (phases 33–45); 0 tasks planned
 
 ---
 
@@ -1486,5 +1486,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-04 (Phase **44** ENH-027+ENH-028 complete → v1.12.0; Phase **45** ENH-029 planned)
+- Last Updated: 2026-04-04 (Phase **45** ENH-029 complete → v1.13.0; all M1.29 phases done)
 - Estimated completion: M1.x iterative releases (see TRACKER)

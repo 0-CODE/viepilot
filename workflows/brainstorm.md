@@ -204,6 +204,9 @@ Kích hoạt Architect Design Mode để tôi tạo HTML visualization không?
   feature-map.html        # Features với tags: layer, phase, MVP/Post-MVP/Future, status
   erd.html                # Database ERD: entities, attributes, relationships (erDiagram) — ENH-027
   user-use-cases.html     # User Stories / Use Cases / Actors (flowchart TD) — ENH-028
+  sequence-diagram.html   # Per-scenario sequences (sequenceDiagram) — ENH-029
+  deployment.html         # Infra, environments, CI/CD pipeline — ENH-029
+  apis.html               # Service API listing & design decisions — ENH-029
   style.css               # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
   notes.md                # Machine-readable YAML (xem schema bên dưới)
 ```
@@ -214,6 +217,28 @@ Kích hoạt Architect Design Mode để tôi tạo HTML visualization không?
 - `feature-map.html` → `mindmap` hoặc `quadrantChart`
 - `erd.html` → `erDiagram` (entities, attributes, relationships)
 - `user-use-cases.html` → `flowchart TD` (actors → use case bubbles)
+- `sequence-diagram.html` → `sequenceDiagram` (per-scenario step-by-step)
+- `deployment.html` → `graph TD` (infra) + `flowchart LR` (CI/CD pipeline)
+- `apis.html` → no diagram; endpoint tables with HTTP method badges
+
+#### Page Boundary Rules (ENH-029)
+
+| Page | Use when... |
+|------|------------|
+| `data-flow.html` | High-level service/event flows — which services talk to which |
+| `sequence-diagram.html` | Per-scenario step-by-step interactions with exact message order |
+| `architecture.html` | Component structure + C4 system context + external integrations |
+| `deployment.html` | Infrastructure, environments, ops concerns, CI/CD pipeline |
+| `apis.html` | API endpoint design, HTTP methods, request/response contracts |
+
+#### Sequence trigger keywords (ENH-029)
+Khi user nhắc đến: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
+
+#### Deployment trigger keywords (ENH-029)
+Khi user nhắc đến: `deploy`, `deployment`, `infrastructure`, `infra`, `environment`, `staging`, `production`, `prod`, `AWS`, `GCP`, `Azure`, `Docker`, `Kubernetes`, `k8s`, `CI/CD`, `pipeline`, `server`, `hosting`, `cloud` → update `deployment.html` + update `notes.md ## deployment` section.
+
+#### APIs trigger keywords (ENH-029)
+Khi user nhắc đến: `endpoint`, `API`, `REST`, `GraphQL`, `gRPC`, `route`, `HTTP`, `POST`, `GET`, `PUT`, `DELETE`, `PATCH`, `request`, `response`, `payload`, `auth header` → update `apis.html` + update `notes.md ## apis` section.
 
 #### ERD trigger keywords (ENH-027)
 Khi user nhắc đến bất kỳ keyword: `database`, `entity`, `table`, `schema`, `relation`, `relationship`, `foreign key`, `primary key`, `ERD`, `data model`, `normalization` → update `erd.html` + update `notes.md ## erd` section.
@@ -295,6 +320,24 @@ user_stories:
     so_that: I can access premium features
     priority: must-have
     status: open
+
+## apis
+style: REST  # REST | GraphQL | gRPC | WebSocket
+services:
+  - name: "{Service 1}"
+    endpoints:
+      - method: GET
+        path: /api/resource
+        auth: true
+        notes: "{notes}"
+      - method: POST
+        path: /api/resource
+        auth: true
+        notes: "{notes}"
+design_decisions:
+  - decision: Authentication
+    choice: "{JWT / Session / OAuth2 / API Key}"
+    rationale: "{rationale}"
 ```
 
 ### Background UI Extraction (silent mode) — ENH-026

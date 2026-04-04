@@ -46,6 +46,7 @@ Hỗ trợ:
 - **Architect Design Mode (FEAT-011):** `/vp-brainstorm --architect` hoặc auto-activate khi ≥3 components/services; generate HTML workspace (architecture, data-flow, decisions, tech-stack, tech-notes, feature-map) với Mermaid diagrams; incremental update per decision; `/review-arch` command; machine-readable `notes.md` YAML schema.
 - **ERD page (ENH-027):** Architect workspace includes `erd.html` — Mermaid `erDiagram`, entity list table, relationship summary; triggered by DB/entity/table/relationship keywords; notes.md `## erd` YAML section exported to ARCHITECTURE.md `## Database Schema` via crystallize Step 1D.
 - **User Use Cases page (ENH-028):** Architect workspace includes `user-use-cases.html` — actor/use-case diagram (Mermaid flowchart), use case table; triggered by user/role/actor/story keywords; notes.md `## use_cases` YAML section exported to PROJECT-CONTEXT.md `## User Stories & Use Cases` via crystallize Step 1D.
+- **C4Context/Sequence/Deployment/APIs pages (ENH-029, 12-page workspace):** Architect workspace expanded to 12 pages — `sequence-diagram.html` (per-scenario sequenceDiagram), `deployment.html` (infra graph + environments + CI/CD pipeline), `apis.html` (endpoint tables with HTTP method badges); page boundary rules table; trigger keywords for sequence/deploy/API; notes.md `## apis` YAML section; deployment+APIs exported to ARCHITECTURE.md via crystallize Step 1D (sequence excluded — scenario docs are not architecture artifacts).
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`

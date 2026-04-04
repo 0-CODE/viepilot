@@ -7,14 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
+## [1.13.0] - 2026-04-04
 
-- **ENH-029** (Phase 45 → 1.13.0): Architect Design Mode — 3 new pages + 1 enhancement:
-  - `architecture.html` enhanced: C4 Context diagram + External Systems table
-  - `sequence-diagram.html` (new): per-scenario sequenceDiagram with boundary differentiation vs data-flow
-  - `deployment.html` (new): infra diagram, environments, deployment pipeline
-  - `apis.html` (new): per-service endpoint tables, HTTP method badges, API design decisions
-  - Boundary rules documented in brainstorm.md; crystallize Step 1D extracts deployment/APIs → ARCHITECTURE.md
+### Added
+
+- **ENH-029 — Architect Design Mode: C4/Sequence/Deployment/APIs pages (12-page workspace)**:
+  - `templates/architect/architecture.html`: C4 Context diagram section (Mermaid `C4Context`) + External Systems table (6 columns: System/Type/Description/Integration method/Owned by/Notes).
+  - `templates/architect/sequence-diagram.html` (new): per-scenario sequences — Scenario Index table, 2 placeholder `sequenceDiagram` blocks, differentiation note linking to data-flow.html.
+  - `templates/architect/deployment.html` (new): infra `graph TD` with dev/staging/prod, Environments table, Infrastructure Components table, CI/CD `flowchart LR`.
+  - `templates/architect/apis.html` (new): per-service endpoint tables (Method/Path/Auth?/Request Body/Response/Status codes/Notes), HTTP method badges, API Design Decisions table with style badges.
+  - `templates/architect/style.css`: 5 HTTP method badge classes (`.method-get/post/put/delete/patch`).
+  - All 12 architect pages updated with full 12-item sidebar nav (Sequence + Deployment + APIs items added to all existing pages).
+  - `templates/architect/index.html`: 3 new hub cards (Sequence Diagram, Deployment, APIs); Architecture card subtitle updated.
+  - `workflows/brainstorm.md`: Page Boundary Rules table; Sequence/Deployment/APIs trigger keyword sections; C4Context added to diagram types; `## apis` YAML schema section; 3 new pages in workspace layout.
+  - `workflows/crystallize.md` Step 1D: steps 5–6 extract `deployment.html`/`notes.md ## deployment` → `## Deployment & Infrastructure` and `apis.html`/`notes.md ## apis` → `## API Design` in ARCHITECTURE.md; sequence-diagram.html explicitly excluded with rationale.
+  - `skills/vp-brainstorm/SKILL.md`: ENH-029 capability note added.
+  - `tests/unit/vp-enh029-architect-pages-contracts.test.js` (new): 11 contract tests — all pass (362 total).
 
 ## [1.12.0] - 2026-04-04
 
