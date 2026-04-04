@@ -34,13 +34,15 @@ describe('ENH-027 Architect Design Mode — ERD page', () => {
     expect(content).toMatch(/Relationship/);
   });
 
-  test('templates/architect/erd.html: sidebar nav has 8+ nav items including ERD active', () => {
+  test('templates/architect/erd.html: sidebar nav has 9 items including ERD active and Use Cases link', () => {
     const content = read('templates/architect/erd.html');
     // Active link for erd.html
     expect(content).toMatch(/erd\.html.*class="active"|class="active"[^>]*>.*ERD/s);
-    // Has at least 7 nav links (index + 7 pages)
+    // Must include Use Cases link (BUG-008 fix)
+    expect(content).toMatch(/user-use-cases\.html/);
+    // Has all 9 nav links
     const navLinks = content.match(/<li><a href=/g) || [];
-    expect(navLinks.length).toBeGreaterThanOrEqual(7);
+    expect(navLinks.length).toBeGreaterThanOrEqual(9);
   });
 
   test('brainstorm.md: ERD trigger keywords documented in Architect Design Mode', () => {
