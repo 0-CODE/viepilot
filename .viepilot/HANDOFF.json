@@ -1,8 +1,8 @@
 {
   "version": 1,
   "position": {
-    "phase": "21",
-    "task": "21.2",
+    "phase": "22",
+    "task": "22.1",
     "status": "control_point",
     "sub_task": null
   },
@@ -19,15 +19,15 @@
       "jest",
       "clack-prompts"
     ],
-    "last_decision": "User requested a full commit for Task 21.2. After commit, PASS will still require a push because git persistence stays incomplete on local-only history."
+    "last_decision": "Task 21.3 is complete and ready for Phase 22 follow-on work. Phase 22.1 cannot start until its task contract is expanded to satisfy the doc-first gate."
   },
   "control_point": {
     "active": true,
-    "reason": "Git persistence gate is partially resolved by local commit, but PASS still requires pushing the resulting commit to the configured upstream.",
-    "ts": "2026-04-04T04:08:23Z"
+    "reason": "Task 22.1 is blocked at contract validation. The task file currently lacks execution-grade sections required by /vp-auto before implementation can begin.",
+    "ts": "2026-04-04T04:24:05Z"
   },
   "meta": {
-    "last_written": "2026-04-04T04:08:23Z",
+    "last_written": "2026-04-04T04:24:05Z",
     "last_archived": null
   }
 }

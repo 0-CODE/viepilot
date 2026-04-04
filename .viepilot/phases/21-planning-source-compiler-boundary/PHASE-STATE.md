@@ -2,16 +2,16 @@
 
 ## Overview
 - **Started**: 2026-04-04
-- **Status**: executing
-- **Progress**: 1/3 tasks (33%)
-- **Current Task**: 21.2
+- **Status**: complete ✅
+- **Progress**: 3/3 tasks (100%)
+- **Current Task**: —
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "task_21_2"
-  status: control_point
+  current: "—"
+  status: pass
   available_transitions:
     on_start: "-> executing"
     on_pass: "-> update_state -> next_task"
@@ -30,9 +30,11 @@ execution_state:
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
 | 21.1 | Define planning source schema inventory and field ownership | done | 2026-04-04 | 2026-04-04 | viepilot-vp-p21-t21.1-done |
-| 21.2 | Define runtime artifact contracts | in_progress | 2026-04-04 | — | — |
-| 21.3 | Map v2 artifacts to v3 ownership and projections | not_started | — | — | — |
+| 21.2 | Define runtime artifact contracts | done | 2026-04-04 | 2026-04-04 | viepilot-vp-p21-t21.2-done |
+| 21.3 | Map v2 artifacts to v3 ownership and projections | done | 2026-04-04 | 2026-04-04 | viepilot-vp-p21-t21.3-done |
 
 ## Notes
 
-- 2026-04-04: Task 21.2 implementation and verification completed locally. Commit persistence was requested by the user; PASS remains blocked until the resulting commit is pushed.
+- 2026-04-04: Task 21.2 PASS confirmed. Commit `80ff37b` is already persisted on `origin/v2`, so the earlier git-persistence control point was stale.
+- 2026-04-04: Task 21.3 contract was expanded, `compat-map.json` plus schema/test were implemented, and local verification passed.
+- 2026-04-04: Task 21.3 persistence completed and Phase 21 is now complete.

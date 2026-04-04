@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "artifact": {
+    "kind": "compat-map",
+    "version": "3.0.0-alpha",
+    "path": ".viepilot/compat-map.json"
+  },
+  "intent": "Map current .viepilot repository artifacts to their v3 ownership or disposition so compiler/runtime migration does not rely on prose inference.",
+  "classifications": [
+    {
+      "id": "compat-map-self",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/compat-map.json"
+        ]
+      },
+      "v3_role": "canonical_input",
+      "canonical_owner": ".viepilot/compat-map.json",
+      "notes": "Compatibility ownership map is canonical for current-to-v3 artifact classification."
+    },
+    {
+      "id": "runtime-projections",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/TRACKER.md",
+          ".viepilot/HANDOFF.json"
+        ]
+      },
+      "v3_role": "runtime_projection",
+      "canonical_owner": ".viepilot/runtime-state.json",
+      "notes": "These files expose current execution position and control-point status for humans or compatibility consumers."
+    },
+    {
+      "id": "planning-projections",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/ROADMAP.md",
+          ".viepilot/ROADMAP-INDEX.md"
+        ]
+      },
+      "v3_role": "planning_projection",
+      "canonical_owner": ".viepilot/planning-source.json",
+      "notes": "Roadmap views remain planning-facing projections once planning-source becomes canonical."
+    },
+    {
+      "id": "phase-state-projections",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/phases/.+/PHASE-STATE\\.md$"
+      },
+      "v3_role": "runtime_projection",
+      "canonical_owner": ".viepilot/runtime-state.json",
+      "notes": "Per-phase execution snapshots are compatibility projections and will be demoted after migration."
+    },
+    {
+      "id": "phase-task-inputs",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/phases/.+/(SPEC\\.md|SUMMARY\\.md|tasks/.+\\.md)$"
+      },
+      "v3_role": "canonical_input",
+      "canonical_owner": ".viepilot/planning-source.json",
+      "notes": "Phase specs, summaries, and task markdown remain planning/compiler inputs until planning-source fully replaces them."
+    },
+    {
+      "id": "request-inputs",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/requests/.+\\.md$"
+      },
+      "v3_role": "canonical_input",
+      "canonical_owner": ".viepilot/planning-source.json",
+      "notes": "Request records feed planning history and compiler lineage."
+    },
+    {
+      "id": "brainstorm-source",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/brainstorm-manifest.json"
+        ]
+      },
+      "v3_role": "canonical_input",
+      "canonical_owner": ".viepilot/planning-source.json",
+      "notes": "Brainstorm manifest remains an upstream normalized planning input rather than a runtime artifact."
+    },
+    {
+      "id": "planning-boundary-docs",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/PROJECT-CONTEXT.md",
+          ".viepilot/ARCHITECTURE.md",
+          ".viepilot/SPEC.md"
+        ]
+      },
+      "v3_role": "canonical_input",
+      "canonical_owner": ".viepilot/planning-source.json",
+      "notes": "These docs define the current planning boundary and artifact vocabulary that the compiler will normalize."
+    },
+    {
+      "id": "schema-references",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/schemas/.+\\.(json|md|sql|yaml)$"
+      },
+      "v3_role": "reference",
+      "canonical_owner": null,
+      "notes": "Schemas and contract references define validation and ownership rules but are not mutable runtime truth themselves."
+    },
+    {
+      "id": "static-guidance",
+      "match": {
+        "type": "path",
+        "values": [
+          ".viepilot/AI-GUIDE.md",
+          ".viepilot/STACKS.md",
+          ".viepilot/SYSTEM-RULES.md",
+          ".viepilot/PROJECT-META.md",
+          ".viepilot/cold-start-manifest.json"
+        ]
+      },
+      "v3_role": "reference",
+      "canonical_owner": null,
+      "notes": "Static guidance and metadata inform execution but should remain separate from canonical runtime and planning state."
+    },
+    {
+      "id": "architecture-sidecars",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/architecture/.+\\.mermaid$"
+      },
+      "v3_role": "reference",
+      "canonical_owner": null,
+      "notes": "Diagram sidecars are design references synchronized from planning docs, not runtime state."
+    },
+    {
+      "id": "logs-and-debug-history",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/(logs/.+\\.md|debug/.+\\.json)$"
+      },
+      "v3_role": "migration_only",
+      "canonical_owner": null,
+      "notes": "Logs and debug snapshots are audit/history artifacts retained for migration and troubleshooting only."
+    },
+    {
+      "id": "legacy-milestone-history",
+      "match": {
+        "type": "regex",
+        "value": "^\\.viepilot/milestones/.+\\.(md|json)$"
+      },
+      "v3_role": "migration_only",
+      "canonical_owner": null,
+      "notes": "Legacy milestone snapshots are historical references and should not regain canonical ownership in v3."
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viepilot.dev/schemas/compat-map.schema.json",
+  "title": "ViePilot Compatibility Map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "artifact",
+    "intent",
+    "classifications"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "path"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "compat-map"
+        },
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "const": ".viepilot/compat-map.json"
+        }
+      }
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classifications": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/classification"
+      }
+    }
+  },
+  "$defs": {
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "match",
+        "v3_role",
+        "canonical_owner",
+        "notes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "match": {
+          "$ref": "#/$defs/match"
+        },
+        "v3_role": {
+          "type": "string",
+          "enum": [
+            "canonical_input",
+            "runtime_projection",
+            "planning_projection",
+            "reference",
+            "migration_only"
+          ]
+        },
+        "canonical_owner": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            ".viepilot/planning-source.json",
+            ".viepilot/runtime-state.json",
+            ".viepilot/execution-graph.json",
+            ".viepilot/active-packet.json",
+            ".viepilot/compat-map.json",
+            null
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "path",
+            "prefix",
+            "regex"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "path"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "values"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "prefix",
+                  "regex"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "value"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

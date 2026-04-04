@@ -19,6 +19,7 @@ ViePilot is a local-first workflow framework for AI-assisted software delivery. 
 | `runtime-state.json` | Canonical mutable executor state: position, recovery, control-point, and projection-sync truth |
 | `execution-graph.json` | Canonical compile-time task dependency graph and packet issuance strategy |
 | `active-packet.json` | Canonical current-task packet delivered to the runtime executor with scoped reads, writes, and verification |
+| `compat-map.json` | Canonical ownership map that classifies current repo artifacts as canonical inputs, projections, references, or migration-only leftovers during v3 transition |
 
 ## Business Rules
 
@@ -38,6 +39,7 @@ brainstorm sessions
       -> runtime-state.json
       -> execution-graph.json
       -> active-packet.json
+      -> compat-map.json
       -> human projections (TRACKER, ROADMAP, HANDOFF-compatible views)
 ```
 </domain_knowledge>
