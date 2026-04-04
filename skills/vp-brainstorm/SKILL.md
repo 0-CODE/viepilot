@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.9.0
+version: 1.0.0
 ---
 
 <cursor_skill_adapter>
@@ -44,6 +44,8 @@ Hỗ trợ:
 - **UX walkthrough (FEAT-010 + ENH-019 + ENH-020):** trong **`--ui`**, lệnh **`/research-ui`** hoặc **`/research ui`** chạy 3 phase — mô phỏng **end-user** (kèm **content stress pass** + **stress recipes theo archetype** → **Stress findings**) → **UX designer + web research** → chỉnh `index.html` / `pages/*.html` / `style.css` và ghi **`## UX walkthrough log`** trong `notes.md` (đồng bộ hub + **Pages inventory** khi multi-page).
 - **Background UI extraction (ENH-026):** tự động nhận diện UI signal keywords trong mọi phiên brainstorm (không cần `--ui` flag); silent accumulation buffer; surface để xác nhận khi topic kết thúc, `/save`, hoặc ≥5 signals — không interrupt hội thoại chính.
 - **Architect Design Mode (FEAT-011):** `/vp-brainstorm --architect` hoặc auto-activate khi ≥3 components/services; generate HTML workspace (architecture, data-flow, decisions, tech-stack, tech-notes, feature-map) với Mermaid diagrams; incremental update per decision; `/review-arch` command; machine-readable `notes.md` YAML schema.
+- **ERD page (ENH-027):** Architect workspace includes `erd.html` — Mermaid `erDiagram`, entity list table, relationship summary; triggered by DB/entity/table/relationship keywords; notes.md `## erd` YAML section exported to ARCHITECTURE.md `## Database Schema` via crystallize Step 1D.
+- **User Use Cases page (ENH-028):** Architect workspace includes `user-use-cases.html` — actor/use-case diagram (Mermaid flowchart), use case table; triggered by user/role/actor/story keywords; notes.md `## use_cases` YAML section exported to PROJECT-CONTEXT.md `## User Stories & Use Cases` via crystallize Step 1D.
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`

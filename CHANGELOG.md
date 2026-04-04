@@ -9,16 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **ENH-027 + ENH-028** (Phase 44 → 1.12.0): Architect Design Mode — 2 new pages:
-  - `erd.html`: Mermaid `erDiagram`, entity/relationship tables, crystallize → ARCHITECTURE.md
-  - `user-use-cases.html`: Mermaid `flowchart TD` actors/use-cases, User Stories table, crystallize → PROJECT-CONTEXT.md
-  - All hub nav + sidebar nav updated; vp-brainstorm v1.0.0.
 - **ENH-029** (Phase 45 → 1.13.0): Architect Design Mode — 3 new pages + 1 enhancement:
   - `architecture.html` enhanced: C4 Context diagram + External Systems table
   - `sequence-diagram.html` (new): per-scenario sequenceDiagram with boundary differentiation vs data-flow
   - `deployment.html` (new): infra diagram, environments, deployment pipeline
   - `apis.html` (new): per-service endpoint tables, HTTP method badges, API design decisions
   - Boundary rules documented in brainstorm.md; crystallize Step 1D extracts deployment/APIs → ARCHITECTURE.md
+
+## [1.12.0] - 2026-04-04
+
+### Added
+
+- **ENH-027 — Architect Design Mode: ERD page**:
+  - `templates/architect/erd.html` (new): Mermaid `erDiagram` with sample entities (User/Order/OrderItem/Product), Entity List table (Entity/Attributes/PK/FK/Notes), Relationship Summary table.
+  - `workflows/brainstorm.md`: ERD trigger keywords (entity, table, relationship, foreign key, schema, DB, database); `## erd` section in notes.md YAML schema; `erDiagram` added to supported Mermaid types.
+  - `workflows/crystallize.md` Step 1D: step 3 — extracts `## erd` → `## Database Schema (from Architect ERD)` in ARCHITECTURE.md.
+  - All 7 existing architect templates updated with `🗄️ ERD` sidebar nav link.
+- **ENH-028 — Architect Design Mode: User Use Cases page**:
+  - `templates/architect/user-use-cases.html` (new): Mermaid `flowchart LR` with Actors/Use Cases subgraphs, Use Case List table (ID/Actor/Priority), Actor Summary table.
+  - `workflows/brainstorm.md`: Use Case trigger keywords (user story, actor, role, use case, scenario); `## use_cases` section in notes.md YAML schema.
+  - `workflows/crystallize.md` Step 1D: step 4 — extracts `## use_cases` → `## User Stories & Use Cases (from Architect Mode)` in PROJECT-CONTEXT.md.
+  - All architect templates updated with `👤 Use Cases` sidebar nav link; `index.html` adds 2 hub cards.
+- **vp-brainstorm v1.0.0**: bumped from 0.9.0 with ENH-027 + ENH-028 capability notes.
 
 ## [1.11.0] - 2026-04-04
 

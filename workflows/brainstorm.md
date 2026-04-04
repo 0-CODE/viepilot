@@ -195,21 +195,31 @@ Kích hoạt Architect Design Mode để tôi tạo HTML visualization không?
 
 ```
 .viepilot/architect/{session-id}/
-  index.html         # Hub: sidebar nav + tabs → tới tất cả sections
-  architecture.html  # System diagram (Mermaid graph TD / C4Context) + component descriptions
-  data-flow.html     # Request/event flow (Mermaid sequenceDiagram / flowchart LR)
-  decisions.html     # ADR log: Date | Decision | Options | Chosen | Rationale | Status
-  tech-stack.html    # Layer-by-layer: frontend, backend, infra, data, DevOps
-  tech-notes.html    # 3 columns: Assumptions | Risks | Open Questions
-  feature-map.html   # Features với tags: layer, phase, MVP/Post-MVP/Future, status
-  style.css          # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
-  notes.md           # Machine-readable YAML (xem schema bên dưới)
+  index.html              # Hub: sidebar nav + tabs → tới tất cả sections
+  architecture.html       # System diagram (graph TD / C4Context) + component descriptions
+  data-flow.html          # High-level service/event flows (sequenceDiagram / flowchart LR)
+  decisions.html          # ADR log: Date | Decision | Options | Chosen | Rationale | Status
+  tech-stack.html         # Layer-by-layer: frontend, backend, infra, data, DevOps
+  tech-notes.html         # 3 columns: Assumptions | Risks | Open Questions
+  feature-map.html        # Features với tags: layer, phase, MVP/Post-MVP/Future, status
+  erd.html                # Database ERD: entities, attributes, relationships (erDiagram) — ENH-027
+  user-use-cases.html     # User Stories / Use Cases / Actors (flowchart TD) — ENH-028
+  style.css               # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
+  notes.md                # Machine-readable YAML (xem schema bên dưới)
 ```
 
 **Mermaid.js** — tất cả diagrams dùng: `<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js">`
 - `architecture.html` → `graph TD` hoặc `C4Context`
 - `data-flow.html` → `sequenceDiagram` hoặc `flowchart LR`
 - `feature-map.html` → `mindmap` hoặc `quadrantChart`
+- `erd.html` → `erDiagram` (entities, attributes, relationships)
+- `user-use-cases.html` → `flowchart TD` (actors → use case bubbles)
+
+#### ERD trigger keywords (ENH-027)
+Khi user nhắc đến bất kỳ keyword: `database`, `entity`, `table`, `schema`, `relation`, `relationship`, `foreign key`, `primary key`, `ERD`, `data model`, `normalization` → update `erd.html` + update `notes.md ## erd` section.
+
+#### Use Case trigger keywords (ENH-028)
+Khi user nhắc đến: `user story`, `use case`, `actor`, `persona`, `as a user`, `user flow`, `workflow`, `journey`, `role`, `permission` → update `user-use-cases.html` + update `notes.md ## use_cases` section.
 
 #### Dialogue cadence
 
@@ -255,6 +265,36 @@ updated: {date}
   database: PostgreSQL
   infra: AWS ECS + RDS
   devops: GitHub Actions + Terraform
+
+## erd
+entities:
+  - name: User
+    attributes: [id, email, name, created_at]
+    primary_key: id
+  - name: Order
+    attributes: [id, user_id, total, status]
+    primary_key: id
+    foreign_keys:
+      - user_id → User.id
+relationships:
+  - from: User
+    to: Order
+    type: one-to-many
+    label: places
+
+## use_cases
+actors:
+  - name: Guest
+    role: Unauthenticated visitor
+  - name: User
+    role: Registered member
+user_stories:
+  - id: US001
+    as_a: User
+    i_want: to register an account
+    so_that: I can access premium features
+    priority: must-have
+    status: open
 ```
 
 ### Background UI Extraction (silent mode) — ENH-026

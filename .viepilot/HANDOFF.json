@@ -1,0 +1,31 @@
+{
+  "milestone": "M1.29",
+  "milestone_name": "All planned phases complete",
+  "phase": 44,
+  "phase_name": "enh027-architect-erd-use-cases",
+  "task": null,
+  "task_name": null,
+  "status": "phase_complete",
+  "last_activity": "2026-04-04T00:00:00Z",
+  "version": {
+    "current": "1.12.0",
+    "next": "1.13.0 (Phase 45 — ENH-029)"
+  },
+  "progress": {
+    "phases_total": 45,
+    "phases_completed": 44,
+    "tasks_total": 153,
+    "tasks_completed": 151,
+    "percentage": 99
+  },
+  "context": {
+    "notes": [
+      "Phase 44 ENH-027+ENH-028 shipped: erd.html + user-use-cases.html + 9 nav updates + brainstorm/crystallize workflow + 18 contract tests → 1.12.0",
+      "vp-brainstorm SKILL.md bumped to v1.0.0 with ENH-027+ENH-028 capability notes",
+      "Phase 45 ENH-029 planned (11 tasks): architecture.html C4 enhancement + sequence-diagram.html + deployment.html + apis.html → 1.13.0"
+    ]
+  },
+  "checkpoints": [],
+  "created_at": "2026-03-30T20:55:00Z",
+  "updated_at": "2026-04-04T00:00:00Z"
+}

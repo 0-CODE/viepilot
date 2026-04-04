@@ -263,11 +263,29 @@ If `.viepilot/architect/` exists with at least one session directory:
      - Q001: {question}
      - Q002: {question}
      ```
-3. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
-4. **Record in working notes**:
+3. **`erd.html` / `notes.md ## erd`** (if exists — ENH-027) → append to `.viepilot/ARCHITECTURE.md`:
+   ```markdown
+   ## Database Schema (from Architect ERD)
+   | Entity | Attributes | PK | FK | Notes |
+   ...
+   ### Relationships
+   | Entity A | Type | Entity B | Label |
+   ```
+4. **`user-use-cases.html` / `notes.md ## use_cases`** (if exists — ENH-028) → append to `.viepilot/PROJECT-CONTEXT.md`:
+   ```markdown
+   ## User Stories & Use Cases (from Architect Mode)
+   ### Actors
+   | Actor | Role | Goals |
+   ### User Stories
+   | ID | As a... | I want to... | So that... | Priority |
+   ```
+5. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
+6. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
+   - `erd_entities_count`: {count if erd present, else "n/a"}
+   - `use_cases_count`: {count if use_cases present, else "n/a"}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):

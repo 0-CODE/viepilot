@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Use Cases — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+      <li><a href="erd.html">🗄️ ERD</a></li>
+      <li><a href="user-use-cases.html" class="active">👤 Use Cases</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>👤 User Use Cases</h1>
+        <p>Actors, goals, and interaction scenarios</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>Actor / Use Case Diagram</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+flowchart LR
+    subgraph Actors
+        U[👤 User]
+        A[🔑 Admin]
+        G[🌐 Guest]
+    end
+
+    subgraph UseCases["Use Cases"]
+        UC1([Register / Login])
+        UC2([Browse Products])
+        UC3([Place Order])
+        UC4([Track Order])
+        UC5([Manage Products])
+        UC6([View Reports])
+    end
+
+    G --> UC1
+    G --> UC2
+    U --> UC2
+    U --> UC3
+    U --> UC4
+    A --> UC5
+    A --> UC6
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Use Case List</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Use Case</th>
+            <th>Actor(s)</th>
+            <th>Precondition</th>
+            <th>Main Flow</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>UC-001</td>
+            <td>{Use case name}</td>
+            <td>{Actor}</td>
+            <td>{Precondition}</td>
+            <td>{Brief main flow}</td>
+            <td><span class="badge badge-mvp">MVP</span></td>
+          </tr>
+          <tr>
+            <td>UC-002</td>
+            <td>{Use case name}</td>
+            <td>{Actor}</td>
+            <td>{Precondition}</td>
+            <td>{Brief main flow}</td>
+            <td><span class="badge badge-post-mvp">Post-MVP</span></td>
+          </tr>
+          <tr>
+            <td>UC-003</td>
+            <td>{Use case name}</td>
+            <td>{Actor}</td>
+            <td>{Precondition}</td>
+            <td>{Brief main flow}</td>
+            <td><span class="badge badge-future">Future</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Actor Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Actor</th>
+            <th>Role</th>
+            <th>Goals</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>{Actor 1}</strong></td>
+            <td>{Role description}</td>
+            <td>{Primary goals}</td>
+            <td>{notes}</td>
+          </tr>
+          <tr>
+            <td><strong>{Actor 2}</strong></td>
+            <td>{Role description}</td>
+            <td>{Primary goals}</td>
+            <td>{notes}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+      mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
+    }
+  </script>
+</body>
+</html>
