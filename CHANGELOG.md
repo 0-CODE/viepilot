@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `erd.html`: Mermaid `erDiagram`, entity/relationship tables, crystallize → ARCHITECTURE.md
   - `user-use-cases.html`: Mermaid `flowchart TD` actors/use-cases, User Stories table, crystallize → PROJECT-CONTEXT.md
   - All hub nav + sidebar nav updated; vp-brainstorm v1.0.0.
+- **ENH-029** (Phase 45 → 1.13.0): Architect Design Mode — 3 new pages + 1 enhancement:
+  - `architecture.html` enhanced: C4 Context diagram + External Systems table
+  - `sequence-diagram.html` (new): per-scenario sequenceDiagram with boundary differentiation vs data-flow
+  - `deployment.html` (new): infra diagram, environments, deployment pipeline
+  - `apis.html` (new): per-service endpoint tables, HTTP method badges, API design decisions
+  - Boundary rules documented in brainstorm.md; crystallize Step 1D extracts deployment/APIs → ARCHITECTURE.md
 
 ## [1.11.0] - 2026-04-04
 
