@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture Hub — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html" class="active">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Architecture Hub</h1>
+        <p>Session: {session-id} &nbsp;·&nbsp; Updated: {date}</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>Project Summary</h2>
+      <table>
+        <tr><th>Field</th><th>Value</th></tr>
+        <tr><td>Project</td><td>{project}</td></tr>
+        <tr><td>Session</td><td>{session-id}</td></tr>
+        <tr><td>Created</td><td>{date}</td></tr>
+        <tr><td>Open Questions</td><td>{open-questions-count}</td></tr>
+        <tr><td>Decisions</td><td>{decisions-count}</td></tr>
+      </table>
+    </div>
+
+    <div class="cols-2">
+      <a href="architecture.html" class="card" style="text-decoration:none;display:block;">
+        <h2>🏗️ Architecture</h2>
+        <p style="color:var(--text-muted);font-size:13px;">System components, service boundaries, Mermaid diagram</p>
+      </a>
+      <a href="data-flow.html" class="card" style="text-decoration:none;display:block;">
+        <h2>🔄 Data Flow</h2>
+        <p style="color:var(--text-muted);font-size:13px;">Request/event flows, sequence diagrams</p>
+      </a>
+      <a href="decisions.html" class="card" style="text-decoration:none;display:block;">
+        <h2>📋 Decisions (ADR)</h2>
+        <p style="color:var(--text-muted);font-size:13px;">Architecture decision log — context, options, rationale</p>
+      </a>
+      <a href="tech-stack.html" class="card" style="text-decoration:none;display:block;">
+        <h2>🛠️ Tech Stack</h2>
+        <p style="color:var(--text-muted);font-size:13px;">Layer-by-layer: frontend, backend, infra, data, DevOps</p>
+      </a>
+      <a href="tech-notes.html" class="card" style="text-decoration:none;display:block;">
+        <h2>📝 Tech Notes</h2>
+        <p style="color:var(--text-muted);font-size:13px;">Assumptions, risks, open questions</p>
+      </a>
+      <a href="feature-map.html" class="card" style="text-decoration:none;display:block;">
+        <h2>🗺️ Feature Map</h2>
+        <p style="color:var(--text-muted);font-size:13px;">Features with tags: layer, phase, MVP/Post-MVP</p>
+      </a>
+    </div>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    }
+  </script>
+</body>
+</html>

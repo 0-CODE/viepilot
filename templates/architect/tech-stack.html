@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Stack — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html" class="active">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>🛠️ Tech Stack</h1>
+        <p>Layer-by-layer technology choices and alternatives</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>Stack Layers</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Version</th>
+            <th>Why Chosen</th>
+            <th>Alternatives</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frontend</strong></td>
+            <td>{e.g. React + TypeScript}</td>
+            <td>{version}</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+          <tr>
+            <td><strong>Backend</strong></td>
+            <td>{e.g. Node.js + Express}</td>
+            <td>{version}</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+          <tr>
+            <td><strong>Database</strong></td>
+            <td>{e.g. PostgreSQL}</td>
+            <td>{version}</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+          <tr>
+            <td><strong>Cache</strong></td>
+            <td>{e.g. Redis}</td>
+            <td>{version}</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+          <tr>
+            <td><strong>Infrastructure</strong></td>
+            <td>{e.g. AWS ECS + RDS}</td>
+            <td>—</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+          <tr>
+            <td><strong>DevOps</strong></td>
+            <td>{e.g. GitHub Actions + Terraform}</td>
+            <td>—</td>
+            <td>{rationale}</td>
+            <td>{alternatives}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Stack Summary</h2>
+      <p style="color:var(--text-muted);font-size:13px;">{High-level summary of technology choices and their coherence as a system}</p>
+    </div>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    }
+  </script>
+</body>
+</html>

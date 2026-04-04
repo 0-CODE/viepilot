@@ -7,9 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
+_Nothing planned yet._
 
-- **FEAT-011** (Phase 43 → 1.11.0): Architect Design Mode — `/vp-brainstorm --architect` with live HTML generation (architecture, data-flow, decisions, tech-stack, tech-notes, feature-map); `vp-crystallize` Step 1C consumes architect artifacts into ARCHITECTURE.md.
+## [1.11.0] - 2026-04-04
+
+### Added
+
+- **FEAT-011 — Architect Design Mode**:
+  - `workflows/brainstorm.md`: new `### Architect Design Mode` section — activate via `--architect` flag or auto-heuristic (≥3 components OR ≥1 stack mention); generates HTML workspace with 7 sections (architecture, data-flow, decisions, tech-stack, tech-notes, feature-map, hub) + `notes.md` YAML schema; incremental updates per decision with `.updated` CSS highlight; `/review-arch` command for summary + open_questions review.
+  - `templates/architect/`: 7 HTML templates + `style.css` — dark/light toggle, Mermaid.js diagrams, `.updated` diff indicator, responsive sidebar nav. Self-contained, open in browser.
+  - `workflows/crystallize.md`: new Step 1D `consume_architect_artifacts` — reads `notes.md` YAML; imports `decisions[]` → ARCHITECTURE.md, uses `tech_stack{}` as authoritative, surfaces `open_questions[]` status=open; cross-references `feature-map.html` with Product Horizon; soft suggestion (not hard block) when architect dir missing.
+  - `skills/vp-brainstorm/SKILL.md`: bumped to `0.9.0`, FEAT-011 listed in capabilities.
+  - `skills/vp-crystallize/SKILL.md`: bumped to `0.7.0`, FEAT-011 listed in capabilities.
+  - `docs/user/features/architect-design-mode.md`: new — 8 sections covering overview, activation, HTML artifacts, dialogue cadence, `/review-arch`, crystallize integration, notes.md schema, tips.
+  - `tests/unit/vp-feat011-architect-design-mode-contracts.test.js`: 8 contract tests (333 total, all pass).
 
 ## [1.10.0] - 2026-04-04
 

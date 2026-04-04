@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.6.0
+version: 0.7.0
 ---
 
 <cursor_skill_adapter>
@@ -68,6 +68,9 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 
 **UI direction hard gate (ENH-026):**
 - Step 1A scans brainstorm for UI signal keywords; if ≥3 signals detected + no artifacts → **STOP** with 2-option dialogue (go back to brainstorm --ui OR proceed with assumptions written to ARCHITECTURE.md). Enforces direction-first workflow before crystallize proceeds.
+
+**Architect artifacts consumption (FEAT-011):**
+- Step 1D reads `.viepilot/architect/{session}/notes.md` YAML — imports `decisions[]` → ARCHITECTURE.md, uses `tech_stack{}` as authoritative stack (conflict → ask user), surfaces `open_questions[]` with `status: open`. Soft suggestion (not hard block) when architect dir missing but ≥5 services detected.
 </objective>
 
 <execution_context>

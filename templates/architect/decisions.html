@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture Decisions — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html" class="active">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>📋 Architecture Decisions (ADR)</h1>
+        <p>Decision log — context, options considered, chosen path, rationale</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>Decision Log</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Decision</th>
+            <th>Options Considered</th>
+            <th>Chosen</th>
+            <th>Rationale</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-updated="true" class="updated">
+            <td>D001</td>
+            <td>{date}</td>
+            <td>{Topic, e.g. "Database choice"}</td>
+            <td>{option A, option B, option C}</td>
+            <td><strong>{Chosen option}</strong></td>
+            <td>{Rationale}</td>
+            <td><span class="badge badge-decided">Decided</span></td>
+          </tr>
+          <tr>
+            <td>D002</td>
+            <td>{date}</td>
+            <td>{Topic}</td>
+            <td>{options}</td>
+            <td><strong>{Chosen}</strong></td>
+            <td>{Rationale}</td>
+            <td><span class="badge badge-open">Open</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Legend</h2>
+      <p style="font-size:13px;color:var(--text-muted);">
+        <span class="badge badge-decided">Decided</span> — decision finalized &nbsp;
+        <span class="badge badge-open">Open</span> — needs resolution &nbsp;
+        <span class="badge badge-deferred">Deferred</span> — intentionally postponed
+      </p>
+    </div>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    }
+  </script>
+</body>
+</html>

@@ -244,6 +244,41 @@ Also create project-local index for traceability:
 - `.viepilot/STACKS.md` listing stacks used and cache paths.
 </step>
 
+<step name="consume_architect_artifacts">
+## Step 1D: Consume Architect Artifacts (FEAT-011)
+
+If `.viepilot/architect/` exists with at least one session directory:
+
+1. **Select most recent session** (by directory mtime or newest session-id).
+2. **Read `notes.md`** → parse YAML frontmatter sections:
+   - **`decisions[]`** → append to `.viepilot/ARCHITECTURE.md` under:
+     ```markdown
+     ## Architecture Decisions (from Architect Mode)
+     | ID | Topic | Chosen | Rationale | Status |
+     ```
+   - **`tech_stack{}`** → use as **authoritative tech stack** (overrides brainstorm text if conflict; when conflict detected: surface to user with both values and ask which to use before proceeding).
+   - **`open_questions[]`** with `status: open` → surface as list:
+     ```
+     ⚠️ These questions were open at end of Architect Design Mode — please resolve before proceeding:
+     - Q001: {question}
+     - Q002: {question}
+     ```
+3. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
+4. **Record in working notes**:
+   - `architect_session_id`: {id}
+   - `decisions_imported`: {count}
+   - `open_questions_count`: {count of open questions}
+
+If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
+- Suggest (soft prompt — not a hard block):
+  ```
+  💡 Bạn muốn quay lại /vp-brainstorm --architect để tạo visualization trước không?
+  1. Có — quay lại architect mode
+  2. Không — tiếp tục crystallize với text-only brainstorm
+  ```
+- User confirmation required before proceeding.
+</step>
+
 <step name="generate_ai_guide">
 ## Step 2: Generate AI-GUIDE.md
 

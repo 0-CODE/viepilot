@@ -1,0 +1,214 @@
+/* ViePilot Architect Design Mode — Shared Styles (FEAT-011) */
+
+/* ── CSS Variables ── */
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface-alt: #22263a;
+  --border: #2e3248;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --updated-bg: #fef3c720;
+  --updated-border: #f59e0b;
+  --badge-bg: #f59e0b;
+  --badge-text: #1a1d27;
+  --link: #818cf8;
+  --nav-width: 220px;
+  --radius: 8px;
+}
+
+html.light {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-alt: #f1f5f9;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --updated-bg: #fef9c3;
+  --updated-border: #d97706;
+  --badge-bg: #d97706;
+  --badge-text: #ffffff;
+  --link: #4f46e5;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ── */
+.nav-sidebar {
+  width: var(--nav-width);
+  min-height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 20px 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+}
+
+.nav-sidebar .logo {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.nav-sidebar .logo span { font-size: 12px; color: var(--text-muted); display: block; }
+.nav-sidebar .logo strong { font-size: 14px; color: var(--text); }
+
+.nav-sidebar ul { list-style: none; }
+.nav-sidebar li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-sidebar li a:hover,
+.nav-sidebar li a.active {
+  background: var(--surface-alt);
+  color: var(--text);
+  border-left-color: var(--accent);
+  text-decoration: none;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 960px;
+}
+
+.page-header {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.page-header h1 { font-size: 22px; font-weight: 600; }
+.page-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+/* ── Dark/Light Toggle ── */
+#theme-toggle {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 12px;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+}
+#theme-toggle:hover { border-color: var(--accent); color: var(--text); }
+
+/* ── Cards & Tables ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.card h2 { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th {
+  background: var(--surface-alt);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface-alt); }
+
+/* ── Updated Diff Indicator ── */
+.updated {
+  border-left: 3px solid var(--updated-border) !important;
+  background: var(--updated-bg) !important;
+  position: relative;
+}
+.updated::after {
+  content: "updated";
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Mermaid Container ── */
+.mermaid-wrap {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.mermaid { font-size: 13px; }
+
+/* ── Status Badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-decided  { background: #16a34a20; color: #4ade80; }
+.badge-open     { background: #f59e0b20; color: #fbbf24; }
+.badge-deferred { background: #6366f120; color: #a5b4fc; }
+.badge-mvp      { background: #0ea5e920; color: #38bdf8; }
+.badge-post-mvp { background: #8b5cf620; color: #c4b5fd; }
+.badge-future   { background: #64748b20; color: #94a3b8; }
+
+/* ── Columns layout ── */
+.cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cols-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 768px) {
+  .cols-3, .cols-2 { grid-template-columns: 1fr; }
+  .nav-sidebar { display: none; }
+}

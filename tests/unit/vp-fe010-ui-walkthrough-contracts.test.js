@@ -28,7 +28,7 @@ describe('FEAT-010 UI walkthrough contracts', () => {
     expect(md).toMatch(/ENH-019/);
     expect(md).toMatch(/ENH-020/);
     expect(md).toMatch(/\/research-ui/);
-    expect(md).toMatch(/version:\s*0\.8\.0/);
+    expect(md).toMatch(/version:\s*0\.9\.0/);
   });
 
   test('ui-direction user doc documents /research-ui', () => {

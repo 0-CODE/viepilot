@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Notes — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html" class="active">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>📝 Tech Notes</h1>
+        <p>Assumptions, risks, and open questions</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="cols-3">
+      <div class="card">
+        <h2>🔷 Assumptions</h2>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">{Assumption 1}</li>
+          <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">{Assumption 2}</li>
+          <li style="padding:6px 0;font-size:13px;">{Assumption 3}</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>⚠️ Risks</h2>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">{Risk 1} — <span style="color:var(--text-muted)">High/Med/Low</span></li>
+          <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">{Risk 2} — <span style="color:var(--text-muted)">High/Med/Low</span></li>
+          <li style="padding:6px 0;font-size:13px;">{Risk 3} — <span style="color:var(--text-muted)">High/Med/Low</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>❓ Open Questions</h2>
+        <ul style="list-style:none;padding:0;">
+          <li style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;">
+            <strong>Q001</strong>: {Question?}
+            <span class="badge badge-open" style="margin-left:4px;">open</span>
+          </li>
+          <li style="padding:6px 0;font-size:13px;">
+            <strong>Q002</strong>: {Question?}
+            <span class="badge badge-deferred" style="margin-left:4px;">deferred</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Additional Notes</h2>
+      <p style="color:var(--text-muted);font-size:13px;">{Additional context, constraints, or design notes that don't fit in other sections}</p>
+    </div>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+    }
+  </script>
+</body>
+</html>

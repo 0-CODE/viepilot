@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Flow — {project}</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav-sidebar">
+    <div class="logo">
+      <span>ViePilot Architect Mode</span>
+      <strong>{project}</strong>
+    </div>
+    <ul>
+      <li><a href="index.html">🏠 Hub</a></li>
+      <li><a href="architecture.html">🏗️ Architecture</a></li>
+      <li><a href="data-flow.html" class="active">🔄 Data Flow</a></li>
+      <li><a href="decisions.html">📋 Decisions (ADR)</a></li>
+      <li><a href="tech-stack.html">🛠️ Tech Stack</a></li>
+      <li><a href="tech-notes.html">📝 Tech Notes</a></li>
+      <li><a href="feature-map.html">🗺️ Feature Map</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>🔄 Data Flow</h1>
+        <p>Request/event flows and sequence diagrams</p>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+    </div>
+
+    <div class="card">
+      <h2>Primary Request Flow</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+sequenceDiagram
+    participant C as Client
+    participant A as API Gateway
+    participant S as {Service}
+    participant D as Database
+
+    C->>A: Request {action}
+    A->>A: Auth / Rate limit
+    A->>S: Forward request
+    S->>D: Query/write
+    D-->>S: Result
+    S-->>A: Response
+    A-->>C: Final response
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Event Flow (Async)</h2>
+      <div class="mermaid-wrap">
+        <div class="mermaid">
+flowchart LR
+    Producer["{Producer}"] -->|event| Queue["{Queue/Topic}"]
+    Queue --> Consumer1["{Consumer 1}"]
+    Queue --> Consumer2["{Consumer 2}"]
+    Consumer1 --> Store["{Data Store}"]
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Flow Notes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Flow</th>
+            <th>Trigger</th>
+            <th>Steps</th>
+            <th>SLA / Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{Flow name}</td>
+            <td>{Trigger}</td>
+            <td>{Steps}</td>
+            <td>{SLA}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isLight = html.classList.toggle('light');
+      document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
+      mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
+    }
+  </script>
+</body>
+</html>
