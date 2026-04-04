@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Nothing planned yet._
+### Planned
+
+- **ENH-027** (Phase 44 → 1.12.0): Architect Design Mode ERD page — `erd.html` với Mermaid `erDiagram`, entity/relationship tables; hub nav update; crystallize Step 1D ERD extraction → ARCHITECTURE.md; vp-brainstorm v1.0.0.
 
 ## [1.11.0] - 2026-04-04
 
