@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- **ENH-027** (Phase 44 → 1.12.0): Architect Design Mode ERD page — `erd.html` với Mermaid `erDiagram`, entity/relationship tables; hub nav update; crystallize Step 1D ERD extraction → ARCHITECTURE.md; vp-brainstorm v1.0.0.
+- **ENH-027 + ENH-028** (Phase 44 → 1.12.0): Architect Design Mode — 2 new pages:
+  - `erd.html`: Mermaid `erDiagram`, entity/relationship tables, crystallize → ARCHITECTURE.md
+  - `user-use-cases.html`: Mermaid `flowchart TD` actors/use-cases, User Stories table, crystallize → PROJECT-CONTEXT.md
+  - All hub nav + sidebar nav updated; vp-brainstorm v1.0.0.
 
 ## [1.11.0] - 2026-04-04
 
