@@ -7,7 +7,7 @@
 - **Version target**: `3.0.0-alpha`
 - **Goal**: Convert ViePilot from prose-driven runtime behavior into a compiler-driven, state-machine-first execution architecture while preserving the command journey
 - **Phases**: 4
-- **Status**: Not Started
+- **Status**: In Progress
 
 ### Phase 21: Planning Source and Compiler Boundary
 
@@ -81,7 +81,7 @@
 
 | Phase | Status | Tasks | Completed | Progress |
 |-------|--------|-------|-----------|----------|
-| 21. Planning Source and Compiler Boundary | not_started | 3 | 0 | 0% |
+| 21. Planning Source and Compiler Boundary | in_progress | 3 | 1 | 33% |
 | 22. Compiler Pipeline and Projection Rendering | not_started | 3 | 0 | 0% |
 | 23. Runtime Executor and Host Adapter Refactor | not_started | 3 | 0 | 0% |
 | 24. Migration and Adaptive Front Door | not_started | 3 | 0 | 0% |

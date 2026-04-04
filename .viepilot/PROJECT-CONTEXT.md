@@ -15,10 +15,10 @@ ViePilot is a local-first workflow framework for AI-assisted software delivery. 
 | Runtime executor | Narrow execution loop that reads structured runtime artifacts only |
 | Runtime truth | Canonical machine-readable state replacing prose inference during execution |
 | Projection artifact | Human-facing markdown view rendered from canonical structured state |
+| `planning-source.json` | Canonical upstream planning artifact compiled from brainstorm and planning inputs before runtime artifacts are emitted |
 | `runtime-state.json` | Main execution state machine artifact for v3 |
 | `execution-graph.json` | Planned task/phase dependency graph for executor decisions |
 | `active-packet.json` | Current work packet delivered to the runtime executor |
-| Planning source | Upstream structured source replacing ad hoc roadmap prose as execution input |
 
 ## Business Rules
 
@@ -33,7 +33,7 @@ ViePilot is a local-first workflow framework for AI-assisted software delivery. 
 ```text
 brainstorm sessions
   -> extraction / normalization
-  -> planning source
+  -> planning-source.json
   -> compiler outputs
       -> runtime-state.json
       -> execution-graph.json
@@ -82,6 +82,7 @@ brainstorm sessions
 ### Project Specific
 
 - Structured runtime artifacts: `kebab-case.json`
+- Canonical planning artifact: `planning-source.json`
 - Human-facing projections: existing `.md` files remain stable names where possible
 - Compiler phases: zero-padded directory prefixes (`21-`, `22-`, ...)
 - Stack cache ids: lowercase kebab-case (`nodejs-commonjs`, `clack-prompts`)

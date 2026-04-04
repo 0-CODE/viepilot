@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://viepilot.local/schemas/planning-source.schema.json",
+  "title": "ViePilot Planning Source",
+  "description": "Canonical planning artifact compiled from discovery and planning inputs before runtime artifacts are emitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact",
+    "milestone",
+    "source_session",
+    "planning_inputs",
+    "phase_inventory",
+    "compiler_directives",
+    "projection_requirements"
+  ],
+  "properties": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "path",
+        "generated_at"
+      ],
+      "properties": {
+        "kind": {
+          "const": "planning-source"
+        },
+        "version": {
+          "type": "string",
+          "description": "Schema version for the planning-source artifact."
+        },
+        "path": {
+          "type": "string",
+          "const": ".viepilot/planning-source.json",
+          "description": "Canonical artifact path owned by the compiler/planning boundary."
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "milestone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "baseline_version",
+        "target_version",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "baseline_version": {
+          "type": "string"
+        },
+        "target_version": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "planned",
+            "active",
+            "paused",
+            "complete"
+          ]
+        }
+      }
+    },
+    "source_session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "brainstorm_session_id",
+        "decision_sources"
+      ],
+      "properties": {
+        "brainstorm_session_id": {
+          "type": "string"
+        },
+        "decision_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "planning_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "thesis",
+        "constraints",
+        "open_questions"
+      ],
+      "properties": {
+        "thesis": {
+          "type": "string",
+          "description": "Normalized planning statement approved from discovery."
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "phase_inventory": {
+      "type": "array",
+      "description": "Canonical inventory of phases and task planning inputs before compile emits runtime artifacts.",
+      "items": {
+        "$ref": "#/$defs/phase"
+      }
+    },
+    "compiler_directives": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_artifacts",
+        "compile_policy",
+        "ownership_rules"
+      ],
+      "properties": {
+        "runtime_artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "runtime-state.json",
+              "execution-graph.json",
+              "active-packet.json",
+              "compat-map.json"
+            ]
+          }
+        },
+        "compile_policy": {
+          "type": "string",
+          "enum": [
+            "stage-b-compile-project"
+          ]
+        },
+        "ownership_rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "projection_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projection_targets",
+        "projection_policy"
+      ],
+      "properties": {
+        "projection_targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projection_policy": {
+          "type": "string",
+          "enum": [
+            "derived-only"
+          ]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase_id",
+        "name",
+        "goal",
+        "dependencies",
+        "tasks"
+      ],
+      "properties": {
+        "phase_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "goal": {
+          "type": "string"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task"
+          }
+        }
+      }
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "title",
+        "objective",
+        "acceptance_criteria",
+        "write_scope",
+        "verification"
+      ],
+      "properties": {
+        "task_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "write_scope": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

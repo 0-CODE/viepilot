@@ -6,7 +6,7 @@
 
 | Phase | Name | Summary status |
 |-------|------|----------------|
-| 21 | Planning Source and Compiler Boundary | Next |
+| 21 | Planning Source and Compiler Boundary | In progress |
 | 22 | Compiler Pipeline and Projection Rendering | Planned |
 | 23 | Runtime Executor and Host Adapter Refactor | Planned |
 | 24 | Migration and Adaptive Front Door | Planned |

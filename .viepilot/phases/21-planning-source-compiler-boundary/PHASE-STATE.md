@@ -2,16 +2,16 @@
 
 ## Overview
 - **Started**: 2026-04-04
-- **Status**: not_started
-- **Progress**: 0/3 tasks (0%)
-- **Current Task**: 21.1
+- **Status**: executing
+- **Progress**: 1/3 tasks (33%)
+- **Current Task**: 21.2
 
 ## Execution State
 
 ```yaml
 execution_state:
-  current: "task_21_1"
-  status: not_started
+  current: "task_21_2"
+  status: executing
   available_transitions:
     on_start: "-> executing"
     on_pass: "-> update_state -> next_task"
@@ -29,6 +29,6 @@ execution_state:
 
 | # | Task | Status | Started | Completed | Git Tag |
 |---|------|--------|---------|-----------|---------|
-| 21.1 | Define planning source schema inventory and field ownership | not_started | — | — | — |
+| 21.1 | Define planning source schema inventory and field ownership | done | 2026-04-04 | 2026-04-04 | viepilot-vp-p21-t21.1-done |
 | 21.2 | Define runtime artifact contracts | not_started | — | — | — |
 | 21.3 | Map v2 artifacts to v3 ownership and projections | not_started | — | — | — |

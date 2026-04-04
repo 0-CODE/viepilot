@@ -2,7 +2,7 @@
   "version": 1,
   "position": {
     "phase": "21",
-    "task": "21.1",
+    "task": "21.2",
     "status": "not_started",
     "sub_task": null
   },
@@ -19,7 +19,7 @@
       "jest",
       "clack-prompts"
     ],
-    "last_decision": "Crystallize approved the v3 compiler-runtime refactor milestone and seeded phases 21-24 from the 2026-04-04 brainstorm thesis."
+    "last_decision": "Task 21.1 defined planning-source.json as the canonical planning artifact and advanced Phase 21 to runtime contract work."
   },
   "control_point": {
     "active": false,
@@ -27,7 +27,7 @@
     "ts": null
   },
   "meta": {
-    "last_written": "2026-04-04T00:00:00Z",
+    "last_written": "2026-04-04T03:54:38.196Z",
     "last_archived": null
   }
 }

@@ -3,12 +3,13 @@
 
 CREATE TABLE planning_source (
   id TEXT PRIMARY KEY,
-  version TEXT NOT NULL,
-  milestone TEXT NOT NULL,
+  artifact_version TEXT NOT NULL,
+  artifact_path TEXT NOT NULL,
+  milestone_key TEXT NOT NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
-  source_session_id TEXT NOT NULL,
-  normalized_payload_json TEXT NOT NULL
+  brainstorm_session_id TEXT NOT NULL,
+  planning_json TEXT NOT NULL
 );
 
 CREATE TABLE runtime_state (

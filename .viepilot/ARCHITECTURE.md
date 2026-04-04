@@ -5,6 +5,8 @@
 
 ViePilot v3 is planned as a compiler-driven, state-machine-first refactor of the current local-first framework. The user-facing command journey stays intact, but `/vp-auto` is narrowed into a runtime executor that consumes compiled artifacts instead of planning prose.
 
+The planning boundary now assumes a concrete canonical artifact, `.viepilot/planning-source.json`, which is compiled before runtime artifacts are emitted.
+
 **Diagram source:** `.viepilot/architecture/system-overview.mermaid`
 
 ```mermaid
@@ -62,7 +64,7 @@ No ViePilot global profile bound - organization context comes from Step 0 only.
 
 - **Purpose**: Transform planning inputs into canonical structured runtime artifacts
 - **Inputs**: brainstorm outputs, metadata, stack guidance, roadmap intent
-- **Outputs**: planning source, `runtime-state.json`, `execution-graph.json`, `active-packet.json`, projections
+- **Outputs**: `planning-source.json`, `runtime-state.json`, `execution-graph.json`, `active-packet.json`, projections
 - **Dependencies**: `.viepilot/STACKS.md`, schemas, templates
 
 ### Runtime Executor
@@ -82,6 +84,8 @@ No ViePilot global profile bound - organization context comes from Step 0 only.
 ## Data Flow
 
 **Diagram source:** `.viepilot/architecture/data-flow.mermaid`
+
+`planning-source.json` is the canonical compiler input at this layer. The markdown roadmap and tracker remain human-facing projections once v3 compile is in place.
 
 ```mermaid
 flowchart TD
@@ -160,6 +164,7 @@ flowchart TD
 | Runtime model | State-machine-first executor | Removes prose inference from normal execution | Continue v2 prose-heavy runtime |
 | Compile boundary | Two-stage crystallize pipeline | Keeps extraction reviewable before generation | Single opaque pass |
 | Canonical state | Structured JSON artifacts | Better determinism and lower token cost | Markdown-only planning as source of truth |
+| Planning source artifact | `planning-source.json` under `.viepilot/` | Gives compiler a single canonical upstream input before runtime artifacts exist | Continue parsing roadmap/task prose directly |
 | Projection strategy | Generated markdown views | Preserves familiar UX without runtime drift | Manual markdown maintenance |
 | Host support | Semantic workflow + thin adapters | Claude/Cursor differences stay isolated | Host-specific workflow forks |
 | CLI runtime | Node.js CommonJS baseline for now | Matches current published package and bin files | Immediate ESM migration |

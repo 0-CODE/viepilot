@@ -26,7 +26,7 @@ paths:
           description: Routed intent
   /commands/crystallize:
     post:
-      summary: Run extraction and compile stages for a planning set
+      summary: Run extraction and compile stages for the canonical planning-source artifact
       requestBody:
         required: true
         content:
@@ -39,7 +39,7 @@ paths:
                   enum: [extract, generate]
       responses:
         "200":
-          description: Artifacts generated or extraction bundle returned
+          description: planning-source.json updated or runtime/projection artifacts generated
   /commands/auto:
     post:
       summary: Execute the current active packet
