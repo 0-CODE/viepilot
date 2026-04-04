@@ -1,7 +1,7 @@
 ---
 name: vp-brainstorm
 description: "Brainstorm session để thu thập ý tưởng, quyết định cho dự án"
-version: 0.6.3
+version: 0.8.0
 ---
 
 <cursor_skill_adapter>
@@ -42,6 +42,7 @@ Hỗ trợ:
 - **Product horizon (ENH-014):** mọi session phải duy trì **`## Product horizon`** khi thảo luận capability/milestone — tier tags `(MVP)` / `(Post-MVP)` / `(Future)`, non-goals, deferred capabilities; hoặc ghi rõ **single-release / no deferred epics** (contract: `workflows/brainstorm.md`)
 - **Project meta intake (FEAT-009):** sau khi **scope locked**, **trước** `Completed` / `/end`, nếu thiếu `.viepilot/META.md` (`viepilot_profile_id`) — chạy Q&A **tuần tự** có proposal; đọc/ghi `~/.viepilot/profile-map.md`; tạo `~/.viepilot/profiles/<slug>.md` + binding theo **`docs/dev/global-profiles.md`**. Nếu đã có profile bound — skip intake mặc định (hỏi đổi nếu cần).
 - **UX walkthrough (FEAT-010 + ENH-019 + ENH-020):** trong **`--ui`**, lệnh **`/research-ui`** hoặc **`/research ui`** chạy 3 phase — mô phỏng **end-user** (kèm **content stress pass** + **stress recipes theo archetype** → **Stress findings**) → **UX designer + web research** → chỉnh `index.html` / `pages/*.html` / `style.css` và ghi **`## UX walkthrough log`** trong `notes.md` (đồng bộ hub + **Pages inventory** khi multi-page).
+- **Background UI extraction (ENH-026):** tự động nhận diện UI signal keywords trong mọi phiên brainstorm (không cần `--ui` flag); silent accumulation buffer; surface để xác nhận khi topic kết thúc, `/save`, hoặc ≥5 signals — không interrupt hội thoại chính.
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`

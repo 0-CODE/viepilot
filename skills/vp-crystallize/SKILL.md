@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.5.2
+version: 0.6.0
 ---
 
 <cursor_skill_adapter>
@@ -65,6 +65,9 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 - `.viepilot/STACKS.md` (project-local index to global cache)
 
 **After:** Ready for `/vp-auto`
+
+**UI direction hard gate (ENH-026):**
+- Step 1A scans brainstorm for UI signal keywords; if ≥3 signals detected + no artifacts → **STOP** with 2-option dialogue (go back to brainstorm --ui OR proceed with assumptions written to ARCHITECTURE.md). Enforces direction-first workflow before crystallize proceeds.
 </objective>
 
 <execution_context>

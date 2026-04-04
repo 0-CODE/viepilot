@@ -9,7 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
-- None.
+- **FEAT-011** (Phase 43 → 1.11.0): Architect Design Mode — `/vp-brainstorm --architect` with live HTML generation (architecture, data-flow, decisions, tech-stack, tech-notes, feature-map); `vp-crystallize` Step 1C consumes architect artifacts into ARCHITECTURE.md.
+
+## [1.10.0] - 2026-04-04
+
+### Added
+
+- **ENH-026 — Background UI Extraction + Crystallize Hard Gate**:
+  - `workflows/brainstorm.md`: new `### Background UI Extraction (silent mode)` section — auto-detects 35 UI signal keywords in any brainstorm session; silent `ui_idea_buffer[]` accumulation; surfaces 3-option confirmation dialogue (save to notes, activate UI Direction Mode, or keep buffer) at topic end / `/save` / ≥5 signals. Non-blocking.
+  - `workflows/crystallize.md`: Step 1A upgraded to **hard gate** — scans brainstorm sessions for ≥3 UI signals; if `ui_scope_detected = true` and artifacts missing → STOP with 2-option dialogue; Option 2 bypass writes `## UI Direction Assumptions` to `.viepilot/ARCHITECTURE.md`.
+  - `skills/vp-brainstorm/SKILL.md`: bumped to `0.8.0`, ENH-026 background extraction listed in capabilities.
+  - `skills/vp-crystallize/SKILL.md`: bumped to `0.6.0`, ENH-026 hard gate listed in capabilities.
+  - `docs/user/features/ui-direction.md`: new `## Background Extraction` and updated `## Crystallize Integration` sections with hard gate docs, dialogue examples, and diff table vs `--ui` mode.
+  - `tests/unit/vp-enh026-ui-extraction-contracts.test.js`: 6 contract tests (325 total, all pass).
 
 ## [1.9.11] - 2026-04-02
 
