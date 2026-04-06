@@ -25,50 +25,50 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Báo cáo / gap** — **không** fix shipping mặc định; route **`/vp-request`** → **`/vp-evolve`** → **`/vp-auto`** hoặc user explicit. Xem `workflows/request.md`.
+- **Report / gap** — do **not** fix shipping by default; route **`/vp-request`** → **`/vp-evolve`** → **`/vp-auto`** or user explicit. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Audit ViePilot project state và documentation để phát hiện drift.
-Hoạt động trên **bất kỳ project nào** đang dùng ViePilot (Java, Node, Python, v.v.).
-Auto-detect nếu đang chạy trong viepilot framework repo để thêm framework-specific checks.
+Audit ViePilot project state and documentation to detect drift.
+Works on **any project** using ViePilot (Java, Node, Python, etc.).
+Auto-detects if running inside the viepilot framework repo to enable framework-specific checks.
 
-**Tier 1 — ViePilot State Consistency (mọi project):**
+**Tier 1 — ViePilot State Consistency (all projects):**
 - `.viepilot/TRACKER.md` current state vs `.viepilot/phases/*/PHASE-STATE.md`
 - `.viepilot/ROADMAP.md` phase status vs PHASE-STATE.md
 - `.viepilot/HANDOFF.json` vs TRACKER.md (resume-state consistency)
 - Git tags `vp-p{N}-complete` vs completed phases in PHASE-STATE.md
 
-**Tier 2 — Project Documentation Drift (mọi project):**
+**Tier 2 — Project Documentation Drift (all projects):**
 - `README.md` version vs `package.json` / `pom.xml` / `pyproject.toml`
 - `CHANGELOG.md` vs recent git commits
-- Placeholder URLs trong `docs/` (`your-org`, `YOUR_USERNAME`, v.v.)
-- Features mới (từ phases gần đây) chưa có documentation
+- Placeholder URLs in `docs/` (`your-org`, `YOUR_USERNAME`, etc.)
+- New features (from recent phases) without documentation
 - `ARCHITECTURE.md` diagram applicability matrix consistency:
   - `required` diagrams must have Mermaid content
   - `optional` diagrams may be omitted/merged with explicit note
   - `N/A` diagrams must have rationale line
 - **ENH-022 (recommended check):** when a diagram type is `required` (or `optional` with a real Mermaid block) and crystallize policy applies, verify **`.viepilot/architecture/<type>.mermaid`** exists and that **Diagram source** lines in `ARCHITECTURE.md` match; for `N/A`, sidecar file should be absent (no empty stubs)
 
-**Tier 3 — Stack Best Practices + Code Quality (mọi project, theo stack detect được):**
-- Detect stacks liên quan từ context/project manifests
-- So khớp code patterns với stack-specific Do/Don't + anti-patterns
-- Severity findings: `critical` / `high` / `medium` / `low` kèm file/module mapping
-- Fallback research bằng `WebSearch` + `WebFetch` khi cache stack thiếu/yếu
-- Sinh output guardrails/checklist để `vp-auto` tái sử dụng trong preflight
+**Tier 3 — Stack Best Practices + Code Quality (all projects, for each detected stack):**
+- Detect relevant stacks from context/project manifests
+- Match code patterns against stack-specific Do/Don't + anti-patterns
+- Severity findings: `critical` / `high` / `medium` / `low` with file/module mapping
+- Fallback research using `WebSearch` + `WebFetch` when stack cache is missing/weak
+- Generate guardrails/checklist output for `vp-auto` reuse during preflight
 
-**Tier 4 — Framework Integrity (chỉ khi detect viepilot framework repo):**
-- Auto-detect: `skills/vp-*/SKILL.md` tồn tại → là viepilot framework repo
-- `ARCHITECTURE.md` counts vs `skills/`, `workflows/`, CLI thực tế
+**Tier 4 — Framework Integrity (only when viepilot framework repo is detected):**
+- Auto-detect: `skills/vp-*/SKILL.md` present → this is the viepilot framework repo
+- `ARCHITECTURE.md` counts vs actual `skills/`, `workflows/`, CLI
 - `README.md` viepilot-specific badges (version, skills-N, workflows-N)
 - `docs/skills-reference.md` sections vs `skills/` directory
 
 **Output:**
-- Báo cáo theo 4 tiers, mỗi tier có status riêng
-- Auto-fix option theo tier
-- Suggestions cho complex gaps
-- `vp-auto` compatible guardrails contract theo từng stack
+- Report by 4 tiers, each tier with its own status
+- Auto-fix option per tier
+- Suggestions for complex gaps
+- `vp-auto`-compatible guardrails contract per stack
 </objective>
 
 <execution_context>

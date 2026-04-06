@@ -1,6 +1,6 @@
 ---
 name: vp-crystallize
-description: "Chuyển đổi brainstorm thành executable artifacts"
+description: "Convert brainstorm sessions into executable artifacts"
 version: 0.8.0
 ---
 
@@ -10,7 +10,7 @@ version: 0.8.0
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với numbered list options.
+Prompt user conversationally with numbered list options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,18 +25,18 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- Tạo **artifact** trong `.viepilot/` (và template copy) từ brainstorm — **không** thay **`/vp-auto`** để implement mã ứng dụng / framework shipping. Backlog feature code: **`/vp-evolve`** + **`/vp-auto`**. Xem `workflows/request.md`.
+- Creates **artifacts** in `.viepilot/` (and template copy) from brainstorm — does **not** replace **`/vp-auto`** for implementing application code / framework shipping. Backlog feature code: **`/vp-evolve`** + **`/vp-auto`**. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Chuyển đổi brainstorm sessions thành structured artifacts để AI có thể autonomous execution.
+Convert brainstorm sessions into structured artifacts for autonomous AI execution.
 
 **Creates:**
 ```
 .viepilot/
-├── AI-GUIDE.md          # Navigation cho AI
-├── PROJECT-META.md      # Metadata dự án
+├── AI-GUIDE.md          # AI navigation guide
+├── PROJECT-META.md      # Project metadata
 ├── ARCHITECTURE.md      # System design
 ├── architecture/        # ENH-022: *.mermaid sidecars (mirror fenced diagrams)
 ├── PROJECT-CONTEXT.md   # Domain knowledge + `<product_vision>` (phased scope)
@@ -55,7 +55,7 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 - Updated `README.md`
 
 **ViePilot profile (FEAT-009):**
-- Đọc `.viepilot/META.md` → file `~/.viepilot/profiles/<slug>.md` (contract: `docs/dev/global-profiles.md`); pre-fill Step 0; merge vào **ARCHITECTURE** (`## ViePilot organization context`), **PROJECT-CONTEXT** (`## ViePilot active profile`), **AI-GUIDE** quick context.
+- Reads `.viepilot/META.md` → file `~/.viepilot/profiles/<slug>.md` (contract: `docs/dev/global-profiles.md`); pre-fills Step 0; merges into **ARCHITECTURE** (`## ViePilot organization context`), **PROJECT-CONTEXT** (`## ViePilot active profile`), **AI-GUIDE** quick context.
 
 **Stack intelligence (global cache):**
 - `~/.viepilot/stacks/{stack}/SUMMARY.md`
@@ -84,8 +84,8 @@ Execute workflow from `@$HOME/.cursor/viepilot/workflows/crystallize.md`
 Key steps:
 
 ### Step 0: Collect Project Metadata
-- **FEAT-009:** Load `.viepilot/META.md` + global profile file first (`workflows/crystallize.md`); set `profile_resolved` or `none`; pre-fill org/website khi có profile.
-Ask user for (confirm proposals từ profile nếu có):
+- **FEAT-009:** Load `.viepilot/META.md` + global profile file first (`workflows/crystallize.md`); set `profile_resolved` or `none`; pre-fill org/website when profile is present.
+Ask user for (confirm proposals from profile if present):
 - Project name, description
 - Organization name, website
 - Package Base ID (e.g., com.company.project)
@@ -99,7 +99,7 @@ Ask user for (confirm proposals từ profile nếu có):
 - Load all brainstorm sessions
 - Extract: decisions, architecture, schemas, features
 - Extract selected tech stacks
-- **Phase assignment (ENH-030):** parse `## Phases` từ brainstorm sessions; build `phases_inventory`; run phase assignment gate (mọi feature phải có phase — full contract: `workflows/crystallize.md` Step 1)
+- **Phase assignment (ENH-030):** parse `## Phases` from brainstorm sessions; build `phases_inventory`; run phase assignment gate (all features must have a phase — full contract: `workflows/crystallize.md` Step 1)
 - Validate completeness (tech stack, features, schema/API clarity, **phase assignment gate**)
 
 ### Step 1A: Consume UI direction (if present)
@@ -127,7 +127,7 @@ Ask user for (confirm proposals từ profile nếu có):
 - Quick lookup table
 - Context loading strategy
 - File relationships
-- **FEAT-009:** Quick context cho `profile_id` + path profile khi đã resolve
+- **FEAT-009:** Quick context for `profile_id` + profile path when resolved
 
 ### Step 3: Generate PROJECT-META.md
 - Project info
@@ -135,11 +135,11 @@ Ask user for (confirm proposals từ profile nếu có):
 - Package structure
 - Developer info
 - File headers template
-- **FEAT-009:** Align Organization với profile đã confirm (public only)
+- **FEAT-009:** Align Organization with confirmed profile content (public only)
 
 ### Step 4: Generate ARCHITECTURE.md
 - System overview
-- **FEAT-009:** Section `## ViePilot organization context` khi có profile (hoặc dòng none)
+- **FEAT-009:** Section `## ViePilot organization context` when profile is present (or none line)
 - Services definitions
 - Data flow
 - Technology decisions
@@ -153,7 +153,7 @@ Ask user for (confirm proposals từ profile nếu có):
 - **ENH-022:** For each diagram type with real Mermaid, write **`.viepilot/architecture/<type>.mermaid`** (raw source) and keep it **identical** to the body inside the fenced ` ```mermaid ` block in `ARCHITECTURE.md`; omit files for `N/A` or no diagram — see `workflows/crystallize.md` Step 4.
 
 ### Step 5: Generate PROJECT-CONTEXT.md
-- **FEAT-009:** Block `## ViePilot active profile (FEAT-009)` khi có binding
+- **FEAT-009:** Block `## ViePilot active profile (FEAT-009)` when binding is present
 - Domain knowledge
 - Business rules
 - Conventions
@@ -214,6 +214,6 @@ Ask user for (confirm proposals từ profile nếu có):
 - [ ] Project files created
 - [ ] Git committed
 - [ ] ARCHITECTURE diagram matrix is present and consistent (`required|optional|N/A`)
-- [ ] **ENH-022:** Mỗi diagram Mermaid được sinh có file `.viepilot/architecture/<canonical-name>.mermaid` đồng bộ nội dung với `ARCHITECTURE.md` (không tạo file thừa cho N/A)
-- [ ] **FEAT-009:** Nếu có profile bound — ARCHITECTURE + PROJECT-CONTEXT ghi nguồn profile; nếu không — ghi rõ none / not configured
+- [ ] **ENH-022:** Every generated Mermaid diagram has a `.viepilot/architecture/<canonical-name>.mermaid` file in sync with `ARCHITECTURE.md` (no extra files created for N/A)
+- [ ] **FEAT-009:** When profile is bound — ARCHITECTURE + PROJECT-CONTEXT record the profile source; if not — state none / not configured explicitly
 </success_criteria>
