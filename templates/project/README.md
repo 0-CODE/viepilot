@@ -19,6 +19,24 @@
 | Status | {{STATUS}} |
 | Started | {{INCEPTION_YEAR}} |
 
+### Phân bổ / Breakdown
+
+| Thành phần / Component | Số lượng / Count | Mô tả / Description |
+|------------------------|------------------|---------------------|
+{{BREAKDOWN_TABLE}}
+
+---
+
+## Độ hoàn thiện / Completion Status
+
+```
+Tổng thể / Overall:  {{COMPLETION_BAR}}  {{COMPLETION_PERCENT}}%
+```
+
+| Lĩnh vực / Area | Trạng thái | Chi tiết |
+|-----------------|------------|----------|
+{{COMPLETION_TABLE}}
+
 ---
 
 ## Tính năng / Features
@@ -32,6 +50,14 @@
 | Layer | Technology |
 |-------|------------|
 {{TECH_STACK_TABLE}}
+
+---
+
+## Standards / Tiêu chuẩn
+
+| Standard | Specification | Usage |
+|----------|---------------|-------|
+{{STANDARDS_TABLE}}
 
 ---
 
@@ -67,6 +93,12 @@ make test     # Run tests
 make build    # Build for production
 make help     # Show all commands
 ```
+
+---
+
+## Sử dụng / Usage
+
+{{USAGE_SECTION}}
 
 ---
 
@@ -158,6 +190,14 @@ Xem chi tiết tại / See details at: [.viepilot/ROADMAP.md](.viepilot/ROADMAP.
 Chúng tôi hoan nghênh mọi đóng góp! / We welcome contributions!
 
 Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết chi tiết.
+
+---
+
+## Bảo mật / Security
+
+Để báo cáo lỗ hổng bảo mật, vui lòng xem [SECURITY.md](SECURITY.md).
+
+To report security vulnerabilities, please see [SECURITY.md](SECURITY.md).
 
 ---
 
