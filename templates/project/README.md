@@ -14,15 +14,18 @@
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
+| Total LOC | **{{TOTAL_LOC}}** (nguồn chính; không gồm `node_modules`, `vendor`) |
 | Version | {{VERSION}} |
 | Phases | {{PHASE_COUNT}} |
 | Status | {{STATUS}} |
 | Started | {{INCEPTION_YEAR}} |
 
+> Metric `Total LOC` có thể được refresh tự động bằng `npm run readme:sync` (dùng `cloc`; nếu thiếu `cloc` script sẽ fallback an toàn).
+
 ### Phân bổ / Breakdown
 
-| Thành phần / Component | Số lượng / Count | Mô tả / Description |
-|------------------------|------------------|---------------------|
+| Thành phần / Component | LOC | Số lượng / Count | Mô tả / Description |
+|------------------------|-----|------------------|---------------------|
 {{BREAKDOWN_TABLE}}
 
 ---
