@@ -1,6 +1,6 @@
 <purpose>
-Autonomous execution của project phases. Cho mỗi phase: analyze → execute tasks → verify → iterate.
-Pauses at control points cho user decisions.
+Autonomous execution of project phases. For each phase: analyze → execute tasks → verify → iterate.
+Pauses at control points for user decisions.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -11,7 +11,7 @@ Pauses at control points cho user decisions.
 
 ## Implementation entry (cross-skill)
 
-- **`/vp-auto`** + workflow này là **lane mặc định** để **implement** work đã có **phase/task plan** (và doc-first **BUG-001**). **`/vp-request`** và **`/vp-evolve`** **không** thay thế bước này trừ user explicit override — xem **Implementation routing guard** trong `workflows/request.md` và `workflows/evolve.md`.
+- **`/vp-auto`** + this workflow is the **default lane** for **implementing** work that already has a **phase/task plan** (and doc-first **BUG-001**). **`/vp-request`** and **`/vp-evolve`** do **not** replace this step unless the user explicitly overrides — see **Implementation routing guard** in `workflows/request.md` and `workflows/evolve.md`.
 
 
 <process>
@@ -20,8 +20,8 @@ Pauses at control points cho user decisions.
 ## 1. Initialize
 
 Parse `{{VP_ARGS}}` for flags:
-- `--from N` : Start từ phase N
-- `--phase N` : Chỉ chạy phase N
+- `--from N` : Start from phase N
+- `--phase N` : Run only phase N
 - `--fast` : Skip optional verifications
 - `--dry-run` : Plan only
 

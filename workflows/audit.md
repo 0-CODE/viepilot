@@ -1,7 +1,7 @@
 <purpose>
-Audit ViePilot project state và documentation để phát hiện drift.
-Hoạt động trên bất kỳ project nào đang dùng ViePilot.
-Auto-detect nếu đang chạy trong viepilot framework repo để thêm framework-specific checks.
+Audit ViePilot project state and documentation to detect drift.
+Works on any project using ViePilot.
+Auto-detects if running inside the viepilot framework repo to enable framework-specific checks.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
