@@ -2,12 +2,12 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-1.9.5-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.16.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-16-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-12-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-308%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-448%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
 **Versioning:** Shield **1.9.5** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**1.9.5**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
@@ -28,7 +28,7 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~27,991+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Total LOC | **~34,308+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
 | Skills | **16** |
 | Workflows | **12** |
 | Templates | **17** (Project: 12, Phase: 5) |
