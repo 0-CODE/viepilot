@@ -101,6 +101,35 @@ read:
   - context_required files from task file
 ```
 
+#### ⛔ Preflight: Task Paths Validation (BUG-009)
+
+**Before any implementation**, read the `## Paths` block of the task file and validate each listed path:
+
+```
+FOR EACH path in ## Paths:
+  IF path starts with "~/" OR starts with "/" (absolute):
+    → STOP. Do NOT execute this task.
+    → Output:
+
+    ⛔ TASK PATH ERROR (BUG-009)
+    Task {phase}.{task} contains an absolute or external path:
+      "{offending_path}"
+
+    Expected: a repo-relative path (e.g., workflows/foo.md, skills/vp-bar/SKILL.md)
+
+    Fix the task file before continuing:
+      .viepilot/phases/{phase-dir}/tasks/{phase}.{task}.md
+
+    Replace:   {offending_path}
+    With the repo-relative equivalent (e.g., without ~/.claude/viepilot/ prefix).
+
+  ELSE:
+    → Pass. Continue with task execution.
+```
+
+This check fires on `~/`, `~\`, and any path starting with `/`.
+It does NOT fire on paths inside code block content within the task (only the `## Paths` header block is validated).
+
 ### ViePilot Skill Scope Policy (BUG-004 baseline)
 - **Default mode**: only reference/route skills in the ViePilot namespace (`vp-*`).
 - **External skills** (`non vp-*`) are out of scope by default and must not be suggested implicitly.

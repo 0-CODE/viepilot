@@ -59,6 +59,19 @@ Optional flags:
 - `--feature` : Add feature mode
 - `--milestone` : New milestone mode
 - `--refactor` : Refactor mode
+
+**Task path convention (BUG-009):**
+When generating task files, ALL paths in `## Paths` blocks MUST be
+repo-relative (relative to the repository root where `package.json` lives).
+
+```
+CORRECT:   workflows/foo.md   skills/vp-bar/SKILL.md   lib/foo.cjs
+INCORRECT: ~/.claude/viepilot/workflows/foo.md   /absolute/path
+```
+
+Absolute paths inside code block content (bash examples, runtime descriptions)
+are fine — only the `## Paths` header block must use repo-relative paths.
+See guard in `workflows/evolve.md` → "TASK PATH RULE (BUG-009)".
 </context>
 
 <process>

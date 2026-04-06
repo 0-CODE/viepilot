@@ -103,6 +103,38 @@ Create new phase in ROADMAP.md:
 - [ ] {criteria}
 ```
 
+### ⚠️ TASK PATH RULE (BUG-009)
+
+When writing the `## Paths` block in **any task `.md` file**, ALWAYS use paths
+**relative to the repository root** (where `package.json` / `Makefile` lives).
+
+```
+CORRECT (repo-relative):
+  workflows/crystallize.md
+  skills/vp-audit/SKILL.md
+  templates/project/AI-GUIDE.md
+  lib/viepilot-config.cjs
+  bin/vp-tools.cjs
+  tests/unit/my-test.test.js
+
+INCORRECT (never use in ## Paths):
+  ~/.claude/viepilot/workflows/crystallize.md
+  ~/.claude/skills/vp-audit/SKILL.md
+  /Users/someone/.claude/...
+  /absolute/path/to/anything
+```
+
+**Exception:** paths *inside* code block content (bash examples, runtime descriptions)
+may reference absolute paths (e.g., `~/.claude/viepilot/config.json` inside a bash
+snippet). Only the `## Paths` header block must be repo-relative.
+
+If unsure of the repo-relative path, inspect:
+- `ls workflows/`   → workflow files
+- `ls skills/`      → skill files
+- `ls lib/`         → library files
+- `ls bin/`         → CLI files
+- `ls templates/`   → template files
+
 ### Create Phase Directory
 ```bash
 mkdir -p .viepilot/phases/{NN}-{feature-slug}/tasks/

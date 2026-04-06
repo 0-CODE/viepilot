@@ -1464,8 +1464,86 @@
 | 44. Architect ERD + User Use Cases (ENH-027 + ENH-028) | ✅ Complete | 9 | 9 | 100% |
 | 45. Architect System/Sequence/Deployment/APIs (ENH-029) | ✅ Complete | 11 | 11 | 100% |
 | 46. Remove MVP/Post-MVP concept — phases+tasks only (ENH-030) | ✅ Complete | 10 | 10 | 100% |
+| 47. Task path guard — repo-relative enforcement (BUG-009) | ✅ Complete | 4 | 4 | 100% |
+| 48. Language standardization — English-primary (ENH-031) | 🔲 Planned | 9 | 0 | 0% |
+| 49. Language configuration system (ENH-032) | 🔲 Planned | 8 | 0 | 0% |
 
-**Total (to date)**: 71 tasks done (phases 33–46)
+**Total (to date)**: 75 tasks done (phases 33–47)
+
+---
+
+### Phase 47: Task Path Guard — Repo-Relative Enforcement (BUG-009)
+**Goal**: Add guards to `vp-evolve` (task generation) and `vp-auto` (task execution) to enforce repo-relative paths in task `## Paths` blocks. Prevents silent editing of live ViePilot install instead of source codebase.
+**Estimated Tasks**: 4
+**Dependencies**: None (prerequisite for phases 48 + 49)
+**Directory**: `.viepilot/phases/47-bug009-path-guard/`
+**Version target**: 1.15.0
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 47.1 | workflows/evolve.md — add TASK PATH RULE guard | Guard present before task generation step; CORRECT/INCORRECT examples listed | S |
+| 47.2 | workflows/autonomous.md — preflight path validation | Preflight aborts on ~/  or / prefix; error names path + task file | S |
+| 47.3 | skills/vp-evolve/SKILL.md + skills/vp-auto/SKILL.md — document path convention | BUG-009 note in <context> of both skills | S |
+| 47.4 | Jest contract tests: vp-bug009-path-guard.test.js | 4 test groups pass; existing phase files validated | M |
+
+**Verification**:
+- [ ] Guard present in `workflows/evolve.md` before task generation step
+- [ ] Preflight check present in `workflows/autonomous.md`
+- [ ] `vp-tools install` + create new phase → task files use repo-relative paths
+- [ ] All 4 test groups in `vp-bug009-path-guard.test.js` pass
+
+---
+
+### Phase 48: Language Standardization — English-Primary (ENH-031)
+**Goal**: Standardize all skills, workflows, and templates to English-primary. Vietnamese permitted only in `cursor_skill_adapter` invocation trigger keywords.
+**Estimated Tasks**: 9
+**Dependencies**: Phase 47 (BUG-009)
+**Directory**: `.viepilot/phases/48-enh031-language-standardization/`
+**Version target**: 1.16.0
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 48.1 | HIGH workflows: crystallize.md, autonomous.md, audit.md | No Vietnamese prose outside triggers | L |
+| 48.2 | HIGH skills objective blocks: vp-audit, vp-crystallize, vp-brainstorm | objective + guard blocks fully English | M |
+| 48.3 | Remaining workflows batch (9 files) | All prose English; triggers intact | M |
+| 48.4 | MEDIUM skills batch 1: vp-request, vp-auto, vp-docs | Metadata + objective + process English | M |
+| 48.5 | MEDIUM skills batch 2: vp-pause, vp-resume, vp-rollback | Metadata + objective + process English | M |
+| 48.6 | MEDIUM skills batch 3: vp-ui-components, vp-evolve, vp-update | Metadata + objective + process English | M |
+| 48.7 | Residual skills: vp-info, vp-task, vp-status, vp-debug | All Vietnamese prose removed | S |
+| 48.8 | Template: templates/project/AI-GUIDE.md | All headers/labels/prose English | S |
+| 48.9 | Jest contract tests for language standardization | 5 test groups pass, npm test green | M |
+
+**Verification**:
+- [ ] `grep` for Vietnamese diacritics in objective/process blocks returns 0 matches across all files
+- [ ] `cursor_skill_adapter` invocation trigger keywords intact (untouched)
+- [ ] All 5 test groups in vp-enh031 test file pass
+
+---
+
+### Phase 49: Language Configuration System (ENH-032)
+**Goal**: Installer prompts for communication/document language; crystallize/brainstorm/autonomous read config at runtime. Defaults: en/en.
+**Estimated Tasks**: 8
+**Dependencies**: Phase 48 (ENH-031 must ship first)
+**Directory**: `.viepilot/phases/49-enh032-language-config/`
+**Version target**: 1.17.0
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 49.1 | New lib/viepilot-config.cjs — schema, read/write, defaults | 4 exported functions; defaults en/en | M |
+| 49.2 | lib/viepilot-install.cjs — language setup prompts | Prompts at install end; --yes skips | M |
+| 49.3 | bin/vp-tools.cjs — config get/set/reset CLI commands | All 3 commands work; help lists config | M |
+| 49.4 | workflows/crystallize.md — inject COMMUNICATION_LANG + DOCUMENT_LANG | load_language_config step present; file writes reference DOCUMENT_LANG | M |
+| 49.5 | workflows/brainstorm.md — auto-detect session language for file storage | detect_session_language step; files in BRAINSTORM_LANG | M |
+| 49.6 | workflows/autonomous.md — use COMMUNICATION_LANG for banners | load_language_config step; banners reference COMMUNICATION_LANG | S |
+| 49.7 | SKILL.md: vp-crystallize, vp-brainstorm, vp-auto — document language config | ENH-032 notes present in all 3 | S |
+| 49.8 | Jest contract tests for ENH-032 | 4 test groups pass; npm test green | M |
+
+**Verification**:
+- [ ] `vp-tools config set language.communication vi && vp-tools config get language.communication` prints `vi`
+- [ ] `~/.claude/viepilot/config.json` created after install with correct values
+- [ ] load_language_config step present in crystallize.md, autonomous.md
+- [ ] detect_session_language step present in brainstorm.md
+- [ ] All 4 test groups in vp-enh032 test file pass
 
 ---
 
@@ -1487,5 +1565,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-06 (Phase **46** ENH-030 shipped → v1.14.0)
+- Last Updated: 2026-04-06 (Phase **47** BUG-009 shipped → v1.15.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

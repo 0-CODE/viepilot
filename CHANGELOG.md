@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed (ENH-031 — Phase 48 — target 1.16.0)
+- **Language standardization (English-primary):** all skills, workflows, and templates converted to English; Vietnamese retained only in `cursor_skill_adapter` invocation trigger keywords
+
+### Added (ENH-032 — Phase 49 — target 1.17.0)
+- **Language configuration system:** installer prompts for `language.communication` and `language.document` (default: `en`/`en`)
+- `lib/viepilot-config.cjs` — global config read/write module
+- `vp-tools config get/set/reset` — CLI commands for language reconfiguration
+- `workflows/crystallize.md`: reads config at session start; AI responses in `COMMUNICATION_LANG`, generated docs in `DOCUMENT_LANG`
+- `workflows/brainstorm.md`: auto-detects session conversation language for brainstorm file storage
+- `workflows/autonomous.md`: banners and prompts rendered in `COMMUNICATION_LANG`
+
+## [1.15.0] - 2026-04-06
+
+### Fixed (BUG-009 — Phase 47)
+- **Task path guard:** `workflows/evolve.md` now enforces repo-relative paths in task `## Paths` blocks (prevents generating `~/.claude/...` paths that would edit the live install instead of source)
+- **Preflight validation:** `workflows/autonomous.md` aborts task execution if `## Paths` contains `~/` or absolute path — error message names offending path and task file
+- `skills/vp-evolve/SKILL.md` + `skills/vp-auto/SKILL.md`: path convention documented in `<context>`
+
+### Tests
+- Added `tests/unit/vp-bug009-path-guard.test.js` (13 tests) — all pass (385 total)
+
 ## [1.14.0] - 2026-04-06
 
 ### Changed (ENH-030 — Phase 46)

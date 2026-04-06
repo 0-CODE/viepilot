@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **46** — ✅ Complete (**ENH-030** → **1.14.0**)
-- **Last Completed Phase**: **46** — ✅ Complete (**ENH-030** → **1.14.0**)
+- **Current Phase**: **48** — 🔲 Planned (**ENH-031** → **1.16.0**)
+- **Last Completed Phase**: **47** — ✅ Complete (**BUG-009** → **1.15.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-06 — Phase 46 shipped (ENH-030 — remove MVP/Post-MVP concept → 1.14.0)
+- **Last Activity**: 2026-04-06 — Phase 47 shipped (BUG-009 — path guard in evolve + autonomous → 1.15.0)
 
 ## Progress Overview
 ```
@@ -63,18 +63,27 @@ Suggested next version: per release checklist
 | 2026-04-04 | Phase 44 shipped: ENH-027 + ENH-028 (erd.html + user-use-cases.html + 9 nav updates + crystallize + tests) — **1.12.0** | `/vp-auto` | M1.29 |
 | 2026-04-04 | Phase 45 shipped: ENH-029 (sequence-diagram.html + deployment.html + apis.html + 12-page nav + style.css badges + brainstorm/crystallize/SKILL.md + tests) — **1.13.0** | `/vp-auto` | M1.29 |
 | 2026-04-06 | Phase 46 shipped: ENH-030 (remove MVP/Post-MVP concept — brainstorm/crystallize/templates/skills updated — phases+tasks only) — **1.14.0** | `/vp-auto` | M1.29 |
+| 2026-04-06 | ENH-031 logged: Standardize framework language to English-primary (Option B) | `/vp-request` | Backlog |
+| 2026-04-06 | ENH-032 logged: Language configuration system — installer setup + crystallize/brainstorm runtime awareness | `/vp-request` | Backlog |
+| 2026-04-06 | BUG-009 logged: vp-evolve generates task Paths with installed paths instead of repo-relative — HIGH severity | `/vp-request` | Backlog |
+| 2026-04-06 | Phase 47 planned: BUG-009 (4 tasks) — path guard in evolve + autonomous, target **1.15.0** | `/vp-evolve` | M1.29 |
+| 2026-04-06 | ENH-031 → Phase 48 (renumbered from 47), ENH-032 → Phase 49 (renumbered from 48) | `/vp-evolve` | M1.29 |
+| 2026-04-06 | Phase 47 shipped: BUG-009 (path guard in evolve.md + autonomous.md + SKILL.md docs + 13 tests) — **1.15.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-docs`** — Phase 46 complete; consider running `/vp-docs` to update documentation or `/vp-request` for next enhancement
+**`/vp-auto`** — Phase 48 ready; run `/vp-auto` to execute ENH-031 (language standardization → 1.16.0), then Phase 49 (ENH-032 → 1.17.0)
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
+| ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | new |
+| ENH-031 | 🔧 | Standardize framework language to English-primary (Option B from audit) | high | new |
 | ENH-030 | 🔧 | Remove MVP/Post-MVP concept — crystallize to complete project with phases+tasks only | high | ✅ done (**1.14.0**) |
 | ENH-029 | 🔧 | Architect: System C4 + Sequence + Deployment + APIs pages | high | ✅ done (**1.13.0**) |
 | ENH-028 | 🔧 | Architect Design Mode: User Use Cases page | high | new (→ Phase 44) |

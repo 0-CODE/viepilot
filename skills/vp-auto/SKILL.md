@@ -102,6 +102,15 @@ Optional flags:
 - `--dry-run` : Plan only, no execution
 
 No extra args: chỉ nghĩa các cờ trên **tắt** — **không** phải rule “dừng bắt buộc sau mỗi task”. Trong chat, một turn thường ~một task; tiếp tục bằng lượt sau hoặc `/vp-auto` lại. Doc: `docs/user/features/autonomous-mode.md`.
+
+**Task path validation (BUG-009):**
+Before executing each task, validates all paths in the `## Paths` block.
+If any path starts with `~/` or `/` (absolute):
+- Execution stops for that task with a ⛔ error message
+- User must fix the task file to use repo-relative paths before continuing
+- This prevents accidentally editing `~/.claude/` (live install) instead of source
+
+See preflight check in `workflows/autonomous.md` → “Preflight: Task Paths Validation (BUG-009)”.
 </context>
 
 <process>
