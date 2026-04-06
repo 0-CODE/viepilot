@@ -1,6 +1,6 @@
 ---
 name: vp-evolve
-description: "Nâng cấp, thêm features, hoặc bắt đầu milestone mới"
+description: "Upgrade, add features, or start a new milestone"
 version: 0.3.0
 ---
 
@@ -10,7 +10,7 @@ version: 0.3.0
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với options.
+Prompt user conversationally with options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,28 +25,28 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- Skill này chỉ **planning**: ROADMAP, phase dir, SPEC/tasks, TRACKER, ghi chú version/CHANGELOG khi workflow quy định — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, sửa lớn `workflows/`/`skills/` ngoài plan artifact).
-- **Bước tiếp:** **`/vp-auto`**. Xem `workflows/evolve.md`.
-- **Ngoại lệ:** User **explicit** bypass — nêu rõ trong chat.
+- This skill is **planning only**: ROADMAP, phase dir, SPEC/tasks, TRACKER, version/CHANGELOG notes when the workflow specifies — does **not** implement default shipping code (`lib/`, `tests/`, `bin/`, large edits to `workflows/`/`skills/` beyond plan artifacts).
+- **Next step:** **`/vp-auto`**. See `workflows/evolve.md`.
+- **Exception:** User **explicit** bypass — state clearly in chat.
 </implementation_routing_guard>
 
 
 <objective>
-Nâng cấp hoặc mở rộng dự án sau khi hoàn thành milestone hoặc cần thêm features.
+Upgrade or expand the project after completing a milestone or when new features are needed.
 
 **Modes:**
-1. **Add Feature** - Thêm feature vào milestone hiện tại
-2. **New Milestone** - Bắt đầu milestone mới
-3. **Refactor** - Cải thiện code hiện có
+1. **Add Feature** - Add a feature to the current milestone
+2. **New Milestone** - Start a new milestone
+3. **Refactor** - Improve existing code
 
 **Routing intelligence:**
-- Với yêu cầu thiên về khám phá ý tưởng (đặc biệt landing page), ưu tiên route qua `/vp-brainstorm` nâng cao trước khi crystallize phase.
-- Hỗ trợ route brainstorm có in-session research để user quyết định ngay trong một phiên.
+- For requests leaning toward idea exploration (especially landing pages), prioritize routing through enhanced `/vp-brainstorm` before the crystallize phase.
+- Supports brainstorm routing with in-session research so the user can decide within a single session.
 
 **Updates:**
 - `.viepilot/ROADMAP.md`
 - `.viepilot/TRACKER.md`
-- `.viepilot/ARCHITECTURE.md` (nếu có changes)
+- `.viepilot/ARCHITECTURE.md` (if there are changes)
 - `CHANGELOG.md`
 </objective>
 

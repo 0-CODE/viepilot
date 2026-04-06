@@ -1,6 +1,6 @@
 ---
 name: vp-docs
-description: "Generate comprehensive documentation cho dự án"
+description: "Generate comprehensive documentation for the project"
 version: 0.2.1
 ---
 
@@ -10,7 +10,7 @@ version: 0.2.1
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với options.
+Prompt user conversationally with options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,12 +25,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- Skill này sửa **`docs/`**, index, README liên quan doc — **không** implement **`lib/`**, **`tests/`**, logic product mặc định; việc đó là **`/vp-auto`**. Override explicit. Xem `workflows/request.md`.
+- This skill edits **`docs/`**, index, README related to docs — does **not** implement **`lib/`**, **`tests/`**, default product logic; that is **`/vp-auto`**. Explicit override required. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Generate comprehensive documentation từ code và artifacts.
+Generate comprehensive documentation from code and artifacts.
 
 **Creates/Updates:**
 ```
@@ -60,7 +60,7 @@ CHANGELOG.md (updated)
 - GitHub owner/repo from `git remote get-url origin`
 - Skills count from `ls skills/*/SKILL.md | wc -l`
 - Workflows count from `ls workflows/*.md | wc -l`
-- **FEAT-009:** Optional ViePilot global profile từ `.viepilot/META.md` + `~/.viepilot/profiles/` cho attribution/tone (`workflows/documentation.md` §0A)
+- **FEAT-009:** Optional ViePilot global profile from `.viepilot/META.md` + `~/.viepilot/profiles/` for attribution/tone (`workflows/documentation.md` §0A)
 </objective>
 
 <execution_context>
@@ -98,7 +98,7 @@ ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
 
 ### Step 0A: ViePilot active profile (FEAT-009)
 
-Sau Step 0: resolve `.viepilot/META.md` → file profile global (cùng quy tắc `workflows/crystallize.md`). Giữ working notes (org, website, audience, branding) cho prose docs; **không** fail nếu thiếu. Chi tiết: `workflows/documentation.md` §0A.
+After Step 0: resolve `.viepilot/META.md` → global profile file (same rules as `workflows/crystallize.md`). Keep working notes (org, website, audience, branding) for prose docs; do **not** fail if missing. Details: `workflows/documentation.md` §0A.
 
 ### Step 1: Ask Documentation Scope
 ```
@@ -273,5 +273,5 @@ View at: docs/README.md
 - [ ] skills-reference.md has sections for all skills in skills/ directory
 - [ ] Root README.md Documentation table updated
 - [ ] Git committed
-- [ ] **FEAT-009:** Nếu có profile — dùng cho attribution khi phù hợp; nếu không — bỏ qua im lặng (không placeholder sai)
+- [ ] **FEAT-009:** If profile exists — use for attribution where appropriate; if not — silently skip (no incorrect placeholders)
 </success_criteria>

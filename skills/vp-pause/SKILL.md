@@ -1,6 +1,6 @@
 ---
 name: vp-pause
-description: "Pause work với context preservation để resume sau"
+description: "Pause work with context preservation to resume later"
 version: 0.1.1
 ---
 
@@ -10,7 +10,7 @@ version: 0.1.1
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally để gather state info.
+Prompt user conversationally to gather state info.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,19 +25,19 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Handoff state** — không implement shipping; resume với **`/vp-resume`** rồi **`/vp-auto`** theo plan. Xem `workflows/request.md`.
+- **Handoff state** — does not implement shipping; resume with **`/vp-resume`** then **`/vp-auto`** per plan. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Save complete work state để có thể resume từ bất kỳ context nào.
+Save complete work state so it can be resumed from any context.
 
 **Creates/Updates:**
 - `.viepilot/HANDOFF.json` - Machine-readable state
 - `.viepilot/phases/{current}/.continue-here.md` - Human-readable context
 - Git WIP commit
 
-**After:** Safe to close session. Resume với `/vp-resume`
+**After:** Safe to close session. Resume with `/vp-resume`
 </objective>
 
 <execution_context>

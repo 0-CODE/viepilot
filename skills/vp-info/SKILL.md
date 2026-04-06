@@ -1,6 +1,6 @@
 ---
 name: vp-info
-description: "Hiển thị phiên bản ViePilot, npm latest, danh sách skills/workflows qua vp-tools"
+description: "Display ViePilot version, npm latest, skills/workflows list via vp-tools"
 version: 0.1.1
 ---
 
@@ -22,21 +22,21 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Inventory / version info** — không implement shipping; implement qua **`/vp-auto`**. Xem `workflows/request.md`.
+- **Inventory / version info** — does not implement shipping; implement via **`/vp-auto`**. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Chạy **`vp-tools info`** để lấy metadata bundle ViePilot (không cần `.viepilot/` trong project đích).
+Run **`vp-tools info`** to retrieve the ViePilot bundle metadata (no `.viepilot/` needed in the target project).
 
-**Output hữu ích cho agent:**
+**Useful output for agents:**
 - `installedVersion`, `packageName`, `packageRoot`
-- `latestNpm` (ok + version hoặc lỗi mạng/registry)
-- `gitHead` (nếu clone có git)
+- `latestNpm` (ok + version or network/registry error)
+- `gitHead` (if clone has git)
 - `skills[]`: `id`, `version`, `relativePath`
 - `workflows[]`: `id`, `relativePath`, `note`
 
-Dùng **`vp-tools info --json`** khi cần parse hoặc so sánh phiên bản trong script.
+Use **`vp-tools info --json`** when parsing or comparing versions in scripts.
 </objective>
 
 <execution_context>
@@ -46,30 +46,30 @@ Dùng **`vp-tools info --json`** khi cần parse hoặc so sánh phiên bản tr
 <process>
 
 ### Step 1: Resolve CLI
-Ưu tiên theo thứ tự:
-1. `vp-tools info` — khi ViePilot đã có trên `PATH` (npm global hoặc shim).
-2. `node <viepilot-package>/bin/vp-tools.cjs info` — từ repo clone hoặc `node_modules/viepilot`.
+Priority order:
+1. `vp-tools info` — when ViePilot is already on `PATH` (npm global or shim).
+2. `node <viepilot-package>/bin/vp-tools.cjs info` — from repo clone or `node_modules/viepilot`.
 
-### Step 2: Chạy lệnh
+### Step 2: Run command
 ```bash
 vp-tools info
-# hoặc
+# or
 vp-tools info --json
 ```
 
-### Step 3: Diễn giải JSON (khi dùng `--json`)
-- **`packageRoot`**: gốc package `viepilot` CLI đang resolve được.
-- **`installedVersion`**: semver trong `package.json` của bundle đó.
-- **`latestNpm`**: `{ ok, version }` hoặc `{ ok: false, error }`.
-- **`skills`**: inventory skill trong `skills/*/SKILL.md` (version từ frontmatter).
-- **`workflows`**: file `workflows/*.md`.
+### Step 3: Interpret JSON (when using `--json`)
+- **`packageRoot`**: root of the `viepilot` package the CLI resolved.
+- **`installedVersion`**: semver in `package.json` of that bundle.
+- **`latestNpm`**: `{ ok, version }` or `{ ok: false, error }`.
+- **`skills`**: skill inventory in `skills/*/SKILL.md` (version from frontmatter).
+- **`workflows`**: files in `workflows/*.md`.
 
-### Step 4: Lỗi thường gặp
-Nếu báo không tìm thấy package root: cài global (`npm i -g viepilot`), hoặc chạy từ project có dependency `viepilot`, hoặc trỏ thẳng tới `bin/vp-tools.cjs` trong clone.
+### Step 4: Common errors
+If package root is not found: install globally (`npm i -g viepilot`), or run from a project that has `viepilot` as a dependency, or point directly to `bin/vp-tools.cjs` in a clone.
 </process>
 
 <success_criteria>
-- [ ] Đã gọi đúng subcommand `info` (hoặc `--json` khi cần parse)
-- [ ] Nêu rõ `installedVersion` và (nếu có) `latestNpm.version`
-- [ ] Khi user hỏi “có những skill nào trong bundle”, tóm tắt từ `skills[]` hoặc output bảng CLI
+- [ ] Correct subcommand `info` called (or `--json` when parsing is needed)
+- [ ] `installedVersion` and (if available) `latestNpm.version` clearly stated
+- [ ] When user asks “what skills are in the bundle”, summarize from `skills[]` or CLI table output
 </success_criteria>

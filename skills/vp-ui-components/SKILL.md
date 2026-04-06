@@ -1,6 +1,6 @@
 ---
 name: vp-ui-components
-description: "Quản lý workflow sưu tầm và tái sử dụng UI components"
+description: "Manage workflow for collecting and reusing UI components"
 version: 0.1.1
 ---
 
@@ -10,7 +10,7 @@ version: 0.1.1
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với numbered list options.
+Prompt user conversationally with numbered list options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,23 +25,23 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Curation** `ui-components/` + metadata — không implement toàn bộ feature app / framework shipping mặc định; thay đổi lớn **`/vp-evolve`** → **`/vp-auto`**. Xem `workflows/request.md`.
+- **Curation** `ui-components/` + metadata — does not implement full app feature / default framework shipping; large changes go through **`/vp-evolve`** → **`/vp-auto`**. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Thu thập, phân loại, và lưu trữ UI components để tái sử dụng:
+Collect, classify, and store UI components for reuse:
 - Global library: `~/.viepilot/ui-components/`
 - Project library: `.viepilot/ui-components/`
 
-Nguồn có thể đến từ prompt/link/snippet (đặc biệt 21st.dev), sau đó chuẩn hóa thành artifacts có metadata.
+Sources can come from prompt/link/snippet (especially 21st.dev), then normalized into artifacts with metadata.
 
 **Creates/Updates:**
 - `~/.viepilot/ui-components/{category}/{component-id}/...`
 - `.viepilot/ui-components/{category}/{component-id}/...`
-- `INDEX.md` cho global + local store
+- `INDEX.md` for global + local store
 
-**After:** Component có thể dùng lại cho `/vp-brainstorm --ui` và `/vp-crystallize`.
+**After:** Component is reusable for `/vp-brainstorm --ui` and `/vp-crystallize`.
 </objective>
 
 <execution_context>
@@ -50,11 +50,11 @@ Nguồn có thể đến từ prompt/link/snippet (đặc biệt 21st.dev), sau 
 
 <context>
 Optional flags:
-- `--add` : Add/capture component mới
-- `--list` : Liệt kê component theo category
-- `--sync` : Đồng bộ global ↔ local index
-- `--from-21st` : Ưu tiên flow ingest từ 21st.dev references
-- `--approve` : Mark component status thành approved
+- `--add` : Add/capture new component
+- `--list` : List components by category
+- `--sync` : Sync global ↔ local index
+- `--from-21st` : Prioritize ingest flow from 21st.dev references
+- `--approve` : Mark component status as approved
 </context>
 
 <process>

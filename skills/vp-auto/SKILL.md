@@ -1,6 +1,6 @@
 ---
 name: vp-auto
-description: "Autonomous execution loop với control points và recovery"
+description: "Autonomous execution loop with control points and recovery"
 version: 0.2.2
 ---
 
@@ -10,7 +10,7 @@ version: 0.2.2
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với numbered list options tại control points.
+Prompt user conversationally with numbered list options at control points.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -28,12 +28,12 @@ Use `Task(subagent_type="generalPurpose", ...)` for parallel execution.
 <implementation_routing_guard>
 ## Primary implementation lane (ENH-021)
 
-- **`/vp-auto`** + `workflows/autonomous.md` là **lane mặc định** để **implement** work đã có **phase/task plan** (doc-first **BUG-001**, git persistence **BUG-003**). **`/vp-request`** và **`/vp-evolve`** **không** thay thế lane này trừ user **explicit** override.
+- **`/vp-auto`** + `workflows/autonomous.md` is the **default lane** for **implementing** work that already has a **phase/task plan** (doc-first **BUG-001**, git persistence **BUG-003**). **`/vp-request`** and **`/vp-evolve`** do **not** replace this lane unless the user **explicitly** overrides.
 </implementation_routing_guard>
 
 
 <objective>
-Autonomous execution của project phases. Cho mỗi phase: analyze → plan → execute → verify → iterate.
+Autonomous execution of project phases. For each phase: analyze → plan → execute → verify → iterate.
 
 Pauses at control points:
 - Conflicts detected
@@ -96,12 +96,12 @@ If required task details are missing, do not implement until task contract is re
 
 <context>
 Optional flags:
-- `--from N` : Start từ phase N
-- `--phase N` : Chỉ chạy phase N
+- `--from N` : Start from phase N
+- `--phase N` : Run only phase N
 - `--fast` : Skip optional verifications
 - `--dry-run` : Plan only, no execution
 
-No extra args: chỉ nghĩa các cờ trên **tắt** — **không** phải rule “dừng bắt buộc sau mỗi task”. Trong chat, một turn thường ~một task; tiếp tục bằng lượt sau hoặc `/vp-auto` lại. Doc: `docs/user/features/autonomous-mode.md`.
+No extra args: simply means the flags above are **off** — **not** a rule of “mandatory stop after each task”. In chat, one turn is typically ~one task; continue with the next turn or invoke `/vp-auto` again. Doc: `docs/user/features/autonomous-mode.md`.
 
 **Task path validation (BUG-009):**
 Before executing each task, validates all paths in the `## Paths` block.

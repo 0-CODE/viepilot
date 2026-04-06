@@ -25,12 +25,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Điều tra + log** session; **không** merge fix shipping mặc định cho đến khi user **explicit** (*sửa luôn*, *hotfix*) hoặc route **`/vp-request` → `/vp-evolve` → `/vp-auto`**. Patch nhỏ chỉ để **reproduce** OK nếu user đồng ý. Xem `workflows/debug.md`.
+- **Investigate + log** session; does **not** merge default shipping fixes until user **explicit** (*fix now*, *hotfix*) or routes **`/vp-request` → `/vp-evolve` → `/vp-auto`**. Small patches only to **reproduce** are OK if the user agrees. See `workflows/debug.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Systematic debugging với persistent state tracking. Giúp track vấn đề qua nhiều sessions.
+Systematic debugging with persistent state tracking. Helps track issues across multiple sessions.
 
 **Creates/Updates:**
 - `.viepilot/debug/session-{id}.json` - Debug session state

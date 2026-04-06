@@ -1,6 +1,6 @@
 ---
 name: vp-status
-description: "Hiển thị progress dashboard và actionable insights"
+description: "Display progress dashboard and actionable insights"
 version: 0.1.1
 ---
 
@@ -22,12 +22,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Read-only / dashboard** — không implement shipping; **`/vp-evolve`** → **`/vp-auto`**. Xem `workflows/request.md`.
+- **Read-only / dashboard** — does not implement shipping; **`/vp-evolve`** → **`/vp-auto`**. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Hiển thị visual progress dashboard với actionable insights.
+Display a visual progress dashboard with actionable insights.
 
 **Reads:**
 - `.viepilot/TRACKER.md`
@@ -35,7 +35,7 @@ Hiển thị visual progress dashboard với actionable insights.
 - `.viepilot/phases/*/PHASE-STATE.md`
 - `CHANGELOG.md`
 
-**Output:** Dashboard display với next action suggestions.
+**Output:** Dashboard display with next action suggestions.
 </objective>
 
 <process>

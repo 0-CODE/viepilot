@@ -25,14 +25,14 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Checkpoint / revert** — không thay **`/vp-auto`** cho work mới; sau rollback dùng **`/vp-evolve`** / **`/vp-auto`** theo quy trình. Xem `workflows/request.md`.
+- **Checkpoint / revert** — does not replace **`/vp-auto`** for new work; after rollback use **`/vp-evolve`** / **`/vp-auto`** per workflow. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Rollback đến bất kỳ checkpoint nào một cách an toàn, với backup và state preservation.
+Rollback to any checkpoint safely, with backup and state preservation.
 
-**Checkpoints:** Git tags với prefix `vp-`
+**Checkpoints:** Git tags with prefix `vp-`
 - `vp-p{N}-t{M}` - Start of task M in phase N
 - `vp-p{N}-t{M}-done` - Task M complete
 - `vp-p{N}-complete` - Phase N complete

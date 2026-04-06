@@ -22,12 +22,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- Skill này **chỉ** quản lý **state/tag/task** trong `.viepilot/` — **không** thay **`/vp-auto`** để implement shipping code. Implement: **`/vp-auto`** hoặc user **explicit** override. Chuỗi plan: **`/vp-evolve`** trước. Xem `workflows/request.md`.
+- This skill **only** manages **state/tag/task** in `.viepilot/` — does **not** replace **`/vp-auto`** for implementing shipping code. To implement: use **`/vp-auto`** or user **explicit** override. Plan chain: **`/vp-evolve`** first. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Manual control over tasks khi cần fine-grained management.
+Manual control over tasks when fine-grained management is needed.
 
 **Commands:**
 - `list` - List tasks in current phase

@@ -1,6 +1,6 @@
 ---
 name: vp-request
-description: "Tạo request mới: feature, bug fix, enhancement, hoặc brainstorm tiếp"
+description: "Create new request: feature, bug fix, enhancement, or brainstorm continuation"
 version: 0.2.0
 ---
 
@@ -10,7 +10,7 @@ version: 0.2.0
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với numbered list options.
+Prompt user conversationally with numbered list options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,27 +25,27 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- Skill này chỉ **tạo request**, **backlog**, **triage** (`.viepilot/requests/*`, `TRACKER`, đôi khi gợi ý ROADMAP) — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, `workflows/`, `skills/` của repo, v.v.).
-- **Sau request:** **`/vp-evolve`** (ROADMAP + phase + tasks + plan) → **`/vp-auto`** (thực thi). Xem `workflows/request.md`.
-- **Ngoại lệ:** User **explicit** (*hotfix ngay*, *sửa trong chat này*, *bypass planning*) — phải **nêu rõ** bypass trong chat.
-- **Không** đề xuất *“Start working now”* như implement trực tiếp trong thread này; thay bằng evolve → auto.
+- This skill only **creates requests**, **backlog**, **triage** (`.viepilot/requests/*`, `TRACKER`, sometimes suggests ROADMAP) — does **not** implement default shipping code (`lib/`, `tests/`, `bin/`, `workflows/`, `skills/` of the repo, etc.).
+- **After request:** **`/vp-evolve`** (ROADMAP + phase + tasks + plan) → **`/vp-auto`** (execute). See `workflows/request.md`.
+- **Exception:** User **explicit** (*hotfix now*, *fix in this chat*, *bypass planning*) — must **state clearly** the bypass in chat.
+- **Do not** suggest *”Start working now”* as direct implementation in this thread; use evolve → auto instead.
 </implementation_routing_guard>
 
 
 <objective>
-Tạo và quản lý requests cho dự án đang phát triển:
-- Bug report và fix
+Create and manage requests for the project under development:
+- Bug report and fix
 - Feature request
 - Enhancement/Improvement
 - Technical debt
-- Brainstorm tiếp cho ý tưởng mới
+- Brainstorm continuation for new ideas
 
 **Creates/Updates:**
 - `.viepilot/requests/{TYPE}-{NUMBER}.md`
-- `.viepilot/TRACKER.md` (thêm vào backlog)
-- `.viepilot/ROADMAP.md` (nếu approved)
+- `.viepilot/TRACKER.md` (add to backlog)
+- `.viepilot/ROADMAP.md` (if approved)
 
-**Routes to:** `/vp-auto` hoặc `/vp-evolve` tùy loại request
+**Routes to:** `/vp-auto` or `/vp-evolve` depending on request type
 </objective>
 
 <execution_context>

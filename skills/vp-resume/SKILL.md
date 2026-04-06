@@ -1,6 +1,6 @@
 ---
 name: vp-resume
-description: "Resume work từ previous session với full context restoration"
+description: "Resume work from previous session with full context restoration"
 version: 0.1.1
 ---
 
@@ -10,7 +10,7 @@ version: 0.1.1
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
 ## B. User Prompting
-Prompt user conversationally với options.
+Prompt user conversationally with options.
 
 ## C. Tool Usage
 Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
@@ -25,12 +25,12 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
 
-- **Khôi phục context** — không implement shipping mặc định; tiếp tục **`/vp-auto`** khi có task plan. Xem `workflows/request.md`.
+- **Restore context** — does not implement default shipping; continue with **`/vp-auto`** when a task plan exists. See `workflows/request.md`.
 </implementation_routing_guard>
 
 
 <objective>
-Restore complete project context và resume work seamlessly.
+Restore complete project context and resume work seamlessly.
 
 **Reads:**
 - `.viepilot/HANDOFF.json`
