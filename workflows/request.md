@@ -1,5 +1,5 @@
 <purpose>
-Tạo và quản lý requests cho dự án: bugs, features, enhancements, tech debt, và brainstorm continuation.
+Create and manage project requests: bugs, features, enhancements, tech debt, and brainstorm continuation.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -10,9 +10,9 @@ Tạo và quản lý requests cho dự án: bugs, features, enhancements, tech d
 
 ## Implementation routing guard (planning vs execution)
 
-- Workflow **`request.md`** chỉ **ghi nhận, backlog, triage** — **không** là lane mặc định để **implement** mã shipping (`lib/`, `tests/`, `bin/`, `src/` app, `workflows/`, `skills/` trong repo framework, v.v.).
-- **Chuỗi khuyến nghị sau khi có request:** `/vp-evolve` (ROADMAP, phase, SPEC/tasks, task plan; doc-first **BUG-001** khi áp dụng) → **`/vp-auto`** (thực thi + verify + git persistence **BUG-003**).
-- **Ngoại lệ:** User **explicit** (vd. *hotfix ngay*, *sửa file X trong chat này*, *bypass planning*) → được implement trực tiếp; assistant **phải nêu rõ** đang bypass guard.
+- Workflow **`request.md`** only **records, backlogs, and triages** — it is **not** the default lane to **implement** shipping code (`lib/`, `tests/`, `bin/`, `src/` app, `workflows/`, `skills/` in the framework repo, etc.).
+- **Recommended chain after a request:** `/vp-evolve` (ROADMAP, phase, SPEC/tasks, task plan; doc-first **BUG-001** when applicable) → **`/vp-auto`** (execute + verify + git persistence **BUG-003**).
+- **Exception:** User **explicitly** states (e.g., *hotfix now*, *fix file X in this chat*, *bypass planning*) → direct implementation is allowed; the assistant **must state clearly** it is bypassing the guard.
 
 
 <process>
@@ -455,8 +455,8 @@ Current task: {task}
 
 If option 1:
 - Save current state (like /vp-pause)
-- Create emergency fix phase (minimal SPEC/tasks) **hoặc** user explicit hotfix
-- Route to **`/vp-auto`** — vẫn qua task plan ngắn khi có thể; **không** implement lặng trong thread `/vp-request` trừ user explicit bypass
+- Create emergency fix phase (minimal SPEC/tasks) **or** user explicit hotfix
+- Route to **`/vp-auto`** — still go through a short task plan when possible; do **not** implement silently inside the `/vp-request` thread unless the user explicitly bypasses
 
 ### High Priority Feature
 ```
@@ -466,7 +466,7 @@ Options:
 1. Add to current milestone
 2. Brainstorm more first
 3. Schedule for next milestone
-4. **Plan then execute:** `/vp-evolve` → `/vp-auto` (không implement trực tiếp trong thread `/vp-request` trừ user explicit override)
+4. **Plan then execute:** `/vp-evolve` → `/vp-auto` (do not implement directly inside the `/vp-request` thread unless user explicitly overrides)
 ```
 
 ### Regular Request
@@ -527,7 +527,7 @@ git push
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
  /vp-request --list    View all requests
- /vp-evolve            ROADMAP + phase/tasks (trước code)
+ /vp-evolve            ROADMAP + phase/tasks (before code)
  /vp-auto              Implement theo task plan (sau evolve)
  /vp-request           Create another request
  /vp-status            See overall progress

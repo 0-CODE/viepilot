@@ -1,6 +1,6 @@
 <purpose>
-Systematic debugging workflow với persistent state tracking.
-Giúp organize debugging process và track progress qua nhiều sessions.
+Systematic debugging workflow with persistent state tracking.
+Helps organize the debugging process and track progress across multiple sessions.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -11,8 +11,8 @@ Giúp organize debugging process và track progress qua nhiều sessions.
 
 ## Implementation routing guard (debug)
 
-- **`debug.md`**: ưu tiên **điều tra**, log session, chạy test — **không** sửa mã shipping mặc định cho đến khi (a) user **explicit** *sửa luôn* / *hotfix*, hoặc (b) đã route **`/vp-request`** + **`/vp-evolve`** + **`/vp-auto`** cho fix có cấu trúc.
-- Reproduce/minimal patch **chỉ để xác minh giả thuyết** được phép nếu nhỏ và user đồng ý ngầm trong phiên debug; merge fix thật vẫn nên qua **`/vp-auto`** khi có task plan.
+- **`debug.md`**: prioritizes **investigation**, session logging, running tests — does **not** modify shipping code by default until (a) user **explicitly** says *fix now* / *hotfix*, or (b) already routed through **`/vp-request`** + **`/vp-evolve`** + **`/vp-auto`** for a structured fix.
+- Reproduce/minimal patch **only to verify hypotheses** is allowed if small and the user implicitly agrees during the debug session; merging the real fix should still go through **`/vp-auto`** when a task plan exists.
 
 
 <process>
@@ -61,11 +61,11 @@ Go to step 3 (New Session).
 
 Ask user:
 ```
-Mô tả vấn đề bạn đang gặp:
-1. Vấn đề là gì?
-2. Triệu chứng? (error messages, behavior)
-3. Khi nào xảy ra? (điều kiện)
-4. Files liên quan?
+Describe the problem you are facing:
+1. What is the problem?
+2. Symptoms? (error messages, behavior)
+3. When does it occur? (conditions)
+4. Related files?
 ```
 
 Create session:

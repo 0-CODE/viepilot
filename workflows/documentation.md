@@ -1,5 +1,5 @@
 <purpose>
-Generate comprehensive documentation từ code và artifacts.
+Generate comprehensive documentation from code and artifacts.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -60,11 +60,11 @@ For viepilot framework repos, also use `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS`.
 
 ### 0A. ViePilot active profile (FEAT-009)
 
-Normative: **`docs/dev/global-profiles.md`**. Cùng **resolution** như `workflows/crystallize.md` Step 0 (đọc `.viepilot/META.md` → `viepilot_profile_path` hoặc `$HOME/.viepilot/profiles/<viepilot_profile_id>.md`).
+Normative: **`docs/dev/global-profiles.md`**. Same **resolution** as `workflows/crystallize.md` Step 0 (read `.viepilot/META.md` → `viepilot_profile_path` or `$HOME/.viepilot/profiles/<viepilot_profile_id>.md`).
 
-1. Nếu đọc được file profile, giữ **working notes** (display_name, org_tag, website, audience, branding) để dùng khi sinh README / contributing / bất kỳ prose **attribution** — chỉ nội dung **công khai**, không secrets.
-2. Nếu không có binding hoặc file thiếu → tiếp tục; **không** fail `/vp-docs`.
-3. Khi có profile, nhắc trong output (vd. footer README hoặc `docs/dev/architecture.md`) một dòng trích **profile_id** nếu phù hợp policy dự án.
+1. If the profile file is readable, keep **working notes** (display_name, org_tag, website, audience, branding) for use when generating README / contributing / any prose **attribution** — public content only, no secrets.
+2. If no binding exists or file is missing → continue; do **not** fail `/vp-docs`.
+3. When a profile is present, mention in output (e.g., README footer or `docs/dev/architecture.md`) one line referencing **profile_id** if appropriate for the project policy.
 
 Post-generation validation (run after all files generated):
 ```bash

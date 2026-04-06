@@ -1,6 +1,6 @@
 <purpose>
-Save complete work state để có thể resume từ bất kỳ context nào.
-Creates HANDOFF.json và .continue-here.md cho recovery.
+Save complete work state so it can be resumed from any context.
+Creates HANDOFF.json and .continue-here.md for recovery.
 </purpose>
 
 <process>

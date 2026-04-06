@@ -1,5 +1,5 @@
 <purpose>
-Nâng cấp hoặc mở rộng dự án: thêm features, bắt đầu milestone mới, hoặc refactor.
+Upgrade or expand the project: add features, start a new milestone, or refactor.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
@@ -10,9 +10,9 @@ Nâng cấp hoặc mở rộng dự án: thêm features, bắt đầu milestone 
 
 ## Implementation routing guard (planning vs execution)
 
-- **`evolve.md`** chỉ **lập kế hoạch**: ROADMAP, phase dir, SPEC/tasks, TRACKER, ghi chú CHANGELOG `[Unreleased]` khi workflow yêu cầu — **không** implement mã shipping mặc định (`lib/`, `tests/`, `bin/`, `workflows/` ngoài plan, v.v.).
-- **Bước tiếp:** **`/vp-auto`** sau khi task/phase có plan (doc-first **BUG-001**).
-- **Ngoại lệ:** User **explicit** bypass — phải nêu rõ trong chat.
+- **`evolve.md`** only **plans**: ROADMAP, phase dir, SPEC/tasks, TRACKER, CHANGELOG `[Unreleased]` notes when the workflow requires — does **not** implement shipping code by default (`lib/`, `tests/`, `bin/`, `workflows/` outside plan, etc.).
+- **Next step:** **`/vp-auto`** after task/phase has a plan (doc-first **BUG-001**).
+- **Exception:** User **explicit** bypass — must be stated clearly in chat.
 
 
 <process>
@@ -63,7 +63,7 @@ Describe the new feature:
 3. Which services/modules affected?
 4. Dependencies on existing code?
 5. Estimated complexity? (S/M/L/XL)
-6. Có cần brainstorm chuyên sâu không? (landing page / UX / growth ideas / research-heavy)
+6. Need deep brainstorm? (landing page / UX / growth ideas / research-heavy)
 ```
 
 ### Check Architecture Compatibility
@@ -79,12 +79,12 @@ Questions:
 
 If incompatible → suggest refactor first or discuss alternative.
 
-### Smart Route to Brainstorm (khi phù hợp)
-Nếu feature có nội dung thiên về product discovery, UX, hoặc landing page:
-- Route qua brainstorm nâng cao thay vì chốt phase ngay:
-  - `/vp-brainstorm --new --landing --research` (nếu có landing page)
-  - `/vp-brainstorm --new --research` (nếu cần research decision)
-- Sau khi brainstorm xong, quay lại `/vp-evolve` để crystallize phase/tasks.
+### Smart Route to Brainstorm (when applicable)
+If the feature leans toward product discovery, UX, or landing page:
+- Route through advanced brainstorm instead of locking the phase immediately:
+  - `/vp-brainstorm --new --landing --research` (if there is a landing page)
+  - `/vp-brainstorm --new --research` (if a research decision is needed)
+- After brainstorm is complete, return to `/vp-evolve` to crystallize phase/tasks.
 
 ### Generate Phase
 Create new phase in ROADMAP.md:
@@ -200,7 +200,7 @@ New milestone details:
 
 Options:
 - Route to `/vp-brainstorm --new` for full brainstorm
-- Nếu milestone có landing page focus: `/vp-brainstorm --new --landing --research`
+- If milestone has landing page focus: `/vp-brainstorm --new --landing --research`
 - Quick setup with minimal questions
 
 ### Generate New ROADMAP.md

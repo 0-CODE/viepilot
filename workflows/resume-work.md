@@ -1,5 +1,5 @@
 <purpose>
-Restore complete project context và resume work seamlessly từ previous session.
+Restore complete project context and resume work seamlessly from a previous session.
 </purpose>
 
 <process>

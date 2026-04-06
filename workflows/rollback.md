@@ -1,5 +1,5 @@
 <purpose>
-Safe rollback to any ViePilot checkpoint với backup và state preservation.
+Safe rollback to any ViePilot checkpoint with backup and state preservation.
 </purpose>
 
 <process>
