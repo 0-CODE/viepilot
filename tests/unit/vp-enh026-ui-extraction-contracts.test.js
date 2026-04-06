@@ -32,11 +32,11 @@ describe('ENH-026 vp-brainstorm background UI extraction + crystallize hard gate
   test('brainstorm.md: surface confirmation dialogue has 3 options and links to UI Direction Mode', () => {
     const content = read('workflows/brainstorm.md');
     // Dialogue template must be present
-    expect(content).toMatch(/💡.*Tôi phát hiện/);
+    expect(content).toMatch(/💡.*I detected/);
     // Three numbered options
     expect(content).toMatch(/1\.\s.*notes\.md/);
     expect(content).toMatch(/2\.\s.*UI Direction Mode/);
-    expect(content).toMatch(/3\.\s.*Bỏ qua/);
+    expect(content).toMatch(/3\.\s.*[Dd]iscard/);
     // Option 3 must document buffer preservation
     expect(content).toMatch(/buffer/i);
   });

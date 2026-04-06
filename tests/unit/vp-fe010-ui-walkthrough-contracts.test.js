@@ -14,11 +14,11 @@ describe('FEAT-010 UI walkthrough contracts', () => {
     expect(md).toMatch(/\/research ui/);
     expect(md).toMatch(/UI Direction — UX walkthrough & upgrade \(FEAT-010\)/);
     expect(md).toMatch(/## UX walkthrough log/);
-    expect(md).toMatch(/Mô phỏng người dùng cuối/);
+    expect(md).toMatch(/Simulate end user/);
     expect(md).toMatch(/UX designer \+ research/);
-    expect(md).toMatch(/Stress nội dung & tràn layout/);
+    expect(md).toMatch(/[Cc]ontent stress/);
     expect(md).toMatch(/Stress findings/);
-    expect(md).toMatch(/Stress recipes theo archetype \(ENH-020\)/);
+    expect(md).toMatch(/Stress recipes by archetype \(ENH-020\)/);
     expect(md).toMatch(/\| \*\*Landing \/ marketing\*\*/);
   });
 
