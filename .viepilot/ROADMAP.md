@@ -1465,7 +1465,7 @@
 | 45. Architect System/Sequence/Deployment/APIs (ENH-029) | ✅ Complete | 11 | 11 | 100% |
 | 46. Remove MVP/Post-MVP concept — phases+tasks only (ENH-030) | ✅ Complete | 10 | 10 | 100% |
 | 47. Task path guard — repo-relative enforcement (BUG-009) | ✅ Complete | 4 | 4 | 100% |
-| 48. Language standardization — English-primary (ENH-031) | 🔲 Planned | 9 | 0 | 0% |
+| 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
 | 49. Language configuration system (ENH-032) | 🔲 Planned | 8 | 0 | 0% |
 
 **Total (to date)**: 75 tasks done (phases 33–47)
@@ -1494,12 +1494,12 @@
 
 ---
 
-### Phase 48: Language Standardization — English-Primary (ENH-031)
+### Phase 48: Language Standardization — English-Primary (ENH-031) ✅
 **Goal**: Standardize all skills, workflows, and templates to English-primary. Vietnamese permitted only in `cursor_skill_adapter` invocation trigger keywords.
 **Estimated Tasks**: 9
 **Dependencies**: Phase 47 (BUG-009)
 **Directory**: `.viepilot/phases/48-enh031-language-standardization/`
-**Version target**: 1.16.0
+**Version target**: 1.16.0 ✅
 
 | Task | Description | Acceptance Criteria | Complexity |
 |------|-------------|---------------------|------------|

@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **48** — 🔲 Planned (**ENH-031** → **1.16.0**)
-- **Last Completed Phase**: **47** — ✅ Complete (**BUG-009** → **1.15.0**)
+- **Current Phase**: **49** — 🔲 Planned (**ENH-032** → **1.17.0**)
+- **Last Completed Phase**: **48** — ✅ Complete (**ENH-031** → **1.16.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-06 — Phase 47 shipped (BUG-009 — path guard in evolve + autonomous → 1.15.0)
+- **Last Activity**: 2026-04-06 — Phase 48 shipped (ENH-031 — language standardization English-primary → 1.16.0)
 
 ## Progress Overview
 ```
@@ -69,12 +69,13 @@ Suggested next version: per release checklist
 | 2026-04-06 | Phase 47 planned: BUG-009 (4 tasks) — path guard in evolve + autonomous, target **1.15.0** | `/vp-evolve` | M1.29 |
 | 2026-04-06 | ENH-031 → Phase 48 (renumbered from 47), ENH-032 → Phase 49 (renumbered from 48) | `/vp-evolve` | M1.29 |
 | 2026-04-06 | Phase 47 shipped: BUG-009 (path guard in evolve.md + autonomous.md + SKILL.md docs + 13 tests) — **1.15.0** | `/vp-auto` | M1.29 |
+| 2026-04-06 | Phase 48 shipped: ENH-031 (English-primary language standardization — all 12 workflows + 16 skills + AI-GUIDE template + 63 contract tests) — **1.16.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 48 ready; run `/vp-auto` to execute ENH-031 (language standardization → 1.16.0), then Phase 49 (ENH-032 → 1.17.0)
+**`/vp-auto`** — Phase 49 ready; run `/vp-auto` to execute ENH-032 (language configuration system → 1.17.0)
 
 ## Backlog
 

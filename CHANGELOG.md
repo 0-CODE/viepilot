@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed (ENH-031 — Phase 48 — target 1.16.0)
-- **Language standardization (English-primary):** all skills, workflows, and templates converted to English; Vietnamese retained only in `cursor_skill_adapter` invocation trigger keywords
+## [1.16.0] - 2026-04-06
+
+### Changed (ENH-031 — Phase 48)
+- **Language standardization (English-primary):** all 12 workflows, all 16 skills, and `templates/project/AI-GUIDE.md` converted to English; Vietnamese retained only in `cursor_skill_adapter` invocation trigger keywords and UI scope signal detection patterns
+
+### Tests
+- Added `tests/unit/vp-enh031-language-standardization.test.js` (63 tests) — all pass (448 total)
+- Updated `vp-fe010-ui-walkthrough-contracts.test.js` + `vp-enh026-ui-extraction-contracts.test.js` to match translated English strings
 
 ### Added (ENH-032 — Phase 49 — target 1.17.0)
 - **Language configuration system:** installer prompts for `language.communication` and `language.document` (default: `en`/`en`)

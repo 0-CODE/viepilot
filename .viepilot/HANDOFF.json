@@ -1,31 +1,31 @@
 {
   "milestone": "M1.29",
   "milestone_name": "All planned phases complete",
-  "phase": 45,
-  "phase_name": "enh029-architect-pages",
+  "phase": 48,
+  "phase_name": "enh031-language-standardization",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-04-04T00:00:00Z",
+  "last_activity": "2026-04-06T00:00:00Z",
   "version": {
-    "current": "1.13.0",
-    "next": "pending — no phases planned"
+    "current": "1.16.0",
+    "next": "1.17.0 (ENH-032 language config system — Phase 49)"
   },
   "progress": {
-    "phases_total": 45,
-    "phases_completed": 45,
-    "tasks_total": 164,
-    "tasks_completed": 164,
-    "percentage": 100
+    "phases_total": 49,
+    "phases_completed": 48,
+    "tasks_total": 173,
+    "tasks_completed": 173,
+    "percentage": 98
   },
   "context": {
     "notes": [
-      "Phase 45 ENH-029 shipped: architecture.html C4Context + sequence-diagram.html + deployment.html + apis.html + 12-page nav + style.css badges + brainstorm/crystallize/SKILL.md + 11 contract tests → 1.13.0",
-      "All 45 planned phases complete. 12-page Architect workspace fully operational.",
-      "Next: /vp-request for new features or /vp-docs"
+      "Phase 48 ENH-031 shipped: English-primary language standardization — all 12 workflows + 16 skills + AI-GUIDE template translated; 63 contract tests added → 1.16.0",
+      "Phase 49 (ENH-032) planned: language configuration system — installer prompts + crystallize/brainstorm runtime awareness",
+      "Next: /vp-auto to execute Phase 49"
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-04-04T00:00:00Z"
+  "updated_at": "2026-04-06T00:00:00Z"
 }
