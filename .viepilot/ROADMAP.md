@@ -1466,9 +1466,9 @@
 | 46. Remove MVP/Post-MVP concept — phases+tasks only (ENH-030) | ✅ Complete | 10 | 10 | 100% |
 | 47. Task path guard — repo-relative enforcement (BUG-009) | ✅ Complete | 4 | 4 | 100% |
 | 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
-| 49. Language configuration system (ENH-032) | 🔲 Planned | 8 | 0 | 0% |
+| 49. Language configuration system (ENH-032) | ✅ Complete | 8 | 8 | 100% |
 
-**Total (to date)**: 75 tasks done (phases 33–47)
+**Total (to date)**: 83 tasks done (phases 33–49)
 
 ---
 
@@ -1520,11 +1520,12 @@
 
 ---
 
-### Phase 49: Language Configuration System (ENH-032)
+### Phase 49: Language Configuration System (ENH-032) ✅
 **Goal**: Installer prompts for communication/document language; crystallize/brainstorm/autonomous read config at runtime. Defaults: en/en.
 **Estimated Tasks**: 8
 **Dependencies**: Phase 48 (ENH-031 must ship first)
 **Directory**: `.viepilot/phases/49-enh032-language-config/`
+**Version target**: 1.17.0 ✅
 **Version target**: 1.17.0
 
 | Task | Description | Acceptance Criteria | Complexity |

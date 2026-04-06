@@ -88,6 +88,11 @@ If required task details are missing, do not implement until task contract is re
 - `README.md` metrics — run `npm run readme:sync` when script exists; if `cloc` missing, continue with logged guidance (non-blocking)
 
 **After:** Project built, or paused for user intervention.
+
+**Language configuration (ENH-032):**
+- Initialize step reads `~/.viepilot/config.json` → `COMMUNICATION_LANG` (default: `en`).
+- `COMMUNICATION_LANG` controls banners, control-point messages, and user-facing output.
+- Configure via: `vp-tools config set language.communication vi`
 </objective>
 
 <execution_context>

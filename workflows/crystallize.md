@@ -11,6 +11,19 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 
 <process>
 
+<step name="load_language_config">
+## Step 0-A: Load Language Configuration (ENH-032)
+
+Read `~/.viepilot/config.json` → set session variables:
+- `DOCUMENT_LANG` — language for generated project files (default: `en`)
+- `COMMUNICATION_LANG` — language for AI↔user messages (default: `en`)
+
+Use `DOCUMENT_LANG` for all file content written in Steps 1–9.
+Use `COMMUNICATION_LANG` for all prompts and confirmation messages in this session.
+
+If `~/.viepilot/config.json` is absent, use defaults (en/en) — do not fail.
+</step>
+
 <step name="collect_metadata">
 ## Step 0: Collect Project Metadata
 

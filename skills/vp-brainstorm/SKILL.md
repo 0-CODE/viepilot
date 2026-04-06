@@ -52,6 +52,12 @@ Supports:
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
 **After:** Ready for `/vp-crystallize`
+
+**Language configuration (ENH-032):**
+- Step 0 reads `~/.viepilot/config.json` → `BRAINSTORM_LANG` = `language.document` (default: `en`).
+- `BRAINSTORM_LANG` is used for brainstorm file storage and generated content.
+- User session language takes precedence over config if different.
+- Configure via: `vp-tools config set language.document vi`
 </objective>
 
 <execution_context>

@@ -12,6 +12,17 @@ Allows research inline within the same brainstorm session when needed.
 
 <process>
 
+<step name="detect_session_language">
+## 0. Detect Session Language (ENH-032)
+
+Read `~/.viepilot/config.json` → set `BRAINSTORM_LANG`:
+- `BRAINSTORM_LANG` = `language.document` from config (default: `en`)
+
+Use `BRAINSTORM_LANG` for brainstorm file storage (filenames, generated content).
+If the user writes in a different language during the session, that takes precedence over the config value.
+If `~/.viepilot/config.json` is absent, default to `en` — do not fail.
+</step>
+
 <step name="detect_sessions">
 ## 1. Detect Previous Sessions
 

@@ -25,6 +25,7 @@ const {
 
 const viepilotInfo = require(path.join(__dirname, '../lib/viepilot-info.cjs'));
 const viepilotUpdate = require(path.join(__dirname, '../lib/viepilot-update.cjs'));
+const viepilotConfig = require(path.join(__dirname, '../lib/viepilot-config.cjs'));
 
 // ============================================================================
 // Output Formatting (TTY-aware)
@@ -947,6 +948,73 @@ const commands = {
   },
 
   /**
+   * Config get/set/reset — ENH-032 language configuration
+   */
+  config: (args) => {
+    const sub = args[0];
+    if (!sub || sub === 'help') {
+      console.log(`${colors.cyan}Usage:${colors.reset}
+  vp-tools config get <key>
+  vp-tools config set <key> <value>
+  vp-tools config reset
+
+${colors.cyan}Keys:${colors.reset}
+  language.communication   Language for AI communication/banners (e.g. en, vi)
+  language.document        Language for generated project files (e.g. en, vi)
+
+${colors.cyan}Examples:${colors.reset}
+  ${colors.gray}$${colors.reset} vp-tools config get language.communication
+  ${colors.gray}$${colors.reset} vp-tools config set language.communication vi
+  ${colors.gray}$${colors.reset} vp-tools config reset`);
+      return;
+    }
+    if (sub === 'get') {
+      const key = args[1];
+      if (!key) {
+        console.error(formatError('Missing key', 'Usage: vp-tools config get <key>'));
+        process.exit(1);
+      }
+      const cfg = viepilotConfig.readConfig();
+      const parts = key.split('.');
+      let val = cfg;
+      for (const p of parts) {
+        if (val == null || typeof val !== 'object') { val = undefined; break; }
+        val = val[p];
+      }
+      if (val === undefined) {
+        console.error(formatError(`Unknown config key: ${key}`));
+        process.exit(1);
+      }
+      console.log(val);
+      return;
+    }
+    if (sub === 'set') {
+      const key = args[1];
+      const value = args[2];
+      if (!key || value === undefined) {
+        console.error(formatError('Usage: vp-tools config set <key> <value>'));
+        process.exit(1);
+      }
+      const parts = key.split('.');
+      if (parts.length !== 2) {
+        console.error(formatError('Key must be in format <section>.<field> (e.g. language.communication)'));
+        process.exit(1);
+      }
+      const [section, field] = parts;
+      viepilotConfig.writeConfig({ [section]: { [field]: value } });
+      console.log(formatSuccess(`Set ${key} = ${value}`));
+      return;
+    }
+    if (sub === 'reset') {
+      viepilotConfig.resetConfig();
+      console.log(formatSuccess('Config reset to defaults (communication=en, document=en)'));
+      return;
+    }
+    console.error(formatError(`Unknown config subcommand: ${sub}`, 'Use get, set, or reset'));
+    process.exit(1);
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -1088,6 +1156,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
   ${colors.bold}update${colors.reset} [--dry-run]       Update viepilot via npm (use --yes non-interactive)
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
+  ${colors.bold}config${colors.reset} <get|set|reset>    Read/write language config (~/.viepilot/config.json)
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 

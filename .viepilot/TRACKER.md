@@ -2,14 +2,14 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **49** — 🔲 Planned (**ENH-032** → **1.17.0**)
-- **Last Completed Phase**: **48** — ✅ Complete (**ENH-031** → **1.16.0**)
+- **Current Phase**: **49** — ✅ Complete (**ENH-032** → **1.17.0**)
+- **Last Completed Phase**: **49** — ✅ Complete (**ENH-032** → **1.17.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-06 — Phase 48 shipped (ENH-031 — language standardization English-primary → 1.16.0)
+- **Last Activity**: 2026-04-06 — Phase 49 shipped (ENH-032 — language configuration system → 1.17.0)
 
 ## Progress Overview
 ```
-Framework release     [██████████] npm **1.9.5**
+Framework release     [██████████] npm **1.17.0**
 Phase 34 (FEAT-001)   [██████████] done
 Phase 35 (ENH-022)    [██████████] done
 ─────────────────────────────────────────────
@@ -70,12 +70,13 @@ Suggested next version: per release checklist
 | 2026-04-06 | ENH-031 → Phase 48 (renumbered from 47), ENH-032 → Phase 49 (renumbered from 48) | `/vp-evolve` | M1.29 |
 | 2026-04-06 | Phase 47 shipped: BUG-009 (path guard in evolve.md + autonomous.md + SKILL.md docs + 13 tests) — **1.15.0** | `/vp-auto` | M1.29 |
 | 2026-04-06 | Phase 48 shipped: ENH-031 (English-primary language standardization — all 12 workflows + 16 skills + AI-GUIDE template + 63 contract tests) — **1.16.0** | `/vp-auto` | M1.29 |
+| 2026-04-06 | Phase 49 shipped: ENH-032 (language config system — viepilot-config.cjs + vp-tools config + install prompt + 3 workflow steps + 3 SKILL.md docs + 18 contract tests) — **1.17.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 49 ready; run `/vp-auto` to execute ENH-032 (language configuration system → 1.17.0)
+All planned phases complete. Run `/vp-evolve` to plan new features or `/vp-docs` to generate documentation.
 
 ## Backlog
 
@@ -83,7 +84,7 @@ _None currently_
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
-| ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | new |
+| ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | ✅ done (**1.17.0**) |
 | ENH-031 | 🔧 | Standardize framework language to English-primary (Option B from audit) | high | new |
 | ENH-030 | 🔧 | Remove MVP/Post-MVP concept — crystallize to complete project with phases+tasks only | high | ✅ done (**1.14.0**) |
 | ENH-029 | 🔧 | Architect: System C4 + Sequence + Deployment + APIs pages | high | ✅ done (**1.13.0**) |

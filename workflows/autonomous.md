@@ -32,6 +32,10 @@ cat .viepilot/TRACKER.md
 cat .viepilot/ROADMAP.md
 ```
 
+### load_language_config
+Read `~/.viepilot/config.json` → `COMMUNICATION_LANG` (default: `en`).
+Use `COMMUNICATION_LANG` for all banners, control-point messages, and user-facing output in this session.
+
 Display startup banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

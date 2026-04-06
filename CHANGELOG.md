@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.0] - 2026-04-06
+
+### Added (ENH-032 — Phase 49)
+- **Language configuration system:** `~/.viepilot/config.json` stores `language.communication` and `language.document` (defaults: `en`/`en`)
+- `lib/viepilot-config.cjs` — new module: `readConfig`, `writeConfig`, `resetConfig`, `getConfigPath`; deep-merge with defaults; missing-file safe
+- `vp-tools config get/set/reset` — CLI commands to read and write language config
+- `lib/viepilot-install.cjs`: `language_config_prompt` step writes config at end of install; `--yes` uses defaults without prompting
+- `workflows/crystallize.md`: Step 0-A `load_language_config` — reads `DOCUMENT_LANG` + `COMMUNICATION_LANG` for file generation and session messages
+- `workflows/brainstorm.md`: Step 0 `detect_session_language` — reads `BRAINSTORM_LANG` for file storage; user session language overrides config
+- `workflows/autonomous.md`: `load_language_config` in Initialize — `COMMUNICATION_LANG` for banners and control-point messages
+- `skills/vp-crystallize/SKILL.md`, `skills/vp-brainstorm/SKILL.md`, `skills/vp-auto/SKILL.md`: ENH-032 language config notes
+
+### Tests
+- Added `tests/unit/vp-enh032-language-config.test.js` (18 tests) — all pass (466 total)
+
 ## [1.16.0] - 2026-04-06
 
 ### Changed (ENH-031 — Phase 48)
@@ -15,14 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Tests
 - Added `tests/unit/vp-enh031-language-standardization.test.js` (63 tests) — all pass (448 total)
 - Updated `vp-fe010-ui-walkthrough-contracts.test.js` + `vp-enh026-ui-extraction-contracts.test.js` to match translated English strings
-
-### Added (ENH-032 — Phase 49 — target 1.17.0)
-- **Language configuration system:** installer prompts for `language.communication` and `language.document` (default: `en`/`en`)
-- `lib/viepilot-config.cjs` — global config read/write module
-- `vp-tools config get/set/reset` — CLI commands for language reconfiguration
-- `workflows/crystallize.md`: reads config at session start; AI responses in `COMMUNICATION_LANG`, generated docs in `DOCUMENT_LANG`
-- `workflows/brainstorm.md`: auto-detects session conversation language for brainstorm file storage
-- `workflows/autonomous.md`: banners and prompts rendered in `COMMUNICATION_LANG`
 
 ## [1.15.0] - 2026-04-06
 
