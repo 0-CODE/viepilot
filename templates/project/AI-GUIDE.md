@@ -1,70 +1,70 @@
 # {{PROJECT_NAME}} - AI Navigation Guide
 
-> **Đọc file này TRƯỚC KHI làm bất kỳ task nào**
-> File này giúp bạn tìm đúng context mà không cần load tất cả
+> **Read this file BEFORE starting any task**
+> This file helps you find the right context without loading everything
 
 ## Quick Lookup
 
-| Tôi cần... | Đọc file | Section |
-|------------|----------|---------|
-| Hiểu project làm gì | `PROJECT-CONTEXT.md` | `<domain_knowledge>` |
-| Tầm nhìn & scope theo pha | `PROJECT-CONTEXT.md` | `<product_vision>` |
-| Roadmap phases (không chỉ task hiện tại) | `ROADMAP.md` | Phases sau phase hiện tại |
-| Biết tech stack | `ARCHITECTURE.md` | `## Technology Decisions` |
-| Xem service nào làm gì | `ARCHITECTURE.md` | `## Services` |
-| Biết đang ở phase nào | `TRACKER.md` | `## Current State` |
-| Xem task tiếp theo | `ROADMAP.md` | Tìm phase đang `In Progress` |
+| I need to... | Read file | Section |
+|--------------|-----------|---------|
+| Understand what the project does | `PROJECT-CONTEXT.md` | `<domain_knowledge>` |
+| Vision & phased scope | `PROJECT-CONTEXT.md` | `<product_vision>` |
+| Roadmap phases (beyond current task) | `ROADMAP.md` | Phases after current phase |
+| Know the tech stack | `ARCHITECTURE.md` | `## Technology Decisions` |
+| See what each service does | `ARCHITECTURE.md` | `## Services` |
+| Know current phase | `TRACKER.md` | `## Current State` |
+| See next task | `ROADMAP.md` | Find phase marked `In Progress` |
 | Coding conventions | `SYSTEM-RULES.md` | `<coding_rules>` |
-| Những gì KHÔNG được làm | `SYSTEM-RULES.md` | `<do_not>` |
+| What NOT to do | `SYSTEM-RULES.md` | `<do_not>` |
 | Database schema | `schemas/database-schema.sql` | - |
 | API contracts | `schemas/api-contracts.yaml` | - |
-| Decisions đã quyết định | `TRACKER.md` | `## Decision Log` |
-| Resume công việc dở | `HANDOFF.json` | - |
+| Past decisions | `TRACKER.md` | `## Decision Log` |
+| Resume in-progress work | `HANDOFF.json` | - |
 | Package structure | `PROJECT-META.md` | `## Package Structure` |
 | File headers | `PROJECT-META.md` | `## File Headers` |
 
 ## Context Loading Strategy
 
-### Minimal Context (cho quick tasks)
+### Minimal Context (for quick tasks)
 ```
-Chỉ đọc:
-1. AI-GUIDE.md (file này)
+Read only:
+1. AI-GUIDE.md (this file)
 2. TRACKER.md → Current State
-3. File cụ thể liên quan đến task
+3. The specific file related to the task
 ```
 
-### Standard Context (cho coding tasks)
+### Standard Context (for coding tasks)
 ```
-Đọc theo thứ tự:
-1. AI-GUIDE.md (file này)
-2. TRACKER.md → biết đang ở đâu
-3. PROJECT-CONTEXT.md → <product_vision> + phased scope (đọc TRƯỚC khi khóa thiết kế chi tiết)
-4. ROADMAP.md → skim phases sau phase hiện tại, rồi task hiện tại
+Read in order:
+1. AI-GUIDE.md (this file)
+2. TRACKER.md → know where you are
+3. PROJECT-CONTEXT.md → <product_vision> + phased scope (read BEFORE locking detailed design)
+4. ROADMAP.md → skim phases after current phase, then current task
 5. SYSTEM-RULES.md → coding rules
-6. Schema file nếu cần
+6. Schema file if needed
 ```
 
-### Full Context (cho architecture decisions)
+### Full Context (for architecture decisions)
 ```
-Đọc theo thứ tự:
+Read in order:
 1. AI-GUIDE.md + TRACKER.md
-2. PROJECT-CONTEXT.md → domain + <product_vision> (đầy đủ)
+2. PROJECT-CONTEXT.md → domain + <product_vision> (complete)
 3. ROADMAP.md → phases + tasks
 4. ARCHITECTURE.md
 5. SYSTEM-RULES.md
-6. Brainstorm session gốc (nếu cần rationale chi tiết)
+6. Original brainstorm session (if detailed rationale needed)
 ```
 
-### Product vision & phase planning (trước khi “lock” architecture)
+### Product vision & phase planning (before "locking" architecture)
 
-- Trước task implementation sâu hoặc quyết định kiến trúc lớn: đọc phần `<product_vision>` và phase goals trong `ROADMAP.md` **cùng lúc** với task hiện tại.
+- Before deep implementation tasks or major architecture decisions: read `<product_vision>` and phase goals in `ROADMAP.md` **together** with the current task.
 
 ## File Relationships
 
 ```
-AI-GUIDE.md (đọc đầu tiên)
+AI-GUIDE.md (read first)
      │
-     ├── TRACKER.md (state hiện tại)
+     ├── TRACKER.md (current state)
      │      └── points to → current phase in ROADMAP.md
      │
      ├── PROJECT-CONTEXT.md (domain + <product_vision> / phased scope)
@@ -102,24 +102,24 @@ AI-GUIDE.md (đọc đầu tiên)
 
 Full guidelines: `SYSTEM-RULES.md#comment_standards`
 
-## Khi Nào Cần Đọc Lại
+## When to Re-read
 
-| Trigger | Cần refresh |
-|---------|-------------|
-| Bắt đầu session mới | `TRACKER.md`, `HANDOFF.json` |
-| Chuyển phase | `ROADMAP.md` section của phase mới |
-| Gặp lỗi architecture | `ARCHITECTURE.md`, `SYSTEM-RULES.md` |
-| Không rõ business rule | `PROJECT-CONTEXT.md` |
-| Cần quyết định mới | `TRACKER.md` → Decision Log |
+| Trigger | Refresh |
+|---------|---------|
+| Starting a new session | `TRACKER.md`, `HANDOFF.json` |
+| Switching phases | `ROADMAP.md` section for the new phase |
+| Encountering architecture issues | `ARCHITECTURE.md`, `SYSTEM-RULES.md` |
+| Unclear business rule | `PROJECT-CONTEXT.md` |
+| Need to make a new decision | `TRACKER.md` → Decision Log |
 
 ## Commands Reference
 
-| Command | Dùng khi |
-|---------|----------|
-| `/vp-status` | Xem progress nhanh |
-| `/vp-auto` | Chạy autonomous |
-| `/vp-pause` | Dừng, lưu state |
-| `/vp-resume` | Tiếp tục từ pause |
-| `/vp-evolve` | Thêm features/milestone mới |
+| Command | When to use |
+|---------|-------------|
+| `/vp-status` | Quick progress view |
+| `/vp-auto` | Run autonomous execution |
+| `/vp-pause` | Stop and save state |
+| `/vp-resume` | Continue from pause |
+| `/vp-evolve` | Add features / start new milestone |
 | `/vp-docs` | Generate documentation |
-| `/vp-task` | Quản lý task thủ công |
+| `/vp-task` | Manage tasks manually |
