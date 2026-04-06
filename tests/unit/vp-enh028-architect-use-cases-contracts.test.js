@@ -23,11 +23,11 @@ describe('ENH-028 Architect Design Mode — User Use Cases page', () => {
     expect(content).toMatch(/Actor|actor|👤|subgraph/i);
   });
 
-  test('templates/architect/user-use-cases.html: Use Case List table with ID, Actor, Priority columns', () => {
+  test('templates/architect/user-use-cases.html: Use Case List table with ID, Actor, Phase columns', () => {
     const content = read('templates/architect/user-use-cases.html');
     expect(content).toMatch(/Use Case/);
     expect(content).toMatch(/Actor/);
-    expect(content).toMatch(/Priority/);
+    expect(content).toMatch(/Phase/);
     expect(content).toMatch(/UC-00/);
   });
 

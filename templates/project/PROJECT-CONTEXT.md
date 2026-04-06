@@ -23,19 +23,15 @@
 <product_vision>
 ## Product vision & phased scope
 
-> Aligns with **`ROADMAP.md` → Post-MVP / Product horizon** and brainstorm tier tags `(MVP)` / `(Post-MVP)` / `(Future)`.
+### Project scope
 
-### MVP boundary (ship first)
+{{PROJECT_SCOPE}}
 
-{{MVP_BOUNDARY}}
-
-### Post-MVP themes
-
-{{POST_MVP_VISION}}
-
-### Future / exploratory north star
-
-{{FUTURE_VISION}}
+### Phase overview
+| Phase | Goals | Key features |
+|-------|-------|--------------|
+| Phase 1 | {{PHASE_1_GOAL}} | {{PHASE_1_FEATURES}} |
+| Phase 2 | {{PHASE_2_GOAL}} | {{PHASE_2_FEATURES}} |
 
 ### Anti-goals & explicit non-scope
 

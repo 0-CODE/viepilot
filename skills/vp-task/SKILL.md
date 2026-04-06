@@ -50,7 +50,7 @@ Commands:
 - /vp-task show 3
 - /vp-task start 3
 - /vp-task done 3
-- /vp-task skip 3 --reason "Not needed for MVP"
+- /vp-task skip 3 --reason "Not needed for Phase 1"
 - /vp-task retry 3
 - /vp-task rollback 3
 ```

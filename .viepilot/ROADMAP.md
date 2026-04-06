@@ -1463,8 +1463,9 @@
 | 43. Architect Design Mode + crystallize Step 1C (FEAT-011) | ✅ Complete | 8 | 8 | 100% |
 | 44. Architect ERD + User Use Cases (ENH-027 + ENH-028) | ✅ Complete | 9 | 9 | 100% |
 | 45. Architect System/Sequence/Deployment/APIs (ENH-029) | ✅ Complete | 11 | 11 | 100% |
+| 46. Remove MVP/Post-MVP concept — phases+tasks only (ENH-030) | ✅ Complete | 10 | 10 | 100% |
 
-**Total (to date)**: 61 tasks done (phases 33–45); 0 tasks planned
+**Total (to date)**: 71 tasks done (phases 33–46)
 
 ---
 
@@ -1486,5 +1487,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-04 (Phase **45** ENH-029 complete → v1.13.0; all M1.29 phases done)
+- Last Updated: 2026-04-06 (Phase **46** ENH-030 shipped → v1.14.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

@@ -57,9 +57,9 @@ describe('ENH-027 Architect Design Mode — ERD page', () => {
     expect(content).toMatch(/Database Schema/i);
   });
 
-  test('skills/vp-brainstorm/SKILL.md: version 1.0.0 and ENH-027 note', () => {
+  test('skills/vp-brainstorm/SKILL.md: version and ENH-027 note', () => {
     const content = read('skills/vp-brainstorm/SKILL.md');
-    expect(content).toMatch(/version:\s*1\.0\.0/);
+    expect(content).toMatch(/version:\s*\d+\.\d+\.\d+/);
     expect(content).toMatch(/ENH-027/);
     expect(content).toMatch(/erd\.html/);
   });

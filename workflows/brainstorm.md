@@ -48,7 +48,7 @@ Nếu user chọn tiếp tục:
 2. Tóm tắt nội dung đã thảo luận
 3. Xác định các open questions / action items còn lại
 4. Tiếp tục từ điểm dừng
-5. Nếu session đã có section **`## Product horizon`**: tóm tắt nhanh MVP / Post-MVP / Future hiện có; mọi cập nhật sau đó phải **merge** vào section đó (không xóa im lặng, không làm mất tier tags) trừ khi user chủ động yêu cầu thu hẹp/mở rộng scope.
+5. Nếu session đã có section **`## Phases`**: tóm tắt nhanh các phase hiện có; mọi cập nhật sau đó phải **merge** vào section đó (không xóa im lặng) trừ khi user chủ động yêu cầu thu hẹp/mở rộng scope.
 </step>
 
 <step name="brainstorm_mode">
@@ -88,12 +88,7 @@ Gợi ý các topics để brainstorm:
    - Monitoring
    - Scaling
 
-6. **Product horizon (MVP vs Post-MVP vs Future)** — **bắt buộc duy trì trong session file** khi user thảo luận bất kỳ tính năng / milestone nào:
-   - **Mục tiêu**: tách rõ phạm vi ship đầu tiên với tầm nhìn sau MVP để `/vp-crystallize` không “mất” ý tưởng dài hạn.
-   - **Quy ước tag** (đặt ở cuối dòng bullet): `(MVP)` | `(Post-MVP)` | `(Future)`.
-   - **Non-goals for MVP**: những gì cố tình *không* làm ở bản đầu (tránh hiểu nhầm là quên).
-   - **Deferred capabilities**: tính năng đã thống nhất nhưng **lùi sau MVP** — ghi rõ để crystallize map vào roadmap horizon.
-   - Nếu sản phẩm **single-release** (không có post-MVP): ghi một dòng explicit trong session, ví dụ: `**Scope**: single-release only — no deferred epics.`
+6. **Phase assignment (ENH-030):** trong quá trình brainstorm, mỗi feature/capability được gán vào một **phase** cụ thể — Phase 1, Phase 2, Phase 3... Không dùng tier MVP/Post-MVP/Future. Nếu user chưa nêu phase, hỏi: “Feature này bạn muốn đưa vào Phase mấy?”
 
 ### Interactive Q&A
 Cho mỗi topic:
@@ -201,7 +196,7 @@ Kích hoạt Architect Design Mode để tôi tạo HTML visualization không?
   decisions.html          # ADR log: Date | Decision | Options | Chosen | Rationale | Status
   tech-stack.html         # Layer-by-layer: frontend, backend, infra, data, DevOps
   tech-notes.html         # 3 columns: Assumptions | Risks | Open Questions
-  feature-map.html        # Features với tags: layer, phase, MVP/Post-MVP/Future, status
+  feature-map.html        # Features với tags: layer, phase, priority, status
   erd.html                # Database ERD: entities, attributes, relationships (erDiagram) — ENH-027
   user-use-cases.html     # User Stories / Use Cases / Actors (flowchart TD) — ENH-028
   sequence-diagram.html   # Per-scenario sequences (sequenceDiagram) — ENH-029
@@ -449,7 +444,7 @@ Tham chiếu user: `docs/user/features/ui-direction.md`.
 - Tóm tắt decisions
 - List action items
 - Note open questions
-- Nếu topic thêm/sửa capability: cập nhật **`## Product horizon`** trong bản nháp session (hoặc nhắc user lưu `/save`) với tag tier phù hợp
+- Nếu topic thêm/sửa capability: cập nhật **`## Phases`** trong bản nháp session (hoặc nhắc user lưu `/save`) với phase phù hợp
 </step>
 
 <step name="project_meta_intake">
@@ -461,7 +456,7 @@ Normative contract: **`docs/dev/global-profiles.md`** (`~/.viepilot/profiles/`, 
 
 Chạy **trước** khi ghi session ở trạng thái **`Completed`** hoặc khi user gõ **`/end`**, **nếu**:
 
-1. **Scope locked**: `## Product horizon` trong bản nháp session đã có nội dung thật (không chỉ placeholder) **hoặc** user vừa xác nhận bằng lời đã chốt scope MVP / horizon.
+1. **Scope locked**: `## Phases` trong bản nháp session đã có nội dung thật (tất cả features đã được gán phase) **hoặc** user vừa xác nhận bằng lời đã chốt scope.
 2. **Binding thiếu**: không tồn tại `.viepilot/META.md` **hoặc** frontmatter thiếu `viepilot_profile_id` hợp lệ (slug `kebab-case` theo contract).
 
 **Bỏ qua mặc định** (skip intake) khi `.viepilot/META.md` đã có `viepilot_profile_id` hợp lệ — chỉ hỏi nhanh: *“Giữ profile `{id}`? Đổi profile?”*; nếu giữ → sang bước Save.
@@ -479,7 +474,7 @@ Chạy **trước** khi ghi session ở trạng thái **`Completed`** hoặc khi
 
 Với mỗi câu hỏi:
 
-1. Đưa **Proposal** ngắn (1–2 câu) suy ra từ session + Product horizon.
+1. Đưa **Proposal** ngắn (1–2 câu) suy ra từ session + phase plan.
 2. User trả lời **Accept proposal** / **Edit** (ghi nhận bản user).
 3. Sang câu tiếp.
 
@@ -533,29 +528,16 @@ Tạo/cập nhật file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - **Participants**: User, Claude
 - **Status**: In Progress | Completed
 
-## Product horizon
+## Phases
 
-> Single source for **MVP / Post-MVP / Future** scope. Bắt buộc giữ section này khi tiếp tục session; crystallize đọc để không bỏ sót post-MVP.
+### Phase 1
+- {Feature / capability}
 
-### MVP (ship first)
-- Capability / theme — `(MVP)`
-- ...
+### Phase 2
+- {Feature / capability}
 
-### Post-MVP (after first release)
-- Capability / theme — `(Post-MVP)`
-- ...
-
-### Future / exploratory
-- Idea — `(Future)`
-- ...
-
-### Non-goals for MVP
-- ...
-
-### Deferred capabilities (from MVP)
-- ...
-
-**Scope note (optional):** Nếu không có post-MVP: `Single-release product — no separate horizon epics.`
+### Phase 3 (và tiếp theo)
+- {Feature / capability}
 
 ## Project meta intake (FEAT-009)
 
@@ -665,7 +647,7 @@ Next step: /vp-crystallize
 This will transform your brainstorm into:
 - Project structure
 - Architecture documents
-- Development roadmap (MVP phases + **Post-MVP / horizon** when documented above)
+- Development roadmap (phases + tasks from `## Phases` section)
 ```
 </step>
 
@@ -687,7 +669,7 @@ User có thể dùng các lệnh trong phiên brainstorm:
 
 <success_criteria>
 - [ ] Session file created với đầy đủ sections
-- [ ] `## Product horizon` present với MVP / Post-MVP / Future (hoặc explicit single-release statement)
+- [ ] `## Phases` present với ít nhất Phase 1 có nội dung thật
 - [ ] Decisions có rationale
 - [ ] Open questions tracked
 - [ ] Action items captured

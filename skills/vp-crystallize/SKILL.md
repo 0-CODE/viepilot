@@ -1,7 +1,7 @@
 ---
 name: vp-crystallize
 description: "Chuyển đổi brainstorm thành executable artifacts"
-version: 0.7.0
+version: 0.8.0
 ---
 
 <cursor_skill_adapter>
@@ -41,7 +41,7 @@ Chuyển đổi brainstorm sessions thành structured artifacts để AI có th�
 ├── architecture/        # ENH-022: *.mermaid sidecars (mirror fenced diagrams)
 ├── PROJECT-CONTEXT.md   # Domain knowledge + `<product_vision>` (phased scope)
 ├── SYSTEM-RULES.md      # Coding rules & standards
-├── ROADMAP.md           # MVP phases & tasks + **Post-MVP / Product horizon** block (mandatory)
+├── ROADMAP.md           # Phases & tasks in order from phases_inventory
 ├── TRACKER.md           # Progress tracking
 ├── HANDOFF.json         # Machine-readable state
 └── schemas/             # Database, API, Kafka schemas
@@ -99,8 +99,8 @@ Ask user for (confirm proposals từ profile nếu có):
 - Load all brainstorm sessions
 - Extract: decisions, architecture, schemas, features
 - Extract selected tech stacks
-- **Product horizon (ENH-014):** parse each session **`## Product horizon`**; build consolidated **horizon inventory**; record **single-release** mode when stated; run **validation gate** (missing section vs multi-release discussion → stop and ask; tier conflicts → stop) — full contract: `workflows/crystallize.md` Step 1
-- Validate completeness (tech stack, features, schema/API clarity, **horizon gate**)
+- **Phase assignment (ENH-030):** parse `## Phases` từ brainstorm sessions; build `phases_inventory`; run phase assignment gate (mọi feature phải có phase — full contract: `workflows/crystallize.md` Step 1)
+- Validate completeness (tech stack, features, schema/API clarity, **phase assignment gate**)
 
 ### Step 1A: Consume UI direction (if present)
 - Read `.viepilot/ui-direction/{session-id}/notes.md` first, then `style.css`, then HTML:
@@ -158,7 +158,7 @@ Ask user for (confirm proposals từ profile nếu có):
 - Business rules
 - Conventions
 - Constraints
-- Fill **`<product_vision>`** from template (`templates/project/PROJECT-CONTEXT.md`): MVP boundary, Post-MVP / Future themes, anti-goals — aligned with brainstorm horizon + Step 1 inventory
+- Fill **`<product_vision>`** from template (`templates/project/PROJECT-CONTEXT.md`): Project scope, Phase overview, anti-goals — aligned with brainstorm `## Phases` + Step 1 phases_inventory
 
 ### Step 6: Generate SYSTEM-RULES.md
 - Architecture rules
@@ -171,9 +171,9 @@ Ask user for (confirm proposals từ profile nếu có):
 - Stack-specific rules from cache
 
 ### Step 7: Generate ROADMAP.md
-- Use `templates/project/ROADMAP.md` — **executable MVP phases** first (tasks, criteria, verification)
-- **Mandatory `## Post-MVP / Product horizon`:** epic-level deferred work from horizon inventory **or** explicit single-release statement (no silent omission)
-- **Self-check before finalize:** non-empty horizon inventory must appear in ROADMAP; if mismatch → stop and ask user — see `workflows/crystallize.md` Step 7
+- Use `templates/project/ROADMAP.md` — phases in order (Phase 1, Phase 2...) from `phases_inventory`; no Post-MVP block
+- Each phase: tasks, acceptance criteria, verification commands
+- **Self-check before finalize:** all phases from phases_inventory appear in ROADMAP; if mismatch → stop and ask user — see `workflows/crystallize.md` Step 7
 
 ### Step 8: Generate schemas/
 - database-schema.sql
@@ -207,9 +207,9 @@ Ask user for (confirm proposals từ profile nếu có):
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md has complete metadata
 - [ ] SYSTEM-RULES.md has all standards
-- [ ] Step 1 horizon extracted or explicit single-release recorded; validation gate satisfied
+- [ ] Step 1 phase assignment gate satisfied (phases_inventory recorded, all features assigned)
 - [ ] PROJECT-CONTEXT.md includes populated **`<product_vision>`** (template placeholders filled from brainstorm)
-- [ ] ROADMAP.md has MVP phases with tasks **and** mandatory Post-MVP / horizon block (or explicit single-release statement)
+- [ ] ROADMAP.md has phases with tasks in order from phases_inventory
 - [ ] TRACKER.md initialized
 - [ ] Project files created
 - [ ] Git committed

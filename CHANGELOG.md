@@ -7,18 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned
+## [1.14.0] - 2026-04-06
 
-- **ENH-030** (Phase 46 → 1.14.0): Remove MVP/Post-MVP concept — crystallize to complete project with phases+tasks only
-  - `brainstorm.md`: remove Product Horizon section + ENH-014 rule; add Phase assignment (ENH-030) with `## Phases` session template
-  - `crystallize.md`: remove Horizon validation gate; add Phase assignment gate + phases_inventory
-  - `feature-map.html`: MVP/Post-MVP/Future badges → Phase 1/Phase 2/Phase 3
-  - `style.css`: `.badge-mvp/.badge-post-mvp/.badge-future` → `.badge-phase-1/.badge-phase-2/.badge-phase-3`
-  - `user-use-cases.html`, `index.html`: remove MVP badge references
-  - `templates/project/PROJECT-CONTEXT.md`: MVP boundary → Project scope + Phase overview
-  - `templates/project/ROADMAP.md`: remove Post-MVP/horizon block
-  - `templates/project/AI-GUIDE.md`: remove MVP/horizon reading instructions
-  - `skills/vp-brainstorm/SKILL.md`, `vp-crystallize/SKILL.md`, `vp-task/SKILL.md`: update docs
+### Changed (ENH-030 — Phase 46)
+
+- **Remove MVP/Post-MVP/Future concept** — all projects now use phase-based planning only:
+  - `workflows/brainstorm.md`: replaced `## Product horizon` section + ENH-014 rule with Phase assignment rule (ENH-030) and `## Phases` session template
+  - `workflows/crystallize.md`: replaced Horizon validation gate with Phase assignment gate; Step 7 ROADMAP generation now uses `phases_inventory` (no Post-MVP block)
+  - `templates/architect/feature-map.html`: mindmap nodes + badge classes updated — MVP/Post-MVP/Future → Phase 1/Phase 2/Phase 3
+  - `templates/architect/style.css`: `.badge-mvp/.badge-post-mvp/.badge-future` → `.badge-phase-1/.badge-phase-2/.badge-phase-3`
+  - `templates/architect/user-use-cases.html`: Priority column → Phase; badge-mvp/post-mvp/future → badge-phase-1/2/3
+  - `templates/architect/index.html`: feature map subtitle updated (no MVP/Post-MVP text)
+  - `templates/project/PROJECT-CONTEXT.md`: MVP boundary + Post-MVP themes sections replaced with Project scope + Phase overview table
+  - `templates/project/ROADMAP.md`: Post-MVP / Product horizon block removed; maintenance note updated
+  - `templates/project/AI-GUIDE.md`: all MVP/horizon reading instructions replaced with phase-centric equivalents
+  - `skills/vp-brainstorm/SKILL.md` v1.1.0: phase assignment rule replaces product horizon rule
+  - `skills/vp-crystallize/SKILL.md` v0.8.0: phase assignment gate replaces horizon gate
+  - `skills/vp-task/SKILL.md`: example updated (no MVP reference)
+
+### Tests
+- Added `tests/unit/vp-enh030-no-mvp-contracts.test.js` (10 tests) — all pass (372 total)
 
 ## [1.13.0] - 2026-04-04
 

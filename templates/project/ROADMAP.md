@@ -51,33 +51,7 @@
 
 ---
 
-## Post-MVP / Product horizon
-
-> **Mandatory block (crystallize):** Populate from brainstorm **`## Product horizon`**, or state **single-release** explicitly. Tier tags: `(MVP)` ship first; `(Post-MVP)` after first release; `(Future)` exploratory.
-
-### Horizon mode
-
-{{HORIZON_MODE_LINE}}
-
-### Post-MVP themes (epic-level)
-
-{{POST_MVP_EPICS}}
-
-### Future / exploratory
-
-{{FUTURE_EPICS}}
-
-### Deferred capabilities (from MVP)
-
-{{DEFERRED_CAPABILITIES}}
-
-### Non-goals for MVP (reference)
-
-{{MVP_NON_GOALS_ROADMAP}}
-
----
-
 ## Notes
 - Created: {{DATE}}
 - Last Updated: {{DATE}}
-- **Horizon:** Keep Post-MVP / Future content in sync with `PROJECT-CONTEXT.md` *Product vision & phased scope* after crystallize.
+- **Phases:** Keep phase status rows up to date after each phase completes.

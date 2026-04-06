@@ -104,25 +104,22 @@ For each session file:
 3. Extract database schemas
 4. Extract features/requirements
 5. Extract tech stack choices
-6. **Product horizon (mandatory)** — parse `## Product horizon` when present (contract: `workflows/brainstorm.md`):
-   - Classify bullets under **MVP (ship first)**, **Post-MVP (after first release)**, and **Future / exploratory** using trailing tags `(MVP)` / `(Post-MVP)` / `(Future)` when present.
-   - Capture **Non-goals for MVP** and **Deferred capabilities (from MVP)** as first-class lists (these feed roadmap horizon and architecture constraints).
-   - Record **extensibility / platform notes** that imply deferred work (e.g., plugin model later, multi-tenant after MVP) if written in horizon or architecture sections.
-   - If the session states **single-release only** / **no deferred epics** (see brainstorm scope note), record `horizon_mode: single_release` in working notes for Step 7.
+6. **Phase assignment** — parse `## Phases` from brainstorm session(s):
+   - Collect features/capabilities listed under each `### Phase N` heading.
+   - If a feature has no phase assigned → ask user which phase before continuing.
+   - Record `phases_inventory: { phase_1: [...], phase_2: [...], ... }` in working notes.
 
-**Consolidate across sessions** into a single **horizon inventory** (dedupe by capability name; if the same capability appears under conflicting tiers → stop and ask the user which tier wins).
-
-**Horizon validation gate (before leaving Step 1):**
-- [ ] Every brainstorm file was checked for `## Product horizon` **or** an explicit in-session single-release / no-deferred statement.
-- [ ] If `## Product horizon` is missing and the session still discusses releases beyond MVP without a single-release statement → stop and ask the user to update the session (e.g. `/vp-brainstorm` save) or confirm **single-release only** for the whole project.
-- [ ] Either **horizon inventory is non-empty** (Post-MVP/Future/deferred items captured) **or** **single-release** is explicitly recorded — no silent default.
+**Phase assignment gate (before leaving Step 1):**
+- [ ] Every brainstorm session checked for `## Phases` section OR features explicitly assigned during conversation.
+- [ ] All features have a phase number assigned — no unassigned features.
+- [ ] `phases_inventory` recorded in working notes with at least Phase 1 non-empty.
 
 Validate completeness:
 - [ ] Tech stack defined
 - [ ] Core features identified
 - [ ] Database schema exists
 - [ ] API requirements clear
-- [ ] Product horizon processed per gate above (inventory or explicit single-release)
+- [ ] Phase assignment gate satisfied (phases_inventory recorded)
 
 If gaps found → ask user to clarify or return to brainstorm.
 </step>
@@ -297,7 +294,7 @@ If `.viepilot/architect/` exists with at least one session directory:
    | Decision | Choice | Rationale |
    ```
    Note: `sequence-diagram.html` is intentionally excluded from crystallize extraction — per-scenario diagrams are not architecture artifacts (they live in Architect Mode workspace only).
-7. **`feature-map.html`** → cross-reference with brainstorm `## Product Horizon` (MVP tiers); if discrepancies found (feature in HTML not in horizon, or vice versa) → list them for user to confirm.
+7. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
 8. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
@@ -326,7 +323,7 @@ Create `.viepilot/AI-GUIDE.md` using template:
 Customize with:
 - Project-specific file references
 - **ViePilot profile (FEAT-009):** Nếu Step 0 đặt `profile_resolved` thành đường dẫn hợp lệ, thêm mục **Quick context** ghi `profile_id`, đường dẫn file profile, và nhắc đọc file đó cho **tone/branding** khi viết user-facing text. Nếu `profile_resolved: none`, ghi một dòng: chưa bind profile global.
-- Context loading strategy based on project size — **preserve template ordering** where `PROJECT-CONTEXT.md` **`<product_vision>`** and **`ROADMAP.md` horizon** (Post-MVP / Future) are read **before** deep implementation / architecture lock; state this explicitly in the generated `AI-GUIDE.md` if you trim sections
+- Context loading strategy based on project size — **preserve template ordering** where `PROJECT-CONTEXT.md` **`<product_vision>`** and **`ROADMAP.md` phases** are read **before** deep implementation / architecture lock; state this explicitly in the generated `AI-GUIDE.md` if you trim sections
 - Quick lookup for project-specific terms
 - Fast stack lookup section:
   - Read `.viepilot/STACKS.md`
@@ -474,23 +471,17 @@ Include:
 Create `.viepilot/ROADMAP.md` using template:
 `@$HOME/.cursor/viepilot/templates/project/ROADMAP.md`
 
-From brainstorm features/MVP breakdown:
-1. Create **executable MVP phases** (what `/vp-auto` can run next; near-term delivery only).
+From brainstorm `phases_inventory`:
+1. Generate phases in order: Phase 1, Phase 2, Phase 3... from `phases_inventory`.
 2. For each phase:
    - Define goal
    - Break into tasks
    - Set acceptance criteria
    - Add verification checkpoints
    - Estimate complexity (S/M/L/XL)
-3. Define dependencies between MVP phases.
-4. **Post-MVP / product horizon (mandatory section in `.viepilot/ROADMAP.md`):**
-   - After MVP phases, always add a dedicated block (heading e.g. `## Post-MVP / Product horizon` or match the project template’s equivalent) that is **never omitted**:
-     - If Step 1 recorded **single-release** / no deferred epics: state explicitly *e.g.* **Single-release scope — no separate post-MVP epics** and that deferred capabilities are none by confirmation (do not invent future work).
-     - Otherwise: summarize **horizon inventory** items as **epic-level** entries (dependencies, rough sequencing OK; full task breakdown optional).
-   - Where a future epic depends on MVP deliverables, note **dependency links** back to the MVP phase(s) that unlock it.
-5. **ROADMAP self-check before finalize:**
-   - If Step 1 **horizon inventory** is non-empty but the draft ROADMAP **drops** those items or lacks the horizon block → **stop** and ask the user to reconcile (do not ship a roadmap that silently omits post-MVP content from brainstorm).
-   - If brainstorm contained Post-MVP ideas only in free text without `## Product horizon` → you should already have stopped in Step 1; do not proceed to commit ROADMAP.
+3. Define dependencies between phases.
+4. Each phase: tasks, acceptance criteria, verification commands.
+5. No Post-MVP / horizon block needed — all work is already in phases.
 </step>
 
 <step name="generate_schemas">
@@ -637,11 +628,11 @@ Note: global stack cache at `~/.viepilot/stacks/` is machine-level knowledge and
 - [ ] All metadata collected
 - [ ] Official research completed for each selected stack
 - [ ] Global stack cache written under ~/.viepilot/stacks/{stack}/
-- [ ] Step 1: product horizon extracted **or** explicit single-release recorded; validation gate satisfied
+- [ ] Step 1: phase assignment gate satisfied (phases_inventory recorded, all features assigned)
 - [ ] All artifacts created in .viepilot/
 - [ ] PROJECT-META.md complete
 - [ ] SYSTEM-RULES.md has all standards
-- [ ] ROADMAP.md has MVP phases with tasks **and** mandatory Post-MVP / horizon block (or explicit single-release statement)
+- [ ] ROADMAP.md has phases with tasks in order from phases_inventory
 - [ ] Phase directories created
 - [ ] Project files created
 - [ ] Git committed

@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **45** — ✅ Complete (**ENH-029** → **1.13.0**)
-- **Last Completed Phase**: **45** — ✅ Complete (**ENH-029** → **1.13.0**)
+- **Current Phase**: **46** — ✅ Complete (**ENH-030** → **1.14.0**)
+- **Last Completed Phase**: **46** — ✅ Complete (**ENH-030** → **1.14.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-04 — Phase 45 shipped (ENH-029 → **v1.13.0**)
+- **Last Activity**: 2026-04-06 — Phase 46 shipped (ENH-030 — remove MVP/Post-MVP concept → 1.14.0)
 
 ## Progress Overview
 ```
@@ -62,19 +62,21 @@ Suggested next version: per release checklist
 | 2026-04-04 | Phase 45 planned: ENH-029 (11 tasks), target **1.13.0** | `/vp-evolve` | M1.29 |
 | 2026-04-04 | Phase 44 shipped: ENH-027 + ENH-028 (erd.html + user-use-cases.html + 9 nav updates + crystallize + tests) — **1.12.0** | `/vp-auto` | M1.29 |
 | 2026-04-04 | Phase 45 shipped: ENH-029 (sequence-diagram.html + deployment.html + apis.html + 12-page nav + style.css badges + brainstorm/crystallize/SKILL.md + tests) — **1.13.0** | `/vp-auto` | M1.29 |
+| 2026-04-06 | Phase 46 shipped: ENH-030 (remove MVP/Post-MVP concept — brainstorm/crystallize/templates/skills updated — phases+tasks only) — **1.14.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-All planned phases complete. Consider `/vp-docs` or `/vp-request` for new features.
+**`/vp-docs`** — Phase 46 complete; consider running `/vp-docs` to update documentation or `/vp-request` for next enhancement
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-029 | 🔧 | Architect: System C4 + Sequence + Deployment + APIs pages | high | new (→ Phase 45) |
+| ENH-030 | 🔧 | Remove MVP/Post-MVP concept — crystallize to complete project with phases+tasks only | high | ✅ done (**1.14.0**) |
+| ENH-029 | 🔧 | Architect: System C4 + Sequence + Deployment + APIs pages | high | ✅ done (**1.13.0**) |
 | ENH-028 | 🔧 | Architect Design Mode: User Use Cases page | high | new (→ Phase 44) |
 | ENH-027 | 🔧 | Architect Design Mode: ERD page cho Database Entity & Relationship | high | new (→ Phase 44) |
 | FEAT-011 | ✨ | Architect Design Mode: collaborative arch brainstorm + HTML generation + crystallize integration | high | ✅ done (**1.11.0**) |
