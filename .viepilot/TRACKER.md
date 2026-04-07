@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **50** — ✅ Complete (**ENH-033** → **1.18.0**)
-- **Last Completed Phase**: **50** — ✅ Complete (**ENH-033** → **1.18.0**)
+- **Current Phase**: **51** — ✅ Complete (**BUG-010** → **1.18.1**)
+- **Last Completed Phase**: **51** — ✅ Complete (**BUG-010** → **1.18.1**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-07 — Phase 50 shipped (ENH-033 — Architect HTML item IDs + Approve/Edit buttons → 1.18.0)
+- **Last Activity**: 2026-04-07 — Phase 51 shipped (BUG-010 — diagram card data-arch-id fix → 1.18.1)
 
 ## Progress Overview
 ```
@@ -76,19 +76,20 @@ Suggested next version: per release checklist
 | 2026-04-07 | Phase 50 shipped: ENH-033 (architect-actions.js + style.css + 11 templates + brainstorm.md isolation rule + 50 contract tests) — **1.18.0** | `/vp-auto` | M1.29 |
 | 2026-04-07 | BUG-010 logged: ENH-033 diagram cards missing data-arch-id (6 pages, 9 diagrams) | `/vp-request` | Backlog |
 | 2026-04-07 | Phase 51 planned: BUG-010 (3 tasks), patch target **1.18.1** | `/vp-evolve` | M1.29 |
+| 2026-04-07 | Phase 51 shipped: BUG-010 (9 diagram card data-arch-id attrs across 6 templates + 9 contract tests) — **1.18.1** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 51 planned (BUG-010 → 1.18.1); run `/vp-auto` to fix missing data-arch-id on diagram cards
+**`/vp-evolve`** — All phases complete; run `/vp-evolve` to plan new features or `/vp-docs` for documentation
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | new |
+| BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |
 | ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | ✅ done (**1.18.0**) |
 | BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
 | ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | ✅ done (**1.17.0**) |

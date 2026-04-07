@@ -1,27 +1,27 @@
 {
   "milestone": "M1.29",
   "milestone_name": "All planned phases complete",
-  "phase": 50,
-  "phase_name": "enh033-architect-item-actions",
+  "phase": 51,
+  "phase_name": "bug010-diagram-card-ids",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-04-07T00:00:00Z",
   "version": {
-    "current": "1.18.0",
+    "current": "1.18.1",
     "next": null
   },
   "progress": {
-    "phases_total": 50,
-    "phases_completed": 50,
-    "tasks_total": 190,
-    "tasks_completed": 190,
+    "phases_total": 51,
+    "phases_completed": 51,
+    "tasks_total": 193,
+    "tasks_completed": 193,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 50 ENH-033 shipped: architect-actions.js + style.css + 11 HTML templates (data-arch-id) + brainstorm.md isolation rule + 50 contract tests → 1.18.0",
-      "All 50 planned phases complete",
+      "Phase 51 BUG-010 shipped: 9 diagram cards across 6 templates (architecture ARCH-DIAG1/2, data-flow DF-DIAG1/2, erd ERD-DIAG1, use-cases UC-DIAG1, sequence SEQ-DIAG1/2, deployment DEP-DIAG1) now have data-arch-id + data-arch-title → 1.18.1",
+      "All 51 planned phases complete",
       "Next: /vp-evolve to plan new features or /vp-docs for documentation"
     ]
   },

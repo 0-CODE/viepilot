@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed (BUG-010 — Phase 51 — target 1.18.1)
-- **Approve/Edit buttons missing on Mermaid diagram cards:** add `data-arch-id` + `data-arch-title` to all 9 diagram cards across 6 pages (architecture ARCH-DIAG1/2, data-flow DF-DIAG1/2, erd ERD-DIAG1, use-cases UC-DIAG1, sequence SEQ-DIAG1/2, deployment DEP-DIAG1)
+## [1.18.1] - 2026-04-07
+
+### Fixed (BUG-010 — Phase 51)
+- **Approve/Edit buttons missing on Mermaid diagram cards:** added `data-arch-id` + `data-arch-title` to all 9 diagram cards across 6 pages (architecture ARCH-DIAG1/2, data-flow DF-DIAG1/2, erd ERD-DIAG1, use-cases UC-DIAG1, sequence SEQ-DIAG1/2, deployment DEP-DIAG1)
+
+### Tests
+- Added Test Group 5 to `tests/unit/vp-enh033-architect-item-actions.test.js` (9 new tests) — 525 total
 
 ## [1.18.0] - 2026-04-07
 

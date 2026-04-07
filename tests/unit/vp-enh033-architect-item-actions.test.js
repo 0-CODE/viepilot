@@ -161,3 +161,62 @@ describe('ENH-033 — workflows/brainstorm.md: isolation rule documented', () =>
     expect(content).toMatch(/EDIT.*prompt|receive.*EDIT/i);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test Group 5: BUG-010 — diagram cards have data-arch-id on mermaid wrappers
+// ─────────────────────────────────────────────────────────────────────────────
+describe('BUG-010 — diagram cards: data-arch-id present on mermaid card wrappers', () => {
+  test('architecture.html has ARCH-DIAG1 on C4 Context Diagram card', () => {
+    const src = read('templates/architect/architecture.html');
+    expect(src).toMatch(/data-arch-id="ARCH-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="C4 Context Diagram"/);
+  });
+
+  test('architecture.html has ARCH-DIAG2 on System Diagram card', () => {
+    const src = read('templates/architect/architecture.html');
+    expect(src).toMatch(/data-arch-id="ARCH-DIAG2"/);
+    expect(src).toMatch(/data-arch-title="System Diagram"/);
+  });
+
+  test('data-flow.html has DF-DIAG1 on Primary Request Flow card', () => {
+    const src = read('templates/architect/data-flow.html');
+    expect(src).toMatch(/data-arch-id="DF-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="Primary Request Flow"/);
+  });
+
+  test('data-flow.html has DF-DIAG2 on Event Flow card', () => {
+    const src = read('templates/architect/data-flow.html');
+    expect(src).toMatch(/data-arch-id="DF-DIAG2"/);
+    expect(src).toMatch(/data-arch-title="Event Flow \(Async\)"/);
+  });
+
+  test('erd.html has ERD-DIAG1 on ERD Diagram card', () => {
+    const src = read('templates/architect/erd.html');
+    expect(src).toMatch(/data-arch-id="ERD-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="ERD Diagram"/);
+  });
+
+  test('user-use-cases.html has UC-DIAG1 on Actor/Use Case Diagram card', () => {
+    const src = read('templates/architect/user-use-cases.html');
+    expect(src).toMatch(/data-arch-id="UC-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="Actor \/ Use Case Diagram"/);
+  });
+
+  test('sequence-diagram.html has SEQ-DIAG1 on SEQ-01 card', () => {
+    const src = read('templates/architect/sequence-diagram.html');
+    expect(src).toMatch(/data-arch-id="SEQ-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="SEQ-01: \{Scenario 1 Name\}"/);
+  });
+
+  test('sequence-diagram.html has SEQ-DIAG2 on SEQ-02 card', () => {
+    const src = read('templates/architect/sequence-diagram.html');
+    expect(src).toMatch(/data-arch-id="SEQ-DIAG2"/);
+    expect(src).toMatch(/data-arch-title="SEQ-02: \{Scenario 2 Name\}"/);
+  });
+
+  test('deployment.html has DEP-DIAG1 on Infrastructure Diagram card', () => {
+    const src = read('templates/architect/deployment.html');
+    expect(src).toMatch(/data-arch-id="DEP-DIAG1"/);
+    expect(src).toMatch(/data-arch-title="Infrastructure Diagram"/);
+  });
+});
