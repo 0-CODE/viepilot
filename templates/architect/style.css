@@ -217,3 +217,114 @@ tr:hover td { background: var(--surface-alt); }
   .cols-3, .cols-2 { grid-template-columns: 1fr; }
   .nav-sidebar { display: none; }
 }
+
+/* ── Architect Item Actions (ENH-033) ── */
+/* Item ID badge */
+.arch-id-badge {
+  display: inline-block;
+  font-family: "SF Mono", "Fira Code", ui-monospace, monospace;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  letter-spacing: 0.03em;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Action buttons container */
+.arch-item-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+/* Reveal on row/card hover */
+tr:hover .arch-item-actions,
+.card:hover > .arch-item-actions,
+[data-arch-id]:hover > .arch-item-actions {
+  opacity: 1;
+}
+
+/* Always visible in actions cell */
+.arch-actions-cell .arch-item-actions {
+  opacity: 0;
+}
+tr:hover .arch-actions-cell .arch-item-actions {
+  opacity: 1;
+}
+
+/* Actions column header — minimal width, no label */
+.arch-actions-th {
+  width: 140px;
+  min-width: 140px;
+}
+
+/* Actions column cell */
+.arch-actions-cell {
+  white-space: nowrap;
+  vertical-align: middle;
+  padding: 4px 8px !important;
+}
+
+/* Base button */
+.arch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.6;
+  user-select: none;
+}
+.arch-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Approve button — green tint */
+.arch-btn-approve {
+  background: #16a34a18;
+  color: #4ade80;
+  border-color: #16a34a40;
+}
+.arch-btn-approve:hover {
+  background: #16a34a30;
+  border-color: #16a34a70;
+}
+
+/* Edit button — accent tint */
+.arch-btn-edit {
+  background: #6366f118;
+  color: #a5b4fc;
+  border-color: #6366f140;
+}
+.arch-btn-edit:hover {
+  background: #6366f130;
+  border-color: #6366f170;
+}
+
+/* "Copied!" feedback state */
+.arch-btn.copied {
+  background: #f59e0b20;
+  color: #fbbf24;
+  border-color: #f59e0b50;
+}
+
+/* Light-mode overrides */
+html.light .arch-btn-approve { background: #dcfce7; color: #16a34a; border-color: #bbf7d0; }
+html.light .arch-btn-approve:hover { background: #bbf7d0; }
+html.light .arch-btn-edit { background: #ede9fe; color: #4f46e5; border-color: #c4b5fd; }
+html.light .arch-btn-edit:hover { background: #c4b5fd; }
+html.light .arch-btn.copied { background: #fef9c3; color: #b45309; border-color: #fde68a; }
+html.light .arch-id-badge { background: #f1f5f9; color: #64748b; border-color: #e2e8f0; }

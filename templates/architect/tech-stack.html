@@ -6,7 +6,7 @@
   <title>Tech Stack — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="tech-stack">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -50,42 +50,42 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="TS1">
             <td><strong>Frontend</strong></td>
             <td>{e.g. React + TypeScript}</td>
             <td>{version}</td>
             <td>{rationale}</td>
             <td>{alternatives}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="TS2">
             <td><strong>Backend</strong></td>
             <td>{e.g. Node.js + Express}</td>
             <td>{version}</td>
             <td>{rationale}</td>
             <td>{alternatives}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="TS3">
             <td><strong>Database</strong></td>
             <td>{e.g. PostgreSQL}</td>
             <td>{version}</td>
             <td>{rationale}</td>
             <td>{alternatives}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="TS4">
             <td><strong>Cache</strong></td>
             <td>{e.g. Redis}</td>
             <td>{version}</td>
             <td>{rationale}</td>
             <td>{alternatives}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="TS5">
             <td><strong>Infrastructure</strong></td>
             <td>{e.g. AWS ECS + RDS}</td>
             <td>—</td>
             <td>{rationale}</td>
             <td>{alternatives}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="TS6">
             <td><strong>DevOps</strong></td>
             <td>{e.g. GitHub Actions + Terraform}</td>
             <td>—</td>
@@ -109,5 +109,6 @@
       document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

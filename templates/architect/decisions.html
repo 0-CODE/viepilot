@@ -6,7 +6,7 @@
   <title>Architecture Decisions — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="decisions">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -52,7 +52,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-updated="true" class="updated">
+          <tr data-updated="true" class="updated" data-arch-id="D1">
             <td>D001</td>
             <td>{date}</td>
             <td>{Topic, e.g. "Database choice"}</td>
@@ -61,7 +61,7 @@
             <td>{Rationale}</td>
             <td><span class="badge badge-decided">Decided</span></td>
           </tr>
-          <tr>
+          <tr data-arch-id="D2">
             <td>D002</td>
             <td>{date}</td>
             <td>{Topic}</td>
@@ -91,5 +91,6 @@
       document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

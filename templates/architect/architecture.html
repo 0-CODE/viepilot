@@ -6,7 +6,7 @@
   <title>Architecture — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="architecture">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -89,13 +89,13 @@ graph TD
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="C1">
             <td>{Component 1}</td>
             <td>{Responsibility}</td>
             <td>{Technology}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="C2">
             <td>{Component 2}</td>
             <td>{Responsibility}</td>
             <td>{Technology}</td>
@@ -124,7 +124,7 @@ graph TD
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="C3">
             <td>{External System 1}</td>
             <td>{SaaS / Internal / 3rd party}</td>
             <td>{What it does}</td>
@@ -132,7 +132,7 @@ graph TD
             <td>{Team / Vendor}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="C4">
             <td>{External System 2}</td>
             <td>{SaaS / Internal / 3rd party}</td>
             <td>{What it does}</td>
@@ -155,5 +155,6 @@ graph TD
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

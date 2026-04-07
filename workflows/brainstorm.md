@@ -267,6 +267,34 @@ When a decision changes:
 - Update `notes.md` YAML (`updated` date + corresponding entry).
 - Preserve `decisions.html` history — only add new rows or update the `status` field (do not delete history).
 
+#### Architect Item Actions (ENH-033)
+
+Each item in the Architect HTML workspace has a stable ID in the format `[ARCH:{page-slug}:{item-id}]`
+(e.g., `[ARCH:decisions:D1]`, `[ARCH:erd:E2]`, `[ARCH:apis:A4]`).
+
+Two buttons appear on hover next to each item in the HTML:
+- **✅ Approve** — copies: `[ARCH:{slug}:{id}] APPROVE — "{title}" on {slug} page. No changes needed.`
+- **✏️ Edit** — copies: `[ARCH:{slug}:{id}] EDIT — "{title}" on {slug} page. Current: "{excerpt}". What should I change?`
+
+**When you receive an APPROVE prompt:**
+- Confirm the item is accepted as-is.
+- Do NOT touch any other item or page.
+- Ask if the user wants to continue reviewing other items.
+
+**When you receive an EDIT prompt:**
+- Acknowledge the item by its full ID (`[ARCH:{slug}:{id}]`).
+- State what the current content is.
+- Ask the user what they want to change.
+- Apply the change only to that specific item on that specific page.
+
+**ISOLATION RULE — CRITICAL:**
+Each action is **strictly scoped** to the named page and item.
+
+- Approving `[ARCH:architecture:C2]` does **NOT** approve any item in `erd`, `apis`, `decisions`, or any other page.
+- Editing `[ARCH:decisions:D1]` does **NOT** trigger updates to `architecture`, `erd`, or any other page unless the user explicitly asks for cross-page follow-up.
+- **Never infer or cascade approval/edit across pages.** Each page is an independent artifact namespace.
+- Cross-page impacts (e.g., "this decision affects the ERD") must come from a **separate, explicit** user prompt after the first action is complete.
+
 #### notes.md YAML schema
 
 ```yaml

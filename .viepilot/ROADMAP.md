@@ -1467,9 +1467,9 @@
 | 47. Task path guard — repo-relative enforcement (BUG-009) | ✅ Complete | 4 | 4 | 100% |
 | 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
 | 49. Language configuration system (ENH-032) | ✅ Complete | 8 | 8 | 100% |
-| 50. Architect HTML: item IDs + Approve/Edit buttons (ENH-033) | 🔲 Planned | 9 | 0 | 0% |
+| 50. Architect HTML: item IDs + Approve/Edit buttons (ENH-033) | ✅ Complete | 9 | 9 | 100% |
 
-**Total (to date)**: 83 tasks done (phases 33–49)
+**Total (to date)**: 92 tasks done (phases 33–50)
 
 ---
 
@@ -1549,7 +1549,7 @@
 
 ---
 
-### Phase 50: Architect HTML — Item IDs + Approve/Edit Prompt-Copy Buttons (ENH-033)
+### Phase 50: Architect HTML — Item IDs + Approve/Edit Prompt-Copy Buttons (ENH-033) ✅
 **Goal**: Add stable per-item IDs and Approve/Edit clipboard-copy buttons to all 11 Architect HTML content pages. Isolation rule: each action is scoped to one item on one page — no cross-page cascading.
 **Estimated Tasks**: 9
 **Dependencies**: Phase 49 (ENH-032)

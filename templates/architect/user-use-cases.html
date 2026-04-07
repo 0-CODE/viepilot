@@ -6,7 +6,7 @@
   <title>User Use Cases — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="use-cases">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -82,7 +82,7 @@ flowchart LR
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="UC1">
             <td>UC-001</td>
             <td>{Use case name}</td>
             <td>{Actor}</td>
@@ -90,7 +90,7 @@ flowchart LR
             <td>{Brief main flow}</td>
             <td><span class="badge badge-phase-1">Phase 1</span></td>
           </tr>
-          <tr>
+          <tr data-arch-id="UC2">
             <td>UC-002</td>
             <td>{Use case name}</td>
             <td>{Actor}</td>
@@ -98,7 +98,7 @@ flowchart LR
             <td>{Brief main flow}</td>
             <td><span class="badge badge-phase-2">Phase 2</span></td>
           </tr>
-          <tr>
+          <tr data-arch-id="UC3">
             <td>UC-003</td>
             <td>{Use case name}</td>
             <td>{Actor}</td>
@@ -122,13 +122,13 @@ flowchart LR
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="UC4">
             <td><strong>{Actor 1}</strong></td>
             <td>{Role description}</td>
             <td>{Primary goals}</td>
             <td>{notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="UC5">
             <td><strong>{Actor 2}</strong></td>
             <td>{Role description}</td>
             <td>{Primary goals}</td>
@@ -149,5 +149,6 @@ flowchart LR
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

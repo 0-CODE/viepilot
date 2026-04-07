@@ -6,7 +6,7 @@
   <title>APIs — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="apis">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -52,7 +52,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="A1">
             <td><span class="badge method-get">GET</span></td>
             <td>/api/resource</td>
             <td>Yes</td>
@@ -61,7 +61,7 @@
             <td>200, 401, 500</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A2">
             <td><span class="badge method-post">POST</span></td>
             <td>/api/resource</td>
             <td>Yes</td>
@@ -70,7 +70,7 @@
             <td>201, 400, 401</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A3">
             <td><span class="badge method-put">PUT</span></td>
             <td>/api/resource/:id</td>
             <td>Yes</td>
@@ -79,7 +79,7 @@
             <td>200, 400, 404</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A4">
             <td><span class="badge method-delete">DELETE</span></td>
             <td>/api/resource/:id</td>
             <td>Yes</td>
@@ -88,7 +88,7 @@
             <td>200, 404</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A5">
             <td><span class="badge method-patch">PATCH</span></td>
             <td>/api/resource/:id</td>
             <td>Yes</td>
@@ -113,7 +113,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="A6">
             <td>API Style</td>
             <td>
               <span class="badge method-get">REST</span>
@@ -124,19 +124,19 @@
             <td>{Rationale}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A7">
             <td>Authentication</td>
             <td>{JWT / Session / OAuth2 / API Key}</td>
             <td>{Rationale}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A8">
             <td>Versioning</td>
             <td>{URL path / Header / None}</td>
             <td>{Rationale}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="A9">
             <td>Rate limiting</td>
             <td>{Strategy}</td>
             <td>{Rationale}</td>
@@ -154,5 +154,6 @@
       document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

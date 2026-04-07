@@ -6,7 +6,7 @@
   <title>ERD — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="erd">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -89,14 +89,14 @@ erDiagram
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="E1">
             <td><strong>{Entity 1}</strong></td>
             <td>{id, name, ...}</td>
             <td>id</td>
             <td>—</td>
             <td>{notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="E2">
             <td><strong>{Entity 2}</strong></td>
             <td>{id, entity1_id, ...}</td>
             <td>id</td>
@@ -120,14 +120,14 @@ erDiagram
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="E3">
             <td>{Entity A}</td>
             <td>one-to-many</td>
             <td>{Entity B}</td>
             <td>{label}</td>
             <td>{notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="E4">
             <td>{Entity B}</td>
             <td>many-to-one</td>
             <td>{Entity C}</td>
@@ -149,5 +149,6 @@ erDiagram
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

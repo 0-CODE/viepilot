@@ -6,7 +6,7 @@
   <title>Deployment — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="deployment">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -83,21 +83,21 @@ graph TD
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="DEP1">
             <td>Dev</td>
             <td>http://localhost:3000</td>
             <td>Local development</td>
             <td>App, DB</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="DEP2">
             <td>Staging</td>
             <td>{staging URL}</td>
             <td>QA / integration testing</td>
             <td>App, DB, Cache, LB</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="DEP3">
             <td>Production</td>
             <td>{prod URL}</td>
             <td>Live system</td>
@@ -121,28 +121,28 @@ graph TD
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="DEP4">
             <td>App Server</td>
             <td>Compute</td>
             <td>{AWS EC2 / GCP GCE / Heroku / ...}</td>
             <td>{Instance size}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="DEP5">
             <td>Database</td>
             <td>Managed DB</td>
             <td>{RDS / Cloud SQL / PlanetScale / ...}</td>
             <td>{Size}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="DEP6">
             <td>Cache</td>
             <td>In-memory</td>
             <td>{ElastiCache / Upstash / ...}</td>
             <td>{Size}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="DEP7">
             <td>CDN</td>
             <td>Content delivery</td>
             <td>{CloudFront / Cloudflare / ...}</td>
@@ -179,5 +179,6 @@ flowchart LR
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

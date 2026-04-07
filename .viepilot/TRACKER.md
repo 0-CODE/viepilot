@@ -2,14 +2,14 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **49** — ✅ Complete (**ENH-032** → **1.17.0**)
-- **Last Completed Phase**: **49** — ✅ Complete (**ENH-032** → **1.17.0**)
+- **Current Phase**: **50** — ✅ Complete (**ENH-033** → **1.18.0**)
+- **Last Completed Phase**: **50** — ✅ Complete (**ENH-033** → **1.18.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-06 — Phase 49 shipped (ENH-032 — language configuration system → 1.17.0)
+- **Last Activity**: 2026-04-07 — Phase 50 shipped (ENH-033 — Architect HTML item IDs + Approve/Edit buttons → 1.18.0)
 
 ## Progress Overview
 ```
-Framework release     [██████████] npm **1.17.0**
+Framework release     [██████████] npm **1.18.0**
 Phase 34 (FEAT-001)   [██████████] done
 Phase 35 (ENH-022)    [██████████] done
 ─────────────────────────────────────────────
@@ -73,19 +73,20 @@ Suggested next version: per release checklist
 | 2026-04-06 | Phase 49 shipped: ENH-032 (language config system — viepilot-config.cjs + vp-tools config + install prompt + 3 workflow steps + 3 SKILL.md docs + 18 contract tests) — **1.17.0** | `/vp-auto` | M1.29 |
 | 2026-04-07 | ENH-033 logged: Architect HTML item IDs + Approve/Edit prompt-copy buttons — isolation rule: per-item per-page, no cross-page cascade | `/vp-request` | Backlog |
 | 2026-04-07 | Phase 50 planned: ENH-033 (9 tasks), target **1.18.0** | `/vp-evolve` | M1.29 |
+| 2026-04-07 | Phase 50 shipped: ENH-033 (architect-actions.js + style.css + 11 templates + brainstorm.md isolation rule + 50 contract tests) — **1.18.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 50 planned (ENH-033 → 1.18.0); run `/vp-auto` to execute Architect HTML item IDs + Approve/Edit buttons
+All planned phases complete (50/50). Run `/vp-evolve` to plan new features or `/vp-docs` to generate documentation.
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | new |
+| ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | ✅ done (**1.18.0**) |
 | BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
 | ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | ✅ done (**1.17.0**) |
 | ENH-031 | 🔧 | Standardize framework language to English-primary (Option B from audit) | high | new |

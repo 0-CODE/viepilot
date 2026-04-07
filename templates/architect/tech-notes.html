@@ -6,7 +6,7 @@
   <title>Tech Notes — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="tech-notes">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" data-arch-id="TN1">
       <h2>Additional Notes</h2>
       <p style="color:var(--text-muted);font-size:13px;">{Additional context, constraints, or design notes that don't fit in other sections}</p>
     </div>
@@ -84,5 +84,6 @@
       document.getElementById('theme-toggle').textContent = isLight ? '🌙 Dark' : '☀️ Light';
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@
   <title>Data Flow — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="data-flow">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -83,7 +83,7 @@ flowchart LR
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="DF1">
             <td>{Flow name}</td>
             <td>{Trigger}</td>
             <td>{Steps}</td>
@@ -104,5 +104,6 @@ flowchart LR
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>

@@ -7,13 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added (ENH-033 — Phase 50 — target 1.18.0)
-- **Architect HTML item actions:** stable `data-arch-id` on all items in all 11 content pages
-- `templates/architect/architect-actions.js` — shared JS: `copyArchPrompt()` + button injection on DOMContentLoaded
-- Approve button: copies `[ARCH:{slug}:{id}] APPROVE — "{title}" on {slug} page`
-- Edit button: copies `[ARCH:{slug}:{id}] EDIT — "{title}" on {slug} page. Current: "...". What should change?`
-- **Isolation rule** documented in `workflows/brainstorm.md`: Approve/Edit strictly per-item per-page, no cross-page cascade
-- `templates/architect/style.css`: `.arch-id-badge` + `.arch-btn-approve`/`.arch-btn-edit` styles
+## [1.18.0] - 2026-04-07
+
+### Added (ENH-033 — Phase 50)
+- **Architect HTML item actions:** stable `data-arch-id` IDs on every item across all 11 content pages (decisions D1–D2, architecture C1–C4, erd E1–E4, use-cases UC1–UC5, apis A1–A9, deployment DEP1–DEP7, data-flow DF1, sequence SEQ1–SEQ2, tech-stack TS1–TS6, tech-notes TN1, features F1–F3)
+- `templates/architect/architect-actions.js` — new shared vanilla JS: `approvePrompt()`, `editPrompt()`, `copyText()` with clipboard API + execCommand fallback, button injection on DOMContentLoaded
+- **✅ Approve button**: copies `[ARCH:{slug}:{id}] APPROVE — "{title}" on {slug} page. No changes needed.`
+- **✏️ Edit button**: copies `[ARCH:{slug}:{id}] EDIT — "{title}" on {slug} page. Current: "{excerpt}". What should I change?`
+- `templates/architect/style.css`: `.arch-id-badge`, `.arch-item-actions`, `.arch-btn`, `.arch-btn-approve`, `.arch-btn-edit`, `.arch-btn.copied`, `.arch-actions-cell` — hover-reveal pattern, light-mode overrides
+- `workflows/brainstorm.md`: **Architect Item Actions (ENH-033)** section — isolation rule, APPROVE/EDIT prompt handling spec, cross-page cascade prohibition
+
+### Tests
+- Added `tests/unit/vp-enh033-architect-item-actions.test.js` (50 tests, 4 groups) — all pass (516 total)
 
 ## [1.17.0] - 2026-04-06
 

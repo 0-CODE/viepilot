@@ -6,7 +6,7 @@
   <title>Sequence Diagram — {project}</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-arch-slug="sequence">
   <nav class="nav-sidebar">
     <div class="logo">
       <span>ViePilot Architect Mode</span>
@@ -57,7 +57,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-arch-id="SEQ1">
             <td>SEQ-01</td>
             <td>{Scenario name}</td>
             <td>{Actor A, Actor B}</td>
@@ -65,7 +65,7 @@
             <td>{UC-ID}</td>
             <td>{Notes}</td>
           </tr>
-          <tr>
+          <tr data-arch-id="SEQ2">
             <td>SEQ-02</td>
             <td>{Scenario name}</td>
             <td>{Actor A, Actor B}</td>
@@ -128,5 +128,6 @@ sequenceDiagram
       mermaid.initialize({ startOnLoad: false, theme: isLight ? 'default' : 'dark' });
     }
   </script>
+    <script src="architect-actions.js"></script>
 </body>
 </html>
