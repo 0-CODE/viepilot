@@ -1468,6 +1468,7 @@
 | 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
 | 49. Language configuration system (ENH-032) | ✅ Complete | 8 | 8 | 100% |
 | 50. Architect HTML: item IDs + Approve/Edit buttons (ENH-033) | ✅ Complete | 9 | 9 | 100% |
+| 51. Fix diagram card IDs missing from ENH-033 (BUG-010) | 🔲 Planned | 3 | 0 | 0% |
 
 **Total (to date)**: 92 tasks done (phases 33–50)
 
@@ -1575,6 +1576,26 @@
 - [ ] Prompt format: `[ARCH:{slug}:{id}] APPROVE/EDIT — "{title}"...`
 - [ ] `workflows/brainstorm.md` isolation rule paragraph present
 - [ ] All contract tests pass; npm test green
+
+---
+
+### Phase 51: Fix Diagram Card IDs Missing from ENH-033 (BUG-010)
+**Goal**: Add `data-arch-id` + `data-arch-title` to all 9 Mermaid diagram cards across 6 pages. The `architect-actions.js` div branch and CSS hover rules already handle this — only HTML templates need patching.
+**Estimated Tasks**: 3
+**Dependencies**: Phase 50 (ENH-033)
+**Directory**: `.viepilot/phases/51-bug010-diagram-card-ids/`
+**Version target**: 1.18.1
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 51.1 | `architecture.html` + `data-flow.html` — data-arch-id on 2+2 diagram cards | ARCH-DIAG1/2, DF-DIAG1/2 present with data-arch-title | S |
+| 51.2 | `erd.html` + `user-use-cases.html` + `sequence-diagram.html` + `deployment.html` — 1+1+2+1 diagram cards | ERD-DIAG1, UC-DIAG1, SEQ-DIAG1/2, DEP-DIAG1 present | S |
+| 51.3 | Jest contract tests — Test Group 5 for all 9 diagram card IDs | 9 new tests pass; npm test green | S |
+
+**Verification**:
+- [ ] 9 diagram cards have `data-arch-id` across 6 pages
+- [ ] All IDs have matching `data-arch-title`
+- [ ] npm test green
 
 ---
 
