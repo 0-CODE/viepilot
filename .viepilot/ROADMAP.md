@@ -1467,6 +1467,7 @@
 | 47. Task path guard — repo-relative enforcement (BUG-009) | ✅ Complete | 4 | 4 | 100% |
 | 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
 | 49. Language configuration system (ENH-032) | ✅ Complete | 8 | 8 | 100% |
+| 50. Architect HTML: item IDs + Approve/Edit buttons (ENH-033) | 🔲 Planned | 9 | 0 | 0% |
 
 **Total (to date)**: 83 tasks done (phases 33–49)
 
@@ -1545,6 +1546,35 @@
 - [ ] load_language_config step present in crystallize.md, autonomous.md
 - [ ] detect_session_language step present in brainstorm.md
 - [ ] All 4 test groups in vp-enh032 test file pass
+
+---
+
+### Phase 50: Architect HTML — Item IDs + Approve/Edit Prompt-Copy Buttons (ENH-033)
+**Goal**: Add stable per-item IDs and Approve/Edit clipboard-copy buttons to all 11 Architect HTML content pages. Isolation rule: each action is scoped to one item on one page — no cross-page cascading.
+**Estimated Tasks**: 9
+**Dependencies**: Phase 49 (ENH-032)
+**Directory**: `.viepilot/phases/50-enh033-architect-item-actions/`
+**Version target**: 1.18.0
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 50.1 | `templates/architect/style.css` — button + badge styles | `.arch-id-badge`, `.arch-btn-approve`, `.arch-btn-edit`, hover-reveal classes added | S |
+| 50.2 | `templates/architect/architect-actions.js` — shared JS: copyArchPrompt() + button injection | copyArchPrompt(type,slug,id,title,excerpt) works; Approve/Edit inject on DOMContentLoaded | M |
+| 50.3 | `decisions.html` + `architecture.html` — data-arch-id on rows + script include | data-arch-id present on all items; buttons render | M |
+| 50.4 | `erd.html` + `user-use-cases.html` — data-arch-id + script include | data-arch-id present; buttons render | M |
+| 50.5 | `apis.html` + `deployment.html` — data-arch-id + script include | data-arch-id present; buttons render | M |
+| 50.6 | `data-flow.html` + `sequence-diagram.html` — data-arch-id + script include | data-arch-id present; buttons render | M |
+| 50.7 | `tech-stack.html` + `tech-notes.html` + `feature-map.html` — data-arch-id + script include | data-arch-id present; buttons render | M |
+| 50.8 | `workflows/brainstorm.md` — document isolation rule in Architect Design Mode section | isolation rule paragraph present; per-page scoping documented | S |
+| 50.9 | Jest contract tests for ENH-033 | 4 test groups pass; npm test green | M |
+
+**Verification**:
+- [ ] All 11 content pages have `data-arch-id` on item rows/cards
+- [ ] `architect-actions.js` exists in `templates/architect/`
+- [ ] `style.css` has `.arch-id-badge` and `.arch-btn-*` classes
+- [ ] Prompt format: `[ARCH:{slug}:{id}] APPROVE/EDIT — "{title}"...`
+- [ ] `workflows/brainstorm.md` isolation rule paragraph present
+- [ ] All contract tests pass; npm test green
 
 ---
 

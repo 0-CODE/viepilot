@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (ENH-033 — Phase 50 — target 1.18.0)
+- **Architect HTML item actions:** stable `data-arch-id` on all items in all 11 content pages
+- `templates/architect/architect-actions.js` — shared JS: `copyArchPrompt()` + button injection on DOMContentLoaded
+- Approve button: copies `[ARCH:{slug}:{id}] APPROVE — "{title}" on {slug} page`
+- Edit button: copies `[ARCH:{slug}:{id}] EDIT — "{title}" on {slug} page. Current: "...". What should change?`
+- **Isolation rule** documented in `workflows/brainstorm.md`: Approve/Edit strictly per-item per-page, no cross-page cascade
+- `templates/architect/style.css`: `.arch-id-badge` + `.arch-btn-approve`/`.arch-btn-edit` styles
+
 ## [1.17.0] - 2026-04-06
 
 ### Added (ENH-032 — Phase 49)

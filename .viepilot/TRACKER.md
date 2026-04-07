@@ -71,18 +71,21 @@ Suggested next version: per release checklist
 | 2026-04-06 | Phase 47 shipped: BUG-009 (path guard in evolve.md + autonomous.md + SKILL.md docs + 13 tests) — **1.15.0** | `/vp-auto` | M1.29 |
 | 2026-04-06 | Phase 48 shipped: ENH-031 (English-primary language standardization — all 12 workflows + 16 skills + AI-GUIDE template + 63 contract tests) — **1.16.0** | `/vp-auto` | M1.29 |
 | 2026-04-06 | Phase 49 shipped: ENH-032 (language config system — viepilot-config.cjs + vp-tools config + install prompt + 3 workflow steps + 3 SKILL.md docs + 18 contract tests) — **1.17.0** | `/vp-auto` | M1.29 |
+| 2026-04-07 | ENH-033 logged: Architect HTML item IDs + Approve/Edit prompt-copy buttons — isolation rule: per-item per-page, no cross-page cascade | `/vp-request` | Backlog |
+| 2026-04-07 | Phase 50 planned: ENH-033 (9 tasks), target **1.18.0** | `/vp-evolve` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-All planned phases complete. Run `/vp-evolve` to plan new features or `/vp-docs` to generate documentation.
+**`/vp-auto`** — Phase 50 planned (ENH-033 → 1.18.0); run `/vp-auto` to execute Architect HTML item IDs + Approve/Edit buttons
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | new |
 | BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
 | ENH-032 | 🔧 | Language configuration system — installer setup + crystallize/brainstorm runtime awareness | high | ✅ done (**1.17.0**) |
 | ENH-031 | 🔧 | Standardize framework language to English-primary (Option B from audit) | high | new |
