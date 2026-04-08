@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (FEAT-013 — Phase 53 — target 2.0.0)
+- **Dynamic agent adapter system**: `lib/adapters/` module with `claude-code.cjs`, `cursor.cjs`, `index.cjs` registry — each platform is a self-contained adapter (skillsDir, viepilotDir, hooks config, isAvailable)
+- `lib/viepilot-install.cjs`: `buildInstallPlan()` now loops over selected adapters — no hardcoded `.cursor/` paths
+- `bin/viepilot.cjs`: TARGETS sourced from adapter registry; default non-interactive target = claude-code
+- `dev-install.sh`: `VIEPILOT_ADAPTER` env var (default: `claude-code`); `VIEPILOT_INSTALL_PROFILE` kept as alias
+- `bin/vp-tools.cjs`: `hooks scaffold [--adapter <id>]` — prints settings.json hook snippet for Claude Code
+
+### BREAKING CHANGES (2.0.0)
+- Default install target changes from `cursor-ide` → `claude-code` (`~/.claude/`)
+- Cursor users: set `VIEPILOT_ADAPTER=cursor-agent` or pass `--target cursor-agent`
+
 ## [1.19.0] - 2026-04-08
 
 ### Added (ENH-034 — Phase 52)

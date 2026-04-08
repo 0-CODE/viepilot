@@ -1622,6 +1622,32 @@
 
 ---
 
+### Phase 53: Dynamic Agent Adapter System (FEAT-013) 🔲
+**Goal**: Replace hardcoded Cursor paths in install logic with a dynamic adapter registry. Each AI agent platform (Claude Code, Cursor, future: Antigravity, Codex…) is a self-contained `lib/adapters/{id}.cjs` module. Default install target changes from Cursor to Claude Code. No regression for existing Cursor users.
+**Estimated Tasks**: 5
+**Dependencies**: Phase 52 (ENH-034 — framework stable)
+**Directory**: `.viepilot/phases/53-feat013-adapter-system/`
+**Version target**: 2.0.0 (MAJOR)
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 53.1 | `lib/adapters/` — adapter interface + registry + `claude-code.cjs` + `cursor.cjs` | Adapter spec: id/name/skillsDir/viepilotDir/hooks/isAvailable; registry getAdapter()/listAdapters() | M |
+| 53.2 | `lib/viepilot-install.cjs` — refactor `buildInstallPlan()` to loop over selected adapters | No hardcoded `.cursor/` paths; default targets → claude-code; cursor-agent/cursor-ide deduplicated | L |
+| 53.3 | `bin/viepilot.cjs` + `dev-install.sh` — TARGETS from registry; `VIEPILOT_ADAPTER` env var; default=claude-code | `VIEPILOT_ADAPTER=claude-code` → `~/.claude/`; `VIEPILOT_ADAPTER=cursor-agent` → `~/.cursor/`; backward compat alias | M |
+| 53.4 | `bin/vp-tools.cjs` — `hooks scaffold [--adapter <id>]` subcommand | Prints settings.json snippet for Claude Code; prints Cursor explanation for cursor adapter | S |
+| 53.5 | Jest contract tests — `viepilot-adapters.test.js` (~18 tests) | Adapter shape, registry, install plan paths, dev-install.sh adapter var | M |
+
+**Verification**:
+- [ ] `lib/adapters/claude-code.cjs` + `cursor.cjs` + `index.cjs` exist with correct interface
+- [ ] `buildInstallPlan({}, [], {installTargets:[]})` → installs to `~/.claude/` by default
+- [ ] `buildInstallPlan({}, [], {installTargets:['cursor-agent']})` → `~/.cursor/` (no regression)
+- [ ] `dev-install.sh` default `VIEPILOT_ADAPTER=claude-code`
+- [ ] `vp-tools hooks scaffold` prints Claude Code settings.json snippet
+- [ ] All ~18 adapter tests pass + full suite green
+- [ ] Adding a new adapter = only `lib/adapters/{id}.cjs` + registry entry (documented)
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -1640,5 +1666,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-08 (Phase **52** ENH-034 planned → target v1.19.0)
+- Last Updated: 2026-04-08 (Phase **53** FEAT-013 planned → target v2.0.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

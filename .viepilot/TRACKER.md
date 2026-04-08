@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **52** — ✅ Complete (**ENH-034** → **1.19.0**)
+- **Current Phase**: **53** — 🔲 Planned (**FEAT-013** → **2.0.0**)
 - **Last Completed Phase**: **52** — ✅ Complete (**ENH-034** → **1.19.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-08 — Phase 52 shipped (ENH-034 — brainstorm architect delta sync + .arch-stale CSS + markStale JS → 1.19.0)
+- **Last Activity**: 2026-04-08 — Phase 53 planned (FEAT-013 — dynamic adapter system → target 2.0.0)
 
 ## Progress Overview
 ```
@@ -80,12 +80,15 @@ Suggested next version: per release checklist
 | 2026-04-08 | ENH-034 logged: vp-brainstorm UI sync architect HTML templates when gaps/changes identified | `/vp-request` | Backlog |
 | 2026-04-08 | Phase 52 planned: ENH-034 Option B (4 tasks — delta sync step + .arch-stale CSS + markStale JS + tests), target **1.19.0** | `/vp-evolve` | M1.29 |
 | 2026-04-08 | Phase 52 shipped: ENH-034 (architect_delta_sync step + /sync-arch command + .arch-gap-badge CSS + markStale JS + 14 contract tests) — **1.19.0** | `/vp-auto` | M1.29 |
+| 2026-04-08 | FEAT-012 logged: vp-brainstorm post-exchange staleness hook (Claude Code Stop event) | `/vp-request` | Backlog |
+| 2026-04-08 | FEAT-013 logged: Dynamic agent adapter system — multi-platform (revised from pivot) | `/vp-request` | Backlog |
+| 2026-04-08 | Phase 53 planned: FEAT-013 (5 tasks — adapters + install refactor + CLI + hooks scaffold + tests), target **2.0.0** | `/vp-evolve` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-evolve`** — All phases complete; run `/vp-evolve` to plan new features or `/vp-docs` for documentation
+**`/vp-auto`** — Phase 53 planned (FEAT-013 → 2.0.0); run `/vp-auto` to implement adapter system
 
 ## Backlog
 
