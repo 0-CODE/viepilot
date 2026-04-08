@@ -168,9 +168,50 @@
     });
   }
 
+  // ── Stale / gap badge injection (ENH-034) ────────────────────────────────
+  // Items with data-arch-stale="true" get an amber "⚠ gap" badge.
+  // Stale means: brainstorm detected a gap here; HTML not yet synced.
+
+  function injectStaleBadges() {
+    document.querySelectorAll('[data-arch-stale="true"]').forEach(function (el) {
+      var reason = el.getAttribute('data-arch-stale-note') || 'gap detected in brainstorm';
+      var badge = document.createElement('span');
+      badge.className = 'arch-gap-badge';
+      badge.textContent = '⚠ gap';
+      badge.title = reason;
+
+      if (el.tagName === 'TR') {
+        var firstTd = el.querySelector('td');
+        if (firstTd && !firstTd.querySelector('.arch-gap-badge')) {
+          firstTd.appendChild(badge);
+        }
+      } else {
+        var h = el.querySelector('h2,h3,h4');
+        if (h && !h.querySelector('.arch-gap-badge')) {
+          h.appendChild(badge);
+        }
+      }
+    });
+  }
+
+  function markStale(id, reason) {
+    var el = document.querySelector('[data-arch-id="' + id + '"]');
+    if (!el) return;
+    el.setAttribute('data-arch-stale', 'true');
+    if (reason) el.setAttribute('data-arch-stale-note', reason);
+    injectStaleBadges();
+  }
+
+  // Expose for browser console use during architect review sessions
+  window.vpMarkStale = markStale;
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inject);
+    document.addEventListener('DOMContentLoaded', function () {
+      inject();
+      injectStaleBadges();
+    });
   } else {
     inject();
+    injectStaleBadges();
   }
 })();

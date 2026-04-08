@@ -372,6 +372,16 @@ design_decisions:
   - decision: Authentication
     choice: "{JWT / Session / OAuth2 / API Key}"
     rationale: "{rationale}"
+
+## architect_sync
+- synced_at: "{ISO datetime}"
+  source_session: "{ui-direction session-id}"
+  trigger: "end-of-session | /sync-arch"
+  changes:
+    - page: "{slug}"
+      item_id: "{data-arch-id}"
+      action: "updated | added"
+      change: "{brief description, ≤80 chars}"
 ```
 
 ### Background UI Extraction (silent mode) — ENH-026
@@ -671,6 +681,123 @@ git push
 ```
 </step>
 
+<step name="architect_delta_sync">
+## 6B. Architect Delta Sync (ENH-034)
+
+Bridges the gap between UI Direction Mode and the Architect HTML workspace.
+When a UI brainstorm session surfaces architect-relevant gaps or changes, those
+deltas are parsed and written back to the relevant architect HTML template files.
+
+### Trigger conditions
+
+Runs when **either** condition is met:
+
+1. **End of UI session** — `.viepilot/ui-direction/{session-id}/` exists for the current
+   session AND the session contains ≥1 architect keyword hit detected during UI discussion
+   (see keyword lists below).
+2. **Manual command** — user types `/sync-arch` at any point in a session.
+
+When neither condition is met: skip silently.
+When `/sync-arch` is used explicitly and no gaps are found: output
+`✓ No architect gaps detected in this session.`
+
+### Step 1: Locate architect session
+
+```bash
+ls .viepilot/architect/ 2>/dev/null
+```
+
+- Find `.viepilot/architect/{session-id}/` matching the current session context
+  (same date, same project name, or most recent).
+- If **no architect workspace exists**: skip with message:
+  `⚠ No architect workspace found. Run /vp-brainstorm --architect first to create one.`
+
+### Step 2: Gap detection — scan session for architect keywords by page
+
+Use the **existing trigger keyword lists** from Architect Design Mode (defined above) to
+identify which architect pages are affected:
+
+| Page | Keywords (excerpt) |
+|------|--------------------|
+| `architecture.html` | service, component, module, layer, boundary, system, integration, C4 |
+| `erd.html` | database, entity, table, schema, relation, foreign key, ERD, data model |
+| `apis.html` | endpoint, API, REST, route, HTTP, POST, GET, PUT, DELETE, request, response |
+| `deployment.html` | deploy, infrastructure, environment, staging, production, CI/CD, pipeline |
+| `data-flow.html` | data flow, event flow, queue, webhook, async, pub/sub |
+| `user-use-cases.html` | user story, use case, actor, persona, as a user, user flow, journey |
+| `sequence-diagram.html` | sequence, step by step, login flow, checkout flow, interaction |
+
+For each page where **≥1 keyword is found in the UI brainstorm session output**:
+- Mark as **affected**.
+- Extract the relevant sentences/paragraphs that describe the gap or change.
+
+### Step 3: Update HTML for each affected page
+
+For each affected page:
+
+1. **Read** `.viepilot/architect/{session-id}/{page}.html`
+2. **Identify the target element(s)**:
+   - Match the gap context to the nearest `<tr data-arch-id="...">` row or
+     `<div class="card" data-arch-id="...">` by comparing gap keywords to the
+     item's `data-arch-title` or first cell content.
+   - If no exact match: add a **new row** to the relevant `<tbody>` (the most
+     appropriate table for the content type) with the gap information.
+3. **Update element content**:
+   - For existing rows: update the relevant `<td>` cell with the new/corrected
+     information from the brainstorm.
+   - For new rows: create `<tr data-arch-id="{PAGE-PREFIX-NEW{n}}"
+     data-updated="true" class="updated">` with content from the brainstorm.
+4. **Mark as updated**: add `data-updated="true"` and `class="updated"` to the
+   changed element (uses existing `.updated` CSS — yellow left border + badge).
+5. **Add sync note**: add `data-arch-sync-note="{brief reason, ≤60 chars}"` to the
+   changed element recording why it was updated.
+
+**Do NOT**:
+- Change elements that were NOT identified as gaps.
+- Cascade updates across pages (isolation rule — ENH-033 applies here too).
+- Remove existing data — only update or add.
+
+### Step 4: Record delta in notes.md
+
+Append under `## architect_sync` section in `.viepilot/architect/{session-id}/notes.md`:
+
+```yaml
+## architect_sync
+- synced_at: {ISO datetime}
+  source_session: {ui-direction session-id}
+  trigger: {end-of-session | /sync-arch}
+  changes:
+    - page: {slug}
+      item_id: {data-arch-id}
+      action: {updated | added}
+      change: "{brief description of what was updated, ≤80 chars}"
+    - page: {slug}
+      item_id: {data-arch-id}
+      action: updated
+      change: "{description}"
+```
+
+### Step 5: Output sync report
+
+```
+🔄 Architect Sync complete
+
+Updated {N} items across {M} pages:
+  {page}    {item-id} [{action}] — {change}
+  ...
+
+Items marked with data-updated="true" in architect workspace.
+Open .viepilot/architect/{session-id}/ to review changes.
+```
+
+If only 1 item changed: single-line summary is sufficient.
+
+### notes.md schema update
+
+The `## architect_sync` section is **appended** (not replaced) on each sync run.
+Multiple sync entries can exist — each with its own `synced_at` timestamp.
+</step>
+
 <step name="suggest_next">
 ## 7. Suggest Next Action
 
@@ -704,6 +831,7 @@ User can use the following commands during a brainstorm session:
 - `/research-ui` — UX walkthrough: simulate user → designer + research → update UI direction + log (`notes.md`) — only when a UI session exists (FEAT-010)
 - `/research ui` — alias of `/research-ui`
 - `/review-arch` — Architect Mode: output summary table of decisions + open_questions from `notes.md`, confirm before continuing (FEAT-011)
+- `/sync-arch` — Architect Delta Sync (ENH-034): manually trigger architect HTML sync from current UI brainstorm session; scans session for architect gaps → updates relevant architect workspace pages
 </commands>
 
 <success_criteria>
@@ -719,4 +847,5 @@ User can use the following commands during a brainstorm session:
 - [ ] Git committed
 - [ ] **FEAT-009**: If binding is missing and scope is locked — **Project meta intake** (step 5) has been run or a **`## Meta intake waiver`** with reason exists before Completed
 - [ ] **`## Project meta intake (FEAT-009)`** in session: `status` + `profile_id` when completed (or waiver if skipped)
+- [ ] **ENH-034**: If UI session surfaces architect gaps → `architect_delta_sync` step runs; architect HTML updated + `## architect_sync` appended to notes.md
 </success_criteria>

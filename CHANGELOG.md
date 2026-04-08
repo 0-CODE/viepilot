@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added (ENH-034 — Phase 52 — target 1.19.0)
-- **vp-brainstorm UI: architect delta sync** — new `architect_delta_sync` step in `brainstorm.md`: when UI brainstorm surfaces architect gaps, `/sync-arch` command or end-of-session trigger parses deltas and updates the relevant architect HTML template content
-- `templates/architect/style.css`: `.arch-stale` + `.arch-gap-badge` amber indicator for items flagged as gap-detected but not yet synced
-- `templates/architect/architect-actions.js`: `markStale(id, reason)` + `injectStaleBadges()` — auto-inject amber badges for `[data-arch-stale="true"]` items on DOMContentLoaded
+## [1.19.0] - 2026-04-08
+
+### Added (ENH-034 — Phase 52)
+- **vp-brainstorm UI: Architect Delta Sync** — new `architect_delta_sync` step in `workflows/brainstorm.md`: bridges UI Direction Mode and Architect HTML workspace; when a UI session surfaces architect-related gaps, the step parses session for deltas, maps them to affected pages (using existing trigger keyword lists), updates `<tr>` / `<div class="card">` HTML content, marks changed items `data-updated="true"`, and records delta in `notes.md ## architect_sync`
+- `/sync-arch` command: manual trigger for architect delta sync at any point in a brainstorm session
+- `notes.md` YAML schema extended with `## architect_sync` section (synced_at, source_session, trigger, changes)
+- `templates/architect/style.css`: `.arch-gap-badge` (amber) + `[data-arch-stale="true"]` amber left-border indicator — visually distinct from `.updated` (yellow = changed); light-mode overrides included
+- `templates/architect/architect-actions.js`: `markStale(id, reason)` + `injectStaleBadges()` — auto-scans `[data-arch-stale="true"]` on DOMContentLoaded and injects amber "⚠ gap" badges; `window.vpMarkStale` exposed for browser console use
+
+### Tests
+- Added `tests/unit/vp-enh034-architect-delta-sync.test.js` (14 tests, 3 groups) — all pass (539 total)
 
 ## [1.18.1] - 2026-04-07
 

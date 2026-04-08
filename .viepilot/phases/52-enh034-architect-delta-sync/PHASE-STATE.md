@@ -1,12 +1,12 @@
 # Phase 52 State
 
-## Status: planned
+## Status: complete
 
 ## Tasks
-- [ ] 52.1 workflows/brainstorm.md — architect_delta_sync step
-- [ ] 52.2 templates/architect/style.css — .arch-stale + .arch-gap-badge classes
-- [ ] 52.3 templates/architect/architect-actions.js — markStale() + [data-arch-stale] injection
-- [ ] 52.4 Jest contract tests for ENH-034 (12 tests)
+- [x] 52.1 workflows/brainstorm.md — architect_delta_sync step
+- [x] 52.2 templates/architect/style.css — .arch-stale + .arch-gap-badge classes
+- [x] 52.3 templates/architect/architect-actions.js — markStale() + [data-arch-stale] injection
+- [x] 52.4 Jest contract tests for ENH-034 (14 tests)
 
 ## Blockers
 _None_
