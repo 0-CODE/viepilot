@@ -1599,6 +1599,29 @@
 
 ---
 
+### Phase 52: vp-brainstorm UI — Architect Delta Sync (ENH-034)
+**Goal**: When a UI brainstorm session surfaces architect-related gaps or changes, automatically sync them back to the relevant architect HTML workspace pages. Full-content update (Option B): parse session for deltas → update `<tr>` / `<div class="card">` content → mark with `data-updated` → record in `notes.md`.
+**Estimated Tasks**: 4
+**Dependencies**: Phase 51 (BUG-010 — data-arch-id complete on all items)
+**Directory**: `.viepilot/phases/52-enh034-architect-delta-sync/`
+**Version target**: 1.19.0
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 52.1 | `workflows/brainstorm.md` — `architect_delta_sync` step: trigger, gap detection, HTML update, notes.md recording | Step present; `/sync-arch` command; isolation rule respected; notes.md schema updated | M |
+| 52.2 | `templates/architect/style.css` — `.arch-stale` + `.arch-gap-badge` amber indicator classes | Amber badge + left-border for `[data-arch-stale]`; light-mode override | S |
+| 52.3 | `templates/architect/architect-actions.js` — `markStale()` + `injectStaleBadges()` on DOMContentLoaded | markStale(id, reason) works; badge injected for `[data-arch-stale="true"]`; `window.vpMarkStale` exposed | S |
+| 52.4 | Jest contract tests: 12 tests for ENH-034 | All 12 pass; npm test green | M |
+
+**Verification**:
+- [ ] `workflows/brainstorm.md` has `architect_delta_sync` step with `/sync-arch` trigger documented
+- [ ] Step: detects gaps → maps to pages → updates HTML content → records in notes.md
+- [ ] `[data-arch-stale="true"]` shows amber "⚠ gap" badge in architect HTML
+- [ ] `markStale(id, reason)` callable from browser console or workflow output
+- [ ] 12 contract tests pass; npm test green
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -1617,5 +1640,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-06 (Phase **47** BUG-009 shipped → v1.15.0)
+- Last Updated: 2026-04-08 (Phase **52** ENH-034 planned → target v1.19.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

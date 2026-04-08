@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (ENH-034 — Phase 52 — target 1.19.0)
+- **vp-brainstorm UI: architect delta sync** — new `architect_delta_sync` step in `brainstorm.md`: when UI brainstorm surfaces architect gaps, `/sync-arch` command or end-of-session trigger parses deltas and updates the relevant architect HTML template content
+- `templates/architect/style.css`: `.arch-stale` + `.arch-gap-badge` amber indicator for items flagged as gap-detected but not yet synced
+- `templates/architect/architect-actions.js`: `markStale(id, reason)` + `injectStaleBadges()` — auto-inject amber badges for `[data-arch-stale="true"]` items on DOMContentLoaded
+
 ## [1.18.1] - 2026-04-07
 
 ### Fixed (BUG-010 — Phase 51)
