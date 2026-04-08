@@ -89,6 +89,7 @@ _None currently_
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | new |
 | BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |
 | ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | ✅ done (**1.18.0**) |
 | BUG-009 | 🐛 | vp-evolve generates task Paths with installed paths instead of repo-relative paths | high | ✅ done (**1.15.0**) |
