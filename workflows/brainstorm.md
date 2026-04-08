@@ -697,6 +697,12 @@ Runs when **either** condition is met:
    (see keyword lists below).
 2. **Manual command** — user types `/sync-arch` at any point in a session.
 
+> **Automatic mode (FEAT-012):** If the brainstorm staleness hook is installed
+> (`vp-tools hooks install`), stale architect items are flagged automatically after
+> **each AI response** — no need to type `/sync-arch`. The hook marks items
+> `data-arch-stale="true"` (amber badge) without rewriting content. Install once per machine.
+> See `docs/user/features/hooks.md` for setup.
+
 When neither condition is met: skip silently.
 When `/sync-arch` is used explicitly and no gaps are found: output
 `✓ No architect gaps detected in this session.`
@@ -832,6 +838,7 @@ User can use the following commands during a brainstorm session:
 - `/research ui` — alias of `/research-ui`
 - `/review-arch` — Architect Mode: output summary table of decisions + open_questions from `notes.md`, confirm before continuing (FEAT-011)
 - `/sync-arch` — Architect Delta Sync (ENH-034): manually trigger architect HTML sync from current UI brainstorm session; scans session for architect gaps → updates relevant architect workspace pages
+- `/hooks-install` — Install the brainstorm staleness hook (FEAT-012): runs `vp-tools hooks install`; one-time setup per machine; auto-marks stale architect items after each AI response
 </commands>
 
 <success_criteria>
@@ -848,4 +855,5 @@ User can use the following commands during a brainstorm session:
 - [ ] **FEAT-009**: If binding is missing and scope is locked — **Project meta intake** (step 5) has been run or a **`## Meta intake waiver`** with reason exists before Completed
 - [ ] **`## Project meta intake (FEAT-009)`** in session: `status` + `profile_id` when completed (or waiver if skipped)
 - [ ] **ENH-034**: If UI session surfaces architect gaps → `architect_delta_sync` step runs; architect HTML updated + `## architect_sync` appended to notes.md
+- [ ] **FEAT-012**: If brainstorm staleness hook installed → stale architect items auto-flagged after each AI response (amber badge); `/hooks-install` sets this up once per machine
 </success_criteria>

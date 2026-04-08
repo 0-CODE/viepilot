@@ -949,41 +949,48 @@ const commands = {
   },
 
   /**
-   * Hooks scaffold — FEAT-013 adapter system
-   * Usage: vp-tools hooks scaffold [--adapter <id>]
+   * Hooks scaffold + install — FEAT-013/FEAT-012 adapter hook management
+   * Usage: vp-tools hooks <scaffold|install> [--adapter <id>]
    */
   hooks: (args) => {
     const sub = args[0];
     if (!sub || sub === 'help') {
       console.log(`${colors.cyan}Usage:${colors.reset}
   vp-tools hooks scaffold [--adapter <id>]
+  vp-tools hooks install  [--adapter <id>]
 
 ${colors.cyan}Subcommands:${colors.reset}
   scaffold   Print hook config snippet for the target adapter (default: claude-code)
+  install    Install ViePilot staleness hook into adapter config file (idempotent)
 
 ${colors.cyan}Options:${colors.reset}
   --adapter <id>   Adapter ID: claude-code (default), cursor-agent, cursor-ide
 
 ${colors.cyan}Examples:${colors.reset}
   ${colors.gray}$${colors.reset} vp-tools hooks scaffold
-  ${colors.gray}$${colors.reset} vp-tools hooks scaffold --adapter cursor-agent`);
+  ${colors.gray}$${colors.reset} vp-tools hooks scaffold --adapter cursor-agent
+  ${colors.gray}$${colors.reset} vp-tools hooks install
+  ${colors.gray}$${colors.reset} vp-tools hooks install --adapter claude-code`);
       return;
     }
+
+    // ── shared adapter resolution ──────────────────────────────────────────
+    const adapterArgIdx = args.indexOf('--adapter');
+    const adapterId = adapterArgIdx !== -1 ? args[adapterArgIdx + 1] : 'claude-code';
+    if (adapterArgIdx !== -1 && !adapterId) {
+      console.error(formatError('--adapter requires a value (e.g. claude-code, cursor-agent)'));
+      process.exit(1);
+    }
+    const { getAdapter } = require(path.join(__dirname, '../lib/adapters/index.cjs'));
+    let adapter;
+    try {
+      adapter = getAdapter(adapterId);
+    } catch (e) {
+      console.error(formatError(e.message));
+      process.exit(1);
+    }
+
     if (sub === 'scaffold') {
-      const adapterArgIdx = args.indexOf('--adapter');
-      const adapterId = adapterArgIdx !== -1 ? args[adapterArgIdx + 1] : 'claude-code';
-      if (!adapterId) {
-        console.error(formatError('--adapter requires a value (e.g. claude-code, cursor-agent)'));
-        process.exit(1);
-      }
-      const { getAdapter } = require(path.join(__dirname, '../lib/adapters/index.cjs'));
-      let adapter;
-      try {
-        adapter = getAdapter(adapterId);
-      } catch (e) {
-        console.error(formatError(e.message));
-        process.exit(1);
-      }
       if (!adapter.hooks || !adapter.hooks.configFile) {
         console.log(`Adapter "${adapterId}" (${adapter.name}) does not use a settings.json hook config.`);
         console.log(`For Cursor, hooks are configured via .cursorrules or project MDC files.`);
@@ -1005,10 +1012,61 @@ ${colors.cyan}Examples:${colors.reset}
           }]
         }
       }, null, 2));
-      console.log(`\nNote: brainstorm-staleness.cjs is shipped in FEAT-012.`);
+      console.log(`\nRun 'vp-tools hooks install' to register this hook automatically.`);
       process.exit(0);
     }
-    console.error(formatError(`Unknown hooks subcommand: ${sub}`, 'Use: scaffold'));
+
+    if (sub === 'install') {
+      if (!adapter.hooks || !adapter.hooks.configFile) {
+        console.log(`Adapter "${adapterId}" (${adapter.name}) does not support settings.json hooks.`);
+        console.log(`For Cursor, add hooks via .cursorrules or project MDC files.`);
+        process.exit(0);
+      }
+      const home = os.homedir();
+      const configPath = adapter.hooks.configFile(home);
+      const hookCommand = `node ${path.join(home, '.viepilot', 'hooks', 'brainstorm-staleness.cjs')}`;
+
+      // Read existing settings.json (create if missing)
+      let settings = {};
+      if (fs.existsSync(configPath)) {
+        try { settings = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_e) { settings = {}; }
+      }
+
+      // Merge hook entry — idempotent check
+      if (!settings.hooks) settings.hooks = {};
+      if (!settings.hooks.Stop) settings.hooks.Stop = [];
+
+      const alreadyInstalled = settings.hooks.Stop.some((entry) =>
+        Array.isArray(entry.hooks) &&
+        entry.hooks.some((h) => h.type === 'command' && h.command === hookCommand)
+      );
+
+      if (alreadyInstalled) {
+        console.log(formatSuccess('ViePilot staleness hook already installed.'));
+        console.log(`  Config: ${configPath}`);
+        process.exit(0);
+      }
+
+      settings.hooks.Stop.push({
+        matcher: {},
+        hooks: [{ type: 'command', command: hookCommand }],
+      });
+
+      try {
+        fs.mkdirSync(path.dirname(configPath), { recursive: true });
+        fs.writeFileSync(configPath, JSON.stringify(settings, null, 2) + '\n', 'utf8');
+      } catch (e) {
+        console.error(formatError(`Failed to write ${configPath}: ${e.message}`));
+        process.exit(1);
+      }
+
+      console.log(formatSuccess('ViePilot staleness hook installed.'));
+      console.log(`  Config:  ${configPath}`);
+      console.log(`  Command: ${hookCommand}`);
+      process.exit(0);
+    }
+
+    console.error(formatError(`Unknown hooks subcommand: ${sub}`, 'Use: scaffold, install'));
     process.exit(1);
   },
 
@@ -1221,7 +1279,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
   ${colors.bold}update${colors.reset} [--dry-run]       Update viepilot via npm (use --yes non-interactive)
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
-  ${colors.bold}hooks${colors.reset} scaffold [--adapter] Print hook config snippet for adapter (default: claude-code)
+  ${colors.bold}hooks${colors.reset} scaffold|install [--adapter] scaffold: print snippet; install: write to settings.json
   ${colors.bold}config${colors.reset} <get|set|reset>    Read/write language config (~/.viepilot/config.json)
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)

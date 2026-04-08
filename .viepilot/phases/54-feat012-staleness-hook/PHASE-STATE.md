@@ -1,12 +1,12 @@
 # Phase 54 State
 
-## Status: planned
+## Status: complete
 
 ## Tasks
-- [ ] 54.1 lib/hooks/brainstorm-staleness.cjs — Stop event hook: read stdin, detect stale items, patch HTML
-- [ ] 54.2 bin/vp-tools.cjs — add `hooks install [--adapter <id>]` subcommand
-- [ ] 54.3 docs/user/features/hooks.md + workflows/brainstorm.md — hook user docs
-- [ ] 54.4 tests/unit/brainstorm-staleness-hook.test.js — contract tests
+- [x] 54.1 lib/hooks/brainstorm-staleness.cjs — Stop event hook: read stdin, detect stale items, patch HTML
+- [x] 54.2 bin/vp-tools.cjs — add `hooks install [--adapter <id>]` subcommand
+- [x] 54.3 docs/user/features/hooks.md + workflows/brainstorm.md — hook user docs
+- [x] 54.4 tests/unit/brainstorm-staleness-hook.test.js — contract tests
 
 ## Blockers
 _None_

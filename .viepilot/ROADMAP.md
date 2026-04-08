@@ -1471,9 +1471,9 @@
 | 51. Fix diagram card IDs missing from ENH-033 (BUG-010) | ✅ Complete | 3 | 3 | 100% |
 | 52. Architect delta sync — brainstorm → HTML (ENH-034) | ✅ Complete | 4 | 4 | 100% |
 | 53. Dynamic adapter system (FEAT-013) | ✅ Complete | 5 | 5 | 100% |
-| 54. Brainstorm staleness hook (FEAT-012) | 🔲 Planned | 4 | 0 | 0% |
+| 54. Brainstorm staleness hook (FEAT-012) | ✅ Complete | 4 | 4 | 100% |
 
-**Total (to date)**: 104 tasks done (phases 33–53)
+**Total (to date)**: 108 tasks done (phases 33–54)
 
 ---
 
@@ -1651,7 +1651,7 @@
 
 ---
 
-### Phase 54: Brainstorm Staleness Hook (FEAT-012) 🔲
+### Phase 54: Brainstorm Staleness Hook (FEAT-012) ✅
 **Goal**: Ship ViePilot's first Claude Code hook — a `Stop` event handler that automatically detects stale architect/ui-direction content after each AI response in a brainstorm session, and marks affected HTML items with `data-arch-stale="true"` (amber badge). Option A (flag-only); non-blocking.
 **Estimated Tasks**: 4
 **Dependencies**: Phase 53 (FEAT-013 ✅ — adapter system + hooks scaffold)
@@ -1693,5 +1693,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-08 (Phase **54** FEAT-012 planned → target v2.1.0)
+- Last Updated: 2026-04-08 (Phase **54** FEAT-012 shipped → v2.1.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **54** — 🔲 Planned (**FEAT-012** → **2.1.0**)
-- **Last Completed Phase**: **53** — ✅ Complete (**FEAT-013** → **2.0.0**)
+- **Current Phase**: **54** — ✅ Complete (**FEAT-012** → **2.1.0**)
+- **Last Completed Phase**: **54** — ✅ Complete (**FEAT-012** → **2.1.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-08 — Phase 54 planned (FEAT-012 — brainstorm staleness hook → target 2.1.0)
+- **Last Activity**: 2026-04-08 — Phase 54 shipped (FEAT-012 — brainstorm staleness hook → 2.1.0)
 
 ## Progress Overview
 ```
@@ -19,7 +19,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ### Current Version
 ```
-2.0.0
+2.1.0
 ```
 
 ### Next Version
@@ -85,12 +85,13 @@ Suggested next version: per release checklist
 | 2026-04-08 | Phase 53 planned: FEAT-013 (5 tasks — adapters + install refactor + CLI + hooks scaffold + tests), target **2.0.0** | `/vp-evolve` | M1.29 |
 | 2026-04-08 | Phase 53 shipped: FEAT-013 (lib/adapters/ registry + install refactor + viepilot.cjs/dev-install.sh + hooks scaffold + 19 tests) — **2.0.0** | `/vp-auto` | M1.29 |
 | 2026-04-08 | Phase 54 planned: FEAT-012 (4 tasks — staleness hook + install cmd + docs + tests), target **2.1.0** | `/vp-evolve` | M1.29 |
+| 2026-04-08 | Phase 54 shipped: FEAT-012 (brainstorm-staleness.cjs + hooks install + docs + 20 tests) — **2.1.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 54 planned (FEAT-012 → 2.1.0); run `/vp-auto` to implement staleness hook
+**`/vp-evolve`** — Phase 54 complete; backlog is clear — define next feature or start new milestone
 
 ## Backlog
 
@@ -98,7 +99,7 @@ _None currently_
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | FEAT-013 | ✨ | Dynamic agent adapter system — multi-platform (Claude Code, Cursor, Antigravity, Codex, …) | critical | ✅ done (**2.0.0**) |
-| FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | → Phase 54 |
+| FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | ✅ done (**2.1.0**) |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |
 | BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |
 | ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | ✅ done (**1.18.0**) |

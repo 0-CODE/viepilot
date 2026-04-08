@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added (FEAT-012 — Phase 54 — target 2.1.0)
-- `lib/hooks/brainstorm-staleness.cjs` — Claude Code `Stop` event hook: auto-detects stale architect HTML items after each brainstorm exchange; marks `data-arch-stale="true"` (flag-only, non-blocking)
-- `bin/vp-tools.cjs`: `hooks install [--adapter <id>]` — merges hook entry into `~/.claude/settings.json`; idempotent
-- `docs/user/features/hooks.md` — hooks system user doc; install instructions; adapter table
-- `workflows/brainstorm.md` — architect_delta_sync step references automatic hook mode
+## [2.1.0] - 2026-04-08
+
+### Added (FEAT-012 — Phase 54)
+- **Brainstorm staleness hook**: `lib/hooks/brainstorm-staleness.cjs` — Claude Code `Stop` event handler; fires after each AI response in a brainstorm session; detects stale architect HTML items via keyword matching; marks `data-arch-stale="true"` (amber badge, flag-only); non-blocking (exit 0 always)
+- `bin/vp-tools.cjs`: `hooks install [--adapter <id>]` subcommand — merges ViePilot hook entry into `~/.claude/settings.json`; idempotent (re-run safe)
+- `docs/user/features/hooks.md` — new user doc: install instructions, adapter table, troubleshooting
+- `workflows/brainstorm.md`: `architect_delta_sync` step now references automatic hook mode; `/hooks-install` command added
+
+### Tests
+- Added `tests/unit/brainstorm-staleness-hook.test.js` (20 tests, 4 groups) — session discovery, keyword detection, HTML patching, install command
+- Total: 578 tests (was 558)
 
 ## [2.0.0] - 2026-04-08
 
