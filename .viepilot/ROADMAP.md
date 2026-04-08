@@ -1471,6 +1471,7 @@
 | 51. Fix diagram card IDs missing from ENH-033 (BUG-010) | ✅ Complete | 3 | 3 | 100% |
 | 52. Architect delta sync — brainstorm → HTML (ENH-034) | ✅ Complete | 4 | 4 | 100% |
 | 53. Dynamic adapter system (FEAT-013) | ✅ Complete | 5 | 5 | 100% |
+| 54. Brainstorm staleness hook (FEAT-012) | 🔲 Planned | 4 | 0 | 0% |
 
 **Total (to date)**: 104 tasks done (phases 33–53)
 
@@ -1650,6 +1651,30 @@
 
 ---
 
+### Phase 54: Brainstorm Staleness Hook (FEAT-012) 🔲
+**Goal**: Ship ViePilot's first Claude Code hook — a `Stop` event handler that automatically detects stale architect/ui-direction content after each AI response in a brainstorm session, and marks affected HTML items with `data-arch-stale="true"` (amber badge). Option A (flag-only); non-blocking.
+**Estimated Tasks**: 4
+**Dependencies**: Phase 53 (FEAT-013 ✅ — adapter system + hooks scaffold)
+**Directory**: `.viepilot/phases/54-feat012-staleness-hook/`
+**Version target**: 2.1.0 (MINOR)
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 54.1 | `lib/hooks/brainstorm-staleness.cjs` — Stop event handler: read stdin, find session, detect stale, patch HTML | Non-blocking (exit 0); keyword detection; idempotent HTML patch | L |
+| 54.2 | `bin/vp-tools.cjs` — `hooks install [--adapter <id>]` subcommand | Merges hook entry into settings.json; idempotent | M |
+| 54.3 | `docs/user/features/hooks.md` + `workflows/brainstorm.md` hook reference | Install doc; adapter table; brainstorm step auto-mode note | S |
+| 54.4 | Jest contract tests — `brainstorm-staleness-hook.test.js` (~20 tests) | Hook parsing, detection, HTML patch, install command | M |
+
+**Verification**:
+- [ ] `lib/hooks/brainstorm-staleness.cjs` exists, handles empty stdin, exits 0
+- [ ] Keyword detection returns correct pages for known content
+- [ ] HTML patching is idempotent (no duplicate attrs)
+- [ ] `vp-tools hooks install` writes Stop entry to `~/.claude/settings.json`
+- [ ] Re-run is idempotent
+- [ ] ~20 new tests pass + full suite green
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features
@@ -1668,5 +1693,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-08 (Phase **53** FEAT-013 shipped → v2.0.0)
+- Last Updated: 2026-04-08 (Phase **54** FEAT-012 planned → target v2.1.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

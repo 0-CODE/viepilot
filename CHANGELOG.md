@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (FEAT-012 — Phase 54 — target 2.1.0)
+- `lib/hooks/brainstorm-staleness.cjs` — Claude Code `Stop` event hook: auto-detects stale architect HTML items after each brainstorm exchange; marks `data-arch-stale="true"` (flag-only, non-blocking)
+- `bin/vp-tools.cjs`: `hooks install [--adapter <id>]` — merges hook entry into `~/.claude/settings.json`; idempotent
+- `docs/user/features/hooks.md` — hooks system user doc; install instructions; adapter table
+- `workflows/brainstorm.md` — architect_delta_sync step references automatic hook mode
+
 ## [2.0.0] - 2026-04-08
 
 ### Added (FEAT-013 — Phase 53)
