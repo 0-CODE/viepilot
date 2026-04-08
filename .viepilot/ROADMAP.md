@@ -1468,9 +1468,11 @@
 | 48. Language standardization — English-primary (ENH-031) | ✅ Complete | 9 | 9 | 100% |
 | 49. Language configuration system (ENH-032) | ✅ Complete | 8 | 8 | 100% |
 | 50. Architect HTML: item IDs + Approve/Edit buttons (ENH-033) | ✅ Complete | 9 | 9 | 100% |
-| 51. Fix diagram card IDs missing from ENH-033 (BUG-010) | 🔲 Planned | 3 | 0 | 0% |
+| 51. Fix diagram card IDs missing from ENH-033 (BUG-010) | ✅ Complete | 3 | 3 | 100% |
+| 52. Architect delta sync — brainstorm → HTML (ENH-034) | ✅ Complete | 4 | 4 | 100% |
+| 53. Dynamic adapter system (FEAT-013) | ✅ Complete | 5 | 5 | 100% |
 
-**Total (to date)**: 92 tasks done (phases 33–50)
+**Total (to date)**: 104 tasks done (phases 33–53)
 
 ---
 
@@ -1622,7 +1624,7 @@
 
 ---
 
-### Phase 53: Dynamic Agent Adapter System (FEAT-013) 🔲
+### Phase 53: Dynamic Agent Adapter System (FEAT-013) ✅
 **Goal**: Replace hardcoded Cursor paths in install logic with a dynamic adapter registry. Each AI agent platform (Claude Code, Cursor, future: Antigravity, Codex…) is a self-contained `lib/adapters/{id}.cjs` module. Default install target changes from Cursor to Claude Code. No regression for existing Cursor users.
 **Estimated Tasks**: 5
 **Dependencies**: Phase 52 (ENH-034 — framework stable)
@@ -1666,5 +1668,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-08 (Phase **53** FEAT-013 planned → target v2.0.0)
+- Last Updated: 2026-04-08 (Phase **53** FEAT-013 shipped → v2.0.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

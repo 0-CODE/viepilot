@@ -1,13 +1,13 @@
 # Phase 53 State
 
-## Status: planned
+## Status: complete
 
 ## Tasks
-- [ ] 53.1 lib/adapters/ — adapter interface + registry + claude-code + cursor adapters (new files)
-- [ ] 53.2 lib/viepilot-install.cjs — refactor buildInstallPlan() to be adapter-driven
-- [ ] 53.3 bin/viepilot.cjs + dev-install.sh — load TARGETS from registry; VIEPILOT_ADAPTER env var
-- [ ] 53.4 bin/vp-tools.cjs — add `hooks scaffold [--adapter <id>]` subcommand
-- [ ] 53.5 Jest contract tests for FEAT-013 adapter system
+- [x] 53.1 lib/adapters/ — adapter interface + registry + claude-code + cursor adapters (new files)
+- [x] 53.2 lib/viepilot-install.cjs — refactor buildInstallPlan() to be adapter-driven
+- [x] 53.3 bin/viepilot.cjs + dev-install.sh — load TARGETS from registry; VIEPILOT_ADAPTER env var
+- [x] 53.4 bin/vp-tools.cjs — add `hooks scaffold [--adapter <id>]` subcommand
+- [x] 53.5 Jest contract tests for FEAT-013 adapter system
 
 ## Blockers
 _None_

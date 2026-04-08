@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **53** — 🔲 Planned (**FEAT-013** → **2.0.0**)
-- **Last Completed Phase**: **52** — ✅ Complete (**ENH-034** → **1.19.0**)
+- **Current Phase**: **53** — ✅ Complete (**FEAT-013** → **2.0.0**)
+- **Last Completed Phase**: **53** — ✅ Complete (**FEAT-013** → **2.0.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-08 — Phase 53 planned (FEAT-013 — dynamic adapter system → target 2.0.0)
+- **Last Activity**: 2026-04-08 — Phase 53 shipped (FEAT-013 — dynamic adapter system → 2.0.0)
 
 ## Progress Overview
 ```
@@ -19,13 +19,13 @@ Phase 35 (ENH-022)    [██████████] done
 
 ### Current Version
 ```
-1.9.5
+2.0.0
 ```
 
 ### Next Version
 ```
 Pending changes in [Unreleased]:
-- See CHANGELOG.md [Unreleased]
+- None
 
 Suggested next version: per release checklist
 ```
@@ -83,19 +83,20 @@ Suggested next version: per release checklist
 | 2026-04-08 | FEAT-012 logged: vp-brainstorm post-exchange staleness hook (Claude Code Stop event) | `/vp-request` | Backlog |
 | 2026-04-08 | FEAT-013 logged: Dynamic agent adapter system — multi-platform (revised from pivot) | `/vp-request` | Backlog |
 | 2026-04-08 | Phase 53 planned: FEAT-013 (5 tasks — adapters + install refactor + CLI + hooks scaffold + tests), target **2.0.0** | `/vp-evolve` | M1.29 |
+| 2026-04-08 | Phase 53 shipped: FEAT-013 (lib/adapters/ registry + install refactor + viepilot.cjs/dev-install.sh + hooks scaffold + 19 tests) — **2.0.0** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-auto`** — Phase 53 planned (FEAT-013 → 2.0.0); run `/vp-auto` to implement adapter system
+**`/vp-evolve`** — Phase 53 complete; next: FEAT-012 (brainstorm staleness hook — Phase 54 candidate)
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| FEAT-013 | ✨ | Dynamic agent adapter system — multi-platform (Claude Code, Cursor, Antigravity, Codex, …) | critical | new |
+| FEAT-013 | ✨ | Dynamic agent adapter system — multi-platform (Claude Code, Cursor, Antigravity, Codex, …) | critical | ✅ done (**2.0.0**) |
 | FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | new |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |
 | BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |

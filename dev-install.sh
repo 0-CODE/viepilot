@@ -3,8 +3,11 @@
 # ViePilot Development Installation Script
 # Installs development build without symlink dependency by default
 #
-# Optional: VIEPILOT_SYMLINK_SKILLS=1 — symlink each skills/vp-* into ~/.cursor/skills/
-# (live edits from this repo; default remains copy for reliability — see FEAT-005)
+# Optional env vars:
+#   VIEPILOT_ADAPTER      — target platform: claude-code (default), cursor, cursor-agent, cursor-ide
+#   VIEPILOT_INSTALL_PROFILE — backward-compat alias for VIEPILOT_ADAPTER
+#   VIEPILOT_AUTO_YES     — skip confirmation prompt (set to 1)
+#   VIEPILOT_SYMLINK_SKILLS=1 — symlink each skills/vp-* instead of copy
 
 set -e
 
@@ -17,10 +20,27 @@ NC='\033[0m'
 
 # Get script directory (project root)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CURSOR_SKILLS_DIR="$HOME/.cursor/skills"
-VIEPILOT_DIR="$HOME/.cursor/viepilot"
 AUTO_YES="${VIEPILOT_AUTO_YES:-0}"
-INSTALL_PROFILE="${VIEPILOT_INSTALL_PROFILE:-cursor-agent}"
+
+# Backward compat: VIEPILOT_INSTALL_PROFILE accepted as alias for VIEPILOT_ADAPTER
+ADAPTER="${VIEPILOT_ADAPTER:-${VIEPILOT_INSTALL_PROFILE:-claude-code}}"
+
+case "$ADAPTER" in
+  claude-code)
+    SKILLS_DIR="$HOME/.claude/skills"
+    VIEPILOT_DIR="$HOME/.claude/viepilot"
+    PROFILE_LABEL="Claude Code"
+    ;;
+  cursor|cursor-agent|cursor-ide)
+    SKILLS_DIR="$HOME/.cursor/skills"
+    VIEPILOT_DIR="$HOME/.cursor/viepilot"
+    PROFILE_LABEL="Cursor"
+    ;;
+  *)
+    echo "Unknown adapter: $ADAPTER. Use: claude-code (default), cursor-agent, cursor-ide"
+    exit 1
+    ;;
+esac
 
 echo -e "${BLUE}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -33,9 +53,10 @@ if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
 else
     echo -e "${YELLOW}Development mode installation (copy-first for reliability)${NC}"
 fi
-echo "  Source: $SCRIPT_DIR"
-echo "  Target: $CURSOR_SKILLS_DIR, $VIEPILOT_DIR"
-echo "  Profile: $INSTALL_PROFILE"
+echo "  Source:  $SCRIPT_DIR"
+echo "  Skills:  $SKILLS_DIR"
+echo "  Viepilot: $VIEPILOT_DIR"
+echo "  Adapter: $ADAPTER ($PROFILE_LABEL)"
 echo ""
 
 check_cloc_dependency() {
@@ -68,7 +89,7 @@ echo ""
 echo -e "${BLUE}Removing old installations...${NC}"
 
 # Remove old skill installations
-for skill in "$CURSOR_SKILLS_DIR"/vp-*/; do
+for skill in "$SKILLS_DIR"/vp-*/; do
     if [ -d "$skill" ] || [ -L "$skill" ]; then
         rm -rf "$skill"
         echo "  Removed: $(basename "$skill")"
@@ -85,7 +106,7 @@ echo ""
 echo -e "${BLUE}Installing skills...${NC}"
 
 # Install skills: copy (default) or symlink when VIEPILOT_SYMLINK_SKILLS=1
-mkdir -p "$CURSOR_SKILLS_DIR"
+mkdir -p "$SKILLS_DIR"
 for skill in "$SCRIPT_DIR"/skills/vp-*/; do
     skill_name=$(basename "$skill")
     if [ "${VIEPILOT_SYMLINK_SKILLS:-0}" = "1" ]; then
@@ -94,10 +115,10 @@ for skill in "$SCRIPT_DIR"/skills/vp-*/; do
         else
             skill_abs=$(cd "$skill" && pwd)
         fi
-        ln -sfn "$skill_abs" "$CURSOR_SKILLS_DIR/$skill_name"
+        ln -sfn "$skill_abs" "$SKILLS_DIR/$skill_name"
         echo -e "  ${GREEN}✓${NC} $skill_name (symlink)"
     else
-        cp -R "$skill" "$CURSOR_SKILLS_DIR/$skill_name"
+        cp -R "$skill" "$SKILLS_DIR/$skill_name"
         echo -e "  ${GREEN}✓${NC} $skill_name"
     fi
 done
@@ -129,7 +150,7 @@ echo -e "  ${GREEN}✓${NC} ui-components"
 check_cloc_dependency
 
 # Count installed
-SKILL_COUNT=$(ls -d "$CURSOR_SKILLS_DIR"/vp-*/ 2>/dev/null | wc -l | tr -d ' ')
+SKILL_COUNT=$(ls -d "$SKILLS_DIR"/vp-*/ 2>/dev/null | wc -l | tr -d ' ')
 WORKFLOW_COUNT=$(ls "$SCRIPT_DIR"/workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
 
 echo ""

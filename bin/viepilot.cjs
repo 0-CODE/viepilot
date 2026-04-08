@@ -14,11 +14,13 @@ const { buildInstallPlan, applyInstallPlan, resolveViepilotPackageRoot } = requi
   'lib',
   'viepilot-install.cjs',
 ));
+const { adapters: adapterMap } = require(path.join(__dirname, '..', 'lib', 'adapters', 'index.cjs'));
 
+// UI target list — keep cursor-agent and cursor-ide as distinct choices for users.
 const TARGETS = [
-  { id: 'claude-code', label: 'Claude Code' },
+  { id: 'claude-code',  label: adapterMap['claude-code'].name + ' (default)' },
   { id: 'cursor-agent', label: 'Cursor Agent' },
-  { id: 'cursor-ide', label: 'Cursor IDE' },
+  { id: 'cursor-ide',   label: 'Cursor IDE' },
 ];
 
 function printHelp() {
@@ -254,7 +256,7 @@ async function interactiveTargetSelection() {
 function runInstallViaNode(selectedTargets, dryRun) {
   const fallbackRoot = path.join(__dirname, '..');
   const pkgRoot = resolveViepilotPackageRoot(fallbackRoot) || fallbackRoot;
-  const profile = selectedTargets[0] || 'cursor-ide';
+  const profile = selectedTargets[0] || 'claude-code';
   const env = {
     ...process.env,
     VIEPILOT_AUTO_YES: '1',
@@ -307,8 +309,8 @@ async function installCommand(rawArgs) {
 
   if (!selectedTargets) {
     if (options.yes) {
-      selectedTargets = TARGETS.map((t) => t.id);
-      console.log('No --target provided with --yes; defaulting to all targets.');
+      selectedTargets = ['claude-code'];
+      console.log('No --target provided with --yes; defaulting to claude-code.');
     } else {
       selectedTargets = await interactiveTargetSelection();
       if (selectedTargets.length === 0) {

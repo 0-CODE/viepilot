@@ -82,7 +82,7 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
 
   test('normalizeInstallEnv defaults', () => {
     const e = normalizeInstallEnv({});
-    expect(e.profile).toBe('cursor-ide');
+    expect(e.profile).toBe('claude-code');
     expect(e.autoYes).toBe(false);
   });
 
@@ -113,15 +113,17 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
     expect(w.content).toMatch(/profile_id/);
   });
 
-  test('buildInstallPlan without installTargets does not add ~/.claude/skills steps', () => {
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-no-claude-'));
+  test('buildInstallPlan without installTargets defaults to claude-code (FEAT-013)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-default-claude-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
       { VIEPILOT_AUTO_YES: '1' },
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
-    expect(plan.paths.claudeSkillsDir).toBeNull();
-    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.claude'))).toBe(false);
+    const claudeSkills = path.join(path.resolve(fakeHome), '.claude', 'skills');
+    expect(plan.paths.claudeSkillsDir).toBe(claudeSkills);
+    expect(plan.steps.some((s) => s.kind === 'mkdir' && s.path.includes('.claude'))).toBe(true);
+    expect(plan.paths.cursorSkillsDir).toBeNull();
   });
 
   test('buildInstallPlan with installTargets claude-code mirrors vp-* into ~/.claude/skills', () => {
@@ -146,7 +148,7 @@ describe('viepilot-install plan (28.1 scaffold)', () => {
 });
 
 describe('viepilot-install apply (28.2)', () => {
-  test('applyInstallPlan dry-run does not create ~/.cursor under fake home', () => {
+  test('applyInstallPlan dry-run does not create dirs under fake home', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-dry-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -155,10 +157,10 @@ describe('viepilot-install apply (28.2)', () => {
     );
     const r = applyInstallPlan(plan, { dryRun: true });
     expect(r.ok).toBe(true);
-    expect(fs.existsSync(path.join(fakeHome, '.cursor'))).toBe(false);
+    expect(fs.existsSync(path.join(fakeHome, '.claude'))).toBe(false);
   });
 
-  test('applyInstallPlan copies CLI into fake HOME', () => {
+  test('applyInstallPlan copies CLI into ~/.claude under fake HOME (FEAT-013 default)', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-apply-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -167,7 +169,7 @@ describe('viepilot-install apply (28.2)', () => {
     );
     const r = applyInstallPlan(plan, { dryRun: false });
     expect(r.ok).toBe(true);
-    const bin = path.join(fakeHome, '.cursor', 'viepilot', 'bin', 'vp-tools.cjs');
+    const bin = path.join(fakeHome, '.claude', 'viepilot', 'bin', 'vp-tools.cjs');
     expect(fs.existsSync(bin)).toBe(true);
     expect(fs.readFileSync(bin, 'utf8').length).toBeGreaterThan(10);
   });
@@ -285,11 +287,11 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     expect(content).toContain('.claude/viepilot');
   });
 
-  test('buildInstallPlan without claude-code target has null claudeViepilotDir and no rewrite step', () => {
+  test('cursor-only target has null claudeViepilotDir and no rewrite step', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-nocc-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
-      { VIEPILOT_AUTO_YES: '1' },
+      { VIEPILOT_AUTO_YES: '1', VIEPILOT_INSTALL_PROFILE: 'cursor-ide' },
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     expect(plan.paths.claudeViepilotDir).toBeNull();
@@ -304,7 +306,7 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-cursor-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
-      { VIEPILOT_AUTO_YES: '1' },
+      { VIEPILOT_AUTO_YES: '1', VIEPILOT_INSTALL_PROFILE: 'cursor-ide' },
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     const libDir = path.join(path.resolve(fakeHome), '.cursor', 'viepilot', 'lib');
@@ -334,7 +336,7 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-nocc-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
-      { VIEPILOT_AUTO_YES: '1' },
+      { VIEPILOT_AUTO_YES: '1', VIEPILOT_INSTALL_PROFILE: 'cursor-ide' },
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     const claudeLibDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot', 'lib');
@@ -360,7 +362,7 @@ describe('BUG-007: claude-code install includes package.json copy (41.2)', () =>
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b007-cursor-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
-      { VIEPILOT_AUTO_YES: '1' },
+      { VIEPILOT_AUTO_YES: '1', VIEPILOT_INSTALL_PROFILE: 'cursor-ide' },
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     const claudeViepilotDir = path.join(path.resolve(fakeHome), '.claude', 'viepilot');

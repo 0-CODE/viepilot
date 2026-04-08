@@ -7,16 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added (FEAT-013 — Phase 53 — target 2.0.0)
-- **Dynamic agent adapter system**: `lib/adapters/` module with `claude-code.cjs`, `cursor.cjs`, `index.cjs` registry — each platform is a self-contained adapter (skillsDir, viepilotDir, hooks config, isAvailable)
-- `lib/viepilot-install.cjs`: `buildInstallPlan()` now loops over selected adapters — no hardcoded `.cursor/` paths
-- `bin/viepilot.cjs`: TARGETS sourced from adapter registry; default non-interactive target = claude-code
-- `dev-install.sh`: `VIEPILOT_ADAPTER` env var (default: `claude-code`); `VIEPILOT_INSTALL_PROFILE` kept as alias
-- `bin/vp-tools.cjs`: `hooks scaffold [--adapter <id>]` — prints settings.json hook snippet for Claude Code
+## [2.0.0] - 2026-04-08
 
-### BREAKING CHANGES (2.0.0)
+### Added (FEAT-013 — Phase 53)
+- **Dynamic agent adapter system**: `lib/adapters/` module with `claude-code.cjs`, `cursor.cjs`, `index.cjs` registry — each platform is a self-contained adapter (skillsDir, viepilotDir, executionContextBase, hooks config, installSubdirs, isAvailable, pathRewrite)
+- `lib/viepilot-install.cjs`: `buildInstallPlan()` now resolves all platform paths from adapter registry — no hardcoded `.cursor/` constants; single adapter loop replaces cursor + claude-code if-blocks
+- `bin/viepilot.cjs`: TARGETS sourced from adapter registry; default non-interactive target = `claude-code`
+- `dev-install.sh`: `VIEPILOT_ADAPTER` env var (default: `claude-code`); backward-compat `VIEPILOT_INSTALL_PROFILE` alias preserved
+- `bin/vp-tools.cjs`: `hooks scaffold [--adapter <id>]` subcommand — prints `~/.claude/settings.json` hook registration snippet for Claude Code; Cursor: prints explanation
+
+### BREAKING CHANGES
 - Default install target changes from `cursor-ide` → `claude-code` (`~/.claude/`)
-- Cursor users: set `VIEPILOT_ADAPTER=cursor-agent` or pass `--target cursor-agent`
+- Cursor users: set `VIEPILOT_ADAPTER=cursor-agent` (or `VIEPILOT_INSTALL_PROFILE=cursor-agent`) or pass `--target cursor-agent`
+- `normalizeInstallEnv({})` default profile is now `claude-code` (was `cursor-ide`)
+
+### Tests
+- Added `tests/unit/viepilot-adapters.test.js` (19 tests, 4 groups) — adapter interface, registry, install plan, dev-install.sh
+- Updated `tests/unit/viepilot-install.test.js` — 7 tests updated to reflect claude-code default; cursor-explicit tests use `VIEPILOT_INSTALL_PROFILE: 'cursor-ide'`
+- Total: 558 tests (was 539)
 
 ## [1.19.0] - 2026-04-08
 

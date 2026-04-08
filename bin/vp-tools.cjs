@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const os = require('os');
 
 const {
   validators,
@@ -948,6 +949,70 @@ const commands = {
   },
 
   /**
+   * Hooks scaffold — FEAT-013 adapter system
+   * Usage: vp-tools hooks scaffold [--adapter <id>]
+   */
+  hooks: (args) => {
+    const sub = args[0];
+    if (!sub || sub === 'help') {
+      console.log(`${colors.cyan}Usage:${colors.reset}
+  vp-tools hooks scaffold [--adapter <id>]
+
+${colors.cyan}Subcommands:${colors.reset}
+  scaffold   Print hook config snippet for the target adapter (default: claude-code)
+
+${colors.cyan}Options:${colors.reset}
+  --adapter <id>   Adapter ID: claude-code (default), cursor-agent, cursor-ide
+
+${colors.cyan}Examples:${colors.reset}
+  ${colors.gray}$${colors.reset} vp-tools hooks scaffold
+  ${colors.gray}$${colors.reset} vp-tools hooks scaffold --adapter cursor-agent`);
+      return;
+    }
+    if (sub === 'scaffold') {
+      const adapterArgIdx = args.indexOf('--adapter');
+      const adapterId = adapterArgIdx !== -1 ? args[adapterArgIdx + 1] : 'claude-code';
+      if (!adapterId) {
+        console.error(formatError('--adapter requires a value (e.g. claude-code, cursor-agent)'));
+        process.exit(1);
+      }
+      const { getAdapter } = require(path.join(__dirname, '../lib/adapters/index.cjs'));
+      let adapter;
+      try {
+        adapter = getAdapter(adapterId);
+      } catch (e) {
+        console.error(formatError(e.message));
+        process.exit(1);
+      }
+      if (!adapter.hooks || !adapter.hooks.configFile) {
+        console.log(`Adapter "${adapterId}" (${adapter.name}) does not use a settings.json hook config.`);
+        console.log(`For Cursor, hooks are configured via .cursorrules or project MDC files.`);
+        process.exit(0);
+      }
+      const home = os.homedir();
+      const configPath = adapter.hooks.configFile(home);
+      console.log(`\nViePilot hooks scaffold for: ${adapter.name}`);
+      console.log(`Config file: ${configPath}\n`);
+      console.log(`Add the following to your ${configPath}:\n`);
+      console.log(JSON.stringify({
+        hooks: {
+          Stop: [{
+            matcher: {},
+            hooks: [{
+              type: 'command',
+              command: `node ${path.join(home, '.viepilot', 'hooks', 'brainstorm-staleness.cjs')}`
+            }]
+          }]
+        }
+      }, null, 2));
+      console.log(`\nNote: brainstorm-staleness.cjs is shipped in FEAT-012.`);
+      process.exit(0);
+    }
+    console.error(formatError(`Unknown hooks subcommand: ${sub}`, 'Use: scaffold'));
+    process.exit(1);
+  },
+
+  /**
    * Config get/set/reset — ENH-032 language configuration
    */
   config: (args) => {
@@ -1156,6 +1221,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}info${colors.reset} [--json]            Show ViePilot version, npm latest, skills/workflows
   ${colors.bold}update${colors.reset} [--dry-run]       Update viepilot via npm (use --yes non-interactive)
   ${colors.bold}conflicts${colors.reset}                Check for potential conflicts
+  ${colors.bold}hooks${colors.reset} scaffold [--adapter] Print hook config snippet for adapter (default: claude-code)
   ${colors.bold}config${colors.reset} <get|set|reset>    Read/write language config (~/.viepilot/config.json)
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
