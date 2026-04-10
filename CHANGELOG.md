@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed (BUG-011 — Phase 55)
+
+## [2.1.2] - 2026-04-10
+
+### Fixed (BUG-013 — Phase 57)
+- **Untrack .viepilot/ from git**: `git rm -r --cached .viepilot/` — removes all 27 previously-tracked internal state files from the git index; `.viepilot/` now correctly treated as gitignored on disk only, never staged or pushed
+- **GITIGNORE-AWARE STAGING RULE**: `workflows/autonomous.md` commit block now has `⛔ GITIGNORE-AWARE STAGING RULE (BUG-013)` — instructs vp-auto to check `git check-ignore -q` before staging, and explicitly forbids `git add .viepilot/`
+- **Git persistence gate note**: porcelain check section clarified — `??` (untracked-only) lines are CLEAN, not dirty state; prevents false gate failures after BUG-013 fix
+
+### Tests
+- Added `tests/unit/vp-bug013-gitignore-staging-rule.test.js` (3 tests)
+- Total: 584 tests (was 581)
 - **ui-direction path disambiguation**: `workflows/brainstorm.md` confirmation dialogue option 1 now shows full unambiguous path `.viepilot/ui-direction/{session-id}/notes.md` (was bare `ui-direction/notes.md`)
 - **crystallize PATH GUARD**: `workflows/crystallize.md` `consume_ui_direction` step now opens with `⛔ PATH GUARD (BUG-011)` — explicitly instructs LLM to ignore any `{root}/ui-direction/` folder and read only from `.viepilot/ui-direction/`
 

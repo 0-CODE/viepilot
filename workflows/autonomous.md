@@ -233,6 +233,16 @@ Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the
    git commit -m "{type}({scope}): {description}"
    git push
    ```
+
+   ⛔ **GITIGNORE-AWARE STAGING RULE (BUG-013)**: Before staging any file, verify it is
+   not gitignored. NEVER stage or commit gitignored files — they are internal state, not
+   shipping artifacts.
+   ```bash
+   # Check before staging:
+   git check-ignore -q {file} && echo "IGNORED — skip" || git add {file}
+   ```
+   `.viepilot/` is ALWAYS gitignored in ViePilot repos. **Never run `git add .viepilot/`.**
+
 8. Log notes in task file after each sub-task
 
 #### Verify Task
@@ -257,6 +267,9 @@ Before marking a task PASS, require durable git persistence:
 ```bash
 # Must have no unstaged/staged residue for this task
 git status --porcelain
+# NOTE (BUG-013): lines starting with "??" are UNTRACKED files — NOT a dirty state.
+# Porcelain is CLEAN when output is empty OR contains only "??" lines.
+# Gitignored files (e.g. .viepilot/) must never be staged, so they appear as ?? here.
 
 # Must track an upstream branch
 git rev-parse --abbrev-ref --symbolic-full-name @{u}
