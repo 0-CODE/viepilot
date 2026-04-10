@@ -37,7 +37,7 @@ Run **`vp-tools update`** to plan and (when confirmed) execute the `npm` upgrade
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/bin/vp-tools.cjs
+@$HOME/{envToolDir}/bin/vp-tools.cjs
 </execution_context>
 
 <process>

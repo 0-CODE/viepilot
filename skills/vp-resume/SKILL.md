@@ -41,11 +41,11 @@ Restore complete project context and resume work seamlessly.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/resume-work.md
+@$HOME/{envToolDir}/workflows/resume-work.md
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/resume-work.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/resume-work.md`
 
 ### Step 1: Check Project Exists
 ```bash

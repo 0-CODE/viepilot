@@ -61,7 +61,7 @@ Supports:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/brainstorm.md
+@$HOME/{envToolDir}/workflows/brainstorm.md
 </execution_context>
 
 <context>
@@ -75,7 +75,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/brainstorm.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/brainstorm.md`
 
 Key steps:
 1. Detect existing sessions

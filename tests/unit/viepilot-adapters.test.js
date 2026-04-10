@@ -26,7 +26,6 @@ describe('FEAT-013: Adapter interface shape', () => {
     expect(typeof a.skillsDir).toBe('function');
     expect(typeof a.viepilotDir).toBe('function');
     expect(typeof a.executionContextBase).toBe('string');
-    expect(a.pathRewrite).toBeTruthy();
     expect(a.hooks).toBeTruthy();
     expect(Array.isArray(a.installSubdirs)).toBe(true);
     expect(typeof a.isAvailable).toBe('function');
@@ -167,7 +166,7 @@ describe('FEAT-013: Install plan adapter-driven', () => {
     expect(hasCursorSkills).toBe(false);
   });
 
-  test('steps include path-rewrite step when claude-code target is used', () => {
+  test('steps include {envToolDir} substitution step for claude-code target (ENH-035)', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-a-rw-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -176,8 +175,21 @@ describe('FEAT-013: Install plan adapter-driven', () => {
     );
     const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
     expect(rewrite).toBeDefined();
-    expect(rewrite.from).toBe('.cursor/viepilot');
+    expect(rewrite.from).toBe('{envToolDir}');
     expect(rewrite.to).toBe('.claude/viepilot');
+  });
+
+  test('steps include {envToolDir} substitution step for cursor target (ENH-035)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-a-rw-cur-'));
+    const plan = buildInstallPlan(
+      REPO_ROOT,
+      { VIEPILOT_AUTO_YES: '1' },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['cursor-agent'] },
+    );
+    const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
+    expect(rewrite).toBeDefined();
+    expect(rewrite.from).toBe('{envToolDir}');
+    expect(rewrite.to).toBe('.cursor/viepilot');
   });
 });
 

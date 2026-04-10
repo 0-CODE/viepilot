@@ -44,7 +44,7 @@ Rollback to any checkpoint safely, with backup and state preservation.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/rollback.md
+@$HOME/{envToolDir}/workflows/rollback.md
 </execution_context>
 
 <context>

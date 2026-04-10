@@ -45,7 +45,7 @@ Sources can come from prompt/link/snippet (especially 21st.dev), then normalized
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/ui-components.md
+@$HOME/{envToolDir}/workflows/ui-components.md
 </execution_context>
 
 <context>
@@ -58,7 +58,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/ui-components.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/ui-components.md`
 
 Key steps:
 1. Prepare global + local component stores

@@ -51,7 +51,7 @@ Upgrade or expand the project after completing a milestone or when new features 
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/evolve.md
+@$HOME/{envToolDir}/workflows/evolve.md
 </execution_context>
 
 <context>

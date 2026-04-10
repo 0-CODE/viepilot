@@ -72,7 +72,7 @@ Auto-detects if running inside the viepilot framework repo to enable framework-s
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/audit.md
+@$HOME/{envToolDir}/workflows/audit.md
 </execution_context>
 
 <context>
@@ -89,7 +89,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/audit.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/audit.md`
 
 ### Quick Summary
 

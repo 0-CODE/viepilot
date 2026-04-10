@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-04-10
+
+### Changed (ENH-035 — Phase 58)
+- **{envToolDir} template variable**: all 14 `skills/*/SKILL.md` source files now use `$HOME/{envToolDir}/` instead of hardcoded `$HOME/.cursor/viepilot/` — skill sources are platform-neutral
+- **`lib/viepilot-install.cjs`**: path substitution now unconditionally replaces `{envToolDir}` → `adapter.executionContextBase` for every adapter (Cursor → `.cursor/viepilot`, Claude Code → `.claude/viepilot`, future adapters just set `executionContextBase`)
+- **`lib/adapters/claude-code.cjs`**: removed `pathRewrite` field — no longer needed
+- **`lib/adapters/cursor.cjs`**: removed `pathRewrite: null` field — no longer needed
+- Adding a new adapter now requires only `executionContextBase` — no `pathRewrite` definition
+
+### Tests
+- Updated `tests/unit/viepilot-adapters.test.js`: removed `pathRewrite` assertion; rewrite step tests now check `from: '{envToolDir}'`; added cursor-target substitution test
+- Updated `tests/unit/viepilot-install.test.js`: 2 tests updated for ENH-035 behavior
+- Total: 588 tests (was 587)
+
 ## [2.1.3] - 2026-04-10
 
 ### Fixed (BUG-011 — Phase 55)

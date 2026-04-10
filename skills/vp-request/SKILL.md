@@ -49,7 +49,7 @@ Create and manage requests for the project under development:
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/request.md
+@$HOME/{envToolDir}/workflows/request.md
 </execution_context>
 
 <context>
@@ -64,7 +64,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/request.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/request.md`
 
 ### Step 1: Detect Request Type
 

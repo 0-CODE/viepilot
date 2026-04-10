@@ -267,7 +267,7 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
     expect(rewrite).toBeDefined();
     expect(rewrite.dir).toBe(claudeSkills);
-    expect(rewrite.from).toBe('.cursor/viepilot');
+    expect(rewrite.from).toBe('{envToolDir}');  // ENH-035: template variable
     expect(rewrite.to).toBe('.claude/viepilot');
   });
 
@@ -287,7 +287,7 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
     expect(content).toContain('.claude/viepilot');
   });
 
-  test('cursor-only target has null claudeViepilotDir and no rewrite step', () => {
+  test('cursor-only target has null claudeViepilotDir and {envToolDir} rewrite step (ENH-035)', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b005-nocc-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -295,7 +295,11 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
       { overrideHomedir: fakeHome, wantPathShim: false },
     );
     expect(plan.paths.claudeViepilotDir).toBeNull();
-    expect(plan.steps.some((s) => s.kind === 'rewrite_paths_in_dir')).toBe(false);
+    // ENH-035: every adapter now gets {envToolDir} substitution (cursor resolves to .cursor/viepilot)
+    const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
+    expect(rewrite).toBeDefined();
+    expect(rewrite.from).toBe('{envToolDir}');
+    expect(rewrite.to).toBe('.cursor/viepilot');
   });
 });
 

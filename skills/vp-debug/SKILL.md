@@ -50,7 +50,7 @@ Systematic debugging with persistent state tracking. Helps track issues across m
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/debug.md
+@$HOME/{envToolDir}/workflows/debug.md
 </execution_context>
 
 <context>
@@ -63,7 +63,7 @@ Optional flags:
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/debug.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/debug.md`
 
 ### Debug Session Structure
 ```json

@@ -80,12 +80,12 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/crystallize.md
-@$HOME/.cursor/viepilot/templates/project/
+@$HOME/{envToolDir}/workflows/crystallize.md
+@$HOME/{envToolDir}/templates/project/
 </execution_context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/crystallize.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/crystallize.md`
 
 Key steps:
 

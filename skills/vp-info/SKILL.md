@@ -40,7 +40,7 @@ Use **`vp-tools info --json`** when parsing or comparing versions in scripts.
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/bin/vp-tools.cjs
+@$HOME/{envToolDir}/bin/vp-tools.cjs
 </execution_context>
 
 <process>

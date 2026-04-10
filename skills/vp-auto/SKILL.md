@@ -96,7 +96,7 @@ If required task details are missing, do not implement until task contract is re
 </objective>
 
 <execution_context>
-@$HOME/.cursor/viepilot/workflows/autonomous.md
+@$HOME/{envToolDir}/workflows/autonomous.md
 </execution_context>
 
 <context>
@@ -119,7 +119,7 @@ See preflight check in `workflows/autonomous.md` → “Preflight: Task Paths Va
 </context>
 
 <process>
-Execute workflow from `@$HOME/.cursor/viepilot/workflows/autonomous.md`
+Execute workflow from `@$HOME/{envToolDir}/workflows/autonomous.md`
 
 ### 1. Initialize
 ```bash
