@@ -24,9 +24,13 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 ## Step 1: Initialize
 
 ```bash
-Read lib/proposal-generator.cjs  → PROPOSAL_TYPES, resolveTemplate, detectBrainstormSession
+Read lib/proposal-generator.cjs  → PROPOSAL_TYPES, resolveTemplate, detectBrainstormSession, buildLangInstruction
+Read lib/viepilot-config.cjs      → getProposalLang, recordProposalLang
 Read package.json                 → verify pptxgenjs + docx dependencies present
 ```
+
+Read `~/.viepilot/config.json` → `proposal.recentLangs` via `getProposalLang()`.
+If `--lang` flag provided: validate ISO 639-1 code; set `lang = flag value`.
 
 Display startup banner:
 ```
@@ -103,8 +107,37 @@ Output: `typeId` (string), `slideCount` (number), `label` (string)
 
 </step>
 
+<step name="language_selection">
+## Step 3b: Language Selection
+
+If `--lang` provided: skip prompt; use flag value directly.
+
+If `--lang` not provided:
+```
+Language for this proposal?
+
+  1. {recentLangs[0]} (most recently used)   ← only shown if recentLangs non-empty
+  2. English (en)
+  3. Vietnamese (vi)
+  4. Other — enter ISO 639-1 code (e.g. ja, fr, zh, ko)
+```
+- `recent = getProposalLang()` from config
+- Present numbered menu; save selected `lang`
+
+Output: `lang` (ISO 639-1 string), `langContentOnly` (boolean from `--lang-content-only` flag)
+
+---
+
+</step>
+
 <step name="manifest_generation">
 ## Step 4: AI Slide Manifest Generation
+
+Build language instruction and prepend to prompt:
+```js
+const langInstruction = buildLangInstruction(lang, langContentOnly);
+// Prepend langInstruction to the AI content generation prompt before the slide structure spec.
+```
 
 Generate a structured JSON manifest from the loaded context.
 
@@ -330,6 +363,11 @@ Prerequisites (shown if auth fails):
    Share .docx as supporting document
    /vp-proposal --slides   to upload to Google Slides
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Update MRU config:
+```js
+recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentLangs
 ```
 
 ---

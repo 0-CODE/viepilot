@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-04-10
+
+### Added (ENH-039 — Phase 68)
+- **`/vp-proposal --lang <code>`**: language selection for AI-generated content (ISO 639-1; e.g. `vi`, `en`, `ja`, `fr`, `zh`)
+  - If omitted: prompted with MRU suggestions from `~/.viepilot/config.json → proposal.recentLangs`
+  - Language is saved to MRU after each successful generation
+- **`/vp-proposal --lang-content-only`**: translate bullets, notes, and paragraphs; keep structural labels / section names in English
+- **MRU language history**: `~/.viepilot/config.json → proposal.recentLangs` (max 5, most recent first, deduped)
+- **`lib/viepilot-config.cjs`**: `getProposalLang()` + `recordProposalLang()` helpers; `DEFAULTS` extended with `proposal.recentLangs` + `proposal.defaultLang`
+- **`lib/proposal-generator.cjs`**: `buildLangInstruction(lang, contentOnly)` — builds AI prompt language instruction; no-op for English
+- **`workflows/proposal.md`**: Step 3b Language Selection (MRU prompt); `langInstruction` injection in manifest generation; `recordProposalLang` after confirm output
+- **`skills/vp-proposal/SKILL.md`**: `--lang` + `--lang-content-only` flags documented
+
+### Tests
+- Added `tests/unit/vp-enh039-proposal-lang.test.js` (13 tests — config helpers, buildLangInstruction, SKILL.md/workflow contracts)
+- Updated `tests/unit/vp-proposal-contracts.test.js` (+2 tests — --lang and --lang-content-only flag documentation)
+- Total: **645 → 660 tests**
+
 ## [2.5.0] - 2026-04-11
 
 ### Added (FEAT-016 — Phases 63–67)

@@ -37,6 +37,14 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(read('skills/vp-proposal/SKILL.md')).toMatch(/--dry-run/);
   });
 
+  test('SKILL.md documents --lang flag', () => {
+    expect(read('skills/vp-proposal/SKILL.md')).toMatch(/--lang/);
+  });
+
+  test('SKILL.md documents --lang-content-only flag', () => {
+    expect(read('skills/vp-proposal/SKILL.md')).toContain('--lang-content-only');
+  });
+
   test('workflow.md contains Step 1 context detection', () => {
     const content = read('workflows/proposal.md');
     expect(content).toMatch(/Step 1/);

@@ -65,6 +65,11 @@ Optional flags:
                   If omitted: guided selection menu is shown
 - `--from <file>` : Explicit brainstorm session file to use as context
                     Default: auto-detect latest `docs/brainstorm/session-*.md`
+- `--lang <code>` : Language for generated content — ISO 639-1 (e.g. vi, en, ja, fr, zh).
+                    If omitted: prompted with MRU suggestions from config.
+                    Saved to ~/.viepilot/config.json → proposal.recentLangs after generation.
+- `--lang-content-only` : Translate content (bullets, notes, paragraphs) only.
+                           Keep structural labels / section names in English.
 - `--slides` : After .pptx is generated, upload to Google Slides via service account auth
                Requires: `@googleapis/slides` installed + `GOOGLE_APPLICATION_CREDENTIALS` env var
 - `--dry-run` : Show slide manifest (JSON) without writing any files
@@ -163,6 +168,8 @@ Execute workflow from `workflows/proposal.md`
 - [ ] .docx written to docs/proposals/
 - [ ] .md summary written to docs/proposals/
 - [ ] Template resolution: project override takes precedence over stock
+- [ ] --lang: content generated in specified language; MRU saved to config
+- [ ] --lang-content-only: bullets/notes translated; structural labels stay English
 - [ ] --slides: Google Slides URL written to -slides.txt (or clear error shown)
 - [ ] --dry-run: manifest printed, no files written
 </success_criteria>
