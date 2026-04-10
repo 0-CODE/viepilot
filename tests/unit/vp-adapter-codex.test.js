@@ -12,11 +12,11 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 // ──────────────────────────────────────────────────────────────────────────────
 // Group 1: Adapter shape
 // ──────────────────────────────────────────────────────────────────────────────
-describe('FEAT-014: Antigravity adapter shape', () => {
-  test('antigravity adapter has all required fields', () => {
-    const a = getAdapter('antigravity');
-    expect(a.id).toBe('antigravity');
-    expect(a.name).toBe('Antigravity');
+describe('FEAT-015: Codex adapter shape', () => {
+  test('codex adapter has all required fields', () => {
+    const a = getAdapter('codex');
+    expect(a.id).toBe('codex');
+    expect(a.name).toBe('Codex');
     expect(typeof a.skillsDir).toBe('function');
     expect(typeof a.viepilotDir).toBe('function');
     expect(typeof a.executionContextBase).toBe('string');
@@ -26,31 +26,37 @@ describe('FEAT-014: Antigravity adapter shape', () => {
     expect(typeof a.isAvailable).toBe('function');
   });
 
-  test('antigravity skillsDir(home) returns .antigravity/skills path', () => {
-    const a = getAdapter('antigravity');
+  test('codex skillsDir(home) returns .codex/skills path', () => {
+    const a = getAdapter('codex');
     const dir = a.skillsDir('/fake/home');
-    expect(dir).toContain('.antigravity');
+    expect(dir).toContain('.codex');
     expect(dir).toContain('skills');
   });
 
-  test('antigravity viepilotDir(home) returns .antigravity/viepilot path', () => {
-    const a = getAdapter('antigravity');
+  test('codex viepilotDir(home) returns .codex/viepilot path', () => {
+    const a = getAdapter('codex');
     const dir = a.viepilotDir('/fake/home');
-    expect(dir).toContain(path.join('.antigravity', 'viepilot'));
+    expect(dir).toContain(path.join('.codex', 'viepilot'));
   });
 
-  test('antigravity executionContextBase is .antigravity/viepilot', () => {
-    const a = getAdapter('antigravity');
-    expect(a.executionContextBase).toBe('.antigravity/viepilot');
+  test('codex executionContextBase is .codex/viepilot', () => {
+    const a = getAdapter('codex');
+    expect(a.executionContextBase).toBe('.codex/viepilot');
   });
 
-  test('antigravity has no pathRewrite field (ENH-035 clean shape)', () => {
-    const a = getAdapter('antigravity');
+  test('codex has no pathRewrite field (ENH-035 clean shape)', () => {
+    const a = getAdapter('codex');
     expect(a.pathRewrite).toBeUndefined();
   });
 
-  test('antigravity hooks.configFile is null (no hooks system)', () => {
-    const a = getAdapter('antigravity');
+  test('codex postInstallHint uses $vp-status syntax (not /vp-status)', () => {
+    const a = getAdapter('codex');
+    expect(a.postInstallHint).toContain('$vp-status');
+    expect(a.postInstallHint).not.toMatch(/^- \//);
+  });
+
+  test('codex hooks.configFile is null (no programmatic hooks)', () => {
+    const a = getAdapter('codex');
     expect(a.hooks.configFile).toBeNull();
     expect(a.hooks.supportedEvents).toEqual([]);
   });
@@ -59,18 +65,19 @@ describe('FEAT-014: Antigravity adapter shape', () => {
 // ──────────────────────────────────────────────────────────────────────────────
 // Group 2: Registry
 // ──────────────────────────────────────────────────────────────────────────────
-describe('FEAT-014: Antigravity registry', () => {
-  test('getAdapter("antigravity") resolves without error', () => {
-    expect(() => getAdapter('antigravity')).not.toThrow();
-    expect(getAdapter('antigravity').id).toBe('antigravity');
+describe('FEAT-015: Codex registry', () => {
+  test('getAdapter("codex") resolves without error', () => {
+    expect(() => getAdapter('codex')).not.toThrow();
+    expect(getAdapter('codex').id).toBe('codex');
   });
 
-  test('listAdapters() contains antigravity (among 4 unique adapters)', () => {
+  test('listAdapters() returns 4 unique adapters (claude-code, cursor, antigravity, codex)', () => {
     const list = listAdapters();
     const ids = list.map((a) => a.id);
     expect(ids).toContain('claude-code');
     expect(ids).toContain('cursor');
     expect(ids).toContain('antigravity');
+    expect(ids).toContain('codex');
     expect(list.length).toBe(4);
   });
 });
@@ -78,29 +85,28 @@ describe('FEAT-014: Antigravity registry', () => {
 // ──────────────────────────────────────────────────────────────────────────────
 // Group 3: Install plan
 // ──────────────────────────────────────────────────────────────────────────────
-describe('FEAT-014: Antigravity install plan', () => {
-  test('buildInstallPlan with installTargets:["antigravity"] → paths.skillsDir contains .antigravity', () => {
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-ag-'));
+describe('FEAT-015: Codex install plan', () => {
+  test('buildInstallPlan with installTargets:["codex"] → paths.skillsDir contains .codex', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-cx-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
       { VIEPILOT_AUTO_YES: '1' },
-      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['antigravity'] },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['codex'] },
     );
-    expect(plan.paths.skillsDir).toContain('.antigravity');
-    expect(plan.paths.viepilotDir).toContain('.antigravity');
+    expect(plan.paths.skillsDir).toContain('.codex');
+    expect(plan.paths.viepilotDir).toContain('.codex');
   });
 
-  test('antigravity install plan resolves {envToolDir} → .antigravity/viepilot (ENH-035)', () => {
-    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-ag-rw-'));
+  test('codex install plan resolves {envToolDir} → .codex/viepilot (ENH-035)', () => {
+    const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-cx-rw-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
       { VIEPILOT_AUTO_YES: '1' },
-      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['antigravity'] },
+      { overrideHomedir: fakeHome, wantPathShim: false, installTargets: ['codex'] },
     );
     const rewrite = plan.steps.find((s) => s.kind === 'rewrite_paths_in_dir');
     expect(rewrite).toBeDefined();
     expect(rewrite.from).toBe('{envToolDir}');
-    expect(rewrite.to).toBe('.antigravity/viepilot');
+    expect(rewrite.to).toBe('.codex/viepilot');
   });
 });
-

@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-04-10
+
+### Added (FEAT-015 — Phase 62)
+- **Codex adapter**: `lib/adapters/codex.cjs` — OpenAI Codex CLI is now a first-class install target; skills install to `~/.codex/skills/`, viepilot bundle to `~/.codex/viepilot/`
+- `lib/adapters/index.cjs`: `codex` registered; `listAdapters()` now returns 4 unique adapters
+- `bin/viepilot.cjs`: Codex added to interactive installer TARGETS list and help text
+- `docs/user/features/adapters.md`: Codex row added; `$skill-name` invocation note; removed stale `dev-install.sh` reference
+
+### Notes
+- Codex uses `$vp-status` syntax (not `/vp-status`) — SKILL.md format is fully compatible, invocation prefix differs
+
+### Tests
+- Added `tests/unit/vp-adapter-codex.test.js` (11 tests)
+- Updated `tests/unit/vp-adapter-antigravity.test.js`: `listAdapters()` now expects 4
+- Updated `tests/unit/viepilot-adapters.test.js`: count 3 → 4
+- Updated `tests/unit/guided-installer.test.js`: `normalizeTargets('all')` includes codex
+- Total: 607 tests (was 596)
+
 ## [2.3.2] - 2026-04-10
 
 ### Changed (ENH-037 — Phase 61)
