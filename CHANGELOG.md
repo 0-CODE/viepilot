@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed (BUG-011 — Phase 55)
+- **ui-direction path disambiguation**: `workflows/brainstorm.md` confirmation dialogue option 1 now shows full unambiguous path `.viepilot/ui-direction/{session-id}/notes.md` (was bare `ui-direction/notes.md`)
+- **crystallize PATH GUARD**: `workflows/crystallize.md` `consume_ui_direction` step now opens with `⛔ PATH GUARD (BUG-011)` — explicitly instructs LLM to ignore any `{root}/ui-direction/` folder and read only from `.viepilot/ui-direction/`
+
+## [2.1.1] - 2026-04-10
+
+### Fixed (BUG-012 — Phase 56)
+- **PATH RESOLUTION RULE**: `workflows/autonomous.md` now has `⛔ PATH RESOLUTION RULE (BUG-012)` block — explicitly states all file reads/edits during task execution resolve from `{cwd}` (repo root), never from `~/.claude/` or `~/.cursor/` install directories
+- **evolve.md cwd note**: `workflows/evolve.md` TASK PATH RULE section now includes BUG-012 cwd-resolution clarification: repo-relative paths always anchor to `{cwd}`, not install paths
+
+### Tests
+- Added `tests/unit/vp-bug012-path-resolution-rule.test.js` (3 tests)
+- Total: 581 tests (was 578)
+
 ## [2.1.0] - 2026-04-08
 
 ### Added (FEAT-012 — Phase 54)

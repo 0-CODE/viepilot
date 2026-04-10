@@ -2,10 +2,10 @@
 
 ## Current State
 - **Milestone**: M1.29
-- **Current Phase**: **54** — ✅ Complete (**FEAT-012** → **2.1.0**)
-- **Last Completed Phase**: **54** — ✅ Complete (**FEAT-012** → **2.1.0**)
+- **Current Phase**: **56** — ✅ Complete (**BUG-012** → **2.1.1**)
+- **Last Completed Phase**: **56** — ✅ Complete (**BUG-012** → **2.1.1**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-08 — Phase 54 shipped (FEAT-012 — brainstorm staleness hook → 2.1.0)
+- **Last Activity**: 2026-04-10 — Phase 56 shipped (BUG-012 — PATH RESOLUTION RULE → 2.1.1)
 
 ## Progress Overview
 ```
@@ -86,18 +86,26 @@ Suggested next version: per release checklist
 | 2026-04-08 | Phase 53 shipped: FEAT-013 (lib/adapters/ registry + install refactor + viepilot.cjs/dev-install.sh + hooks scaffold + 19 tests) — **2.0.0** | `/vp-auto` | M1.29 |
 | 2026-04-08 | Phase 54 planned: FEAT-012 (4 tasks — staleness hook + install cmd + docs + tests), target **2.1.0** | `/vp-evolve` | M1.29 |
 | 2026-04-08 | Phase 54 shipped: FEAT-012 (brainstorm-staleness.cjs + hooks install + docs + 20 tests) — **2.1.0** | `/vp-auto` | M1.29 |
+| 2026-04-10 | BUG-011 logged: ui-direction path ambiguity — workflows read `{root}/ui-direction/` instead of `{root}/.viepilot/ui-direction/` | `/vp-request` | Backlog |
+| 2026-04-10 | Phase 55 planned: BUG-011 (3 tasks — brainstorm dialogue fix + crystallize PATH GUARD + 3 tests), target **2.1.1** | `/vp-evolve` | M1.29 |
+| 2026-04-10 | BUG-012 logged: vp-auto edits production (~/.claude/) instead of codebase — CRITICAL, blocks Phase 55 | `/vp-request` | Backlog |
+| 2026-04-10 | Phase 56 planned: BUG-012 (3 tasks — PATH RESOLUTION RULE in autonomous.md + evolve.md + tests), target **2.1.1** | `/vp-evolve` | M1.29 |
+| 2026-04-10 | Phase 55 version target revised: 2.1.1 → **2.1.2** (blocked by BUG-012/Phase 56) | `/vp-evolve` | M1.29 |
+| 2026-04-10 | Phase 56 shipped: BUG-012 (PATH RESOLUTION RULE in autonomous.md + evolve.md cwd note + 3 contract tests) — **2.1.1** | `/vp-auto` | M1.29 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-**`/vp-evolve`** — Phase 54 complete; backlog is clear — define next feature or start new milestone
+**`/vp-auto`** — Phase 55 ready (BUG-011 — ui-direction path guard); Phase 56 (BUG-012) shipped **2.1.1**.
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| BUG-012 | 🐛 | vp-auto edits production `~/.claude/` instead of codebase `{repo}/` | critical | new |
+| BUG-011 | 🐛 | ui-direction path ambiguity — LLM reads `{root}/ui-direction/` instead of `{root}/.viepilot/ui-direction/` | high | new |
 | FEAT-013 | ✨ | Dynamic agent adapter system — multi-platform (Claude Code, Cursor, Antigravity, Codex, …) | critical | ✅ done (**2.0.0**) |
 | FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | ✅ done (**2.1.0**) |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |

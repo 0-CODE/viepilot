@@ -1675,6 +1675,49 @@
 
 ---
 
+### Phase 56: PATH RESOLUTION RULE — codebase vs install (BUG-012) ✅
+**Goal**: Prevent vp-auto from editing production install files (`~/.claude/`) instead of codebase source. Add `⛔ PATH RESOLUTION RULE (BUG-012)` to `autonomous.md` and cwd-resolution note to `evolve.md`. Blocks Phase 55 until fixed.
+**Estimated Tasks**: 3
+**Dependencies**: Phase 54 ✅
+**Directory**: `.viepilot/phases/56-bug012-path-resolution-rule/`
+**Version target**: 2.1.1 (PATCH)
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 56.1 | `workflows/autonomous.md` — add `⛔ PATH RESOLUTION RULE (BUG-012)` block after BUG-009 preflight | Block present; forbids `~/.claude/` + `~/.cursor/`; defines `{cwd}` as resolution anchor | S |
+| 56.2 | `workflows/evolve.md` — append BUG-012 cwd-resolution clarification to TASK PATH RULE section | BUG-012 marker + `{cwd}` note present; no existing text removed | S |
+| 56.3 | `tests/unit/vp-bug012-path-resolution-rule.test.js` — 3 contract tests | All 3 pass; no regression | S |
+
+**Verification**:
+- [ ] `autonomous.md` has PATH RESOLUTION RULE block with `{cwd}`, `~/.claude/`, `~/.cursor/` references
+- [ ] `evolve.md` has BUG-012 cwd note in TASK PATH RULE
+- [ ] 3 new tests pass
+- [ ] `npm test` green
+
+---
+
+### Phase 55: ui-direction Path Disambiguation Guard (BUG-011)
+**Goal**: Fix silent path ambiguity where LLM reads `{root}/ui-direction/` (user reference dir) instead of `{root}/.viepilot/ui-direction/` (ViePilot SOT). Add PATH GUARD to `crystallize.md` and fix ambiguous path reference in `brainstorm.md` confirmation dialogue.
+**Estimated Tasks**: 3
+**Dependencies**: Phase 54 ✅
+**Directory**: `.viepilot/phases/55-bug011-ui-direction-path-guard/`
+**Version target**: 2.1.2 (PATCH — after Phase 56/BUG-012)
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 55.1 | `workflows/brainstorm.md` — fix confirmation dialogue option 1 from bare `ui-direction/notes.md` to `.viepilot/ui-direction/{session-id}/notes.md` | Option 1 path unambiguous; ENH-026 tests still pass | S |
+| 55.2 | `workflows/crystallize.md` — add `⛔ PATH GUARD (BUG-011)` block at start of `consume_ui_direction` step | Guard present before UI Scope Detection; explicitly ignores `{root}/ui-direction/` | S |
+| 55.3 | `tests/unit/vp-bug011-ui-direction-path-guard.test.js` — 3 contract tests verifying guards | All 3 tests pass; no regression on ENH-026's 6 tests | S |
+
+**Verification**:
+- [ ] `brainstorm.md` dialogue option 1 contains `.viepilot/ui-direction/{session-id}/notes.md`
+- [ ] `crystallize.md` has `⛔ PATH GUARD (BUG-011)` before UI Scope Detection section
+- [ ] 3 new tests pass
+- [ ] All existing ENH-026 tests (6) still pass
+- [ ] `npm test` green
+
+---
+
 ## Future Milestones (Backlog)
 
 ### M2 - Enterprise Features

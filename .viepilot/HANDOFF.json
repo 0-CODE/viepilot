@@ -1,31 +1,31 @@
 {
   "milestone": "M1.29",
   "milestone_name": "All planned phases complete",
-  "phase": 52,
-  "phase_name": "enh034-architect-delta-sync",
+  "phase": 56,
+  "phase_name": "bug012-path-resolution-rule",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-04-08T00:00:00Z",
+  "last_activity": "2026-04-10T00:00:00Z",
   "version": {
-    "current": "1.19.0",
+    "current": "2.1.1",
     "next": null
   },
   "progress": {
-    "phases_total": 52,
-    "phases_completed": 52,
-    "tasks_total": 197,
-    "tasks_completed": 197,
+    "phases_total": 56,
+    "phases_completed": 56,
+    "tasks_total": 200,
+    "tasks_completed": 200,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 52 ENH-034 shipped: architect_delta_sync step in brainstorm.md + /sync-arch command + notes.md architect_sync schema + .arch-gap-badge CSS (amber) + markStale()/injectStaleBadges() JS + 14 contract tests → 1.19.0",
-      "All 52 planned phases complete",
-      "Next: /vp-evolve to plan new features or /vp-docs for documentation"
+      "Phase 56 BUG-012 shipped: PATH RESOLUTION RULE block in autonomous.md + cwd-resolution note in evolve.md + 3 contract tests → 2.1.1",
+      "Phase 55 (BUG-011) is now unblocked — ready to execute",
+      "Next: /vp-auto to run Phase 55 (BUG-011 — ui-direction path guard → 2.1.2)"
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-04-08T00:00:00Z"
+  "updated_at": "2026-04-10T00:00:00Z"
 }

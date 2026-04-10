@@ -135,6 +135,8 @@ If unsure of the repo-relative path, inspect:
 - `ls bin/`         → CLI files
 - `ls templates/`   → template files
 
+**Resolution rule (BUG-012):** Paths in `## Paths` are always resolved from `{cwd}` (the repo root where `package.json` lives) — never from `~/.claude/`, `~/.cursor/`, or any install directory. When both a codebase copy and an installed copy exist, `{cwd}` wins.
+
 ### Create Phase Directory
 ```bash
 mkdir -p .viepilot/phases/{NN}-{feature-slug}/tasks/

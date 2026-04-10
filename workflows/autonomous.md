@@ -134,6 +134,25 @@ FOR EACH path in ## Paths:
 This check fires on `~/`, `~\`, and any path starting with `/`.
 It does NOT fire on paths inside code block content within the task (only the `## Paths` header block is validated).
 
+#### ⛔ PATH RESOLUTION RULE (BUG-012)
+
+**All file reads and edits during task execution MUST be resolved from `{cwd}`** — the repository root where `package.json` lives (e.g. `/Users/.../my-project/`).
+
+```
+WHEN executing a task with:
+  ## Paths
+  workflows/brainstorm.md
+
+→ Read and edit: {cwd}/workflows/brainstorm.md
+→ NEVER:         ~/.claude/viepilot/workflows/brainstorm.md
+→ NEVER:         ~/.cursor/viepilot/workflows/brainstorm.md
+→ NEVER:         any path outside {cwd}
+```
+
+**Rule**: If a file exists at both `{cwd}/workflows/foo.md` (codebase) and `~/.claude/viepilot/workflows/foo.md` (production install), **ALWAYS use the `{cwd}` copy**.
+
+The install directory (`~/.claude/`, `~/.cursor/`) is a **deployment artifact** — it is populated by `dev-install.sh`. Editing it directly bypasses version control and will be silently overwritten on the next install.
+
 ### ViePilot Skill Scope Policy (BUG-004 baseline)
 - **Default mode**: only reference/route skills in the ViePilot namespace (`vp-*`).
 - **External skills** (`non vp-*`) are out of scope by default and must not be suggested implicitly.
