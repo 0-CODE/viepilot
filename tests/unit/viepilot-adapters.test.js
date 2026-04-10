@@ -2,7 +2,7 @@
  * @jest-environment node
  *
  * Contract tests for FEAT-013: dynamic adapter system
- * Tests: adapter interface shape, registry, install plan paths, dev-install.sh
+ * Tests: adapter interface shape, registry, install plan paths
  */
 
 const fs = require('fs');
@@ -13,7 +13,6 @@ const { getAdapter, listAdapters, adapters: adapterMap } = require('../../lib/ad
 const { buildInstallPlan } = require('../../lib/viepilot-install.cjs');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
-const DEV_INSTALL_SH = path.join(REPO_ROOT, 'dev-install.sh');
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Group 1: Adapter interface shape
@@ -194,20 +193,3 @@ describe('FEAT-013: Install plan adapter-driven', () => {
   });
 });
 
-// ──────────────────────────────────────────────────────────────────────────────
-// Group 4: dev-install.sh adapter variable
-// ──────────────────────────────────────────────────────────────────────────────
-describe('FEAT-013: dev-install.sh adapter variable', () => {
-  test('dev-install.sh contains VIEPILOT_ADAPTER env var reference', () => {
-    const content = fs.readFileSync(DEV_INSTALL_SH, 'utf8');
-    expect(content).toContain('VIEPILOT_ADAPTER');
-  });
-
-  test('dev-install.sh default adapter is claude-code (not cursor)', () => {
-    const content = fs.readFileSync(DEV_INSTALL_SH, 'utf8');
-    // The default fallback should be claude-code
-    expect(content).toMatch(/ADAPTER=.*claude-code/);
-    // Should NOT default to cursor
-    expect(content).not.toMatch(/ADAPTER=.*cursor[^-]/);
-  });
-});

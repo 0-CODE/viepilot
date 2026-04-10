@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-04-10
+
+### Removed (ENH-036 — Phase 60)
+- `install.sh` — bash wrapper was redundant; `bin/viepilot.cjs install` covers all install functionality
+- `dev-install.sh` — bash adapter routing duplicated `lib/adapters/`; `bin/viepilot.cjs install --target <adapter>` is the canonical path
+- Removed 5 tests that only verified shell script content (viepilot-install.test.js, viepilot-adapters.test.js, vp-adapter-antigravity.test.js)
+
 ## [2.3.0] - 2026-04-10
 
 ### Added (FEAT-014 — Phase 59)

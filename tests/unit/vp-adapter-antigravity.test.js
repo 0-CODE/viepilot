@@ -8,7 +8,6 @@ const { getAdapter, listAdapters } = require('../../lib/adapters/index.cjs');
 const { buildInstallPlan } = require('../../lib/viepilot-install.cjs');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
-const DEV_INSTALL_SH = path.join(REPO_ROOT, 'dev-install.sh');
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Group 1: Adapter shape
@@ -104,18 +103,3 @@ describe('FEAT-014: Antigravity install plan', () => {
   });
 });
 
-// ──────────────────────────────────────────────────────────────────────────────
-// Group 4: dev-install.sh
-// ──────────────────────────────────────────────────────────────────────────────
-describe('FEAT-014: dev-install.sh antigravity target', () => {
-  test('dev-install.sh contains antigravity case', () => {
-    const content = fs.readFileSync(DEV_INSTALL_SH, 'utf8');
-    expect(content).toContain('antigravity)');
-  });
-
-  test('dev-install.sh antigravity sets .antigravity dirs', () => {
-    const content = fs.readFileSync(DEV_INSTALL_SH, 'utf8');
-    expect(content).toContain('.antigravity/skills');
-    expect(content).toContain('.antigravity/viepilot');
-  });
-});

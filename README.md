@@ -69,7 +69,7 @@ Tổng thể / Overall:  ██████████████████�
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
-| Installation | ✅ Hoàn thiện | install.sh + dev-install.sh |
+| Installation | ✅ Hoàn thiện | `bin/viepilot.cjs install` (Node-based, all adapters) |
 
 ---
 
@@ -419,7 +419,6 @@ viepilot/
 │   ├── api-service/               # Express + JWT example
 │   └── cli-tool/                  # Node.js CLI example
 │
-├── install.sh                     # Installation script
 ├── Makefile                       # Developer commands
 ├── CHANGELOG.md                   # Version history
 ├── CONTRIBUTING.md                # Contribution guide
