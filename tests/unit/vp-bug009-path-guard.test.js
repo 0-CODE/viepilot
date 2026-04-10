@@ -105,11 +105,15 @@ describe('BUG-009 — Phase task files use repo-relative paths', () => {
     ...glob.sync('.viepilot/phases/49-*/tasks/*.md', { cwd: ROOT }),
   ];
 
-  test('task files for phases 47–49 exist', () => {
+  // .viepilot/ is gitignored (BUG-013) — task files only exist in a dev working copy,
+  // not in CI or fresh clones. Skip gracefully when absent.
+  const itIfFiles = taskFiles.length > 0 ? test : test.skip;
+
+  itIfFiles('task files for phases 47–49 exist (dev-only: .viepilot/ is gitignored)', () => {
     expect(taskFiles.length).toBeGreaterThan(0);
   });
 
-  test('no ## Paths block contains ~/.claude/ prefix', () => {
+  itIfFiles('no ## Paths block contains ~/.claude/ prefix', () => {
     const violations = [];
     for (const file of taskFiles) {
       const content = read(file);
@@ -133,7 +137,7 @@ describe('BUG-009 — Phase task files use repo-relative paths', () => {
     }
   });
 
-  test('no ## Paths block contains absolute / prefix', () => {
+  itIfFiles('no ## Paths block contains absolute / prefix', () => {
     const violations = [];
     for (const file of taskFiles) {
       const content = read(file);
