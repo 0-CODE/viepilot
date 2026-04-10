@@ -72,6 +72,13 @@
       }
     }
   },
+  "dependencies": {
+    "docx": "^9.0.0",
+    "pptxgenjs": "^3.12.0"
+  },
+  "optionalDependencies": {
+    "@googleapis/slides": "^1.0.0"
+  },
   "devDependencies": {
     "jest": "^30.3.0"
   }
