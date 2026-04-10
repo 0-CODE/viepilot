@@ -467,3 +467,49 @@ CHANGELOG.md (updated)
 ### Lưu ý
 - Trong repo **application** có `node_modules/viepilot`, update mặc định có thể target **local** — dùng **`--global`** nếu chỉ muốn global.
 - Luồng an toàn: `vp-tools update --dry-run` → sau đó `vp-tools update --yes` (hoặc `--global --yes`).
+
+---
+
+## /vp-proposal
+
+**Purpose**: Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs.
+
+**Triggers**: "proposal", "pitch deck", "presentation", "tài liệu đề xuất"
+
+### Proposal Types
+| Type | Slides | Use case |
+|------|--------|----------|
+| `project-proposal` | 10 | Client delivery — scope, timeline, budget |
+| `tech-architecture` | 12 | Technical partners — system design |
+| `product-pitch` | 12 | Investors / partners — pitch |
+| `general` | 8 | Any audience — flexible |
+
+### Flags
+| Flag | Description |
+|------|-------------|
+| `--type <id>` | Proposal type ID. If omitted: guided menu. |
+| `--from <file>` | Explicit brainstorm session file to use |
+| `--slides` | Upload to Google Slides after generation (requires service account) |
+| `--dry-run` | Print slide manifest; no files written |
+
+### Output
+```
+docs/proposals/
+├── {slug}-{date}.md      Markdown source
+├── {slug}-{date}.pptx    Presentation
+├── {slug}-{date}.docx    Detailed document
+└── {slug}-{date}-slides.txt  Google Slides URL (--slides only)
+```
+
+### Template Override
+Place custom `.pptx`/`.docx` files in `.viepilot/proposal-templates/` to override stock ViePilot templates for a specific project.
+
+### Examples
+```
+/vp-proposal                              Auto-detect session + guided type selection
+/vp-proposal --type product-pitch         12-slide investor pitch
+/vp-proposal --type project-proposal --slides  + upload to Google Slides
+/vp-proposal --dry-run                    Preview manifest only
+```
+
+Full guide: `docs/user/features/proposal.md`

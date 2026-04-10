@@ -20,6 +20,13 @@ Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, 
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
 </scope_policy>
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- **`/vp-proposal`** generates **output artifacts** (`docs/proposals/*.pptx`, `*.docx`, `*.md`) — it does **not** implement shipping code for `lib/`, `tests/`, `bin/`, or framework `workflows/`/`skills/`.
+- This skill is the **delivery lane** after `/vp-brainstorm` captures the ideas. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for ViePilot framework feature work.
+- **Exception:** User **explicit** bypass — state clearly in chat.
+</implementation_routing_guard>
 
 <objective>
 Generate a professional proposal package from a brainstorm session or direct brief.

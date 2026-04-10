@@ -4,18 +4,23 @@
 **Version:** 0.1.0  
 **Output:** `docs/proposals/{slug}-{date}.pptx` + `.docx` + `.md` (+ optional `-slides.txt`)
 
----
+<purpose>
+Convert a brainstorm session (or direct brief) into a professional proposal package suitable
+for client, partner, or investor presentations. Generates three synchronized files:
+- .pptx — presentation (ViePilot branded, dark navy/charcoal, for direct delivery)
+- .docx — detailed supporting document (full narrative, specs, appendix)
+- .md  — Markdown source of truth (version-controlled, diff-friendly)
+Supports 4 proposal types with configurable slide counts; optional Google Slides upload.
+</purpose>
 
-## Overview
+## Implementation routing guard (ENH-021)
 
-This workflow converts a brainstorm session (or direct brief) into a professional proposal package
-suitable for client, partner, or investor presentations. It generates three synchronized files:
-- `.pptx` — presentation (ViePilot branded, dark navy/charcoal, for direct delivery)
-- `.docx` — detailed supporting document (full narrative, specs, appendix)
-- `.md` — Markdown source of truth (version-controlled, diff-friendly)
+This workflow generates **proposal output artifacts** (`docs/proposals/`) — not ViePilot framework
+shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework feature work.
 
----
+<process>
 
+<step name="initialize">
 ## Step 1: Initialize
 
 ```bash
@@ -32,6 +37,9 @@ Display startup banner:
 
 ---
 
+</step>
+
+<step name="context_detection">
 ## Step 2: Context Detection
 
 Priority order:
@@ -65,6 +73,9 @@ No brainstorm session found. Please provide a brief:
 
 ---
 
+</step>
+
+<step name="type_selection">
 ## Step 3: Proposal Type Selection
 
 If `--type <id>` provided: validate against `PROPOSAL_TYPES`; confirm with user.
@@ -90,6 +101,9 @@ Output: `typeId` (string), `slideCount` (number), `label` (string)
 
 ---
 
+</step>
+
+<step name="manifest_generation">
 ## Step 4: AI Slide Manifest Generation
 
 Generate a structured JSON manifest from the loaded context.
@@ -185,6 +199,9 @@ If `--dry-run`: print manifest as JSON and stop here.
 
 ---
 
+</step>
+
+<step name="template_resolution">
 ## Step 5: Template Resolution
 
 ```js
@@ -203,6 +220,9 @@ mkdir -p docs/proposals/
 
 ---
 
+</step>
+
+<step name="generate_pptx">
 ## Step 6: Generate .pptx
 
 Using `pptxgenjs`:
@@ -217,6 +237,9 @@ Progress: `[pptx] Generating {N} slides...`
 
 ---
 
+</step>
+
+<step name="generate_docx">
 ## Step 7: Generate .docx
 
 Using `docx` package:
@@ -233,6 +256,9 @@ Progress: `[docx] Building detailed document...`
 
 ---
 
+</step>
+
+<step name="generate_md">
 ## Step 8: Generate .md Summary
 
 Write a Markdown mirror of the manifest:
@@ -257,6 +283,9 @@ Write to `docs/proposals/{slug}-{date}.md`
 
 ---
 
+</step>
+
+<step name="google_slides_upload">
 ## Step 9: Optional Google Slides Upload (`--slides`)
 
 ```js
@@ -278,6 +307,9 @@ Prerequisites (shown if auth fails):
 
 ---
 
+</step>
+
+<step name="confirm_output">
 ## Step 10: Confirm Output
 
 ```
@@ -315,14 +347,18 @@ Prerequisites (shown if auth fails):
 
 ---
 
-## Success Criteria
+</step>
 
-- [ ] Context loaded (session or brief)
-- [ ] Type validated; slide count matches spec
-- [ ] Manifest generated with correct structure
+</process>
+
+<success_criteria>
+- [ ] Context loaded (brainstorm session or direct brief)
+- [ ] Type validated; slide count matches PROPOSAL_TYPES spec
+- [ ] Manifest generated with correct structure and slide count
 - [ ] `.pptx` written to `docs/proposals/`
 - [ ] `.docx` written to `docs/proposals/`
 - [ ] `.md` written to `docs/proposals/`
-- [ ] Template resolution: project override > stock
-- [ ] `--slides`: URL in `-slides.txt` or clear error
-- [ ] `--dry-run`: manifest printed, no files written
+- [ ] Template resolution: project override takes precedence over stock
+- [ ] `--slides`: Google Slides URL in `-slides.txt` or clear non-fatal error shown
+- [ ] `--dry-run`: manifest printed to console; no files written
+</success_criteria>

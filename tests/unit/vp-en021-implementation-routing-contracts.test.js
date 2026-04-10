@@ -20,7 +20,7 @@ describe('ENH-021 implementation routing contracts', () => {
     const skills = fs
       .readdirSync(dir, { withFileTypes: true })
       .filter((d) => d.isDirectory() && d.name.startsWith('vp-'));
-    expect(skills.length).toBe(16);
+    expect(skills.length).toBe(17);
     for (const d of skills) {
       const md = read(path.join('skills', d.name, 'SKILL.md'));
       expect(md).toMatch(/<implementation_routing_guard>/);

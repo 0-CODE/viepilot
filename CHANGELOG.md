@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-04-11
+
+### Added (FEAT-016 — Phases 63–67)
+- **`/vp-proposal` skill**: convert brainstorm session (or direct brief) → professional proposal package
+  - `.pptx` presentation (ViePilot branded, dark navy/charcoal)
+  - `.docx` detailed document (10 sections: executive summary → appendix)
+  - `.md` Markdown source of truth
+  - Optional `.txt` Google Slides URL (`--slides` flag)
+- **4 proposal types**: `project-proposal` (10 slides), `tech-architecture` (12), `product-pitch` (12), `general` (8)
+- **`lib/proposal-generator.cjs`**: 2-tier template resolution (project `.viepilot/proposal-templates/` override → ViePilot stock fallback), context detection, type validation, output path builder
+- **`lib/google-slides-exporter.cjs`**: service account auth; lazy-loads `@googleapis/slides`; graceful error when package or credentials absent
+- **Stock templates**: `templates/proposal/pptx/` (4 files, dark navy `#1a1f36`/charcoal `#2d3142`, ViePilot branded) + `templates/proposal/docx/project-detail.docx`
+- **`scripts/gen-proposal-pptx.cjs`** + **`scripts/gen-proposal-docx.cjs`**: template generation scripts
+- **`skills/vp-proposal/SKILL.md`**: full skill definition; `--type`, `--from`, `--slides`, `--dry-run` flags
+- **`workflows/proposal.md`**: 10-step workflow; slide manifest schema; 4 proposal type structures; error handling
+- **`docs/user/features/proposal.md`**: full user guide with Google Slides 5-step setup guide
+- **`@googleapis/slides`** added as `optionalDependencies` (install not required unless using `--slides`)
+- **`pptxgenjs` + `docx`** added as runtime `dependencies`
+
+### Tests
+- Added `tests/unit/vp-proposal-contracts.test.js` (25 tests — skill/workflow files, generator exports, stock templates, graceful degradation)
+- Added `tests/unit/vp-proposal-core.test.js` (15 tests — resolveTemplate, validateType, detectBrainstormSession)
+- Total: 607 → **647 tests**
+
 ## [2.4.0] - 2026-04-10
 
 ### Added (FEAT-015 — Phase 62)
