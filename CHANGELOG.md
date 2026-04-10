@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.2] - 2026-04-10
+
+### Changed (ENH-037 — Phase 61)
+- Post-install "Next actions" block is now adapter-driven: each adapter carries a `postInstallHint` string; CLI prints one hint per unique installed target — Antigravity now appears when installed
+- `lib/adapters/claude-code.cjs`, `cursor.cjs`, `antigravity.cjs`: added `postInstallHint` field
+
 ## [2.3.1] - 2026-04-10
 
 ### Removed (ENH-036 — Phase 60)

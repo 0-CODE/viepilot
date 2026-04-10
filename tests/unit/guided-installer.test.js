@@ -101,6 +101,16 @@ describe('guided installer CLI', () => {
     expect(result.stdout).toContain('Uninstall summary:');
   });
 
+  test('dry-run with antigravity target shows Antigravity in Next actions (ENH-037)', () => {
+    const result = spawnSync('node', [CLI, 'install', '--target', 'antigravity', '--yes', '--dry-run'], {
+      encoding: 'utf8',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Next actions:');
+    expect(result.stdout).toContain('- Antigravity:');
+  });
+
   test('computeUninstallPaths includes root install dir', () => {
     const paths = computeUninstallPaths(['cursor-agent']);
     expect(paths.some((p) => p.endsWith('/.cursor/viepilot'))).toBe(true);

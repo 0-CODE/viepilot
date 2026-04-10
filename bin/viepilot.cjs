@@ -338,8 +338,14 @@ async function installCommand(rawArgs) {
     else console.log(`- ${r.target}: failed (exit ${r.code})`);
   }
   console.log('\nNext actions:');
-  console.log('- Cursor: open project and run /vp-status');
-  console.log('- Claude Code: restart session if needed so ~/.claude/skills/vp-* is picked up; then /vp-status');
+  const seenAdapters = new Set();
+  for (const target of selectedTargets) {
+    const a = adapterMap[target];
+    if (a && !seenAdapters.has(a.id)) {
+      seenAdapters.add(a.id);
+      console.log(`- ${a.name}: ${a.postInstallHint || 'run /vp-status'}`);
+    }
+  }
   console.log('- If needed, run /vp-brainstorm then /vp-crystallize');
 
   return failed.length === 0 ? 0 : 1;

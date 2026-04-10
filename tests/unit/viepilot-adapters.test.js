@@ -25,6 +25,7 @@ describe('FEAT-013: Adapter interface shape', () => {
     expect(typeof a.skillsDir).toBe('function');
     expect(typeof a.viepilotDir).toBe('function');
     expect(typeof a.executionContextBase).toBe('string');
+    expect(typeof a.postInstallHint).toBe('string');
     expect(a.hooks).toBeTruthy();
     expect(Array.isArray(a.installSubdirs)).toBe(true);
     expect(typeof a.isAvailable).toBe('function');
@@ -49,6 +50,7 @@ describe('FEAT-013: Adapter interface shape', () => {
     expect(typeof a.skillsDir).toBe('function');
     expect(typeof a.viepilotDir).toBe('function');
     expect(typeof a.executionContextBase).toBe('string');
+    expect(typeof a.postInstallHint).toBe('string');
     expect(Array.isArray(a.installSubdirs)).toBe(true);
     expect(typeof a.isAvailable).toBe('function');
   });
