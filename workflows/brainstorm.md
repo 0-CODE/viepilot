@@ -413,7 +413,7 @@ Display a confirmation dialogue when any of the following conditions occur:
 ...
 
 What would you like to do?
-1. Save to ui-direction/notes.md (background extraction)
+1. Save to .viepilot/ui-direction/{session-id}/notes.md (background extraction)
 2. Save + activate UI Direction Mode to generate HTML direction
 3. Discard and continue brainstorming
 ```

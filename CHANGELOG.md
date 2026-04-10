@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.3] - 2026-04-10
+
 ### Fixed (BUG-011 — Phase 55)
+- **brainstorm.md dialogue path**: confirmation option 1 now shows `.viepilot/ui-direction/{session-id}/notes.md` instead of bare `ui-direction/notes.md` — eliminates ambiguity with user-managed `{root}/ui-direction/` folders
+- **crystallize.md PATH GUARD**: `consume_ui_direction` step now opens with `⛔ PATH GUARD (BUG-011)` — explicitly instructs LLM to ignore any `{root}/ui-direction/` folder and read only from `.viepilot/ui-direction/`
+
+### Tests
+- Added `tests/unit/vp-bug011-ui-direction-path-guard.test.js` (3 tests)
+- Total: 587 tests (was 584)
 
 ## [2.1.2] - 2026-04-10
 

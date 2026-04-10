@@ -140,6 +140,11 @@ If gaps found → ask user to clarify or return to brainstorm.
 <step name="consume_ui_direction">
 ## Step 1A: Consume UI Direction Artifacts (for UI/UX projects)
 
+> ⛔ **PATH GUARD (BUG-011):** The ONLY valid ui-direction path is `.viepilot/ui-direction/`.
+> If a `{root}/ui-direction/` directory exists at the project root — **IGNORE it completely**.
+> It is user-managed reference material, NOT ViePilot artifacts.
+> Never read, glob, or reference any file under `{root}/ui-direction/` in this workflow.
+
 ### UI Scope Detection (ENH-026 hard gate)
 
 Before checking for artifacts, scan brainstorm session files (`docs/brainstorm/session-*.md`) for UI signal keywords:
