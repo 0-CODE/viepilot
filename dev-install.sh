@@ -4,7 +4,7 @@
 # Installs development build without symlink dependency by default
 #
 # Optional env vars:
-#   VIEPILOT_ADAPTER      — target platform: claude-code (default), cursor, cursor-agent, cursor-ide
+#   VIEPILOT_ADAPTER      — target platform: claude-code (default), cursor, cursor-agent, cursor-ide, antigravity
 #   VIEPILOT_INSTALL_PROFILE — backward-compat alias for VIEPILOT_ADAPTER
 #   VIEPILOT_AUTO_YES     — skip confirmation prompt (set to 1)
 #   VIEPILOT_SYMLINK_SKILLS=1 — symlink each skills/vp-* instead of copy
@@ -36,8 +36,13 @@ case "$ADAPTER" in
     VIEPILOT_DIR="$HOME/.cursor/viepilot"
     PROFILE_LABEL="Cursor"
     ;;
+  antigravity)
+    SKILLS_DIR="$HOME/.antigravity/skills"
+    VIEPILOT_DIR="$HOME/.antigravity/viepilot"
+    PROFILE_LABEL="Antigravity"
+    ;;
   *)
-    echo "Unknown adapter: $ADAPTER. Use: claude-code (default), cursor-agent, cursor-ide"
+    echo "Unknown adapter: $ADAPTER. Use: claude-code (default), cursor-agent, cursor-ide, antigravity"
     exit 1
     ;;
 esac

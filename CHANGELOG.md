@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-04-10
+
+### Added (FEAT-014 — Phase 59)
+- **Antigravity adapter**: `lib/adapters/antigravity.cjs` — Google Antigravity IDE is now a first-class install target; skills install to `~/.antigravity/skills/`, viepilot bundle to `~/.antigravity/viepilot/`
+- `lib/adapters/index.cjs`: `antigravity` registered; `listAdapters()` now returns 3 unique adapters
+- `dev-install.sh`: `VIEPILOT_ADAPTER=antigravity` supported
+- `bin/viepilot.cjs`: Antigravity added to interactive installer TARGETS list and help text
+- `docs/user/features/adapters.md`: new doc — supported platforms table, install examples, guide for adding new adapters
+
+### Tests
+- Added `tests/unit/vp-adapter-antigravity.test.js` (12 tests)
+- Updated `tests/unit/viepilot-adapters.test.js`: `listAdapters()` now expects 3
+- Updated `tests/unit/guided-installer.test.js`: `normalizeTargets('all')` includes antigravity
+- Total: 600 tests (was 588)
+
 ## [2.2.0] - 2026-04-10
 
 ### Changed (ENH-035 — Phase 58)

@@ -35,7 +35,7 @@ describe('guided installer parser', () => {
 
   test('normalizes all targets', () => {
     const targets = normalizeTargets('all');
-    expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide']);
+    expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide', 'antigravity']);
   });
 
   test('throws on unsupported target', () => {

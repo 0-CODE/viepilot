@@ -21,6 +21,7 @@ const TARGETS = [
   { id: 'claude-code',  label: adapterMap['claude-code'].name + ' (default)' },
   { id: 'cursor-agent', label: 'Cursor Agent' },
   { id: 'cursor-ide',   label: 'Cursor IDE' },
+  { id: 'antigravity',  label: adapterMap['antigravity'].name },
 ];
 
 function printHelp() {
@@ -34,14 +35,14 @@ Usage:
   viepilot --list-targets
 
 Install options:
-  --target <id|id,id|all>   Target profile(s): claude-code (mirrors vp-* to ~/.claude/skills), cursor-agent, cursor-ide
+  --target <id|id,id|all>   Target profile(s): claude-code (mirrors vp-* to ~/.claude/skills), cursor-agent, cursor-ide, antigravity
   --yes                      Non-interactive mode (skip confirmations)
   --dry-run                  Print actions only (Node installer; no bash)
   --list-targets             Print supported targets and exit
   --help                     Show help
 
 Uninstall options:
-  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; shared: ~/.cursor/viepilot)
+  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; antigravity: ~/.antigravity/skills/vp-*)
   --yes                     Non-interactive mode (skip confirmations)
   --dry-run                 Print actions only, do not remove files
 `);
