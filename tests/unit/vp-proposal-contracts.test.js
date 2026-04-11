@@ -67,6 +67,18 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(read('workflows/proposal.md')).toMatch(/mermaid|Mermaid/);
   });
 
+  test('workflow.md contains Step 4c detect_visual_artifacts (ENH-042)', () => {
+    expect(read('workflows/proposal.md')).toMatch(/detect_visual_artifacts|Step 4c/);
+  });
+
+  test('workflow.md documents visualSlides[] manifest field (ENH-042)', () => {
+    expect(read('workflows/proposal.md')).toContain('visualSlides');
+  });
+
+  test('lib/screenshot-artifact.cjs can be required (ENH-042)', () => {
+    expect(() => require('../../lib/screenshot-artifact.cjs')).not.toThrow();
+  });
+
   test('SKILL.md execution_context points to workflows/proposal.md', () => {
     expect(read('skills/vp-proposal/SKILL.md')).toMatch(/workflows\/proposal\.md/);
   });

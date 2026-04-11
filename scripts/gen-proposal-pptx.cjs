@@ -506,6 +506,47 @@ const TEMPLATES = {
   },
 };
 
+// ── Visual embedding helpers (ENH-042) ────────────────────────────────────────
+
+/**
+ * Add a styled placeholder shape to a slide where a screenshot would appear.
+ * Used as fallback when puppeteer is not installed or artifact file is missing.
+ *
+ * @param {object} slide - pptxgenjs slide object
+ * @param {string} [label='Screenshot placeholder'] - Label text shown in the box
+ */
+function addPlaceholderVisual(slide, label = 'Screenshot placeholder') {
+  // Dark background box (matches navy theme)
+  slide.addShape(pptxgen.ShapeType.rect, {
+    x: 0.4, y: 1.6, w: '58%', h: 3.6,
+    fill: { color: '2d3142' },
+    line: { color: '4f6ef7', width: 1.5 },
+  });
+  // Label text
+  slide.addText(label, {
+    x: 0.4, y: 1.6, w: '58%', h: 3.6,
+    color: '8892b0', fontSize: 12, italic: true,
+    align: 'center', valign: 'middle',
+  });
+}
+
+// ── Runtime visual embedding (called by vp-proposal workflow, not template gen) ──
+// When visualSlides[] is populated by Step 4c, apply screenshots or placeholders:
+//
+//   const { screenshotArtifact, cleanupScreenshot } = require('../lib/screenshot-artifact.cjs');
+//
+//   for (const entry of visualSlides) {
+//     const slide = pptx.slides[entry.slideIndex];
+//     if (!slide) continue;
+//     const tmpPng = await screenshotArtifact(entry.htmlPath);
+//     if (tmpPng) {
+//       slide.addImage({ path: tmpPng, x: 0.4, y: 1.6, w: '58%', h: 3.6 });
+//       cleanupScreenshot(tmpPng);
+//     } else {
+//       addPlaceholderVisual(slide, entry.label || 'Visual: ' + entry.artifactType);
+//     }
+//   }
+
 // ── Generate all templates ─────────────────────────────────────────────────────
 async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });

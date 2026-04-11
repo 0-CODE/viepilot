@@ -372,6 +372,66 @@ Store result as `docxContent` variable for use in Steps 7 and 8.
 
 </step>
 
+
+<step name="detect_visual_artifacts">
+## Step 4c: Detect Visual Artifacts (optional screenshot pass)
+
+This step runs **after Step 4b** and **before template resolution**.
+
+1. Call `detectVisualArtifacts()` from `lib/proposal-generator.cjs`:
+   ```js
+   const { detectVisualArtifacts } = require('./lib/proposal-generator.cjs');
+   const artifacts = detectVisualArtifacts(); // auto-detects latest .viepilot/ui-direction/ session
+   ```
+
+2. **If no artifacts found** (`artifacts.uiPages.length === 0 && artifacts.architectPages.length === 0`):
+   - Set `visualSlides = []`
+   - Log: `[visuals] No HTML artifacts found — skipping screenshot pass`
+   - Continue to Step 5
+
+3. **If artifacts are found**, produce `visualSlides[]` by mapping slide topics to artifact files using AI judgment:
+
+   **Artifact → slide mapping rules:**
+   | Slide topic keywords | Artifact to use | artifactType |
+   |----------------------|-----------------|--------------|
+   | UI, interface, mockup, design, screens | `artifacts.uiPages[0]` (index.html) | `ui-overview` |
+   | Specific UI page (login, dashboard…) | matching `artifacts.uiPages[N]` | `ui-page` |
+   | Architecture, system design, components | `architecture.html` in architectPages | `architect-arch` |
+   | Database, entities, ERD, data model | `erd.html` in architectPages | `architect-erd` |
+   | Flow, sequence, interactions, API calls | `sequence-diagram.html` in architectPages | `architect-seq` |
+   | Features, feature map | `feature-map.html` in architectPages | `architect-features` |
+   | Users, roles, use cases, actors | `user-use-cases.html` in architectPages | `architect-usecases` |
+
+4. `visualSlides[]` schema — one entry per slide that should receive a visual:
+   ```json
+   [
+     {
+       "slideIndex": 3,
+       "artifactType": "ui-overview",
+       "htmlPath": "/absolute/path/to/index.html",
+       "label": "UI Prototype Overview"
+     },
+     {
+       "slideIndex": 7,
+       "artifactType": "architect-arch",
+       "htmlPath": "/absolute/path/to/architecture.html",
+       "label": "System Architecture"
+     }
+   ]
+   ```
+   - `slideIndex`: 0-based index in the slides array
+   - Maximum **1 visual per slide**
+   - **Only assign visuals to content slides** — do NOT assign to cover (slide 0), section dividers, or closing/CTA slides
+   - Maximum 3–4 visual slides per proposal to avoid visual overload
+
+5. Store as `visualSlides` variable for use in Step 6 (`generate_pptx`).
+
+Progress: `[visuals] Found {N} artifact(s) → {M} slides will have screenshots`
+
+---
+
+</step>
+
 <step name="template_resolution">
 ## Step 5: Template Resolution
 

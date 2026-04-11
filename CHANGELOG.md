@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-04-11
+
+### Added (ENH-042 — Phase 71)
+- **`lib/proposal-generator.cjs`**: `detectVisualArtifacts(sessionDir)` — auto-scans `.viepilot/ui-direction/{latest-session}/` for ui-direction pages (`index.html`, `pages/*.html`) and 10 architect workspace page types (`architecture.html`, `erd.html`, `sequence-diagram.html`, etc.)
+- **`lib/screenshot-artifact.cjs`** (new): `screenshotArtifact(htmlPath)` via optional puppeteer (headless Chrome) — returns `null` gracefully when puppeteer not installed; `isPuppeteerAvailable()` boolean guard; `cleanupScreenshot()` temp-file cleanup
+- **`workflows/proposal.md` Step 4c `detect_visual_artifacts`**: AI maps slide topics to HTML artifact files, produces `visualSlides[]` array with `slideIndex`, `artifactType`, `htmlPath`, `label` fields
+- **`scripts/gen-proposal-pptx.cjs`**: `addPlaceholderVisual(slide, label)` — styled navy+accent placeholder shape for when screenshots are unavailable; runtime integration comment block documenting the `screenshotArtifact` → `addImage` → `cleanupScreenshot` pattern
+- Zero breaking change: all proposal generation works without puppeteer; visuals are additive
+
 ## [2.8.0] - 2026-04-11
 
 ### Added (ENH-041 — Phase 70)
