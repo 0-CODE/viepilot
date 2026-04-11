@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.1] - 2026-04-11
+
+### Changed (ENH-044 — Phase 73)
+- **`lib/screenshot-artifact.cjs`**: `warnMissingTool(tool, installCmd)` — standardized stderr `⚠` warning when visual tool absent but artifacts exist; exports alongside existing helpers
+- **`workflows/proposal.md` Step 4c**: mandatory enforcement — `visualSlides[]` MUST be non-empty when artifacts exist; puppeteer absent → `warnMissingTool('puppeteer', ...)` + `addPlaceholderVisual()` (no more silent skip)
+- **`workflows/proposal.md` Step 7**: mandatory enforcement — Mermaid + ui/arch sections MUST be added when diagrams/artifacts exist; mmdc absent → text fallback + `warnMissingTool('mmdc', ...)`; puppeteer absent → placeholder paragraph + `warnMissingTool('puppeteer', ...)`
+- `warnMissingTool()` called once per missing tool per generation run (not per-diagram)
+- 16 tests in `vp-enh044-visual-enforce.test.js`
+
 ## [2.10.0] - 2026-04-11
 
 ### Added (ENH-043 — Phase 72)
