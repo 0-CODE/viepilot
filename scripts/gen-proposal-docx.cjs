@@ -191,6 +191,64 @@ function teamTable(rows) {
   });
 }
 
+// ── Risk Register table ───────────────────────────────────────────────────────
+// Columns: Risk | Probability | Impact | Mitigation
+function riskRegisterTable(rows) {
+  const headerRow = new TableRow({
+    tableHeader: true,
+    children: [
+      headerCell('Risk', 35),
+      headerCell('Probability', 15),
+      headerCell('Impact', 15),
+      headerCell('Mitigation', 35),
+    ],
+  });
+  const dataRows = rows.map(([risk, prob, impact, mitigation]) =>
+    new TableRow({
+      children: [
+        new TableCell({ width: { size: 35, type: WidthType.PERCENTAGE }, children: [placeholder(risk)] }),
+        new TableCell({ width: { size: 15, type: WidthType.PERCENTAGE }, children: [placeholder(prob)] }),
+        new TableCell({ width: { size: 15, type: WidthType.PERCENTAGE }, children: [placeholder(impact)] }),
+        new TableCell({ width: { size: 35, type: WidthType.PERCENTAGE }, children: [placeholder(mitigation)] }),
+      ],
+    })
+  );
+  return new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: [headerRow, ...dataRows],
+  });
+}
+
+// ── Glossary table ────────────────────────────────────────────────────────────
+// Columns: Term | Definition
+function glossaryTable(rows) {
+  const headerRow = new TableRow({
+    tableHeader: true,
+    children: [
+      headerCell('Term', 30),
+      headerCell('Definition', 70),
+    ],
+  });
+  const dataRows = rows.map(([term, definition]) =>
+    new TableRow({
+      children: [
+        new TableCell({
+          width: { size: 30, type: WidthType.PERCENTAGE },
+          children: [new Paragraph({
+            children: [new TextRun({ text: `{{${term}}}`, bold: true, italics: false, color: NAVY, size: 20 })],
+            spacing: { before: 60, after: 60 },
+          })],
+        }),
+        new TableCell({ width: { size: 70, type: WidthType.PERCENTAGE }, children: [placeholder(definition)] }),
+      ],
+    })
+  );
+  return new Table({
+    width: { size: 100, type: WidthType.PERCENTAGE },
+    rows: [headerRow, ...dataRows],
+  });
+}
+
 // ── Tech stack table ──────────────────────────────────────────────────────────
 function twoColTable(rows) {
   return new Table({
@@ -398,15 +456,30 @@ async function main() {
           ]),
           spacer(),
 
-          // ── 8. Why Choose Us ─────────────────────────────────────────────
-          h1('8. Why Choose Us'),
+          // ── 8. Risk Register ─────────────────────────────────────────────
+          pageBreak(),
+          h1('8. Risk Register'),
+          para('The following table summarises key project risks, their likelihood and impact, and the planned mitigation strategies.'),
+          spacer(),
+          riskRegisterTable([
+            ['Requirements scope creep', 'probability: High|Med|Low', 'impact: High|Med|Low', 'mitigation strategy — who owns it and how it is managed'],
+            ['Key resource unavailability', 'probability: High|Med|Low', 'impact: High|Med|Low', 'mitigation strategy'],
+            ['Third-party API or integration delays', 'probability: High|Med|Low', 'impact: High|Med|Low', 'mitigation strategy'],
+            ['Performance under peak load', 'probability: High|Med|Low', 'impact: High|Med|Low', 'mitigation strategy'],
+            ['Security vulnerability in dependencies', 'probability: High|Med|Low', 'impact: High|Med|Low', 'mitigation strategy'],
+          ]),
+          spacer(),
+
+          // ── 9. Why Choose Us ─────────────────────────────────────────────
+          pageBreak(),
+          h1('9. Why Choose Us'),
           placeholder('Differentiator 1: specific, outcome-oriented reason (e.g. "Delivered 3 similar platforms in the fintech space — avg 15% under budget")'),
           placeholder('Differentiator 2: methodology or process advantage'),
           placeholder('Differentiator 3: support model, IP ownership, or risk mitigation'),
           spacer(),
 
-          // ── 9. Next Steps ────────────────────────────────────────────────
-          h1('9. Next Steps'),
+          // ── 10. Next Steps ───────────────────────────────────────────────
+          h1('10. Next Steps'),
           placeholder('Action 1: {{what}} — Owner: {{who}} — By: {{date}}'),
           placeholder('Action 2: {{what}} — Owner: {{who}} — By: {{date}}'),
           placeholder('Action 3: {{what}} — Owner: {{who}} — By: {{date}}'),
@@ -414,16 +487,29 @@ async function main() {
           para('To proceed, please reply to this proposal or contact us at {{contact information}}.', { bold: false }),
           spacer(),
 
-          // ── 10. Appendix ─────────────────────────────────────────────────
+          // ── 11. Glossary ─────────────────────────────────────────────────
           pageBreak(),
-          h1('10. Appendix'),
-          h2('10.1 Brainstorm Session Notes'),
+          h1('11. Glossary'),
+          para('Definitions of key terms and acronyms used in this proposal.'),
+          spacer(),
+          glossaryTable([
+            ['Term / Acronym 1', 'plain-language definition — avoid jargon; write for a non-technical decision maker'],
+            ['Term / Acronym 2', 'plain-language definition'],
+            ['Term / Acronym 3', 'plain-language definition'],
+            ['Term / Acronym 4', 'plain-language definition'],
+          ]),
+          spacer(),
+
+          // ── 12. Appendix ─────────────────────────────────────────────────
+          pageBreak(),
+          h1('12. Appendix'),
+          h2('12.1 Brainstorm Session Notes'),
           placeholder('Auto-populated from vp-brainstorm session when available. Contains raw ideas, decisions, and open questions captured during ideation.'),
           spacer(),
-          h2('10.2 References & Supporting Documents'),
+          h2('12.2 References & Supporting Documents'),
           placeholder('List any external references, research papers, or supporting documents relevant to this proposal.'),
           spacer(),
-          h2('10.3 Assumptions'),
+          h2('12.3 Assumptions'),
           placeholder('List key assumptions made in preparing this proposal (e.g. client provides test data, API access available by Phase 2).'),
           spacer(),
           new Paragraph({

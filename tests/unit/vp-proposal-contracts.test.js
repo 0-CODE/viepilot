@@ -59,6 +59,14 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(content).toMatch(/[Cc]ontext [Dd]etection/);
   });
 
+  test('workflow.md contains Step 4b generate_docx_content AI pass (ENH-041)', () => {
+    expect(read('workflows/proposal.md')).toMatch(/generate_docx_content|Step 4b/);
+  });
+
+  test('workflow.md embeds Mermaid fenced blocks in Step 8 (ENH-041)', () => {
+    expect(read('workflows/proposal.md')).toMatch(/mermaid|Mermaid/);
+  });
+
   test('SKILL.md execution_context points to workflows/proposal.md', () => {
     expect(read('skills/vp-proposal/SKILL.md')).toMatch(/workflows\/proposal\.md/);
   });
@@ -104,6 +112,18 @@ describe('vp-proposal — proposal-generator exports', () => {
 
   test('general has 8 slides', () => {
     expect(gen.PROPOSAL_TYPES['general'].slides).toBe(8);
+  });
+
+  test('getDiagramTypes is a function (ENH-041)', () => {
+    expect(typeof gen.getDiagramTypes).toBe('function');
+  });
+
+  test('getDiagramTypes returns flowchart+gantt for project-proposal (ENH-041)', () => {
+    expect(gen.getDiagramTypes('project-proposal')).toEqual(['flowchart', 'gantt']);
+  });
+
+  test('getDiagramTypes falls back to [flowchart] for unknown type (ENH-041)', () => {
+    expect(gen.getDiagramTypes('unknown')).toEqual(['flowchart']);
   });
 });
 

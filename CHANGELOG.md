@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2026-04-11
+
+### Added (ENH-041 — Phase 70)
+- **`workflows/proposal.md` Step 4b `generate_docx_content`**: dedicated AI pass for deep `.docx` content, independent of the slide manifest — richer prose, risk analysis, diagrams
+- **`docxContent` JSON schema**: `executiveSummary[]`, `problemStatement[]`, `solutionNarrative[]`, `technicalNarrative[]`, `riskRegister[]`, `glossary[]`, `diagrams[]` (with `mermaidSource`)
+- **Step 7 updated**: `.docx` generator consumes `docxContent` for narrative paragraphs; new Risk Register and Glossary sections fed from `docxContent`
+- **Step 8 updated**: `.md` companion embeds Mermaid fenced code blocks (` ```flowchart `, ` ```sequenceDiagram `, etc.) for each diagram in `docxContent.diagrams[]`
+- **`getDiagramTypes(typeId)` helper** in `lib/proposal-generator.cjs`: maps proposal type to diagram array (`project-proposal` → `[flowchart, gantt]`, `tech-architecture` → `[flowchart, sequenceDiagram, classDiagram]`, etc.)
+- **`.docx` Risk Register table**: Risk | Probability | Impact | Mitigation (5 placeholder rows)
+- **`.docx` Glossary table**: Term | Definition (4 placeholder rows)
+- `project-detail.docx` regenerated — 12 sections (added §8 Risk Register, §11 Glossary; previous §8–10 renumbered §9–12)
+- 17 new tests in `tests/unit/vp-enh041-proposal-docx-ai.test.js`; `vp-proposal-contracts.test.js` updated (+5 ENH-041 assertions)
+
 ## [2.7.0] - 2026-04-10
 
 ### Added (ENH-040 — Phase 69)

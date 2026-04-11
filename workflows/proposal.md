@@ -304,6 +304,74 @@ If `--dry-run`: print manifest as JSON and stop here.
 
 </step>
 
+<step name="generate_docx_content">
+## Step 4b: AI Docx Content Generation (independent pass)
+
+This is a **separate AI call** from the slide manifest generation.
+- Input: brainstorm session + quality brief meta + proposal type + slide manifest (for context only)
+- Output: `docxContent` JSON — per-section rich content + diagram specs
+- This content is deeper and longer than slides; it is NOT derived from slide bullets
+
+**Docx content AI prompt contract:**
+
+```
+You are generating the DETAILED DOCUMENT for a professional proposal.
+This document is the deep technical and narrative companion to the slides.
+
+CONTEXT:
+- Proposal type: {typeId} — {label}
+- Audience: {meta.decisionMaker}
+- CTA: {meta.cta}
+- Budget: {meta.budget}
+- Timeline: {meta.timeline}
+- Brainstorm session summary: {sessionSummary or "none"}
+- Slide headings (for context only): {slides.map(s => s.heading).join(', ')}
+{langInstruction}
+
+DIAGRAM TYPES to generate: {getDiagramTypes(typeId)}
+  project-proposal  → flowchart, gantt
+  tech-architecture → flowchart, sequenceDiagram, classDiagram
+  product-pitch     → flowchart, sequenceDiagram
+  general           → flowchart
+
+GENERATE a JSON object with this exact schema:
+{
+  "executiveSummary": ["paragraph1 (3–6 sentences)", "paragraph2", "paragraph3"],
+  "problemStatement": ["paragraph1", "paragraph2"],
+  "solutionNarrative": ["paragraph1", "paragraph2"],
+  "technicalNarrative": ["paragraph1"],
+  "riskRegister": [
+    { "risk": "...", "probability": "High|Med|Low", "impact": "High|Med|Low", "mitigation": "..." }
+  ],
+  "glossary": [
+    { "term": "...", "definition": "plain-language definition" }
+  ],
+  "diagrams": [
+    {
+      "type": "flowchart|sequenceDiagram|classDiagram|erDiagram|gantt",
+      "title": "diagram title",
+      "mermaidSource": "valid Mermaid 10+ source code"
+    }
+  ]
+}
+
+CONTENT RULES:
+- Each paragraph: 3–6 sentences, outcome-oriented, uses data from brainstorm session
+- riskRegister: 3–5 rows covering the most likely project risks
+- glossary: 5–10 key terms the decision-maker may not know
+- diagrams: generate one diagram per type in getDiagramTypes(typeId)
+- Mermaid source MUST be syntactically valid Mermaid 10+ syntax
+- flowchart uses `flowchart TD` (not `graph TD`)
+- gantt must include `dateFormat YYYY-MM-DD` and at least 3 sections
+- AVOID placeholder text — generate real content from the brainstorm session context
+```
+
+Store result as `docxContent` variable for use in Steps 7 and 8.
+
+---
+
+</step>
+
 <step name="template_resolution">
 ## Step 5: Template Resolution
 
@@ -345,23 +413,27 @@ Progress: `[pptx] Generating {N} slides...`
 <step name="generate_docx">
 ## Step 7: Generate .docx
 
-Using `docx` package:
+Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrative paragraphs:
+
 1. Build `Document` with structured sections
 2. **Cover page**: title (H1, large), subtitle, prepared-for, date
-3. **Body sections** — required for all proposal types:
+3. **Body sections** — sourced from `docxContent`:
 
-   | Section | Content |
-   |---------|---------|
-   | Executive Summary | 2–3 paragraphs: project purpose, key benefits, recommended action (meta.cta) |
-   | Problem & Opportunity | 1–2 paragraphs: context + pain points from session/brief |
-   | Proposed Solution | 1–2 paragraphs + feature list (bullets) |
-   | Technical Approach | 1 paragraph + components table (tech-architecture type only) |
-   | **Project Timeline** | **Gantt-style table: Phase \| Milestone \| Duration \| Dependencies** |
-   | **Investment Estimate** | **Budget table: Line Item \| Estimate \| Notes** (use meta.budget as header context) |
-   | Team & Expertise | Role \| Experience \| Responsibility table |
-   | Why Choose Us | 2–3 differentiator bullets |
-   | Next Steps | Numbered action list (first action = meta.cta) |
-   | Appendix | Full brainstorm session notes (if session loaded) |
+   | Section | Source | Content |
+   |---------|--------|---------|
+   | Executive Summary | `docxContent.executiveSummary[]` | Paragraphs rendered as Word body text |
+   | Problem & Opportunity | `docxContent.problemStatement[]` | Paragraphs rendered as Word body text |
+   | Proposed Solution | `docxContent.solutionNarrative[]` | Paragraphs rendered as Word body text |
+   | Technical Approach | `docxContent.technicalNarrative[]` | Paragraph(s); omit section if array is empty |
+   | **Project Timeline** | slide manifest `meta` | **Gantt-style table: Phase \| Milestone \| Duration \| Dependencies** |
+   | **Investment Estimate** | slide manifest `meta` | **Budget table: Line Item \| Estimate \| Notes** (use meta.budget as header context) |
+   | Team & Expertise | slide manifest | Role \| Experience \| Responsibility table |
+   | **Risk Register** | `docxContent.riskRegister[]` | **Risk \| Probability \| Impact \| Mitigation table** |
+   | **Diagram Reference** | `docxContent.diagrams[]` | **One table per diagram: Title \| Type \| Description (mermaidSource as preformatted text)** |
+   | Why Choose Us | slide manifest | 2–3 differentiator bullets |
+   | Next Steps | slide manifest `meta.cta` | Numbered action list |
+   | **Glossary** | `docxContent.glossary[]` | **Term \| Definition table** |
+   | Appendix | session file | Full brainstorm session notes (if session loaded) |
 
 4. Timeline table structure:
    ```
@@ -381,7 +453,30 @@ Using `docx` package:
    | Total            | $XX,000    | {meta.budget}      |
    ```
 
-6. Write to `docs/proposals/{slug}-{date}.docx`
+6. Risk Register table structure (from `docxContent.riskRegister[]`):
+   ```
+   | Risk | Probability | Impact | Mitigation |
+   |------|-------------|--------|------------|
+   | {r.risk} | {r.probability} | {r.impact} | {r.mitigation} |
+   ```
+
+7. Diagram Reference table structure (one table per diagram in `docxContent.diagrams[]`):
+   ```
+   Heading: {diagram.title} ({diagram.type})
+   | Field   | Value               |
+   |---------|---------------------|
+   | Type    | {diagram.type}      |
+   | Source  | (preformatted Mermaid source — monospace paragraph) |
+   ```
+
+8. Glossary table structure (from `docxContent.glossary[]`):
+   ```
+   | Term | Definition |
+   |------|------------|
+   | {g.term} | {g.definition} |
+   ```
+
+9. Write to `docs/proposals/{slug}-{date}.docx`
 
 Progress: `[docx] Building detailed document...`
 
@@ -392,7 +487,7 @@ Progress: `[docx] Building detailed document...`
 <step name="generate_md">
 ## Step 8: Generate .md Summary
 
-Write a Markdown mirror of the manifest:
+Write a Markdown document combining the slide manifest and `docxContent` diagrams:
 
 ```markdown
 # {title}
@@ -403,12 +498,31 @@ Write a Markdown mirror of the manifest:
 
 ---
 
-## Slide {N}: {heading}
+## Slides
+
+### Slide {N}: {heading}
 
 {bullets as - list}
 
 > Speaker notes: {speakerNotes}
+
+---
+
+## Diagrams
+
+For each entry in `docxContent.diagrams[]`, emit a fenced Mermaid code block:
+
+### {diagram.title}
+
+```{diagram.type}
+{diagram.mermaidSource}
 ```
+
+_(repeat for each diagram)_
+```
+
+- Mermaid fences use the diagram type as the language identifier (e.g. ` ```flowchart `, ` ```sequenceDiagram `)
+- Diagrams section is omitted if `docxContent.diagrams` is empty or unavailable
 
 Write to `docs/proposals/{slug}-{date}.md`
 
