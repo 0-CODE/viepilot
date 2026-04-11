@@ -374,9 +374,11 @@ Store result as `docxContent` variable for use in Steps 7 and 8.
 
 
 <step name="detect_visual_artifacts">
-## Step 4c: Detect Visual Artifacts (optional screenshot pass)
+## Step 4c: Detect Visual Artifacts (MANDATORY visual pass when artifacts exist)
 
 This step runs **after Step 4b** and **before template resolution**.
+
+**ENH-044 enforcement rule:** When `detectVisualArtifacts()` returns non-empty results, `visualSlides[]` MUST be populated — silent skip is not allowed. If puppeteer is absent, use `addPlaceholderVisual()` and emit a WARNING.
 
 1. Call `detectVisualArtifacts()` from `lib/proposal-generator.cjs`:
    ```js
@@ -389,7 +391,25 @@ This step runs **after Step 4b** and **before template resolution**.
    - Log: `[visuals] No HTML artifacts found — skipping screenshot pass`
    - Continue to Step 5
 
-3. **If artifacts are found**, produce `visualSlides[]` by mapping slide topics to artifact files using AI judgment:
+3. **If artifacts are found** — `visualSlides[]` MUST be populated (never left empty):
+
+   **3a. When puppeteer is available** (`isPuppeteerAvailable()` returns true):
+   - Use `screenshotArtifact(htmlPath)` → `addImage()` for each mapped artifact
+   - `visualSlides[]` entries use real screenshots
+
+   **3b. When puppeteer is absent** (MANDATORY fallback):
+   ```js
+   const { warnMissingTool, isPuppeteerAvailable } = require('./lib/screenshot-artifact.cjs');
+   if (!isPuppeteerAvailable()) {
+     warnMissingTool('puppeteer', 'npm install puppeteer');
+     // Use addPlaceholderVisual(slide, label) for each mapped artifact — do NOT skip
+   }
+   ```
+   - Call `addPlaceholderVisual(slide, label)` for each entry that would have had a screenshot
+   - `visualSlides[]` is still populated — placeholder entries count as valid visual slides
+   - Do NOT leave `visualSlides[]` empty when artifacts exist
+
+   **Produce `visualSlides[]`** by mapping slide topics to artifact files using AI judgment:
 
    **Artifact → slide mapping rules:**
    | Slide topic keywords | Artifact to use | artifactType |
@@ -521,9 +541,19 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
    ```
 
 7. Diagram Reference structure (one block per diagram in `docxContent.diagrams[]`):
+
+   **MANDATORY (ENH-044):** This section MUST be added when `docxContent.diagrams.length > 0` — do not skip.
+
    - Heading: `{diagram.title} ({diagram.type})`
    - **If `isMmdcAvailable()`**: render `mermaidSource` → PNG via `renderMermaidToPng()` → embed as `ImageRun` in a Paragraph
-   - **Fallback** (mmdc absent): monospace paragraph with preformatted `mermaidSource` text
+   - **Fallback** (mmdc absent): emit WARNING + embed preformatted text:
+     ```js
+     const { warnMissingTool, isMmdcAvailable } = require('./lib/screenshot-artifact.cjs');
+     if (!isMmdcAvailable()) {
+       warnMissingTool('mmdc', 'npm install -g @mermaid-js/mermaid-cli');
+       // Add monospace paragraph with preformatted mermaidSource text (NOT skip)
+     }
+     ```
    - Cleanup temp PNG immediately after embedding (`cleanupScreenshot()`)
 
 8. Glossary table structure (from `docxContent.glossary[]`):
@@ -533,11 +563,13 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
    | {g.term} | {g.definition} |
    ```
 
-9. **Visual embedding** (ENH-043 — when `mmdc` / `puppeteer` available):
+9. **Visual embedding** (ENH-043/ENH-044 — MANDATORY when artifacts exist):
+
+   **MANDATORY (ENH-044):** When `detectVisualArtifacts()` returns non-empty, visual sections MUST be added to the document — do not skip silently. If puppeteer is absent, emit WARNING and add a placeholder text paragraph instead.
 
    **Mermaid diagram images** — for each `docxContent.diagrams[]` entry:
    ```js
-   const { renderMermaidToPng, isMmdcAvailable, cleanupScreenshot } = require('./lib/screenshot-artifact.cjs');
+   const { renderMermaidToPng, isMmdcAvailable, warnMissingTool, cleanupScreenshot } = require('./lib/screenshot-artifact.cjs');
    const tmpPng = path.join(os.tmpdir(), `vp-mmdc-${Date.now()}.png`);
    const rendered = renderMermaidToPng(diagram.mermaidSource, tmpPng);
    if (rendered) {
@@ -545,40 +577,56 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
      if (imgRun) children.push(new Paragraph({ children: [imgRun] }));
      cleanupScreenshot(rendered);
    }
-   // Fallback: preformatted mermaid source text already added (step 7)
+   // Fallback: preformatted mermaid source text already added (step 7, always present)
    ```
 
-   **UI prototype screenshot** — if `artifacts.uiPages[0]` available (from Step 4c):
+   **UI prototype screenshot** — MANDATORY when `artifacts.uiPages.length > 0`:
    ```js
+   const { screenshotArtifact, isPuppeteerAvailable, warnMissingTool, cleanupScreenshot } = require('./lib/screenshot-artifact.cjs');
    const artifacts = detectVisualArtifacts();
-   if (artifacts.uiPages[0]) {
-     const tmpPng = await screenshotArtifact(artifacts.uiPages[0]);
-     if (tmpPng) {
-       const imgRun = imageRunFromPng(tmpPng);
-       if (imgRun) executiveSummaryChildren.unshift(
-         new Paragraph({ children: [imgRun], spacing: { before: 120, after: 200 } })
+   if (artifacts.uiPages.length > 0) {
+     if (isPuppeteerAvailable()) {
+       const tmpPng = await screenshotArtifact(artifacts.uiPages[0]);
+       if (tmpPng) {
+         const imgRun = imageRunFromPng(tmpPng);
+         if (imgRun) executiveSummaryChildren.unshift(
+           new Paragraph({ children: [imgRun], spacing: { before: 120, after: 200 } })
+         );
+         cleanupScreenshot(tmpPng);
+       }
+     } else {
+       warnMissingTool('puppeteer', 'npm install puppeteer');
+       // Add placeholder paragraph — do NOT skip the section
+       executiveSummaryChildren.unshift(
+         new Paragraph({ text: '[UI Prototype screenshot — install puppeteer to embed]', style: 'Caption' })
        );
-       cleanupScreenshot(tmpPng);
      }
    }
    ```
 
-   **Architecture screenshot** — if `architecture.html` in `artifacts.architectPages`:
+   **Architecture screenshot** — MANDATORY when `architecture.html` in `artifacts.architectPages`:
    ```js
    const archHtml = artifacts.architectPages.find(p => p.endsWith('architecture.html'));
    if (archHtml) {
-     const tmpPng = await screenshotArtifact(archHtml);
-     if (tmpPng) {
-       const imgRun = imageRunFromPng(tmpPng);
-       if (imgRun) techSectionChildren.push(
-         new Paragraph({ children: [imgRun], spacing: { before: 200, after: 120 } })
+     if (isPuppeteerAvailable()) {
+       const tmpPng = await screenshotArtifact(archHtml);
+       if (tmpPng) {
+         const imgRun = imageRunFromPng(tmpPng);
+         if (imgRun) techSectionChildren.push(
+           new Paragraph({ children: [imgRun], spacing: { before: 200, after: 120 } })
+         );
+         cleanupScreenshot(tmpPng);
+       }
+     } else {
+       // warnMissingTool already called above (once per run — not repeated per artifact)
+       techSectionChildren.push(
+         new Paragraph({ text: '[Architecture diagram screenshot — install puppeteer to embed]', style: 'Caption' })
        );
-       cleanupScreenshot(tmpPng);
      }
    }
    ```
 
-   All three patterns fail gracefully — `screenshotArtifact` / `renderMermaidToPng` return `null` when tools absent.
+   Rule: `warnMissingTool()` is called **once per missing tool per generation run** — not per-diagram or per-artifact.
 
 10. Write to `docs/proposals/{slug}-{date}.docx`
 
