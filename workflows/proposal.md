@@ -130,6 +130,45 @@ Output: `lang` (ISO 639-1 string), `langContentOnly` (boolean from `--lang-conte
 
 </step>
 
+<step name="quality_brief">
+## Step 2C: Quality Brief
+
+Ask these 4 questions regardless of whether a session was loaded:
+
+```
+To sharpen the proposal, please answer briefly:
+
+1. Decision / CTA: What should this proposal make the audience do?
+   (e.g. "sign the contract", "approve budget", "schedule a demo")
+
+2. Budget range: Approximate investment level?
+   (e.g. "$50K–$100K", "internal only", or skip with Enter)
+
+3. Timeline: Key deadline or constraint?
+   (e.g. "present end of month", "no fixed deadline")
+
+4. Decision-maker: Who is the primary audience?
+   (e.g. "non-technical CEO", "CTO + engineering team", "procurement committee")
+```
+
+Store answers in manifest `meta` object:
+```json
+{
+  "meta": {
+    "cta": "sign the contract",
+    "budget": "$50K–$100K",
+    "timeline": "present end of month",
+    "decisionMaker": "non-technical CEO"
+  }
+}
+```
+
+These drive sharper content in Step 4 (manifest_generation): tone, word choice, CTA on closing slide.
+
+---
+
+</step>
+
 <step name="manifest_generation">
 ## Step 4: AI Slide Manifest Generation
 
@@ -145,9 +184,15 @@ Generate a structured JSON manifest from the loaded context.
 ```json
 {
   "title": "Project Name",
-  "subtitle": "Tagline or date",
+  "subtitle": "One compelling sentence — not just a date",
   "type": "project-proposal",
   "audience": "client|partner|investor|internal",
+  "meta": {
+    "cta": "sign the contract",
+    "budget": "$50K–$100K",
+    "timeline": "present end of month",
+    "decisionMaker": "non-technical CEO"
+  },
   "slides": [
     {
       "index": 1,
@@ -167,12 +212,37 @@ Generate a structured JSON manifest from the loaded context.
 }
 ```
 
+## AI Prompt Contract
+
+Inject this system context before asking AI to generate the manifest:
+
+```
+You are generating a professional proposal slide manifest.
+
+AUDIENCE: {meta.decisionMaker || "business decision-maker"}
+CTA: {meta.cta || "approve the proposal"}
+BUDGET CONTEXT: {meta.budget || "not specified"}
+TIMELINE: {meta.timeline || "not specified"}
+TONE: {if decisionMaker contains "technical" → "precise and data-driven"; else → "clear and persuasive"}
+{langInstruction}
+
+CONTENT RULES — apply to every slide:
+- Cover subtitle: one compelling sentence that states the value proposition (NOT just a date)
+- Every bullet point: 8–15 words, outcome-oriented, starts with an action verb
+- Speaker notes: 3–5 sentences — (1) key talking point, (2) supporting evidence or example,
+  (3) anticipated objection + response, (4) transition to next slide
+- Closing slide: concrete CTA matching meta.cta — NOT "Thank you" alone
+- Data/metrics slide: include at least one quantified metric (estimate is fine, label as such)
+- AVOID filler phrases: "In conclusion", "As you can see", "We believe", "It is important to note"
+- AVOID vague bullets: "Improved performance", "Better results", "Enhanced UX"
+```
+
 **Slide layout types:**
 - `cover` — full-bleed title slide (index 1 always)
 - `section` — heading + bullet list (main content slides)
 - `two-column` — heading + two content columns (for comparisons)
 - `data` — heading + key metric callouts
-- `closing` — thank you / next steps / contact (last slide always)
+- `closing` — CTA block matching meta.cta (last slide always)
 
 **Slide count rules:** `slides.length` MUST equal `PROPOSAL_TYPES[typeId].slides`
 
@@ -276,14 +346,42 @@ Progress: `[pptx] Generating {N} slides...`
 ## Step 7: Generate .docx
 
 Using `docx` package:
-1. Build `Document` with sections matching the proposal type
-2. **Cover page**: title (H1), subtitle, prepared-for, date
-3. **Body sections** (one per major slide group):
-   - `HeadingLevel.HEADING_1` per section
-   - Paragraph content expanded from slide bullets (2–4 sentences each)
-   - Tables where relevant (timeline, budget estimate, tech stack)
-4. **Appendix**: raw brainstorm notes (if session loaded)
-5. Write to `docs/proposals/{slug}-{date}.docx`
+1. Build `Document` with structured sections
+2. **Cover page**: title (H1, large), subtitle, prepared-for, date
+3. **Body sections** — required for all proposal types:
+
+   | Section | Content |
+   |---------|---------|
+   | Executive Summary | 2–3 paragraphs: project purpose, key benefits, recommended action (meta.cta) |
+   | Problem & Opportunity | 1–2 paragraphs: context + pain points from session/brief |
+   | Proposed Solution | 1–2 paragraphs + feature list (bullets) |
+   | Technical Approach | 1 paragraph + components table (tech-architecture type only) |
+   | **Project Timeline** | **Gantt-style table: Phase \| Milestone \| Duration \| Dependencies** |
+   | **Investment Estimate** | **Budget table: Line Item \| Estimate \| Notes** (use meta.budget as header context) |
+   | Team & Expertise | Role \| Experience \| Responsibility table |
+   | Why Choose Us | 2–3 differentiator bullets |
+   | Next Steps | Numbered action list (first action = meta.cta) |
+   | Appendix | Full brainstorm session notes (if session loaded) |
+
+4. Timeline table structure:
+   ```
+   | Phase | Milestone | Duration | Dependencies |
+   |-------|-----------|----------|--------------|
+   | 1     | Discovery | 2 weeks  | —            |
+   | 2     | Design    | 3 weeks  | Phase 1      |
+   ```
+
+5. Budget table structure:
+   ```
+   | Line Item        | Estimate   | Notes              |
+   |------------------|------------|--------------------|
+   | Discovery & UX   | $X,000     | Fixed fee          |
+   | Development      | $XX,000    | Time & materials   |
+   | Testing & QA     | $X,000     | Included           |
+   | Total            | $XX,000    | {meta.budget}      |
+   ```
+
+6. Write to `docs/proposals/{slug}-{date}.docx`
 
 Progress: `[docx] Building detailed document...`
 

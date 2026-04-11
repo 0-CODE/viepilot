@@ -45,6 +45,14 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(read('skills/vp-proposal/SKILL.md')).toContain('--lang-content-only');
   });
 
+  test('workflow.md contains Step 2C quality brief', () => {
+    expect(read('workflows/proposal.md')).toMatch(/quality_brief|Quality Brief|Step 2C/);
+  });
+
+  test('workflow.md specifies outcome-oriented bullet rules', () => {
+    expect(read('workflows/proposal.md')).toContain('outcome-oriented');
+  });
+
   test('workflow.md contains Step 1 context detection', () => {
     const content = read('workflows/proposal.md');
     expect(content).toMatch(/Step 1/);

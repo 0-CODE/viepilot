@@ -3,6 +3,7 @@
  * gen-proposal-pptx.cjs
  * Generates 4 stock .pptx templates for vp-proposal skill.
  * Design: dark navy (#1a1f36) / charcoal (#2d3142) — ViePilot brand.
+ * ENH-040: 5 distinct slide layouts — cover, section, two-column, data, closing.
  *
  * Usage: node scripts/gen-proposal-pptx.cjs
  */
@@ -15,155 +16,493 @@ const OUT_DIR = path.join(__dirname, '..', 'templates', 'proposal', 'pptx');
 
 // ── Colour palette ────────────────────────────────────────────────────────────
 const C = {
-  navy:    '1a1f36',
-  charcoal:'2d3142',
-  accent:  '4f6ef7',
-  light:   'e8ecf4',
-  muted:   '8892b0',
-  white:   'FFFFFF',
+  navy:     '1a1f36',
+  charcoal: '2d3142',
+  accent:   '4f6ef7',
+  accentDim:'2a3f9e',
+  light:    'e8ecf4',
+  muted:    '8892b0',
+  mutedDim: '5a637a',
+  white:    'FFFFFF',
+  dark:     '0d1020',
 };
 
-// ── Shared helpers ────────────────────────────────────────────────────────────
+// ── Slide Master ──────────────────────────────────────────────────────────────
 function makePres() {
   const pres = new PptxGenJS();
-  pres.layout = 'LAYOUT_WIDE';
+  pres.layout = 'LAYOUT_WIDE';   // 13.33" × 7.5"
   pres.defineSlideMaster({
     title: 'VIEPILOT_MASTER',
     background: { color: C.navy },
     objects: [
       // Bottom accent bar
-      { rect: { x: 0, y: 6.8, w: '100%', h: 0.08, fill: { color: C.accent } } },
-      // Footer brand text
+      { rect: { x: 0, y: 7.18, w: '100%', h: 0.06, fill: { color: C.accent } } },
+      // Footer: brand left
       { text: {
           text: 'ViePilot',
-          options: { x: 0.3, y: 6.88, w: 2, h: 0.2, fontSize: 9, color: C.muted, align: 'left' }
+          options: { x: 0.3, y: 7.24, w: 2, h: 0.22, fontSize: 8, color: C.muted, align: 'left', fontFace: 'Calibri' },
+      }},
+      // Footer: page number right (placeholder — AI fills at runtime)
+      { text: {
+          text: '·',
+          options: { x: 11.5, y: 7.24, w: 1.5, h: 0.22, fontSize: 8, color: C.mutedDim, align: 'right', fontFace: 'Calibri' },
       }},
     ],
   });
   return pres;
 }
 
-function addCoverSlide(pres, title, subtitle) {
+// ── Layout 1: Cover ───────────────────────────────────────────────────────────
+// Full-bleed title, large accent graphic element, subtitle + meta
+function addCoverSlide(pres, { title, subtitle, meta }) {
   const slide = pres.addSlide({ masterName: 'VIEPILOT_MASTER' });
-  // Accent line left
-  slide.addShape(pres.ShapeType.rect, { x: 0, y: 1.8, w: 0.12, h: 2.4, fill: { color: C.accent } });
+  // Large accent background block (left 40%)
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: 5.2, h: 7.5,
+    fill: { color: C.charcoal },
+  });
+  // Accent bar left edge
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: 0.2, h: 7.5,
+    fill: { color: C.accent },
+  });
+  // Horizontal accent line (right panel divider)
+  slide.addShape(pres.ShapeType.rect, {
+    x: 5.4, y: 2.8, w: 7.7, h: 0.05,
+    fill: { color: C.accent },
+  });
+  // "PROPOSAL" label top-right
+  slide.addText('PROPOSAL', {
+    x: 5.6, y: 0.5, w: 7.4, h: 0.4,
+    fontSize: 11, bold: true, color: C.accent, charSpacing: 3, fontFace: 'Calibri',
+  });
+  // Main title (right panel)
   slide.addText(title, {
-    x: 0.4, y: 1.9, w: 11.6, h: 1.2,
-    fontSize: 40, bold: true, color: C.light, fontFace: 'Calibri',
+    x: 5.4, y: 1.1, w: 7.7, h: 1.8,
+    fontSize: 34, bold: true, color: C.light, fontFace: 'Calibri', wrap: true,
   });
+  // Subtitle (right panel, below divider)
   slide.addText(subtitle, {
-    x: 0.4, y: 3.2, w: 9, h: 0.7,
-    fontSize: 20, color: C.muted, fontFace: 'Calibri',
+    x: 5.4, y: 3.0, w: 7.7, h: 0.9,
+    fontSize: 17, color: C.muted, fontFace: 'Calibri', wrap: true,
   });
-  slide.addText('Prepared with ViePilot · ' + new Date().getFullYear(), {
-    x: 0.4, y: 4.2, w: 6, h: 0.35,
-    fontSize: 11, color: C.muted,
+  // Meta info (right panel bottom)
+  if (meta) {
+    slide.addText(meta, {
+      x: 5.4, y: 4.1, w: 7.7, h: 0.5,
+      fontSize: 12, color: C.mutedDim, fontFace: 'Calibri',
+    });
+  }
+  // Left panel: ViePilot mark
+  slide.addText('V', {
+    x: 0.4, y: 0.5, w: 1.2, h: 1.2,
+    fontSize: 56, bold: true, color: C.accent, fontFace: 'Calibri',
+  });
+  // Left panel: "ViePilot" brand
+  slide.addText('ViePilot', {
+    x: 0.4, y: 6.5, w: 4.4, h: 0.4,
+    fontSize: 11, color: C.muted, fontFace: 'Calibri',
   });
   return slide;
 }
 
-function addSectionSlide(pres, heading, bullets) {
+// ── Layout 2: Section ─────────────────────────────────────────────────────────
+// Accent left sidebar (thin), heading row, bullets body
+function addSectionSlide(pres, { heading, bullets }) {
   const slide = pres.addSlide({ masterName: 'VIEPILOT_MASTER' });
-  // Heading bar
-  slide.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: '100%', h: 1.1, fill: { color: C.charcoal } });
+  // Left accent sidebar
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: 0.12, h: 7.5,
+    fill: { color: C.accent },
+  });
+  // Heading background row
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0.12, y: 0, w: 13.21, h: 1.0,
+    fill: { color: C.charcoal },
+  });
+  // Heading text
   slide.addText(heading, {
-    x: 0.4, y: 0.18, w: 11.6, h: 0.75,
-    fontSize: 24, bold: true, color: C.light, fontFace: 'Calibri',
+    x: 0.38, y: 0.12, w: 12.7, h: 0.76,
+    fontSize: 22, bold: true, color: C.light, fontFace: 'Calibri', valign: 'middle',
   });
-  // Bullet content
-  const bulletText = bullets.map(b => ({ text: b, options: { bullet: true } }));
-  slide.addText(bulletText, {
-    x: 0.5, y: 1.3, w: 11.4, h: 5.2,
-    fontSize: 16, color: C.light, fontFace: 'Calibri', valign: 'top',
+  // Bullets
+  const bulletItems = bullets.map(b => ({ text: b, options: { bullet: { type: 'bullet', characterCode: '2022', indent: 15 }, color: C.light, fontSize: 15 } }));
+  slide.addText(bulletItems, {
+    x: 0.5, y: 1.2, w: 12.5, h: 5.7,
+    fontFace: 'Calibri', valign: 'top', paraSpaceAfter: 8,
   });
   return slide;
 }
 
-function addClosingSlide(pres, cta) {
+// ── Layout 3: Two-Column ──────────────────────────────────────────────────────
+// Heading row, two equal content columns (comparisons, before/after, pros/cons)
+function addTwoColumnSlide(pres, { heading, leftLabel, leftBullets, rightLabel, rightBullets }) {
   const slide = pres.addSlide({ masterName: 'VIEPILOT_MASTER' });
-  slide.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: '100%', h: '100%', fill: { color: C.charcoal } });
-  slide.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: '100%', h: 0.08, fill: { color: C.accent } });
-  slide.addText('Thank You', {
-    x: 0.5, y: 1.5, w: 11.4, h: 1.4,
-    fontSize: 48, bold: true, color: C.white, align: 'center',
+  // Top heading bar
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: '100%', h: 1.0,
+    fill: { color: C.charcoal },
   });
+  slide.addText(heading, {
+    x: 0.38, y: 0.12, w: 12.7, h: 0.76,
+    fontSize: 22, bold: true, color: C.light, fontFace: 'Calibri', valign: 'middle',
+  });
+  // Column divider
+  slide.addShape(pres.ShapeType.rect, {
+    x: 6.55, y: 1.15, w: 0.04, h: 5.8,
+    fill: { color: C.mutedDim },
+  });
+  // Left column label
+  slide.addText(leftLabel || 'Current', {
+    x: 0.38, y: 1.15, w: 6.0, h: 0.45,
+    fontSize: 13, bold: true, color: C.accent, fontFace: 'Calibri',
+  });
+  // Left column bullets
+  const leftItems = leftBullets.map(b => ({ text: b, options: { bullet: true, color: C.light, fontSize: 14 } }));
+  slide.addText(leftItems, {
+    x: 0.38, y: 1.7, w: 6.0, h: 5.0,
+    fontFace: 'Calibri', valign: 'top', paraSpaceAfter: 7,
+  });
+  // Right column label
+  slide.addText(rightLabel || 'Proposed', {
+    x: 6.9, y: 1.15, w: 6.0, h: 0.45,
+    fontSize: 13, bold: true, color: C.accent, fontFace: 'Calibri',
+  });
+  // Right column bullets
+  const rightItems = rightBullets.map(b => ({ text: b, options: { bullet: true, color: C.light, fontSize: 14 } }));
+  slide.addText(rightItems, {
+    x: 6.9, y: 1.7, w: 6.0, h: 5.0,
+    fontFace: 'Calibri', valign: 'top', paraSpaceAfter: 7,
+  });
+  return slide;
+}
+
+// ── Layout 4: Data / Metrics ──────────────────────────────────────────────────
+// Heading, up to 3 large metric callout boxes
+function addDataSlide(pres, { heading, metrics }) {
+  const slide = pres.addSlide({ masterName: 'VIEPILOT_MASTER' });
+  // Top heading bar
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: '100%', h: 1.0,
+    fill: { color: C.charcoal },
+  });
+  slide.addText(heading, {
+    x: 0.38, y: 0.12, w: 12.7, h: 0.76,
+    fontSize: 22, bold: true, color: C.light, fontFace: 'Calibri', valign: 'middle',
+  });
+  // Metric boxes (up to 3, evenly spaced)
+  const count = Math.min(metrics.length, 3);
+  const boxW  = 3.8;
+  const gap   = (13.33 - count * boxW) / (count + 1);
+  metrics.slice(0, count).forEach((m, i) => {
+    const x = gap + i * (boxW + gap);
+    // Box background
+    slide.addShape(pres.ShapeType.rect, {
+      x, y: 1.6, w: boxW, h: 3.2,
+      fill: { color: C.charcoal },
+      line: { color: C.accent, width: 1.5 },
+    });
+    // Metric value (large)
+    slide.addText(m.value || '{{Value}}', {
+      x, y: 1.8, w: boxW, h: 1.4,
+      fontSize: 40, bold: true, color: C.accent, align: 'center', fontFace: 'Calibri',
+    });
+    // Metric label
+    slide.addText(m.label || '{{Label}}', {
+      x, y: 3.2, w: boxW, h: 0.55,
+      fontSize: 15, color: C.light, align: 'center', fontFace: 'Calibri',
+    });
+    // Metric sub-note
+    if (m.note) {
+      slide.addText(m.note, {
+        x, y: 3.75, w: boxW, h: 0.4,
+        fontSize: 11, color: C.muted, align: 'center', fontFace: 'Calibri',
+      });
+    }
+  });
+  return slide;
+}
+
+// ── Layout 5: Closing ─────────────────────────────────────────────────────────
+// Full-bleed charcoal, accent top bar, large CTA, contact line
+function addClosingSlide(pres, { cta, contact }) {
+  const slide = pres.addSlide({ masterName: 'VIEPILOT_MASTER' });
+  // Full background
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: '100%', h: 7.5,
+    fill: { color: C.charcoal },
+  });
+  // Top accent bar
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 0, w: '100%', h: 0.15,
+    fill: { color: C.accent },
+  });
+  // Bottom accent bar
+  slide.addShape(pres.ShapeType.rect, {
+    x: 0, y: 7.35, w: '100%', h: 0.15,
+    fill: { color: C.accent },
+  });
+  // CTA label
+  slide.addText("What's Next", {
+    x: 0.5, y: 1.4, w: 12.4, h: 0.5,
+    fontSize: 13, bold: true, color: C.accent, align: 'center', charSpacing: 2, fontFace: 'Calibri',
+  });
+  // Main CTA text
   slide.addText(cta, {
-    x: 0.5, y: 3.2, w: 11.4, h: 0.8,
-    fontSize: 20, color: C.muted, align: 'center',
+    x: 1.0, y: 2.1, w: 11.4, h: 2.0,
+    fontSize: 32, bold: true, color: C.white, align: 'center', fontFace: 'Calibri', wrap: true,
   });
-  slide.addText('contact@example.com · viepilot.dev', {
-    x: 0.5, y: 4.3, w: 11.4, h: 0.4,
-    fontSize: 13, color: C.muted, align: 'center',
+  // Accent divider
+  slide.addShape(pres.ShapeType.rect, {
+    x: 4.5, y: 4.3, w: 4.4, h: 0.04,
+    fill: { color: C.accent },
+  });
+  // Contact info
+  slide.addText(contact || 'contact@example.com  ·  viepilot.dev', {
+    x: 0.5, y: 4.55, w: 12.4, h: 0.45,
+    fontSize: 13, color: C.muted, align: 'center', fontFace: 'Calibri',
+  });
+  // ViePilot brand bottom
+  slide.addText('Powered by ViePilot', {
+    x: 0.5, y: 6.6, w: 12.4, h: 0.35,
+    fontSize: 10, color: C.mutedDim, align: 'center', fontFace: 'Calibri',
   });
   return slide;
 }
 
 // ── Template definitions ──────────────────────────────────────────────────────
+
 const TEMPLATES = {
   'project-proposal': {
     label: 'Project Proposal',
-    cover: { title: '{{Project Name}}', subtitle: 'Project Proposal · {{Client}} · {{Date}}' },
-    sections: [
-      { heading: 'Agenda', bullets: ['Problem & Opportunity', 'Proposed Solution', 'Deliverables', 'Timeline & Budget', 'Next Steps'] },
-      { heading: 'Problem / Opportunity', bullets: ['{{Problem statement}}', '{{Current pain points}}', '{{Business impact}}'] },
-      { heading: 'Proposed Solution', bullets: ['{{Solution overview}}', '{{Key approach}}', '{{Unique value}}'] },
-      { heading: 'Key Deliverables', bullets: ['{{Deliverable 1}}', '{{Deliverable 2}}', '{{Deliverable 3}}'] },
-      { heading: 'Technical Approach', bullets: ['{{Architecture overview}}', '{{Tech stack}}', '{{Integration points}}'] },
-      { heading: 'Project Timeline', bullets: ['Phase 1: {{Description}} — {{Duration}}', 'Phase 2: {{Description}} — {{Duration}}', 'Phase 3: {{Description}} — {{Duration}}'] },
-      { heading: 'Team & Expertise', bullets: ['{{Team member 1}} — {{Role}}', '{{Team member 2}} — {{Role}}', '{{Relevant experience}}'] },
-      { heading: 'Investment', bullets: ['Total estimate: {{Amount}}', 'Payment schedule: {{Terms}}', 'What\'s included: {{Scope}}'] },
+    cover: {
+      title: '{{Project Name}}',
+      subtitle: '{{One sentence describing the value this project delivers to the client}}',
+      meta: 'Prepared for {{Client}} · {{Date}}',
+    },
+    slides: [
+      // index 2 — Agenda (section)
+      { layout: 'section', heading: 'Agenda', bullets: [
+        'Problem & Opportunity', 'Proposed Solution', 'Key Deliverables',
+        'Technical Approach', 'Timeline & Investment', 'Next Steps',
+      ]},
+      // index 3 — Problem (section)
+      { layout: 'section', heading: 'Problem / Opportunity', bullets: [
+        '{{Describe the core problem in 8–12 words, outcome-oriented}}',
+        '{{Current pain point — quantify if possible: "$X lost per month"}}',
+        '{{Business impact if unresolved: risk, cost, missed opportunity}}',
+      ]},
+      // index 4 — Solution (section)
+      { layout: 'section', heading: 'Proposed Solution', bullets: [
+        '{{Lead with the key capability: "A platform that automates..."}}',
+        '{{How the approach is different from what they tried before}}',
+        '{{The core value proposition in one outcome sentence}}',
+      ]},
+      // index 5 — Deliverables vs Out-of-scope (two-column)
+      { layout: 'two-column', heading: 'Scope & Deliverables',
+        leftLabel: 'In Scope', leftBullets: ['{{Deliverable 1}}', '{{Deliverable 2}}', '{{Deliverable 3}}'],
+        rightLabel: 'Out of Scope', rightBullets: ['{{Exclusion 1}}', '{{Exclusion 2}}', '{{Exclusion 3}}'],
+      },
+      // index 6 — Technical Approach (section)
+      { layout: 'section', heading: 'Technical Approach', bullets: [
+        '{{Architecture decision + rationale in one sentence}}',
+        '{{Tech stack choice: "Built on X because Y"}}',
+        '{{Integration with existing systems: timeline + effort}}',
+      ]},
+      // index 7 — Timeline (data)
+      { layout: 'data', heading: 'Project Timeline', metrics: [
+        { value: 'Phase 1', label: 'Discovery & Design', note: '2 weeks' },
+        { value: 'Phase 2', label: 'Development', note: '6–8 weeks' },
+        { value: 'Phase 3', label: 'Testing & Launch', note: '2 weeks' },
+      ]},
+      // index 8 — Team (section)
+      { layout: 'section', heading: 'Team & Expertise', bullets: [
+        '{{Team Lead}} — {{Role, 1-line background relevant to this project}}',
+        '{{Team Member}} — {{Role, key skill}}',
+        '{{Relevant past project: "Delivered X for Y — outcome"}}',
+      ]},
+      // index 9 — Investment (data)
+      { layout: 'data', heading: 'Investment Estimate', metrics: [
+        { value: '${{XX}}K', label: 'Total Investment', note: '{{Payment terms}}' },
+        { value: '{{N}} wks', label: 'Time to Delivery', note: 'From kickoff' },
+        { value: '{{ROI}}', label: 'Expected Return', note: '{{Timeframe}}' },
+      ]},
     ],
-    closing: 'Ready to get started? Let\'s discuss next steps.',
+    closing: {
+      cta: '{{Ready to start? Let\'s schedule the kickoff.}}',
+      contact: 'contact@example.com  ·  Schedule a call: calendly.com/{{handle}}',
+    },
   },
 
   'tech-architecture': {
     label: 'Technical Architecture',
-    cover: { title: '{{System Name}}', subtitle: 'Technical Architecture · {{Partner}} · {{Date}}' },
-    sections: [
-      { heading: 'Executive Summary', bullets: ['{{System purpose}}', '{{Key architectural decisions}}', '{{Expected outcomes}}'] },
-      { heading: 'Problem Statement', bullets: ['{{Current limitations}}', '{{Scale requirements}}', '{{Technical constraints}}'] },
-      { heading: 'Architecture Overview', bullets: ['{{High-level diagram description}}', '{{Core components}}', '{{System boundaries}}'] },
-      { heading: 'Component Breakdown', bullets: ['{{Component 1}}: {{responsibility}}', '{{Component 2}}: {{responsibility}}', '{{Component 3}}: {{responsibility}}'] },
-      { heading: 'Data Flow', bullets: ['{{Input sources}}', '{{Processing pipeline}}', '{{Output / consumers}}'] },
-      { heading: 'Tech Stack', bullets: ['Frontend: {{technologies}}', 'Backend: {{technologies}}', 'Infrastructure: {{technologies}}'] },
-      { heading: 'Security & Compliance', bullets: ['{{Auth strategy}}', '{{Data encryption}}', '{{Compliance requirements}}'] },
-      { heading: 'Scalability & Performance', bullets: ['{{Scaling approach}}', '{{Performance targets}}', '{{Bottleneck mitigations}}'] },
-      { heading: 'Integration Points', bullets: ['{{External API 1}}', '{{External API 2}}', '{{Internal services}}'] },
-      { heading: 'Implementation Roadmap', bullets: ['Sprint 1: {{goal}}', 'Sprint 2: {{goal}}', 'Sprint 3: {{goal}}'] },
+    cover: {
+      title: '{{System Name}}',
+      subtitle: '{{One sentence: what problem this architecture solves at scale}}',
+      meta: 'Technical Brief for {{Partner}} · {{Date}}',
+    },
+    slides: [
+      { layout: 'section', heading: 'Executive Summary', bullets: [
+        '{{System purpose: "Enables X to do Y at Z scale"}}',
+        '{{Key architectural decision + rationale}}',
+        '{{Expected outcome: performance target, cost reduction, or reliability gain}}',
+      ]},
+      { layout: 'section', heading: 'Problem Statement', bullets: [
+        '{{Current limitation: "The existing system cannot handle X because Y"}}',
+        '{{Scale requirement: throughput, latency, or data volume target}}',
+        '{{Constraint: budget, timeline, team size, or compliance requirement}}',
+      ]},
+      { layout: 'section', heading: 'Architecture Overview', bullets: [
+        '{{Layer 1 (e.g. Presentation)}} → {{Layer 2 (e.g. API Gateway)}} → {{Layer 3 (e.g. Services)}}',
+        '{{Core architectural pattern: microservices / event-driven / serverless}}',
+        '{{Key infrastructure: cloud provider, orchestration, data store}}',
+      ]},
+      { layout: 'two-column', heading: 'Component Breakdown',
+        leftLabel: 'Frontend / Client', leftBullets: ['{{Component A}} — {{responsibility}}', '{{Component B}} — {{responsibility}}', '{{State management: approach}}'],
+        rightLabel: 'Backend / Services', rightBullets: ['{{Service X}} — {{responsibility}}', '{{Service Y}} — {{responsibility}}', '{{Data layer: type + rationale}}'],
+      },
+      { layout: 'section', heading: 'Data Flow', bullets: [
+        'Input: {{Source}} → {{Processing step 1}} → {{Processing step 2}}',
+        'Storage: {{What is persisted, where, and why}}',
+        'Output: {{Consumers / downstream systems / APIs exposed}}',
+      ]},
+      { layout: 'section', heading: 'Tech Stack', bullets: [
+        'Frontend: {{technologies + version}}',
+        'Backend: {{technologies + version}}',
+        'Infrastructure: {{cloud + container + CI/CD}}',
+      ]},
+      { layout: 'two-column', heading: 'Security & Scalability',
+        leftLabel: 'Security', leftBullets: ['Auth: {{OAuth2 / JWT / RBAC}}', 'Encryption: {{at rest + in transit}}', 'Compliance: {{SOC2 / GDPR / HIPAA}}'],
+        rightLabel: 'Scalability', rightBullets: ['Scale-out: {{horizontal strategy}}', 'Throughput target: {{X req/sec}}', 'Bottleneck mitigation: {{caching / queue}}'],
+      },
+      { layout: 'data', heading: 'Performance Targets', metrics: [
+        { value: '<{{N}}ms', label: 'p95 Latency', note: 'API response time' },
+        { value: '{{X}}K/s', label: 'Throughput', note: 'Requests per second' },
+        { value: '99.{{N}}%', label: 'Availability', note: 'Monthly uptime SLA' },
+      ]},
+      { layout: 'section', heading: 'Integration Points', bullets: [
+        '{{External API 1}}: {{protocol, frequency, SLA expectation}}',
+        '{{Internal service}}: {{sync/async, data contract}}',
+        '{{Third-party tool}}: {{purpose + dependency risk}}',
+      ]},
+      { layout: 'section', heading: 'Implementation Roadmap', bullets: [
+        'Sprint 1–2: {{Foundation — infra, CI/CD, auth}}',
+        'Sprint 3–5: {{Core services — {{key features}}}}',
+        'Sprint 6–7: {{Integration, load testing, hardening}}',
+      ]},
     ],
-    closing: 'Questions? Let\'s dive deeper into any component.',
+    closing: {
+      cta: '{{Questions? Let\'s schedule a technical deep-dive.}}',
+      contact: 'engineering@example.com  ·  GitHub: github.com/{{org}}',
+    },
   },
 
   'product-pitch': {
     label: 'Product Pitch Deck',
-    cover: { title: '{{Product Name}}', subtitle: '{{Tagline}} · {{Date}}' },
-    sections: [
-      { heading: 'The Problem', bullets: ['{{Pain point 1}}', '{{Pain point 2}}', '{{Market gap}}'] },
-      { heading: 'Our Solution', bullets: ['{{What it does}}', '{{How it\'s different}}', '{{Core value proposition}}'] },
-      { heading: 'Market Opportunity', bullets: ['TAM: {{Total addressable market}}', 'SAM: {{Serviceable market}}', 'SOM: {{Target share}}'] },
-      { heading: 'Product Demo', bullets: ['{{Key feature 1}}', '{{Key feature 2}}', '{{Key feature 3}}'] },
-      { heading: 'Business Model', bullets: ['Revenue model: {{description}}', 'Pricing: {{tiers}}', 'Unit economics: {{LTV/CAC}}'] },
-      { heading: 'Traction & Validation', bullets: ['{{Metric 1}}: {{value}}', '{{Metric 2}}: {{value}}', '{{Customer proof point}}'] },
-      { heading: 'Competitive Landscape', bullets: ['{{Competitor 1}} — {{weakness}}', '{{Competitor 2}} — {{weakness}}', 'Our advantage: {{differentiator}}'] },
-      { heading: 'Team', bullets: ['{{Name}} — {{Role, background}}', '{{Name}} — {{Role, background}}', '{{Advisors / investors}}'] },
-      { heading: 'Roadmap', bullets: ['Q1: {{milestone}}', 'Q2: {{milestone}}', 'Q3–Q4: {{milestone}}'] },
-      { heading: 'The Ask', bullets: ['Raising: {{amount}}', 'Use of funds: {{breakdown}}', 'Milestones with this round: {{goals}}'] },
+    cover: {
+      title: '{{Product Name}}',
+      subtitle: '{{One sentence: who you help, what problem you solve, and the key outcome}}',
+      meta: '{{Round / Stage}} · {{Date}}',
+    },
+    slides: [
+      { layout: 'section', heading: 'The Problem', bullets: [
+        '{{Vivid description of pain: "Every day, X people struggle with Y — costing Z"}}',
+        '{{Why current solutions fail: "Existing tools are X, Y, and Z"}}',
+        '{{Market signal: survey data, search volume, or VC attention}}',
+      ]},
+      { layout: 'section', heading: 'Our Solution', bullets: [
+        '{{What it does in one sentence: "{{Product}} lets X do Y in Z time"}}',
+        '{{Key differentiator: what makes this fundamentally different}}',
+        '{{User experience: describe the "aha moment" for a new user}}',
+      ]},
+      { layout: 'data', heading: 'Market Opportunity', metrics: [
+        { value: '${{X}}B', label: 'TAM', note: 'Total addressable market' },
+        { value: '${{Y}}M', label: 'SAM', note: 'Serviceable segment' },
+        { value: '${{Z}}M', label: 'SOM (Y1)', note: '{{Go-to-market target}}' },
+      ]},
+      { layout: 'section', heading: 'Product Highlights', bullets: [
+        '{{Feature 1}}: {{outcome in user-centric language}}',
+        '{{Feature 2}}: {{outcome — quantify if possible}}',
+        '{{Feature 3}}: {{outcome — how it compares to status quo}}',
+      ]},
+      { layout: 'section', heading: 'Business Model', bullets: [
+        'Revenue model: {{SaaS / usage-based / marketplace / license}}',
+        'Pricing: {{Tier 1 at $X/mo — Tier 2 at $Y/mo — Enterprise custom}}',
+        'Unit economics: LTV ${{X}} · CAC ${{Y}} · Payback {{N}} months',
+      ]},
+      { layout: 'data', heading: 'Traction & Validation', metrics: [
+        { value: '{{X}}', label: '{{Key metric e.g. Active Users}}', note: '{{Growth rate}}' },
+        { value: '${{Y}}K', label: 'ARR / MRR', note: '{{MoM growth %}}' },
+        { value: '{{N}}', label: 'Customers', note: '{{Notable logos}}' },
+      ]},
+      { layout: 'two-column', heading: 'Competitive Landscape',
+        leftLabel: 'Competitors', leftBullets: ['{{Competitor A}} — {{key weakness}}', '{{Competitor B}} — {{key weakness}}', '{{Status quo}} — {{why it fails}}'],
+        rightLabel: 'Our Advantage', rightBullets: ['{{Differentiator 1}}: {{why it matters}}', '{{Differentiator 2}}: {{moat or defensibility}}', '{{Differentiator 3}}: {{network effect / IP / switching cost}}'],
+      },
+      { layout: 'section', heading: 'Team', bullets: [
+        '{{Founder/CEO}} — {{1-line background: domain expertise + prior outcome}}',
+        '{{CTO/Co-founder}} — {{technical background + relevant achievement}}',
+        '{{Advisor/Investor}} — {{credibility signal}}',
+      ]},
+      { layout: 'section', heading: 'Roadmap', bullets: [
+        'Q{{N}} {{Year}}: {{Milestone — e.g. GA launch, key integration, first enterprise deal}}',
+        'Q{{N+1}}: {{Milestone — growth lever or product expansion}}',
+        'Q{{N+2}}: {{Milestone — scale or expansion target}}',
+      ]},
+      { layout: 'section', heading: 'The Ask', bullets: [
+        'Raising: ${{Amount}} ({{round type: pre-seed / seed / Series A}}) ',
+        'Use of funds: {{XX}}% product · {{YY}}% GTM · {{ZZ}}% ops',
+        'Key milestone: {{What this round buys — users, revenue, product}}',
+      ]},
     ],
-    closing: 'Join us in building {{product name}}.',
+    closing: {
+      cta: '{{Join us in building {{product name}}.}}',
+      contact: 'founder@{{product}}.com  ·  deck@{{product}}.com',
+    },
   },
 
   'general': {
     label: 'General Proposal',
-    cover: { title: '{{Proposal Title}}', subtitle: '{{Organisation}} · {{Date}}' },
-    sections: [
-      { heading: 'Overview', bullets: ['{{Purpose of this proposal}}', '{{Scope}}', '{{Expected outcomes}}'] },
-      { heading: 'Problem / Context', bullets: ['{{Background}}', '{{Current challenges}}', '{{Opportunity}}'] },
-      { heading: 'Proposed Solution', bullets: ['{{What we\'re proposing}}', '{{Why this approach}}', '{{Expected benefits}}'] },
-      { heading: 'Key Benefits', bullets: ['{{Benefit 1}}', '{{Benefit 2}}', '{{Benefit 3}}'] },
-      { heading: 'Approach & Timeline', bullets: ['Phase 1: {{description}}', 'Phase 2: {{description}}', 'Estimated duration: {{timeframe}}'] },
-      { heading: 'About Us', bullets: ['{{Organisation background}}', '{{Relevant experience}}', '{{Credentials / references}}'] },
+    cover: {
+      title: '{{Proposal Title}}',
+      subtitle: '{{One sentence: what you are proposing and the key benefit to the audience}}',
+      meta: '{{Organisation}} · {{Date}}',
+    },
+    slides: [
+      { layout: 'section', heading: 'Overview', bullets: [
+        '{{Purpose of this proposal in one sentence: "We propose to X in order to Y"}}',
+        '{{Scope: what is covered (and what is not)}}',
+        '{{Expected outcomes: 2–3 measurable benefits}}',
+      ]},
+      { layout: 'section', heading: 'Problem / Context', bullets: [
+        '{{Background: why this situation exists}}',
+        '{{Current challenge: specific, measurable if possible}}',
+        '{{Opportunity: what becomes possible if this is addressed}}',
+      ]},
+      { layout: 'section', heading: 'Proposed Solution', bullets: [
+        '{{What we are proposing: specific and concrete}}',
+        '{{Why this approach: rationale over alternatives}}',
+        '{{Expected benefit: outcome-first language}}',
+      ]},
+      { layout: 'two-column', heading: 'Key Benefits',
+        leftLabel: 'Short-term (0–3 months)', leftBullets: ['{{Benefit A}}', '{{Benefit B}}', '{{Benefit C}}'],
+        rightLabel: 'Long-term (3–12 months)', rightBullets: ['{{Benefit D}}', '{{Benefit E}}', '{{Benefit F}}'],
+      },
+      { layout: 'section', heading: 'Approach & Timeline', bullets: [
+        'Phase 1 ({{duration}}): {{goal + key activities}}',
+        'Phase 2 ({{duration}}): {{goal + key activities}}',
+        'Phase 3 ({{duration}}): {{goal + delivery}}',
+      ]},
+      { layout: 'section', heading: 'About Us / Credentials', bullets: [
+        '{{Organisation background: founded, mission, size}}',
+        '{{Relevant experience: past project + outcome}}',
+        '{{Credential / reference: client name or award}}',
+      ]},
     ],
-    closing: 'We look forward to your feedback.',
+    closing: {
+      cta: '{{We look forward to your feedback and the opportunity to move forward together.}}',
+      contact: 'contact@example.com  ·  {{phone or website}}',
+    },
   },
 };
 
@@ -173,16 +512,35 @@ async function main() {
 
   for (const [typeId, def] of Object.entries(TEMPLATES)) {
     const pres = makePres();
-    addCoverSlide(pres, def.cover.title, def.cover.subtitle);
-    for (const section of def.sections) {
-      addSectionSlide(pres, section.heading, section.bullets);
+
+    // Slide 1: cover
+    addCoverSlide(pres, def.cover);
+
+    // Middle slides: each with its specified layout
+    for (const s of def.slides) {
+      switch (s.layout) {
+        case 'section':
+          addSectionSlide(pres, s);
+          break;
+        case 'two-column':
+          addTwoColumnSlide(pres, s);
+          break;
+        case 'data':
+          addDataSlide(pres, s);
+          break;
+        default:
+          addSectionSlide(pres, s);
+      }
     }
+
+    // Last slide: closing
     addClosingSlide(pres, def.closing);
 
     const outPath = path.join(OUT_DIR, `${typeId}.pptx`);
     await pres.writeFile({ fileName: outPath });
     const size = Math.round(fs.statSync(outPath).size / 1024);
-    console.log(`  ✓ ${typeId}.pptx  (${size} KB)`);
+    const slideCount = 1 + def.slides.length + 1;
+    console.log(`  ✓ ${typeId}.pptx  (${size} KB, ${slideCount} slides)`);
   }
   console.log('\nAll 4 stock .pptx templates generated in templates/proposal/pptx/');
 }

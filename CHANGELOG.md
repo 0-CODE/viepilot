@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-04-10
+
+### Added (ENH-040 — Phase 69)
+- **`workflows/proposal.md` Step 2C Quality Brief**: 4 focused questions before AI generation — CTA, budget range, timeline constraint, decision-maker — stored in manifest `meta` field
+- **Manifest `meta` schema**: `cta`, `budget`, `timeline`, `decisionMaker` fields drive tone and content specificity
+- **AI Prompt Contract** in manifest_generation step: 8–15 word outcome-oriented bullets, 3–5 sentence speaker notes, concrete CTA on closing slide, avoids filler phrases
+- **`.pptx` templates: 5 distinct layouts** (ENH-040 Layer 1):
+  - `cover` — split panel (left charcoal + ViePilot mark, right title/subtitle/meta)
+  - `section` — left accent sidebar + heading bar + bullets
+  - `two-column` — heading + dual column content (comparisons, scope, competitive)
+  - `data` — heading + up to 3 metric callout boxes (large value + label + note)
+  - `closing` — full charcoal, prominent CTA text, accent bars top/bottom
+- **`.docx` template: structured tables + narrative** (ENH-040 Layer 3):
+  - **Timeline table**: Phase | Milestone/Deliverable | Duration | Dependencies (6 rows)
+  - **Budget/Investment table**: Line Item | Estimate | Notes (with TOTAL row)
+  - **Team table**: Role | Name/Background | Responsibility
+  - Narrative paragraphs for Executive Summary, Problem & Opportunity, Why Choose Us
+  - 10 sections + explicit `{{placeholder}}` instructions for AI to fill
+- All 4 `.pptx` stock templates regenerated (137–151 KB; prev 97–126 KB)
+- `project-detail.docx` regenerated (12 KB; prev 10 KB)
+
+### Tests
+- Added `tests/unit/vp-enh040-proposal-quality.test.js` (27 tests — workflow contracts, pptx layout coverage, docx structure)
+- Updated `tests/unit/vp-proposal-contracts.test.js` (+2 tests — quality brief + outcome-oriented rules)
+- Total: **660 → 689 tests**
+
 ## [2.6.0] - 2026-04-10
 
 ### Added (ENH-039 — Phase 68)
