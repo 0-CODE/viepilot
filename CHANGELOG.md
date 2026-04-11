@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.0] - 2026-04-11
+
+### Added (ENH-043 — Phase 72)
+- **`lib/screenshot-artifact.cjs`**: `isMmdcAvailable()` — boolean guard for `mmdc` CLI on PATH; `renderMermaidToPng(source, outPath)` — renders Mermaid source string → PNG via `mmdc` CLI; returns null when mmdc absent (no crash)
+- **`scripts/gen-proposal-docx.cjs`**: `imageRunFromPng(pngPath, widthEmu, heightEmu)` → `ImageRun` (docx package) for embedding PNG as inline image; requires `screenshot-artifact.cjs` + `proposal-generator.cjs`; runtime visual embedding comment block documenting three injection points: Mermaid diagrams (renderMermaidToPng → ImageRun), UI prototype screenshot (before Executive Summary), architecture screenshot (after Technical Approach)
+- **`workflows/proposal.md` Step 7**: Diagram Reference updated to render `mermaidSource` → PNG via `renderMermaidToPng()`; documents `screenshotArtifact` for ui-direction + architect injection; all paths use `cleanupScreenshot()`; graceful fallback when mmdc/puppeteer absent
+- 19 tests in `vp-enh043-docx-visuals.test.js`; contracts +2 (769/769 total)
+
 ## [2.9.0] - 2026-04-11
 
 ### Added (ENH-042 — Phase 71)

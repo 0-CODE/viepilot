@@ -9,11 +9,18 @@
 
 const path = require('path');
 const fs   = require('fs');
+const os   = require('os');
 const {
   Document, Packer, Paragraph, TextRun, HeadingLevel,
   AlignmentType, PageBreak, Table, TableRow, TableCell,
   WidthType, BorderStyle, ShadingType, VerticalAlign,
+  ImageRun,
 } = require('docx');
+const {
+  renderMermaidToPng, isMmdcAvailable,
+  screenshotArtifact, cleanupScreenshot,
+} = require('../lib/screenshot-artifact.cjs');
+const { detectVisualArtifacts } = require('../lib/proposal-generator.cjs');
 
 const OUT_DIR  = path.join(__dirname, '..', 'templates', 'proposal', 'docx');
 const OUT_FILE = path.join(OUT_DIR, 'project-detail.docx');
@@ -273,6 +280,76 @@ function twoColTable(rows) {
     ),
   });
 }
+
+// ── Image embedding helpers (ENH-043) ────────────────────────────────────────
+
+/**
+ * Create a docx ImageRun from a PNG file path.
+ * Returns null if pngPath is null or file does not exist.
+ *
+ * @param {string|null} pngPath - Absolute path to PNG
+ * @param {number} [widthEmu=5940000] - Width in EMUs (~6.5 inches, full content width)
+ * @param {number} [heightEmu=3402000] - Height in EMUs (~3.7 inches)
+ * @returns {ImageRun|null}
+ */
+function imageRunFromPng(pngPath, widthEmu = 5940000, heightEmu = 3402000) {
+  if (!pngPath || !fs.existsSync(pngPath)) return null;
+  try {
+    return new ImageRun({
+      data: fs.readFileSync(pngPath),
+      transformation: { width: widthEmu, height: heightEmu },
+      type: 'png',
+    });
+  } catch {
+    return null;
+  }
+}
+
+// ── Runtime visual embedding (ENH-043) — called by vp-proposal workflow ───────
+//
+// 1. Mermaid diagram images in Diagram Reference section:
+//    for (const diagram of docxContent.diagrams) {
+//      const tmpPng = path.join(os.tmpdir(), `vp-mmdc-${Date.now()}.png`);
+//      const rendered = renderMermaidToPng(diagram.mermaidSource, tmpPng);
+//      if (rendered) {
+//        const imgRun = imageRunFromPng(rendered);
+//        if (imgRun) {
+//          diagramSectionChildren.push(
+//            new Paragraph({ children: [imgRun], spacing: { before: 120, after: 120 } })
+//          );
+//        }
+//        cleanupScreenshot(rendered);
+//      }
+//      // Fallback already present: preformatted mermaidSource text paragraph
+//    }
+//
+// 2. UI prototype screenshot — before Executive Summary:
+//    const artifacts = detectVisualArtifacts();
+//    if (artifacts.uiPages[0]) {
+//      const tmpPng = await screenshotArtifact(artifacts.uiPages[0]);
+//      if (tmpPng) {
+//        const imgRun = imageRunFromPng(tmpPng);
+//        if (imgRun)
+//          executiveSummaryChildren.unshift(
+//            new Paragraph({ children: [imgRun], spacing: { before: 120, after: 200 } })
+//          );
+//        cleanupScreenshot(tmpPng);
+//      }
+//    }
+//
+// 3. Architecture screenshot — after Technical Approach section:
+//    const archHtml = artifacts.architectPages.find(p => p.endsWith('architecture.html'));
+//    if (archHtml) {
+//      const tmpPng = await screenshotArtifact(archHtml);
+//      if (tmpPng) {
+//        const imgRun = imageRunFromPng(tmpPng);
+//        if (imgRun)
+//          techSectionChildren.push(
+//            new Paragraph({ children: [imgRun], spacing: { before: 200, after: 120 } })
+//          );
+//        cleanupScreenshot(tmpPng);
+//      }
+//    }
 
 // ── Document ──────────────────────────────────────────────────────────────────
 async function main() {

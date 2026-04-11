@@ -79,6 +79,16 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(() => require('../../lib/screenshot-artifact.cjs')).not.toThrow();
   });
 
+  test('isMmdcAvailable is exported from screenshot-artifact.cjs (ENH-043)', () => {
+    const s = require('../../lib/screenshot-artifact.cjs');
+    expect(typeof s.isMmdcAvailable).toBe('function');
+  });
+
+  test('renderMermaidToPng is exported from screenshot-artifact.cjs (ENH-043)', () => {
+    const s = require('../../lib/screenshot-artifact.cjs');
+    expect(typeof s.renderMermaidToPng).toBe('function');
+  });
+
   test('SKILL.md execution_context points to workflows/proposal.md', () => {
     expect(read('skills/vp-proposal/SKILL.md')).toMatch(/workflows\/proposal\.md/);
   });

@@ -489,7 +489,7 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
    | **Investment Estimate** | slide manifest `meta` | **Budget table: Line Item \| Estimate \| Notes** (use meta.budget as header context) |
    | Team & Expertise | slide manifest | Role \| Experience \| Responsibility table |
    | **Risk Register** | `docxContent.riskRegister[]` | **Risk \| Probability \| Impact \| Mitigation table** |
-   | **Diagram Reference** | `docxContent.diagrams[]` | **One table per diagram: Title \| Type \| Description (mermaidSource as preformatted text)** |
+   | **Diagram Reference** | `docxContent.diagrams[]` | **Per diagram: render `mermaidSource` → PNG via `renderMermaidToPng()` → `ImageRun`; fallback: preformatted Mermaid source text when mmdc absent** |
    | Why Choose Us | slide manifest | 2–3 differentiator bullets |
    | Next Steps | slide manifest `meta.cta` | Numbered action list |
    | **Glossary** | `docxContent.glossary[]` | **Term \| Definition table** |
@@ -520,14 +520,11 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
    | {r.risk} | {r.probability} | {r.impact} | {r.mitigation} |
    ```
 
-7. Diagram Reference table structure (one table per diagram in `docxContent.diagrams[]`):
-   ```
-   Heading: {diagram.title} ({diagram.type})
-   | Field   | Value               |
-   |---------|---------------------|
-   | Type    | {diagram.type}      |
-   | Source  | (preformatted Mermaid source — monospace paragraph) |
-   ```
+7. Diagram Reference structure (one block per diagram in `docxContent.diagrams[]`):
+   - Heading: `{diagram.title} ({diagram.type})`
+   - **If `isMmdcAvailable()`**: render `mermaidSource` → PNG via `renderMermaidToPng()` → embed as `ImageRun` in a Paragraph
+   - **Fallback** (mmdc absent): monospace paragraph with preformatted `mermaidSource` text
+   - Cleanup temp PNG immediately after embedding (`cleanupScreenshot()`)
 
 8. Glossary table structure (from `docxContent.glossary[]`):
    ```
@@ -536,7 +533,54 @@ Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrati
    | {g.term} | {g.definition} |
    ```
 
-9. Write to `docs/proposals/{slug}-{date}.docx`
+9. **Visual embedding** (ENH-043 — when `mmdc` / `puppeteer` available):
+
+   **Mermaid diagram images** — for each `docxContent.diagrams[]` entry:
+   ```js
+   const { renderMermaidToPng, isMmdcAvailable, cleanupScreenshot } = require('./lib/screenshot-artifact.cjs');
+   const tmpPng = path.join(os.tmpdir(), `vp-mmdc-${Date.now()}.png`);
+   const rendered = renderMermaidToPng(diagram.mermaidSource, tmpPng);
+   if (rendered) {
+     const imgRun = imageRunFromPng(rendered);
+     if (imgRun) children.push(new Paragraph({ children: [imgRun] }));
+     cleanupScreenshot(rendered);
+   }
+   // Fallback: preformatted mermaid source text already added (step 7)
+   ```
+
+   **UI prototype screenshot** — if `artifacts.uiPages[0]` available (from Step 4c):
+   ```js
+   const artifacts = detectVisualArtifacts();
+   if (artifacts.uiPages[0]) {
+     const tmpPng = await screenshotArtifact(artifacts.uiPages[0]);
+     if (tmpPng) {
+       const imgRun = imageRunFromPng(tmpPng);
+       if (imgRun) executiveSummaryChildren.unshift(
+         new Paragraph({ children: [imgRun], spacing: { before: 120, after: 200 } })
+       );
+       cleanupScreenshot(tmpPng);
+     }
+   }
+   ```
+
+   **Architecture screenshot** — if `architecture.html` in `artifacts.architectPages`:
+   ```js
+   const archHtml = artifacts.architectPages.find(p => p.endsWith('architecture.html'));
+   if (archHtml) {
+     const tmpPng = await screenshotArtifact(archHtml);
+     if (tmpPng) {
+       const imgRun = imageRunFromPng(tmpPng);
+       if (imgRun) techSectionChildren.push(
+         new Paragraph({ children: [imgRun], spacing: { before: 200, after: 120 } })
+       );
+       cleanupScreenshot(tmpPng);
+     }
+   }
+   ```
+
+   All three patterns fail gracefully — `screenshotArtifact` / `renderMermaidToPng` return `null` when tools absent.
+
+10. Write to `docs/proposals/{slug}-{date}.docx`
 
 Progress: `[docx] Building detailed document...`
 
