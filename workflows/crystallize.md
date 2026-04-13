@@ -353,14 +353,131 @@ Rule: If no deployment signal found → `deployment_signals` = MISSING; user pro
 
 ---
 
-### Scan Report Schema (partial — Signal Cat 7–12 fields added in step continuation)
+### Signal Category 7 — Environment & Configuration Shape
+
+| File pattern | Purpose |
+|-------------|---------|
+| `.env.example`, `.env.sample`, `.env.template` | Required env key shape |
+| `application.properties`, `application.yml`, `application-*.yml` | Spring Boot config |
+| `config/database.yml` | Rails DB config |
+| `config/settings.py`, `config/*.py` | Django / Python config |
+| `appsettings.json`, `appsettings.*.json` | .NET config |
+| `config/config.exs`, `config/runtime.exs` | Elixir config |
+| `config.yaml`, `config.yml` (project root or config/) | Generic config |
+
+**Rule:** Read `.env.example` / `.env.sample` / `.env.template` to extract key names into `config_keys[]`.
+**SAFETY: Never read `.env` (live secrets file) — scanner explicitly skips it.**
+
+---
+
+### Signal Category 8 — Test Coverage Signals
+
+| File pattern | Test framework |
+|-------------|----------------|
+| `jest.config.js`, `jest.config.ts`, `jest.config.mjs` | Jest |
+| `vitest.config.ts`, `vitest.config.js` | Vitest |
+| `.mocharc.js`, `.mocharc.yaml` | Mocha |
+| `pytest.ini`, `setup.cfg [tool:pytest]`, `pyproject.toml [tool.pytest.ini_options]` | pytest |
+| `karma.conf.js` | Karma |
+| `cypress.config.js`, `cypress.config.ts`, `cypress.json` | Cypress |
+| `playwright.config.ts`, `playwright.config.js` | Playwright |
+| `phpunit.xml`, `phpunit.xml.dist` | PHPUnit |
+
+**Coverage indicators:** presence of `coverage/`, `htmlcov/`, `.nyc_output/`, `target/site/jacoco/` → `has_coverage_reports = true`.
+
+Output: `test_frameworks[]`, `test_root_dirs[]`, `has_coverage_reports`.
+
+Rule: If no test signals found → `test_frameworks` = MISSING; note added to generated `SYSTEM-RULES.md` quality gates section.
+
+---
+
+### Signal Category 9 — Code Quality & Tooling
+
+| File pattern | Tool |
+|-------------|------|
+| `.eslintrc*`, `eslint.config.*` | ESLint |
+| `.prettierrc*`, `prettier.config.*` | Prettier |
+| `sonar-project.properties`, `sonar-project.yml` | SonarQube |
+| `.pre-commit-config.yaml` | pre-commit hooks |
+| `checkstyle.xml` | Checkstyle (Java) |
+| `.pylintrc`, `pylint.cfg` | Pylint |
+| `.flake8`, `setup.cfg [flake8]` | Flake8 |
+| `mypy.ini`, `pyproject.toml [tool.mypy]` | mypy |
+| `rustfmt.toml`, `.rustfmt.toml` | rustfmt |
+| `.golangci.yml` | golangci-lint |
+| `.editorconfig` | EditorConfig |
+| `commitlint.config.js`, `.commitlintrc*` | Conventional Commits enforcement |
+| `.husky/` | Husky git hooks |
+| `lint-staged.config.*`, `package.json "lint-staged"` | lint-staged |
+
+Output: `quality_tools[]` — used to populate `SYSTEM-RULES.md` quality gates section.
+
+---
+
+### Signal Category 10 — Documentation Files
+
+| File | Priority |
+|------|----------|
+| `README.md` | MUST-READ — extract: project name, description, quickstart |
+| `CHANGELOG.md`, `HISTORY.md`, `RELEASES.md` | SHOULD-READ — extract: version history, latest changes |
+| `CONTRIBUTING.md` | SHOULD-READ — extract: contribution rules |
+| `ARCHITECTURE.md`, `docs/architecture*.md` | SHOULD-READ — extract: any existing arch notes |
+| `docs/adr/`, `ADR/`, `decisions/` | SHOULD-READ — Architecture Decision Records |
+| `docs/**/*.md` (top 10 by mtime) | NICE-TO-READ — project-specific docs |
+| `LICENSE` | MUST-READ — extract license type |
+
+Output: `docs_extracted[]` — each with `{ file, summary, key_facts[] }`.
+
+Rule: If `README.md` absent → `project_name` elevated to MISSING (must ask user).
+
+---
+
+### Signal Category 11 — Git History & Version Signals
+
+Run the following git commands (read-only):
+
+| Command | Purpose |
+|---------|---------|
+| `git log --oneline -100` | Commit message patterns (Conventional Commits? Jira refs? free-form?) |
+| `git tag --sort=-version:refname \| head -20` | Version history + tag naming convention |
+| `git log --format="%H %s" --diff-filter=A -- "*.md" \| head -20` | When key docs were added |
+| `git branch -a \| head -20` | Branch naming convention |
+| `git log --stat -3` | Most recently changed files |
+| `git shortlog -sn --no-merges \| head -10` | Top contributors |
+| `git remote get-url origin` | Repository URL |
+
+Extract: `commit_convention` (Conventional Commits / Jira-ref / free-form / mixed), `version_pattern` (semver / calver / custom), `latest_tag`, `active_branches[]`, `top_contributors[]`, `repo_url`.
+
+Rule: If not a git repo → all git fields = MISSING; user warned.
+
+---
+
+### Signal Category 12 — File Extension Language Survey
+
+Glob source file extensions to detect secondary languages:
+
+```
+Glob: src/**/*.{ts,tsx,js,jsx,py,java,kt,go,rs,rb,php,cs,swift,ex,exs,scala,clj,elm,dart}
+(also check project root if no src/ directory)
+```
+
+Count files per extension → `language_distribution{}` (e.g. `{ ts: 142, java: 38, sql: 12 }`).
+
+Rule: `secondary_languages[]` = languages with ≥5 files that are not `primary_language`.
+
+---
+
+### Scan Report Schema (finalized)
+
+After running all 12 signal categories, produce this structured Scan Report:
 
 ```yaml
-project_name: string
-current_version: string
-primary_language: string
-secondary_languages: []
-runtime_version: string
+# ViePilot Brownfield Scan Report
+project_name: string           # from manifest or README
+current_version: string        # from manifest or latest git tag
+primary_language: string       # from manifest
+secondary_languages: []        # from file extension survey
+runtime_version: string        # node/java/python/go version
 frameworks:
   backend: []
   frontend: []
@@ -370,17 +487,134 @@ frameworks:
 build_tool: string
 package_manager: string
 monorepo: bool
-modules: []
-architecture_layers: []
-database_signals: []
-api_contracts: []
-api_style: string
-deployment_signals: []
-# Signal Cat 7–12 fields: see Step 0-B continuation (task 75.2)
-open_questions: []
+modules: []                    # if monorepo
+architecture_layers: []        # { layer, evidence_path }
+database_signals: []           # { type, evidence_path, migration_tool }
+api_contracts: []              # { style, file_path }
+api_style: string              # REST | GraphQL | gRPC | mixed | unknown
+deployment_signals: []         # { platform, file_path }
+test_frameworks: []
+test_root_dirs: []
+has_coverage_reports: bool
+quality_tools: []
+config_keys: []                # from .env.example (key names only — no values)
+commit_convention: string      # conventional | jira | free-form | mixed
+version_pattern: string        # semver | calver | custom
+latest_tag: string
+repo_url: string
+top_contributors: []
+docs_extracted: []             # { file, summary, key_facts[] }
+language_distribution: {}      # { ts: 142, java: 38, ... }
+open_questions: []             # fields not resolved by user input
 ```
 
-> **Note:** Complete Scan Report schema (including Signal Cat 7–12 fields) is defined after all signal categories are fully documented.
+---
+
+### Gap Detection Rules
+
+Every field in Scan Report is classified as:
+
+| Status | Meaning | Required action |
+|--------|---------|-----------------|
+| **DETECTED** | Inferred from codebase with high confidence | Show for confirmation — no user action required |
+| **ASSUMED** | Inferred with low confidence or indirect signal | Show to user with rationale; user may correct |
+| **MISSING** | Not found anywhere in codebase | **Must ask user** before generating artifacts |
+
+**MUST-DETECT fields** (MISSING = hard blocker — cannot generate artifacts until user fills):
+- `project_name`
+- `primary_language`
+- At least one entry in `frameworks.backend` OR `frameworks.frontend`
+- `current_version`
+
+**SHOULD-DETECT fields** (MISSING = warning — document assumption, continue with user acknowledgment):
+- `api_style`
+- At least one entry in `database_signals` (if ORM dep found)
+- `test_frameworks`
+- `commit_convention`
+- `deployment_signals`
+
+**NICE-TO-DETECT fields** (MISSING = note only — generate with placeholder):
+- `auth` frameworks, `message_broker`, `config_keys`, `top_contributors`, `has_coverage_reports`
+
+**Assumption documentation rule:** For every ASSUMED or MISSING field that proceeds without user fill, append to `open_questions[]` and insert a `> ⚠️ Assumed: {rationale}` callout in the relevant `.viepilot/` artifact section.
+
+---
+
+### Interactive Gap-Filling (Step 0-B-ii)
+
+After scanner completes:
+
+1. Display Scan Report summary table to user (field | value | status).
+2. For each MUST-DETECT field that is MISSING → **pause and ask user to provide value**. Do not proceed until all MUST-DETECT fields are filled.
+3. Present ASSUMED fields in a confirmation table → user may accept all with "y" or override individually.
+4. Capture all user responses; update Scan Report fields accordingly.
+5. All remaining unresolved items → `open_questions[]`.
+
+---
+
+### Brownfield Brainstorm Stub Generation (Step 0-C)
+
+After gap-filling is complete, write:
+
+**Path:** `docs/brainstorm/session-brownfield-import.md`
+
+**Content:**
+```markdown
+# Brownfield Import — {project_name}
+
+## Meta
+- **Import date**: {scan_date}
+- **Import source**: `vp-crystallize --brownfield`
+- **Scanner version**: FEAT-018
+
+## Scan Report
+
+\`\`\`yaml
+{full confirmed Scan Report YAML}
+\`\`\`
+```
+
+**Purpose:** This stub allows `vp-audit` and other ViePilot tools to not error on missing brainstorm session files. The presence of `session-brownfield-import.md` is treated as a valid brownfield import.
+
+---
+
+### Safety Rules
+
+The brownfield scanner MUST:
+
+```
+NEVER read:
+  .env                    (live secrets)
+  *.key, *.pem, *.p12, *.jks, id_rsa, id_ed25519
+
+ALWAYS skip these directories:
+  node_modules/
+  .git/
+  target/
+  build/
+  dist/
+  __pycache__/
+  .venv/
+  vendor/
+
+NEVER write any files until the user has confirmed the Scan Report.
+
+NEVER overwrite existing .viepilot/ without explicit user confirmation (y/n prompt).
+```
+
+---
+
+### TRACKER.md Continuity Annotation
+
+When generating TRACKER.md in Step 9 (brownfield mode only), append:
+
+```markdown
+## Brownfield Import
+- **Import date**: {scan_date}
+- **Imported version**: {current_version}
+- **Note**: Project history pre-dates ViePilot adoption.
+- **Scan Report**: `docs/brainstorm/session-brownfield-import.md`
+```
 
 </step>
 
