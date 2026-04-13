@@ -104,6 +104,286 @@ Ask the user for project information:
 Store all metadata for template generation.
 </step>
 
+<step name="brownfield_detection">
+## Step 0-B: Brownfield Mode Detection (FEAT-018)
+
+**Trigger brownfield mode when ANY of the following is true:**
+- `--brownfield` flag passed explicitly, OR
+- `docs/brainstorm/` directory does not exist or is empty (no `session-*.md` files) **AND** `.viepilot/` directory does not yet exist
+
+**If NEITHER condition is met** (greenfield path): skip this entire step; proceed to Step 1.
+
+**If brownfield triggered AND `.viepilot/` already exists:**
+- Warn: "`.viepilot/` already exists. Re-running brownfield mode will overwrite artifacts."
+- Ask: "Continue? (y/n)" — abort if n.
+
+**When brownfield mode is active:**
+1. Run the full 12-category codebase scanner (Signal Categories 1–12 below).
+2. Produce a structured **Scan Report** (see schema at end of this step).
+3. Classify every field as DETECTED / ASSUMED / MISSING per Gap Detection Rules.
+4. Present Scan Report summary to user; interactively fill every MISSING MUST-DETECT field.
+5. User confirms ASSUMED fields (may accept all or override individually).
+6. After confirmation: proceed to Step 0-C (brainstorm stub generation).
+7. Then skip Step 1 (`analyze_brainstorm`); continue from Step 0 (metadata collection) → Step 2 onward using the confirmed Scan Report as input.
+
+---
+
+### Signal Category 1 — Build Manifest & Package Identity
+
+Probe the following files in order of priority (first match per language wins):
+
+| Language / Platform | Files to probe |
+|---------------------|----------------|
+| Node.js | `package.json` |
+| Java / Maven | `pom.xml` |
+| Java / Gradle | `build.gradle`, `build.gradle.kts`, `settings.gradle` |
+| Python | `pyproject.toml`, `setup.py`, `setup.cfg`, `requirements.txt`, `Pipfile` |
+| Rust | `Cargo.toml` |
+| Go | `go.mod` |
+| PHP | `composer.json` |
+| Ruby | `Gemfile`, `*.gemspec` |
+| .NET | `*.csproj`, `*.sln`, `global.json` |
+| Elixir / Erlang | `mix.exs` |
+| Swift | `Package.swift` |
+
+**Fields to extract per manifest:**
+- `project_name` — package name / artifactId / module name
+- `current_version` — version field
+- `primary_language` — derived from manifest type
+- `runtime_version` — engines/node, java.version, python_requires, go version
+- `entry_points` — main, bin, spring-boot:run target, etc.
+- `raw_dependencies[]` — full dependency list (used by Signal Category 2)
+- `raw_dev_dependencies[]` — dev/test deps
+
+**Monorepo detection** (check before single-manifest scan):
+- npm workspaces: `package.json` → `"workspaces"` field + `packages/*/package.json`
+- Nx / Turborepo: `nx.json`, `turbo.json` + `apps/*/` and `libs/*/`
+- Maven multi-module: `pom.xml` with `<modules>`
+- Gradle multi-project: `settings.gradle` with `include`
+- Cargo workspace: `Cargo.toml` with `[workspace]`
+- Go workspace: `go.work`
+
+If monorepo detected → scan each module separately; aggregate into `modules[]` in Scan Report.
+
+If no manifest found → `primary_language` = MISSING; user must provide.
+
+---
+
+### Signal Category 2 — Framework & Library Detection
+
+Infer from `raw_dependencies[]` + `raw_dev_dependencies[]`:
+
+**Backend frameworks:**
+| Signal pattern | Framework |
+|---------------|-----------|
+| `spring-boot-starter-*` | Spring Boot |
+| `express`, `fastify`, `koa`, `hapi` | Node.js HTTP |
+| `nestjs/core` | NestJS |
+| `fastapi`, `flask`, `django` | Python HTTP |
+| `gin-gonic/gin`, `gofiber/fiber`, `labstack/echo` | Go HTTP |
+| `rails`, `sinatra` | Ruby |
+| `laravel/framework`, `slim/slim` | PHP |
+| `actix-web`, `axum`, `rocket` | Rust HTTP |
+| `phoenix` (mix.exs) | Elixir |
+| `Microsoft.AspNetCore.*` | .NET ASP.NET Core |
+
+**Frontend frameworks:**
+| Signal pattern | Framework |
+|---------------|-----------|
+| `react`, `react-dom` | React |
+| `vue` | Vue.js |
+| `@angular/core` | Angular |
+| `svelte` | Svelte |
+| `next` | Next.js |
+| `nuxt` | Nuxt.js |
+| `remix` | Remix |
+| `astro` | Astro |
+| `solid-js` | SolidJS |
+
+**ORM / Database clients:**
+| Signal pattern | ORM / DB |
+|---------------|----------|
+| `mybatis-spring-boot-starter`, `mybatis` | MyBatis |
+| `spring-boot-starter-data-jpa`, `hibernate-*` | Hibernate / JPA |
+| `typeorm` | TypeORM |
+| `prisma` | Prisma |
+| `sequelize` | Sequelize |
+| `sqlalchemy`, `alembic` | SQLAlchemy |
+| `gorm.io/gorm` | GORM |
+| `mongoose` | Mongoose (MongoDB) |
+| `pg`, `mysql2`, `mariadb`, `better-sqlite3` | Raw SQL clients |
+| `redis`, `ioredis` | Redis client |
+
+**Message broker clients:**
+| Signal pattern | Broker |
+|---------------|--------|
+| `spring-kafka`, `kafka-clients` | Apache Kafka |
+| `amqplib`, `spring-rabbit` | RabbitMQ |
+| `@aws-sdk/client-sqs` | AWS SQS |
+| `nats` | NATS |
+| `bullmq`, `bull` | Redis-based queue |
+
+**Auth libraries:**
+| Signal pattern | Auth mechanism |
+|---------------|----------------|
+| `spring-security`, `spring-boot-starter-security` | Spring Security |
+| `jsonwebtoken`, `jose`, `passport-jwt` | JWT |
+| `passport` | OAuth / multi-strategy |
+| `keycloak-*`, `keycloak-connect` | Keycloak |
+| `next-auth`, `@auth/core` | NextAuth |
+| `authlib`, `python-jose`, `djangorestframework-simplejwt` | Python auth |
+
+**Test frameworks:**
+| Signal pattern | Framework |
+|---------------|-----------|
+| `jest`, `@jest/core` | Jest |
+| `vitest` | Vitest |
+| `mocha` | Mocha |
+| `jasmine` | Jasmine |
+| `junit`, `spring-boot-starter-test` | JUnit |
+| `pytest` | pytest |
+| `rspec-rails`, `rspec` | RSpec |
+| `cypress` | Cypress E2E |
+| `playwright` | Playwright E2E |
+| `@testing-library/*` | Testing Library |
+| `testify` | Testify (Go) |
+
+Rule: If zero backend AND zero frontend frameworks detected → add entry to `open_questions[]` and ask user.
+
+---
+
+### Signal Category 3 — Architecture Layer Inference (Directory Structure)
+
+Glob the following path patterns; presence implies the corresponding layer:
+
+| Pattern(s) | Inferred layer |
+|------------|----------------|
+| `src/main/java/**`, `src/main/kotlin/**` | Java/Kotlin Maven standard layout |
+| `src/controllers/`, `app/controllers/`, `**/controller/**` | MVC — Controller layer |
+| `src/api/`, `api/`, `routes/`, `src/routes/` | API / Router layer |
+| `src/services/`, `services/`, `**/service/**` | Service / Business logic layer |
+| `src/repositories/`, `repositories/`, `**/repository/**`, `**/dao/**` | Repository / DAO layer |
+| `src/models/`, `models/`, `**/model/**`, `**/entity/**` | Domain models / Entities |
+| `src/middleware/`, `middleware/` | Middleware layer |
+| `src/utils/`, `utils/`, `helpers/`, `common/` | Utilities / Shared |
+| `frontend/`, `client/`, `web/`, `src/client/` | Frontend module |
+| `backend/`, `server/`, `src/server/` | Backend module |
+| `packages/`, `apps/`, `libs/` | Monorepo layout |
+| `infrastructure/`, `infra/`, `terraform/`, `helm/`, `k8s/`, `kubernetes/` | Infrastructure / IaC |
+| `scripts/`, `bin/`, `tools/` | Developer tooling |
+| `public/`, `static/`, `assets/` | Static assets |
+| `docs/`, `documentation/` | Documentation |
+| `config/`, `configs/`, `settings/` | Configuration |
+| `tests/`, `test/`, `__tests__/`, `spec/`, `e2e/` | Test suite root |
+| `migrations/`, `db/migrate/`, `alembic/` | Database migrations |
+
+Output: `architecture_layers[]` — each with `{ layer, evidence_path }`.
+
+---
+
+### Signal Category 4 — Database Schema Signals
+
+Probe for migration/schema evidence:
+
+| Pattern | Evidence type |
+|---------|---------------|
+| `db/migrate/*.rb` | Rails ActiveRecord migrations |
+| `migrations/*.sql`, `migrations/*.js`, `migrations/*.ts` | Generic migrations |
+| `src/main/resources/db/migration/V*.sql` | Flyway |
+| `db/changelog*.xml`, `db/changelog*.yaml` | Liquibase |
+| `alembic/versions/*.py` | SQLAlchemy Alembic |
+| `src/migrations/**` | TypeORM / Sequelize migrations |
+| `prisma/schema.prisma` | Prisma schema |
+| `**/schema.sql`, `**/init.sql`, `**/seed.sql` | Raw SQL schema / seed |
+| `docker-compose.yml` → service names | Implied DB types (postgres, mysql, mongo, redis…) |
+
+Output: `database_signals[]` — each with `{ type, evidence_path, migration_tool }`.
+
+Rule: If none found but ORM dep exists → `database_signals` = ASSUMED with rationale note.
+
+---
+
+### Signal Category 5 — API Contract Files
+
+| File pattern | Contract type |
+|-------------|---------------|
+| `openapi.yaml`, `openapi.json`, `swagger.yaml`, `swagger.json` | OpenAPI / Swagger |
+| `api-docs.yaml`, `api.yaml`, `api-spec.yaml`, `api/*.yaml` | OpenAPI (alternate) |
+| `*.proto`, `proto/**/*.proto` | gRPC / Protocol Buffers |
+| `schema.graphql`, `**/*.graphql` | GraphQL |
+| `src/main/resources/static/v3/api-docs*` | Spring Swagger (generated) |
+| `postman_collection.json`, `*.postman_collection.json` | Postman |
+| `insomnia.yaml`, `.insomnia/` | Insomnia |
+
+`api_style` inference:
+- REST → if OpenAPI/Swagger file found
+- gRPC → if `*.proto` found (set `mixed` if REST also found)
+- GraphQL → if `schema.graphql` / `*.graphql` found
+- ASSUMED REST → if REST framework detected but no contract file found
+- MISSING → if api_style still unknown after all signals; user prompted
+
+---
+
+### Signal Category 6 — Infrastructure & Deployment Configuration
+
+| File pattern | Deployment signal |
+|-------------|------------------|
+| `Dockerfile` | Containerized — read `FROM` for base image |
+| `docker-compose.yml`, `docker-compose*.yml` | Service topology (list all services) |
+| `.github/workflows/*.yml` | GitHub Actions CI/CD |
+| `.gitlab-ci.yml` | GitLab CI |
+| `Jenkinsfile` | Jenkins pipeline |
+| `.circleci/config.yml` | CircleCI |
+| `bitbucket-pipelines.yml` | Bitbucket Pipelines |
+| `k8s/**/*.yaml`, `kubernetes/**/*.yaml` | Kubernetes manifests |
+| `helm/**`, `Chart.yaml` | Helm charts |
+| `terraform/**/*.tf` | Terraform IaC |
+| `pulumi/**`, `Pulumi.yaml` | Pulumi IaC |
+| `ansible/**`, `playbook.yml` | Ansible |
+| `nginx.conf`, `nginx/**` | Nginx reverse proxy |
+| `serverless.yml`, `serverless.ts` | Serverless Framework |
+| `fly.toml` | Fly.io |
+| `vercel.json`, `.vercel/` | Vercel |
+| `netlify.toml` | Netlify |
+| `render.yaml` | Render |
+
+Output: `deployment_signals[]` — each with `{ platform, file_path, notes }`.
+
+Rule: If no deployment signal found → `deployment_signals` = MISSING; user prompted.
+
+---
+
+### Scan Report Schema (partial — Signal Cat 7–12 fields added in step continuation)
+
+```yaml
+project_name: string
+current_version: string
+primary_language: string
+secondary_languages: []
+runtime_version: string
+frameworks:
+  backend: []
+  frontend: []
+  orm: []
+  auth: []
+  message_broker: []
+build_tool: string
+package_manager: string
+monorepo: bool
+modules: []
+architecture_layers: []
+database_signals: []
+api_contracts: []
+api_style: string
+deployment_signals: []
+# Signal Cat 7–12 fields: see Step 0-B continuation (task 75.2)
+open_questions: []
+```
+
+> **Note:** Complete Scan Report schema (including Signal Cat 7–12 fields) is defined after all signal categories are fully documented.
+
+</step>
+
 <step name="analyze_brainstorm">
 ## Step 1: Analyze Brainstorm
 
