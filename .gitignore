@@ -1,2 +1,9 @@
 node_modules/
 .viepilot/
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Local brainstorm sessions (project-specific, not framework code)
+docs/brainstorm/
