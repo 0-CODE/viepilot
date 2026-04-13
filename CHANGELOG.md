@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.14.0] - 2026-04-13
+
+### Added (ENH-047 — Phase 77: Brownfield Multi-Repo, Submodules & Per-Module Gap Detection)
+
+**Gap A — Git Submodule Detection:**
+- `workflows/crystallize.md`: Signal Category 1 now reads `.gitmodules` → parses all `[submodule]` blocks (name, path, url); runs Signal Cat 1+2+4 on each initialized submodule path; records uninitialized paths with `initialized: false` + `primary_language: MISSING`
+- Scan Report `modules[]`: new fields `type` (submodule/workspace/root), `submodule_url`, `initialized`
+- Safety rule: scanner never runs `git submodule update` — local filesystem read-only
+
+**Gap B — Polyrepo / Multi-Repo Detection:**
+- `workflows/crystallize.md`: new Polyrepo Detection subsection in Signal Category 1 with 6 signal sources (docker-compose `../` build contexts, `file:../` package.json deps, CI cross-repo clones, README external repo links, Makefile `cd ../` targets)
+- Scan Report: `polyrepo_hints[]` + `related_repos[]` fields (omitted entirely when empty — no empty arrays in clean single-repo reports)
+- Interactive prompt fires when polyrepo signals detected; user can supply related repo URLs with optional role label
+- Gap-fill rule: polyrepo hints without `related_repos` → system-level context fields = ASSUMED tier
+
+**Gap C — Per-Module Gap Detection:**
+- `workflows/crystallize.md`: new Per-Module Gap Detection section with MUST-DETECT table (primary_language, framework, module_purpose, entry_point) including source signals and tier-if-absent rules
+- `must_detect_status{}` per module: records `{ value, source, tier }` per MUST-DETECT field; source conventions: `"tsconfig.json"` (file), `"inferred"` (ASSUMED), `"absent"` (MISSING), `"user"` (gap-filled)
+- Root gap tier rollup: worst tier across all modules (MISSING > ASSUMED > DETECTED)
+- Module with `gap_tier: MISSING` blocks artifact generation with targeted per-field user prompt
+- Per-module `open_questions[]` rolled up into root `open_questions[]`
+- Scan summary printout table (module | path | language | framework | gap tier)
+- `skills/vp-crystallize/SKILL.md`: Brownfield Mode section updated with Gaps A+B+C, Scan Report contents list, per-module MUST-DETECT fields
+
 ## [2.13.0] - 2026-04-13
 
 ### Changed (ENH-046 — Phase 76)
