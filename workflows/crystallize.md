@@ -165,6 +165,55 @@ Probe the following files in order of priority (first match per language wins):
 
 If monorepo detected → scan each module separately; aggregate into `modules[]` in Scan Report.
 
+**Git Submodule Detection** (run after monorepo check):
+- Check for `.gitmodules` file at repo root
+- If present: parse all `[submodule "name"]` blocks → extract `name`, `path`, `url`
+- For each submodule path:
+  - If path exists on disk (initialized):
+    - Run Signal Cat 1 (manifest scan) on `{path}/`
+    - Run Signal Cat 2 (framework) on `{path}/`
+    - Run Signal Cat 4 (DB signals) on `{path}/`
+    - Record `initialized: true`
+  - If path absent (not initialized):
+    - Record `initialized: false`, `primary_language: MISSING`
+    - Add open question: "Submodule '{name}' not initialized — run `git submodule update --init {path}` to scan it"
+- Add each submodule to `modules[]` with `type: submodule`
+
+> **SAFETY RULE**: Never run `git submodule update`, `git submodule init`, or any git network command during scan. Read the local filesystem only.
+
+**Polyrepo / Multi-Repo Detection** (run after submodule check):
+
+Scan the following signals to determine if this repo is part of a larger multi-repo system:
+
+| Signal Source | Pattern | Interpretation |
+|--------------|---------|----------------|
+| `docker-compose.yml` / `docker-compose*.yml` | `build: ../path` or `context: ../path` (value starts with `../`) | Sibling repo used as build context |
+| `docker-compose.yml` | Multiple services with external `image:` and no local `build:` | External microservices — possible sibling repos |
+| `package.json` | `"dependencies"` or `"devDependencies"` value matching `"file:../..."` | Local `file:` sibling repo dependency |
+| `.github/workflows/*.yml` / `.gitlab-ci.yml` / `ci/*.yml` | `git clone` steps, or `uses: org/other-repo/.github/workflows/` referencing a different repo | CI clones or calls a sibling repo |
+| `README.md` / `CONTRIBUTING.md` | Lines containing a repo URL whose path differs from the current repo's remote | Related repo link in docs |
+| `Makefile` / `justfile` | Targets containing `cd ../` followed by build/test commands | Cross-repo build orchestration |
+
+For each match: record `{ source, hint, inferred_repo }` in `polyrepo_hints[]`.
+Deduplicate by `inferred_repo` name.
+If `polyrepo_hints` is empty → skip this section entirely (no empty array in clean single-repo Scan Reports).
+
+**Interactive prompt** (fire when `polyrepo_hints` non-empty):
+```
+⚠️ Polyrepo signals detected:
+  {list polyrepo_hints}
+
+This repo appears to be part of a multi-repo system.
+Would you like to list related repos? (optional — press Enter to skip)
+Format: one URL per line, e.g. https://github.com/org/api-service [backend]
+```
+- User-supplied repos → stored in `related_repos[]` as `{ url, role }`
+- If user skips → `related_repos: []`; system-level context fields set to **ASSUMED** tier
+
+**Gap-fill rule for polyrepo:**
+- `polyrepo_hints` non-empty AND `related_repos` empty → system-level fields (e.g. `deployment_topology`) = ASSUMED (not MISSING; single-repo scan is still valid)
+- `related_repos` populated → system-level fields = DETECTED for user-supplied context
+
 If no manifest found → `primary_language` = MISSING; user must provide.
 
 ---
@@ -487,8 +536,34 @@ frameworks:
 build_tool: string
 package_manager: string
 monorepo: bool
-modules: []                    # if monorepo
+gap_tier: DETECTED | ASSUMED | MISSING   # root rollup = worst tier across all modules
+modules:                       # if monorepo or submodules detected
+  - name: string               # workspace package name or submodule name
+    type: workspace | submodule | root   # workspace = monorepo member; submodule = git submodule
+    path: string               # repo-relative path
+    submodule_url: string | null         # remote URL from .gitmodules (null if not submodule)
+    initialized: bool          # true if path exists on disk (submodules only)
+    primary_language: string
+    framework: string | null
+    module_purpose: string     # inferred from dir name + manifest description
+    entry_point: string | null # main entry file path
+    gap_tier: DETECTED | ASSUMED | MISSING
+    must_detect_status:        # evidence record per MUST-DETECT field
+      primary_language: { value: string, source: string, tier: string }
+      framework:        { value: string, source: string, tier: string }
+      module_purpose:   { value: string, source: string, tier: string }
+      entry_point:      { value: string, source: string, tier: string }
+    open_questions: []         # per-module open questions
+polyrepo_hints:                # present only when polyrepo signals detected
+  - source: string             # e.g. docker-compose.yml
+    hint: string               # raw signal text
+    inferred_repo: string      # guessed sibling repo name
+related_repos:                 # present only when user supplied input after prompt
+  - url: string
+    role: string               # backend | frontend | shared-library | infra | etc.
 architecture_layers: []        # { layer, evidence_path }
+module_dependencies: []        # { from, to, type, evidence_path } — Gap D (Phase 78)
+dependency_cycles: []          # cycle paths detected — Gap D (Phase 78)
 database_signals: []           # { type, evidence_path, migration_tool }
 api_contracts: []              # { style, file_path }
 api_style: string              # REST | GraphQL | gRPC | mixed | unknown
@@ -505,7 +580,7 @@ repo_url: string
 top_contributors: []
 docs_extracted: []             # { file, summary, key_facts[] }
 language_distribution: {}      # { ts: 142, java: 38, ... }
-open_questions: []             # fields not resolved by user input
+open_questions: []             # root-level open questions (includes rollup from modules)
 ```
 
 ---
