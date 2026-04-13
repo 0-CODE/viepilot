@@ -17,20 +17,35 @@ Generate comprehensive documentation from code and artifacts.
 Before generating any file, collect actual project context from the environment:
 
 ```bash
-# Get GitHub remote URL (supports both HTTPS and SSH formats)
+# Get Git remote URL (supports any forge: GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, self-hosted)
 REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
 
-# Extract owner/repo slug
-# https://github.com/0-CODE/viepilot.git → 0-CODE/viepilot
-# git@github.com:0-CODE/viepilot.git → 0-CODE/viepilot
-GITHUB_SLUG=$(echo "$REMOTE_URL" | sed 's|.*github\.com[:/]||; s|\.git$||')
-GITHUB_OWNER=$(echo "$GITHUB_SLUG" | cut -d'/' -f1)
-GITHUB_REPO=$(echo "$GITHUB_SLUG" | cut -d'/' -f2)
+# Forge-agnostic remote URL parser
+# Handles SSH  : git@<host>:owner/repo.git
+# Handles HTTPS: https://<host>/owner/repo.git
+# Handles Azure DevOps: https://dev.azure.com/org/project/_git/repo
+if echo "$REMOTE_URL" | grep -q 'dev\.azure\.com'; then
+  # Azure DevOps: https://dev.azure.com/ORG/PROJECT/_git/REPO
+  GIT_HOST="dev.azure.com"
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|.*dev\.azure\.com/||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|.*/_git/||; s|\.git$||; s|/$||')
+elif echo "$REMOTE_URL" | grep -q '^git@'; then
+  # SSH format: git@host:owner/repo.git
+  GIT_HOST=$(echo "$REMOTE_URL" | sed 's|^git@||; s|:.*||')
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|^git@[^:]*:||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|^git@[^:]*:[^/]*/||; s|\.git$||')
+else
+  # HTTPS format: https://host/owner/repo.git
+  GIT_HOST=$(echo "$REMOTE_URL" | sed 's|^https\?://||; s|/.*||')
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|^https\?://[^/]*/||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|^https\?://[^/]*/[^/]*/||; s|\.git$||; s|/$||')
+fi
 
 # Fallback if no remote
-if [ -z "$GITHUB_OWNER" ]; then
-  GITHUB_OWNER="{GITHUB_OWNER}"
-  GITHUB_REPO="{GITHUB_REPO}"
+if [ -z "$GIT_OWNER" ]; then
+  GIT_HOST="{GIT_HOST}"
+  GIT_OWNER="{GIT_OWNER}"
+  GIT_REPO="{GIT_REPO}"
 fi
 
 # Get project name from package.json or directory name
@@ -54,7 +69,7 @@ if [ -d "skills" ] && ls skills/vp-*/SKILL.md 2>/dev/null | head -1 > /dev/null;
 fi
 ```
 
-Use `$GITHUB_OWNER`, `$GITHUB_REPO` throughout all generated files.
+Use `$GIT_HOST`, `$GIT_OWNER`, `$GIT_REPO` throughout all generated files.
 For viepilot framework repos, also use `$ACTUAL_SKILLS`, `$ACTUAL_WORKFLOWS`.
 **Never hardcode** `your-org`, `YOUR_USERNAME`, `YOUR_ORG`, or static skill/workflow counts.
 
