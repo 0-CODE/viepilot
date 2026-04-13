@@ -193,6 +193,11 @@ Generate a structured JSON manifest from the loaded context.
     "timeline": "present end of month",
     "decisionMaker": "non-technical CEO"
   },
+  "designConfig": {
+    "colorPalette": "navy-electric",
+    "layoutStyle": "modern-tech",
+    "fontPair": "Calibri / Calibri Light"
+  },
   "slides": [
     {
       "index": 1,
@@ -244,7 +249,43 @@ CONTENT RULES — apply to every slide:
 - `data` — heading + key metric callouts
 - `closing` — CTA block matching meta.cta (last slide always)
 
-**Slide count rules:** `slides.length` MUST equal `PROPOSAL_TYPES[typeId].slides`
+**Slide count rules (ENH-045 — dynamic):**
+- Base skeleton per type defines the minimum set of slides (see structure below).
+- AI may add extra slides when content warrants — there is **no hard maximum**.
+- Content-aware split triggers:
+  - `technicalNarrative` has > 4 paragraphs → split into 2 Technical Approach slides
+  - `team` has > 4 members → split into 2 Team slides
+  - `phases` / timeline has > 4 items → split into 2 Timeline slides
+  - `riskRegister` has > 3 items → add a dedicated Risk slide
+- Every generated manifest MUST include a `designConfig` field (see **Design Selection** below).
+
+**Design Selection (ENH-045):**
+
+The AI MUST choose a `designConfig` based on project context (sector, audience, tone) and include it in the manifest:
+
+```json
+"designConfig": {
+  "colorPalette": "navy-electric | navy-gold | dark-vibrant",
+  "layoutStyle":  "modern-tech | enterprise | creative",
+  "fontPair":     "Calibri / Calibri Light | Georgia / Calibri | Calibri / Calibri"
+}
+```
+
+Selection heuristic:
+- **enterprise** → finance, banking, legal, compliance, government, corporate audience
+- **creative** → startup, design agency, gaming, media, art, consumer product
+- **modern-tech** → default; SaaS, developer tools, technical architecture, general tech
+
+Add this block to the AI prompt immediately after the TONE line:
+
+```
+DESIGN SELECTION:
+Choose one layoutStyle based on project context:
+  enterprise  — if sector/audience is: finance, banking, legal, compliance, government, corporate
+  creative    — if sector/audience is: startup, design, gaming, media, agency, consumer
+  modern-tech — default for SaaS, dev tools, tech architecture, general
+Include "designConfig": { "colorPalette": ..., "layoutStyle": ..., "fontPair": ... } in the manifest root.
+```
 
 **Slide structure by type:**
 
@@ -755,8 +796,8 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 
 <success_criteria>
 - [ ] Context loaded (brainstorm session or direct brief)
-- [ ] Type validated; slide count matches PROPOSAL_TYPES spec
-- [ ] Manifest generated with correct structure and slide count
+- [ ] Type validated; slide count ≥ base skeleton for type (dynamic — no hard maximum)
+- [ ] Manifest generated with correct structure; `designConfig` field present
 - [ ] `.pptx` written to `docs/proposals/`
 - [ ] `.docx` written to `docs/proposals/`
 - [ ] `.md` written to `docs/proposals/`
