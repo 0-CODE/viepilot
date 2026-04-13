@@ -34,6 +34,17 @@ Audit ViePilot project state and documentation to detect drift.
 Works on **any project** using ViePilot (Java, Node, Python, etc.).
 Auto-detects if running inside the viepilot framework repo to enable framework-specific checks.
 
+**Brownfield Import Compatibility (FEAT-018):**
+
+When auditing a project bootstrapped via `vp-crystallize --brownfield`:
+
+- If `docs/brainstorm/` exists and contains **only** `session-brownfield-import.md` (no `session-*.md` greenfield files):
+  - **Valid brownfield import** — do NOT flag as missing brainstorm session.
+  - Verify `session-brownfield-import.md` contains a `## Scan Report` section with a YAML block.
+    - If YAML block absent → flag LOW severity: "Brownfield stub missing Scan Report content."
+  - If `.viepilot/TRACKER.md` contains `## Brownfield Import` section → brownfield metadata confirmed; no further brainstorm check needed.
+- If `docs/brainstorm/` is completely absent → flag MEDIUM severity: "No brainstorm session or brownfield stub found — run `/vp-crystallize` or `/vp-crystallize --brownfield`."
+
 **Tier 1 — ViePilot State Consistency (all projects):**
 - `.viepilot/TRACKER.md` current state vs `.viepilot/phases/*/PHASE-STATE.md`
 - `.viepilot/ROADMAP.md` phase status vs PHASE-STATE.md

@@ -77,6 +77,33 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 - `DOCUMENT_LANG` controls content language for all generated files (ROADMAP, TRACKER, ARCHITECTURE, etc.).
 - `COMMUNICATION_LANG` controls prompt/confirmation language for this session.
 - Configure via: `vp-tools config set language.document vi`
+
+**Brownfield Mode (`--brownfield`) — FEAT-018:**
+
+Use when adopting ViePilot on an **existing project** (no brainstorm session required).
+
+Flags:
+- `--brownfield` : Explicit brownfield mode
+- *(auto-detected)* : Triggers when `docs/brainstorm/` is absent/empty AND `.viepilot/` does not exist
+
+Scanner runs 12 signal categories across the existing codebase:
+1. **Build manifests** — `package.json`, `pom.xml`, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc. (11 platforms) → infers project_name, version, language, deps
+2. **Framework detection** — 40+ dependency patterns → backend/frontend/ORM/auth/broker/test frameworks
+3. **Architecture layers** — 18 directory patterns → controller/service/repository/frontend/infra/etc.
+4. **Database schema signals** — Flyway/Liquibase/Prisma/Rails migrations + docker-compose services
+5. **API contracts** — OpenAPI, gRPC `.proto`, GraphQL schemas
+6. **Infrastructure** — Dockerfile, docker-compose, k8s, Terraform, Vercel, Fly.io, etc. (16 patterns)
+7. **Environment config** — `.env.example` key names (never reads `.env`)
+8. **Test coverage** — Jest/pytest/JUnit/Cypress config + coverage report dirs
+9. **Code quality tools** — ESLint/Prettier/SonarQube/pre-commit/golangci-lint/etc. (14 patterns)
+10. **Documentation** — README, CHANGELOG, ADRs, docs/ (priority-ordered)
+11. **Git history** — commit convention, version pattern, contributors, repo URL
+12. **Language survey** — file extension glob → language distribution
+
+Produces **Scan Report** (YAML) with DETECTED / ASSUMED / MISSING classification.
+MUST-DETECT gaps (project_name, primary_language, ≥1 framework, current_version) block artifact generation until user fills interactively.
+Generates `docs/brainstorm/session-brownfield-import.md` stub for `vp-audit` compatibility.
+Safety: never reads `.env`; skips `node_modules/`, `.git/`, `target/`, `build/`, `dist/`.
 </objective>
 
 <execution_context>
