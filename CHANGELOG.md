@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (FEAT-018 — Phase 75)
+- **`vp-crystallize --brownfield`**: Brownfield Mode — bootstrap `.viepilot/` project context from an existing codebase without a brainstorm session
+  - 12-category codebase scanner: build manifests (11 platforms), framework detection (40+ dep patterns), architecture layer inference (18 directory patterns), database schema signals, API contract detection, infrastructure config, environment config shape, test coverage, code quality tools, documentation files, git history, file extension survey
+  - Structured Scan Report (YAML) with DETECTED / ASSUMED / MISSING gap classification
+  - MUST-DETECT gap tier: blocks artifact generation until user fills interactively
+  - Synthetic brainstorm stub (`docs/brainstorm/session-brownfield-import.md`) for `vp-audit` compatibility
+  - Safety rules: never reads `.env`; skips `node_modules/`, `.git/`, `target/`, `build/`, `dist/`, `__pycache__/`, `.venv/`, `vendor/`
+  - `vp-audit` updated to accept brownfield stub as valid brainstorm source (no false-positive errors)
+  - `TRACKER.md` annotated with `## Brownfield Import` block on first-time bootstrap
+
+## [2.11.0] - 2026-04-13
+
+### Added (ENH-045 — Phase 74)
+- **`lib/proposal-generator.cjs`**: `getDesignConfig(projectContext)` helper + `DESIGN_CONFIGS` map (3 styles: modern-tech, enterprise, creative) — auto-selects palette from sector/audience/tone context
+- **`scripts/gen-proposal-pptx.cjs`**: `PALETTES` map with 3 colour schemes + 3 rich slide layouts (timeline-gantt, team-card, investment-visual) + generates `project-proposal-{modern-tech,enterprise,creative}.pptx` variants
+- **`workflows/proposal.md`**: dynamic slide count (no hard cap) + `designConfig` field in manifest + content-aware split rules (technicalNarrative > 4 → 2 slides; team > 4 → 2 slides; phases > 4 → 2 timeline slides) + DESIGN SELECTION AI prompt block
+- 31 contract tests in `vp-enh045-dynamic-slides.test.js`
+
 ## [2.10.1] - 2026-04-11
 
 ### Changed (ENH-044 — Phase 73)
