@@ -80,7 +80,7 @@ Ask the user for project information:
 
 9. Lead developer email?
 
-10. GitHub username? (optional)
+10. Git remote host / username? (optional — e.g. github.com/johndoe, gitlab.com/org, bitbucket.org/team)
 ```
 
 ### Repository Info

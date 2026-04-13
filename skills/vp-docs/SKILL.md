@@ -80,19 +80,29 @@ Optional flags:
 
 ### Step 0: Resolve Project Context (ALWAYS first)
 ```bash
-# Read actual GitHub URL — never use hardcoded placeholder
+# Forge-agnostic remote URL parser — supports GitHub, GitLab, Bitbucket, Azure DevOps, Gitea, self-hosted
 REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
-GITHUB_SLUG=$(echo "$REMOTE_URL" | sed 's|.*github\.com[:/]||; s|\.git$||')
-GITHUB_OWNER=$(echo "$GITHUB_SLUG" | cut -d'/' -f1)
-GITHUB_REPO=$(echo "$GITHUB_SLUG" | cut -d'/' -f2)
+if echo "$REMOTE_URL" | grep -q 'dev\.azure\.com'; then
+  GIT_HOST="dev.azure.com"
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|.*dev\.azure\.com/||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|.*/_git/||; s|\.git$||; s|/$||')
+elif echo "$REMOTE_URL" | grep -q '^git@'; then
+  GIT_HOST=$(echo "$REMOTE_URL" | sed 's|^git@||; s|:.*||')
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|^git@[^:]*:||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|^git@[^:]*:[^/]*/||; s|\.git$||')
+else
+  GIT_HOST=$(echo "$REMOTE_URL" | sed 's|^https\?://||; s|/.*||')
+  GIT_OWNER=$(echo "$REMOTE_URL" | sed 's|^https\?://[^/]*/||; s|/.*||')
+  GIT_REPO=$(echo "$REMOTE_URL" | sed 's|^https\?://[^/]*/[^/]*/||; s|\.git$||; s|/$||')
+fi
 # Fallback: use searchable placeholder, not 'your-org'
-[ -z "$GITHUB_OWNER" ] && GITHUB_OWNER="{GITHUB_OWNER}" && GITHUB_REPO="{GITHUB_REPO}"
+[ -z "$GIT_OWNER" ] && GIT_HOST="{GIT_HOST}" && GIT_OWNER="{GIT_OWNER}" && GIT_REPO="{GIT_REPO}"
 
 ACTUAL_SKILLS=$(ls skills/*/SKILL.md 2>/dev/null | wc -l | tr -d ' ')
 ACTUAL_WORKFLOWS=$(ls workflows/*.md 2>/dev/null | wc -l | tr -d ' ')
 ```
 
-> Use `$GITHUB_OWNER/$GITHUB_REPO` in all generated files.
+> Use `$GIT_HOST`, `$GIT_OWNER`, `$GIT_REPO` in all generated files.
 > Use `$ACTUAL_SKILLS` and `$ACTUAL_WORKFLOWS` for counts.
 > **Never write** `your-org`, `YOUR_USERNAME`, `YOUR_ORG` into generated files.
 

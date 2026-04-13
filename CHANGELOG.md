@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.13.0] - 2026-04-13
+
+### Changed (ENH-046 — Phase 76)
+- **`workflows/documentation.md`**: replaced GitHub-only URL parser with a forge-agnostic extractor supporting GitHub (SSH/HTTPS), GitLab (SSH/HTTPS), Bitbucket, Azure DevOps (`dev.azure.com`), Gitea, and any self-hosted remote
+  - Variables renamed: `GITHUB_OWNER`/`GITHUB_REPO` → `GIT_OWNER`/`GIT_REPO`; added `GIT_HOST`
+- **`skills/vp-docs/SKILL.md`**: Step 0 shell block updated to match — same forge-agnostic parser, same variable names
+- **`workflows/crystallize.md`**: Step 0 prompt label generalized from "GitHub username? (optional)" → "Git remote host / username? (optional — e.g. github.com/johndoe, gitlab.com/org)"
+
 ## [2.12.0] - 2026-04-13
 
 ### Added (FEAT-018 — Phase 75)
