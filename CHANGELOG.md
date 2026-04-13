@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.0] - 2026-04-13
+
 ### Added (FEAT-018 — Phase 75)
 - **`vp-crystallize --brownfield`**: Brownfield Mode — bootstrap `.viepilot/` project context from an existing codebase without a brainstorm session
   - 12-category codebase scanner: build manifests (11 platforms), framework detection (40+ dep patterns), architecture layer inference (18 directory patterns), database schema signals, API contract detection, infrastructure config, environment config shape, test coverage, code quality tools, documentation files, git history, file extension survey
