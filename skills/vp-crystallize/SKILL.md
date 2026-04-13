@@ -100,8 +100,21 @@ Scanner runs 12 signal categories across the existing codebase:
 11. **Git history** — commit convention, version pattern, contributors, repo URL
 12. **Language survey** — file extension glob → language distribution
 
+**Multi-repo / monorepo support (ENH-047):**
+
+- **Git submodule detection** — reads `.gitmodules`; scans each initialized submodule path (Signal Cat 1+2+4); records uninitialized paths as `primary_language: MISSING`. Never runs `git submodule update` — read-only.
+- **Polyrepo hints** — detects docker-compose `../` build contexts, `file:../` deps, CI cross-repo clones, README external links, Makefile `cd ../` targets; outputs `polyrepo_hints[]`; prompts user to supply `related_repos[]` (optional).
+- **Per-module gap detection** — every `modules[]` entry carries `gap_tier` (DETECTED/ASSUMED/MISSING), `must_detect_status{}` (evidence per field: value + source + tier), and `open_questions[]`. A module with `gap_tier: MISSING` blocks artifact generation with a targeted per-field prompt.
+
+**Scan Report contains:**
+- Root `gap_tier` (= worst tier across all modules: MISSING > ASSUMED > DETECTED)
+- `modules[]` — one entry per workspace/submodule/root with `gap_tier`, `must_detect_status{}`, `open_questions[]`
+- `polyrepo_hints[]` — polyrepo signals (omitted when empty, no empty arrays)
+- `related_repos[]` — user-supplied sibling repos (omitted when empty)
+- Root `open_questions[]` — includes rollup from all modules
+
 Produces **Scan Report** (YAML) with DETECTED / ASSUMED / MISSING classification.
-MUST-DETECT gaps (project_name, primary_language, ≥1 framework, current_version) block artifact generation until user fills interactively.
+MUST-DETECT gaps (root: project_name, primary_language, ≥1 framework, current_version; per-module: primary_language, framework, module_purpose, entry_point) block artifact generation until user fills interactively.
 Generates `docs/brainstorm/session-brownfield-import.md` stub for `vp-audit` compatibility.
 Safety: never reads `.env`; skips `node_modules/`, `.git/`, `target/`, `build/`, `dist/`.
 </objective>

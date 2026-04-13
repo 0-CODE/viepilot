@@ -615,15 +615,73 @@ Every field in Scan Report is classified as:
 
 ---
 
+### Per-Module Gap Detection
+
+Applies to every entry in `modules[]` (monorepo workspace members, git submodules, and root if single-repo). Each module is assessed independently.
+
+**Per-module MUST-DETECT fields:**
+
+| Field | Source signals | Tier if absent |
+|-------|---------------|----------------|
+| `primary_language` | Manifest extension, file survey (Signal Cat 12), `tsconfig.json`, `pyproject.toml` | MISSING — must ask user |
+| `framework` | Signal Cat 2 dep patterns scanned on module path | ASSUMED if no dep match; MISSING if no manifest found |
+| `module_purpose` | Manifest `description` field, directory name convention, README first line | ASSUMED (infer from dir name); MISSING if none of the above |
+| `entry_point` | `main` in `package.json`; `src/index.*`; `cmd/main.go`; `*Application.java` | ASSUMED if standard path exists; MISSING otherwise |
+
+**Gap tier assignment per module:**
+```
+DETECTED  — all MUST-DETECT fields sourced directly from file evidence (no inference)
+ASSUMED   — ≥1 MUST-DETECT field inferred by convention (no direct file evidence, but plausible)
+MISSING   — ≥1 MUST-DETECT field has no evidence and cannot be inferred
+```
+
+**`must_detect_status` evidence conventions:**
+- `source: "tsconfig.json"` — read from a specific file
+- `source: "inferred"` — derived by directory name / naming convention (tier = ASSUMED)
+- `source: "absent"` — no evidence found (tier = MISSING)
+- `source: "user"` — provided by user during gap-filling (tier = DETECTED)
+
+**Root gap tier rollup:**
+```
+root gap_tier = worst tier across all modules
+Priority order: MISSING > ASSUMED > DETECTED
+```
+If any module is MISSING → root `gap_tier` = MISSING → artifact generation blocked until resolved.
+If all modules are DETECTED or ASSUMED → root `gap_tier` matches the worst module tier.
+
+**Scan summary printout** (show after all modules scanned):
+```
+Module scan summary:
+┌─────────────────┬──────────────────┬────────────┬──────────────┬───────────┐
+│ Module          │ Path             │ Language   │ Framework    │ Gap Tier  │
+├─────────────────┼──────────────────┼────────────┼──────────────┼───────────┤
+│ api-service     │ apps/api         │ TypeScript │ NestJS       │ DETECTED  │
+│ web-client      │ apps/web         │ TypeScript │ React        │ DETECTED  │
+│ shared-lib      │ libs/shared      │ TypeScript │ —            │ ASSUMED   │
+│ legacy-worker   │ services/worker  │ MISSING    │ MISSING      │ MISSING   │
+└─────────────────┴──────────────────┴────────────┴──────────────┴───────────┘
+Root gap tier: MISSING (worst across modules)
+```
+
+---
+
 ### Interactive Gap-Filling (Step 0-B-ii)
 
 After scanner completes:
 
 1. Display Scan Report summary table to user (field | value | status).
-2. For each MUST-DETECT field that is MISSING → **pause and ask user to provide value**. Do not proceed until all MUST-DETECT fields are filled.
-3. Present ASSUMED fields in a confirmation table → user may accept all with "y" or override individually.
-4. Capture all user responses; update Scan Report fields accordingly.
-5. All remaining unresolved items → `open_questions[]`.
+2. **Per-module MISSING fields** — for each module with `gap_tier: MISSING`, pause and ask per field:
+   ```
+   ⛔ Module '{name}' (path: {path}) has MISSING required fields:
+     - {field}: no evidence found
+   Please provide {field}:
+   ```
+   Record answer as `{ value: user_input, source: "user", tier: DETECTED }`.
+   Do NOT proceed to artifact generation until all MISSING module fields are filled.
+3. For each root-level MUST-DETECT field that is MISSING → **pause and ask user to provide value**.
+4. Present ASSUMED fields (root + per-module) in a confirmation table → user may accept all with "y" or override individually.
+5. Capture all user responses; update Scan Report fields accordingly.
+6. All remaining unresolved items → `open_questions[]` (roll up per-module `open_questions[]` into root).
 
 ---
 
