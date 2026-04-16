@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.16.0] - 2026-04-17
+
+### Changed
+- **vp-audit** Tier 4 (Framework Integrity) now runs silently — output is suppressed
+  when the check passes (✅) or is skipped (non-framework repo). Tier 4 is only
+  surfaced in the audit report when issues (⚠️) are found. (ENH-049)
+
+### Files
+- `workflows/audit.md` — Step 4 skip: removed `echo "→ Tier 4 skipped"` message;
+  Step 4f report block wrapped in `TIER4_ISSUES > 0` guard; All Clear banner Tier 4
+  line removed; Issues Found banner Tier 4 line rendered only when `TIER4_ISSUES > 0`
+- `skills/vp-audit/SKILL.md` — documented silent-by-default Tier 4 behavior (ENH-049)
+- `tests/unit/vp-enh049-audit-tier4-silent.test.js` — 13 contract tests
+
 ## [2.15.0] - 2026-04-13
 
 ### Changed (ENH-048 — Phase 78: AskUserQuestion Adapter-Aware Integration)
