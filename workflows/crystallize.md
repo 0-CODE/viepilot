@@ -2,6 +2,14 @@
 Convert brainstorm sessions into structured artifacts for autonomous AI execution.
 </purpose>
 
+## Adapter Compatibility
+
+| Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
+|---------|----------------------|-----------------------|-----------|----------------------|
+| Interactive prompts | ✅ `AskUserQuestion` tool | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+
+When `AskUserQuestion` is not available, each prompt block falls back to the plain-text numbered list shown below it — no configuration needed.
+
 ## ViePilot Skill Scope Policy (BUG-004)
 
 - Default behavior: only use and suggest skills under `vp-*`.
@@ -92,6 +100,15 @@ Ask the user for project information:
 ```
 
 ### License & Year
+
+> **Adapter-aware prompt (question 13):**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "Which license for this project?"
+>   - header: "License"
+>   - options: [{ label: "MIT", description: "Permissive — most common open-source choice" }, { label: "Apache-2.0", description: "Permissive with patent grant — preferred for enterprise OSS" }, { label: "GPL-3.0", description: "Copyleft — derivative works must stay open-source" }, { label: "Proprietary", description: "All rights reserved — no public redistribution" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text list below
+
 ```
 13. License?
     Options: MIT, Apache-2.0, GPL-3.0, BSD-3-Clause, Proprietary
@@ -115,7 +132,16 @@ Store all metadata for template generation.
 
 **If brownfield triggered AND `.viepilot/` already exists:**
 - Warn: "`.viepilot/` already exists. Re-running brownfield mode will overwrite artifacts."
-- Ask: "Continue? (y/n)" — abort if n.
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "`.viepilot/` already exists. Re-running brownfield mode will overwrite artifacts. Continue?"
+>   - header: "Overwrite?"
+>   - options: [{ label: "Yes, continue", description: "Overwrite existing .viepilot/ artifacts with new scan results" }, { label: "No, abort", description: "Stop here — keep existing artifacts unchanged" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text prompt below
+>
+> Ask: "Continue? (y/n)" — abort if n.
 
 **When brownfield mode is active:**
 1. Run the full 12-category codebase scanner (Signal Categories 1–12 below).
@@ -199,6 +225,15 @@ Deduplicate by `inferred_repo` name.
 If `polyrepo_hints` is empty → skip this section entirely (no empty array in clean single-repo Scan Reports).
 
 **Interactive prompt** (fire when `polyrepo_hints` non-empty):
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "Polyrepo signals detected — this repo may be part of a multi-repo system. Would you like to provide related repo URLs?"
+>   - header: "Polyrepo?"
+>   - options: [{ label: "Yes, I'll list them", description: "Provide sibling repo URLs — improves system-level context accuracy" }, { label: "Skip for now", description: "Continue without related repos — affected fields will be marked ASSUMED" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text prompt below
+
 ```
 ⚠️ Polyrepo signals detected:
   {list polyrepo_hints}
@@ -806,6 +841,14 @@ Check if `.viepilot/ui-direction/` exists and contains any session artifacts.
 
 If `ui_scope_detected = true` **AND** artifacts are missing → **STOP** and present:
 
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "UI Direction artifacts missing. The brainstorm indicates UI scope but `.viepilot/ui-direction/` has no artifacts. How to proceed?"
+>   - header: "UI Direction"
+>   - options: [{ label: "Return to /vp-brainstorm --ui (Recommended)", description: "Create UI direction artifacts first for best results" }, { label: "Continue with assumptions", description: "Record assumptions in ARCHITECTURE.md and proceed without visual direction" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text menu below
+
 ```
 ⚠️ UI Direction artifacts missing
 
@@ -971,6 +1014,15 @@ If `.viepilot/architect/` exists with at least one session directory:
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "Complex architecture detected (≥5 services/components). Would you like to create architecture visualizations first with /vp-brainstorm --architect?"
+>   - header: "Architect?"
+>   - options: [{ label: "Yes, go to architect mode", description: "Create visual architecture diagrams before crystallizing (recommended for complex systems)" }, { label: "No, continue now", description: "Continue crystallize with text-only brainstorm — no visual diagrams" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text menu below
+
   ```
   💡 Would you like to return to /vp-brainstorm --architect to create visualizations first?
   1. Yes — return to architect mode

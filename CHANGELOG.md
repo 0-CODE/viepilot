@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.15.0] - 2026-04-13
+
+### Changed (ENH-048 — Phase 78: AskUserQuestion Adapter-Aware Integration)
+
+All `vp-*` workflows that ask users questions now include adapter-aware interactive prompts.
+Claude Code (terminal) receives a structured click-to-select UI via `AskUserQuestion` tool.
+All other adapters (Cursor Agent/Skills, Codex CLI, Antigravity native) automatically fall back
+to the existing plain-text numbered lists — no configuration required.
+
+**Research findings (adapter compatibility):**
+- Claude Code terminal: ✅ `AskUserQuestion` fully supported (native tool)
+- Cursor Agent/Skills Mode: ❌ `AskQuestion` only available in Plan Mode (community feature request)
+- Codex CLI: ❌ not native (community MCP `ask-user-questions-mcp` exists separately)
+- Antigravity native agent: ❌ uses Artifact model, no raw tool calls
+
+**`workflows/crystallize.md`:**
+- Added `Adapter Compatibility` table near top
+- License selection (Step 0): AUQ spec with MIT/Apache-2.0/GPL-3.0/Proprietary options
+- Brownfield overwrite confirmation (Step 0-B): AUQ Yes/No prompt
+- Polyrepo related-repos prompt (Step 0-B): AUQ Yes supply/Skip options
+- UI direction gate (Step 1A): AUQ Return-to-brainstorm / Continue-with-assumptions options
+- Architect mode suggestion (Step 1D): AUQ Yes/No architect mode routing
+
+**`workflows/brainstorm.md`:**
+- Added `Adapter Compatibility` table near top
+- Session intent (Step 2): AUQ Continue-recent / Review-specific / New-session options
+- Landing page layout (Step 4): AUQ Layout A/B/C/D with descriptions (4-option fit)
+
+**`workflows/request.md`:**
+- Added `Adapter Compatibility` table near top
+- Request type detection (Step 2): AUQ Bug/Feature/Enhancement/Tech-Debt (Brainstorm+List remain text)
+- Bug severity (Step 4A): AUQ Critical/High/Medium/Low options
+- Feature priority (Step 4B): AUQ Must-have/Should-have/Nice-to-have options
+
+**`workflows/evolve.md`:**
+- Added `Adapter Compatibility` table near top
+- Intent detection (Step 2): AUQ Add-Feature/New-Milestone/Refactor options
+- Complexity question (Step 3A): AUQ S/M/L/XL options
+- Brainstorm routing (Step 3A): AUQ Yes-brainstorm/No-plan-directly options
+
+**`skills/vp-crystallize/SKILL.md`, `skills/vp-brainstorm/SKILL.md`, `skills/vp-request/SKILL.md`:**
+- Added `## Adapter Compatibility` section with 6-row adapter support table
+- Listed prompts using AskUserQuestion per skill
+
+### Added
+- `tests/unit/vp-enh048-askuserquestion.test.js` — 33 contract tests verifying AUQ specs + text fallback preservation across all affected files
+
 ## [2.14.0] - 2026-04-13
 
 ### Added (ENH-047 — Phase 77: Brownfield Multi-Repo, Submodules & Per-Module Gap Detection)

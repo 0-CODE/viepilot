@@ -265,3 +265,25 @@ Update `.viepilot/TRACKER.md`:
 - [ ] TRACKER.md updated
 - [ ] Appropriate routing suggested
 </success_criteria>
+
+## Adapter Compatibility
+
+### AskUserQuestion Tool (ENH-048)
+This skill uses adapter-aware interactive prompts. Behavior depends on your adapter:
+
+| Adapter | Interactive Prompts | Notes |
+|---------|---------------------|-------|
+| Claude Code (terminal) | ✅ `AskUserQuestion` tool | Click-to-select UI, multi-select, preview panels |
+| Claude Code (VS Code ext) | ⚠️ Partial | Terminal yes; VS Code UI pending [anthropics/claude-code#12609](https://github.com/anthropics/claude-code/issues/12609) |
+| Cursor (Plan Mode) | ⚠️ Partial | `AskQuestion` in Plan Mode only — not in Agent/Skills Mode |
+| Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
+| Codex CLI | ❌ Text fallback | Native tool N/A; community MCP available |
+| Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
+
+When `AskUserQuestion` is not available, the skill automatically falls back to
+plain-text numbered list prompts — no configuration required.
+
+**Prompts using AskUserQuestion in this skill:**
+- Request type detection (Bug / Feature / Enhancement / Tech Debt — Step 2)
+- Bug severity selection (Critical / High / Medium / Low — Step 4A)
+- Feature priority selection (Must-have / Should-have / Nice-to-have — Step 4B)

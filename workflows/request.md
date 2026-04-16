@@ -2,6 +2,14 @@
 Create and manage project requests: bugs, features, enhancements, tech debt, and brainstorm continuation.
 </purpose>
 
+## Adapter Compatibility
+
+| Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
+|---------|----------------------|-----------------------|-----------|----------------------|
+| Interactive prompts | ✅ `AskUserQuestion` tool | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+
+When `AskUserQuestion` is not available, each prompt block falls back to the plain-text numbered list shown below it — no configuration needed.
+
 ## ViePilot Skill Scope Policy (BUG-004)
 
 - Default behavior: only use and suggest skills under `vp-*`.
@@ -53,6 +61,15 @@ Parse `{{VP_ARGS}}` for type flag:
 - `--list` → List Requests
 
 If no flag, ask user:
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "What type of request would you like to create?"
+>   - header: "Request type"
+>   - options: [{ label: "🐛 Bug Report", description: "Something is broken — file a defect report" }, { label: "✨ Feature Request", description: "New functionality — add a capability that doesn't exist yet" }, { label: "🔧 Enhancement", description: "Improve existing feature — make something better" }, { label: "🧹 Technical Debt", description: "Code cleanup / refactor — no new behavior" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text menu below (Brainstorm and List options remain text-only)
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► REQUEST
@@ -117,6 +134,15 @@ Options:
    > 
 
 6. Severity?
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "What is the bug severity?"
+>   - header: "Severity"
+>   - options: [{ label: "Critical", description: "System down, data loss — needs immediate attention" }, { label: "High", description: "Major feature broken — significantly impacts users" }, { label: "Medium", description: "Feature impaired — workaround exists" }, { label: "Low", description: "Minor / cosmetic issue — no functional impact" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text list below
+
    1. Critical - System down, data loss
    2. High - Major feature broken
    3. Medium - Feature impaired
@@ -191,6 +217,15 @@ Create `BUG-{N}.md`:
    > 
 
 5. Priority?
+
+> **Adapter-aware prompt:**
+> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+>   - question: "What is the feature priority?"
+>   - header: "Priority"
+>   - options: [{ label: "Must-have", description: "Critical for release — cannot ship without it" }, { label: "Should-have", description: "Important but not blocking — include if capacity allows" }, { label: "Nice-to-have", description: "Quality-of-life improvement — can defer to next milestone" }]
+>   - multiSelect: false
+> - **Cursor / Codex / Antigravity / other:** use text list below
+
    1. Must-have - Critical for release
    2. Should-have - Important but not blocking
    3. Nice-to-have - Can defer

@@ -263,3 +263,27 @@ Ask user for (confirm proposals from profile if present):
 - [ ] **ENH-022:** Every generated Mermaid diagram has a `.viepilot/architecture/<canonical-name>.mermaid` file in sync with `ARCHITECTURE.md` (no extra files created for N/A)
 - [ ] **FEAT-009:** When profile is bound — ARCHITECTURE + PROJECT-CONTEXT record the profile source; if not — state none / not configured explicitly
 </success_criteria>
+
+## Adapter Compatibility
+
+### AskUserQuestion Tool (ENH-048)
+This skill uses adapter-aware interactive prompts. Behavior depends on your adapter:
+
+| Adapter | Interactive Prompts | Notes |
+|---------|---------------------|-------|
+| Claude Code (terminal) | ✅ `AskUserQuestion` tool | Click-to-select UI, multi-select, preview panels |
+| Claude Code (VS Code ext) | ⚠️ Partial | Terminal yes; VS Code UI pending [anthropics/claude-code#12609](https://github.com/anthropics/claude-code/issues/12609) |
+| Cursor (Plan Mode) | ⚠️ Partial | `AskQuestion` in Plan Mode only — not in Agent/Skills Mode |
+| Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
+| Codex CLI | ❌ Text fallback | Native tool N/A; community MCP available |
+| Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
+
+When `AskUserQuestion` is not available, the skill automatically falls back to
+plain-text numbered list prompts — no configuration required.
+
+**Prompts using AskUserQuestion in this skill:**
+- License selection (Step 0 metadata)
+- Brownfield overwrite confirmation (Step 0-B)
+- Polyrepo related-repos prompt (Step 0-B)
+- UI direction gate choice (Step 1A)
+- Architect mode suggestion (Step 1D)
