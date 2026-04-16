@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.17.0] - 2026-04-17
+
+### Changed
+- **vp-auto** git tags now include active branch and package version for full
+  traceability. New format: `{prefix}-{branch}-{version}-vp-p{n}-t{n}`. (ENH-050)
+  - Branch resolved via `git rev-parse --abbrev-ref HEAD` (sanitized: `/` → `-`)
+  - Version resolved from `package.json` (fallback: `0.0.0`)
+  - Legacy tags (`{prefix}-vp-p{n}-*`) continue to be recognized by audit + rollback
+
+### Files
+- `workflows/autonomous.md` — `TAG_PREFIX` resolution block (BRANCH_SAFE + VERSION);
+  task start, task done, and phase complete tag patterns updated to enriched format
+- `workflows/audit.md` — `COMPLETE_TAGS` regex: added third alternative for enriched
+  format; `PREV_TAG` grep: extended char class to include `.` for version strings
+- `workflows/rollback.md` — tag grep char class extended to include `.` for version strings
+- `tests/unit/vp-enh050-git-tag-format.test.js` — 16 contract tests
+
 ## [2.16.0] - 2026-04-17
 
 ### Changed
