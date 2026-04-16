@@ -8,7 +8,8 @@ Safe rollback to any ViePilot checkpoint with backup and state preservation.
 ## 1. List Available Checkpoints
 
 ```bash
-git tag --sort=-creatordate | rg "(^vp-p|^-*vp-backup|^[a-z0-9-]+-vp-p|^[a-z0-9-]+-vp-backup)" | head -20
+git tag --sort=-creatordate | rg "(^vp-p|^-*vp-backup|^[a-z0-9._-]+-vp-p|^[a-z0-9._-]+-vp-backup)" | head -20
+# [a-z0-9._-]+ matches both legacy and enriched (prefix-branch-version-vp-p*) formats (ENH-050)
 ```
 
 For each tag, get info:

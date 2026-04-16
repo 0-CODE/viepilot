@@ -100,7 +100,10 @@ fi
 ```bash
 # List completed phases (PHASE-STATE.md with status: complete)
 # List git tags matching legacy + project-scoped complete format
-COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E '(^vp-p[0-9]+-complete$)|(^[a-z0-9-]+-vp-p[0-9]+-complete$)' | sort)
+COMPLETE_TAGS=$(git tag 2>/dev/null | grep -E \
+  '(^vp-p[0-9]+-complete$)|(^[a-z0-9-]+-vp-p[0-9]+-complete$)|(^[a-z0-9._-]+-[a-z0-9._-]+-[0-9]+\.[0-9]+\.[0-9]+-vp-p[0-9]+-complete$)' \
+  | sort)
+# Third alternative matches enriched format: prefix-branch-version-vp-pN-complete (ENH-050)
 # Report any phase marked complete in PHASE-STATE.md without a git tag
 ```
 
@@ -215,7 +218,8 @@ for phase_state in $RECENT_PHASES; do
     PHASE_NUM=$(basename "$PHASE_DIR" | grep -o '^[0-9]*' | sed 's/^0*//')
     TAG_PREFIX=$(vp-tools tag-prefix --raw 2>/dev/null || echo "vp")
     PHASE_TAG="${TAG_PREFIX}-p${PHASE_NUM}-complete"
-    PREV_TAG=$(git tag --sort=-version:refname 2>/dev/null | grep -E "(vp-p.*-complete|[a-z0-9-]+-vp-p.*-complete)" | grep -A1 "^$PHASE_TAG$" | tail -1)
+    PREV_TAG=$(git tag --sort=-version:refname 2>/dev/null | grep -E "(vp-p.*-complete|[a-z0-9._-]+-vp-p.*-complete)" | grep -A1 "^$PHASE_TAG$" | tail -1)
+    # [a-z0-9._-]+ covers both legacy (viepilot-vp-p60) and enriched (viepilot-main-2.17.0-vp-p80) formats
     if [ -n "$PREV_TAG" ]; then
       DOCS_CHANGED=$(git diff "$PREV_TAG"..HEAD --name-only 2>/dev/null | grep "^docs/" | wc -l | tr -d ' ')
       if [ "$DOCS_CHANGED" -eq 0 ]; then
