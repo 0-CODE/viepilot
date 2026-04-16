@@ -45,6 +45,10 @@ Complete reference for all ViePilot skills.
 - **Product horizon:** session file giữ **`## Product horizon`** (MVP / Post-MVP / Future tags, deferred capabilities, hoặc single-release statement) để `/vp-crystallize` không bỏ sót post-MVP — xem `workflows/brainstorm.md`.
 - UI Direction (optional): `.viepilot/ui-direction/{session-id}/` — legacy (`index.html`) hoặc multi-page (`pages/*.html` + hub + `## Pages inventory` trong `notes.md`). Chi tiết: [UI Direction](user/features/ui-direction.md).
 
+### Adapter-Aware Interactive Prompts (ENH-048)
+- **Claude Code (terminal)**: dùng `AskUserQuestion` tool — click-to-select UI cho session intent + landing page layout
+- **Cursor / Codex / Antigravity / other**: tự động fallback về text list — không cần cấu hình
+
 ---
 
 ## /vp-crystallize
@@ -100,6 +104,10 @@ CONTRIBUTORS.md
 LICENSE
 README.md
 ```
+
+### Adapter-Aware Interactive Prompts (ENH-048)
+- **Claude Code (terminal)**: dùng `AskUserQuestion` tool cho license selection, brownfield overwrite confirm, polyrepo prompt, UI direction gate, architect suggestion
+- **Cursor / Codex / Antigravity / other**: tự động fallback về text list — không cần cấu hình
 
 ---
 
@@ -312,6 +320,10 @@ CHANGELOG.md (updated)
 3. Create request file
 4. Add to backlog
 5. Offer routing options (fix now, add to phase, etc.)
+
+### Adapter-Aware Interactive Prompts (ENH-048)
+- **Claude Code (terminal)**: dùng `AskUserQuestion` tool cho request type detection, bug severity, feature priority
+- **Cursor / Codex / Antigravity / other**: tự động fallback về text list — không cần cấu hình
 
 ---
 
