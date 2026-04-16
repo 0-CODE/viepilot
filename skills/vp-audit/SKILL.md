@@ -74,6 +74,9 @@ When auditing a project bootstrapped via `vp-crystallize --brownfield`:
 - `ARCHITECTURE.md` counts vs actual `skills/`, `workflows/`, CLI
 - `README.md` viepilot-specific badges (version, skills-N, workflows-N)
 - `docs/skills-reference.md` sections vs `skills/` directory
+- **Silent by default (ENH-049):** Tier 4 output is suppressed when all checks pass (✅)
+  or when the check is skipped (non-framework repo). Output only appears when issues (⚠️)
+  are found. Non-framework repos: Tier 4 skipped silently with no message.
 
 **Output:**
 - Report by 4 tiers, each tier with its own status
