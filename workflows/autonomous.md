@@ -36,6 +36,26 @@ cat .viepilot/ROADMAP.md
 Read `~/.viepilot/config.json` → `COMMUNICATION_LANG` (default: `en`).
 Use `COMMUNICATION_LANG` for all banners, control-point messages, and user-facing output in this session.
 
+### Tag Prefix Resolution (ENH-050)
+Resolve the enriched git tag prefix once at session start. All task/phase tags use `${TAG_PREFIX}`.
+
+```bash
+PROJECT_PREFIX=$(node bin/vp-tools.cjs info --prefix 2>/dev/null \
+  || grep -i "^prefix:" .viepilot/PROJECT-META.md 2>/dev/null | awk '{print $2}' \
+  || basename "$(pwd)")
+BRANCH_SAFE=$(git rev-parse --abbrev-ref HEAD 2>/dev/null \
+  | sed 's/[^a-zA-Z0-9._-]/-/g' || echo "main")
+VERSION=$(node -e "try{console.log(require('./package.json').version)}catch(e){console.log('0.0.0')}" 2>/dev/null \
+  || grep '"version"' package.json 2>/dev/null | head -1 | sed 's/.*"\([0-9.]*\)".*/\1/' || echo "0.0.0")
+TAG_PREFIX="${PROJECT_PREFIX}-${BRANCH_SAFE}-${VERSION}"
+# Example: viepilot-main-2.17.0
+# Tags: ${TAG_PREFIX}-vp-p{phase}-t{task}
+#        ${TAG_PREFIX}-vp-p{phase}-t{task}-done
+#        ${TAG_PREFIX}-vp-p{phase}-complete
+```
+
+> Note: dots in version are valid in git tag names. Branch `/` → `-` via sed.
+
 Display startup banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -195,7 +215,7 @@ Canonical order for every task: **Validate contract → Doc-first gate → Stack
 
 If any check fails:
 - Mark task `blocked` in `PHASE-STATE.md` and list what is missing under **Notes**
-- **Do not** create `{projectPrefix}-vp-p{phase}-t{task}`
+- **Do not** create `{TAG_PREFIX}-vp-p{phase}-t{task}` (where `TAG_PREFIX=${PROJECT_PREFIX}-${BRANCH_SAFE}-${VERSION}`)
 - **Do not** proceed to **Execute Task**
 
 #### Stack Preflight (token-efficient lookup)
@@ -213,7 +233,10 @@ If stack cache is missing:
 
 Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
 
-Create git tag: `{projectPrefix}-vp-p{phase}-t{task}`  
+Create git tag: `{TAG_PREFIX}-vp-p{phase}-t{task}` (enriched format: `${PROJECT_PREFIX}-${BRANCH_SAFE}-${VERSION}-vp-p{phase}-t{task}`)
+```bash
+git tag "${TAG_PREFIX}-vp-p${PHASE}-t${TASK}"
+```
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
 #### Execute Task
@@ -289,7 +312,7 @@ If any check fails:
 #### Handle Result
 
 **PASS:**
-- Create git tag: `{projectPrefix}-vp-p{phase}-t{task}-done`
+- Create git tag: `{TAG_PREFIX}-vp-p{phase}-t{task}-done` (e.g. `git tag "${TAG_PREFIX}-vp-p${PHASE}-t${TASK}-done"`)
 - Update PHASE-STATE.md immediately: task → done, append files changed by this task to Files Changed table (individual files, no glob patterns)
 - Update TRACKER.md immediately
 - Update HANDOFF.json immediately
@@ -355,7 +378,7 @@ When all tasks in phase are done/skipped:
    | smarttrack-*/pom.xml (8 files) | 1.1 |   ← WRONG: glob pattern
    | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
-4. Create git tag: `{projectPrefix}-vp-p{phase}-complete`
+4. Create git tag: `{TAG_PREFIX}-vp-p{phase}-complete` (e.g. `git tag "${TAG_PREFIX}-vp-p${PHASE}-complete"`)
 5. Check version bump needed:
    - Features added → MINOR
    - Fixes only → PATCH
