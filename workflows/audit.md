@@ -338,8 +338,7 @@ Include source links and last-updated timestamp.
 
 ```bash
 if [ "$IS_VIEPILOT_FRAMEWORK" != "true" ]; then
-  echo "→ Tier 4 skipped (not a viepilot framework repo)"
-  # Jump to step 5 (report)
+  # Tier 4 skipped silently — not a viepilot framework repo
 fi
 ```
 
@@ -389,14 +388,22 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
 ```
 
 ### 4f. Report Tier 4 results
-```
- TIER 4: Framework Integrity
- ─────────────────────────────────────────────────
- Skills count (ARCHITECTURE.md)  {✅ N in sync | ⚠️ N actual vs M documented}
- Workflows count                  {✅ N in sync | ⚠️ N actual vs M documented}
- CLI commands count               {✅ N in sync | ⚠️ N actual vs M documented}
- README.md badges                 {✅ In sync | ⚠️ version/skills/workflows drift}
- docs/skills-reference.md         {✅ Complete | ⚠️ N skills missing}
+
+> **Silent by default (ENH-049):** Only output Tier 4 results when `TIER4_ISSUES > 0`.
+> If all checks pass or Tier 4 was skipped, produce no output — the user does not
+> need to see "✅ In sync" or "ℹ️ Skipped" every run.
+
+```bash
+if [ "$TIER4_ISSUES" -gt 0 ]; then
+  echo " TIER 4: Framework Integrity"
+  echo " ─────────────────────────────────────────────────"
+  # Print each failing check:
+  # Skills count (ARCHITECTURE.md)  ⚠️ N actual vs M documented
+  # Workflows count                  ⚠️ N actual vs M documented
+  # CLI commands count               ⚠️ N actual vs M documented
+  # README.md badges                 ⚠️ version/skills/workflows drift
+  # docs/skills-reference.md         ⚠️ N skills missing
+fi
 ```
 </step>
 
@@ -412,7 +419,6 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
  Tier 1: ViePilot State     ✅ All consistent
  Tier 2: Project Docs       ✅ No drift detected
  Tier 3: Stack Practices    {✅ In sync | ⚠️ N issues}
- Tier 4: Framework          {✅ In sync | ℹ️ Skipped}
 
  Everything looks good!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -427,7 +433,9 @@ MISSING_IN_SKILLSREF=$(comm -23 <(echo "$ACTUAL_SKILLS_LIST") <(echo "$DOCUMENTE
  Tier 1: ViePilot State     {✅ | ⚠️ N issues}
  Tier 2: Project Docs       {✅ | ⚠️ N issues}
  Tier 3: Stack Practices    {✅ | ⚠️ N issues}
- Tier 4: Framework          {✅ | ⚠️ N issues | ℹ️ Skipped}
+{if TIER4_ISSUES > 0}
+ Tier 4: Framework          ⚠️ {TIER4_ISSUES} issues
+{/if}
 
  ISSUES DETAIL:
  {list each issue with context}
