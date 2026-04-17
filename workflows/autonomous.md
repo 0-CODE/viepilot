@@ -428,6 +428,46 @@ fi
 ```
 </step>
 
+<step name="post_phase_audit">
+## 5c. Post-Phase Documentation Audit (Tier 1 + 2 only)
+
+After the phase-complete git tag is created, run a fast silent audit:
+
+```bash
+AUDIT_ISSUES=0
+
+# Tier 1: ROADMAP.md phase marked ✅?
+PHASE_IN_ROADMAP=$(grep -c "Phase ${PHASE_NUM}.*✅" .viepilot/ROADMAP.md 2>/dev/null || echo "0")
+[ "$PHASE_IN_ROADMAP" -eq 0 ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 1: Phase ${PHASE_NUM} not marked ✅ in ROADMAP.md"
+
+# Tier 1: HANDOFF.json current phase matches?
+HANDOFF_PHASE=$(node -e "try{const h=require('./.viepilot/HANDOFF.json');console.log(h.phase||'')}catch(e){}" 2>/dev/null)
+[ "$HANDOFF_PHASE" != "$PHASE_NUM" ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 1: HANDOFF.json phase=$HANDOFF_PHASE, expected $PHASE_NUM"
+
+# Tier 2: README.md version badge matches package.json?
+PKG_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+README_VERSION=$(grep -o 'version-[0-9]*\.[0-9]*\.[0-9]*' README.md 2>/dev/null | head -1 | sed 's/version-//')
+[ "$PKG_VERSION" != "$README_VERSION" ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 2: README.md badge=$README_VERSION, package.json=$PKG_VERSION"
+```
+
+If `AUDIT_ISSUES > 0`:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ POST-PHASE AUDIT: {AUDIT_ISSUES} issue(s) found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{list issues}
+
+Fix now before starting next phase? (y/n)
+→ y: run /vp-audit --fix  then continue
+→ n: continue (issues noted, non-blocking)
+```
+
+If `AUDIT_ISSUES == 0`: silent — no output.
+</step>
+
 <step name="iterate">
 ## 6. Iterate
 

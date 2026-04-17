@@ -524,32 +524,55 @@ Create `.viepilot/audit-report.md`:
 <integration>
 ## Auto-Hook Integration
 
-Add to `workflows/autonomous.md` after phase complete:
+The following `<step name="post_phase_audit">` block is inserted into `workflows/autonomous.md`
+immediately after the `<step name="phase_complete">` block (after git tag + push, before
+starting the next phase).
 
 ```xml
 <step name="post_phase_audit">
-## Post-Phase Documentation Audit
+## Post-Phase Documentation Audit (Tier 1 + 2 only)
 
-After marking phase complete:
+After the phase-complete git tag is created, run a fast silent audit:
 
-1. Run silent audit (Tier 1 + Tier 2 only)
-   ```bash
-   # Conceptually:
-   /vp-audit --silent
-   ```
+```bash
+AUDIT_ISSUES=0
 
-2. If issues found:
-   ```
-   ⚠️ Documentation may be out of sync.
-   
-   Run /vp-audit to check and fix.
-   
-   Continue anyway? (y/n)
-   ```
+# Tier 1: ROADMAP.md phase marked ✅?
+PHASE_IN_ROADMAP=$(grep -c "Phase ${PHASE_NUM}.*✅" .viepilot/ROADMAP.md 2>/dev/null || echo "0")
+[ "$PHASE_IN_ROADMAP" -eq 0 ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 1: Phase ${PHASE_NUM} not marked ✅ in ROADMAP.md"
 
-3. Recommend running before version bump
+# Tier 1: HANDOFF.json current phase matches?
+HANDOFF_PHASE=$(node -e "try{const h=require('./.viepilot/HANDOFF.json');console.log(h.phase||'')}catch(e){}" 2>/dev/null)
+[ "$HANDOFF_PHASE" != "$PHASE_NUM" ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 1: HANDOFF.json phase=$HANDOFF_PHASE, expected $PHASE_NUM"
+
+# Tier 2: README.md version badge matches package.json?
+PKG_VERSION=$(node -p "require('./package.json').version" 2>/dev/null)
+README_VERSION=$(grep -o 'version-[0-9]*\.[0-9]*\.[0-9]*' README.md 2>/dev/null | head -1 | sed 's/version-//')
+[ "$PKG_VERSION" != "$README_VERSION" ] && AUDIT_ISSUES=$((AUDIT_ISSUES+1)) && \
+  echo "⚠️  Tier 2: README.md badge=$README_VERSION, package.json=$PKG_VERSION"
+```
+
+If `AUDIT_ISSUES > 0`:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ POST-PHASE AUDIT: {AUDIT_ISSUES} issue(s) found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{list issues above}
+
+Fix now before starting next phase? (y/n)
+→ y: run /vp-audit --fix  then continue
+→ n: continue (issues noted, non-blocking)
+```
+
+If `AUDIT_ISSUES == 0`: silent — no output.
 </step>
 ```
+
+> **Note:** This hook runs Tier 1 + Tier 2 checks only (3 fast assertions). It does NOT
+> invoke `/vp-audit` in full — Tier 3 (stack) and Tier 4 (framework) are too slow for
+> a post-phase gate. For a full audit, run `/vp-audit` manually.
 </integration>
 
 <success_criteria>
