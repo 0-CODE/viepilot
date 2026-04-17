@@ -128,13 +128,44 @@ git log -1 --oneline
 <step name="update_state">
 ## 7. Update State Files
 
-Parse tag to determine phase/task (support both legacy and project-scoped):
-- `vp-p{N}-t{M}` or `{project}-vp-p{N}-t{M}` → Phase N, Task M, status: in_progress
-- `vp-p{N}-t{M}-done` or `{project}-vp-p{N}-t{M}-done` → Phase N, Task M+1, status: not_started
-- `vp-p{N}-complete` or `{project}-vp-p{N}-complete` → Phase N+1, Task 1, status: not_started
+Parse tag to determine phase/task — 3 supported formats (ENH-050):
 
-Update HANDOFF.json accordingly.
-Update TRACKER.md progress.
+- **Format A** (legacy): `vp-p{N}-t{M}[-done]` or `vp-p{N}-complete`
+- **Format B** (project-scoped): `{project}-vp-p{N}-t{M}[-done]` or `{project}-vp-p{N}-complete`
+- **Format C** (enriched): `{project}-{branch}-{version}-vp-p{N}-t{M}[-done|-complete]`
+
+For all formats, extract N and M by matching the terminal segments:
+
+```bash
+TAG="{selected_tag}"
+
+# Extract phase number — works for all 3 formats
+PHASE_NUM=$(echo "$TAG" | grep -oE 'vp-p[0-9]+' | grep -oE '[0-9]+$')
+
+# Extract task number if present
+TASK_NUM=$(echo "$TAG" | grep -oE '\-t[0-9]+' | tail -1 | grep -oE '[0-9]+$')
+
+# Determine restore intent
+if echo "$TAG" | grep -q '\-complete$'; then
+  # Phase complete tag → restore to start of next phase
+  RESTORE_PHASE=$((PHASE_NUM + 1))
+  RESTORE_TASK=1
+  RESTORE_STATUS="not_started"
+elif echo "$TAG" | grep -q '\-done$'; then
+  # Task done tag → restore to start of next task
+  RESTORE_PHASE=$PHASE_NUM
+  RESTORE_TASK=$((TASK_NUM + 1))
+  RESTORE_STATUS="not_started"
+else
+  # Task start tag → restore to in-progress state
+  RESTORE_PHASE=$PHASE_NUM
+  RESTORE_TASK=${TASK_NUM:-1}
+  RESTORE_STATUS="in_progress"
+fi
+```
+
+Update HANDOFF.json with `RESTORE_PHASE`, `RESTORE_TASK`, `RESTORE_STATUS`.
+Update TRACKER.md progress accordingly.
 </step>
 
 <step name="confirm_success">
