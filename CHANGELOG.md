@@ -7,6 +7,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.18.0] - 2026-04-18
+
+### Fixed
+- **vp-rollback** (BUG-014): `rollback.md` Step 7 now parses enriched tag format
+  `{project}-{branch}-{version}-vp-p{N}-t{M}` introduced by ENH-050. Rollback to
+  any Phase 57+ checkpoint correctly restores HANDOFF.json phase/task state.
+  All 3 formats (legacy, project-scoped, enriched) handled via `grep -oE vp-p[0-9]+`.
+
+### Changed
+- **vp-crystallize** (ENH-051): Added "Brownfield Execution Path" table clarifying
+  which sub-steps (1A–1D) run, skip, or are conditional in brownfield mode.
+  Steps 1A/1B CONDITIONAL; Steps 1C/1D SKIP with rationale.
+- **vp-brainstorm** (ENH-052): Step 6 now validates phase assignment before saving.
+  Scope-locked sessions with features but no phase assignments are blocked with
+  actionable message. Exploratory sessions and brownfield stubs bypass the gate.
+- **Version bump rules** (ENH-053): Consolidated into `.viepilot/SYSTEM-RULES.md`
+  as single canonical table with precedence rule (MAJOR > MINOR > PATCH) and
+  mixed-phase handling. `evolve.md` and `autonomous.md` reference this table
+  instead of defining rules inline.
+- **vp-audit post-phase hook** (ENH-054): Auto-hook integration upgraded from
+  conceptual note to concrete `<step name="post_phase_audit">` block in
+  `autonomous.md`. Runs 3 fast Tier 1+2 checks after every phase-complete event;
+  completely silent when no issues found; y/n prompt when issues detected.
+- **AskUserQuestion enforcement** (ENH-055): All 13 AUQ prompt blocks across 4
+  workflows (evolve, request, brainstorm, crystallize) now explicitly mark Claude
+  Code adapter as REQUIRED. Plain-text menus remain as fallback for non-Claude-Code
+  adapters only. `vp-evolve/SKILL.md` gains new Adapter Compatibility section.
+
+### Files
+- `workflows/rollback.md` — Step 7: 3-format tag parse with `grep -oE`
+- `workflows/crystallize.md` — Brownfield Execution Path table (Step 0-C → Step 1)
+- `workflows/brainstorm.md` — Pre-save phase validation gate in Step 6
+- `.viepilot/SYSTEM-RULES.md` — Canonical Version Bump Rules table
+- `workflows/evolve.md` — Version bump ref → SYSTEM-RULES.md; AUQ REQUIRED
+- `workflows/autonomous.md` — Version bump ref + `post_phase_audit` step (5c)
+- `workflows/audit.md` — Auto-hook: concrete integration spec replaces conceptual note
+- `workflows/request.md`, `brainstorm.md`, `crystallize.md` — AUQ REQUIRED
+- `skills/vp-evolve/SKILL.md` — New Adapter Compatibility section
+- `skills/vp-request`, `vp-brainstorm`, `vp-crystallize` SKILL.md — AUQ REQUIRED
+- `tests/unit/vp-workflow-consistency.test.js` — 35 contract tests
+
 ## [2.17.0] - 2026-04-17
 
 ### Changed

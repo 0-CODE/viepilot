@@ -524,12 +524,12 @@ Create `.viepilot/audit-report.md`:
 <integration>
 ## Auto-Hook Integration
 
-The following `<step name="post_phase_audit">` block is inserted into `workflows/autonomous.md`
-immediately after the `<step name="phase_complete">` block (after git tag + push, before
+The following `&lt;step name="post_phase_audit"&gt;` block is inserted into `workflows/autonomous.md`
+immediately after the `&lt;step name="phase_complete"&gt;` block (after git tag + push, before
 starting the next phase).
 
 ```xml
-<step name="post_phase_audit">
+&lt;step name="post_phase_audit"&gt;
 ## Post-Phase Documentation Audit (Tier 1 + 2 only)
 
 After the phase-complete git tag is created, run a fast silent audit:
@@ -567,7 +567,7 @@ Fix now before starting next phase? (y/n)
 ```
 
 If `AUDIT_ISSUES == 0`: silent — no output.
-</step>
+&lt;/step&gt;
 ```
 
 > **Note:** This hook runs Tier 1 + Tier 2 checks only (3 fast assertions). It does NOT
