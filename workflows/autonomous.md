@@ -379,9 +379,8 @@ When all tasks in phase are done/skipped:
    | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
 4. Create git tag: `{TAG_PREFIX}-vp-p{phase}-complete` (e.g. `git tag "${TAG_PREFIX}-vp-p${PHASE}-complete"`)
-5. Check version bump needed:
-   - Features added → MINOR
-   - Fixes only → PATCH
+5. Check version bump needed — apply `.viepilot/SYSTEM-RULES.md → Version Bump Rules`:
+   - Features added → MINOR; Fixes only → PATCH; Mixed → MINOR; Breaking → MAJOR
 6. Update TRACKER.md
 7. Push all changes:
    ```bash

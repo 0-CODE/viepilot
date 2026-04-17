@@ -288,13 +288,15 @@ Add to ROADMAP.md as phase {N+0.5} or insert between phases.
 <step name="update_version">
 ## 4. Update Version
 
-Based on changes:
+Apply the canonical bump rules from `.viepilot/SYSTEM-RULES.md → Version Bump Rules`.
+Precedence: MAJOR > MINOR > PATCH. Mixed phase → highest applicable bump wins.
 
-| Mode | Version Bump |
-|------|--------------|
-| Add Feature | MINOR (x.Y.z) |
-| New Milestone | MAJOR or MINOR |
-| Refactor | PATCH (x.y.Z) |
+Quick reference:
+- Add Feature → **MINOR**
+- Bug fix only → **PATCH**
+- Refactor (no behavior change) → **PATCH**
+- Mixed feature + fix → **MINOR**
+- Breaking change → **MAJOR**
 
 Update in:
 - TRACKER.md
