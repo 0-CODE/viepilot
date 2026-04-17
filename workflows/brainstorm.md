@@ -7,9 +7,10 @@ Allows research inline within the same brainstorm session when needed.
 
 | Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
 |---------|----------------------|-----------------------|-----------|----------------------|
-| Interactive prompts | ✅ `AskUserQuestion` tool | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+| Interactive prompts | ✅ `AskUserQuestion` tool — **REQUIRED** | ❌ text fallback | ❌ text fallback | ❌ text fallback |
 
-When `AskUserQuestion` is not available, each prompt block falls back to the plain-text numbered list shown below it — no configuration needed.
+**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu below if the tool returns an error or is unavailable.
+**Cursor / Codex CLI / Antigravity / other adapters:** `AskUserQuestion` not available — use text menus below.
 
 ## ViePilot Skill Scope Policy (BUG-004)
 
@@ -47,12 +48,12 @@ Parse results to get list of existing sessions.
 **If previous sessions exist:**
 
 > **Adapter-aware prompt:**
-> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable. AUQ spec:
 >   - question: "Previous brainstorm sessions found. What would you like to do?"
 >   - header: "Session"
 >   - options: [{ label: "Continue recent session", description: "Resume the most recent session from where it stopped" }, { label: "Review specific session", description: "Choose a particular session to review or continue" }, { label: "New brainstorm session", description: "Start fresh — previous sessions are preserved" }]
 >   - multiSelect: false
-> - **Cursor / Codex / Antigravity / other:** use text menu below
+> **Cursor / Codex / Antigravity / other:** use text menu below
 
 ```
 I found previous brainstorm sessions:
@@ -137,12 +138,12 @@ If the user is brainstorming a landing page / homepage / marketing page:
 2. Present a layout menu for the user to choose from:
 
 > **Adapter-aware prompt:**
-> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable. AUQ spec:
 >   - question: "Which landing page layout fits your goals and audience?"
 >   - header: "Layout"
 >   - options: [{ label: "Layout A — Hero centric", description: "Hero + trust logos + features + CTA — best for brand awareness and conversions" }, { label: "Layout B — Problem/Solution", description: "Problem/Solution + social proof + pricing + FAQ — best for SaaS sign-ups" }, { label: "Layout C — Product storytelling", description: "Screenshots + testimonials + final CTA — best for product demos" }, { label: "Layout D — SaaS conversion", description: "Integrations + comparison + onboarding steps — best for tool adoption" }]
 >   - multiSelect: false
-> - **Cursor / Codex / Antigravity / other:** use list below
+> **Cursor / Codex / Antigravity / other:** use list below
 
    - Layout A: Hero centric + trust logos + features + CTA
    - Layout B: Problem/Solution + social proof + pricing + FAQ

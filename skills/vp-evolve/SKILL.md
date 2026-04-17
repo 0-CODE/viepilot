@@ -180,6 +180,24 @@ Next action: /vp-auto --from {new_phase}
 ```
 </process>
 
+## Adapter Compatibility
+
+### AskUserQuestion Tool (ENH-048 + ENH-055)
+
+| Adapter | Interactive Prompts | Notes |
+|---------|---------------------|-------|
+| Claude Code (terminal) | ✅ `AskUserQuestion` tool — **REQUIRED** | Must call AUQ; plain-text only if tool errors or is unavailable |
+| Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
+| Codex CLI | ❌ Text fallback | Native tool N/A |
+| Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
+
+**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu if the tool returns an error or is unavailable.
+
+**Prompts using AskUserQuestion in this skill:**
+- Evolve mode selection (Step 2 — Add Feature / New Milestone / Refactor)
+- Complexity selection (Step 3A — S/M/L/XL)
+- Brainstorm routing decision (Step 3A — Yes / No)
+
 <success_criteria>
 - [ ] User intent correctly identified
 - [ ] Architecture compatibility checked

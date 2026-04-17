@@ -6,9 +6,10 @@ Upgrade or expand the project: add features, start a new milestone, or refactor.
 
 | Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
 |---------|----------------------|-----------------------|-----------|----------------------|
-| Interactive prompts | ✅ `AskUserQuestion` tool | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+| Interactive prompts | ✅ `AskUserQuestion` tool — **REQUIRED** | ❌ text fallback | ❌ text fallback | ❌ text fallback |
 
-When `AskUserQuestion` is not available, each prompt block falls back to the plain-text numbered list shown below it — no configuration needed.
+**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu below if the tool returns an error or is unavailable.
+**Cursor / Codex CLI / Antigravity / other adapters:** `AskUserQuestion` not available — use text menus below.
 
 ## ViePilot Skill Scope Policy (BUG-004)
 
@@ -54,8 +55,9 @@ Determine:
 How would you like to evolve the project?
 ```
 
-> **Adapter-aware prompt:**
-> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable.
+> **Cursor / Codex / Antigravity:** use text menu below.
+> AUQ spec:
 >   - question: "How would you like to evolve the project?"
 >   - header: "Evolve mode"
 >   - options: [{ label: "Add Feature", description: "Add a new capability to the current milestone" }, { label: "New Milestone", description: "Archive current milestone and start a new scope" }, { label: "Refactor", description: "Improve existing code without adding new features" }]
@@ -81,23 +83,25 @@ Describe the new feature:
 3. Which services/modules affected?
 4. Dependencies on existing code?
 
-> **Adapter-aware prompt (question 5 — complexity):**
-> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+> **Claude Code (terminal) — REQUIRED (question 5 — complexity):** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable.
+> **Cursor / Codex / Antigravity:** use text menu below.
+> AUQ spec:
 >   - question: "Estimated implementation complexity?"
 >   - header: "Complexity"
 >   - options: [{ label: "S — Small", description: "Few hours — isolated change, 1 file" }, { label: "M — Medium", description: "1–2 days — 1–2 files, some integration" }, { label: "L — Large", description: "3–5 days — multiple modules affected" }, { label: "XL — Extra Large", description: "1+ week — architectural change or major feature" }]
 >   - multiSelect: false
-> - **Cursor / Codex / Antigravity / other:** use text below
+> **Cursor / Codex / Antigravity / other:** use text below
 
 5. Estimated complexity? (S/M/L/XL)
 
-> **Adapter-aware prompt (question 6 — brainstorm routing):**
-> - **Claude Code (terminal):** use `AskUserQuestion` tool — spec:
+> **Claude Code (terminal) — REQUIRED (question 6 — brainstorm routing):** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable.
+> **Cursor / Codex / Antigravity:** use text menu below.
+> AUQ spec:
 >   - question: "Does this feature need a brainstorm session first?"
 >   - header: "Brainstorm?"
 >   - options: [{ label: "Yes — go to /vp-brainstorm", description: "Research-heavy, UX-driven, or landing page feature — brainstorm first" }, { label: "No — plan directly", description: "Scope is clear — proceed to phase/task planning now" }]
 >   - multiSelect: false
-> - **Cursor / Codex / Antigravity / other:** use text below
+> **Cursor / Codex / Antigravity / other:** use text below
 
 6. Need deep brainstorm? (landing page / UX / growth ideas / research-heavy)
 ```

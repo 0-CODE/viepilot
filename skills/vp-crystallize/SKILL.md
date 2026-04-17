@@ -271,7 +271,7 @@ This skill uses adapter-aware interactive prompts. Behavior depends on your adap
 
 | Adapter | Interactive Prompts | Notes |
 |---------|---------------------|-------|
-| Claude Code (terminal) | ✅ `AskUserQuestion` tool | Click-to-select UI, multi-select, preview panels |
+| Claude Code (terminal) | ✅ `AskUserQuestion` tool — **REQUIRED** | Must call AUQ; plain-text only if tool errors or is unavailable |
 | Claude Code (VS Code ext) | ⚠️ Partial | Terminal yes; VS Code UI pending [anthropics/claude-code#12609](https://github.com/anthropics/claude-code/issues/12609) |
 | Cursor (Plan Mode) | ⚠️ Partial | `AskQuestion` in Plan Mode only — not in Agent/Skills Mode |
 | Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
