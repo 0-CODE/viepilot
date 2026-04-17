@@ -593,6 +593,40 @@ After intake is **completed** or a **valid skip** (META already has profile) →
 <step name="save_session">
 ## 6. Save Session
 
+### Pre-Save Phase Assignment Validation (ENH-052)
+
+Before writing the session file, validate phase assignment completeness:
+
+**Scope-locked session** — `## Phases` section exists with real content OR user confirmed scope finalized (ref: Step 5.1 condition 1):
+
+```
+CHECK 1: Does session draft contain a non-empty ## Phases section?
+CHECK 2: Does Phase 1 have at least one feature/capability assigned?
+CHECK 3: Are there any features listed outside a phase (unassigned)?
+```
+
+**Gate condition:**
+- If scope is locked AND (CHECK 1 fails OR CHECK 2 fails):
+  → **Block save.** Show:
+  ```
+  ⚠️  Phase assignment incomplete — cannot save as Completed.
+
+  Features were discussed but no phase assignments exist.
+  Before saving:
+    1. Assign all features to phases (## Phases section)
+    2. Ensure Phase 1 has at least one feature
+
+  Return to the conversation to assign phases, then /save again.
+  ```
+- If scope is **not** locked (exploratory session — no feature assignments):
+  → **Allow save** with `Status: In Progress` and add advisory note to session file:
+  ```markdown
+  > ⚠️ Exploratory session — no phase assignments yet.
+  > Run /vp-brainstorm to continue and assign features to phases before /vp-crystallize.
+  ```
+- If brownfield stub session (`IS_BROWNFIELD=true`): **skip this gate** — brownfield stubs intentionally have no phases.
+- If all checks pass → proceed to file write below.
+
 Create/update file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
 ```markdown
