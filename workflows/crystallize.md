@@ -786,6 +786,31 @@ When generating TRACKER.md in Step 9 (brownfield mode only), append:
 
 </step>
 
+<step name="brownfield_execution_path">
+## Brownfield Execution Path
+
+When `IS_BROWNFIELD=true`, the following table governs which steps execute:
+
+| Step | Name | Brownfield behavior | Rationale |
+|------|------|---------------------|-----------|
+| 0 | Collect metadata | **RUN** | Always needed |
+| 0-B | Brownfield scanner | **RUN** | Core brownfield step |
+| 0-C | Generate brainstorm stub | **RUN** | Creates `session-brownfield-import.md` |
+| 1 | Analyze brainstorm | **RUN (stub only)** | Reads brownfield stub; skips greenfield-only checks |
+| 1A | UI direction gate | **CONDITIONAL** — run if `.viepilot/ui-direction/` already exists in the project |
+| 1B | Stack research cache | **CONDITIONAL** — skip if brownfield scanner already populated stack cache |
+| 1C | Architect artifact consumption | **SKIP** — no architect HTML workspace in a brownfield import |
+| 1D | Architect auto-activate suggestion | **SKIP** — no scope brainstorm; architect mode not applicable |
+| 2+ | All subsequent steps | **RUN** — same as greenfield from Step 2 onward |
+
+> **Implementation note for AI agents:** When `IS_BROWNFIELD=true`, check each CONDITIONAL
+> step against the stated condition before executing. Do **not** skip Step 1 entirely —
+> read the brownfield stub to extract stack + gap data for Step 2 (AI-GUIDE.md generation).
+> For Step 1B: check `~/.viepilot/stacks/` for entries created during the Step 0-B scan;
+> if present and non-empty, skip the full research pass in 1B.
+
+</step>
+
 <step name="analyze_brainstorm">
 ## Step 1: Analyze Brainstorm
 
