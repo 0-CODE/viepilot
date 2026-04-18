@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.19.0] - 2026-04-18
+
+### Added
+- **ENH-056: Skill invocation greeting banner** — all 17 `vp-*` skills now output
+  a version banner as the very first output on invocation:
+  ```
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   VIEPILOT ► VP-AUTO  v0.2.2 (fw 2.19.0)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ```
+  Addresses Claude Code UI change where skill-load indicators are no longer shown;
+  users can now confirm which skill version is running. 119 contract tests added.
+
 ## [2.18.0] - 2026-04-18
 
 ### Fixed

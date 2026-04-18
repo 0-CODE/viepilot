@@ -1,6 +1,6 @@
 {
   "name": "viepilot",
-  "version": "2.18.0",
+  "version": "2.19.0",
   "description": "**Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**",
   "main": "index.js",
   "bin": {
