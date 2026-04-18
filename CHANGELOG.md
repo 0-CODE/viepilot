@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.25.0] - 2026-04-18
+
+### Changed (ENH-061)
+- `workflows/brainstorm.md`: Added **Recommended Breakdown Ordering** — 8-step idea→architect+UI flow (free collection → scope lock → coverage mapping → architect design → arch→UI sync → UI direction → completeness gate → save)
+- `workflows/brainstorm.md`: Added **Feature → Coverage Mapping** step — after scope lock, maps each Phase 1 feature to an architect page + UI screen; outputs `## Coverage` matrix in `notes.md`; warns on features with no coverage in either mode (non-blocking)
+- `workflows/brainstorm.md`: Added **Section 6C — Architect → UI Direction Sync** (`arch_to_ui_sync`) — reverse sync from Architect workspace to UI Direction; surfaces UI implications of architectural decisions (async flows, auth roles, error codes, constraints); `/sync-ui` command; records `## arch_to_ui_sync` in `notes.md`
+- `workflows/brainstorm.md`: Expanded pre-save completeness gate with **CHECK 4** — non-blocking warning when both workspaces are active but Phase 1 features have no coverage in either mode
+- `skills/vp-brainstorm/SKILL.md`: Breakdown loop documented (coverage matrix, `arch_to_ui_sync` reverse sync, completeness gate, recommended ordering)
+
 ## [2.24.0] - 2026-04-18
 
 ### Changed (ENH-060)

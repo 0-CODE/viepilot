@@ -196,6 +196,45 @@ When the `pages/` directory exists or any `pages/*.html` is added / renamed / re
    - adjustments according to product objectives
 4. Keep the prototype at a directional description level; do not force production-ready code at the brainstorm stage.
 
+### Recommended Breakdown Ordering (ENH-061)
+
+For sessions that produce both system architecture and UI/UX artifacts, follow this sequence to ensure complete idea→architect+UI breakdown:
+
+```
+Step 1: Free idea collection
+  → Explore the problem space; no structure required yet
+
+Step 2: Scope lock + Phase assignment  (existing)
+  → Assign all features to Phase 1 / Phase 2 / Phase 3...
+  → Fill ## Phases in session draft
+
+Step 3: Feature → Coverage mapping  (ENH-061)
+  → For each Phase 1 feature: name the architect component AND UI screen
+  → Output: ## Coverage matrix in notes.md
+
+Step 4: Architect Design  (existing)
+  → Fill architect workspace per coverage matrix
+  → Use /vp-brainstorm --architect or let heuristics fire
+
+Step 5: Architect → UI sync  (ENH-061 — arch_to_ui_sync)
+  → After architect edits: check which architectural decisions impact UI screens
+  → Prompt user to update UI Direction accordingly
+
+Step 6: UI Direction  (existing)
+  → Fill UI workspace per coverage matrix + arch feedback
+  → Use /vp-brainstorm --ui or proactive 🎨 banner
+
+Step 7: Completeness gate  (ENH-061)
+  → Validate: every Phase 1 feature has ≥1 coverage (architect OR UI)
+  → Warn on any feature with no coverage in both modes
+
+Step 8: /save → /vp-crystallize  (existing)
+```
+
+> **Note**: Steps 3–7 are optional for simple or early-stage sessions. The flow is recommended when a session produces both Architect Design and UI Direction artifacts.
+
+---
+
 ### Architect Design Mode (FEAT-011)
 
 Brainstorm system architecture with live HTML generation — a visual workspace for the user to review, edit, and present before running `/vp-crystallize`.
@@ -618,6 +657,8 @@ Before writing the session file, validate phase assignment completeness:
 CHECK 1: Does session draft contain a non-empty ## Phases section?
 CHECK 2: Does Phase 1 have at least one feature/capability assigned?
 CHECK 3: Are there any features listed outside a phase (unassigned)?
+CHECK 4 (ENH-061): If both Architect workspace AND UI Direction workspace are active —
+         does ## Coverage in notes.md have any Phase 1 feature with "none yet" in BOTH columns?
 ```
 
 **Gate condition:**
@@ -639,8 +680,40 @@ CHECK 3: Are there any features listed outside a phase (unassigned)?
   > ⚠️ Exploratory session — no phase assignments yet.
   > Run /vp-brainstorm to continue and assign features to phases before /vp-crystallize.
   ```
+- If CHECK 4 fires (both workspaces active + uncovered Phase 1 features): **non-blocking warning**:
+  ```
+  ⚠️  Coverage gap detected — these Phase 1 features have no Architect or UI coverage:
+  - {feature name}
+  Consider running /sync-ui or adding these features to a workspace before /vp-crystallize.
+  Proceed with save? (yes / skip coverage for now)
+  ```
 - If brownfield stub session (`IS_BROWNFIELD=true`): **skip this gate** — brownfield stubs intentionally have no phases.
-- If all checks pass → proceed to file write below.
+- If all checks pass → proceed to Feature → Coverage Mapping check, then file write.
+
+### Feature → Coverage Mapping (ENH-061)
+
+**Trigger**: After phase assignment checks pass and before file write. Runs when the session has BOTH Architect workspace AND UI Direction workspace active, or when `## Coverage` already exists in notes.md.
+
+For each feature/capability listed under **Phase 1** in the session draft, identify:
+- **Architect coverage**: which architect page handles this? (`architecture`, `data-flow`, `erd`, `apis`, `tech-stack`, `decisions`, `user-use-cases`, `sequence-diagram`, `deployment`, or `none yet`)
+- **UI coverage**: which UI screen/page handles this? (page slug, `index.html`, or `none yet`)
+
+Output a `## Coverage` section in `notes.md`:
+
+```markdown
+## Coverage
+| Feature | Architect page | UI screen |
+|---------|---------------|-----------|
+| User authentication | architecture, apis | login.html, register.html |
+| Dashboard overview | data-flow | dashboard.html |
+| Notification system | architecture | none yet |
+```
+
+**Warning rules (non-blocking)**:
+- If a Phase 1 feature has `none yet` in **both** columns:
+  `⚠️ Feature "{name}" has no coverage in Architect or UI Direction. Consider adding it to a workspace before /vp-crystallize.`
+- If Architect workspace exists but coverage matrix is empty: suggest running coverage mapping.
+- User can dismiss with "skip coverage" or "fill in later" — does **not** block save.
 
 Create/update file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 
@@ -754,6 +827,66 @@ git add docs/brainstorm/
 git commit -m "docs: brainstorm session {date}"
 git push
 ```
+</step>
+
+<step name="arch_to_ui_sync">
+## 6C. Architect → UI Direction Sync (ENH-061)
+
+Bridges the gap from **Architect Design** → **UI Direction** — the reverse of `architect_delta_sync` (ENH-034, which syncs UI → Architect).
+
+When the architect workspace is updated (any page edit during the session), scan the changed content for decisions that carry **UI implications**:
+
+### Architectural decisions that trigger UI updates
+
+| Architect signal | UI implication to check |
+|-----------------|------------------------|
+| Async / event-driven flow | Loading states, optimistic updates, error handling screens |
+| API pagination | Pagination component, empty state, scroll-to-load |
+| Auth roles / permissions | Conditional UI rendering, role-specific screens |
+| Rate limiting / quota | Warning banners, upgrade prompts, disabled states |
+| Real-time → polling fallback | Refresh indicators, stale data warnings |
+| File size / type constraints | Upload validation, error messages, progress indicators |
+| Third-party OAuth / SSO | Redirect flow, consent screen, token expiry handling |
+| Error codes from APIs | Error state screens, retry affordances |
+| Data constraints (max length, required fields) | Form validation UI, helper text |
+
+### Trigger conditions
+`arch_to_ui_sync` fires when:
+- The user edits any architect workspace page during an active brainstorm session that also has a UI Direction workspace
+- User types `/sync-ui` (manual trigger, parallel to `/sync-arch`)
+- After `/review-arch` if changes were applied
+
+### Output format
+```
+🎨 Architect → UI sync — detected implications:
+
+From `data-flow.html` (async notification queue):
+  → UI may need: notification badge with unread count, real-time update indicator, empty state
+  → Affected screens: dashboard.html (not yet modeled in UI Direction)
+
+Update UI Direction to reflect these decisions?
+1. Yes — open UI Direction and address these screens/states now
+2. Note it in notes.md (## arch_to_ui_sync) for later
+3. Skip — already handled
+```
+
+### Manual command
+`/sync-ui` — manually trigger arch_to_ui_sync from the current architect session state. If no UI Direction workspace is active, suggest activating it first.
+
+When `/sync-ui` is used and no implications are found:
+`✓ No UI Direction implications detected from current architect changes.`
+
+### notes.md record
+Append to `notes.md` when action is taken:
+```yaml
+## arch_to_ui_sync
+- architect_page: data-flow.html
+  decision: async notification queue
+  ui_implication: unread count badge, empty state, real-time update indicator
+  status: noted | addressed | skipped
+  date: {YYYY-MM-DD}
+```
+
 </step>
 
 <step name="architect_delta_sync">
@@ -913,6 +1046,7 @@ User can use the following commands during a brainstorm session:
 - `/research ui` — alias of `/research-ui`
 - `/review-arch` — Architect Mode: output summary table of decisions + open_questions from `notes.md`, confirm before continuing (FEAT-011)
 - `/sync-arch` — Architect Delta Sync (ENH-034): manually trigger architect HTML sync from current UI brainstorm session; scans session for architect gaps → updates relevant architect workspace pages
+- `/sync-ui` — Architect → UI Direction Sync (ENH-061): manually trigger arch_to_ui_sync; scans architect workspace for decisions that carry UI implications and prompts UI Direction updates
 - `/hooks-install` — Install the brainstorm staleness hook (FEAT-012): runs `vp-tools hooks install`; one-time setup per machine; auto-marks stale architect items after each AI response
 </commands>
 
