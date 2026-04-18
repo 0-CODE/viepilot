@@ -26,6 +26,8 @@ Create and manage project requests: bugs, features, enhancements, tech debt, and
 
 <process>
 
+> **AUQ preload — Claude Code adapter (ENH-059):** At session start, before any interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred schema. Required on Claude Code (terminal). Skip only if `ToolSearch` returns an error → use text fallback for that session.
+
 <step name="init">
 ## 1. Initialize
 

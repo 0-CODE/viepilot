@@ -242,6 +242,22 @@ At any control point, offer:
 Display progress summary on stop.
 </process>
 
+## Adapter Compatibility
+
+### AskUserQuestion Tool (ENH-059)
+Control-point prompts use `AskUserQuestion` on Claude Code (terminal).
+
+| Adapter | Interactive Prompts | Notes |
+|---------|---------------------|-------|
+| Claude Code (terminal) | ✅ `AskUserQuestion` — **REQUIRED** at control points | Preload schema via ToolSearch first |
+| Cursor / Codex / Copilot / Antigravity | ❌ Text fallback | Plain numbered list |
+
+**Claude Code (terminal) — AUQ preload required (ENH-059):**
+Before the first interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred tool schema. Only after `ToolSearch` succeeds can `AskUserQuestion` be invoked. If `ToolSearch` returns an error, fall back to plain-text numbered list for that session.
+
+**Prompts using AskUserQuestion in this skill:**
+- Control point decisions (retry / skip / rollback / stop — Step 7)
+
 <success_criteria>
 - [ ] Phases executed in dependency order
 - [ ] Tasks tracked with git tags

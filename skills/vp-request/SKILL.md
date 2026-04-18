@@ -293,7 +293,10 @@ This skill uses adapter-aware interactive prompts. Behavior depends on your adap
 | Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
 | GitHub Copilot | ✅ `/skill-name` in Chat | Via `.agent.md` custom agent; AUQ not available — text fallback |
 
-When `AskUserQuestion` is not available, the skill automatically falls back to
+**Claude Code (terminal) — AUQ preload required (ENH-059):**
+Before the first interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred tool schema. Only after `ToolSearch` succeeds can `AskUserQuestion` be invoked. If `ToolSearch` returns an error, fall back to plain-text numbered list for that session.
+
+When `AskUserQuestion` is not available on other adapters, the skill automatically falls back to
 plain-text numbered list prompts — no configuration required.
 
 **Prompts using AskUserQuestion in this skill:**

@@ -204,7 +204,8 @@ Next action: /vp-auto --from {new_phase}
 | Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
 | GitHub Copilot | ✅ `/skill-name` in Chat | Via `.agent.md` custom agent; AUQ not available — text fallback |
 
-**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu if the tool returns an error or is unavailable.
+**Claude Code (terminal) — AUQ preload required (ENH-059):**
+Before the first interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred tool schema. Only after `ToolSearch` succeeds can `AskUserQuestion` be invoked. If `ToolSearch` returns an error, fall back to plain-text numbered list for that session.
 
 **Prompts using AskUserQuestion in this skill:**
 - Evolve mode selection (Step 2 — Add Feature / New Milestone / Refactor)

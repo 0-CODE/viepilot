@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.23.0] - 2026-04-18
+
+### Added
+- **ENH-059**: AskUserQuestion ToolSearch preload — all vp-* skills and workflow files on Claude Code adapter now instruct the model to call `ToolSearch { query: "select:AskUserQuestion" }` before the first interactive prompt, preventing deferred-tool fallback to text menus
+  - 5 SKILL.md files updated: `vp-request`, `vp-evolve`, `vp-auto`, `vp-brainstorm`, `vp-crystallize`
+  - 3 workflow files updated: `workflows/request.md`, `workflows/evolve.md`, `workflows/autonomous.md`
+  - `vp-auto/SKILL.md` now has a full AUQ adapter compatibility section
+
 ## [2.22.1] - 2026-04-18
 
 ### Fixed
