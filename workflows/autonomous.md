@@ -13,6 +13,29 @@ Pauses at control points for user decisions.
 
 - **`/vp-auto`** + this workflow is the **default lane** for **implementing** work that already has a **phase/task plan** (and doc-first **BUG-001**). **`/vp-request`** and **`/vp-evolve`** do **not** replace this step unless the user explicitly overrides — see **Implementation routing guard** in `workflows/request.md` and `workflows/evolve.md`.
 
+## Agent Delegation (ENH-057)
+
+This workflow delegates heavy/repetitive operations to sub-agents defined in `agents/`.
+Each agent is invoked via the pattern below rather than implemented inline.
+
+| Agent | When invoked | Operation |
+|-------|-------------|-----------|
+| tracker-agent | Task start, task complete, phase complete | TRACKER.md status updates |
+| changelog-agent | Post-phase last task (version bump) | CHANGELOG + package.json bump |
+| test-generator-agent | Last task of each phase (contract tests) | Test file generation + run |
+| doc-sync-agent | Bulk edits: ≥5 identical file types in Paths block | Multi-file .md updates |
+
+**Invoke-agent pattern** (Claude Code adapter):
+```
+Agent({
+  subagent_type: "general-purpose",
+  description: "{agent-name}: {operation}",
+  prompt: "Load agents/{agent-name}.md for full spec. Execute: {operation} with inputs: {inputs}"
+})
+```
+**Non-Claude Code adapters**: execute the equivalent operation inline in the same session.
+
+See `agents/` directory for full agent specifications.
 
 <process>
 
@@ -239,6 +262,28 @@ git tag "${TAG_PREFIX}-vp-p${PHASE}-t${TASK}"
 ```
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
 
+#### Bulk-Edit Task Detection — doc-sync-agent (ENH-057)
+
+**Before executing**, scan the `## Paths` block of the task:
+
+```
+IF (Paths block contains ≥5 files of the same type, e.g., skills/*/SKILL.md)
+  OR (task description matches: "update all N files", "add row to all skills", "sync across N files")
+→ Invoke doc-sync-agent instead of N sequential edits:
+
+   Agent({ subagent_type: "general-purpose",
+     description: "doc-sync-agent: {change_mode} across {file_pattern}",
+     prompt: "Load agents/doc-sync-agent.md. Pattern: {glob}. Mode: {change_mode}. Anchor: {anchor}. Content: {content}."
+   })
+   Non-Claude Code: apply changes sequentially inline.
+
+   Example: Task 84.3 "Update all 17 SKILL.md — add Copilot adapter row"
+   → Pattern: skills/*/SKILL.md | Mode: insert-row | Anchor: "| Codex CLI |" | Content: "| GitHub Copilot | ✅ ..."
+   → 1 agent call replaces 17 sequential Edit calls.
+```
+
+If Paths block has < 5 files: proceed with sequential edits as normal.
+
 #### Execute Task
 1. Read task objective and acceptance criteria
 2. Read SYSTEM-RULES.md for coding standards
@@ -335,11 +380,20 @@ After each PASS task and PASS sub-task (state-first, then continue):
 ```yaml
 update:
   - PHASE-STATE.md: task status, timestamp
-  - TRACKER.md: current state, progress
+  - TRACKER.md: current state, progress   ← via tracker-agent (ENH-057)
   - HANDOFF.json: latest position
   - ROADMAP.md: sync when phase status/progress changed
-  - CHANGELOG.md: if feature/fix completed
+  - CHANGELOG.md: if feature/fix completed  ← via changelog-agent at end of phase (ENH-057)
 ```
+
+**Tracker updates — invoke tracker-agent:**
+```
+Agent({ subagent_type: "general-purpose",
+  description: "tracker-agent: update task {phase}.{task} → {status}",
+  prompt: "Load agents/tracker-agent.md. Operation: update-task-status. Phase: {phase}. Task: {task}. Status: {status}."
+})
+```
+Non-Claude Code: update TRACKER.md inline as before.
 
 Rule:
 - Never defer state updates to end-of-phase only.
@@ -381,6 +435,19 @@ When all tasks in phase are done/skipped:
 4. Create git tag: `{TAG_PREFIX}-vp-p{phase}-complete` (e.g. `git tag "${TAG_PREFIX}-vp-p${PHASE}-complete"`)
 5. Check version bump needed — apply `.viepilot/SYSTEM-RULES.md → Version Bump Rules`:
    - Features added → MINOR; Fixes only → PATCH; Mixed → MINOR; Breaking → MAJOR
+
+   **Version bump — invoke changelog-agent (ENH-057, ENH-053 fix):**
+   ```
+   Agent({ subagent_type: "general-purpose",
+     description: "changelog-agent: bump to {version} + CHANGELOG [{version}]",
+     prompt: "Load agents/changelog-agent.md. Version: {version}. Date: {today}. Entries: {phase_summary_bullets}. Files: package.json + CHANGELOG.md."
+   })
+   ```
+   Non-Claude Code: update CHANGELOG.md + package.json inline as before.
+
+   > changelog-agent is the **single authority** for version bumps. Both autonomous.md and
+   > evolve.md invoke it — never do inline version bumps (resolves ENH-053).
+
 6. Update TRACKER.md
 7. Push all changes:
    ```bash
