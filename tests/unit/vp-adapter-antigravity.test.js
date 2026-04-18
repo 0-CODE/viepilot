@@ -71,7 +71,7 @@ describe('FEAT-014: Antigravity registry', () => {
     expect(ids).toContain('claude-code');
     expect(ids).toContain('cursor');
     expect(ids).toContain('antigravity');
-    expect(list.length).toBe(4);
+    expect(list.length).toBe(5);
   });
 });
 

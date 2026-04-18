@@ -2,7 +2,7 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-2.20.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.21.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skills](https://img.shields.io/badge/skills-17-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-13-orange.svg)](#workflows)

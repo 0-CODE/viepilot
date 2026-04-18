@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.21.0] - 2026-04-18
+
+### Added
+- **FEAT-019: GitHub Copilot Adapter** — install and run vp-* skills inside VS Code Copilot Chat and GitHub Copilot CLI
+  - `lib/adapters/copilot.cjs` — adapter definition with `~/.config/gh-copilot/` config home
+  - Auto-detect via `~/.config/gh-copilot/` directory or `gh` CLI binary presence
+  - Skill invocation: `/vp-status`, `/vp-auto`, etc. (same slash syntax as Claude Code / Cursor)
+  - Install command: `viepilot install --target copilot`
+  - 4 adapter-table SKILL.md files updated with GitHub Copilot row
+  - `docs/user/features/adapters.md` — Copilot section with surface matrix, prerequisites, limitations
+
 ## [2.20.0] - 2026-04-18
 
 ### Added
