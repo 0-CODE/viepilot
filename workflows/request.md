@@ -87,6 +87,39 @@ What type of request?
 ```
 </step>
 
+<step name="feasibility_gate">
+## 2B. Feasibility Gate — research-agent (ENH-057)
+
+**Trigger**: auto-activate for **Feature** and **Enhancement** requests when any of:
+- User description mentions a new platform, IDE, API, protocol, or SDK
+- User asks "is this possible?", "how does X work?", "feasibility of X"
+- Request type = Feature AND subject is an external integration
+
+**Skip for**: Bug reports, internal refactors, Enhancement requests on known code.
+
+If triggered:
+
+**Claude Code (terminal) — invoke research-agent:**
+```
+Agent({
+  subagent_type: "general-purpose",
+  description: "research-agent: feasibility study for {topic}",
+  prompt: `
+    Load agents/research-agent.md for full spec.
+    Topic: {extracted from user description}
+    Questions: ["What SDK/API exists?", "What are integration points?", "What config dir/convention?", "Feasibility rating?"]
+    Return a ## Research Findings section + ## Sources.
+  `
+})
+```
+
+**Non-Claude Code**: if web search available, perform inline research. Otherwise note "manual research needed" and continue gathering details.
+
+**Output**: embed research-agent findings in the `## Research Findings` section of the request file.
+
+> This gate made FEAT-019 (Copilot adapter) research systematic — apply it to all future platform/API feature requests.
+</step>
+
 <step name="list_requests">
 ## 3. List Requests (if --list)
 
@@ -256,6 +289,9 @@ Create `FEAT-{N}.md`:
 
 ## Summary
 {TITLE}
+
+## Research Findings
+{Populated by research-agent if feasibility gate triggered (Step 2B); omit section if not applicable}
 
 ## Problem Statement
 {PROBLEM}
