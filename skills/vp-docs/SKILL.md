@@ -4,6 +4,18 @@ description: "Generate comprehensive documentation for the project"
 version: 0.2.1
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-DOCS  v0.2.1 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-docs`, `/vp-docs`, "docs", "documentation", "tài liệu"

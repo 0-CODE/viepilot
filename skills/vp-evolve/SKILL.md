@@ -4,6 +4,18 @@ description: "Upgrade, add features, or start a new milestone"
 version: 0.3.0
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-EVOLVE  v0.3.0 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-evolve`, `/vp-evolve`, "evolve", "thêm feature", "milestone mới", "upgrade"

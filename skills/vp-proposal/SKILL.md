@@ -4,6 +4,18 @@ description: "Generate professional proposal packages (.pptx + .docx + .md) from
 version: 0.1.0
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-PROPOSAL  v0.1.0 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-proposal`, `/vp-proposal`, "proposal", "pitch deck", "presentation", "tài liệu đề xuất"

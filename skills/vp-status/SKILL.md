@@ -4,6 +4,18 @@ description: "Display progress dashboard and actionable insights"
 version: 0.1.1
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-STATUS  v0.1.1 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-status`, `/vp-status`, "status", "tiến độ", "đang ở đâu"

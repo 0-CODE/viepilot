@@ -4,6 +4,18 @@ description: "Brainstorm session to collect ideas and decisions for the project"
 version: 1.1.0
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-BRAINSTORM  v1.1.0 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-brainstorm`, `/vp-brainstorm`, hoặc yêu cầu "brainstorm"

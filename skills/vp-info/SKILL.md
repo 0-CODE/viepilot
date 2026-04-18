@@ -4,6 +4,18 @@ description: "Display ViePilot version, npm latest, skills/workflows list via vp
 version: 0.1.1
 ---
 
+<greeting>
+## Invocation Banner
+
+Output this banner as the **first** thing on every invocation — before questions, work, or any other output:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► VP-INFO  v0.1.1 (fw 2.19.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+</greeting>
+
 <cursor_skill_adapter>
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-info`, `/vp-info`, "viepilot version", "phiên bản viepilot", "skills list bundle"
