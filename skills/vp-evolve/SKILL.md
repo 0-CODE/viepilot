@@ -210,6 +210,7 @@ Next action: /vp-auto --from {new_phase}
 - Evolve mode selection (Step 2 — Add Feature / New Milestone / Refactor)
 - Complexity selection (Step 3A — S/M/L/XL)
 - Brainstorm routing decision (Step 3A — Yes / No)
+- Workflow continuation (Step 5 — Execute /vp-auto / Create request / Done)
 
 <success_criteria>
 - [ ] User intent correctly identified

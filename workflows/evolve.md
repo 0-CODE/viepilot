@@ -311,6 +311,8 @@ Update in:
 <step name="confirm">
 ## 5. Confirm & Suggest Next
 
+Output the evolution summary banner:
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► EVOLVE COMPLETE ✓
@@ -328,7 +330,32 @@ Update in:
  - Phase {N}: {name}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Next: /vp-auto --from {new_phase}
+```
+
+Then — **Claude Code adapter (terminal): use AskUserQuestion**:
+
+```
+question: "Phase {N} planned. What would you like to do next?"
+options:
+  - label: "Execute now → /vp-auto"
+    description: "Start implementing Phase {N} immediately (Recommended)"
+  - label: "Create another request → /vp-request"
+    description: "Log more requests before implementing"
+  - label: "Done for now"
+    description: "Exit — run /vp-auto later to start implementation"
+```
+
+**On selection:**
+- "Execute now → /vp-auto": invoke `/vp-auto --from {new_phase}` skill
+- "Create another request → /vp-request": invoke `/vp-request` skill
+- "Done for now": print brief confirmation and exit
+
+**Text fallback (Cursor, Codex, Copilot, Antigravity — AUQ not available):**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Next:
+ - /vp-auto --from {new_phase}    Execute Phase {N}
+ - /vp-request                    Create another request
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </step>

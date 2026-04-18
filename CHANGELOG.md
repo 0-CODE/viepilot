@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.0] - 2026-04-18
+
+### Added
+- **ENH-058**: Workflow continuation prompt — AskUserQuestion at vp-evolve and vp-request completion
+  - `workflows/evolve.md` Step 5: AUQ asks "Execute now / Create request / Done" — selecting Execute invokes `/vp-auto` immediately
+  - `workflows/request.md` Step 7: AUQ asks "Plan phase / Create another / Done" — selecting Plan invokes `/vp-evolve` immediately
+  - Text fallback for Cursor / Codex / Copilot / Antigravity adapters (static list preserved)
+  - `skills/vp-evolve/SKILL.md` + `skills/vp-request/SKILL.md` AUQ prompt tables updated
+
 ## [2.21.0] - 2026-04-18
 
 ### Added

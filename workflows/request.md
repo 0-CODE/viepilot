@@ -581,6 +581,8 @@ git push
 <step name="confirm">
 ## 7. Confirm
 
+Output the request summary banner:
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► REQUEST CREATED ✓
@@ -595,15 +597,33 @@ git push
  File: .viepilot/requests/{TYPE}-{N}.md
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Next Steps
+```
+
+Then — **Claude Code adapter (terminal): use AskUserQuestion**:
+
+```
+question: "Request {TYPE}-{N} logged. What would you like to do next?"
+options:
+  - label: "Plan phase + tasks → /vp-evolve"
+    description: "Create ROADMAP entry, phase dir, and task files now (Recommended)"
+  - label: "Create another request → /vp-request"
+    description: "Log more requests before planning"
+  - label: "Done for now"
+    description: "Exit — request is saved in backlog"
+```
+
+**On selection:**
+- "Plan phase + tasks → /vp-evolve": invoke `/vp-evolve` skill
+- "Create another request → /vp-request": invoke `/vp-request` skill
+- "Done for now": print brief confirmation and exit
+
+**Text fallback (Cursor, Codex, Copilot, Antigravity — AUQ not available):**
+```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
- /vp-request --list    View all requests
- /vp-evolve            ROADMAP + phase/tasks (before code)
- /vp-auto              Implement theo task plan (sau evolve)
- /vp-request           Create another request
- /vp-status            See overall progress
-
+ Next:
+ - /vp-evolve            Plan phase/tasks + ROADMAP
+ - /vp-request           Create another request
+ - /vp-request --list    View all requests
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </step>

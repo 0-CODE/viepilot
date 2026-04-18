@@ -300,3 +300,4 @@ plain-text numbered list prompts — no configuration required.
 - Request type detection (Bug / Feature / Enhancement / Tech Debt — Step 2)
 - Bug severity selection (Critical / High / Medium / Low — Step 4A)
 - Feature priority selection (Must-have / Should-have / Nice-to-have — Step 4B)
+- Workflow continuation (Step 6 — Plan /vp-evolve / Create another / Done)
