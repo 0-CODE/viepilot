@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.1] - 2026-04-18
+
+### Fixed
+- **BUG-015**: `copilot` adapter missing from `bin/viepilot.cjs` CLI — `TARGETS` array and `printHelp()` text now include `copilot`; `viepilot --list-targets` shows GitHub Copilot; `viepilot install --target copilot` no longer fails with "Unknown target"
+
 ## [2.22.0] - 2026-04-18
 
 ### Added
