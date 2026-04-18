@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.24.0] - 2026-04-18
+
+### Changed (ENH-060)
+- **`workflows/brainstorm.md`**: UI Direction Mode now proactively suggests itself when ≥1 UI keyword is found in the initial message (early-session detection), matching Architect Design Mode behavior — shows a 🎨 banner before topic selection
+- **`workflows/brainstorm.md`**: Lowered accumulation threshold from ≥3 to ≥1 signal; surface threshold lowered from ≥5 to ≥2 unique signals
+- **`workflows/brainstorm.md`**: Confirmation dialogue updated with 🎨 banner (was plain 💡), wording mirrors the Architect 🏗️ banner style
+- **`skills/vp-brainstorm/SKILL.md`**: Updated Background UI extraction docs — auto-suggestion, lower thresholds, 🎨 banner reference, ENH-060 tagged
+
 ## [2.23.0] - 2026-04-18
 
 ### Added

@@ -420,9 +420,23 @@ When the assistant detects any keyword (case-insensitive, Vietnamese or English)
 
 > `màu`, `màu sắc`, `color`, `layout`, `màn hình`, `screen`, `page`, `trang`, `button`, `nút`, `form`, `biểu mẫu`, `mobile`, `responsive`, `giao diện`, `UI`, `UX`, `design`, `dashboard`, `sidebar`, `header`, `footer`, `modal`, `popup`, `icon`, `theme`, `typography`, `font`, `spacing`, `grid`, `card`, `component`, `hero`, `banner`
 
+#### Early-session detection (ENH-060)
+At the very start of a brainstorm session, scan the user's **initial message** for UI/UX signal keywords. If **≥1 keyword** is found, show the proactive activation banner **immediately** (before topic selection):
+
+```
+🎨 I noticed your project involves UI/UX design.
+Would you like to activate UI Direction Mode? I can generate an HTML prototype direction alongside our brainstorm.
+
+1. Yes — activate UI Direction Mode (create .viepilot/ui-direction/{session-id}/)
+2. Save ideas to notes only (background, no HTML yet)
+3. No — continue brainstorm without UI Direction
+```
+
+This mirrors **Architect Design Mode** which proactively banners when system architecture heuristics fire.
+
 #### Threshold & accumulation rule
 - **Count unique keyword occurrences** during the ongoing session.
-- When **≥3 unique signal occurrences** are reached: begin **silent accumulation** — record UI ideas into a `ui_idea_buffer[]` in the session context.
+- When **≥1 signal occurrence** is detected: begin **silent accumulation** — record UI ideas into a `ui_idea_buffer[]` in the session context.
 - **Non-blocking**: does not interrupt the main conversation, does not ask for user confirmation immediately.
 - Each buffer entry records: keyword trigger, utterance context (short summary ≤20 words).
 
@@ -430,19 +444,19 @@ When the assistant detects any keyword (case-insensitive, Vietnamese or English)
 Display a confirmation dialogue when any of the following conditions occur:
 - (a) **Topic ends** — user types `/topic` to switch to a new topic or says "next"
 - (b) **User types `/save` or `/review`**
-- (c) **≥5 signals accumulated** in the buffer
+- (c) **≥2 unique signals accumulated** in the buffer
 
 #### Confirmation dialogue template
 ```
-💡 I detected some UI ideas in this session:
+🎨 I noticed UI/UX design ideas in this session:
 - {idea 1 extracted from buffer}
 - {idea 2 extracted from buffer}
 ...
 
-What would you like to do?
-1. Save to .viepilot/ui-direction/{session-id}/notes.md (background extraction)
-2. Save + activate UI Direction Mode to generate HTML direction
-3. Discard and continue brainstorming
+Would you like to activate UI Direction Mode?
+1. Save to .viepilot/ui-direction/{session-id}/notes.md (background, no HTML yet)
+2. Save + activate UI Direction Mode (create .viepilot/ui-direction/{session-id}/, generate HTML direction)
+3. No — discard and continue brainstorming
 ```
 
 **Option 1**: Write `## Background extracted ideas` to `.viepilot/ui-direction/{session-id}/notes.md` (create file/directory if not yet present). Clear buffer. Continue.

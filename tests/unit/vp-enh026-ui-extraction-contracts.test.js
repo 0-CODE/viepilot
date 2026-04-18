@@ -23,7 +23,8 @@ describe('ENH-026 vp-brainstorm background UI extraction + crystallize hard gate
 
   test('brainstorm.md: threshold, accumulation and surface rules documented as non-blocking', () => {
     const content = read('workflows/brainstorm.md');
-    expect(content).toMatch(/≥3 unique signal/i);
+    // ENH-060: threshold lowered to ≥1 signal occurrence (was ≥3 unique signals)
+    expect(content).toMatch(/≥1 signal occurrence/i);
     expect(content).toMatch(/ui_idea_buffer/);
     expect(content).toMatch(/[Nn]on-blocking|non.blocking/);
     expect(content).toMatch(/[Ss]ilent/);
@@ -31,8 +32,8 @@ describe('ENH-026 vp-brainstorm background UI extraction + crystallize hard gate
 
   test('brainstorm.md: surface confirmation dialogue has 3 options and links to UI Direction Mode', () => {
     const content = read('workflows/brainstorm.md');
-    // Dialogue template must be present
-    expect(content).toMatch(/💡.*I detected/);
+    // ENH-060: dialogue updated from 💡 to 🎨 proactive banner
+    expect(content).toMatch(/🎨.*I noticed/);
     // Three numbered options
     expect(content).toMatch(/1\.\s.*notes\.md/);
     expect(content).toMatch(/2\.\s.*UI Direction Mode/);
