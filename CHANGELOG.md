@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.20.0] - 2026-04-18
+
+### Added
+- **ENH-057: ViePilot Agents System** — 6 dedicated sub-agents for repetitive/parallelizable skill tasks:
+  - `tracker-agent`: TRACKER.md read/write delegation (phase status, task status, decision log)
+  - `research-agent`: WebSearch + WebFetch feasibility studies (auto-triggered in request.md Step 2B)
+  - `file-scanner-agent`: Glob + Grep repo-wide scanning (Explore subagent on Claude Code)
+  - `changelog-agent`: atomic CHANGELOG + version bump — single authority (resolves ENH-053)
+  - `test-generator-agent`: contract test scaffolding + run from acceptance criteria
+  - `doc-sync-agent`: bulk multi-file `.md` updates (≥5 files → 1 agent call)
+- `agents/` directory with 6 agent definition files (`agents/*-agent.md`)
+- Research-agent feasibility gate in `workflows/request.md` Step 2B — auto-triggered for Feature/platform requests
+- Bulk-edit task detection in `workflows/autonomous.md` — doc-sync-agent invoked when ≥5 identical file types in task Paths
+- Agent delegation table + invoke-agent patterns in `workflows/autonomous.md`
+- `docs/dev/agents.md` — developer reference for agents layer architecture and invocation
+
+### Fixed
+- **ENH-053**: Version bump authority unified in `changelog-agent` — `autonomous.md` and `evolve.md` both invoke it; no more inline duplication
+
 ## [2.19.0] - 2026-04-18
 
 ### Added
