@@ -202,6 +202,7 @@ Next action: /vp-auto --from {new_phase}
 | Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
 | Codex CLI | ❌ Text fallback | Native tool N/A |
 | Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
+| GitHub Copilot | ✅ `/skill-name` in Chat | Via `.agent.md` custom agent; AUQ not available — text fallback |
 
 **Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu if the tool returns an error or is unavailable.
 

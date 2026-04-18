@@ -291,6 +291,7 @@ This skill uses adapter-aware interactive prompts. Behavior depends on your adap
 | Cursor (Agent/Skills) | ❌ Text fallback | AskQuestion not available in Agent Mode |
 | Codex CLI | ❌ Text fallback | Native tool N/A; community MCP available |
 | Antigravity (native agent) | ❌ Text fallback | Artifact model, no raw tool calls |
+| GitHub Copilot | ✅ `/skill-name` in Chat | Via `.agent.md` custom agent; AUQ not available — text fallback |
 
 When `AskUserQuestion` is not available, the skill automatically falls back to
 plain-text numbered list prompts — no configuration required.
