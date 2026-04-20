@@ -1057,6 +1057,44 @@ If `.viepilot/architect/` does **not** exist but brainstorm shows complex archit
 - User confirmation required before proceeding.
 </step>
 
+<step name="skill_decision_gate">
+## Step 1E — Skill Decision Gate (FEAT-020)
+
+**Trigger**: `## skills_used` section exists in the brainstorm session's `notes.md` (`.viepilot/ui-direction/{session-id}/notes.md` or `.viepilot/architect/{session-id}/notes.md`).
+
+**Skip condition**: If no `## skills_used` found anywhere → silently skip this step (no error, no prompt).
+
+**Step — Load skills_used:**
+Read `## skills_used` from the most recent session's `notes.md`. Extract each skill entry: `id`, `capabilities`, `best_practices_applied`.
+
+**Step — AUQ confirm (Claude Code adapter — REQUIRED):**
+
+> **Claude Code (terminal):** Call `AskUserQuestion` tool.
+> - question: "The following skills were used in this brainstorm. Mark each as required, optional, or exclude:"
+> - For each skill: show `id` + capabilities + `best_practices_applied[]`
+> - Options per skill: `required` | `optional` | `exclude`
+
+> **Text fallback (other adapters):** Present numbered list with required / optional / exclude options per skill.
+
+**Step — Write `## Skills` to `PROJECT-CONTEXT.md`:**
+
+Append to `.viepilot/PROJECT-CONTEXT.md`:
+
+```markdown
+## Skills
+
+| Skill | Source | Required | Phases | Rationale |
+|-------|--------|----------|--------|-----------|
+| frontend-design | npm:@vp-skills/frontend-design | required | 1, 2 | UI-Direction HTML generation — design token best practices |
+```
+
+- `required` — skill best_practices injected by vp-auto for matching phases — **no re-asking**
+- `optional` — skill context available but not auto-injected
+- `exclude` — entry omitted from PROJECT-CONTEXT.md
+
+**Lock semantics**: once written, `## Skills` is the authoritative skill decision for the project. `vp-auto` reads it and **never re-prompts**.
+</step>
+
 <step name="generate_ai_guide">
 ## Step 2: Generate AI-GUIDE.md
 
