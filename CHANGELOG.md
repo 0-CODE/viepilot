@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.30.0] - 2026-04-20
+
+### Changed (FEAT-020 Phase 5 — complete)
+- `workflows/autonomous.md`: Added **Skill Context Load** step at init — reads `PROJECT-CONTEXT.md ## Skills`, builds `SKILL_CONTEXT_MAP`; absent section → silent no-op
+- `workflows/autonomous.md`: Added **Skill Context Injection** per-task rule — required skills whose phases match are prepended silently to execution context; records `skills_applied` in task output; never prompts user
+- `skills/vp-auto/SKILL.md`: FEAT-020 silent skill execution docs
+- **FEAT-020 fully complete** (Phases 90–94): Skill Registry System — scanner + installer + brainstorm integration + crystallize gate + vp-auto execution
+
 ## [2.29.0] - 2026-04-20
 
 ### Changed (FEAT-020 Phase 4)

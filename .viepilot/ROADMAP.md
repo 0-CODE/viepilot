@@ -2626,9 +2626,10 @@
 
 ---
 
-### Phase 94: vp-auto Silent Skill Execution (FEAT-020 Phase 5)
+### Phase 94: vp-auto Silent Skill Execution (FEAT-020 Phase 5) ✅
 **Goal**: vp-auto reads `PROJECT-CONTEXT.md ## Skills` at init, injects skill best practices per task — silently, no re-asking. FEAT-020 fully complete.
 **Estimated Tasks**: 3
+**Status**: ✅ Complete → v2.30.0 — **FEAT-020 fully complete (Phases 90–94)**
 **Dependencies**: Phase 93 ✅, Phase 90 ✅ (`loadRegistry()`)
 **Directory**: `.viepilot/phases/94-feat020-auto-skill-execution/`
 

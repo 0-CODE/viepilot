@@ -3,9 +3,9 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **93** — ✅ Complete (**FEAT-020 Phase 4** → **2.29.0**)
+- **Last Completed Phase**: **94** — ✅ Complete (**FEAT-020 Phase 5** → **2.30.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-20 — Phase 93 shipped: FEAT-020 Crystallize Skill Gate (Step 1E) → 2.29.0
+- **Last Activity**: 2026-04-20 — Phase 94 shipped: FEAT-020 fully complete (Phases 90–94, Skill Registry System) → 2.30.0
 
 ## Progress Overview
 ```
@@ -158,7 +158,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| FEAT-020 | ✨ | Skill Registry System — scan-skills + install-skill + brainstorm/crystallize/auto integration (5 phases) | high | triaged (→ Phase 90–94) |
+| FEAT-020 | ✨ | Skill Registry System — scan-skills + install-skill + brainstorm/crystallize/auto integration (5 phases) | high | ✅ done (Phase 90–94 → 2.26.0–2.30.0) |
 | ENH-061 | 🔧 | vp-brainstorm idea-to-architecture breakdown loop — coverage matrix + reverse sync + completeness gate | high | new |
 | ENH-060 | 🔧 | vp-brainstorm UI Direction Mode — proactive suggestion parity with Architect Design | high | triaged (→ Phase 88) |
 | ENH-059 | 🔧 | AskUserQuestion ToolSearch preload — prevent deferred-tool fallback on skill init | high | triaged (→ Phase 87) |
