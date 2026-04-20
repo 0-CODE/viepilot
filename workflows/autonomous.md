@@ -61,6 +61,24 @@ cat .viepilot/ROADMAP.md
 Read `~/.viepilot/config.json` → `COMMUNICATION_LANG` (default: `en`).
 Use `COMMUNICATION_LANG` for all banners, control-point messages, and user-facing output in this session.
 
+### Skill Context Load (FEAT-020)
+
+After loading context files, load the project's skill decisions:
+
+```bash
+# Read PROJECT-CONTEXT.md ## Skills section
+SKILL_CONTEXT=$(grep -A 100 "^## Skills" .viepilot/PROJECT-CONTEXT.md 2>/dev/null | \
+  head -n $(grep -n "^## " .viepilot/PROJECT-CONTEXT.md | awk -F: 'NR==2{print $1}'))
+```
+
+Build `SKILL_CONTEXT_MAP` in session memory:
+- Parse `## Skills` table rows
+- For each row: extract `id`, `source`, `required` (yes/no), `phases` (comma list)
+- Call `loadRegistry()` to get `best_practices[]` for each skill
+- Structure: `{ required: [{id, phases: [1,2], best_practices: [...]}], optional: [...] }`
+
+**If `## Skills` section absent or empty**: silent no-op — `SKILL_CONTEXT_MAP = { required: [], optional: [] }`.
+
 ### Tag Prefix Resolution (ENH-050)
 Resolve the enriched git tag prefix once at session start. All task/phase tags use `${TAG_PREFIX}`.
 
@@ -210,6 +228,28 @@ Architecture context rule (ENH-018):
   - `optional`: consult when directly related; do not block task if absent.
   - `N/A`: respect rationale; do not force diagram regeneration.
 - If matrix is missing, continue with explicit assumption notes in task logs.
+
+#### Skill Context Injection (FEAT-020)
+
+Before executing the task, check `SKILL_CONTEXT_MAP`:
+
+1. Extract the current task's phase number
+2. For each skill in `required`: check if current phase is in `skill.phases[]`
+3. If match: prepend `skill.best_practices[]` to the task execution context as a silent checklist:
+
+```
+[Skill context: {skill-id}]
+Best practices to apply:
+- {practice 1}
+- {practice 2}
+```
+
+4. Record in task output: `skills_applied: [{id}@{version}]`
+
+**Rules:**
+- **Never prompt the user** — decisions were locked at crystallize
+- Optional skills: included only if task file explicitly mentions matching capability keywords
+- No skill context available (empty map): continue normally — no warning
 
 #### Validate Task Contract (required before code)
 Task must include execution-grade details:
