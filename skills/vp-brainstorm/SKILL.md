@@ -145,3 +145,22 @@ plain-text numbered list prompts — no configuration required.
 **Prompts using AskUserQuestion in this skill:**
 - Session intent (continue / review / new — Step 2)
 - Landing page layout selection (Step 4 — Layout A/B/C/D)
+
+
+### Skill Registry Integration (FEAT-020)
+
+When UI Direction Mode is active, vp-brainstorm automatically:
+1. Loads `~/.viepilot/skill-registry.json` (written by `vp-tools scan-skills`)
+2. Matches installed skills by `capabilities` to current UI signals
+3. **Silently** applies matched skill `best_practices` to HTML generation
+4. Records matched skills in `notes.md ## skills_used`
+
+**No prompt is shown** — integration is transparent. Skills with relevant
+capabilities (e.g., `ui-generation`, `component-design`, `responsive-layout`)
+are detected automatically.
+
+Skill decisions are **locked at crystallize time** (see `/vp-crystallize`).
+`/vp-auto` executes with those locked decisions — no re-asking.
+
+Install skills via `vp-tools install-skill <source>`.
+See: `docs/user/features/skill-registry.md`
