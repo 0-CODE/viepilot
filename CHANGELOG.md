@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.26.0] - 2026-04-20
+
+### Added (FEAT-020 Phase 1 — Skill Registry Foundation)
+- `lib/skill-registry.cjs`: new `scanSkills(home?)` — traverses all adapter `skillsDir` paths, parses SKILL.md (extended + legacy), deduplicates by id, writes `~/.viepilot/skill-registry.json`
+- `lib/skill-registry.cjs`: new `loadRegistry(home?)` — reads and returns registry JSON (null if absent)
+- `bin/viepilot.cjs`: new `scan-skills` subcommand — runs scanner, prints per-adapter summary + total unique skills
+- `bin/viepilot.cjs`: new `list-skills` subcommand — displays indexed skills table from registry
+- `docs/user/features/skill-registry.md`: extended SKILL.md format spec (`## Capabilities`, `## Tags`, `## Best Practices`), scanner behavior, registry JSON schema, commands table
+- Extended SKILL.md format: optional metadata sections — backward compatible (legacy SKILL.md without sections indexed with `[]` fields)
+
 ## [2.25.0] - 2026-04-18
 
 ### Changed (ENH-061)
