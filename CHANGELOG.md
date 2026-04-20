@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.29.0] - 2026-04-20
+
+### Changed (FEAT-020 Phase 4)
+- `workflows/crystallize.md`: Added **Step 1E — Skill Decision Gate** — reads `## skills_used` from brainstorm notes.md; AUQ confirm required/optional/exclude; writes `## Skills` to PROJECT-CONTEXT.md; silently skipped when no skills_used present
+- `templates/project/PROJECT-CONTEXT.md`: Added `## Skills` template section
+- `skills/vp-crystallize/SKILL.md`: FEAT-020 skill gate docs — AUQ flow, lock semantics, cross-references
+
 ## [2.28.0] - 2026-04-20
 
 ### Changed (FEAT-020 Phase 3)

@@ -3,9 +3,9 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **92** — ✅ Complete (**FEAT-020 Phase 3** → **2.28.0**)
+- **Last Completed Phase**: **93** — ✅ Complete (**FEAT-020 Phase 4** → **2.29.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-20 — Phase 92 shipped: FEAT-020 Brainstorm Skill Integration → 2.28.0
+- **Last Activity**: 2026-04-20 — Phase 93 shipped: FEAT-020 Crystallize Skill Gate (Step 1E) → 2.29.0
 
 ## Progress Overview
 ```

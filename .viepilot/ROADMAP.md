@@ -2605,9 +2605,10 @@
 
 ---
 
-### Phase 93: Crystallize Skill Decision Gate (FEAT-020 Phase 4)
+### Phase 93: Crystallize Skill Decision Gate (FEAT-020 Phase 4) ✅
 **Goal**: New Step 1E in crystallize: read `## skills_used` → AUQ confirm → write `## Skills` to `PROJECT-CONTEXT.md`.
 **Estimated Tasks**: 4
+**Status**: ✅ Complete → v2.29.0
 **Dependencies**: Phase 92 ✅, ENH-048 ✅, ENH-059 ✅
 **Directory**: `.viepilot/phases/93-feat020-crystallize-skill-gate/`
 
