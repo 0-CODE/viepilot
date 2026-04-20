@@ -33,6 +33,8 @@ ViePilot CLI
 Usage:
   viepilot install [options]
   viepilot uninstall [options]
+  viepilot scan-skills             Scan all adapter skill dirs and build skill registry
+  viepilot list-skills             List all indexed skills from registry
   viepilot --help
   viepilot --list-targets
 
@@ -460,6 +462,56 @@ async function main() {
     printTargets();
     process.exit(0);
   }
+  if (command === 'scan-skills') {
+    const { scanSkills } = require('../lib/skill-registry.cjs');
+    const result = scanSkills();
+    const byAdapter = {};
+    for (const skill of result.skills) {
+      for (const adapter of skill.adapters) {
+        byAdapter[adapter] = (byAdapter[adapter] || 0) + 1;
+      }
+    }
+    console.log('Scanning skill directories...');
+    for (const p of result.scan_paths) {
+      const adapterName = Object.keys(byAdapter).find(a => p.includes(`.${a.replace('claude-code', 'claude')}`)) || '';
+      const count = byAdapter[adapterName];
+      const prefix = count != null ? '  ✓' : '  -';
+      console.log(`${prefix} ${p}${count != null ? `  — ${count} skill${count !== 1 ? 's' : ''} found` : '  — not installed (skipped)'}`);
+    }
+    const uniqueMulti = result.skills.filter(s => s.adapters.length > 1).length;
+    console.log(`\nRegistry written: ~/.viepilot/skill-registry.json`);
+    console.log(`Total: ${result.skills.length} unique skill${result.skills.length !== 1 ? 's' : ''}${uniqueMulti > 0 ? ` (${uniqueMulti} in multiple adapters)` : ''}`);
+    process.exit(0);
+  }
+
+  if (command === 'list-skills') {
+    const { loadRegistry } = require('../lib/skill-registry.cjs');
+    const registry = loadRegistry();
+    if (!registry) {
+      console.log('No registry found. Run vp-tools scan-skills first.');
+      process.exit(0);
+    }
+    console.log(`\nInstalled skills (from ~/.viepilot/skill-registry.json):`);
+    console.log(`Last scan: ${registry.last_scan}\n`);
+    if (registry.skills.length === 0) {
+      console.log('No skills indexed.');
+    } else {
+      const idW = Math.max(4, ...registry.skills.map(s => s.id.length));
+      const adW = Math.max(8, ...registry.skills.map(s => s.adapters.join(', ').length));
+      const capW = 30;
+      const header = `  ${'ID'.padEnd(idW)}  ${'Adapters'.padEnd(adW)}  Capabilities`;
+      const sep    = `  ${'─'.repeat(idW)}  ${'─'.repeat(adW)}  ${'─'.repeat(capW)}`;
+      console.log(header);
+      console.log(sep);
+      for (const skill of registry.skills) {
+        const caps = skill.capabilities.length > 0 ? skill.capabilities.join(', ') : '(legacy — no capabilities)';
+        console.log(`  ${skill.id.padEnd(idW)}  ${skill.adapters.join(', ').padEnd(adW)}  ${caps}`);
+      }
+    }
+    console.log('\nRun `vp-tools scan-skills` to refresh.');
+    process.exit(0);
+  }
+
   if (command !== 'install' && command !== 'uninstall') {
     console.error(`Unknown command: ${command}`);
     printHelp();
