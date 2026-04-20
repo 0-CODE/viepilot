@@ -303,3 +303,19 @@ plain-text numbered list prompts — no configuration required.
 - Polyrepo related-repos prompt (Step 0-B)
 - UI direction gate choice (Step 1A)
 - Architect mode suggestion (Step 1D)
+
+### Step 1E — Skill Decision Gate (FEAT-020)
+
+After scope lock, before SPEC generation, crystallize checks for `## skills_used`
+in the brainstorm session's notes.md:
+
+- **No skills_used found** → step silently skipped
+- **Skills found** → AUQ presents each skill (required / optional / exclude)
+- **Decision written** to `PROJECT-CONTEXT.md ## Skills`
+
+The `## Skills` decision is **final** — `/vp-auto` reads it at execution time
+and injects skill best practices per task without re-prompting.
+
+Install skills: `vp-tools install-skill <source>`
+Registry: `vp-tools scan-skills`
+Docs: `docs/user/features/skill-registry.md`
