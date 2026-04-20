@@ -267,3 +267,20 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 - [ ] CHANGELOG updated for features/fixes
 - [ ] Clean stop with summary on pause/error
 </success_criteria>
+
+### Skill Context Execution (FEAT-020)
+
+At session start, vp-auto reads `PROJECT-CONTEXT.md ## Skills` (locked by `/vp-crystallize`
+Step 1E) and builds a `SKILL_CONTEXT_MAP`.
+
+During each task:
+- Required skills whose phases match the current task's phase are **silently** injected into the execution context
+- Best practices from matched skills appear as a silent checklist before implementation
+- Task output records `skills_applied: [id@version, ...]`
+
+**No prompts are shown** — all skill decisions are locked at crystallize time.
+`/vp-auto` is execution-only for skills.
+
+Install skills: `vp-tools install-skill <source>`
+Lock decisions: `/vp-crystallize` Step 1E
+Docs: `docs/user/features/skill-registry.md`
