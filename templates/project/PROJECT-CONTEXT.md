@@ -90,3 +90,12 @@
 |---------|---------|---------|
 {{LIBRARIES}}
 </external_dependencies>
+
+## Skills
+
+> Skills registered for this project (locked at /vp-crystallize, applied by /vp-auto).
+> Populated by crystallize Step 1E when brainstorm session has ## skills_used.
+
+| Skill | Source | Required | Phases | Rationale |
+|-------|--------|----------|--------|-----------|
+| *(none yet)* | — | — | — | — |
