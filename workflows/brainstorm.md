@@ -182,6 +182,48 @@ If the user is brainstorming a project with UI/UX or requests a visual design:
    - Update HTML/CSS direction directly
    - Record decision + rationale in `notes.md` (single source of truth for design intent)
 
+### Skill Registry Integration (FEAT-020)
+
+**Trigger**: UI Direction Mode is active (at least one HTML file being generated or updated).
+
+**Step — Load registry:**
+- Call `loadRegistry()` from `lib/skill-registry.cjs` (read `~/.viepilot/skill-registry.json`)
+- If registry absent or empty: skip silently — no warning, no prompt
+
+**Step — Match skills to UI signals:**
+Map brainstorm UI signal keywords to capability tags:
+
+| UI Signal keywords | Capability match |
+|-------------------|-----------------|
+| `component`, `layout`, `screen`, `page`, `UI`, `UX` | `ui-generation`, `component-design` |
+| `responsive`, `mobile`, `grid` | `responsive-layout` |
+| `design`, `theme`, `color`, `typography` | `design-system`, `design-tokens` |
+| `form`, `button`, `input`, `modal` | `component-design` |
+
+For each registered skill: if `skill.capabilities` intersects matched capability tags → skill is **active**.
+
+**Step — Silent apply:**
+- For each active skill: prepend `skill.best_practices[]` to the context used for HTML generation
+- **No banner, no prompt, no mention to user** — best practices blend into generated output
+- This is background-only, like Background UI Extraction (ENH-026)
+
+**Step — Record in notes.md:**
+After the session's first UI artifact is generated (or updated), append to `notes.md`:
+
+```yaml
+## skills_used
+- id: frontend-design
+  version: null
+  trigger: ui-generation signal
+  applied_at: brainstorm-session
+  best_practices_applied:
+    - Mobile-first
+    - Design tokens
+```
+
+If `## skills_used` already exists: merge (add new skills, update applied_at).
+If no skills matched or registry absent: omit `## skills_used` section.
+
 **Required hook (multi-page only)**
 
 When the `pages/` directory exists or any `pages/*.html` is added / renamed / removed:
