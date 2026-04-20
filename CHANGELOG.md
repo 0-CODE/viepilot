@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.27.0] - 2026-04-20
+
+### Added (FEAT-020 Phase 2 — Skill Installer)
+- `lib/skill-installer.cjs`: new `installSkill(source, home?)`, `uninstallSkill(id, home?)`, `updateSkill(id, home?)` — multi-channel installer (npm / GitHub / local); writes `skill-meta.json` post-install; auto-runs `scanSkills()`
+- `bin/viepilot.cjs`: new `install-skill`, `uninstall-skill`, `update-skill` subcommands
+
 ## [2.26.0] - 2026-04-20
 
 ### Added (FEAT-020 Phase 1 — Skill Registry Foundation)
