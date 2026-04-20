@@ -35,6 +35,9 @@ Usage:
   viepilot uninstall [options]
   viepilot scan-skills             Scan all adapter skill dirs and build skill registry
   viepilot list-skills             List all indexed skills from registry
+  viepilot install-skill <source>  Install a third-party skill (npm:pkg, github:org/repo, ./path)
+  viepilot uninstall-skill <id>    Remove a skill from all adapter dirs
+  viepilot update-skill <id>       Re-install skill from its original source
   viepilot --help
   viepilot --list-targets
 
@@ -510,6 +513,58 @@ async function main() {
     }
     console.log('\nRun `vp-tools scan-skills` to refresh.');
     process.exit(0);
+  }
+
+  if (command === 'install-skill') {
+    const source = rest[0];
+    if (!source) { console.error('Usage: vp-tools install-skill <source>'); process.exit(1); }
+    const { installSkill } = require('../lib/skill-installer.cjs');
+    const channel = source.startsWith('github:') ? 'github' : source.startsWith('./') || source.startsWith('/') ? 'local' : 'npm';
+    console.log(`Installing skill: ${source} (${channel})...`);
+    const result = await installSkill(source);
+    if (result.ok) {
+      for (const p of result.installedPaths) console.log(`  ✓ ${p}  — installed`);
+      console.log(`Done. Skill "${result.id}" is ready.`);
+      process.exit(0);
+    } else {
+      console.error(`Error: ${result.error}`);
+      process.exit(1);
+    }
+  }
+
+  if (command === 'uninstall-skill') {
+    const id = rest[0];
+    if (!id) { console.error('Usage: vp-tools uninstall-skill <id>'); process.exit(1); }
+    const { uninstallSkill } = require('../lib/skill-installer.cjs');
+    console.log(`Removing skill: ${id}...`);
+    const result = uninstallSkill(id);
+    if (result.ok) {
+      if (result.removedPaths.length === 0) {
+        console.log(`Skill "${id}" not found in any adapter dir.`);
+      } else {
+        for (const p of result.removedPaths) console.log(`  ✓ ${p}  — removed`);
+      }
+      process.exit(0);
+    } else {
+      console.error(`Error: ${result.error}`);
+      process.exit(1);
+    }
+  }
+
+  if (command === 'update-skill') {
+    const id = rest[0];
+    if (!id) { console.error('Usage: vp-tools update-skill <id>'); process.exit(1); }
+    const { updateSkill } = require('../lib/skill-installer.cjs');
+    console.log(`Updating skill: ${id}...`);
+    const result = await updateSkill(id);
+    if (result.ok) {
+      for (const p of result.installedPaths) console.log(`  ✓ ${p}  — updated`);
+      console.log(`Done. Skill "${result.id}" updated.`);
+      process.exit(0);
+    } else {
+      console.error(`Error: ${result.error}`);
+      process.exit(1);
+    }
   }
 
   if (command !== 'install' && command !== 'uninstall') {
