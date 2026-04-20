@@ -3,9 +3,9 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **91** — ✅ Complete (**FEAT-020 Phase 2** → **2.27.0**)
+- **Last Completed Phase**: **92** — ✅ Complete (**FEAT-020 Phase 3** → **2.28.0**)
 - **Current Task**: —
-- **Last Activity**: 2026-04-20 — Phase 91 shipped: FEAT-020 Skill Installer (npm/github/local) → 2.27.0
+- **Last Activity**: 2026-04-20 — Phase 92 shipped: FEAT-020 Brainstorm Skill Integration → 2.28.0
 
 ## Progress Overview
 ```

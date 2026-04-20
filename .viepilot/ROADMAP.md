@@ -2585,9 +2585,10 @@
 
 ---
 
-### Phase 92: Brainstorm UI-Direction Skill Integration (FEAT-020 Phase 3)
+### Phase 92: Brainstorm UI-Direction Skill Integration (FEAT-020 Phase 3) ✅
 **Goal**: Brainstorm silently loads registry, matches skills by capabilities to UI signals, applies best practices to HTML, records `## skills_used` in notes.md.
 **Estimated Tasks**: 3
+**Status**: ✅ Complete → v2.28.0
 **Dependencies**: Phase 91 ✅, Phase 90 ✅
 **Directory**: `.viepilot/phases/92-feat020-brainstorm-skill-integration/`
 

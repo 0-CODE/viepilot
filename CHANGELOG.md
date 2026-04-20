@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.28.0] - 2026-04-20
+
+### Changed (FEAT-020 Phase 3)
+- `workflows/brainstorm.md`: Added **Skill Registry Integration** step in UI Direction Mode — when active, loads `~/.viepilot/skill-registry.json`, matches skills by `capabilities` to UI signals, silently applies `best_practices` to HTML generation, records matched skills in `notes.md ## skills_used`
+- `skills/vp-brainstorm/SKILL.md`: FEAT-020 skill integration docs — silent apply, crystallize lock reference
+
 ## [2.27.0] - 2026-04-20
 
 ### Added (FEAT-020 Phase 2 — Skill Installer)
