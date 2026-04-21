@@ -195,6 +195,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 | BUG-011 | 🐛 | ui-direction path ambiguity — LLM reads `{root}/ui-direction/` instead of `{root}/.viepilot/ui-direction/` | high | ✅ done (**2.1.3**) |
 | FEAT-013 | ✨ | Dynamic agent adapter system — multi-platform (Claude Code, Cursor, Antigravity, Codex, …) | critical | ✅ done (**2.0.0**) |
 | FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | ✅ done (**2.1.0**) |
+| BUG-018 | 🐛 | brainstorm thiếu unified mode-selection prompt — Architect auto-activates không offer UI Direction | high | new |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |
 | BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |
 | ENH-033 | 🔧 | Architect HTML: item IDs + Approve/Edit prompt-copy buttons (12 pages) | high | ✅ done (**1.18.0**) |
