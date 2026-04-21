@@ -1022,6 +1022,7 @@ For each file present, READ COMPLETELY (no skimming):
 10. `deployment.html` — infra, environments (if present)
 11. `apis.html` — endpoints, service contracts (if present)
 12. `admin.html` — admin capabilities (if present — ENH-063)
+13. `content.html` — content types, lifecycle, media/SEO schema (if present — ENH-065)
     *(Skip: `sequence-diagram.html` — intentionally excluded per existing rule)*
 
 **Failure rule**: if `notes.md` is missing or unreadable → STOP and surface:
@@ -1100,8 +1101,26 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    | super_admin | user_management, billing, system_config, audit_log_view |
    | org_admin | invite_users, role_assign, reporting |
    ```
-8. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
-9. **Record in working notes**:
+8. **`content.html` / `notes.md ## content`** (if exists — ENH-065) → append to `.viepilot/PROJECT-CONTEXT.md`:
+   ```markdown
+   ## Content Management (from Architect Mode)
+   | Content Type | Created By | Lifecycle | Key Fields | Phase |
+   |-------------|-----------|-----------|-----------|-------|
+   | article | admin, author | draft → review → published → archived | title, body, slug, tags, seo_meta | 2 |
+   | product | admin | draft → published → discontinued | name, description, price, images, category | 1 |
+
+   ### Media & Storage
+   | Storage | CDN | Types | Max Size |
+   |---------|-----|-------|----------|
+   | S3 | CloudFront | image, pdf | 10 MB |
+
+   ### Localization
+   | Locales | Fallback |
+   |---------|---------|
+   | en | en |
+   ```
+9. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
+10. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
@@ -1111,6 +1130,8 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    - `apis_imported`: {true/false}
    - `admin_imported`: {true/false}
    - `admin_capabilities_count`: {count if admin present, else "n/a"}
+   - `content_imported`: {true/false}
+   - `content_types_count`: {count if content present, else "n/a"}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):

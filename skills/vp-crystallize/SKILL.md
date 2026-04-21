@@ -87,6 +87,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Admin & Governance Export (ENH-063):**
 - Step 1D item 7: if `admin.html` or `notes.md ## admin` exists in architect workspace → append `## Admin & Governance` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Required | Phase | Notes) + Admin Personas table. Records `admin_imported` and `admin_capabilities_count` in working notes.
 
+**Content Management Export (ENH-065):**
+- Step 1D item 8: if `content.html` or `notes.md ## content` exists in architect workspace → append `## Content Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Content Type | Created By | Lifecycle | Key Fields | Phase) + Media/Storage and Localization sub-tables. Records `content_imported` and `content_types_count` in working notes.
+
 **Mandatory Workspace Read Gates (ENH-064):**
 - **Architect workspace (Step 1D):** if `.viepilot/architect/` exists → reads ALL 12 pages front-to-back before any extraction. `architect_read_complete: true` required. Missing `notes.md` → STOP.
 - **UI Direction workspace (Step 1A strengthened):** if `.viepilot/ui-direction/` exists → reads ALL pages/*.html + ALL notes.md sections. `ui_direction_read_complete: true` required. Pages inventory mismatch → STOP.
