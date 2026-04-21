@@ -525,3 +525,25 @@ Place custom `.pptx`/`.docx` files in `.viepilot/proposal-templates/` to overrid
 ```
 
 Full guide: `docs/user/features/proposal.md`
+
+---
+
+## /vp-skills
+
+**Purpose**: Agent-native global skill registry management — scan, list, install, uninstall, update, and inspect third-party skills from any project directory (ENH-062).
+
+### Commands
+| Command | Description |
+|---------|-------------|
+| `/vp-skills scan` | Refresh `~/.viepilot/skill-registry.json` by scanning all adapter dirs |
+| `/vp-skills list` | Display indexed skills table |
+| `/vp-skills install <src>` | Install from npm / `github:<user>/<repo>` / local path |
+| `/vp-skills uninstall <id>` | Remove skill from all adapter directories |
+| `/vp-skills update <id>` | Re-install from original source (`skill-meta.json`) |
+| `/vp-skills info <id>` | Show capabilities, best_practices, and adapter paths |
+
+### Notes
+- Uses installed vp-tools binary (`~/.claude/viepilot/bin/vp-tools.cjs`) — works from any project directory.
+- Fallback: `~/.cursor/viepilot/bin/vp-tools.cjs` for Cursor adapter.
+- Registry file: `~/.viepilot/skill-registry.json` — shared across all projects.
+- Confirmation AUQ prompt before destructive `uninstall` (Claude Code terminal only).

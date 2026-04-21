@@ -2646,9 +2646,10 @@
 
 ---
 
-### Phase 95: `/vp-skills` Slash Command + BUG-016 + BUG-017 Fix (ENH-062)
+### Phase 95: `/vp-skills` Slash Command + BUG-016 + BUG-017 Fix (ENH-062) ✅ complete
 **Goal**: New `skills/vp-skills/SKILL.md` agent slash command + `get-registry` CLI + fix non-executable `loadRegistry()` in workflows (BUG-016) + fix missing AUQ in vp-evolve/vp-request SKILL.md `<process>` body (BUG-017).
 **Estimated Tasks**: 5
+**Status**: ✅ Complete → v2.31.0
 **Dependencies**: FEAT-020 ✅, ENH-058 ✅, ENH-059 ✅, BUG-016, BUG-017, ENH-062
 **Directory**: `.viepilot/phases/95-enh062-vp-skills-slash-command/`
 
@@ -2673,5 +2674,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-21 (Phase 95 planned: ENH-062 /vp-skills + BUG-016 fix → v2.31.0)
+- Last Updated: 2026-04-21 (Phase 95 complete: ENH-062 /vp-skills + BUG-016 + BUG-017 → v2.31.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)
