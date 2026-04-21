@@ -128,7 +128,19 @@ Suggested topics to brainstorm:
    - Reporting & data export? (business metrics, usage analytics, CSV/Excel export)
    - Notification management? (email/push templates, delivery log, unsubscribe management)
 
-7. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
+7. **Content Management**
+   - What types of content exist in this system? (articles, products, pages, media, courses, listings, FAQs...)
+   - Who creates content? (admin only, verified users, any user, API import)
+   - Content lifecycle? (draft → review → published → archived)
+   - Rich text or structured fields? (WYSIWYG, markdown, JSON schema, headless CMS API)
+   - Media management? (image upload, video, file attachments, CDN, storage limits per plan)
+   - Taxonomy & organization? (categories, tags, collections, folders, hierarchical tree)
+   - Multi-language / localization? (which locales, translation workflow, fallback strategy)
+   - Search & filtering? (full-text search, faceted filters, sort options, relevance tuning)
+   - Content versioning / history? (rollback, diff view, scheduled publish, expiry)
+   - SEO fields? (slug, meta title, meta description, OG image, canonical URL, sitemap)
+
+8. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
 
 ### Interactive Q&A
 For each topic:
@@ -377,6 +389,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
   deployment.html         # Infra, environments, CI/CD pipeline — ENH-029
   apis.html               # Service API listing & design decisions — ENH-029
   admin.html              # Admin & governance capabilities — actor flow, role hierarchy, key operations, audit schema (ENH-063)
+  content.html            # Content types, lifecycle state machine, creator roles, taxonomy, media/SEO schema (ENH-065)
   style.css               # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
   notes.md                # Machine-readable YAML (see schema below)
 ```
@@ -401,6 +414,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `deployment.html` | Infrastructure, environments, ops concerns, CI/CD pipeline |
 | `apis.html` | API endpoint design, HTTP methods, request/response contracts |
 | `admin.html` | Admin personas, role hierarchy, key admin operations (CRUD users, billing management, audit log schema), access control model |
+| `content.html` | Content types, lifecycle states, creator permission matrix, taxonomy tree, media storage config, SEO field schema |
 
 #### Admin & Governance Detection (ENH-063)
 
@@ -453,6 +467,58 @@ If ANY detected AND `## admin` YAML section not present in notes.md:
 > (Non-blocking — user can dismiss)
 
 **admin.html trigger:** admin keyword detected in session AND Architect Mode is active → create/update `admin.html`.
+
+#### Content Management Detection (ENH-065)
+
+**Trigger keywords** (case-insensitive, Vietnamese or English):
+> `article`, `blog`, `post`, `product`, `catalog`, `listing`, `page`, `landing page`, `content`, `nội dung`, `bài viết`, `sản phẩm`, `danh mục`, `CMS`, `headless`, `media`, `upload`, `image`, `video`, `category`, `tag`, `taxonomy`, `search`, `SEO`, `slug`, `WYSIWYG`, `markdown`, `template`, `course`, `lesson`, `knowledge base`, `FAQ`, `documentation`, `docs`
+
+**Early-session detection:**
+At session start, scan initial message for content keywords. If **≥1 keyword** found → show proactive banner:
+
+> **Adapter-aware prompt:**
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. AUQ spec:
+>   - question: "I noticed your project may involve content management capabilities. Should we discuss Content Management (Topic 7)?"
+>   - header: "Content Mgmt"
+>   - options: [{ label: "Yes — explore content types, lifecycle, media, search, SEO", description: "Recommended for blogs, eCommerce, SaaS, LMS, marketplace" }, { label: "Not needed — no content layer in this project", description: "" }, { label: "Later — add to notes, continue current topic", description: "" }]
+>
+> **Text fallback:**
+> ```
+> 🗂️ I noticed your project may involve content management capabilities.
+> Should we discuss Content Management (Topic 7)?
+>
+> 1. Yes — explore content types, lifecycle, media, search, SEO (Recommended for blogs, eCommerce, SaaS, LMS, marketplace)
+> 2. Not needed — no content layer in this project
+> 3. Later — add to notes, continue current topic
+> ```
+
+**During-session detection:**
+When **≥2 unique content keywords** detected → surface confirmation:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+>   - question: "Content management signals detected in this session. Would you like to cover Content Management (Topic 7)?"
+>   - options: [{ label: "Yes — switch to / add content topic", description: "" }, { label: "Note in background (no topic switch)", description: "" }, { label: "Skip for this session", description: "" }]
+>
+> **Text fallback:** `🗂️ Content management signals detected. Cover Content Management (Topic 7)? 1. Yes 2. Note in background 3. Skip`
+
+**Content coverage gate before /save:**
+Before writing session file, check:
+- Project has content-type signals (`article`, `product`, `post`, `page`, `listing`, `course`) OR
+- Media signals (`upload`, `image`, `video`, `media`, `CDN`) OR
+- SEO/search signals (`SEO`, `slug`, `search`, `facets`)
+
+If ANY detected AND `## content` YAML section not present in notes.md:
+
+> **Text fallback:**
+> ```
+> ⚠️ Content gap detected: project has content-type/media/SEO signals but Content Management was not covered.
+> 1. Add content topic now (go to Topic 7)
+> 2. Add note to backlog (".viepilot/requests/ENH-content-tbd.md")
+> 3. Dismiss — skip content management for this session
+> ```
+> (Non-blocking — user can dismiss)
+
+**content.html trigger:** content keyword detected in session AND Architect Mode is active → create/update `content.html`.
 
 #### Sequence trigger keywords (ENH-029)
 When the user mentions: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
@@ -613,6 +679,31 @@ capabilities:
     required: no
     phase: ~
     notes: not in scope
+
+## content
+content_types:
+  - id: article
+    created_by: [admin, author]
+    lifecycle: [draft, review, published, archived]
+    fields: [title, body_rich_text, slug, tags, seo_meta]
+    phase: 2
+  - id: product
+    created_by: [admin]
+    lifecycle: [draft, published, discontinued]
+    fields: [name, description, price, images, category]
+    phase: 1
+media:
+  storage: S3  # S3 | GCS | Azure Blob | local
+  cdn: CloudFront
+  types: [image, pdf]
+  max_size_mb: 10
+localization:
+  locales: [en]
+  fallback: en
+search:
+  engine: postgres_fts  # postgres_fts | Elasticsearch | Algolia | Typesense
+  full_text: yes
+  facets: [category, tags]
 
 ## architect_sync
 - synced_at: "{ISO datetime}"
