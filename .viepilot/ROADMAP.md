@@ -2646,7 +2646,29 @@
 
 ---
 
+### Phase 95: `/vp-skills` Slash Command + BUG-016 Fix (ENH-062)
+**Goal**: New `skills/vp-skills/SKILL.md` agent slash command for global skill registry management from any project + `get-registry` CLI subcommand + fix non-executable `loadRegistry()` references in workflows.
+**Estimated Tasks**: 4
+**Dependencies**: FEAT-020 ✅ (lib/skill-registry.cjs, lib/skill-installer.cjs), BUG-016, ENH-062
+**Directory**: `.viepilot/phases/95-enh062-vp-skills-slash-command/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 95.1 | `skills/vp-skills/SKILL.md` — new slash command skill | 6 commands; installed path; cross-project | M |
+| 95.2 | `bin/vp-tools.cjs` — `get-registry [--id <id>]` subcommand | JSON output; null fallback; --help | S |
+| 95.3 | Fix `workflows/autonomous.md` + `workflows/brainstorm.md` (BUG-016) | No `Call loadRegistry()`; uses get-registry shell cmd | S |
+| 95.4 | Tests (≥12) + CHANGELOG [2.31.0] + version bump | All tests pass; package.json = "2.31.0" | S |
+
+**Verification**:
+- [ ] `ls skills/vp-skills/SKILL.md` exists
+- [ ] `node bin/vp-tools.cjs get-registry 2>/dev/null` outputs JSON or null
+- [ ] `grep -c "loadRegistry()" workflows/autonomous.md` = 0
+- [ ] `grep -c "loadRegistry()" workflows/brainstorm.md` = 0
+- [ ] `npm test` all pass
+
+---
+
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-20 (Phases 91–94 planned: FEAT-020 Phases 2–5 → v2.27.0–2.30.0)
+- Last Updated: 2026-04-21 (Phase 95 planned: ENH-062 /vp-skills + BUG-016 fix → v2.31.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)
