@@ -4,8 +4,9 @@
 - **Milestone**: M1.37
 - **Current Phase**: —
 - **Last Completed Phase**: **95** — ✅ Complete (**ENH-062 /vp-skills + BUG-016 + BUG-017** → **2.31.0**)
+- **Next Phase**: **96** — 🔲 Planned (BUG-018 + ENH-063 + ENH-064 → v2.32.0)
 - **Current Task**: —
-- **Last Activity**: 2026-04-21 — Phase 95 shipped: /vp-skills slash command + get-registry CLI + BUG-016/017 fixes → 2.31.0
+- **Last Activity**: 2026-04-21 — Phase 96 planned: brainstorm governance improvements (unified mode-selection, Admin & Governance topic, mandatory crystallize read gates)
 
 ## Progress Overview
 ```

@@ -2672,7 +2672,33 @@
 
 ---
 
+### Phase 96: Brainstorm Governance & Workspace Improvements (BUG-018 + ENH-063 + ENH-064)
+**Goal**: (1) BUG-018: unified workspace mode-selection AUQ after scope lock — user chooses Architect/UI Direction/Both/Neither upfront; (2) ENH-063: Admin & Governance Topic 6 + proactive heuristic + admin coverage gate + admin.html + crystallize export; (3) ENH-064: cross-workspace HUB links + crystallize mandatory read gates (no silent skip).
+**Estimated Tasks**: 5
+**Status**: 🔲 Planned → v2.32.0
+**Dependencies**: ENH-061 ✅, ENH-060 ✅, FEAT-011 ✅, ENH-029 ✅, ENH-048 ✅, BUG-018, ENH-063, ENH-064
+**Directory**: `.viepilot/phases/96-bug018-enh063-enh064-brainstorm-governance/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 96.1 | BUG-018: unified workspace mode-selection AUQ (brainstorm.md + vp-brainstorm SKILL) | Step 2B AUQ; Architect heuristic suppressed after selection | M |
+| 96.2 | ENH-063 brainstorm side: Topic 6 + proactive heuristic + admin.html + YAML schema | Topic 6 in template; 🔐 banner; admin.html architect page | M |
+| 96.3 | ENH-063 crystallize side: admin export + template section | crystallize Step 1D admin export; PROJECT-CONTEXT.md template | S |
+| 96.4 | ENH-064: HUB cross-links + crystallize mandatory read gates | MANDATORY READ GATE in Step 1A + 1D; Step 1F cross-ref gate | L |
+| 96.5 | Tests (≥15) + CHANGELOG [2.32.0] + version bump | All tests pass; package.json = "2.32.0" | S |
+
+**Verification**:
+- [ ] `grep -c "Workspace Mode Selection" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "Admin & Governance" workflows/brainstorm.md` ≥2
+- [ ] `grep -c "admin.html" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "MANDATORY READ GATE" workflows/crystallize.md` ≥2
+- [ ] `grep -c "architect_read_complete" workflows/crystallize.md` ≥2
+- [ ] `grep -c "## Admin & Governance" templates/project/PROJECT-CONTEXT.md` ≥1
+- [ ] `npm test` all pass
+
+---
+
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-21 (Phase 95 complete: ENH-062 /vp-skills + BUG-016 + BUG-017 → v2.31.0)
+- Last Updated: 2026-04-21 (Phase 96 planned: BUG-018 + ENH-063 + ENH-064 → v2.32.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

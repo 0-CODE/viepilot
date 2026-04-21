@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<!-- Phase 96 — v2.32.0 (BUG-018 + ENH-063 + ENH-064) -->
+<!-- brainstorm unified mode-selection + Admin & Governance topic + crystallize mandatory read gates -->
+
 ## [2.31.0] - 2026-04-21
 
 ### Added (ENH-062)
