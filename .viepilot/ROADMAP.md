@@ -2675,7 +2675,7 @@
 ### Phase 96: Brainstorm Governance & Workspace Improvements (BUG-018 + ENH-063 + ENH-064)
 **Goal**: (1) BUG-018: unified workspace mode-selection AUQ after scope lock — user chooses Architect/UI Direction/Both/Neither upfront; (2) ENH-063: Admin & Governance Topic 6 + proactive heuristic + admin coverage gate + admin.html + crystallize export; (3) ENH-064: cross-workspace HUB links + crystallize mandatory read gates (no silent skip).
 **Estimated Tasks**: 5
-**Status**: 🔲 Planned → v2.32.0
+**Status**: ✅ Complete → v2.32.0
 **Dependencies**: ENH-061 ✅, ENH-060 ✅, FEAT-011 ✅, ENH-029 ✅, ENH-048 ✅, BUG-018, ENH-063, ENH-064
 **Directory**: `.viepilot/phases/96-bug018-enh063-enh064-brainstorm-governance/`
 
@@ -2700,5 +2700,5 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-21 (Phase 96 planned: BUG-018 + ENH-063 + ENH-064 → v2.32.0)
+- Last Updated: 2026-04-21 (Phase 96 complete: BUG-018 + ENH-063 + ENH-064 → v2.32.0)
 - Estimated completion: M1.x iterative releases (see TRACKER)

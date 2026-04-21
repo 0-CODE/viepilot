@@ -7,8 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-<!-- Phase 96 — v2.32.0 (BUG-018 + ENH-063 + ENH-064) -->
-<!-- brainstorm unified mode-selection + Admin & Governance topic + crystallize mandatory read gates -->
+## [2.32.0] - 2026-04-21
+
+### Fixed (BUG-018)
+- `workflows/brainstorm.md`: added unified workspace mode-selection AUQ prompt (Step 2B) after scope lock — user now chooses Both / Architect only / UI Direction only / Neither; Architect auto-activate heuristic deferred until after this selection; suppressed when user selects "Neither" or "UI Direction only"
+- `skills/vp-brainstorm/SKILL.md`: objective updated with BUG-018 mode selection reference
+
+### Added (ENH-063)
+- `workflows/brainstorm.md`: Topic 6 "Admin & Governance" in brainstorm Topics Template; proactive 🔐 heuristic (≥1 admin keyword at session start, ≥2 during session); admin coverage gate before /save for multi-user/SaaS/compliance projects; `admin.html` page in Architect workspace; `notes.md ## admin` YAML schema
+- `workflows/crystallize.md`: Step 1D extended — exports `notes.md ## admin` → `## Admin & Governance` table (capabilities + personas) in `PROJECT-CONTEXT.md`
+- `templates/project/PROJECT-CONTEXT.md`: `## Admin & Governance` section with placeholder table
+- `skills/vp-brainstorm/SKILL.md`, `skills/vp-crystallize/SKILL.md`: ENH-063 documented
+
+### Added (ENH-064)
+- `workflows/brainstorm.md`: cross-workspace HUB links — Architect `index.html` ↔ UI Direction `index.html` when both workspaces active in same session; triggered by arch_to_ui_sync, BUG-018 "Both" selection, or `/sync-links`
+- `workflows/crystallize.md`: Step 1D MANDATORY READ GATE — if architect workspace exists, reads ALL 12 pages front-to-back before extraction; `architect_read_complete: true` required; `notes.md` missing → STOP
+- `workflows/crystallize.md`: Step 1A strengthened — if ui-direction exists, reads ALL pages/*.html + ALL notes.md sections; `ui_direction_read_complete: true` required; pages inventory mismatch → STOP
+- `workflows/crystallize.md`: Step 1F Cross-Reference Gate — validates `## Coverage` matrix when both workspaces present; warns on Phase 1 features with no architect OR UI coverage
+- `skills/vp-crystallize/SKILL.md`: mandatory workspace read gates documented
 
 ## [2.31.0] - 2026-04-21
 

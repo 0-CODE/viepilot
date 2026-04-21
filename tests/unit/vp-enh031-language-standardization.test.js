@@ -73,11 +73,13 @@ describe('ENH-031 — workflow files: no Vietnamese prose outside invocation tri
       if (hits.length === 0) return; // clean
 
       if (UI_SIGNAL_EXCEPTION_FILES.has(relPath)) {
-        // Only the UI scope signal keywords line is allowed (single blockquote line)
+        // Scan-target keyword blockquote lines are allowed (not prose).
+        // Patterns: UI signal keywords ("> `màu`") and admin/governance trigger keywords (ENH-063)
         const unexpected = hits.filter(({ text }) => {
-          // Allow lines that are ONLY the UI scan-target keyword blockquote
-          // Pattern: starts with "> `màu`" or similar signal keyword blockquote
-          return !/^>\s+`màu`/.test(text.trim());
+          const t = text.trim();
+          if (/^>\s+`màu`/.test(t)) return false;           // UI signal keywords line
+          if (/^>\s+`admin`/.test(t)) return false;          // Admin trigger keywords line (ENH-063)
+          return true;
         });
         expect(unexpected).toEqual([]);
       } else {

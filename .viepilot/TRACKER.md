@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **95** — ✅ Complete (**ENH-062 /vp-skills + BUG-016 + BUG-017** → **2.31.0**)
-- **Next Phase**: **96** — 🔲 Planned (BUG-018 + ENH-063 + ENH-064 → v2.32.0)
+- **Last Completed Phase**: **96** — ✅ Complete (**BUG-018 + ENH-063 + ENH-064** → **2.32.0**)
+- **Next Phase**: —
 - **Current Task**: —
-- **Last Activity**: 2026-04-21 — Phase 96 planned: brainstorm governance improvements (unified mode-selection, Admin & Governance topic, mandatory crystallize read gates)
+- **Last Activity**: 2026-04-21 — Phase 96 complete: BUG-018 unified mode-selection, ENH-063 Admin & Governance topic + crystallize export, ENH-064 mandatory read gates + HUB links → v2.32.0
 
 ## Progress Overview
 ```
