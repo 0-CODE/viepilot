@@ -87,6 +87,12 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Admin & Governance Export (ENH-063):**
 - Step 1D item 7: if `admin.html` or `notes.md ## admin` exists in architect workspace → append `## Admin & Governance` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Required | Phase | Notes) + Admin Personas table. Records `admin_imported` and `admin_capabilities_count` in working notes.
 
+**Mandatory Workspace Read Gates (ENH-064):**
+- **Architect workspace (Step 1D):** if `.viepilot/architect/` exists → reads ALL 12 pages front-to-back before any extraction. `architect_read_complete: true` required. Missing `notes.md` → STOP.
+- **UI Direction workspace (Step 1A strengthened):** if `.viepilot/ui-direction/` exists → reads ALL pages/*.html + ALL notes.md sections. `ui_direction_read_complete: true` required. Pages inventory mismatch → STOP.
+- **Cross-reference gate (Step 1F):** when both workspaces present → validates coverage matrix; warns on Phase 1 features with no architect OR UI coverage.
+- **No silent skip**: any workspace that exists MUST be fully read. Partial reads are not allowed.
+
 **Language configuration (ENH-032):**
 - Step 0-A reads `~/.viepilot/config.json` → `DOCUMENT_LANG` (default: `en`) and `COMMUNICATION_LANG` (default: `en`).
 - `DOCUMENT_LANG` controls content language for all generated files (ROADMAP, TRACKER, ARCHITECTURE, etc.).

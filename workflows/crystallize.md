@@ -895,6 +895,27 @@ The brainstorm session indicates this project has UI scope but `.viepilot/ui-dir
 
 If `ui_scope_detected = false` → skip gate; proceed normally.
 
+**MANDATORY READ GATE (ENH-064) — if `.viepilot/ui-direction/` exists:**
+
+Read ALL artifacts completely (no partial reads):
+1. `notes.md` — ALL sections: ui_idea_buffer[], background extracted ideas, Pages inventory, arch_to_ui_sync[], skills_used[], coverage[], admin (if present)
+2. If `pages/` directory exists: read EVERY `pages/*.html` file — do NOT skip any page
+   For each page: extract layout intent, component list, interactions, designer annotations
+3. Read `index.html` (hub) — verify nav links match pages/ file set
+4. Verify `## Pages inventory` in notes.md matches actual `pages/*.html` set on disk
+   If mismatch detected → STOP:
+   ```
+   ⛔ UI Direction pages/ directory and notes.md Pages inventory are out of sync.
+   Files on disk: {list}
+   Inventory in notes.md: {list}
+   Please sync brainstorm artifacts before continuing.
+   1. Return to /vp-brainstorm --ui to update inventory
+   2. Continue with disk files as source of truth (override notes.md)
+   ```
+5. Record: `ui_direction_read_complete: true` in crystallize working notes
+
+Do NOT proceed to UI extraction until `ui_direction_read_complete: true`.
+
 ### Consume artifacts (when available)
 
 Check for direction artifacts:
@@ -979,6 +1000,41 @@ Also create project-local index for traceability:
 ## Step 1D: Consume Architect Artifacts (FEAT-011)
 
 If `.viepilot/architect/` exists with at least one session directory:
+
+**MANDATORY READ GATE (ENH-064) — if `.viepilot/architect/` exists:**
+
+Before extracting any data, execute a full sequential read of ALL present files:
+
+```bash
+ls -la .viepilot/architect/{session-id}/
+```
+
+For each file present, READ COMPLETELY (no skimming):
+1. `notes.md` — ALL sections: decisions[], tech_stack{}, open_questions[], erd, use_cases, apis, deployment, feature_map, arch_to_ui_sync[], coverage[], admin (ENH-063), skills_used[]
+2. `architecture.html` — components, C4 intent, external integrations
+3. `data-flow.html` — service flows, async indicators, event queues
+4. `decisions.html` — all ADR entries (supplement notes.md decisions[])
+5. `tech-stack.html` — layer-by-layer stack (authoritative if conflicts with notes.md)
+6. `tech-notes.html` — assumptions, risks, open questions (supplement notes.md open_questions[])
+7. `feature-map.html` — features with phase/priority/status tags
+8. `erd.html` — entities, relationships (if present)
+9. `user-use-cases.html` — actors, use cases (if present)
+10. `deployment.html` — infra, environments (if present)
+11. `apis.html` — endpoints, service contracts (if present)
+12. `admin.html` — admin capabilities (if present — ENH-063)
+    *(Skip: `sequence-diagram.html` — intentionally excluded per existing rule)*
+
+**Failure rule**: if `notes.md` is missing or unreadable → STOP and surface:
+```
+⛔ Architect workspace found but notes.md is missing or unreadable.
+Path: .viepilot/architect/{session-id}/notes.md
+Please fix architect artifacts before running /vp-crystallize.
+1. Return to /vp-brainstorm --architect to regenerate notes.md
+2. Continue without architect data (not recommended)
+```
+
+**Completion record**: after all files read → set `architect_read_complete: true` in crystallize working notes.
+Do NOT proceed to data extraction until `architect_read_complete: true`.
 
 1. **Select most recent session** (by directory mtime or newest session-id).
 2. **Read `notes.md`** → parse YAML frontmatter sections:
@@ -1111,6 +1167,25 @@ Append to `.viepilot/PROJECT-CONTEXT.md`:
 - `exclude` — entry omitted from PROJECT-CONTEXT.md
 
 **Lock semantics**: once written, `## Skills` is the authoritative skill decision for the project. `vp-auto` reads it and **never re-prompts**.
+</step>
+
+<step name="cross_reference_gate">
+## Step 1F: Cross-Reference Gate (ENH-064)
+
+Run when BOTH `architect_read_complete: true` AND `ui_direction_read_complete: true` are set in working notes:
+
+1. Read `## Coverage` from architect notes.md (or ui-direction notes.md if present).
+2. For each Phase 1 feature in coverage matrix:
+   - Confirm architect page was read (in `architect_read_complete` set)
+   - Confirm UI screen page was read (in `ui_direction_read_complete` set)
+3. Features with "none yet" in BOTH architect AND UI columns → surface warning (non-blocking):
+   ```
+   ⚠️ Coverage gap: Feature "{name}" has no coverage in Architect OR UI Direction.
+   Consider adding before proceeding — or dismiss to continue.
+   ```
+4. Record: `cross_reference_complete: true`.
+
+**Skip condition**: if only one workspace is present (not both) → silently skip Step 1F (single-workspace is valid).
 </step>
 
 <step name="generate_ai_guide">

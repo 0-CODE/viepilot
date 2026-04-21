@@ -1062,6 +1062,39 @@ Append to `notes.md` when action is taken:
   date: {YYYY-MM-DD}
 ```
 
+### Cross-workspace HUB links (ENH-064)
+
+When BOTH architect AND ui-direction workspaces are active in the same session:
+After `arch_to_ui_sync` completes (or when both workspaces first become active together):
+
+**Update Architect `index.html`** — add to nav/header section:
+```html
+<div class="cross-workspace-link">
+  <a href="../../ui-direction/{session-id}/index.html" target="_blank">
+    🎨 View UI Direction workspace
+  </a>
+</div>
+```
+
+**Update UI Direction `index.html`** — add to nav/header section:
+```html
+<div class="cross-workspace-link">
+  <a href="../../architect/{session-id}/index.html" target="_blank">
+    🏗️ View Architect workspace
+  </a>
+</div>
+```
+
+**Trigger conditions:**
+- After arch_to_ui_sync fires (ENH-061)
+- When BUG-018 Step 2B selection is "Both" and both workspaces are created
+- Manual: user types `/sync-links`
+
+**Relative path calculation:**
+- From `.viepilot/architect/{session-id}/index.html` → `../../ui-direction/{session-id}/index.html`
+- From `.viepilot/ui-direction/{session-id}/index.html` → `../../architect/{session-id}/index.html`
+- Use the same `{session-id}` (same date YYYY-MM-DD) for cross-linking.
+
 </step>
 
 <step name="architect_delta_sync">
