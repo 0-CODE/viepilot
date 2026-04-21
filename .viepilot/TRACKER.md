@@ -158,7 +158,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-017 | 🐛 | vp-evolve/vp-request Step 5/6 thiếu AUQ call trong `<process>` body — `@` workflow ref không auto-expand | high | new |
+| BUG-017 | 🐛 | vp-evolve/vp-request Step 5/6 thiếu AUQ call trong `<process>` body — `@` workflow ref không auto-expand | high | triaged (→ Phase 95) |
 | ENH-062 | 🔧 | `/vp-skills` slash command — agent-native global skill registry management (scan/install/list cross-project) | high | triaged (→ Phase 95) |
 | BUG-016 | 🐛 | Workflow skill context steps dùng JS function call không executable — cần thay bằng shell command | high | triaged (→ Phase 95) |
 | FEAT-020 | ✨ | Skill Registry System — scan-skills + install-skill + brainstorm/crystallize/auto integration (5 phases) | high | ✅ done (Phase 90–94 → 2.26.0–2.30.0) |

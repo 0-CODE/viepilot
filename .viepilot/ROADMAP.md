@@ -2646,10 +2646,10 @@
 
 ---
 
-### Phase 95: `/vp-skills` Slash Command + BUG-016 Fix (ENH-062)
-**Goal**: New `skills/vp-skills/SKILL.md` agent slash command for global skill registry management from any project + `get-registry` CLI subcommand + fix non-executable `loadRegistry()` references in workflows.
-**Estimated Tasks**: 4
-**Dependencies**: FEAT-020 ✅ (lib/skill-registry.cjs, lib/skill-installer.cjs), BUG-016, ENH-062
+### Phase 95: `/vp-skills` Slash Command + BUG-016 + BUG-017 Fix (ENH-062)
+**Goal**: New `skills/vp-skills/SKILL.md` agent slash command + `get-registry` CLI + fix non-executable `loadRegistry()` in workflows (BUG-016) + fix missing AUQ in vp-evolve/vp-request SKILL.md `<process>` body (BUG-017).
+**Estimated Tasks**: 5
+**Dependencies**: FEAT-020 ✅, ENH-058 ✅, ENH-059 ✅, BUG-016, BUG-017, ENH-062
 **Directory**: `.viepilot/phases/95-enh062-vp-skills-slash-command/`
 
 | Task | Description | Acceptance Criteria | Complexity |
@@ -2657,13 +2657,16 @@
 | 95.1 | `skills/vp-skills/SKILL.md` — new slash command skill | 6 commands; installed path; cross-project | M |
 | 95.2 | `bin/vp-tools.cjs` — `get-registry [--id <id>]` subcommand | JSON output; null fallback; --help | S |
 | 95.3 | Fix `workflows/autonomous.md` + `workflows/brainstorm.md` (BUG-016) | No `Call loadRegistry()`; uses get-registry shell cmd | S |
-| 95.4 | Tests (≥12) + CHANGELOG [2.31.0] + version bump | All tests pass; package.json = "2.31.0" | S |
+| 95.4 | Fix `skills/vp-evolve/SKILL.md` + `skills/vp-request/SKILL.md` (BUG-017) | Step 5/6 has AUQ call in `<process>` body | S |
+| 95.5 | Tests (≥15) + CHANGELOG [2.31.0] + version bump | All tests pass; package.json = "2.31.0" | S |
 
 **Verification**:
 - [ ] `ls skills/vp-skills/SKILL.md` exists
 - [ ] `node bin/vp-tools.cjs get-registry 2>/dev/null` outputs JSON or null
 - [ ] `grep -c "loadRegistry()" workflows/autonomous.md` = 0
 - [ ] `grep -c "loadRegistry()" workflows/brainstorm.md` = 0
+- [ ] `grep -c "AskUserQuestion" skills/vp-evolve/SKILL.md` ≥ 2
+- [ ] `grep -c "AskUserQuestion" skills/vp-request/SKILL.md` ≥ 2
 - [ ] `npm test` all pass
 
 ---
