@@ -117,7 +117,18 @@ Suggested topics to brainstorm:
    - Monitoring
    - Scaling
 
-6. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
+6. **Admin & Governance**
+   - Who are the admin personas? (super-admin, org-admin, ops team, support agent)
+   - User & Role management? (invite users, deactivate, RBAC/ABAC, permission matrix)
+   - Monitoring dashboard? (system health, error rates, latency, active users, SLA targets)
+   - Audit log requirements? (which actions must be tracked? retention period? compliance?)
+   - Billing & subscription management? (plans, invoices, upgrade/downgrade, payment history)
+   - Rate limiting / quota per tier? (API call limits, storage quotas, feature limits)
+   - Feature flags / runtime configuration? (kill switches, A/B toggles, env settings)
+   - Reporting & data export? (business metrics, usage analytics, CSV/Excel export)
+   - Notification management? (email/push templates, delivery log, unsubscribe management)
+
+7. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
 
 ### Interactive Q&A
 For each topic:
@@ -365,6 +376,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
   sequence-diagram.html   # Per-scenario sequences (sequenceDiagram) — ENH-029
   deployment.html         # Infra, environments, CI/CD pipeline — ENH-029
   apis.html               # Service API listing & design decisions — ENH-029
+  admin.html              # Admin & governance capabilities — actor flow, role hierarchy, key operations, audit schema (ENH-063)
   style.css               # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
   notes.md                # Machine-readable YAML (see schema below)
 ```
@@ -388,6 +400,59 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `architecture.html` | Component structure + C4 system context + external integrations |
 | `deployment.html` | Infrastructure, environments, ops concerns, CI/CD pipeline |
 | `apis.html` | API endpoint design, HTTP methods, request/response contracts |
+| `admin.html` | Admin personas, role hierarchy, key admin operations (CRUD users, billing management, audit log schema), access control model |
+
+#### Admin & Governance Detection (ENH-063)
+
+**Trigger keywords** (case-insensitive, Vietnamese or English):
+> `admin`, `administrator`, `back-office`, `quản trị`, `quản lý người dùng`, `user management`, `role`, `permission`, `phân quyền`, `monitor`, `monitoring`, `giám sát`, `audit log`, `audit trail`, `nhật ký`, `billing`, `subscription`, `gói cước`, `thanh toán`, `rate limit`, `quota`, `feature flag`, `feature toggle`, `report`, `reporting`, `báo cáo`, `analytics`, `phân tích`, `SLA`, `compliance`, `GDPR`, `SOC2`, `alert`, `cảnh báo`, `health check`, `observability`
+
+**Early-session detection:**
+At session start, scan initial message for admin keywords. If **≥1 keyword** found → show proactive banner:
+
+> **Adapter-aware prompt:**
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. AUQ spec:
+>   - question: "I noticed your project may involve admin or governance capabilities. Should we discuss Admin & Governance (Topic 6)?"
+>   - header: "Admin & Governance"
+>   - options: [{ label: "Yes — explore admin panel, user management, monitoring, audit logs", description: "Recommended for multi-user/SaaS projects" }, { label: "Not needed — single-user or admin-free project", description: "" }, { label: "Later — add to notes, continue current topic", description: "" }]
+>
+> **Text fallback:**
+> ```
+> 🔐 I noticed your project may involve admin or governance capabilities.
+> Should we discuss Admin & Governance (Topic 6)?
+>
+> 1. Yes — explore admin panel, user management, monitoring, audit logs (Recommended for multi-user/SaaS)
+> 2. Not needed — single-user or admin-free project
+> 3. Later — add to notes, continue current topic
+> ```
+
+**During-session detection:**
+When **≥2 unique admin keywords** detected → surface confirmation:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+>   - question: "Admin/governance signals detected in this session. Would you like to cover Admin & Governance (Topic 6)?"
+>   - options: [{ label: "Yes — switch to / add admin topic", description: "" }, { label: "Note in background (no topic switch)", description: "" }, { label: "Skip for this session", description: "" }]
+>
+> **Text fallback:** `🔐 Admin/governance signals detected. Cover Admin & Governance (Topic 6)? 1. Yes 2. Note in background 3. Skip`
+
+**Admin coverage gate before /save:**
+Before writing session file, check:
+- Project has multi-user signals (`role`, `team`, `organization`) OR
+- SaaS/paid product signals (`subscription`, `billing`, `plan`) OR
+- Compliance signals (`audit`, `GDPR`, `SOC2`)
+
+If ANY detected AND `## admin` YAML section not present in notes.md:
+
+> **Text fallback:**
+> ```
+> ⚠️ Admin gap detected: project has multi-user/SaaS/compliance signals but Admin & Governance was not covered.
+> 1. Add admin topic now (go to Topic 6)
+> 2. Add note to backlog (".viepilot/requests/ENH-admin-tbd.md")
+> 3. Dismiss — skip admin for this session
+> ```
+> (Non-blocking — user can dismiss)
+
+**admin.html trigger:** admin keyword detected in session AND Architect Mode is active → create/update `admin.html`.
 
 #### Sequence trigger keywords (ENH-029)
 When the user mentions: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
@@ -524,6 +589,30 @@ design_decisions:
   - decision: Authentication
     choice: "{JWT / Session / OAuth2 / API Key}"
     rationale: "{rationale}"
+
+## admin
+admin_personas:
+  - id: super_admin
+    capabilities: [user_management, billing, system_config, audit_log_view]
+  - id: org_admin
+    capabilities: [invite_users, role_assign, reporting]
+capabilities:
+  - id: user_management
+    required: yes
+    phase: 2
+    notes: invite, deactivate, RBAC
+  - id: audit_log
+    required: yes
+    phase: 3
+    notes: all write ops, 90-day retention
+  - id: monitoring_dashboard
+    required: optional
+    phase: 3
+    notes: error rate, latency, active users
+  - id: billing_management
+    required: no
+    phase: ~
+    notes: not in scope
 
 ## architect_sync
 - synced_at: "{ISO datetime}"
