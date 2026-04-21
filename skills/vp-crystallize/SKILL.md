@@ -84,6 +84,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Architect artifacts consumption (FEAT-011):**
 - Step 1D reads `.viepilot/architect/{session}/notes.md` YAML — imports `decisions[]` → ARCHITECTURE.md, uses `tech_stack{}` as authoritative stack (conflict → ask user), surfaces `open_questions[]` with `status: open`. Soft suggestion (not hard block) when architect dir missing but ≥5 services detected.
 
+**Admin & Governance Export (ENH-063):**
+- Step 1D item 7: if `admin.html` or `notes.md ## admin` exists in architect workspace → append `## Admin & Governance` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Required | Phase | Notes) + Admin Personas table. Records `admin_imported` and `admin_capabilities_count` in working notes.
+
 **Language configuration (ENH-032):**
 - Step 0-A reads `~/.viepilot/config.json` → `DOCUMENT_LANG` (default: `en`) and `COMMUNICATION_LANG` (default: `en`).
 - `DOCUMENT_LANG` controls content language for all generated files (ROADMAP, TRACKER, ARCHITECTURE, etc.).

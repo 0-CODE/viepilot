@@ -1028,8 +1028,24 @@ If `.viepilot/architect/` exists with at least one session directory:
    | Decision | Choice | Rationale |
    ```
    Note: `sequence-diagram.html` is intentionally excluded from crystallize extraction — per-scenario diagrams are not architecture artifacts (they live in Architect Mode workspace only).
-7. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
-8. **Record in working notes**:
+7. **`admin.html` / `notes.md ## admin`** (if exists — ENH-063) → append to `.viepilot/PROJECT-CONTEXT.md`:
+   ```markdown
+   ## Admin & Governance (from Architect Mode)
+   | Capability | Required | Phase | Notes |
+   |-----------|----------|-------|-------|
+   | User management UI | yes | 2 | invite, deactivate, role assign |
+   | Audit log | yes | 3 | all write operations, 90-day retention |
+   | Monitoring dashboard | optional | 3 | error rate, latency, active users |
+   | Billing management | no | — | not in scope |
+
+   ### Admin Personas
+   | Persona | Key Capabilities |
+   |---------|-----------------|
+   | super_admin | user_management, billing, system_config, audit_log_view |
+   | org_admin | invite_users, role_assign, reporting |
+   ```
+8. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
+9. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
@@ -1037,6 +1053,8 @@ If `.viepilot/architect/` exists with at least one session directory:
    - `use_cases_count`: {count if use_cases present, else "n/a"}
    - `deployment_imported`: {true/false}
    - `apis_imported`: {true/false}
+   - `admin_imported`: {true/false}
+   - `admin_capabilities_count`: {count if admin present, else "n/a"}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):
