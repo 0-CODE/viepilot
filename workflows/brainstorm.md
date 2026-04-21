@@ -255,11 +255,15 @@ Step 2: Scope lock + Phase assignment  (existing)
   → Assign all features to Phase 1 / Phase 2 / Phase 3...
   → Fill ## Phases in session draft
 
+Step 2B: Workspace Mode Selection  (BUG-018)
+  → After scope lock, before any design workspace is created
+  → AUQ: Both / Architect only / UI Direction only / Neither
+
 Step 3: Feature → Coverage mapping  (ENH-061)
   → For each Phase 1 feature: name the architect component AND UI screen
   → Output: ## Coverage matrix in notes.md
 
-Step 4: Architect Design  (existing)
+Step 4: Architect Design  (existing — only when Step 2B selects Both or Architect only)
   → Fill architect workspace per coverage matrix
   → Use /vp-brainstorm --architect or let heuristics fire
 
@@ -267,7 +271,7 @@ Step 5: Architect → UI sync  (ENH-061 — arch_to_ui_sync)
   → After architect edits: check which architectural decisions impact UI screens
   → Prompt user to update UI Direction accordingly
 
-Step 6: UI Direction  (existing)
+Step 6: UI Direction  (existing — only when Step 2B selects Both or UI Direction only)
   → Fill UI workspace per coverage matrix + arch feedback
   → Use /vp-brainstorm --ui or proactive 🎨 banner
 
@@ -279,6 +283,41 @@ Step 8: /save → /vp-crystallize  (existing)
 ```
 
 > **Note**: Steps 3–7 are optional for simple or early-stage sessions. The flow is recommended when a session produces both Architect Design and UI Direction artifacts.
+
+### Step 2B: Workspace Mode Selection (BUG-018)
+
+Runs **after scope lock** (`## Phases` in session draft is populated) and **before any design workspace is created**.
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool:
+> - question: `"Scope locked. Which design workspaces would you like to activate for this session?"`
+> - header: `"Workspaces"`
+> - options:
+>   - `{ label: "Both Architect + UI Direction (Recommended)", description: "Full coverage: architecture HTML workspace + UI prototype direction per ENH-061 Breakdown Ordering" }`
+>   - `{ label: "Architect Design only (🏗️)", description: "System architecture, data-flow, ERD, APIs, decisions HTML workspace" }`
+>   - `{ label: "UI Direction only (🎨)", description: "HTML prototype direction for screens/pages" }`
+>   - `{ label: "Neither — text-only", description: "Continue as text brainstorm, activate workspaces manually later with --architect or --ui" }`
+> - multiSelect: false
+>
+> **Text fallback (Cursor/Codex/Copilot/Antigravity):**
+> ```
+> Scope locked. Which design workspaces would you like to activate?
+> 1. Both Architect + UI Direction (Recommended) — full coverage per ENH-061
+> 2. Architect Design only (🏗️) — HTML architecture workspace
+> 3. UI Direction only (🎨) — HTML prototype direction
+> 4. Neither — text-only, activate manually later
+> ```
+
+**On selection:**
+- **"Both"**: activate Architect Mode (Step 4) → arch_to_ui_sync (Step 5) → UI Direction (Step 6) — in that order
+- **"Architect Design only"**: activate Architect Mode (Step 4), skip Step 6
+- **"UI Direction only"**: skip Architect (Step 4), activate UI Direction (Step 6) directly
+- **"Neither"**: skip both Steps 4 and 6; user can activate later with `--architect` / `--ui` flag
+
+**Guard rule (BUG-018 fix):**
+- Architect auto-activate heuristic (≥3 components / ≥1 stack mention) **MUST NOT fire independently** once Step 2B runs.
+- If heuristic fires **before** scope lock: save the signal, defer prompt until Step 2B.
+- If user selects **"Neither"** or **"UI Direction only"** at Step 2B: suppress Architect auto-activate for the remainder of this session.
+- If user selects **"Architect Design only"** or **"Both"**: heuristic is redundant — workspace activates per selection, no second prompt.
 
 ---
 
