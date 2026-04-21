@@ -187,8 +187,13 @@ If the user is brainstorming a project with UI/UX or requests a visual design:
 **Trigger**: UI Direction Mode is active (at least one HTML file being generated or updated).
 
 **Step — Load registry:**
-- Call `loadRegistry()` from `lib/skill-registry.cjs` (read `~/.viepilot/skill-registry.json`)
-- If registry absent or empty: skip silently — no warning, no prompt
+```bash
+node ~/.claude/viepilot/bin/vp-tools.cjs get-registry 2>/dev/null \
+  || node ~/.cursor/viepilot/bin/vp-tools.cjs get-registry 2>/dev/null \
+  || cat ~/.viepilot/skill-registry.json 2>/dev/null
+```
+Parse JSON output → extract `skills[]`.
+If output is `null` or command fails: skip silently — no warning, no prompt
 
 **Step — Match skills to UI signals:**
 Map brainstorm UI signal keywords to capability tags:

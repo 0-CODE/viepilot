@@ -248,6 +248,7 @@ Update `.viepilot/TRACKER.md`:
 
 ### Step 6: Confirm & Next Steps
 
+Display confirmation banner:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT ► REQUEST CREATED ✓
@@ -260,13 +261,31 @@ Update `.viepilot/TRACKER.md`:
  Status: {STATUS}
 
  File: .viepilot/requests/{TYPE}-{NUMBER}.md
-
- Next:
- - /vp-request --list    View all requests
- - /vp-evolve            Plan phase/tasks + ROADMAP (before code)
- - /vp-auto              Implement per task plan (after evolve)
- - /vp-request           Create another request
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Claude Code (terminal) — REQUIRED:** After banner, call `AskUserQuestion`:
+```
+question: "Request {TYPE}-{N} logged. What would you like to do next?"
+options:
+  - label: "Plan phase + tasks → /vp-evolve"
+    description: "Create ROADMAP entry, phase dir, and task files now (Recommended)"
+  - label: "Create another request → /vp-request"
+    description: "Log more requests before planning"
+  - label: "Done for now"
+    description: "Exit — request is saved in backlog"
+```
+
+**On selection:**
+- "Plan phase + tasks → /vp-evolve": invoke `/vp-evolve` skill
+- "Create another request → /vp-request": invoke `/vp-request` skill
+- "Done for now": print "Request {TYPE}-{N} saved in backlog." and exit
+
+**Text fallback (Cursor/Codex/Copilot/Antigravity):**
+```
+Next actions:
+  /vp-evolve    Plan phase/tasks + ROADMAP
+  /vp-request   Create another request
 ```
 </process>
 

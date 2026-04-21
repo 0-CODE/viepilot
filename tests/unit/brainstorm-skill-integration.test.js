@@ -33,8 +33,8 @@ describe('FEAT-020: workflows/brainstorm.md contracts', () => {
     expect(BRAINSTORM_MD).toContain('FEAT-020');
   });
 
-  test('3. contains "loadRegistry"', () => {
-    expect(BRAINSTORM_MD).toContain('loadRegistry');
+  test('3. contains "get-registry" (BUG-016: shell-executable registry load)', () => {
+    expect(BRAINSTORM_MD).toContain('get-registry');
   });
 
   test('4. contains "skills_used"', () => {

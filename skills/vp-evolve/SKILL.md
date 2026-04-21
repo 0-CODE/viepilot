@@ -179,16 +179,42 @@ Update in:
 - CHANGELOG.md [Unreleased] section
 
 ### Step 5: Confirm & Suggest Next
+
+Display summary banner:
 ```
-✓ Evolution complete
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VIEPILOT ► EVOLVE COMPLETE ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Mode: {mode}
-Changes:
-- {list changes}
+ Mode: {mode}
+ Changes: {list}
+ Version: {old} → {new}
+ New Phases: Phase {N}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
-Version: {old} → {new}
+**Claude Code (terminal) — REQUIRED:** After banner, call `AskUserQuestion`:
+```
+question: "Phase {N} planned. What would you like to do next?"
+options:
+  - label: "Execute now → /vp-auto"
+    description: "Start implementing Phase {N} immediately (Recommended)"
+  - label: "Create another request → /vp-request"
+    description: "Log more requests before implementing"
+  - label: "Done for now"
+    description: "Exit — run /vp-auto later"
+```
 
-Next action: /vp-auto --from {new_phase}
+**On selection:**
+- "Execute now → /vp-auto": invoke `/vp-auto --from {new_phase}` skill
+- "Create another request → /vp-request": invoke `/vp-request` skill
+- "Done for now": print "Phase {N} ready. Run /vp-auto when ready." and exit
+
+**Text fallback (Cursor/Codex/Copilot/Antigravity):**
+```
+Next actions:
+  /vp-auto --from {N}    Execute Phase {N}
+  /vp-request            Create another request
 ```
 </process>
 

@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.31.0] - 2026-04-21
+
+### Added (ENH-062)
+- `skills/vp-skills/SKILL.md`: new `/vp-skills` slash command — agent-native global skill registry management from any project; commands: scan, list, install, uninstall, update, info; uses installed vp-tools path (`~/.claude/viepilot/bin/vp-tools.cjs`)
+- `bin/vp-tools.cjs`: new `get-registry [--id <id>]` subcommand — outputs registry JSON to stdout; enables workflow shell integration
+
+### Fixed (BUG-016)
+- `workflows/autonomous.md`: replaced non-executable `Call loadRegistry()` with `node ~/.claude/viepilot/bin/vp-tools.cjs get-registry --id {id}` shell command
+- `workflows/brainstorm.md`: replaced `Call loadRegistry()` with `node ~/.claude/viepilot/bin/vp-tools.cjs get-registry` shell command + cat fallback
+
+### Fixed (BUG-017)
+- `skills/vp-evolve/SKILL.md`: added explicit AUQ call in Step 5 `<process>` body — workflow continuation prompt (Execute /vp-auto / Create request / Done)
+- `skills/vp-request/SKILL.md`: added explicit AUQ call in Step 6 `<process>` body — workflow continuation prompt (Plan /vp-evolve / Create request / Done)
+
 ## [2.30.0] - 2026-04-20
 
 ### Changed (FEAT-020 Phase 5 — complete)

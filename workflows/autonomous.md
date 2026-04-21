@@ -74,7 +74,13 @@ SKILL_CONTEXT=$(grep -A 100 "^## Skills" .viepilot/PROJECT-CONTEXT.md 2>/dev/nul
 Build `SKILL_CONTEXT_MAP` in session memory:
 - Parse `## Skills` table rows
 - For each row: extract `id`, `source`, `required` (yes/no), `phases` (comma list)
-- Call `loadRegistry()` to get `best_practices[]` for each skill
+- Load best_practices[] for each skill from global registry:
+  ```bash
+  node ~/.claude/viepilot/bin/vp-tools.cjs get-registry --id {skill-id} 2>/dev/null \
+    || node ~/.cursor/viepilot/bin/vp-tools.cjs get-registry --id {skill-id} 2>/dev/null
+  ```
+- Parse JSON output → extract `best_practices[]`
+- If command absent or returns null: `best_practices = []` — silent no-op
 - Structure: `{ required: [{id, phases: [1,2], best_practices: [...]}], optional: [...] }`
 
 **If `## Skills` section absent or empty**: silent no-op — `SKILL_CONTEXT_MAP = { required: [], optional: [] }`.

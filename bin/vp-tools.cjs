@@ -1138,6 +1138,26 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Output global skill registry as JSON (BUG-016 fix — shell-executable alternative to loadRegistry())
+   */
+  'get-registry': (args) => {
+    const { loadRegistry } = require('../lib/skill-registry.cjs');
+    const registry = loadRegistry();
+    if (!registry) {
+      process.stdout.write('null\n');
+      process.exit(0);
+    }
+    const idFilter = args[0] === '--id' ? args[1] : null;
+    if (idFilter) {
+      const skill = (registry.skills || []).find(s => s.id === idFilter) || null;
+      process.stdout.write(JSON.stringify(skill) + '\n');
+    } else {
+      process.stdout.write(JSON.stringify(registry) + '\n');
+    }
+    process.exit(0);
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -1224,6 +1244,15 @@ ${colors.cyan}Examples:${colors.reset}
         options: ['--json: Machine-readable JSON output'],
         examples: ['vp-tools info', 'vp-tools info --json'],
       },
+      'get-registry': {
+        usage: 'vp-tools get-registry [--id <skill-id>]',
+        description: 'Output global skill registry as JSON (enables workflow shell integration)',
+        options: ['--id <id>: Output only the matching skill object (null if not found)'],
+        examples: [
+          'vp-tools get-registry',
+          'vp-tools get-registry --id frontend-design',
+        ],
+      },
       update: {
         usage: 'vp-tools update [--dry-run] [--yes] [--global]',
         description: 'Update viepilot to npm latest (local dependency, global install, or explicit --global)',
@@ -1282,6 +1311,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}hooks${colors.reset} scaffold|install [--adapter] scaffold: print snippet; install: write to settings.json
   ${colors.bold}config${colors.reset} <get|set|reset>    Read/write language config (~/.viepilot/config.json)
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
+  ${colors.bold}get-registry${colors.reset} [--id <id>] Output global skill registry as JSON
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
