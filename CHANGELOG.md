@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.33.0] - 2026-04-21
+
+### Added (ENH-065)
+- `workflows/brainstorm.md`: Topic 7 "Content Management" in brainstorm Topics Template (10 sub-questions: content types, lifecycle, WYSIWYG/markdown, media, taxonomy, localization, search, versioning, SEO); proactive 🗂️ heuristic (≥1 content keyword at session start, ≥2 during session); content coverage gate before /save; `content.html` page in Architect workspace + Page Boundary Rules; `notes.md ## content` YAML schema; Phase assignment renumbered to Topic 8
+- `workflows/crystallize.md`: Step 1D extended — exports `notes.md ## content` → `## Content Management` table (content types, media/storage, localization) in `PROJECT-CONTEXT.md`; `content.html` added to MANDATORY READ GATE list
+- `templates/project/PROJECT-CONTEXT.md`: `## Content Management` section with Content Type, Media & Storage, and Localization placeholder tables
+- `skills/vp-brainstorm/SKILL.md`, `skills/vp-crystallize/SKILL.md`: ENH-065 documented
+
 ## [2.32.0] - 2026-04-21
 
 ### Fixed (BUG-018)
