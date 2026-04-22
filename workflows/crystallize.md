@@ -1118,6 +1118,7 @@ For each file present, READ COMPLETELY (no skimming):
 12. `admin.html` — admin capabilities (if present — ENH-063)
 13. `content.html` — content types, lifecycle, media/SEO schema (if present — ENH-065)
 14. `user-data.html` — user-owned data controls (if present — ENH-066)
+15. `entity-mgmt.html` — admin entity CRUD matrix (if present — ENH-068)
     *(Skip: `sequence-diagram.html` — intentionally excluded per existing rule)*
 
 **Failure rule**: if `notes.md` is missing or unreadable → STOP and surface:
@@ -1228,8 +1229,21 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    | Session/device management | yes | sign out all devices |
    | Two-factor authentication | yes | TOTP + backup codes |
    ```
-10. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
-11. **Record in working notes**:
+10. **`entity-mgmt.html` / `notes.md ## entity_mgmt`** (if exists — ENH-068) → append to `.viepilot/PROJECT-CONTEXT.md`:
+   ```markdown
+   ## Admin Entity Management (from Architect Mode)
+   | Entity | CRUD Ops | Soft Delete | Bulk Actions | Audit Trail | Scope |
+   |--------|----------|-------------|--------------|-------------|-------|
+   | — | — | — | — | — | — |
+
+   ### Import / Export
+   | Direction | Entities |
+   |-----------|----------|
+   | CSV Import | — |
+   | CSV Export | — |
+   ```
+11. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
+12. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
@@ -1243,6 +1257,8 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    - `content_types_count`: {count if content present, else "n/a"}
    - `user_data_imported`: {true/false}
    - `user_data_capabilities_count`: {count if user_data present, else "n/a"}
+   - `entity_mgmt_imported`: {true/false}
+   - `entity_mgmt_entity_count`: {count if entity_mgmt present, else "n/a"}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):

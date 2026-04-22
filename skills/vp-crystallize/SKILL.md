@@ -90,6 +90,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Content Management Export (ENH-065):**
 - Step 1D item 8: if `content.html` or `notes.md ## content` exists in architect workspace → append `## Content Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Content Type | Created By | Lifecycle | Key Fields | Phase) + Media/Storage and Localization sub-tables. Records `content_imported` and `content_types_count` in working notes.
 
+**Admin Entity Management Export (ENH-068):**
+- Step 1D item 10: if `entity-mgmt.html` or `notes.md ## entity_mgmt` exists in architect workspace → append `## Admin Entity Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Entity | CRUD Ops | Soft Delete | Bulk Actions | Audit Trail | Scope) + Import/Export sub-table. Records `entity_mgmt_imported` and `entity_mgmt_entity_count` in working notes.
+
 **User Data Management Export (ENH-066):**
 - Step 1D item 9: if `user-data.html` or `notes.md ## user_data` exists in architect workspace → append `## User Data Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Supported | Notes) with 8 capability rows (profile editing, notification prefs, privacy settings, data export, right to erasure, connected accounts, session management, 2FA). Records `user_data_imported` and `user_data_capabilities_count` in working notes.
 
