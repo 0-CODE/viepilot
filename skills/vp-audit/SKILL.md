@@ -103,15 +103,36 @@ When auditing a project bootstrapped via `vp-crystallize --brownfield`:
 
 <context>
 Optional flags:
-- `--framework` : Force Tier 3 framework checks (even if not auto-detected)
-- `--project`   : Force project-only mode — skip Tier 3 framework checks
-- `--fix`       : Auto-fix all detected issues
-- `--report`    : Generate report file at `.viepilot/audit-report.md`
-- `--silent`    : Only output if issues found
-- `--tier1`     : Run Tier 1 (state consistency) only
-- `--tier2`     : Run Tier 2 (docs drift) only
-- `--tier3`     : Run Tier 3 (stack best-practice) only
-- `--tier4`     : Run Tier 4 (framework integrity) only
+- `--framework`  : Force Tier 3 framework checks (even if not auto-detected)
+- `--project`    : Force project-only mode — skip Tier 3 framework checks
+- `--fix`        : Auto-fix all detected issues
+- `--report`     : Generate report file at `.viepilot/audit-report.md`
+- `--silent`     : Only output if issues found
+- `--tier1`      : Run Tier 1 (state consistency) only
+- `--tier2`      : Run Tier 2 (docs drift) only
+- `--tier3`      : Run Tier 3 (stack best-practice) only
+- `--tier4`      : Run Tier 4 (framework integrity) only
+- `--no-autolog` : Skip auto-logging of gaps to `.viepilot/requests/`; report-only mode
+
+### Auto-Log Behavior (ENH-070)
+
+By default, `vp-audit` automatically logs each detected gap as a request file after the audit report is shown — no manual `/vp-request` step needed:
+
+| Tier | Issue category | Request type | Priority |
+|------|----------------|-------------|----------|
+| 1 | State inconsistency / HANDOFF drift / git tag missing | BUG | medium |
+| 1 | Execute-first ordering risk | BUG | medium |
+| 2 | Doc drift (README/CHANGELOG version) | BUG | low |
+| 2 | Missing docs / placeholder URLs | ENH | low |
+| 3 | Stack violation / correctness anti-pattern | BUG | high |
+| 3 | Stack improvement / best-practice gap | ENH | medium |
+| 4 | Framework integrity gap | ENH | high |
+
+**Duplicate detection**: if a matching open request already exists (title ≥ 70% match or file overlap), the finding is appended to it as a "Re-detected" note rather than creating a duplicate file.
+
+**Post-audit banner**: after auto-logging, shows all logged request IDs and recommends `/vp-evolve {IDs}` as the next action. AUQ prompt on Claude Code terminal.
+
+**Disable**: use `vp-audit --no-autolog` for report-only mode (no `.viepilot/requests/` files created).
 </context>
 
 <process>

@@ -537,6 +537,52 @@ Track across all tiers:
 
 If `auto_logged_new == 0` AND `auto_logged_deduped == 0` (no issues found): skip banner — proceed to Step 6 silently.
 
+### Post-Audit Routing Banner (ENH-070)
+
+After auto-logging completes (and `auto_logged_new > 0` OR `auto_logged_deduped > 0`), display:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ VP-AUDIT: {TOTAL_ISSUES} issue(s) found
+ Requests logged: {auto_logged_new} new, {auto_logged_deduped} updated
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Logged:
+   {TYPE}-{N}: {short title}     [Tier {T}]
+   {TYPE}-{N}: {short title}     [Tier {T}]
+   ...
+
+ (Re-detected on existing requests: {list IDs, or "none"})
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+```
+question: "{N} gap(s) logged. What would you like to do?"
+options:
+  - label: "Plan fix phase → /vp-evolve (Recommended)"
+    description: "Create ROADMAP entry + task files for logged requests now"
+  - label: "Auto-fix now → /vp-auto --fix"
+    description: "Apply auto-fixable issues immediately (Tier 1/2 only)"
+  - label: "Skip — review later"
+    description: "Requests are saved in .viepilot/requests/ — plan when ready"
+```
+
+On selection:
+- **"Plan fix phase → /vp-evolve"**: invoke `/vp-evolve {logged-request-IDs}`
+- **"Auto-fix now → /vp-auto --fix"**: proceed to Step 6 (auto-fix mode)
+- **"Skip — review later"**: print `"Requests saved. Run /vp-evolve {IDs} when ready."` and exit
+
+**Text fallback (other adapters):**
+```
+Next actions:
+  /vp-evolve {IDs}     Plan fix phase (Recommended)
+  /vp-auto --fix       Auto-fix Tier 1/2 issues
+  skip                 Review later
+```
+
+**If `--no-autolog` was set**: skip this banner entirely; show only the plain audit report from Step 5 and proceed to Step 6.
+
 </step>
 
 <step name="fix">
