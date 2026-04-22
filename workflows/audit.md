@@ -454,6 +454,91 @@ fi
 ```
 </step>
 
+<step name="autolog_gate">
+## 5b. Auto-Log Gate (ENH-070)
+
+**Skip condition**: if `--no-autolog` flag is set → skip this entire step; proceed to Step 6.
+
+After the audit report is shown (Step 5), automatically log each detected issue as a request file — no manual `/vp-request` call needed.
+
+### Tier → Request Type Mapping
+
+| Tier | Issue category | Request type | Priority |
+|------|----------------|-------------|----------|
+| 1 | State inconsistency / HANDOFF drift / git tag missing | BUG | medium |
+| 1 | Execute-first ordering risk (BUG-001 heuristic) | BUG | medium |
+| 2 | Doc drift (README/CHANGELOG version mismatch) | BUG | low |
+| 2 | Missing docs / placeholder URLs | ENH | low |
+| 3 | Stack violation / correctness anti-pattern | BUG | high |
+| 3 | Stack improvement / best-practice gap | ENH | medium |
+| 4 | Framework integrity gap (count drift, missing docs) | ENH | high |
+
+### Duplicate Detection (before creating any file)
+
+For each finding, before writing a new request file:
+1. List `.viepilot/requests/*.md` (only files with `Status: new | triaged | in_progress`)
+2. For each open request, check:
+   - Title match: case-insensitive substring ≥ 70% overlap with the finding text
+   - File overlap: any file path from the finding appears in the request's `## Related → Files`
+3. If duplicate found:
+   - Append to the existing file under `## Discussion`:
+     `Re-detected by vp-audit {date}: {finding_text}`
+   - Mark as `auto_logged_deduped` (do NOT create a new file)
+4. If no duplicate: create new request file → mark as `auto_logged_new`
+
+### Create Request File
+
+Path: `.viepilot/requests/{TYPE}-{next_available_N}.md`
+
+```markdown
+# {TYPE}: {title from audit finding}
+
+## Meta
+- **ID**: {TYPE}-{N}
+- **Type**: Bug | Enhancement
+- **Status**: new
+- **Priority**: {priority from tier table above}
+- **Created**: {today}
+- **Reporter**: vp-audit (auto-logged)
+- **Assignee**: AI
+- **Source**: auto-logged by vp-audit Tier {tier}
+
+## Summary
+{audit finding text verbatim}
+
+## Details
+- **Tier**: {tier}
+- **Audit date**: {today}
+- **Affected files**: {files from finding, if any}
+
+## Acceptance Criteria
+- [ ] Fix the detected issue
+- [ ] Re-run vp-audit: this finding no longer appears
+
+## Related
+- Files: {affected files}
+- Dependencies: —
+
+## Resolution
+—
+```
+
+### Update TRACKER.md
+
+After creating all new request files, append each new ID to the TRACKER.md Decision Log:
+```
+| {today} | {TYPE}-{N} auto-logged by vp-audit Tier {tier}: {short title} | `vp-audit` | Backlog |
+```
+
+### Summary counters
+Track across all tiers:
+- `auto_logged_new`: count of new `.viepilot/requests/` files created
+- `auto_logged_deduped`: count of existing request files updated (re-detected note appended)
+
+If `auto_logged_new == 0` AND `auto_logged_deduped == 0` (no issues found): skip banner — proceed to Step 6 silently.
+
+</step>
+
 <step name="fix">
 ## 6. Auto-Fix (if requested)
 
