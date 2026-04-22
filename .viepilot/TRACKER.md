@@ -4,7 +4,7 @@
 - **Milestone**: M1.37
 - **Current Phase**: —
 - **Last Completed Phase**: **103** — ✅ Complete (**ENH-069 Crystallize UI→Task Binding 10-gap fix** → **2.38.0**)
-- **Next Phase**: — (no planned phases)
+- **Next Phase**: **104** — 🔲 Planned (**ENH-070 vp-audit auto-log gaps + vp-evolve routing** → **2.39.0**)
 - **Current Task**: —
 - **Last Activity**: 2026-04-22 — Phase 103 complete: ENH-069 all 10 gaps fixed → v2.38.0
 
@@ -166,6 +166,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-22 | Phase 103 planned: ENH-069 UI→Task binding (10-gap fix — crystallize + autonomous + TASK.md template) → **2.38.0** | `/vp-evolve` | M1.37 |
 | 2026-04-22 | Phase 103 shipped: ENH-069 (all 10 gaps fixed — crystallize.md + autonomous.md + TASK.md template + 33 tests) — **2.38.0** | `/vp-auto` | M1.37 |
 | 2026-04-22 | ENH-070 logged: vp-audit auto-log gaps as requests + direct /vp-evolve routing (no manual /vp-request step needed) | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 104 planned: ENH-070 vp-audit auto-log gaps (Auto-Log Gate + post-audit banner + --no-autolog) → **2.39.0** | `/vp-evolve` | M1.37 |
 
 ## Blockers
 _None currently_

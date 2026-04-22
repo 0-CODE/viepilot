@@ -2868,3 +2868,28 @@
 - [ ] `grep -c "UI Coverage Gate" workflows/autonomous.md` ≥ 2
 - [ ] `grep -c "UI Prototype Reference" templates/phase/TASK.md` ≥ 1
 - [ ] `npm test` all pass
+
+---
+
+---
+
+### Phase 104: ENH-070 — vp-audit Auto-Log Gaps → Direct vp-evolve Routing
+**Goal**: Eliminate the manual `/vp-request` step after audit. When `vp-audit` detects gaps (Tier 1–4), it auto-logs each finding as a `.viepilot/requests/` file with duplicate detection, updates TRACKER.md, and offers a direct `/vp-evolve` route via a post-audit routing banner + AUQ prompt. `--no-autolog` flag for report-only mode.
+**Estimated Tasks**: 3
+**Status**: 🔲 Planned → v2.39.0
+**Dependencies**: ENH-069 ✅, Phase 103 ✅
+**Directory**: `.viepilot/phases/104-enh070-audit-autolog/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 104.1 | audit.md: Auto-Log Gate (Tier 1–4) + duplicate detection + TRACKER update | Gate present; auto-creates requests; dedup logic; TRACKER updated | M |
+| 104.2 | audit.md: Post-audit routing banner + AUQ + `--no-autolog` flag; SKILL.md docs | Banner shows IDs + /vp-evolve; flag skips gate; SKILL.md documents feature | S |
+| 104.3 | Tests (≥12) + CHANGELOG [2.39.0] + version bump | All tests pass; package.json = "2.39.0" | S |
+
+**Verification**:
+- [ ] `grep -c "Auto-Log Gate" workflows/audit.md` ≥ 1
+- [ ] `grep -c "auto-logged by vp-audit" workflows/audit.md` ≥ 1
+- [ ] `grep -c "no-autolog" workflows/audit.md` ≥ 2
+- [ ] `grep -c "vp-evolve" workflows/audit.md` ≥ 2
+- [ ] `grep -c "Auto-Log Behavior" skills/vp-audit/SKILL.md` ≥ 1
+- [ ] `npm test` all pass

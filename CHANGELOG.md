@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.39.0] - unreleased
+
+### Added
+- **ENH-070** — vp-audit auto-log gaps as requests + direct vp-evolve routing
+  - `workflows/audit.md`: Auto-Log Gate fires after all tiers; each ⚠️/⛔ finding auto-creates `.viepilot/requests/{TYPE}-{N}.md`
+  - Duplicate detection: existing open requests with matching title/files are updated (re-detected) instead of creating duplicates
+  - TRACKER.md backlog updated automatically after audit
+  - Post-audit routing banner shows logged request IDs + recommends `/vp-evolve` as next action
+  - AUQ prompt: "Plan fix phase → /vp-evolve" as Recommended option
+  - `--no-autolog` flag disables auto-logging for report-only mode
+  - `skills/vp-audit/SKILL.md`: documents Auto-Log Behavior + `--no-autolog`
+
 ## [2.38.0] - 2026-04-22
 
 ### Added
