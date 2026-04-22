@@ -1305,7 +1305,15 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    | CSV Import | — |
    | CSV Export | — |
    ```
-11. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
+11. **`feature-map.html`** — (ENH-069 Gap 7) cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → **BLOCKED: Step 7 cannot run until every discrepancy is explicitly resolved**:
+
+    For each discrepancy, record a resolution in `## Feature-Map Resolutions` working notes:
+    - **(a) add-to-inventory** — add feature to phases_inventory; will generate a ROADMAP task
+    - **(b) descoped** — mark feature as removed with reason
+    - **(c) design-only** — design artifact only; no implementation task required
+
+    No silent continuation. The `## Feature-Map Resolutions` table must be complete before Step 7 runs.
+
 12. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
@@ -1322,6 +1330,45 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    - `user_data_capabilities_count`: {count if user_data present, else "n/a"}
    - `entity_mgmt_imported`: {true/false}
    - `entity_mgmt_entity_count`: {count if entity_mgmt present, else "n/a"}
+
+---
+
+### Step 1D-a: arch_to_ui_sync noted items → UI Pages → Component Map (ENH-069 Gap 5)
+
+After reading `notes.md → ## arch_to_ui_sync[]`, for each entry with `status: noted`:
+
+1. Check if the referenced `ui_implication` (screen/state/component) is already covered by a row in the `## UI Pages → Component Map` (built in Step 1A-i)
+2. If **NOT covered** → add a new row to the component map:
+   ```
+   | Prototype | Target component | Phase | Source | Status |
+   | [no page yet — arch_to_ui_sync] | {inferred component} | {inferred phase} | arch_to_ui_sync | pending |
+   ```
+3. If already covered (matching page exists in Step 1A map) → no action
+
+Note: entries with `status: addressed` are already reflected in pages/*.html — skip them.
+
+---
+
+### Step 1D-b: Design Staleness Check (ENH-069 Gap 8)
+
+After reading `decisions[]` (Step 1D item 2) and having pages/*.html content from Step 1A:
+
+For each decision in `decisions[]` that has a UI implication (check `arch_to_ui_sync[]` table for matching `decision_id`):
+1. Check the relevant `pages/{slug}.html` for visible representation of the decision (keyword search in HTML content)
+2. If **NOT represented**:
+   ```
+   ⚠️ Design Staleness Warning:
+   Decision '{title}' (ui_implication: {text}) is not reflected in {page}.html.
+   The prototype may have been created before this architectural decision was made.
+   
+   → Adding pre-implementation task to UI Pages → Component Map:
+     "update {page}.html to reflect {decision}"
+     Phase: same as page implementation phase
+     Source: design_staleness
+   ```
+3. This pre-implementation task must appear BEFORE the page's component implementation task in ROADMAP ordering
+
+
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):
@@ -1386,14 +1433,28 @@ Append to `.viepilot/PROJECT-CONTEXT.md`:
 Run when BOTH `architect_read_complete: true` AND `ui_direction_read_complete: true` are set in working notes:
 
 1. Read `## Coverage` from architect notes.md (or ui-direction notes.md if present).
-2. For each Phase 1 feature in coverage matrix:
+2. For each feature in coverage matrix:
    - Confirm architect page was read (in `architect_read_complete` set)
    - Confirm UI screen page was read (in `ui_direction_read_complete` set)
-3. Features with "none yet" in BOTH architect AND UI columns → surface warning (non-blocking):
+3. Features with "none yet" in BOTH architect AND UI columns → apply **ENH-069 Gap 6** split:
+
+   **Case A — Feature IS in `phases_inventory`** (scoped for implementation):
    ```
-   ⚠️ Coverage gap: Feature "{name}" has no coverage in Architect OR UI Direction.
+   ⛔ Coverage gap BLOCKED: Feature "{name}" is scoped to Phase {N} but has no design coverage.
+   Step 7 (ROADMAP generation) is blocked until resolved. Choose one:
+     (a) Add to UI Direction now → /vp-brainstorm --ui (Recommended)
+     (b) Create implementation task with explicit 'design-TBD' note
+     (c) Remove from scope with reason logged in working notes
+   ```
+   → **Step 7 is BLOCKED** until this feature's gap is resolved and logged.
+
+   **Case B — Feature is NOT in `phases_inventory`** (out-of-scope):
+   ```
+   ⚠️ Coverage gap (out-of-scope): Feature "{name}" has no design coverage — not in phases_inventory.
    Consider adding before proceeding — or dismiss to continue.
    ```
+   → Non-blocking warning (unchanged behavior).
+
 4. Record: `cross_reference_complete: true`.
 
 **Skip condition**: if only one workspace is present (not both) → silently skip Step 1F (single-workspace is valid).
@@ -1574,6 +1635,29 @@ From brainstorm `phases_inventory`:
 3. Define dependencies between phases.
 4. Each phase: tasks, acceptance criteria, verification commands.
 5. No Post-MVP / horizon block needed — all work is already in phases.
+
+---
+
+### Step 7 — UI Pages → Component Map Completeness Check (ENH-069 Gap 2)
+
+After generating all phase tasks from `phases_inventory`, run a mandatory UI coverage pass:
+
+For each row in the `## UI Pages → Component Map` (built in Step 1A-i and updated in Steps 1D-a, 1D-b):
+1. Check if a task exists in the generated ROADMAP that implements the `Target component`
+2. If **no task found**:
+   - Add a new task to the appropriate phase:
+     ```
+     Title: "Implement {target_component} from {prototype}"
+     UI Prototype Reference: {path/to/pages/{slug}.html}
+     Source: UI Pages → Component Map (auto-added by crystallize)
+     ```
+   - For `ux-fix-required` rows: add a separate task `fix-ux-p0: {pain description}` before the component task
+   - For `design_staleness` rows: add `update {page}.html to reflect {decision}` before the component task
+3. Update the row status in the component map: `pending` → `assigned (Phase N, Task N.X)`
+
+After the completeness check, **all rows must have `status != pending`**. If any rows remain `pending` after exhausting existing phases, create a new `Phase N+1: UI Implementation` and assign them there.
+
+Finally, write the finalized `## UI Pages → Component Map` to `.viepilot/PROJECT-CONTEXT.md` so `vp-auto` can read it at runtime.
 </step>
 
 <step name="generate_schemas">
