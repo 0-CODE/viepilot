@@ -80,6 +80,7 @@ describe('ENH-031 — workflow files: no Vietnamese prose outside invocation tri
           if (/^>\s+`màu`/.test(t)) return false;           // UI signal keywords line
           if (/^>\s+`admin`/.test(t)) return false;          // Admin trigger keywords line (ENH-063)
           if (/^>\s+`article`/.test(t)) return false;        // Content trigger keywords line (ENH-065)
+          if (/^>\s+`profile`/.test(t)) return false;        // User data trigger keywords line (ENH-066)
           return true;
         });
         expect(unexpected).toEqual([]);

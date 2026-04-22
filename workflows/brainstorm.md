@@ -140,7 +140,19 @@ Suggested topics to brainstorm:
    - Content versioning / history? (rollback, diff view, scheduled publish, expiry)
    - SEO fields? (slug, meta title, meta description, OG image, canonical URL, sitemap)
 
-8. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
+8. **User Data Management**
+   - What user data does the system store? (profile, preferences, history, uploads)
+   - Profile management? (edit name/avatar/email/password, delete account)
+   - Notification preferences? (email, push, SMS — per channel and frequency)
+   - Privacy & data controls? (view my data, export data, right-to-erasure / GDPR delete)
+   - Activity history? (login history, action log, what user can see about themselves)
+   - Connected accounts / integrations? (OAuth providers, third-party app connections, revoke access)
+   - Session & device management? (active sessions list, sign out all devices)
+   - Two-factor authentication? (TOTP, SMS, backup codes)
+   - Consent management? (cookie consent, marketing opt-in, terms acceptance log)
+   - Data retention policy? (how long data is kept, anonymization after deletion)
+
+9. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
 
 ### Interactive Q&A
 For each topic:
@@ -390,6 +402,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
   apis.html               # Service API listing & design decisions — ENH-029
   admin.html              # Admin & governance capabilities — actor flow, role hierarchy, key operations, audit schema (ENH-063)
   content.html            # Content types, lifecycle state machine, creator roles, taxonomy, media/SEO schema (ENH-065)
+  user-data.html          # User-owned data controls — profile fields, privacy rights, session management, 2FA, consent schema (ENH-066)
   style.css               # Shared: dark/light CSS vars, .updated highlight, Mermaid container, responsive nav
   notes.md                # Machine-readable YAML (see schema below)
 ```
@@ -415,6 +428,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `apis.html` | API endpoint design, HTTP methods, request/response contracts |
 | `admin.html` | Admin personas, role hierarchy, key admin operations (CRUD users, billing management, audit log schema), access control model |
 | `content.html` | Content types, lifecycle states, creator permission matrix, taxonomy tree, media storage config, SEO field schema |
+| `user-data.html` | User-owned data: profile field list, privacy rights matrix (export/erasure), connected OAuth providers, session/device management, 2FA config, consent log schema |
 
 #### Admin & Governance Detection (ENH-063)
 
@@ -519,6 +533,58 @@ If ANY detected AND `## content` YAML section not present in notes.md:
 > (Non-blocking — user can dismiss)
 
 **content.html trigger:** content keyword detected in session AND Architect Mode is active → create/update `content.html`.
+
+#### User Data Management Detection (ENH-066)
+
+**Trigger keywords** (case-insensitive, Vietnamese or English):
+> `profile`, `account`, `settings`, `preferences`, `notification`, `privacy`, `GDPR`, `data export`, `delete account`, `logout`, `session`, `device`, `2FA`, `two-factor`, `OAuth`, `login history`, `user data`, `personal data`, `tài khoản`, `hồ sơ`, `cài đặt`, `thông báo`, `quyền riêng tư`, `lịch sử`, `xóa tài khoản`, `đăng xuất`, `consent`, `cookie`
+
+**Early-session detection:**
+At session start, scan initial message for user data keywords. If **≥1 keyword** found → show proactive banner:
+
+> **Adapter-aware prompt:**
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. AUQ spec:
+>   - question: "I noticed your project may involve user data management capabilities. Should we discuss User Data Management (Topic 8)?"
+>   - header: "User Data"
+>   - options: [{ label: "Yes — explore profile, privacy controls, 2FA, sessions", description: "Recommended for B2C apps, SaaS, apps with GDPR requirements" }, { label: "Not needed — no user data layer in this project", description: "" }, { label: "Later — add to notes, continue current topic", description: "" }]
+>
+> **Text fallback:**
+> ```
+> 👤 I noticed your project may involve user data management capabilities.
+> Should we discuss User Data Management (Topic 8)?
+>
+> 1. Yes — explore profile, privacy controls, 2FA, sessions (Recommended for B2C apps, SaaS, GDPR)
+> 2. Not needed — no user data layer in this project
+> 3. Later — add to notes, continue current topic
+> ```
+
+**During-session detection:**
+When **≥2 unique user data keywords** detected → surface confirmation:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+>   - question: "User data management signals detected in this session. Would you like to cover User Data Management (Topic 8)?"
+>   - options: [{ label: "Yes — switch to / add user data topic", description: "" }, { label: "Note in background (no topic switch)", description: "" }, { label: "Skip for this session", description: "" }]
+>
+> **Text fallback:** `👤 User data management signals detected. Cover User Data Management (Topic 8)? 1. Yes 2. Note in background 3. Skip`
+
+**User data coverage gate before /save:**
+Before writing session file, check:
+- Project has user-account signals (`profile`, `account`, `settings`, `login`) OR
+- Privacy signals (`GDPR`, `privacy`, `data export`, `delete account`) OR
+- Auth/session signals (`2FA`, `session`, `OAuth`, `connected accounts`)
+
+If ANY detected AND `## user_data` YAML section not present in notes.md:
+
+> **Text fallback:**
+> ```
+> ⚠️ User data gap detected: project has user-account/privacy/auth signals but User Data Management was not covered.
+> 1. Add user data topic now (go to Topic 8)
+> 2. Add note to backlog (".viepilot/requests/ENH-user-data-tbd.md")
+> 3. Dismiss — skip user data management for this session
+> ```
+> (Non-blocking — user can dismiss)
+
+**user-data.html trigger:** user data keyword detected in session AND Architect Mode is active → create/update `user-data.html`.
 
 #### Sequence trigger keywords (ENH-029)
 When the user mentions: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
@@ -704,6 +770,37 @@ search:
   engine: postgres_fts  # postgres_fts | Elasticsearch | Algolia | Typesense
   full_text: yes
   facets: [category, tags]
+
+## user_data
+profile_fields:
+  - name
+  - email
+  - avatar_url
+  - timezone
+  - locale
+settings_categories:
+  - id: notifications
+    channels: [email, push, in_app]
+    frequency: [immediately, daily_digest, weekly]
+  - id: privacy
+    fields: [data_visibility, analytics_opt_out]
+privacy_rights:
+  data_export: yes
+  right_to_erasure: yes
+  data_retention_days: 730
+connected_accounts:
+  - provider: google
+    scope: [email, profile]
+  - provider: github
+    scope: [read:user, user:email]
+session_management:
+  multi_session: yes
+  show_active_devices: yes
+  force_logout_all: yes
+two_factor:
+  totp: yes
+  sms: no
+  backup_codes: yes
 
 ## architect_sync
 - synced_at: "{ISO datetime}"
