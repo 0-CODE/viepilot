@@ -164,6 +164,8 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-22 | Phase 102 shipped: BUG-020 (scaffold-first gate in autonomous.md + 6 stack SUMMARY.md + docs + 23 tests) — **2.37.0** | `/vp-auto` | M1.37 |
 | 2026-04-22 | ENH-069 logged: crystallize UI→Task binding gap — 10 specific gaps identified in crystallize + autonomous workflows + ui-direction notes.md | `/vp-request` | Backlog |
 | 2026-04-22 | Phase 103 planned: ENH-069 UI→Task binding (10-gap fix — crystallize + autonomous + TASK.md template) → **2.38.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 103 shipped: ENH-069 (all 10 gaps fixed — crystallize.md + autonomous.md + TASK.md template + 33 tests) — **2.38.0** | `/vp-auto` | M1.37 |
+| 2026-04-22 | ENH-070 logged: vp-audit auto-log gaps as requests + direct /vp-evolve routing (no manual /vp-request step needed) | `/vp-request` | Backlog |
 
 ## Blockers
 _None currently_
