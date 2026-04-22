@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.36.1] - 2026-04-22
+
+### Fixed
+- **BUG-019** — `vp-tools scan-skills` subcommand now implemented; previously threw "Unknown command: scan-skills" even though `lib/skill-registry.cjs` already contained `scanSkills()` from FEAT-020. Wired CLI handler, `help scan-skills` entry, and usage summary line in `bin/vp-tools.cjs`.
+
 ## [2.36.0] - 2026-04-22
 
 ### Added (ENH-068)
