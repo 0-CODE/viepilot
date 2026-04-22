@@ -1032,6 +1032,69 @@ When available, for the selected/latest session:
 - In architecture / UI plan output, **enumerate every page** from inventory (or state explicitly single-page legacy).
 
 If `notes.md` exists but has no `## Pages inventory` section and brainstorm shows multi-page scope → warn user and request fix or assumptions before proceeding.
+
+---
+
+### Step 1A-i: Build UI Pages → Component Map (ENH-069 Gap 1)
+
+After all `pages/*.html` files are read, build a binding table in crystallize working notes:
+
+```markdown
+## UI Pages → Component Map
+| Prototype | Target component | Phase | Source | Status |
+|-----------|-----------------|-------|--------|--------|
+| pages/landing.html | resources/js/Pages/Home.vue | Phase 1 | page | pending |
+| pages/dashboard.html | resources/js/Pages/Dashboard.vue | Phase 2 | page | pending |
+```
+
+**Rules:**
+- One row per `pages/{slug}.html` found; derive target component from stack convention:
+  - Inertia/Vue → `resources/js/Pages/{PascalName}.vue`
+  - Next.js App Router → `app/{slug}/page.tsx`
+  - Generic SPA → `src/pages/{PascalName}.{ext}`
+- Phase = best estimate from `phases_inventory` topic match or page content
+- Source = `page` (from pages/*.html), `arch_to_ui_sync` (added in Step 1D), `ux_walkthrough` (added below)
+- Status = `pending` (updated to `assigned` in Step 7 after ROADMAP cross-check)
+
+This table is the **single source of truth** for UI→implementation tracing through Steps 1D, 1F, and Step 7.
+
+---
+
+### Step 1A-ii: Process `## UX walkthrough log` (ENH-069 Gap 9)
+
+After building the component map, scan `notes.md → ## UX walkthrough log` (written by `/research-ui`):
+
+- **P0 entries** (unusability, content loss, critical mis-clicks): add a UX-fix row to the component map:
+  ```
+  Source: ux_walkthrough
+  Status: ux-fix-required
+  Task hint: fix-ux-p0: {pain description} on {page}.html
+  ```
+  These become mandatory tasks in ROADMAP (Phase = same as the page's assigned phase).
+
+- **P1 entries** (significant friction, degraded experience): add to component map with `Status: ux-fix-p1`. Generate task hint; include in ROADMAP as same-phase tasks.
+
+- **P2 entries** (minor polish): surface as non-blocking warnings only; do NOT add to component map.
+
+- If `## UX walkthrough log` is absent or empty → no action.
+
+---
+
+### Step 1A-iii: `## Background extracted ideas` resolution gate (ENH-069 Gap 10)
+
+After UX walkthrough processing, scan `notes.md → ## Background extracted ideas` (written by ENH-026 background extraction when user selects "notes only" — no prototype generated):
+
+For each idea entry:
+1. Check if the idea maps to an existing row in the UI Pages → Component Map OR a feature in `phases_inventory`
+2. If NOT covered: add to a `## Unresolved Background Ideas` gate list
+
+**This gate BLOCKS Step 7 (ROADMAP generation) until every entry in `## Unresolved Background Ideas` is resolved with one of:**
+- **(a) Promote to UI Direction** — user creates/updates `pages/*.html`; add to component map
+- **(b) Add as task-TBD** — create implementation task with `design-TBD` note
+- **(c) Descope** — mark as out-of-scope with reason logged in working notes
+
+Record all resolutions in working notes before Step 7 runs.
+
 </step>
 
 <step name="research_stack_official">
