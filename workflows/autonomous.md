@@ -300,6 +300,60 @@ If stack cache is missing:
 - warn and optionally run quick research
 - then continue with explicit assumptions noted in task logs
 
+#### Scaffold-First Gate (BUG-020)
+
+When the stack preflight identifies a **framework stack** AND the current task is a **project setup / init task** (keywords in title or objective: "set up", "initialize", "create project", "scaffold", "bootstrap", "new project", "install Laravel/Next/Nest/Rails/Django"):
+
+**Step 1 — Check for existing scaffold**: look for a framework marker file in the project root:
+
+| Framework | Marker file |
+|-----------|-------------|
+| Laravel | `artisan` |
+| Next.js | `next.config.js` or `next.config.ts` |
+| NestJS | `nest-cli.json` |
+| Rails | `config/application.rb` |
+| Django | `manage.py` |
+| Spring Boot | `pom.xml` or `build.gradle` |
+| Nuxt / Vue | `nuxt.config.ts` or `nuxt.config.js` |
+| React (CRA) | `src/index.js` or `src/index.tsx` |
+| Electron | `electron-builder.yml` |
+
+**Step 2 — If marker NOT found (fresh project)**:
+
+a. Read `## Scaffold` section from `~/.viepilot/stacks/{stack}/SUMMARY.md` — use `init_command:` and `marker_file:` fields if present (optional, takes priority over built-in table).
+
+b. If SUMMARY.md has no `## Scaffold` section, use the built-in heuristic table:
+
+| Stack | Scaffold command |
+|-------|-----------------|
+| laravel / laravel-php84 | `composer create-project laravel/laravel {name}` |
+| nextjs / nextjs-* | `npx create-next-app@latest {name}` |
+| nestjs | `npx @nestjs/cli new {name}` |
+| rails | `rails new {name}` |
+| django | `django-admin startproject {name} .` |
+| spring-boot* | `spring init --dependencies=web,data-jpa,validation {name}` |
+| nuxt / vuejs* | `npx nuxi@latest init {name}` |
+| react | `npx create-react-app {name}` |
+| electron | `npx create-electron-app {name}` |
+
+c. **Run the scaffold command** — if it exits non-zero: stop, report the error, and offer user: (a) fix environment then retry, (b) confirm project already exists, (c) skip scaffold with explicit reason logged.
+
+d. After scaffold succeeds: continue with configuration and customization tasks normally.
+
+**Step 3 — If marker IS found** (project already scaffolded): skip scaffold entirely, proceed with the task.
+
+**Never-handcraft block list** — NEVER create these files from scratch in a setup task without prior scaffold:
+- `artisan`, `composer.json` (in a Laravel/PHP context)
+- `next.config.js`, `next.config.ts`, `pages/_app.*`, `app/layout.*`
+- `nest-cli.json`, combined `tsconfig.json` + `src/main.ts` in NestJS context
+- `manage.py`, `wsgi.py`, `asgi.py`
+- `config/application.rb`, `config/routes.rb`, `Gemfile`
+- `pom.xml` or `build.gradle` with Spring Boot starters
+
+If the task's `## Paths` block contains one of these AND no scaffold has run:
+→ **⛔ Scaffold-First Gate**: "Cannot create `{file}` — run scaffold command first (BUG-020). See `docs/user/features/scaffold-first.md`."
+→ Offer: (a) run scaffold then retry, (b) confirm project already scaffolded, (c) skip gate with explicit reason in task log.
+
 #### Task start checkpoint (after doc-first gate + preflight)
 
 Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
