@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **96** — ✅ Complete (**BUG-018 + ENH-063 + ENH-064** → **2.32.0**)
-- **Next Phase**: —
+- **Last Completed Phase**: **101** — ✅ Complete (**BUG-019 vp-tools scan-skills CLI** → **2.36.1**)
+- **Next Phase**: — (no planned phases)
 - **Current Task**: —
-- **Last Activity**: 2026-04-21 — Phase 96 complete: BUG-018 unified mode-selection, ENH-063 Admin & Governance topic + crystallize export, ENH-064 mandatory read gates + HUB links → v2.32.0
+- **Last Activity**: 2026-04-22 — Phase 101 shipped: BUG-019 scan-skills CLI (10 tests) — 2.36.1
 
 ## Progress Overview
 ```
@@ -147,6 +147,18 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-20 | Phase 92 planned: FEAT-020 Phase 3 brainstorm UI-Direction skill integration (3 tasks), target **2.28.0** | `/vp-evolve` | M1.37 |
 | 2026-04-20 | Phase 93 planned: FEAT-020 Phase 4 crystallize skill decision gate (4 tasks), target **2.29.0** | `/vp-evolve` | M1.37 |
 | 2026-04-20 | Phase 94 planned: FEAT-020 Phase 5 vp-auto silent skill execution (3 tasks), target **2.30.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | ENH-066 logged: User Data Management — Topic 9 in brainstorm, user-data.html, crystallize export | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 98 planned: ENH-066 User Data Management Coverage (3 tasks — brainstorm+crystallize+tests), target **2.34.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 98 shipped: ENH-066 (Topic 9, user-data.html, ## user_data YAML, crystallize export, 21 tests) — **2.34.0** | `/vp-auto` | M1.37 |
+| 2026-04-22 | ENH-067 logged: Workflow Upgrade Awareness — brainstorm gap detection on --continue + crystallize --upgrade re-scan | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 99 planned: ENH-067 Workflow Upgrade Awareness (3 tasks — brainstorm gap detection + crystallize upgrade re-scan + tests), target **2.35.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 99 shipped: ENH-067 (workflow_version stamps + Step 3B gap detection + Step 0-B --upgrade re-scan + 21 tests) — **2.35.0** | `/vp-auto` | M1.37 |
+| 2026-04-22 | ENH-068 logged: Admin Entity Management — Topic 7 in brainstorm, entity-mgmt.html, crystallize export | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 100 planned: ENH-068 Admin Entity Management (3 tasks — brainstorm+crystallize+tests), target **2.36.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 100 shipped: ENH-068 (Topic 7, entity-mgmt.html, ## entity_mgmt YAML, crystallize Step 1D item 10, 21 tests) — **2.36.0** | `/vp-auto` | M1.37 |
+| 2026-04-22 | BUG-019 logged: vp-tools scan-skills not implemented — referenced in FEAT-020 docs but never in bin/vp-tools.cjs | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 101 planned: BUG-019 scan-skills CLI (2 tasks — CLI handler + tests), target **2.36.1** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 101 shipped: BUG-019 (scan-skills CLI handler + 10 tests) — **2.36.1** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_
@@ -198,6 +210,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 | FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | ✅ done (**2.1.0**) |
 | ENH-064 | 🔧 | Unified HUB cho architect + ui-direction + crystallize mandatory read gates (no silent skip) | high | new |
 | ENH-063 | 🔧 | vp-brainstorm thiếu Admin & Governance topic — không elicit admin panel/monitor/audit/billing → crystallize bỏ qua | high | new |
+| BUG-019 | 🐛 | `vp-tools scan-skills` command not implemented — referenced in FEAT-020 docs but never added to bin/vp-tools.cjs | medium | ✅ done (**2.36.1**) |
 | BUG-018 | 🐛 | brainstorm thiếu unified mode-selection prompt — Architect auto-activates không offer UI Direction | high | new |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |
 | BUG-010 | 🐛 | ENH-033: Approve/Edit buttons missing on Mermaid diagram cards (6 pages, ~9 diagrams) | high | ✅ done (**1.18.1**) |

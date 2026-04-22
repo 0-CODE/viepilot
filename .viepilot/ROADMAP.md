@@ -2698,7 +2698,125 @@
 
 ---
 
+### Phase 97: Brainstorm Topic 7 — Content Management Coverage (ENH-065)
+**Goal**: Add "Content Management" as Topic 7 to brainstorm Topics Template — covering content types, lifecycle, media, taxonomy, localization, search, versioning, SEO. Proactive 🗂️ heuristic, content coverage gate, `content.html` Architect page, `notes.md ## content` YAML schema, crystallize export to PROJECT-CONTEXT.md.
+**Estimated Tasks**: 3
+**Status**: ✅ Complete → v2.33.0
+**Dependencies**: ENH-063 ✅, ENH-065
+**Directory**: `.viepilot/phases/97-enh065-content-management/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 97.1 | ENH-065 brainstorm side: Topic 7 + proactive heuristic + content.html + YAML schema | Topic 7 in template; 🗂️ banner; content.html architect page | M |
+| 97.2 | ENH-065 crystallize side: content export + template section | crystallize Step 1D content export; PROJECT-CONTEXT.md template | S |
+| 97.3 | Tests (≥10) + CHANGELOG [2.33.0] + version bump | All tests pass; package.json = "2.33.0" | S |
+
+**Verification**:
+- [ ] `grep -c "Content Management" workflows/brainstorm.md` ≥2
+- [ ] `grep -c "content.html" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "Content Management" workflows/crystallize.md` ≥1
+- [ ] `grep -c "## Content Management" templates/project/PROJECT-CONTEXT.md` ≥1
+- [ ] `npm test` all pass
+
+---
+
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-21 (Phase 96 complete: BUG-018 + ENH-063 + ENH-064 → v2.32.0)
+---
+
+### Phase 98: Brainstorm Topic 8 — User Data Management Coverage (ENH-066)
+**Goal**: Add "User Data Management" as Topic 8 to brainstorm Topics Template — covering end-user controls over their own data: profile/account settings, notification preferences, privacy rights (GDPR export/erasure), activity history, connected OAuth accounts, session/device management, 2FA, consent management. Proactive 👤 heuristic, user data coverage gate, `user-data.html` Architect page, crystallize export. Phase assignment renumbered to Topic 9.
+**Estimated Tasks**: 3
+**Status**: 🔲 Planned → v2.34.0
+**Dependencies**: ENH-063 ✅, ENH-065 ✅, ENH-066
+**Directory**: `.viepilot/phases/98-enh066-user-data-management/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 98.1 | ENH-066 brainstorm side: Topic 8 + proactive heuristic + user-data.html + YAML schema | Topic 8 in template; 👤 banner; user-data.html architect page | M |
+| 98.2 | ENH-066 crystallize side: user_data export + template section | crystallize Step 1D user_data export; PROJECT-CONTEXT.md template | S |
+| 98.3 | Tests (≥10) + CHANGELOG [2.34.0] + version bump | All tests pass; package.json = "2.34.0" | S |
+
+**Verification**:
+- [ ] `grep -c "User Data Management" workflows/brainstorm.md` ≥2
+- [ ] `grep -c "user-data.html" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "User Data Management" workflows/crystallize.md` ≥1
+- [ ] `grep -c "## User Data Management" templates/project/PROJECT-CONTEXT.md` ≥1
+- [ ] `npm test` all pass
+
+---
+
+### Phase 99: Workflow Upgrade Awareness (ENH-067)
+**Goal**: When ViePilot is updated, existing sessions and crystallize artifacts silently miss new topic coverage. Add two mechanisms: (A) `vp-brainstorm` gap detection — on `--continue`, detect missing topics vs. current Topics Template, show upgrade banner, run inline Q&A, append `## Upgrade supplement`; (B) `vp-crystallize --upgrade` re-scan — detect `crystallize_version` delta, list missing artifact sections, offer Patch (non-destructive append) or Full re-generate (backup + overwrite); (C) version stamps — `workflow_version` in session headers, `crystallize_version` in PROJECT-CONTEXT.md.
+**Estimated Tasks**: 4
+**Status**: 🔲 Planned → v2.35.0
+**Dependencies**: ENH-063 ✅, ENH-065 ✅, ENH-066 ✅, Phase 98 ✅
+**Directory**: `.viepilot/phases/99-enh067-workflow-upgrade-awareness/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 99.1 | Part C — version stamps: session `workflow_version` + artifact `crystallize_version` + SKILL.md docs | stamps documented in both workflows + SKILL.md ENH-067 reference | S |
+| 99.2 | Part A — brainstorm gap detection: Step 1B, upgrade banner (AUQ), `## Upgrade supplement` format, idempotency stamp | Step 1B section; AUQ spec; supplement format; SKILL.md bullet | M |
+| 99.3 | Part B — crystallize --upgrade re-scan: Step 0-B, delta computation, Patch/Re-generate menu, backup logic | Step 0-B section; AUQ spec; patch + regen behavior; SKILL.md bullet | M |
+| 99.4 | Tests (≥10) + CHANGELOG [2.35.0] + version bump | All tests pass; package.json = "2.35.0" | S |
+
+**Verification**:
+- [ ] `grep -c "workflow_version" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "Upgrade supplement" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "crystallize_version" workflows/crystallize.md` ≥1
+- [ ] `grep -c "\-\-upgrade" workflows/crystallize.md` ≥1
+- [ ] `npm test` all pass
+
+---
+
+---
+
+### Phase 100: Brainstorm Topic 7 — Admin Entity Data Management (ENH-068)
+**Goal**: Add "Admin Entity Management" as Topic 7 in the brainstorm Topics Template — covering CRUD interfaces for all business domain entities in the DB (products, orders, categories, tenants, etc.): list views with filter/sort/pagination/bulk ops, create/edit forms, delete semantics (soft vs. hard), import/export CSV, audit trail per entity, multi-tenant scoping, read-only vs. editable entities. Proactive 🗄️ heuristic, coverage gate (cross-references ERD), `entity-mgmt.html` Architect page, `## entity_mgmt` YAML schema, crystallize export. Renumbers Content Management → 8, User Data → 9, Phase assignment → 10.
+**Estimated Tasks**: 3
+**Status**: 🔲 Planned → v2.36.0
+**Dependencies**: ENH-063 ✅, ENH-027 ✅, ENH-065 ✅, ENH-066 ✅, Phase 99 ✅
+**Directory**: `.viepilot/phases/100-enh068-admin-entity-management/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 100.1 | ENH-068 brainstorm side: Topic 7 + 🗄️ heuristic + entity-mgmt.html + YAML + renumber | Topic 7; heuristic; ERD coverage gate; entity-mgmt.html; YAML schema | M |
+| 100.2 | ENH-068 crystallize side: entity_mgmt export + MANDATORY READ GATE + template | Step 1D item 10; item 15 in read gate; PROJECT-CONTEXT.md template | S |
+| 100.3 | Tests (≥10) + ENH-031 exemption + CHANGELOG [2.36.0] + version bump | All tests pass; package.json = "2.36.0" | S |
+
+**Verification**:
+- [ ] `grep -c "Admin Entity Management" workflows/brainstorm.md` ≥2
+- [ ] `grep -c "entity-mgmt.html" workflows/brainstorm.md` ≥1
+- [ ] `grep -c "Admin Entity Management" workflows/crystallize.md` ≥1
+- [ ] `grep -c "## Admin Entity Management" templates/project/PROJECT-CONTEXT.md` ≥1
+- [ ] `grep "10\. \*\*Phase assignment" workflows/brainstorm.md` shows Topic 10
+- [ ] `npm test` all pass
+
+---
+
+---
+
+### Phase 101: BUG-019 — `vp-tools scan-skills` CLI Not Implemented
+**Goal**: Add the missing `scan-skills` subcommand to `bin/vp-tools.cjs`. The underlying `scanSkills()` function already exists in `lib/skill-registry.cjs` (shipped in FEAT-020 Phase 1, v2.26.0). Only the CLI routing, help text, and usage summary line are missing. Fix makes `vp-tools scan-skills` scan installed skills and write `~/.viepilot/skill-registry.json`.
+**Estimated Tasks**: 2
+**Status**: ✅ Complete → v2.36.1
+**Dependencies**: FEAT-020 ✅, Phase 100 ✅
+**Directory**: `.viepilot/phases/101-bug019-scan-skills-cli/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 101.1 | Add `scan-skills` handler + help entry + usage line to bin/vp-tools.cjs | `vp-tools scan-skills` exits 0; help lists it; hint includes it | S |
+| 101.2 | Verify SKILL.md refs + tests (≥8) + CHANGELOG [2.36.1] + version bump | All tests pass; package.json = "2.36.1" | S |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs scan-skills` → "✔ Scanned N skill(s) → ~/.viepilot/skill-registry.json"
+- [ ] `node bin/vp-tools.cjs help scan-skills` → shows usage
+- [ ] `node bin/vp-tools.cjs help` → lists `scan-skills`
+- [ ] `npm test` all pass
+
+---
+
+## Notes
+- Created: 2026-03-30
+- Last Updated: 2026-04-22 (Phase 101 planned: BUG-019 scan-skills CLI → v2.36.1)
 - Estimated completion: M1.x iterative releases (see TRACKER)
