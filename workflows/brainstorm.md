@@ -208,7 +208,19 @@ Suggested topics to brainstorm:
    - Reporting & data export? (business metrics, usage analytics, CSV/Excel export)
    - Notification management? (email/push templates, delivery log, unsubscribe management)
 
-7. **Content Management**
+7. **Admin Entity Management** (ENH-068)
+   - Which DB entities / domain objects need admin CRUD interfaces? (e.g., products, orders, categories, tenants, campaigns, bookings…)
+   - For each entity: which operations are needed? (Create / Read / Update / Delete / List)
+   - **List view** requirements: columns displayed, default sort, pagination style (offset vs. cursor), search & filter fields, range filters (date, price), multi-select filters
+   - **Bulk actions**: bulk delete, bulk status change, bulk export — which entities need these?
+   - **Create/Edit form**: required vs. optional fields, validation rules, nested relation fields (e.g., product → category), rich text / file upload fields, inline vs. separate page, auto-save / draft mode needed?
+   - **Delete semantics**: hard delete vs. soft delete (`is_deleted` / `deleted_at`); cascade rules for related records; restore / undelete capability needed?
+   - **Import / Export**: CSV/XLSX import for bulk seeding (e.g., product catalog); export filtered data from list views to CSV/XLSX/JSON; import validation error reporting
+   - **Audit trail per entity**: which entities need change history (actor + timestamp + field diff)? Separate audit table vs. event-sourced approach; surfaced in admin UI or log-only?
+   - **Admin ownership scoping**: are entities scoped per tenant/org (multi-tenant)? Can org_admin see only their org's data while super_admin sees all?
+   - **Read-only vs. editable entities**: which entities are system-generated (read-only in admin) vs. admin/user-generated (editable)?
+
+8. **Content Management**
    - What types of content exist in this system? (articles, products, pages, media, courses, listings, FAQs...)
    - Who creates content? (admin only, verified users, any user, API import)
    - Content lifecycle? (draft → review → published → archived)
@@ -220,7 +232,7 @@ Suggested topics to brainstorm:
    - Content versioning / history? (rollback, diff view, scheduled publish, expiry)
    - SEO fields? (slug, meta title, meta description, OG image, canonical URL, sitemap)
 
-8. **User Data Management**
+9. **User Data Management**
    - What user data does the system store? (profile, preferences, history, uploads)
    - Profile management? (edit name/avatar/email/password, delete account)
    - Notification preferences? (email, push, SMS — per channel and frequency)
@@ -232,7 +244,7 @@ Suggested topics to brainstorm:
    - Consent management? (cookie consent, marketing opt-in, terms acceptance log)
    - Data retention policy? (how long data is kept, anonymization after deletion)
 
-9. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
+10. **Phase assignment (ENH-030):** during brainstorm, each feature/capability is assigned to a specific **phase** — Phase 1, Phase 2, Phase 3... Do not use MVP/Post-MVP/Future tiers. If the user has not stated a phase, ask: “Which phase would you like to assign this feature to?”
 
 ### Interactive Q&A
 For each topic:
@@ -507,6 +519,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `deployment.html` | Infrastructure, environments, ops concerns, CI/CD pipeline |
 | `apis.html` | API endpoint design, HTTP methods, request/response contracts |
 | `admin.html` | Admin personas, role hierarchy, key admin operations (CRUD users, billing management, audit log schema), access control model |
+| `entity-mgmt.html` | Admin entity CRUD matrix: entity name, admin ops (C/R/U/D), soft delete flag, bulk actions, audit trail, multi-tenant scope; import/export summary table (ENH-068) |
 | `content.html` | Content types, lifecycle states, creator permission matrix, taxonomy tree, media storage config, SEO field schema |
 | `user-data.html` | User-owned data: profile field list, privacy rights matrix (export/erasure), connected OAuth providers, session/device management, 2FA config, consent log schema |
 
@@ -665,6 +678,55 @@ If ANY detected AND `## user_data` YAML section not present in notes.md:
 > (Non-blocking — user can dismiss)
 
 **user-data.html trigger:** user data keyword detected in session AND Architect Mode is active → create/update `user-data.html`.
+
+#### Admin Entity Management Detection (ENH-068)
+
+**Trigger keywords** (case-insensitive, Vietnamese or English):
+> `CRUD`, `entity`, `table`, `manage`, `list view`, `admin panel`, `data management`, `import`, `export`, `bulk`, `soft delete`, `audit trail`, `quản lý dữ liệu`, `bảng dữ liệu`, `danh sách`, `thêm sửa xóa`
+
+**Early-session detection:**
+At session start, scan initial message for entity management keywords. If **≥1 keyword** found → show proactive banner:
+
+> **Adapter-aware prompt:**
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. AUQ spec:
+>   - question: "I noticed your project may involve admin data management. Should we discuss Admin Entity Management (Topic 7)?"
+>   - header: "Entity Mgmt"
+>   - options: [{ label: "Yes — explore CRUD, list views, bulk ops, import/export, audit trail", description: "Recommended for projects with DB entities managed via admin panel" }, { label: "Not needed — no admin CRUD interface in this project", description: "" }, { label: "Later — add to notes, continue current topic", description: "" }]
+>
+> **Text fallback:**
+> ```
+> 🗄️ I noticed your project may involve admin data management.
+> Should we discuss Admin Entity Management (Topic 7)?
+>
+> 1. Yes — explore CRUD, list views, bulk ops, import/export, audit trail (Recommended)
+> 2. Not needed — no admin CRUD interface in this project
+> 3. Later — add to notes, continue current topic
+> ```
+
+**During-session detection:**
+Maintain a running count of unique entity management keywords encountered during the session.
+At ≥2 unique keywords → show soft prompt at next topic boundary (same format as above).
+Does not interrupt mid-topic conversation.
+
+**Coverage gate before /save:**
+
+If `## erd` YAML is present in architect `notes.md` OR `erd.html` is in the workspace
+AND session has no `## Admin Entity Management` / `## entity_mgmt` coverage:
+
+> **Claude Code (terminal):** AUQ:
+>   - question: "🗄️ Entity management gap — your project has DB entities defined but admin CRUD coverage was not discussed. Add now?"
+>   - options: [{ label: "Add entity management topic now", description: "Go to Topic 7" }, { label: "Add note to backlog", description: "Log as .viepilot/requests/ENH-entity-mgmt-tbd.md" }, { label: "Dismiss", description: "Skip entity management for this session" }]
+>
+> **Text fallback:**
+> ```
+> 🗄️ Entity management gap — your project has DB entities but no admin CRUD coverage defined.
+> 1. Add entity management topic now (go to Topic 7)
+> 2. Add note to backlog (".viepilot/requests/ENH-entity-mgmt-tbd.md")
+> 3. Dismiss — skip entity management for this session
+> ```
+> (Non-blocking — user can dismiss)
+
+**entity-mgmt.html trigger:** entity management keyword detected in session AND Architect Mode is active → create/update `entity-mgmt.html`.
 
 #### Sequence trigger keywords (ENH-029)
 When the user mentions: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
@@ -881,6 +943,24 @@ two_factor:
   totp: yes
   sms: no
   backup_codes: yes
+
+## entity_mgmt
+entities:
+  - name: product
+    admin_crud: [create, read, update, delete]
+    soft_delete: yes
+    bulk_actions: [export, status_change]
+    audit_trail: yes
+    scoped_by: org
+  - name: order
+    admin_crud: [read, update]
+    soft_delete: no
+    bulk_actions: [export]
+    audit_trail: yes
+    scoped_by: org
+import_export:
+  csv_import: [product]
+  csv_export: [product, order, user]
 
 ## architect_sync
 - synced_at: "{ISO datetime}"
