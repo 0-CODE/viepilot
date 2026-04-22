@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.37.0] - 2026-04-22
+
+### Fixed
+- **BUG-020** — `vp-auto` scaffold-first gate: when a project setup task is detected for a framework stack (Laravel, Next.js, NestJS, Rails, Django, Spring Boot, Nuxt, React, Electron), vp-auto now MUST run the canonical scaffold command (e.g. `composer create-project laravel/laravel`, `npx create-next-app@latest`) before creating any files. A never-handcraft block list prevents manual creation of framework-native files (`artisan`, `manage.py`, `next.config.*`, `nest-cli.json`, `pom.xml`, `config/application.rb`, etc.) without prior scaffold. Stack `SUMMARY.md` files support an optional `## Scaffold` section with `init_command:` and `marker_file:` fields for override.
+
+### Added
+- `workflows/autonomous.md`: `#### Scaffold-First Gate (BUG-020)` section — framework marker detection table, built-in scaffold command heuristic table (10 stacks), never-handcraft block list, waiver/bypass prompt
+- `docs/user/features/scaffold-first.md` — scaffold-first convention documentation and stack configuration guide
+- `## Scaffold` sections (with `init_command:` + `marker_file:`) added to 6 installed framework stack SUMMARY.md files: laravel, nextjs, nextjs-tailwind-shadcn-threejs, nestjs, spring-boot, spring-boot-3.4
+
 ## [2.36.1] - 2026-04-22
 
 ### Fixed
