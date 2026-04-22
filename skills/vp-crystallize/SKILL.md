@@ -93,6 +93,17 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **User Data Management Export (ENH-066):**
 - Step 1D item 9: if `user-data.html` or `notes.md ## user_data` exists in architect workspace → append `## User Data Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Supported | Notes) with 8 capability rows (profile editing, notification prefs, privacy settings, data export, right to erasure, connected accounts, session management, 2FA). Records `user_data_imported` and `user_data_capabilities_count` in working notes.
 
+**Crystallize version stamps (ENH-067):**
+- Generated `PROJECT-CONTEXT.md` includes `<!-- crystallize_version: {semver} -->` as its first line.
+- `HANDOFF.json` records `crystallize_version` and `crystallized_at` fields.
+- Used by `--upgrade` re-scan mode to compute delta on future runs.
+
+**Upgrade re-scan mode (`--upgrade`) (ENH-067):**
+- Detects `crystallize_version` delta; lists missing PROJECT-CONTEXT.md sections.
+- **Patch mode:** appends only missing sections non-destructively; re-stamps `crystallize_version`.
+- **Full re-generate:** backs up `.viepilot/` → regenerates all artifacts using existing sessions.
+- Integrates brainstorm `## Upgrade supplement` sections when present.
+
 **Mandatory Workspace Read Gates (ENH-064):**
 - **Architect workspace (Step 1D):** if `.viepilot/architect/` exists → reads ALL 12 pages front-to-back before any extraction. `architect_read_complete: true` required. Missing `notes.md` → STOP.
 - **UI Direction workspace (Step 1A strengthened):** if `.viepilot/ui-direction/` exists → reads ALL pages/*.html + ALL notes.md sections. `ui_direction_read_complete: true` required. Pages inventory mismatch → STOP.

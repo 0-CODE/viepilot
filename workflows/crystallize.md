@@ -1331,6 +1331,13 @@ Create `.viepilot/architecture/` only when at least one `.mermaid` file will be 
 Create `.viepilot/PROJECT-CONTEXT.md` using template:
 `@$HOME/.cursor/viepilot/templates/project/PROJECT-CONTEXT.md`
 
+**Version stamp (ENH-067):** Write the following as the **very first line** of the generated file (before the `#` title):
+```
+<!-- crystallize_version: {viepilot_semver} -->
+```
+where `{viepilot_semver}` is resolved from `node bin/vp-tools.cjs info` → `version` field.
+This stamp is used by `--upgrade` re-scan mode (Step 0-B) to detect delta on future crystallize runs.
+
 Extract:
 - Domain knowledge
 - Key concepts
@@ -1430,7 +1437,14 @@ Initialize:
 - Version info (0.1.0-alpha)
 - Next action
 
-Create empty `.viepilot/HANDOFF.json`
+Create `.viepilot/HANDOFF.json` with initial fields including:
+```json
+{
+  "crystallize_version": "{viepilot_semver}",
+  "crystallized_at": "{ISO-8601 timestamp}"
+}
+```
+`crystallize_version` mirrors the stamp written to `PROJECT-CONTEXT.md` (ENH-067). Used by `--upgrade` re-scan as a fallback when `PROJECT-CONTEXT.md` header comment is absent.
 </step>
 
 <step name="generate_phase_dirs">

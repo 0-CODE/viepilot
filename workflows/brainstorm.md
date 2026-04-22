@@ -1087,6 +1087,12 @@ Create/update file: `docs/brainstorm/session-{YYYY-MM-DD}.md`
 - **Date**: {full date}
 - **Participants**: User, Claude
 - **Status**: In Progress | Completed
+- **workflow_version**: {viepilot_semver}
+- **upgrade_supplement_version**: {viepilot_semver_after_supplement | ""}
+
+<!-- workflow_version: set from `node bin/vp-tools.cjs info` → version field at session create/save time.       -->
+<!-- upgrade_supplement_version: empty on first save; set to current version after gap-detection supplement      -->
+<!--   completes (ENH-067 idempotency guard — prevents re-surfacing already-supplemented topics on next open). -->
 
 ## Phases
 

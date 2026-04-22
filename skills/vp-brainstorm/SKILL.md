@@ -75,6 +75,16 @@ Supports:
 - `BRAINSTORM_LANG` is used for brainstorm file storage and generated content.
 - User session language takes precedence over config if different.
 - Configure via: `vp-tools config set language.document vi`
+
+**Workflow version stamps (ENH-067):**
+- Session files record `workflow_version` (current ViePilot semver) at create/save time.
+- `upgrade_supplement_version` stamped after gap-detection supplement completes (idempotency guard).
+
+**Upgrade gap detection (ENH-067):**
+- On `--continue`, compares session `workflow_version` vs. current Topics Template to detect missing topics.
+- Proactive 🔄 upgrade banner (AUQ) lists missing topics; user can discuss inline, defer to /save, or skip.
+- Inline supplement appended as `## Upgrade supplement (vX → vY)` section; `upgrade_supplement_version` stamped for idempotency.
+- After supplement: suggests `/vp-crystallize --upgrade` to patch project artifacts.
 </objective>
 
 <execution_context>
