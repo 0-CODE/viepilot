@@ -80,6 +80,86 @@ If the user chooses to continue:
 5. If the session already has a **`## Phases`** section: briefly summarize existing phases; all subsequent updates must **merge** into that section (no silent deletion) unless the user explicitly requests narrowing/expanding scope.
 </step>
 
+<step name="upgrade_gap_detection">
+### Step 3B: Upgrade Gap Detection (ENH-067)
+
+**Runs immediately after step 3 (Load Context) when user is continuing an existing session.**
+
+#### Trigger conditions — ALL must be true:
+- Session `workflow_version` is absent **OR** older than current ViePilot version
+- Session `upgrade_supplement_version` is absent **OR** older than current ViePilot version
+- (Prevents re-surfacing already-supplemented topics on subsequent opens)
+
+Resolve current ViePilot version: `node bin/vp-tools.cjs info` → `version` field.
+
+#### Gap computation — version threshold table:
+
+| Introduced in | Topic | Detection heuristic (false-positive guard) |
+|--------------|-------|---------------------------------------------|
+| v2.32.0 | Topic 6: Admin & Governance (ENH-063) | session has no `## Admin` section AND no `admin:` YAML block |
+| v2.33.0 | Topic 7: Content Management (ENH-065) | session has no `## Content` section AND no `content_types:` YAML block |
+| v2.34.0 | Topic 8: User Data Management (ENH-066) | session has no `## User Data` section AND no `profile_fields:` YAML block |
+
+Always cross-check: even if the version threshold says a topic should be missing, confirm it
+is actually absent from the session file before listing it as a gap. This avoids false positives
+for users who added content manually or partially covered the topic under a different heading.
+
+#### Upgrade banner
+
+**Claude Code (terminal) — REQUIRED:**
+```
+question: "🔄 Upgrade gap detected — session was created with ViePilot v{old}, current is v{new}.\nMissing topics: {comma-separated list}. Discuss these gaps now?"
+header: "Upgrade"
+options:
+  - label: "Yes — discuss now (Recommended)"
+    description: "Run Q&A for missing topics inline; append ## Upgrade supplement to session"
+  - label: "Remind me at /save"
+    description: "Continue session normally; re-surface gap at /save"
+  - label: "Skip"
+    description: "Ignore gaps for this session"
+```
+
+**Text fallback (Cursor / Codex / other):**
+```
+🔄 Upgrade gap detected (v{old} → v{new})
+Missing topics: {list}
+
+1. Discuss gaps now (Recommended)
+2. Remind me at /save
+3. Skip
+```
+
+#### On "Yes — discuss now"
+
+Run only the Q&A sub-questions for each missing topic (re-use the relevant topic block from
+**Topics Template** in step 4). After completing Q&A for all missing topics, append the results
+to the session file under a clearly delimited section:
+
+```markdown
+## Upgrade supplement (v{old} → v{new})
+*Added {YYYY-MM-DD} after upgrading ViePilot to v{new}*
+
+### Topic 6: Admin & Governance [include only if this topic was missing]
+{Q&A results using Admin & Governance topic format}
+
+### Topic 7: Content Management [include only if this topic was missing]
+{Q&A results using Content Management topic format}
+
+### Topic 8: User Data Management [include only if this topic was missing]
+{Q&A results using User Data Management topic format}
+```
+
+After appending:
+1. Set `upgrade_supplement_version: "{current}"` in the session's `## Session Info` block
+2. Suggest: "Supplement complete — run `/vp-crystallize --upgrade` to patch your project artifacts"
+
+#### On "Remind at /save"
+Store the pending gap list. Re-surface the same AUQ at `/save` before writing the session file.
+
+#### On "Skip"
+Proceed normally. Do **not** set `upgrade_supplement_version` — gap will re-surface on next open.
+</step>
+
 <step name="brainstorm_mode">
 ## 4. Brainstorm Mode
 
