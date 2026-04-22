@@ -28,11 +28,11 @@ describe('Phase 97 — ENH-065 Content Management contracts', () => {
       expect(BRAINSTORM_MD).toContain('Content Management');
     });
 
-    test('2. Topic 7 has ≥10 sub-questions', () => {
-      // Find the Topic 7 block and count bullet lines
-      const topic7Match = BRAINSTORM_MD.match(/7\. \*\*Content Management\*\*([\s\S]*?)(?=8\. \*\*Phase assignment|###)/);
-      expect(topic7Match).not.toBeNull();
-      const bullets = (topic7Match[1].match(/^\s+-/gm) || []).length;
+    test('2. Topic 8 has ≥10 sub-questions (renumbered from 7 after ENH-068 added Topic 7)', () => {
+      // ENH-068 (Phase 100) inserted Topic 7 Admin Entity Management, pushing Content to 8
+      const topic8Match = BRAINSTORM_MD.match(/8\. \*\*Content Management\*\*([\s\S]*?)(?=9\. \*\*User Data|###)/);
+      expect(topic8Match).not.toBeNull();
+      const bullets = (topic8Match[1].match(/^\s+-/gm) || []).length;
       expect(bullets).toBeGreaterThanOrEqual(10);
     });
 
@@ -62,9 +62,9 @@ describe('Phase 97 — ENH-065 Content Management contracts', () => {
       expect(BRAINSTORM_MD).toContain('ENH-065');
     });
 
-    test('9. Phase assignment renumbered to Topic 9 (after ENH-066 added Topic 8)', () => {
-      // ENH-066 (Phase 98) added Topic 8 User Data Management, pushing Phase assignment to 9
-      expect(BRAINSTORM_MD).toContain('9. **Phase assignment (ENH-030):**');
+    test('9. Phase assignment renumbered to Topic 10 (after ENH-068 added Topic 7)', () => {
+      // ENH-068 (Phase 100) added Topic 7 Admin Entity Management, pushing Phase assignment to 10
+      expect(BRAINSTORM_MD).toContain('10. **Phase assignment (ENH-030):**');
     });
   });
 

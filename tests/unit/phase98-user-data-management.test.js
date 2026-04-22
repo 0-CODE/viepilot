@@ -28,8 +28,9 @@ describe('Phase 98 — ENH-066 User Data Management contracts', () => {
       expect(BRAINSTORM_MD).toContain('User Data Management');
     });
 
-    test('2. Topic 8 has ≥10 sub-questions', () => {
-      const topic8Match = BRAINSTORM_MD.match(/8\. \*\*User Data Management\*\*([\s\S]*?)(?=9\. \*\*Phase assignment|###)/);
+    test('2. Topic 9 has ≥10 sub-questions (renumbered from 8 after ENH-068 added Topic 7)', () => {
+      // ENH-068 (Phase 100) inserted Topic 7 Admin Entity Management, pushing User Data to 9
+      const topic8Match = BRAINSTORM_MD.match(/9\. \*\*User Data Management\*\*([\s\S]*?)(?=10\. \*\*Phase assignment|###)/);
       expect(topic8Match).not.toBeNull();
       const bullets = (topic8Match[1].match(/^\s+-/gm) || []).length;
       expect(bullets).toBeGreaterThanOrEqual(10);
@@ -60,8 +61,9 @@ describe('Phase 98 — ENH-066 User Data Management contracts', () => {
       expect(BRAINSTORM_MD).toContain('ENH-066');
     });
 
-    test('9. Phase assignment renumbered to Topic 9', () => {
-      expect(BRAINSTORM_MD).toContain('9. **Phase assignment (ENH-030):**');
+    test('9. Phase assignment renumbered to Topic 10 (after ENH-068 added Topic 7)', () => {
+      // ENH-068 (Phase 100) added Topic 7 Admin Entity Management, pushing Phase assignment to 10
+      expect(BRAINSTORM_MD).toContain('10. **Phase assignment (ENH-030):**');
     });
   });
 

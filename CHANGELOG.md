@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.36.0] - 2026-04-22
+
+### Added (ENH-068)
+- `workflows/brainstorm.md`: Topic 7 "Admin Entity Management" (10 sub-questions: which entities need admin CRUD, list view columns/filter/pagination, bulk ops, create/edit forms, delete semantics hard vs. soft, import/export CSV, audit trail per entity, multi-tenant scoping, read-only vs. editable); proactive 🗄️ heuristic (CRUD/entity/admin panel keywords); entity management coverage gate before /save (cross-references ERD presence); `entity-mgmt.html` Architect page; `notes.md ## entity_mgmt` YAML schema; Content Management → 8, User Data Management → 9, Phase assignment → 10
+- `workflows/crystallize.md`: Step 1D item 10 entity_mgmt export → `## Admin Entity Management` table + Import/Export sub-table in `PROJECT-CONTEXT.md`; `entity-mgmt.html` added to MANDATORY READ GATE as item 15; items 10→11 (feature-map), 11→12 (working notes)
+- `templates/project/PROJECT-CONTEXT.md`: `## Admin Entity Management` section + Import/Export placeholder sub-tables
+- `skills/vp-brainstorm/SKILL.md`, `skills/vp-crystallize/SKILL.md`: ENH-068 documented
+- `tests/unit/vp-enh031-language-standardization.test.js`: exemption for entity_mgmt keyword blockquote (`CRUD` pattern)
+
 ## [2.35.0] - 2026-04-22
 
 ### Added (ENH-067)
