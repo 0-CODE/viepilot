@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.35.0] - 2026-04-22
+
+### Added (ENH-067)
+- `workflows/brainstorm.md`: Session template adds `workflow_version` + `upgrade_supplement_version` fields to `## Session Info`; **Step 3B: Upgrade Gap Detection** — on `--continue`, compares session `workflow_version` vs. current Topics Template using version threshold table (ENH-063 v2.32, ENH-065 v2.33, ENH-066 v2.34) with false-positive cross-check; shows 🔄 upgrade banner (AUQ: discuss now / remind at /save / skip); runs inline Q&A for missing topics; appends `## Upgrade supplement (vX → vY)` section; stamps `upgrade_supplement_version` for idempotency; suggests `/vp-crystallize --upgrade`
+- `workflows/crystallize.md`: **Step 0-B: Upgrade Re-scan Mode** (`--upgrade` flag + auto-detect from `crystallize_version` stamp); delta computation from version threshold table; AUQ menu — **Patch** (non-destructive: reads architect YAML → appends missing sections, re-stamps version) / **Full re-generate** (backup `.viepilot/backup-pre-regen-{ts}/` → pre-fill Step 0 → overwrite artifacts) / **Skip**; brainstorm supplement integration (folds `## Upgrade supplement` content automatically); soft warn when architect `notes.md` YAML missing; Step 5 writes `<!-- crystallize_version: {semver} -->` as first line of `PROJECT-CONTEXT.md`; `HANDOFF.json` records `crystallize_version` + `crystallized_at`
+- `skills/vp-brainstorm/SKILL.md`: Workflow version stamps + Upgrade gap detection bullets (ENH-067)
+- `skills/vp-crystallize/SKILL.md`: Crystallize version stamps + Upgrade re-scan mode bullets (ENH-067)
+
 ## [2.34.0] - 2026-04-21
 
 ### Added (ENH-066)
