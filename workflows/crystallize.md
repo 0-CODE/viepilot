@@ -33,6 +33,100 @@ Use `COMMUNICATION_LANG` for all prompts and confirmation messages in this sessi
 If `~/.viepilot/config.json` is absent, use defaults (en/en) — do not fail.
 </step>
 
+<step name="upgrade_rescan">
+## Step 0-B: Upgrade Re-scan Mode (ENH-067)
+
+**Activated by:** `--upgrade` flag OR auto-detect (see below).
+
+### Auto-detect trigger
+
+1. Read `.viepilot/PROJECT-CONTEXT.md` first line → extract `<!-- crystallize_version: {semver} -->`.
+2. Fallback: read `.viepilot/HANDOFF.json` → `crystallize_version` field.
+3. If neither is present: treat as `crystallize_version = "0.0.0"` (legacy project, never stamped).
+4. Compare against current ViePilot version (`node bin/vp-tools.cjs info` → `version`).
+5. **If `crystallize_version` < current version AND gaps exist (see below): activate upgrade mode.**
+6. If `--upgrade` flag is explicitly passed: always activate, even if no gaps detected (allows forced re-scan).
+
+### Delta computation — version threshold table
+
+| Introduced in | Missing artifact section | Detection check |
+|--------------|--------------------------|-----------------|
+| v2.32.0 | `## Admin & Governance` in PROJECT-CONTEXT.md | section absent AND `admin_imported` not in HANDOFF.json |
+| v2.33.0 | `## Content Management` in PROJECT-CONTEXT.md | section absent AND `content_imported` not in HANDOFF.json |
+| v2.34.0 | `## User Data Management` in PROJECT-CONTEXT.md | section absent AND `user_data_imported` not in HANDOFF.json |
+
+Cross-check: confirm section is actually absent from current `PROJECT-CONTEXT.md` before listing
+as a gap — avoids false positives for projects that have the content already.
+
+### Upgrade menu
+
+**Claude Code (terminal) — REQUIRED:**
+```
+question: "🔄 Crystallize upgrade available (v{old} → v{new}).\nDetected gaps: {comma-separated list}.\nHow would you like to proceed?"
+header: "Upgrade"
+options:
+  - label: "Patch — append missing sections (Recommended)"
+    description: "Non-destructive: reads architect notes.md YAML → appends missing sections only; re-stamps crystallize_version"
+  - label: "Full re-generate"
+    description: "Backup .viepilot/ to .viepilot/backup-pre-regen-{timestamp}/ then regenerate all artifacts from scratch"
+  - label: "Skip"
+    description: "Proceed with current artifacts; skip upgrade for now"
+```
+
+**Text fallback (Cursor / Codex / other):**
+```
+🔄 Crystallize upgrade available (v{old} → v{new})
+Gaps: {list}
+
+1. Patch — append missing sections only (Recommended)
+2. Full re-generate (backup first)
+3. Skip
+```
+
+### Patch mode
+
+For each missing section, run only the corresponding Step 1D export item:
+- `## Admin & Governance` → Step 1D item 7 (ENH-063)
+- `## Content Management` → Step 1D item 8 (ENH-065)
+- `## User Data Management` → Step 1D item 9 (ENH-066)
+
+For each item:
+1. Check if architect `notes.md` has the corresponding YAML section (`## admin`, `## content`,
+   `## user_data`). If missing: soft warn —
+   > ⚠️ `notes.md ## {section}` not found — appending placeholder table instead.
+   Non-blocking: append the placeholder table from `templates/project/PROJECT-CONTEXT.md`.
+2. Check if latest brainstorm session has `## Upgrade supplement` with the relevant topic Q&A.
+   If yes: fold supplement content into the export (treat as first-class session data).
+3. Append section to `.viepilot/PROJECT-CONTEXT.md` (never overwrite existing content).
+4. After all missing sections appended: update `<!-- crystallize_version: {new} -->` comment.
+5. Update `crystallize_version` in `.viepilot/HANDOFF.json`.
+6. Commit: `chore: crystallize patch v{old} → v{new} (ENH-067)`
+
+**Brainstorm supplement check (for both Patch and Full re-generate):**
+Before extracting, check if the latest brainstorm session has pending `## Upgrade supplement`
+sections that haven't been incorporated yet. If brainstorm `upgrade_supplement_version < current`
+but supplement Q&A is present: include it automatically. If supplement Q&A is absent but gaps
+exist in brainstorm coverage: soft warn —
+> ⚠️ Brainstorm session missing Topic {N} coverage — run `/vp-brainstorm --continue` first
+> to fill gaps before crystallizing. Proceeding with placeholder tables.
+Non-blocking.
+
+### Full re-generate mode
+
+1. **Backup:** `cp -r .viepilot/ .viepilot/backup-pre-regen-{timestamp}/` — preserve existing artifacts
+2. **Pre-fill Step 0 metadata** from existing `.viepilot/PROJECT-META.md` (skip interactive Q&A for fields
+   that already have values — only ask about changed or missing fields)
+3. **Run full crystallize flow** from Step 0 onward using existing brainstorm session(s) + architect
+   artifacts as source
+4. Overwrite all `.viepilot/` artifacts (backup already taken in step 1)
+5. Commit: `chore: crystallize full re-generate v{old} → v{new} (ENH-067)`
+
+### Skip
+
+Proceed to Step 0 (Collect Project Metadata) as a normal crystallize run.
+`crystallize_version` is NOT updated until a successful patch or re-generate.
+</step>
+
 <step name="collect_metadata">
 ## Step 0: Collect Project Metadata
 
