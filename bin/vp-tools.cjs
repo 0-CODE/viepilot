@@ -1158,6 +1158,17 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Scan installed skills and rebuild ~/.viepilot/skill-registry.json (BUG-019)
+   */
+  'scan-skills': (_args) => {
+    const { scanSkills } = require('../lib/skill-registry.cjs');
+    const result = scanSkills();
+    const count = (result && result.skills) ? result.skills.length : 0;
+    process.stdout.write(`✔ Scanned ${count} skill${count !== 1 ? 's' : ''} → ~/.viepilot/skill-registry.json\n`);
+    process.exit(0);
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -1253,6 +1264,12 @@ ${colors.cyan}Examples:${colors.reset}
           'vp-tools get-registry --id frontend-design',
         ],
       },
+      'scan-skills': {
+        usage: 'vp-tools scan-skills',
+        description: 'Scan installed skills and rebuild ~/.viepilot/skill-registry.json',
+        options: [],
+        examples: ['vp-tools scan-skills'],
+      },
       update: {
         usage: 'vp-tools update [--dry-run] [--yes] [--global]',
         description: 'Update viepilot to npm latest (local dependency, global install, or explicit --global)',
@@ -1312,6 +1329,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}config${colors.reset} <get|set|reset>    Read/write language config (~/.viepilot/config.json)
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}get-registry${colors.reset} [--id <id>] Output global skill registry as JSON
+  ${colors.bold}scan-skills${colors.reset}               Scan installed skills → ~/.viepilot/skill-registry.json
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
