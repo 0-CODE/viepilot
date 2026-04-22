@@ -62,8 +62,9 @@ describe('Phase 97 — ENH-065 Content Management contracts', () => {
       expect(BRAINSTORM_MD).toContain('ENH-065');
     });
 
-    test('9. Phase assignment renumbered to Topic 8', () => {
-      expect(BRAINSTORM_MD).toContain('8. **Phase assignment (ENH-030):**');
+    test('9. Phase assignment renumbered to Topic 9 (after ENH-066 added Topic 8)', () => {
+      // ENH-066 (Phase 98) added Topic 8 User Data Management, pushing Phase assignment to 9
+      expect(BRAINSTORM_MD).toContain('9. **Phase assignment (ENH-030):**');
     });
   });
 

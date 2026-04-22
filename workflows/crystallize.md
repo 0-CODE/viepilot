@@ -1023,6 +1023,7 @@ For each file present, READ COMPLETELY (no skimming):
 11. `apis.html` — endpoints, service contracts (if present)
 12. `admin.html` — admin capabilities (if present — ENH-063)
 13. `content.html` — content types, lifecycle, media/SEO schema (if present — ENH-065)
+14. `user-data.html` — user-owned data controls (if present — ENH-066)
     *(Skip: `sequence-diagram.html` — intentionally excluded per existing rule)*
 
 **Failure rule**: if `notes.md` is missing or unreadable → STOP and surface:
@@ -1119,8 +1120,22 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    |---------|---------|
    | en | en |
    ```
-9. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
-10. **Record in working notes**:
+9. **`user-data.html` / `notes.md ## user_data`** (if exists — ENH-066) → append to `.viepilot/PROJECT-CONTEXT.md`:
+   ```markdown
+   ## User Data Management (from Architect Mode)
+   | Capability | Supported | Notes |
+   |-----------|----------|-------|
+   | Profile edit (name/email/avatar) | yes | — |
+   | Notification preferences | yes | email, push, in_app |
+   | Data export (GDPR) | yes | CSV/JSON download |
+   | Account deletion (right-to-erasure) | yes | 730-day retention |
+   | Activity history | yes | login history, action log |
+   | Connected accounts (OAuth) | yes | Google, GitHub |
+   | Session/device management | yes | sign out all devices |
+   | Two-factor authentication | yes | TOTP + backup codes |
+   ```
+10. **`feature-map.html`** → cross-reference Phase badges with `phases_inventory`; if discrepancies found (feature in HTML not in inventory, or vice versa) → list them for user to confirm.
+11. **Record in working notes**:
    - `architect_session_id`: {id}
    - `decisions_imported`: {count}
    - `open_questions_count`: {count of open questions}
@@ -1132,6 +1147,8 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    - `admin_capabilities_count`: {count if admin present, else "n/a"}
    - `content_imported`: {true/false}
    - `content_types_count`: {count if content present, else "n/a"}
+   - `user_data_imported`: {true/false}
+   - `user_data_capabilities_count`: {count if user_data present, else "n/a"}
 
 If `.viepilot/architect/` does **not** exist but brainstorm shows complex architecture (≥5 services/components detected):
 - Suggest (soft prompt — not a hard block):

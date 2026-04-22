@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.34.0] - 2026-04-21
+
+### Added (ENH-066)
+- `workflows/brainstorm.md`: Topic 8 "User Data Management" in brainstorm Topics Template (10 sub-questions: profile management, notification preferences, privacy/GDPR controls, activity history, connected OAuth accounts, session/device management, 2FA, consent management, data retention); proactive 👤 heuristic (≥1 user-data keyword at session start, ≥2 during session); user data coverage gate before /save for B2C/SaaS/GDPR projects; `user-data.html` page in Architect workspace; `notes.md ## user_data` YAML schema; Phase assignment renumbered to Topic 9
+- `workflows/crystallize.md`: Step 1D extended — exports `notes.md ## user_data` → `## User Data Management` capabilities table in `PROJECT-CONTEXT.md`; `user-data.html` added to MANDATORY READ GATE list as item 14
+- `templates/project/PROJECT-CONTEXT.md`: `## User Data Management` section with placeholder capability table (8 rows: profile editing, notification prefs, privacy settings, data export, right to erasure, connected accounts, session management, 2FA)
+- `skills/vp-brainstorm/SKILL.md`, `skills/vp-crystallize/SKILL.md`: ENH-066 documented
+
 ## [2.33.0] - 2026-04-21
 
 ### Added (ENH-065)
