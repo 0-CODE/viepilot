@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.39.0] - unreleased
+## [2.39.0] - 2026-04-22
 
 ### Added
 - **ENH-070** — vp-audit auto-log gaps as requests + direct vp-evolve routing
