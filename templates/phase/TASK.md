@@ -34,6 +34,13 @@ files_to_modify:
 - `{{FILE_PATH}}`: {{WHAT_TO_CHANGE_AND_WHY}}
 - `{{FILE_PATH_2}}`: {{WHAT_TO_CHANGE_AND_WHY}}
 
+## UI Prototype Reference
+<!-- Populated by crystallize when this task implements a UI Direction prototype page (ENH-069) -->
+<!-- If blank: no prototype binding — implement from task description only -->
+- Prototype: <!-- e.g. .viepilot/ui-direction/session-2026-04-21/pages/landing.html -->
+- Key sections: <!-- e.g. hero banner, search bar, feature list, CTA footer -->
+- Component target: <!-- e.g. resources/js/Pages/Home.vue -->
+
 ## Context Required
 ```yaml
 files_to_read:

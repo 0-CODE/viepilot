@@ -354,6 +354,23 @@ If the task's `## Paths` block contains one of these AND no scaffold has run:
 → **⛔ Scaffold-First Gate**: "Cannot create `{file}` — run scaffold command first (BUG-020). See `docs/user/features/scaffold-first.md`."
 → Offer: (a) run scaffold then retry, (b) confirm project already scaffolded, (c) skip gate with explicit reason in task log.
 
+#### UI Prototype Reference — populate for frontend tasks (ENH-069 Gap 3)
+
+After contract validation and **before** execution, check if the task implements a frontend component:
+
+1. Read `.viepilot/PROJECT-CONTEXT.md → ## UI Pages → Component Map` (written by crystallize Step 7)
+2. If a row exists whose `Target component` matches the task's target file:
+   - Populate the task file's `## UI Prototype Reference` section:
+     ```markdown
+     ## UI Prototype Reference
+     - Prototype: .viepilot/ui-direction/{session-id}/pages/{slug}.html
+     - Key sections: {sections extracted from the prototype during crystallize Step 1A}
+     - Component target: {target_component_path}
+     ```
+   - Log: `"UI Prototype Reference populated from UI Pages → Component Map"`
+3. During implementation: **READ the referenced prototype file BEFORE writing any component code**. The prototype is the design source — do not implement from task description alone when a prototype is bound.
+4. If no binding found in the component map: leave `## UI Prototype Reference` blank (implement from task description).
+
 #### Task start checkpoint (after doc-first gate + preflight)
 
 Only after **Validate Task Contract**, **Pre-execution documentation gate**, and **Stack Preflight** (or explicit waiver logged in the task file with reason):
@@ -506,6 +523,29 @@ Rule:
 ## 5. Phase Complete
 
 When all tasks in phase are done/skipped:
+
+#### UI Coverage Gate (ENH-069 Gap 4)
+
+Before phase-level verification, run a UI stub check:
+
+1. Read `.viepilot/PROJECT-CONTEXT.md → ## UI Pages → Component Map`
+2. Filter rows where `Phase` = current phase AND `Source` is not `design_staleness` alone (i.e., rows with a real prototype file binding)
+3. For each filtered row:
+   - Check if the `Target component` file exists on disk
+   - If the file exists, apply the stub heuristic:
+     - File has fewer than 20 lines **AND** contains only routing/title markup (no real layout components, no template sections, no data fetching) → **STUB detected**
+   - If file is **missing** OR **stub detected**:
+     ```
+     ⚠️ UI Coverage Warning: "{prototype}" → "{component}" is still a stub or missing.
+     Phase cannot receive ✅ PASS with unimplemented prototype-bound components.
+     Options:
+       (a) Implement now from prototype (Recommended — continue in this phase)
+       (b) Defer to next phase (update component map row status to "deferred-phase-{N+1}" + log reason)
+       (c) Mark as design-only — no implementation required (update row status to "design-only" + log reason)
+     ```
+4. Phase PASS is **blocked** until all warnings are resolved via options (a), (b), or (c).
+   - Option (a): implement the component, then re-run stub check
+   - Option (b) or (c): clears the warning; phase may proceed to PASS
 
 1. Run phase-level verification
 2. Check phase quality gate
