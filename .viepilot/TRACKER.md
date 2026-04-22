@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **101** — ✅ Complete (**BUG-019 vp-tools scan-skills CLI** → **2.36.1**)
+- **Last Completed Phase**: **103** — ✅ Complete (**ENH-069 Crystallize UI→Task Binding 10-gap fix** → **2.38.0**)
 - **Next Phase**: — (no planned phases)
 - **Current Task**: —
-- **Last Activity**: 2026-04-22 — Phase 101 shipped: BUG-019 scan-skills CLI (10 tests) — 2.36.1
+- **Last Activity**: 2026-04-22 — Phase 103 complete: ENH-069 all 10 gaps fixed → v2.38.0
 
 ## Progress Overview
 ```
@@ -159,6 +159,11 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-22 | BUG-019 logged: vp-tools scan-skills not implemented — referenced in FEAT-020 docs but never in bin/vp-tools.cjs | `/vp-request` | Backlog |
 | 2026-04-22 | Phase 101 planned: BUG-019 scan-skills CLI (2 tasks — CLI handler + tests), target **2.36.1** | `/vp-evolve` | M1.37 |
 | 2026-04-22 | Phase 101 shipped: BUG-019 (scan-skills CLI handler + 10 tests) — **2.36.1** | `/vp-auto` | M1.37 |
+| 2026-04-22 | BUG-020 logged: vp-auto ignores scaffold/create-project command — handcrafts framework files instead of running composer/npx/rails | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 102 planned: BUG-020 scaffold-first gate (3 tasks — autonomous.md gate + convention doc + tests), target **2.37.0** | `/vp-evolve` | M1.37 |
+| 2026-04-22 | Phase 102 shipped: BUG-020 (scaffold-first gate in autonomous.md + 6 stack SUMMARY.md + docs + 23 tests) — **2.37.0** | `/vp-auto` | M1.37 |
+| 2026-04-22 | ENH-069 logged: crystallize UI→Task binding gap — 10 specific gaps identified in crystallize + autonomous workflows + ui-direction notes.md | `/vp-request` | Backlog |
+| 2026-04-22 | Phase 103 planned: ENH-069 UI→Task binding (10-gap fix — crystallize + autonomous + TASK.md template) → **2.38.0** | `/vp-evolve` | M1.37 |
 
 ## Blockers
 _None currently_
@@ -210,6 +215,8 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 | FEAT-012 | ✨ | vp-brainstorm post-exchange staleness hook — auto-detect stale architect/ui-direction content | high | ✅ done (**2.1.0**) |
 | ENH-064 | 🔧 | Unified HUB cho architect + ui-direction + crystallize mandatory read gates (no silent skip) | high | new |
 | ENH-063 | 🔧 | vp-brainstorm thiếu Admin & Governance topic — không elicit admin panel/monitor/audit/billing → crystallize bỏ qua | high | new |
+| ENH-069 | 🔧 | crystallize UI→Task binding gap — prototype pages/*.html read but not mapped to implementation tasks; stubs survive all phases | high | new |
+| BUG-020 | 🐛 | vp-auto ignores scaffold/create-project best practice — handcrafts framework files (Laravel, Rails, Next.js, etc.) instead of running canonical init command | critical | ✅ done (**2.37.0**) |
 | BUG-019 | 🐛 | `vp-tools scan-skills` command not implemented — referenced in FEAT-020 docs but never added to bin/vp-tools.cjs | medium | ✅ done (**2.36.1**) |
 | BUG-018 | 🐛 | brainstorm thiếu unified mode-selection prompt — Architect auto-activates không offer UI Direction | high | new |
 | ENH-034 | 🔧 | vp-brainstorm UI: sync architect HTML templates when gaps/changes identified | high | ✅ done (**1.19.0**) |

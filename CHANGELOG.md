@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.38.0] - 2026-04-22
+
+### Added
+- **ENH-069** — crystallize UI→Task binding: 10-gap fix closing the chain where prototype pages remain stubs after all phases complete
+  - Gap 1: crystallize Step 1A emits `## UI Pages → Component Map` table binding each pages/*.html to a target component
+  - Gap 2: crystallize Step 7 cross-checks generated ROADMAP vs component map; auto-adds missing tasks
+  - Gap 3: `templates/phase/TASK.md` and `autonomous.md` populate `## UI Prototype Reference` for frontend component tasks
+  - Gap 4: `autonomous.md` phase completion UI Coverage Gate — warns on stub components before phase PASS
+  - Gap 5: crystallize Step 1D converts `arch_to_ui_sync` entries with `status: noted` into component map rows
+  - Gap 6: crystallize Step 1F makes coverage[] gaps blocking for scoped features (not just warnings)
+  - Gap 7: crystallize Step 1D requires explicit resolution of feature-map.html discrepancies before Step 7
+  - Gap 8: crystallize emits "design staleness" warning when arch decisions are not reflected in pages/*.html
+  - Gap 9: crystallize Step 1A processes `## UX walkthrough log` P0/P1 pain items → UX-fix tasks
+  - Gap 10: crystallize Step 1A surfaces `## Background extracted ideas` with resolution gate before Step 7
+
 ## [2.37.0] - 2026-04-22
 
 ### Fixed

@@ -2818,5 +2818,53 @@
 
 ## Notes
 - Created: 2026-03-30
-- Last Updated: 2026-04-22 (Phase 101 planned: BUG-019 scan-skills CLI → v2.36.1)
+- Last Updated: 2026-04-22 (Phase 102 planned: BUG-020 scaffold-first gate → v2.37.0)
+
+---
+
+### Phase 102: BUG-020 — Scaffold-First Gate for Framework Projects
+**Goal**: Prevent `vp-auto` from handcrafting framework-generated files. Add a scaffold-first enforcement gate to `workflows/autonomous.md`: when a task is detected as a "project setup/init" for a known framework stack (Laravel, Next.js, NestJS, Rails, Django, Spring Boot, etc.), vp-auto MUST run the canonical scaffold command (e.g. `composer create-project laravel/laravel`) before creating any files. Built-in heuristic table + optional `init_command:` field in stack SUMMARY.md. Never-handcraft block list for framework-native files (artisan, manage.py, next.config.*, nest-cli.json, pom.xml, etc.).
+**Estimated Tasks**: 3
+**Status**: ✅ Complete → v2.37.0
+**Dependencies**: FEAT-020 ✅, Phase 101 ✅
+**Directory**: `.viepilot/phases/102-bug020-scaffold-first-gate/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 102.1 | Add scaffold-first gate section to workflows/autonomous.md | Gate section present; heuristic table; block list; SUMMARY.md field reference | M |
+| 102.2 | Convention doc (docs/user/features/scaffold-first.md) + 7 stack SUMMARY.md updates | Doc created; 7 stacks have `## Scaffold` + init_command + marker_file | S |
+| 102.3 | Tests (≥18) + CHANGELOG [2.37.0] + version bump | All tests pass; package.json = "2.37.0" | S |
+
+**Verification**:
+- [ ] `grep -c "Scaffold-First Gate" workflows/autonomous.md` ≥1
+- [ ] `grep -c "composer create-project" workflows/autonomous.md` ≥1
+- [ ] `grep -c "init_command:" workflows/autonomous.md` ≥1
+- [ ] `ls docs/user/features/scaffold-first.md` exists
+- [ ] `npm test` all pass
 - Estimated completion: M1.x iterative releases (see TRACKER)
+
+---
+
+---
+
+### Phase 103: ENH-069 — Crystallize UI→Task Binding (10-Gap Fix)
+**Goal**: Close the 10-gap chain where `crystallize` reads UI Direction artifacts but never binds them to implementation tasks, causing prototype pages to remain stubs after all phases complete. Fixes span crystallize Step 1A (UI Pages→Component Map, UX walkthrough P0/P1 processing, Background ideas gate), Step 1D (arch_to_ui_sync noted items, feature-map discrepancy resolution, design staleness check), Step 1F (coverage gaps blocking), Step 7 (ROADMAP cross-check), and autonomous.md (UI Prototype Reference field + UI Coverage Gate at phase completion).
+**Estimated Tasks**: 5
+**Status**: ✅ Complete → v2.38.0
+**Dependencies**: ENH-064 ✅, BUG-020 ✅, Phase 102 ✅
+**Directory**: `.viepilot/phases/103-enh069-ui-task-binding/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 103.1 | crystallize Step 1A: emit UI Pages→Component Map + UX walkthrough P0/P1→tasks + Background ideas gate | Component map built; P0/P1 pain items generate UX-fix tasks; background ideas gate blocks Step 7 | L |
+| 103.2 | crystallize Step 1D: arch_to_ui_sync noted→map + feature-map explicit resolution + design staleness warning | arch_to_ui_sync noted items added to map; discrepancies require resolution; staleness warning emitted | M |
+| 103.3 | crystallize Step 1F blocking gate + Step 7 ROADMAP cross-check | coverage gaps blocking for scoped features; Step 7 auto-adds missing component tasks | M |
+| 103.4 | autonomous.md + TASK.md: UI Prototype Reference field + phase UI Coverage Gate | TASK.md has field; autonomous populates it; phase PASS gated on non-stub UI coverage | M |
+| 103.5 | Tests (≥20) + CHANGELOG [2.38.0] + version bump | All tests pass; package.json = "2.38.0" | S |
+
+**Verification**:
+- [ ] `grep -c "UI Pages → Component Map" workflows/crystallize.md` ≥ 3
+- [ ] `grep -c "Design Staleness" workflows/crystallize.md` ≥ 2
+- [ ] `grep -c "UI Coverage Gate" workflows/autonomous.md` ≥ 2
+- [ ] `grep -c "UI Prototype Reference" templates/phase/TASK.md` ≥ 1
+- [ ] `npm test` all pass
