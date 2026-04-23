@@ -2916,3 +2916,31 @@
 - [ ] `isAvailable` true for `.gemini/antigravity/` AND `.antigravity/` dirs
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.39.1`
+
+---
+
+### Phase 106: ENH-071 — vp-brainstorm Embedded Domain Mode
+**Goal**: Add Embedded Domain Mode to vp-brainstorm: auto-detect MCU/firmware projects, inject embedded-specific topic probes (MCU/toolchain, RTOS, power budget, safety), add 6 new Architect workspace pages (hw-topology, pin-map, memory-layout, protocol-matrix, rtos-scheduler, power-budget), suppress UI Direction false-positives on hardware display keywords, offer firmware phase ordering template, and export 8 notes.md YAML sections to ARCHITECTURE.md via crystallize.
+**Estimated Tasks**: 5
+**Status**: planned → v2.40.0
+**Dependencies**: FEAT-011 ✅, ENH-029 ✅, ENH-060 ✅, ENH-026 ✅, Phase 105 ✅
+**Directory**: `.viepilot/phases/106-enh071-embedded-domain/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 106.1 | `workflows/brainstorm.md` — domain detection + MCU/RTOS/power/safety probes + firmware phase template (Gaps 2,3,7,9,10) | Detection activates; 5 topic probes injected; phase template offered | M |
+| 106.2 | `workflows/brainstorm.md` — UI Direction false-positive suppression for hardware display keywords (Gap 6) | LCD/OLED → hw-topology not UI buffer; banner suppressed | S |
+| 106.3 | `workflows/brainstorm.md` — 6 new Architect workspace pages: hw-topology, pin-map, memory-layout, protocol-matrix, rtos-scheduler, power-budget (Gaps 1,4,5,8) | All 6 pages with triggers, Mermaid, tables, notes.md YAML | M |
+| 106.4 | `workflows/crystallize.md` — export 8 embedded YAML sections to ARCHITECTURE.md + PROJECT-CONTEXT.md; skip UI Coverage Gate → Hardware Coverage Check | 8 ARCHITECTURE.md sections; embedded domain flag in PROJECT-CONTEXT.md | M |
+| 106.5 | `skills/vp-brainstorm/SKILL.md` docs + tests (≥12) + CHANGELOG [2.40.0] + version bump | All tests pass; package.json = "2.40.0" | S |
+
+**Verification**:
+- [ ] `grep -c "embedded_domain" workflows/brainstorm.md` ≥ 5
+- [ ] `grep -c "hw-topology" workflows/brainstorm.md` ≥ 2
+- [ ] `grep -c "pin-map" workflows/brainstorm.md` ≥ 1
+- [ ] `grep -c "memory-layout" workflows/brainstorm.md` ≥ 1
+- [ ] `grep -c "Embedded Domain Export" workflows/crystallize.md` ≥ 1
+- [ ] `grep -c "Hardware Architecture" workflows/crystallize.md` ≥ 1
+- [ ] `grep -c "Embedded Domain Mode" skills/vp-brainstorm/SKILL.md` ≥ 1
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.40.0`
