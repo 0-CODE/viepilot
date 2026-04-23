@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.39.1] - 2026-04-23
+
+### Fixed
+- **BUG-021** — Antigravity adapter install path updated for Google Gemini ecosystem rebrand
+  - `lib/adapters/antigravity.cjs`: `skillsDir` → `~/.gemini/antigravity/skills/`
+  - `lib/adapters/antigravity.cjs`: `viepilotDir` → `~/.gemini/antigravity/viepilot/`
+  - `lib/adapters/antigravity.cjs`: `executionContextBase` → `.gemini/antigravity/viepilot`
+  - `lib/adapters/antigravity.cjs`: `isAvailable` checks `.gemini/antigravity/` with `.antigravity/` fallback for pre-update installs
+  - `bin/viepilot.cjs`: uninstall help text updated to `~/.gemini/antigravity/skills/vp-*`
+  - `docs/user/features/adapters.md`: Antigravity row paths updated
+  - `docs/user/features/skill-registry.md`: Antigravity row path updated
+
 ## [2.39.0] - 2026-04-22
 
 ### Added
