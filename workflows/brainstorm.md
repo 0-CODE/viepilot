@@ -877,6 +877,141 @@ AND session has no `## Admin Entity Management` / `## entity_mgmt` coverage:
 
 **entity-mgmt.html trigger:** entity management keyword detected in session AND Architect Mode is active → create/update `entity-mgmt.html`.
 
+---
+
+#### Embedded Domain Architect Pages (ENH-071 Gaps 1, 4, 5, 8)
+
+All 6 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
+
+---
+
+##### `hw-topology.html` — Hardware Topology (Gap 1)
+
+**Trigger**: Always created when `embedded_domain: true` AND Architect Mode activates.
+
+**Content**:
+- Mermaid `graph TD` block diagram: MCU node connected to external ICs/sensors/actuators via labeled bus arrows (bus type + speed on arrow label)
+- Component table: Part | Type | Interface | Bus Speed | Notes
+- Power rails table: Rail | Source | Voltage | Max current (mA)
+
+**notes.md YAML section**:
+```yaml
+## hw_topology
+mcu:
+  family: ""        # e.g. STM32F4, ESP32-S3
+  core: ""          # e.g. Cortex-M4 @168MHz
+  flash_kb: 0
+  ram_kb: 0
+peripherals: []     # on-chip peripherals: [{ name, type, instance }]
+external_ics: []    # [{ name, type, interface, bus_speed, notes }]
+buses: []           # [{ type: SPI|I2C|UART|CAN|USB, speed, devices: [] }]
+power_rails: []     # [{ rail, source, voltage_v, max_ma }]
+```
+
+---
+
+##### `pin-map.html` — GPIO/Pin Assignment (Gap 4)
+
+**Trigger**: GPIO / pin / pinout / assignment / alternate function keywords AND `embedded_domain: true` OR when `hw-topology.html` is created (auto-companion).
+
+**Content**:
+- Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction (IN/OUT/AF) | Pull (Up/Down/None) | Voltage Level | Notes
+- Conflict detection: if two rows share the same GPIO name with conflicting functions → highlight row in red and note conflict
+
+**notes.md YAML section**:
+```yaml
+## pin_map
+pins: []        # [{ pin_num, gpio_name, function, peripheral, direction, pull, voltage_v, notes }]
+conflicts: []   # auto-detected: [{ gpio_name, conflicting_functions: [] }]
+```
+
+---
+
+##### `memory-layout.html` — Memory Partitioning (Gap 5)
+
+**Trigger**: flash / RAM / memory / linker / bootloader / OTA / partition / NVS / EEPROM keywords AND `embedded_domain: true`.
+
+**Content**:
+- Flash regions table: Region | Start Address | Size (KB) | Usage | Notes
+- RAM regions table: Region | Start Address | Size (KB) | Usage | Notes
+- Linker constraint notes: stack size, heap size, section alignment, placement constraints
+- OTA layout diagram (simple text diagram) when OTA mentioned
+
+**notes.md YAML section**:
+```yaml
+## memory_layout
+flash_total_kb: 0
+ram_total_kb: 0
+flash_regions: []   # [{ name, start_hex, size_kb, usage, notes }]
+ram_regions: []     # [{ name, start_hex, size_kb, usage, notes }]
+linker_notes: ""
+```
+
+---
+
+##### `protocol-matrix.html` — Communication Protocol Matrix (Gap 8)
+
+**Trigger**: CAN / I2C / SPI / UART / RS-485 / BLE / Wi-Fi / LoRa / LoRaWAN / MQTT / Modbus / CANopen / USB / Zigbee keywords AND `embedded_domain: true`.
+
+**Content** (distinct from `apis.html` which covers HTTP REST):
+- Bus protocol table: Protocol | Role (master/slave/both) | Speed | Topology | Connected Devices | Notes
+- Wireless/external table: Protocol | Role | Endpoint/Broker | QoS/Notes
+- Note at top: "Embedded bus & wireless protocols — see `apis.html` for HTTP REST endpoints (if applicable)"
+
+**notes.md YAML section**:
+```yaml
+## protocols
+bus_protocols: []   # [{ name, role, speed, topology, devices: [], notes }]
+wireless: []        # [{ protocol, role, endpoint, notes }]
+```
+
+**Coexistence rule**: If the project also has a cloud API (HTTP/REST), both `protocol-matrix.html` AND `apis.html` exist in the workspace — they are separate artifacts.
+
+---
+
+##### `rtos-scheduler.html` — RTOS & Task Scheduler (Gap 3 visual)
+
+**Trigger**: RTOS / FreeRTOS / Zephyr / ThreadX / task / scheduler / semaphore / queue / ISR / interrupt priority keywords AND `embedded_domain: true`.
+
+**Content**:
+- Task table: Task Name | Priority | Period or Event | Stack KB | State | Notes
+- ISR table: Interrupt Source | Handler Function | Priority | Shared Resources | Notes
+- Mermaid `stateDiagram-v2` for key task state transitions (only if ≤5 tasks — omit if larger)
+- Shared resource matrix: Resource | Protected by | Tasks using it
+
+**notes.md**: uses `## rtos_config` section written by Task 106.1 probes (no new section — extends same YAML).
+
+---
+
+##### `power-budget.html` — Power Budget (Gap 7 visual)
+
+**Trigger**: battery / sleep / power / current / µA / mAh / Standby / Stop / Shutdown / Hibernate / LoRa / IoT keywords AND `embedded_domain: true`.
+
+**Content**:
+- Power modes table: Mode | MCU state | Active peripherals | Typical current (µA/mA) | Wake-up sources
+- Battery life estimate: Duty cycle % | Avg current (mA) | Capacity (mAh) | Runtime (days) formula
+- Power rail summary (linked from `hw-topology` if available)
+
+**notes.md**: uses `## power_budget` section written by Task 106.1 probes (no new section — extends same YAML).
+
+---
+
+#### Embedded Workspace Layout (ENH-071)
+
+When `embedded_domain: true` and Architect Mode is active, the `index.html` hub includes an **Embedded** nav section after the standard pages:
+
+```html
+<!-- Embedded section (only shown when embedded_domain: true) -->
+<a href="hw-topology.html">🔌 HW Topology</a>
+<a href="pin-map.html">📌 Pin Map</a>
+<a href="memory-layout.html">🗺️ Memory Layout</a>
+<a href="protocol-matrix.html">📡 Protocol Matrix</a>
+<a href="rtos-scheduler.html">⏱️ RTOS Scheduler</a>
+<a href="power-budget.html">🔋 Power Budget</a>
+```
+
+Pages are only linked when they have been created (missing pages are omitted from nav).
+
 #### Sequence trigger keywords (ENH-029)
 When the user mentions: `scenario`, `step by step`, `login flow`, `checkout flow`, `detailed interaction`, `sequence`, `interaction diagram` → update `sequence-diagram.html` + update `notes.md ## sequences` section.
 
