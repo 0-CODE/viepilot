@@ -171,6 +171,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-23 | BUG-021 logged: Antigravity adapter install path outdated — skills must go to `~/.gemini/antigravity/skills/` after Gemini ecosystem rebrand | `/vp-request` | Backlog |
 | 2026-04-23 | Phase 105 planned: BUG-021 Antigravity path update (3 tasks — adapter + bin/docs + tests), target **2.39.1** | `/vp-evolve` | M1.37 |
 | 2026-04-23 | Phase 105 shipped: BUG-021 (antigravity.cjs + bin + docs + 13 tests) — **2.39.1** | `/vp-auto` | M1.37 |
+| 2026-04-23 | ENH-071 logged: vp-brainstorm Embedded Domain Mode — 10 gaps (hw-topology, pin-map, memory-layout, RTOS, protocol-matrix, power-budget, MCU toolchain probes, safety topic, UI-Direction suppression, firmware phase template) | `/vp-request` | Backlog |
 
 ## Blockers
 _None currently_
@@ -184,6 +185,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | ✅ done (**2.39.1**) |
+| ENH-071 | 🔧 | vp-brainstorm Embedded Domain Mode — 10 gaps (hw-topology, pin-map, memory-layout, RTOS, protocol-matrix, power-budget, MCU toolchain, safety, UI-Direction suppression, firmware phase template) | medium | new |
 | BUG-017 | 🐛 | vp-evolve/vp-request Step 5/6 thiếu AUQ call trong `<process>` body — `@` workflow ref không auto-expand | high | triaged (→ Phase 95) |
 | ENH-062 | 🔧 | `/vp-skills` slash command — agent-native global skill registry management (scan/install/list cross-project) | high | triaged (→ Phase 95) |
 | BUG-016 | 🐛 | Workflow skill context steps dùng JS function call không executable — cần thay bằng shell command | high | triaged (→ Phase 95) |
