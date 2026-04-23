@@ -1131,8 +1131,30 @@ When the assistant detects any keyword (case-insensitive, Vietnamese or English)
 
 > `màu`, `màu sắc`, `color`, `layout`, `màn hình`, `screen`, `page`, `trang`, `button`, `nút`, `form`, `biểu mẫu`, `mobile`, `responsive`, `giao diện`, `UI`, `UX`, `design`, `dashboard`, `sidebar`, `header`, `footer`, `modal`, `popup`, `icon`, `theme`, `typography`, `font`, `spacing`, `grid`, `card`, `component`, `hero`, `banner`
 
+#### Embedded Domain UI Suppression (ENH-071 Gap 6)
+
+**Before adding any keyword to the UI buffer**, check if `embedded_domain: true`.
+
+If `embedded_domain: true` AND keyword is a display/screen word (`display`, `screen`, `LCD`, `OLED`, `TFT`, `touch`, `màn hình`, `màn LCD`, `màn OLED`):
+
+1. Check for **hardware context counter-keywords** in the same message or nearby context:
+   - Hardware indicators: `GPIO`, `SPI`, `I2C`, `driver`, `framebuffer`, `ILI9341`, `SSD1306`, `ST7789`, `HX8357`, `RA8875`, `E-Ink`, `EPD`, `7-segment`, `LVGL`, `u8g2`, `resolution`, `pixel`, `backlight`, `contrast`, `init sequence`
+
+2. **If hardware context confirmed**:
+   - Do NOT add to `ui_idea_buffer[]`
+   - Add as peripheral to `hw_topology_buffer[]` instead: `{ type: "display", interface: "SPI/I2C/parallel", part: "{detected_part_if_any}" }`
+   - Log silently: "Display keyword suppressed from UI Direction → added to hw-topology peripherals"
+
+3. **If ambiguous** (no hardware counter-keywords, could be web dashboard):
+   - Add to `ui_idea_buffer[]` normally with note: `"context: may be hardware display — verify"`
+
+4. **Early-session UI Direction banner (ENH-060) suppression**:
+   - If `embedded_domain: true` AND all accumulated display signals have hardware context → **suppress** the `🎨 UI Direction Mode?` banner entirely
+   - Replace with a one-time note: `"Hardware displays detected — will appear in hw-topology page"`
+   - If signals are mixed (some hardware, some ambiguous) → show banner but prepend: `"⚠️ Embedded context detected — confirm if this is a web/mobile UI or hardware display"`
+
 #### Early-session detection (ENH-060)
-At the very start of a brainstorm session, scan the user's **initial message** for UI/UX signal keywords. If **≥1 keyword** is found, show the proactive activation banner **immediately** (before topic selection):
+At the very start of a brainstorm session, scan the user's **initial message** for UI/UX signal keywords. If **≥1 keyword** is found AND `embedded_domain` is NOT active, show the proactive activation banner **immediately** (before topic selection):
 
 ```
 🎨 I noticed your project involves UI/UX design.
