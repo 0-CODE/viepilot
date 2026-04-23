@@ -32,6 +32,155 @@ If the user writes in a different language during the session, that takes preced
 If `~/.viepilot/config.json` is absent, default to `en` — do not fail.
 </step>
 
+<step name="detect_embedded_domain">
+## 0B. Detect Embedded Domain (ENH-071)
+
+Scan the user's **initial message** (and, on `--continue`, the prior session content) for embedded trigger keywords.
+
+**MCU family keywords**: `STM32`, `ESP32`, `ESP8266`, `nRF52`, `nRF5`, `AVR`, `PIC`, `RISC-V`, `Cortex-M`, `RP2040`, `MSP430`, `SAM`, `SAMD`, `LPC`, `GD32`, `CH32`
+
+**Concept keywords**: `firmware`, `bare-metal`, `microcontroller`, `embedded`, `GPIO`, `interrupt`, `HAL`, `bootloader`, `RTOS`, `FreeRTOS`, `Zephyr`, `ThreadX`, `ChibiOS`, `RT-Thread`, `linker`, `peripheral`, `UART`, `SPI`, `I2C`, `CAN`, `watchdog`, `flash memory`, `memory map`, `ISR`, `DMA`, `PWM`, `ADC`, `DAC`, `MCU`, `SoC`
+
+**Activation rule**: `≥2` keyword matches (across both lists) → set `embedded_domain: true`
+
+**Manual override**: `--domain embedded` flag → set `embedded_domain: true` unconditionally, regardless of keyword count.
+
+**On first activation** — show one-time banner (then suppress for rest of session):
+
+```
+🔌 Embedded Domain Mode activated
+   Hardware topology, pin map, memory layout, RTOS scheduler,
+   protocol matrix, and power budget pages will be added to the
+   Architect workspace when relevant keywords are detected.
+   UI Direction web-UI suggestions are suppressed
+   (hardware display keywords route to hw-topology instead).
+```
+
+**Embedded topic injections** (activate when `embedded_domain: true`):
+- MCU/Toolchain sub-topic probes → added to tech-stack section (§ Gap 2)
+- RTOS/Scheduling topic → added after architecture/components (§ Gap 3)
+- Power Budget topic → triggered by battery/sleep/power keywords (§ Gap 7)
+- Safety/Compliance topic → triggered by safety/watchdog/SIL/ASIL keywords (§ Gap 10)
+- Firmware Phase Template → offered at phase assignment step (§ Gap 9)
+
+---
+
+### Embedded Topic Probes (ENH-071)
+
+#### MCU/Toolchain Sub-Topic (Gap 2)
+When `embedded_domain: true`, after general tech-stack questions, inject:
+
+```
+🔌 Embedded Toolchain — let's capture your hardware/toolchain choices:
+
+1. MCU/SoC family?
+   (STM32 / ESP32 / nRF52 / RISC-V / AVR / RP2040 / SAM / other)
+2. Toolchain?
+   (GCC-ARM / Clang / IAR Embedded Workbench / Keil MDK / other)
+3. Build system?
+   (CMake / Make / PlatformIO / West (Zephyr) / Arduino / other)
+4. Debug interface?
+   (SWD / JTAG / UART-bootloader / ESP ROM bootloader / other)
+5. Flasher/debugger tool?
+   (OpenOCD / J-Link / ST-Link / Black Magic Probe / esptool / other)
+6. SDK/HAL?
+   (STM32 HAL+LL / ESP-IDF / nRF5 SDK / Zephyr west / Arduino framework / vendor BSP / custom)
+```
+
+→ Store responses in `notes.md ## embedded_toolchain` YAML section.
+
+#### RTOS/Scheduling Topic (Gap 3)
+When `embedded_domain: true`, add as a brainstorm topic after architecture/components:
+
+```
+🔌 RTOS & Scheduling — describe your execution model:
+
+1. Execution model?
+   (bare-metal super-loop / bare-metal interrupt-driven / RTOS)
+2. If RTOS: which one?
+   (FreeRTOS / Zephyr / ThreadX (Azure RTOS) / RT-Thread / ChibiOS / other)
+3. Tasks/threads needed?
+   (for each: name, period or event-driven, priority 1–10, estimated stack KB)
+4. ISR table?
+   (interrupt source, handler function, priority level 0=highest)
+5. Shared resource protection?
+   (mutex / semaphore / critical section / taskENTER_CRITICAL / spinlock)
+6. Hard real-time constraints?
+   (any response-time budget in µs or ms?)
+```
+
+→ Store in `notes.md ## rtos_config` YAML section.
+
+#### Power Budget Topic (Gap 7)
+**Trigger**: battery / sleep / power / current / µA / mAh / Standby / Stop / Shutdown / Hibernate / IoT / LoRa keywords in session AND `embedded_domain: true`
+
+```
+🔋 Power Budget — capture power management requirements:
+
+1. Power supply?
+   (battery: chemistry + capacity mAh / USB / DC adapter / energy harvesting)
+2. Active mode target current? (mA)
+3. Sleep strategy: which MCU sleep mode?
+   (Stop / Standby / Shutdown / Hibernate / vendor-specific)
+4. Which peripherals stay active during sleep?
+   (RTC / LoRa / BLE / ADC / none)
+5. Wake-up sources?
+   (RTC timer / GPIO interrupt / UART wakeup / WDT)
+6. Target battery lifetime? (hours / days / months)
+```
+
+→ Store in `notes.md ## power_budget` YAML section.
+
+#### Safety/Compliance Topic (Gap 10)
+**Trigger**: safety / watchdog / fault / SIL / ASIL / IEC / ISO 26262 / DO-178 / EN 50128 / safety-critical keywords in session
+
+```
+🛡️ Safety & Compliance — capture safety requirements:
+
+1. Safety standard?
+   (IEC 61508 SIL 1–4 / ISO 26262 ASIL A–D / DO-178C / EN 50128 / none)
+2. Watchdog configuration?
+   (IWDG / WWDG / timeout value ms / pet strategy)
+3. Stack overflow detection?
+   (MPU / FreeRTOS stack check / canary / none)
+4. Fault handler strategy?
+   (HardFault / MemManage / BusFault → reset / safe state / log + continue)
+5. Safe state definition?
+   (what is the safe fallback on error detection?)
+6. Diagnostic coverage requirements? (if applicable)
+```
+
+→ Store in `notes.md ## safety_config` YAML section.
+
+#### Firmware Phase Ordering Template (Gap 9)
+When `embedded_domain: true`, at the **Phase Assignment** step, offer the standard firmware phase template before free-form phase entry:
+
+```
+🔌 Firmware Phase Template — suggested ordering for embedded projects
+(customize: remove, merge, or rename phases as needed):
+
+Phase 1: Board Bring-Up
+  (clock config, GPIO init, UART console, LED blink, JTAG/SWD verify)
+Phase 2: Driver Layer
+  (all peripheral drivers from hw-topology: SPI, I2C, UART, CAN, ADC, PWM, etc.)
+Phase 3: RTOS Configuration
+  (task creation, queues, semaphores, heap sizing, stack overflow detection)
+Phase 4: Middleware & Protocols
+  (MQTT/BLE/LoRa stack, filesystem/NVS, OTA bootloader, custom protocols)
+Phase 5: Application Logic
+  (state machines, business logic, data processing, sensor fusion)
+Phase 6: Integration & System Test
+  (hardware-in-the-loop, timing verification, stress test, power measurement)
+Phase 7: OTA & Production
+  (bootloader signing, provisioning flow, factory test jig, final firmware)
+
+1. Use this template (customize as needed)
+2. Enter phases manually
+```
+
+→ Store phases in `notes.md ## phases` with `domain: embedded` tag.
+</step>
+
 <step name="detect_sessions">
 ## 1. Detect Previous Sessions
 
