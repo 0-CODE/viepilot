@@ -52,7 +52,7 @@ Existing `SKILL.md` files that do not contain these sections continue to work wi
 | Claude Code | `~/.claude/skills/` |
 | Cursor | `~/.cursor/skills/` |
 | Codex | `~/.codex/skills/` |
-| Antigravity | `~/.antigravity/skills/` |
+| Antigravity | `~/.gemini/antigravity/skills/` |
 | GitHub Copilot | `~/.config/gh-copilot/skills/` |
 
 Adapter directories that do not exist are silently skipped. The same skill found in multiple adapter directories is merged into a single registry entry with all adapters listed.

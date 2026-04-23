@@ -8,7 +8,7 @@ ViePilot supports multiple AI coding platforms via its adapter system (FEAT-013)
 |------------|----------|------------|--------------|-------|--------------|
 | `claude-code` | Claude Code *(default)* | `~/.claude/skills/` | `~/.claude/viepilot/` | ✅ Stop, PreToolUse, … | `/vp-status` |
 | `cursor-agent` / `cursor-ide` | Cursor | `~/.cursor/skills/` | `~/.cursor/viepilot/` | — | `/vp-status` |
-| `antigravity` | Google Antigravity | `~/.antigravity/skills/` | `~/.antigravity/viepilot/` | — | `/vp-status` |
+| `antigravity` | Google Antigravity | `~/.gemini/antigravity/skills/` | `~/.gemini/antigravity/viepilot/` | — | `/vp-status` |
 | `codex` | OpenAI Codex CLI | `~/.codex/skills/` | `~/.codex/viepilot/` | — | `$vp-status` |
 | `copilot` | GitHub Copilot | `~/.config/gh-copilot/skills/` | `~/.config/gh-copilot/viepilot/` | — | `/vp-status` |
 
@@ -47,7 +47,7 @@ Skill source files use the neutral placeholder `{envToolDir}` in `execution_cont
 At install time, `{envToolDir}` is replaced with each adapter's `executionContextBase`:
 - `claude-code` → `.claude/viepilot`
 - `cursor` → `.cursor/viepilot`
-- `antigravity` → `.antigravity/viepilot`
+- `antigravity` → `.gemini/antigravity/viepilot`
 - `codex` → `.codex/viepilot`
 - `copilot` → `.config/gh-copilot/viepilot`
 

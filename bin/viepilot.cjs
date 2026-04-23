@@ -49,7 +49,7 @@ Install options:
   --help                     Show help
 
 Uninstall options:
-  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; antigravity: ~/.antigravity/skills/vp-*; codex: ~/.codex/skills/vp-*; copilot: ~/.config/gh-copilot/skills/vp-*)
+  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; antigravity: ~/.gemini/antigravity/skills/vp-*; codex: ~/.codex/skills/vp-*; copilot: ~/.config/gh-copilot/skills/vp-*)
   --yes                     Non-interactive mode (skip confirmations)
   --dry-run                 Print actions only, do not remove files
 `);
