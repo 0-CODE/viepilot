@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.40.0] - 2026-04-23
+
+### Added
+- **ENH-071** — vp-brainstorm Embedded Domain Mode (10 gaps addressed)
+  - Auto-activates when ≥2 embedded trigger keywords detected (MCU families + firmware concepts); `--domain embedded` flag for manual activation
+  - `workflows/brainstorm.md`: `detect_embedded_domain` step (Step 0B) with MCU/concept keyword lists, activation banner, and domain flag
+  - Embedded topic probes injected when domain active: MCU/Toolchain (Gap 2), RTOS/Scheduling (Gap 3), Power Budget (Gap 7), Safety/Compliance (Gap 10), Firmware Phase Template (Gap 9)
+  - 6 new Architect workspace pages: `hw-topology.html`, `pin-map.html`, `memory-layout.html`, `protocol-matrix.html`, `rtos-scheduler.html`, `power-budget.html` (Gaps 1, 4, 5, 8); linked under Embedded nav section in `index.html`
+  - UI Direction false-positive suppression (Gap 6): hardware display keywords (LCD/OLED/TFT) routed to `hw_topology_buffer` instead of `ui_idea_buffer`; `🎨` banner suppressed when all signals have hardware context
+  - `workflows/crystallize.md`: Step 1D item 13 — exports 8 embedded YAML sections (`hw_topology`, `pin_map`, `memory_layout`, `protocols`, `rtos_config`, `embedded_toolchain`, `power_budget`, `safety_config`) to ARCHITECTURE.md hardware sections; `## Embedded Domain` written to PROJECT-CONTEXT.md; hardware sections READ-ONLY for vp-auto
+  - `workflows/crystallize.md`: Step 7 embedded path — skips UI Coverage Gate; applies Hardware Coverage Check (driver-task completeness warning, non-blocking) + Board Bring-Up Phase 1 auto-add
+  - `skills/vp-brainstorm/SKILL.md`: Embedded Domain Mode section with all 6 pages table, topic probes summary, suppression behavior, crystallize exports summary
+
 ## [2.39.1] - 2026-04-23
 
 ### Fixed

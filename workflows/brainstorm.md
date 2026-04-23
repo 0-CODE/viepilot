@@ -1270,7 +1270,7 @@ When the assistant detects any keyword (case-insensitive, Vietnamese or English)
 
 **Before adding any keyword to the UI buffer**, check if `embedded_domain: true`.
 
-If `embedded_domain: true` AND keyword is a display/screen word (`display`, `screen`, `LCD`, `OLED`, `TFT`, `touch`, `màn hình`, `màn LCD`, `màn OLED`):
+If `embedded_domain: true` AND keyword is a display/screen word (`display`, `screen`, `LCD`, `OLED`, `TFT`, `touch`):
 
 1. Check for **hardware context counter-keywords** in the same message or nearby context:
    - Hardware indicators: `GPIO`, `SPI`, `I2C`, `driver`, `framebuffer`, `ILI9341`, `SSD1306`, `ST7789`, `HX8357`, `RA8875`, `E-Ink`, `EPD`, `7-segment`, `LVGL`, `u8g2`, `resolution`, `pixel`, `backlight`, `contrast`, `init sequence`

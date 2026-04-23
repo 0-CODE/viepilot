@@ -65,6 +65,7 @@ Supports:
 - **ERD page (ENH-027):** Architect workspace includes `erd.html` — Mermaid `erDiagram`, entity list table, relationship summary; triggered by DB/entity/table/relationship keywords; notes.md `## erd` YAML section exported to ARCHITECTURE.md `## Database Schema` via crystallize Step 1D.
 - **User Use Cases page (ENH-028):** Architect workspace includes `user-use-cases.html` — actor/use-case diagram (Mermaid flowchart), use case table; triggered by user/role/actor/story keywords; notes.md `## use_cases` YAML section exported to PROJECT-CONTEXT.md `## User Stories & Use Cases` via crystallize Step 1D.
 - **C4Context/Sequence/Deployment/APIs pages (ENH-029, 12-page workspace):** Architect workspace expanded to 12 pages — `sequence-diagram.html` (per-scenario sequenceDiagram), `deployment.html` (infra graph + environments + CI/CD pipeline), `apis.html` (endpoint tables with HTTP method badges); page boundary rules table; trigger keywords for sequence/deploy/API; notes.md `## apis` YAML section; deployment+APIs exported to ARCHITECTURE.md via crystallize Step 1D (sequence excluded — scenario docs are not architecture artifacts).
+- **Embedded Domain Mode (ENH-071):** Activated when ≥2 embedded trigger keywords detected (MCU families: STM32/ESP32/nRF52/AVR/RISC-V/RP2040; concepts: firmware/bare-metal/GPIO/interrupt/HAL/bootloader/RTOS) OR `--domain embedded` flag. Adds 6 Architect workspace pages for embedded hardware artifacts, injects domain-specific topic probes, suppresses web-UI false-positives for hardware display keywords, and offers a firmware phase ordering template. crystallize exports 8 YAML sections to ARCHITECTURE.md hardware sections.
 
 **Creates/Updates:**
 - `docs/brainstorm/session-{YYYY-MM-DD}.md`
@@ -100,7 +101,51 @@ Optional flags:
 - `--landing` : Prioritize the Landing Page layout discovery flow
 - `--research` : Enable proactive research suggestions during the session
 - `--ui` : Enable UI Direction mode (live HTML/CSS direction artifacts)
+- `--domain embedded` : Force-activate Embedded Domain Mode (hardware topology, RTOS, pin map, memory layout, protocol matrix, power budget pages + topic probes)
 </context>
+
+### Embedded Domain Mode (ENH-071)
+
+**Activation**: Automatically when ≥2 embedded keywords detected, or via `--domain embedded` flag. One-time `🔌 Embedded Domain Mode activated` banner shown.
+
+**Topic probes injected when `embedded_domain: true`:**
+- **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
+- **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy
+- **Power Budget** (Gap 7): supply type, sleep modes, current targets, battery life (triggered by battery/power/sleep keywords)
+- **Safety/Compliance** (Gap 10): IEC 61508/ISO 26262/DO-178C, watchdog, fault handlers (triggered by safety/SIL/ASIL keywords)
+- **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
+
+**6 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
+
+| Page | Trigger | Content |
+|------|---------|---------|
+| `hw-topology.html` | Always in embedded domain | MCU block diagram (Mermaid graph TD) + component/bus/power-rail tables |
+| `pin-map.html` | GPIO/pin/pinout keywords | Pin assignment table (Pin# / GPIO / Function / Peripheral / Direction / Pull / Voltage) |
+| `memory-layout.html` | Flash/RAM/linker/bootloader/OTA keywords | Flash + RAM regions tables + linker constraint notes |
+| `protocol-matrix.html` | CAN/I2C/SPI/BLE/LoRa/MQTT/Modbus keywords | Bus protocol + wireless connectivity tables (distinct from `apis.html` HTTP REST) |
+| `rtos-scheduler.html` | RTOS/FreeRTOS/task/ISR/scheduler keywords | Task priority table + ISR table + state diagram (≤5 tasks) |
+| `power-budget.html` | Battery/sleep/power/µA/mAh keywords | Power modes table + battery life estimate |
+
+Pages linked in `index.html` under an **Embedded** nav section.
+
+**UI Direction false-positive suppression** (Gap 6):
+- `LCD` / `OLED` / `TFT` / `display` / `screen` in hardware context → routed to `hw-topology` peripherals, NOT UI Direction buffer
+- Hardware context confirmed by: GPIO / SPI / I2C / driver / framebuffer / ILI9341 / SSD1306 / LVGL / u8g2 keywords
+- `🎨 UI Direction Mode?` banner suppressed when all display signals have hardware context
+
+**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`
+
+**crystallize Step 1D item 13 exports:**
+- `## Hardware Architecture` (from `hw_topology`)
+- `## Hardware Interface` (from `pin_map`)
+- `## Memory Map` (from `memory_layout`)
+- `## Communication Protocols` (from `protocols`) — distinct from `## APIs`
+- `## RTOS & Task Model` (from `rtos_config`)
+- `## Toolchain & Build System` (from `embedded_toolchain`)
+- `## Power Budget` (from `power_budget`)
+- `## Safety & Reliability` (from `safety_config`)
+- `## Embedded Domain: true` + MCU family written to `PROJECT-CONTEXT.md`
+- UI Coverage Gate skipped; Hardware Coverage Check (driver-task completeness, non-blocking) applied instead
 
 <process>
 Execute workflow from `@$HOME/{envToolDir}/workflows/brainstorm.md`
