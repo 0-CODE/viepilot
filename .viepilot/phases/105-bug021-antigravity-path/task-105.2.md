@@ -3,7 +3,7 @@
 ## Objective
 Update all user-visible path strings referencing the old `~/.antigravity/` location.
 
-## Status: pending
+## Status: done
 
 ## Paths
 bin/viepilot.cjs

@@ -1,0 +1,57 @@
+{
+  "id": "debug-20260402-claude-skills-empty",
+  "status": "resolved",
+  "created_at": "2026-04-02T14:00:00Z",
+  "updated_at": "2026-04-02T14:00:00Z",
+  "problem": {
+    "description": "After npx viepilot install for Claude Code, ~/.claude/skills stays empty — no /vp-* commands in Claude Code",
+    "symptoms": [
+      "User expects claude-code target to populate Claude skill directory",
+      "Only ~/.cursor/skills received vp-* before fix"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      "lib/viepilot-install.cjs",
+      "bin/viepilot.cjs"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "buildInstallPlan only wrote skills under ~/.cursor/skills; --target was informational",
+        "status": "confirmed"
+      },
+      {
+        "id": 2,
+        "description": "Claude Code reads ~/.claude/skills per official docs",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "Read viepilot.cjs runInstallViaNode + buildInstallPlan",
+        "output": "installTargets not passed; no .claude path in plan",
+        "timestamp": "2026-04-02T14:00:00Z"
+      }
+    ],
+    "findings": [
+      "FEAT-001 doc already described manual symlink as workaround.",
+      "Product fix: pass selectedTargets as installTargets; mirror vp-* to ~/.claude/skills when claude-code ∈ targets."
+    ]
+  },
+  "resolution": {
+    "root_cause": "Installer never copied skills to ~/.claude/skills; Claude Code does not load ~/.cursor/skills.",
+    "fix_applied": "v1.9.4: buildInstallPlan(opts.installTargets) duplicates skill copy/symlink to ~/.claude/skills when claude-code selected; uninstall removes ~/.claude/skills/vp-* for that target; docs + tests updated.",
+    "files_changed": [
+      "lib/viepilot-install.cjs",
+      "bin/viepilot.cjs",
+      "docs/user/claude-code-setup.md",
+      "docs/user/faq.md",
+      "tests/unit/viepilot-install.test.js",
+      "tests/unit/guided-installer.test.js",
+      "tests/unit/vp-feat001-claude-code-docs-contracts.test.js"
+    ],
+    "verification": "npm test 304 pass; dry-run shows copyDir ... -> ~/.claude/skills/vp-*"
+  }
+}

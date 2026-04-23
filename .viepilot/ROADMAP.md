@@ -2899,7 +2899,7 @@
 ### Phase 105: BUG-021 — Antigravity Adapter Path Update (.antigravity → .gemini/antigravity)
 **Goal**: Fix Antigravity adapter to install skills to `~/.gemini/antigravity/skills/` (new discovery path after Google Gemini ecosystem rebrand). Add backward-compat `isAvailable` fallback for old `.antigravity/` installs.
 **Estimated Tasks**: 3
-**Status**: planned → v2.39.1
+**Status**: ✅ Complete → v2.39.1
 **Dependencies**: Phase 104 ✅
 **Directory**: `.viepilot/phases/105-bug021-antigravity-path/`
 

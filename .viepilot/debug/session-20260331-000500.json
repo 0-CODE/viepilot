@@ -1,0 +1,57 @@
+{
+  "id": "debug-20260331-000500",
+  "status": "resolved",
+  "created_at": "2026-03-31T00:05:00Z",
+  "updated_at": "2026-03-31T00:05:00Z",
+  "problem": {
+    "description": "Chuẩn hóa toàn bộ skill tool-usage theo bộ tool hiện tại và tuân theo debug workflow để tracking.",
+    "symptoms": [
+      "Một số skills vẫn dùng tên tool cũ (Read/Write/Grep/Task)",
+      "Thiếu đồng nhất với skills đã chuẩn hóa WebSearch/WebFetch trước đó"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      "skills/vp-audit/SKILL.md",
+      "skills/vp-docs/SKILL.md",
+      "skills/vp-rollback/SKILL.md",
+      "skills/vp-task/SKILL.md",
+      "skills/vp-status/SKILL.md",
+      "skills/vp-resume/SKILL.md",
+      "skills/vp-pause/SKILL.md"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "Nhóm skills còn lại chưa được migrate sau đợt chuẩn hóa trước",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "rg \"Use Cursor tools:\" skills/*.md",
+        "output": "Found mixed old and new tool lists across skills",
+        "timestamp": "2026-03-31T00:03:00Z"
+      }
+    ],
+    "findings": [
+      "7 skill files còn dùng danh sách tools cũ.",
+      "Các skill đã chuẩn hóa trước đang dùng bộ tools mới nhất."
+    ]
+  },
+  "resolution": {
+    "root_cause": "Migration tool-usage diễn ra nhiều đợt nên còn sót một nhóm skill files.",
+    "fix_applied": "Chuẩn hóa 7 skill files còn lại sang cùng một danh sách tools hiện tại: Shell, ReadFile, Glob, rg, ApplyPatch, WebSearch, WebFetch, Subagent.",
+    "files_changed": [
+      "skills/vp-audit/SKILL.md",
+      "skills/vp-docs/SKILL.md",
+      "skills/vp-rollback/SKILL.md",
+      "skills/vp-task/SKILL.md",
+      "skills/vp-status/SKILL.md",
+      "skills/vp-resume/SKILL.md",
+      "skills/vp-pause/SKILL.md"
+    ],
+    "verification": "Re-run rg on skills shows all targeted files now use the new standardized tool list."
+  }
+}

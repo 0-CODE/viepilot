@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **104** — ✅ Complete (**ENH-070 vp-audit Auto-Log Gaps + vp-evolve routing** → **2.39.0**)
+- **Last Completed Phase**: **105** — ✅ Complete (**BUG-021 Antigravity adapter path update** → **2.39.1**)
 - **Next Phase**: — (no planned phases)
 - **Current Task**: —
 - **Last Activity**: 2026-04-22 — Phase 103 complete: ENH-069 all 10 gaps fixed → v2.38.0
@@ -170,6 +170,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-22 | Phase 104 shipped: ENH-070 (Auto-Log Gate + post-audit banner + --no-autolog + 18 tests) — **2.39.0** | `/vp-auto` | M1.37 |
 | 2026-04-23 | BUG-021 logged: Antigravity adapter install path outdated — skills must go to `~/.gemini/antigravity/skills/` after Gemini ecosystem rebrand | `/vp-request` | Backlog |
 | 2026-04-23 | Phase 105 planned: BUG-021 Antigravity path update (3 tasks — adapter + bin/docs + tests), target **2.39.1** | `/vp-evolve` | M1.37 |
+| 2026-04-23 | Phase 105 shipped: BUG-021 (antigravity.cjs + bin + docs + 13 tests) — **2.39.1** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_
@@ -182,7 +183,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | triaged (→ Phase 105) |
+| BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | ✅ done (**2.39.1**) |
 | BUG-017 | 🐛 | vp-evolve/vp-request Step 5/6 thiếu AUQ call trong `<process>` body — `@` workflow ref không auto-expand | high | triaged (→ Phase 95) |
 | ENH-062 | 🔧 | `/vp-skills` slash command — agent-native global skill registry management (scan/install/list cross-project) | high | triaged (→ Phase 95) |
 | BUG-016 | 🐛 | Workflow skill context steps dùng JS function call không executable — cần thay bằng shell command | high | triaged (→ Phase 95) |

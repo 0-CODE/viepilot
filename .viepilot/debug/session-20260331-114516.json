@@ -1,0 +1,55 @@
+{
+  "id": "debug-20260331-114516",
+  "status": "resolved",
+  "created_at": "2026-03-31T11:45:16Z",
+  "updated_at": "2026-03-31T11:47:30Z",
+  "problem": {
+    "description": "npx jest tests/unit/ --no-coverage fails in validators.test.js after .viepilot was untracked from repository",
+    "symptoms": [
+      "task-status/version/init/progress/clean tests return exit code 1",
+      "errors include 'No ViePilot project found'"
+    ],
+    "error_messages": [
+      "Expected: 0, Received: 1",
+      "No ViePilot project found"
+    ],
+    "affected_files": [
+      "tests/unit/validators.test.js",
+      "lib/cli-shared.cjs",
+      "bin/vp-tools.cjs"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "Validators tests depend on .viepilot files being present in repo checkout; after untrack, clean environments miss fixtures",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "npx jest tests/unit/validators.test.js --no-coverage",
+        "output": "PASS locally when .viepilot exists in working tree",
+        "timestamp": "2026-03-31T11:46:00Z"
+      },
+      {
+        "command": "npx jest tests/unit/ --no-coverage",
+        "output": "PASS 4/4 suites after adding test fixture bootstrap in validators.test.js",
+        "timestamp": "2026-03-31T11:47:20Z"
+      }
+    ],
+    "findings": [
+      "Test failure is environment-dependent and tied to missing .viepilot fixture files.",
+      "Stabilizing tests via local fixture bootstrap avoids changing production validator behavior."
+    ]
+  },
+  "resolution": {
+    "root_cause": "validators.test.js assumed .viepilot/TRACKER.md and related files always exist in repository checkout.",
+    "fix_applied": "Added beforeAll/afterAll fixture setup in validators.test.js to create minimal .viepilot files when absent, with restore/cleanup behavior.",
+    "files_changed": [
+      "tests/unit/validators.test.js"
+    ],
+    "verification": "npx jest tests/unit/ --no-coverage => 4 passed, 205 passed"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "debug-20260406-001",
+  "status": "resolved",
+  "created_at": "2026-04-06T00:00:00Z",
+  "updated_at": "2026-04-06T00:00:00Z",
+  "problem": {
+    "description": "Phase 47 and 48 task files contain wrong implementation paths — they reference the production/installed locations (~/.claude/viepilot/workflows/, ~/.claude/skills/) instead of the source codebase paths (workflows/, skills/) relative to the repo root.",
+    "symptoms": [
+      "Task 47.1 Paths block: '~/.claude/viepilot/workflows/crystallize.md' instead of 'workflows/crystallize.md'",
+      "Task 47.2–47.7: '~/.claude/skills/vp-*/SKILL.md' instead of 'skills/vp-*/SKILL.md'",
+      "Task 47.3: '~/.claude/viepilot/workflows/*.md' instead of 'workflows/*.md'",
+      "Task 47.8: '~/.claude/viepilot/templates/project/AI-GUIDE.md' instead of 'templates/project/AI-GUIDE.md'",
+      "Tasks 48.4–48.6: '~/.claude/viepilot/workflows/*.md' instead of 'workflows/*.md'",
+      "Task 48.7: '~/.claude/skills/vp-*/SKILL.md' instead of 'skills/vp-*/SKILL.md'"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.1.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.2.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.3.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.4.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.5.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.6.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.7.md",
+      ".viepilot/phases/47-enh031-language-standardization/tasks/47.8.md",
+      ".viepilot/phases/48-enh032-language-config/tasks/48.4.md",
+      ".viepilot/phases/48-enh032-language-config/tasks/48.5.md",
+      ".viepilot/phases/48-enh032-language-config/tasks/48.6.md",
+      ".viepilot/phases/48-enh032-language-config/tasks/48.7.md"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "vp-evolve planning used ~/.claude paths (production install) instead of source repo paths because the vp-audit scan referenced the installed files",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "cat .viepilot/phases/46-enh030-remove-mvp/tasks/46.1.md | head -10",
+        "output": "## Paths\n- `workflows/brainstorm.md`",
+        "timestamp": "2026-04-06"
+      }
+    ],
+    "findings": [
+      "Correct pattern (from Phase 46): paths are relative to repo root — 'workflows/brainstorm.md', 'skills/vp-brainstorm/SKILL.md'",
+      "Phase 47-48 tasks incorrectly used absolute installed paths starting with ~/.claude/"
+    ]
+  },
+  "resolution": {
+    "root_cause": "During vp-evolve planning, the audit results referenced installed paths (~/.claude/viepilot/workflows/, ~/.claude/skills/) and those were carried directly into task Paths blocks instead of being converted to source repo-relative paths.",
+    "fix_applied": "Rewrote all 12 affected task files to use source repo-relative paths (workflows/, skills/, templates/).",
+    "files_changed": [
+      "tasks/47.1.md through 47.8.md",
+      "tasks/48.4.md through 48.7.md"
+    ],
+    "verification": "Compare with Phase 46 task pattern: all paths now use repo-relative format matching existing convention"
+  }
+}

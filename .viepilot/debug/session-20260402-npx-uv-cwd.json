@@ -1,0 +1,49 @@
+{
+  "id": "debug-20260402-npx-uv-cwd",
+  "status": "resolved",
+  "created_at": "2026-04-02T12:00:00Z",
+  "updated_at": "2026-04-02T12:00:00Z",
+  "problem": {
+    "description": "npx viepilot install crashes immediately with uv_cwd / process.cwd ENOENT",
+    "symptoms": [
+      "npm validate-engines throws before any ViePilot code runs",
+      "Error mentions current working directory was likely removed"
+    ],
+    "error_messages": [
+      "Error: ENOENT: process.cwd failed with error no such file or directory",
+      "uv_cwd"
+    ],
+    "affected_files": []
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "Shell cwd points at a deleted or moved directory; npm/npx calls process.cwd() at startup",
+        "status": "confirmed"
+      },
+      {
+        "id": 2,
+        "description": "ViePilot package or install script bug",
+        "status": "rejected"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "pwd; cd ~ && npx viepilot --help",
+        "output": "Expected: succeeds from valid directory",
+        "timestamp": "2026-04-02T12:00:00Z"
+      }
+    ],
+    "findings": [
+      "Stack trace is entirely inside npm (/opt/homebrew/lib/node_modules/npm/...), not viepilot.",
+      "Node v25.8.1 + Homebrew npm; failure is cwd lifecycle, not ViePilot semver."
+    ]
+  },
+  "resolution": {
+    "root_cause": "The terminal session's current working directory no longer exists on disk (folder deleted/renamed, or tab restored in bad state). npm/npx requires a valid cwd before loading config.",
+    "fix_applied": "User action: cd to an existing path (e.g. $HOME or project root), or open a new terminal tab, then re-run npx viepilot install.",
+    "files_changed": [],
+    "verification": "From valid cwd: `pwd` prints existing path; `npx viepilot --list-targets` runs without uv_cwd error."
+  }
+}

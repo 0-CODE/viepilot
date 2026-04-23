@@ -1,0 +1,25 @@
+{
+  "id": "debug-en021-routing",
+  "status": "resolved",
+  "created_at": "2026-04-02T00:00:00Z",
+  "updated_at": "2026-04-02T00:00:00Z",
+  "problem": {
+    "description": "AI implement trực tiếp khi dùng /vp-request hoặc /vp-evolve thay vì evolve → plan → /vp-auto",
+    "symptoms": ["Skip ROADMAP/phase task plan", "Shipping edits trong thread request/evolve"],
+    "error_messages": [],
+    "affected_files": ["skills/vp-*/SKILL.md", "workflows/request.md", "workflows/evolve.md"]
+  },
+  "investigation": {
+    "hypotheses": [
+      {"id": 1, "description": "Skill copy đề xuất /vp-auto hoặc Start working now mà không ép evolve trước", "status": "confirmed"}
+    ],
+    "tests_run": [{"command": "npm test vp-en021", "output": "pass", "timestamp": "2026-04-02"}],
+    "findings": ["ENH-021 guard added to 16 skills + 4 workflows"]
+  },
+  "resolution": {
+    "root_cause": "Thiếu normative guard phân tách planning vs execution trên skill/workflow",
+    "fix_applied": "Implementation routing guard (ENH-021) + tests",
+    "files_changed": ["workflows/*.md", "skills/*"],
+    "verification": "Jest vp-en021-implementation-routing-contracts.test.js"
+  }
+}

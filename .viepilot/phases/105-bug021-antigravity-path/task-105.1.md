@@ -3,7 +3,7 @@
 ## Objective
 Update `lib/adapters/antigravity.cjs` to use the new `~/.gemini/antigravity/` discovery path. Change all 4 affected fields: `skillsDir`, `viepilotDir`, `executionContextBase`, `isAvailable`.
 
-## Status: pending
+## Status: done
 
 ## Paths
 lib/adapters/antigravity.cjs

@@ -1,0 +1,79 @@
+{
+  "id": "debug-20260402-ui-direction-sot",
+  "status": "active",
+  "created_at": "2026-04-02T12:00:00Z",
+  "updated_at": "2026-04-02T12:00:00Z",
+  "problem": {
+    "description": "ui-direction artifacts (.viepilot/ui-direction/{session}/) không được bảo vệ bởi 'READ-ONLY' guard trong các workflow ngoài vp-brainstorm. Không có instruction rõ ràng nào ngăn vp-auto, vp-crystallize, hoặc các skill khác vô tình modify ui-direction files khi thực thi task.",
+    "symptoms": [
+      "Không có 'DO NOT WRITE' / 'READ-ONLY' guard trong autonomous.md cho ui-direction dir",
+      "ENH-024 safety check trong autonomous.md chỉ nói 'Auto-loading' nhưng không nói 'do not modify'",
+      "crystallize.md Step 1A/Step 10 chỉ READ nhưng không có explicit prohibition text",
+      "LLM implementing tasks có thể hiểu sai và edit HTML/CSS files trong ui-direction khi 'improving UI'"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      "~/.cursor/viepilot/workflows/autonomous.md",
+      "~/.cursor/viepilot/workflows/crystallize.md"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "autonomous.md thiếu explicit READ-ONLY instruction cho ui-direction — LLM có thể write nếu task yêu cầu UI changes",
+        "status": "confirmed"
+      },
+      {
+        "id": 2,
+        "description": "crystallize.md consume_ui_direction step thiếu 'source of truth' + 'do not modify' note rõ ràng",
+        "status": "confirmed"
+      },
+      {
+        "id": 3,
+        "description": "Các workflow khác (documentation.md, audit.md, evolve.md, debug.md) cũng không có guard nhưng không trực tiếp xử lý ui-direction → risk thấp hơn",
+        "status": "confirmed"
+      },
+      {
+        "id": 4,
+        "description": "brainstorm.md là workflow DUY NHẤT có permission WRITE vào ui-direction — nhưng điều này không được document ở một chỗ central nào",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "grep -n 'ui.direction|READ.ONLY|source.of.truth|do not|write|modify' ~/.cursor/viepilot/workflows/autonomous.md",
+        "output": "Line 109-124: ENH-024 safety check — chỉ có 'Auto-loading latest ui-direction session', 'Read: .viepilot/ui-direction/{latest-session}/notes.md + style.css'. KHÔNG có 'do not modify' hay 'source of truth' language.",
+        "timestamp": "2026-04-02T12:00:00Z"
+      },
+      {
+        "command": "grep -n 'ui.direction|READ.ONLY|source.of.truth|do not|write|modify' ~/.cursor/viepilot/workflows/crystallize.md",
+        "output": "Line 130-161: consume_ui_direction step. Có 'Read .viepilot/ui-direction/{session-id}/notes.md first (source of design decisions)' nhưng 'source of design decisions' ≠ 'READ-ONLY source of truth'. Không có 'do not modify' instruction. Line 307: có 'Single source of truth (mirror policy)' nhưng đây cho ARCHITECTURE.md/mermaid, không phải ui-direction.",
+        "timestamp": "2026-04-02T12:00:00Z"
+      },
+      {
+        "command": "grep -n 'write|save|create.*html|notes.md|style.css' ~/.cursor/viepilot/workflows/brainstorm.md",
+        "output": "Lines 142-216+391-394: brainstorm.md là nơi DUY NHẤT WRITE đến ui-direction. Step save_session (line 298+) tạo/cập nhật tất cả files trong session dir.",
+        "timestamp": "2026-04-02T12:00:00Z"
+      },
+      {
+        "command": "grep -n 'ui.direction' ~/.cursor/viepilot/workflows/documentation.md ~/.cursor/viepilot/workflows/audit.md",
+        "output": "No output — documentation.md và audit.md không tham chiếu ui-direction, risk thấp.",
+        "timestamp": "2026-04-02T12:00:00Z"
+      }
+    ],
+    "findings": [
+      "GAP-1 (HIGH): autonomous.md ENH-024 safety check (dòng ~109-124) THIẾU 'READ-ONLY' guard. Chỉ load để đọc nhưng không có dòng 'NEVER write/modify ui-direction files from vp-auto'.",
+      "GAP-2 (HIGH): crystallize.md consume_ui_direction step THIẾU explicit prohibition. 'source of design decisions' không đủ mạnh để ngăn LLM modify khi context phức tạp.",
+      "GAP-3 (MEDIUM): Không có single doc/policy nào phát biểu 'ui-direction is READ-ONLY OUTSIDE vp-brainstorm'. Phân tán trong nhiều workflow.",
+      "GAP-4 (LOW): Nếu LLM thực hiện task 'update UI styling' trong vp-auto, nó có thể hiểu sai ui-direction files là target thay vì source.",
+      "DESIGN PRINCIPLE (chưa được document): ui-direction = frozen design contract sau brainstorm session. Muốn thay đổi → phải mở phiên brainstorm mới (tạo session-id mới), KHÔNG edit session cũ."
+    ]
+  },
+  "resolution": {
+    "root_cause": null,
+    "fix_applied": null,
+    "files_changed": [],
+    "verification": null
+  }
+}

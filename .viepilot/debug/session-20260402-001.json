@@ -1,0 +1,56 @@
+{
+  "id": "debug-20260402-001",
+  "status": "active",
+  "created_at": "2026-04-02T00:00:00Z",
+  "updated_at": "2026-04-02T00:00:00Z",
+  "problem": {
+    "description": "vp-auto không cập nhật các tài liệu phases và ROADMAP.md sau khi hoàn thành task/phase",
+    "symptoms": [
+      "ROADMAP.md không reflect trạng thái mới nhất sau khi tasks complete",
+      "Phase progress % không được cập nhật giữa chừng"
+    ],
+    "error_messages": [],
+    "affected_files": [
+      ".cursor/viepilot/workflows/autonomous.md"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "Step 3 PASS handler thiếu ROADMAP.md trong danh sách tài liệu cần update",
+        "status": "confirmed"
+      },
+      {
+        "id": 2,
+        "description": "Step 4 (update_state) bị skip vì không được link rõ ràng vào Step 3 PASS flow",
+        "status": "confirmed"
+      },
+      {
+        "id": 3,
+        "description": "Mâu thuẫn giữa Step 3 PASS list và Step 4 update_state list gây LLM bỏ qua ROADMAP.md",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "Read ~/.cursor/viepilot/workflows/autonomous.md",
+        "output": "Step 3 PASS handler cập nhật: PHASE-STATE.md, TRACKER.md, HANDOFF.json, CHANGELOG.md — KHÔNG có ROADMAP.md. Step 4 có ROADMAP.md nhưng đứng tách biệt. Step 5a mới sync ROADMAP.md nhưng chỉ khi phase complete.",
+        "timestamp": "2026-04-02T00:00:00Z"
+      }
+    ],
+    "findings": [
+      "Step 3 PASS handler (dòng 227-232): list 4 docs, THIẾU ROADMAP.md",
+      "Step 4 update_state (dòng 243-258): có ROADMAP.md nhưng đây là step riêng, không được gọi rõ từ Step 3",
+      "Step 5a (dòng 305-318): sync ROADMAP.md chỉ trigger khi phase complete — không đủ, task-level progress bị mất",
+      "Gap: Giữa task PASS và phase complete, ROADMAP.md không có instruction update nào rõ ràng"
+    ]
+  },
+  "resolution": {
+    "root_cause": "Step 3 PASS handler trong autonomous.md không có entry ROADMAP.md. Step 4 update_state có nhắc ROADMAP.md nhưng đứng tách biệt nên bị LLM bỏ qua. Step 5a chỉ sync tại phase-complete, không đủ cho task-level progress.",
+    "fix_applied": "Thêm dòng 'Update ROADMAP.md: sync phase progress % và task count nếu phase status/progress thay đổi' vào Step 3 PASS handler sau 'Update CHANGELOG.md if feature/fix'",
+    "files_changed": ["~/.cursor/viepilot/workflows/autonomous.md"],
+    "verification": "grep 'Update ROADMAP.md' autonomous.md trả về dòng 232 — confirmed. Released v1.9.6."
+  },
+  "status": "resolved"
+}

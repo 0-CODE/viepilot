@@ -1,0 +1,57 @@
+{
+  "id": "debug-20260402-claude-lib-missing",
+  "status": "active",
+  "created_at": "2026-04-02T13:00:00Z",
+  "updated_at": "2026-04-02T13:00:00Z",
+  "problem": {
+    "description": "vp-info crash trên Claude Code production: Cannot find module ~/.claude/viepilot/lib/viepilot-info.cjs",
+    "symptoms": [
+      "node ~/.claude/viepilot/bin/vp-tools.cjs info → Error: Cannot find module '...lib/viepilot-info.cjs'",
+      "~/.claude/viepilot/lib/ chỉ có cli-shared.cjs, thiếu viepilot-info.cjs và viepilot-update.cjs"
+    ],
+    "error_messages": [
+      "Error: Cannot find module '/Users/sonicq12/.claude/viepilot/lib/viepilot-info.cjs'\nRequire stack:\n- /Users/sonicq12/.claude/viepilot/bin/vp-tools.cjs"
+    ],
+    "affected_files": [
+      "lib/viepilot-install.cjs"
+    ]
+  },
+  "investigation": {
+    "hypotheses": [
+      {
+        "id": 1,
+        "description": "BUG-005 (Phase 38) chỉ thêm copy step cho lib/cli-shared.cjs, bỏ qua viepilot-info.cjs và viepilot-update.cjs",
+        "status": "confirmed"
+      }
+    ],
+    "tests_run": [
+      {
+        "command": "ls ~/.claude/viepilot/lib/",
+        "output": "cli-shared.cjs  (chỉ 1 file)",
+        "timestamp": "2026-04-02T13:00:00Z"
+      },
+      {
+        "command": "ls ~/PROJECT_SCRATCH/viepilot/lib/",
+        "output": "cli-shared.cjs  viepilot-info.cjs  viepilot-install.cjs  viepilot-update.cjs",
+        "timestamp": "2026-04-02T13:00:00Z"
+      },
+      {
+        "command": "grep -n 'cli-shared|copy.*lib' lib/viepilot-install.cjs",
+        "output": "Line 192-193: copy cli-shared.cjs → claudeViepilotDir/lib/cli-shared.cjs. KHÔNG có viepilot-info.cjs hay viepilot-update.cjs.",
+        "timestamp": "2026-04-02T13:00:00Z"
+      }
+    ],
+    "findings": [
+      "Root cause: buildInstallPlan (claude-code target) thiếu 2 copy steps: lib/viepilot-info.cjs và lib/viepilot-update.cjs",
+      "vp-tools.cjs require('../lib/viepilot-info.cjs') và require('../lib/viepilot-update.cjs') → crash khi lib dir thiếu files",
+      "viepilot-install.cjs cũng nên được copy để install từ ~/.claude/viepilot hoạt động đầy đủ",
+      "Fix: thêm 3 copy_file steps trong if(installClaudeSkills) block tương tự cli-shared.cjs"
+    ]
+  },
+  "resolution": {
+    "root_cause": "BUG-005 Phase 38 chỉ copy lib/cli-shared.cjs cho claude-code target, bỏ qua viepilot-info.cjs, viepilot-update.cjs, viepilot-install.cjs.",
+    "fix_applied": null,
+    "files_changed": [],
+    "verification": null
+  }
+}

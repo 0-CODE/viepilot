@@ -3,7 +3,7 @@
 ## Objective
 Update unit test assertions to match new `.gemini/antigravity/` paths, verify all tests pass, add CHANGELOG entry, and bump version to 2.39.1.
 
-## Status: pending
+## Status: done
 
 ## Paths
 tests/unit/vp-adapter-antigravity.test.js
