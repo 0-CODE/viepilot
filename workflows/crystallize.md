@@ -1330,6 +1330,70 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
    - `user_data_capabilities_count`: {count if user_data present, else "n/a"}
    - `entity_mgmt_imported`: {true/false}
    - `entity_mgmt_entity_count`: {count if entity_mgmt present, else "n/a"}
+   - `embedded_domain`: {true/false — from notes.md or PROJECT-CONTEXT.md}
+   - `embedded_hw_topology_imported`: {true/false}
+   - `embedded_peripheral_count`: {count if hw_topology present, else "n/a"}
+
+13. **Embedded Domain Export (ENH-071)**
+
+If notes.md contains any of: `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`:
+
+  a. Set `embedded_export: true` in working notes.
+
+  b. Export to `ARCHITECTURE.md` (append in order, skip sections whose YAML is empty/absent):
+
+  - **`## Hardware Architecture`** ← from `## hw_topology`
+    - MCU/SoC spec table: Family | Core | Flash (KB) | RAM (KB)
+    - Mermaid `graph TD` block diagram (MCU → external ICs via labeled bus arrows)
+    - External ICs + bus topology table: Part | Type | Interface | Bus Speed | Notes
+    - Power rails table: Rail | Source | Voltage | Max current (mA)
+
+  - **`## Hardware Interface`** ← from `## pin_map`
+    - Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction | Pull | Voltage | Notes
+    - Conflicts list (if any)
+
+  - **`## Memory Map`** ← from `## memory_layout`
+    - Flash regions table: Region | Start Address | Size (KB) | Usage | Notes
+    - RAM regions table: Region | Start Address | Size (KB) | Usage | Notes
+    - Linker constraints note
+
+  - **`## Communication Protocols`** ← from `## protocols`
+    - Bus protocol matrix table: Protocol | Role | Speed | Topology | Connected Devices | Notes
+    - Wireless/external connectivity table: Protocol | Role | Endpoint | Notes
+    - Note: "See `## APIs` for HTTP REST endpoints (if applicable)"
+
+  - **`## RTOS & Task Model`** ← from `## rtos_config`
+    - Execution model (bare-metal / RTOS name + version)
+    - Task table: Task Name | Priority | Period/Event | Stack KB | Notes
+    - ISR table: Interrupt | Handler | Priority | Shared Resources
+    - Shared resource protection strategy
+
+  - **`## Toolchain & Build System`** ← from `## embedded_toolchain`
+    - MCU family + toolchain + build system + debug interface (one-line summary)
+    - SDK/HAL choice + flasher/debugger tool
+
+  - **`## Power Budget`** ← from `## power_budget`
+    - Power supply summary
+    - Power modes table: Mode | MCU state | Active peripherals | Typical current | Wake-up sources
+    - Battery life estimate (if battery-powered)
+
+  - **`## Safety & Reliability`** ← from `## safety_config`
+    - Safety standard (if any)
+    - Watchdog configuration
+    - Fault handler strategy
+    - Safe state definition
+
+  c. Write to `.viepilot/PROJECT-CONTEXT.md`:
+  ```
+  ## Embedded Domain
+  embedded: true
+  target_mcu: {mcu.family from hw_topology, or "unknown"}
+  toolchain: {toolchain from embedded_toolchain, or "unknown"}
+  ```
+  This flag is read by `vp-auto` at runtime: scaffold-first gate selects the correct embedded toolchain stack instead of web framework scaffolding.
+
+  d. **Hardware sections are READ-ONLY for `vp-auto`** (same protection as ui-direction artifacts).
+     `vp-auto` MUST read hardware sections before implementing driver tasks — never overwrite them.
 
 ---
 
@@ -1658,6 +1722,27 @@ For each row in the `## UI Pages → Component Map` (built in Step 1A-i and upda
 After the completeness check, **all rows must have `status != pending`**. If any rows remain `pending` after exhausting existing phases, create a new `Phase N+1: UI Implementation` and assign them there.
 
 Finally, write the finalized `## UI Pages → Component Map` to `.viepilot/PROJECT-CONTEXT.md` so `vp-auto` can read it at runtime.
+
+### Step 7 — Embedded Domain: Skip UI Coverage Gate + Apply Hardware Coverage Check (ENH-071)
+
+If `PROJECT-CONTEXT.md` contains `## Embedded Domain` with `embedded: true`:
+
+1. **Skip** the UI Pages → Component Map Completeness Check above (no web UI components expected).
+
+2. **Apply Hardware Coverage Check instead** (non-blocking warning):
+
+   For each peripheral in `hw_topology.peripherals[]` and `hw_topology.external_ics[]`:
+   - Check if a driver task exists in the generated ROADMAP (Phase 2: Driver Layer or equivalent)
+   - If **no driver task found** for peripheral `{name}`:
+     ```
+     ⚠️ Hardware Coverage: no driver task found for peripheral "{name}" ({interface})
+     Suggestion: Add "Implement {name} driver ({interface})" to Phase 2 (Driver Layer)
+     ```
+   - Warning is **non-blocking** — ROADMAP generation continues. User can dismiss or add the task.
+
+3. **Add Phase 1: Board Bring-Up task** if not already in ROADMAP and `embedded: true`:
+   - Automatically include "Board Bring-Up verification" as Phase 1 Task 1 (clock config, GPIO init, UART console confirm, LED blink)
+   - Only added if no equivalent task already exists.
 </step>
 
 <step name="generate_schemas">
