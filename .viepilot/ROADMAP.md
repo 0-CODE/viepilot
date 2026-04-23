@@ -2893,3 +2893,26 @@
 - [ ] `grep -c "vp-evolve" workflows/audit.md` ≥ 2
 - [ ] `grep -c "Auto-Log Behavior" skills/vp-audit/SKILL.md` ≥ 1
 - [ ] `npm test` all pass
+
+---
+
+### Phase 105: BUG-021 — Antigravity Adapter Path Update (.antigravity → .gemini/antigravity)
+**Goal**: Fix Antigravity adapter to install skills to `~/.gemini/antigravity/skills/` (new discovery path after Google Gemini ecosystem rebrand). Add backward-compat `isAvailable` fallback for old `.antigravity/` installs.
+**Estimated Tasks**: 3
+**Status**: planned → v2.39.1
+**Dependencies**: Phase 104 ✅
+**Directory**: `.viepilot/phases/105-bug021-antigravity-path/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 105.1 | `lib/adapters/antigravity.cjs` — update skillsDir, viepilotDir, executionContextBase, isAvailable | All 4 fields use `.gemini/antigravity/`; isAvailable fallback checks `.antigravity/` too | S |
+| 105.2 | `bin/viepilot.cjs` uninstall help + `docs/user/features/adapters.md` + `docs/user/features/skill-registry.md` | All user-visible `.antigravity` paths updated | S |
+| 105.3 | `tests/unit/vp-adapter-antigravity.test.js` updates + CHANGELOG [2.39.1] + version bump | All tests pass; package.json = "2.39.1" | S |
+
+**Verification**:
+- [ ] `skillsDir('/fake/home')` contains `.gemini/antigravity/skills`
+- [ ] `viepilotDir('/fake/home')` contains `.gemini/antigravity/viepilot`
+- [ ] `executionContextBase === '.gemini/antigravity/viepilot'`
+- [ ] `isAvailable` true for `.gemini/antigravity/` AND `.antigravity/` dirs
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.39.1`
