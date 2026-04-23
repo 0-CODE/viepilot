@@ -3,7 +3,7 @@
 ## Objective
 Add 6 new HTML pages to the Architect workspace, triggered within Embedded Domain Mode. Each page has keyword triggers, Mermaid diagram type, a data table, and a corresponding notes.md YAML section. Covers ENH-071 Gaps 1 (hw-topology), 4 (pin-map), 5 (memory-layout), 8 (protocol-matrix) + RTOS scheduler and power budget pages.
 
-## Status: pending
+## Status: done
 
 ## Paths
 workflows/brainstorm.md

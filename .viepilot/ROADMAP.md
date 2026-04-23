@@ -2922,7 +2922,7 @@
 ### Phase 106: ENH-071 — vp-brainstorm Embedded Domain Mode
 **Goal**: Add Embedded Domain Mode to vp-brainstorm: auto-detect MCU/firmware projects, inject embedded-specific topic probes (MCU/toolchain, RTOS, power budget, safety), add 6 new Architect workspace pages (hw-topology, pin-map, memory-layout, protocol-matrix, rtos-scheduler, power-budget), suppress UI Direction false-positives on hardware display keywords, offer firmware phase ordering template, and export 8 notes.md YAML sections to ARCHITECTURE.md via crystallize.
 **Estimated Tasks**: 5
-**Status**: planned → v2.40.0
+**Status**: ✅ Complete → v2.40.0
 **Dependencies**: FEAT-011 ✅, ENH-029 ✅, ENH-060 ✅, ENH-026 ✅, Phase 105 ✅
 **Directory**: `.viepilot/phases/106-enh071-embedded-domain/`
 

@@ -3,7 +3,7 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **105** — ✅ Complete (**BUG-021 Antigravity adapter path update** → **2.39.1**)
+- **Last Completed Phase**: **106** — ✅ Complete (**ENH-071 vp-brainstorm Embedded Domain Mode** → **2.40.0**)
 - **Next Phase**: — (no planned phases)
 - **Current Task**: —
 - **Last Activity**: 2026-04-22 — Phase 103 complete: ENH-069 all 10 gaps fixed → v2.38.0
@@ -173,6 +173,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-23 | Phase 105 shipped: BUG-021 (antigravity.cjs + bin + docs + 13 tests) — **2.39.1** | `/vp-auto` | M1.37 |
 | 2026-04-23 | ENH-071 logged: vp-brainstorm Embedded Domain Mode — 10 gaps (hw-topology, pin-map, memory-layout, RTOS, protocol-matrix, power-budget, MCU toolchain probes, safety topic, UI-Direction suppression, firmware phase template) | `/vp-request` | Backlog |
 | 2026-04-23 | Phase 106 planned: ENH-071 Embedded Domain Mode (5 tasks — brainstorm probes + UI suppression + 6 pages + crystallize exports + tests), target **2.40.0** | `/vp-evolve` | M1.37 |
+| 2026-04-23 | Phase 106 shipped: ENH-071 (brainstorm.md Embedded Domain Mode + 6 pages + crystallize exports + 36 tests) — **2.40.0** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_

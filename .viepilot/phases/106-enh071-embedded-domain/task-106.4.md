@@ -3,7 +3,7 @@
 ## Objective
 Extend `workflows/crystallize.md` Step 1D to export the 8 new embedded-domain YAML sections from notes.md to ARCHITECTURE.md when an embedded project is detected.
 
-## Status: pending
+## Status: done
 
 ## Paths
 workflows/crystallize.md

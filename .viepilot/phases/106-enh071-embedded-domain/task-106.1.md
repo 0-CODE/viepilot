@@ -3,7 +3,7 @@
 ## Objective
 Add Embedded Domain Mode detection and embedded-specific topic probes to `workflows/brainstorm.md`. Covers ENH-071 Gaps 2 (MCU/toolchain), 3 (RTOS/scheduling), 7 (power budget), 9 (firmware phase template), 10 (safety/compliance).
 
-## Status: pending
+## Status: done
 
 ## Paths
 workflows/brainstorm.md

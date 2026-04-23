@@ -3,7 +3,7 @@
 ## Objective
 Prevent the UI Direction background extractor (ENH-026) and proactive suggestion banner (ENH-060) from firing on embedded hardware display keywords (`LCD`, `OLED`, `display`, `screen`, `touch`) when `embedded_domain: true`. Route these signals to `hw-topology` peripherals instead.
 
-## Status: pending
+## Status: done
 
 ## Paths
 workflows/brainstorm.md

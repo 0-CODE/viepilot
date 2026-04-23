@@ -3,7 +3,7 @@
 ## Objective
 Document the Embedded Domain Mode in `skills/vp-brainstorm/SKILL.md`, write ≥12 unit tests covering detection, page triggers, suppression, and crystallize exports, then ship CHANGELOG [2.40.0] and bump version.
 
-## Status: pending
+## Status: done
 
 ## Paths
 skills/vp-brainstorm/SKILL.md
