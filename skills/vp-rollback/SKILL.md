@@ -98,11 +98,12 @@ Rollback to any checkpoint safely, with backup and state preservation.
 
 <context>
 Optional flags:
-- `--list` : List available checkpoints
+- `--list` : List available checkpoints (plain-text table, no interactive prompt)
 - `--to <tag>` : Rollback to specific tag
 - `--latest` : Rollback to latest checkpoint
 - `--force` : Skip confirmation
 - `--dry-run` : Show what would happen
+- `--limit N` : Checkpoints per page in interactive selection (default: 10). E.g. `--limit 30` shows 30 per page.
 </context>
 
 <process>
@@ -169,8 +170,30 @@ Update TRACKER.md if needed.
 ```
 </process>
 
+## Adapter Compatibility
+
+### AskUserQuestion Tool (ENH-075)
+Checkpoint selection uses `AskUserQuestion` on Claude Code (terminal).
+
+| Adapter | Interactive Prompts | Notes |
+|---------|---------------------|-------|
+| Claude Code (terminal) | ✅ `AskUserQuestion` — REQUIRED at checkpoint selection | Preload schema via ToolSearch first |
+| Cursor / Codex / Copilot / Antigravity | ❌ Text fallback | Plain numbered list; re-run with `--limit N` for more entries |
+
+**Claude Code (terminal) — AUQ preload required (ENH-059):**
+Before the checkpoint selection prompt, call `ToolSearch` with
+`query: "select:AskUserQuestion"` to load the deferred tool schema.
+If ToolSearch fails, fall back to plain-text numbered list.
+
+**Prompts using AskUserQuestion in this skill:**
+- Checkpoint selection (Step 1 — tag list + "Show N more →" pagination + "Enter manually")
+
 <success_criteria>
 - [ ] Checkpoints listed with dates
+- [ ] AUQ checkpoint picker shown on Claude Code terminal (text fallback on other adapters)
+- [ ] "Show N more →" pagination works; disappears when no more checkpoints
+- [ ] `--limit N` controls page size (default: 10)
+- [ ] `--list` flag outputs plain-text table and exits (no AUQ)
 - [ ] Target validated before rollback
 - [ ] Backup created before changes
 - [ ] State files updated after rollback

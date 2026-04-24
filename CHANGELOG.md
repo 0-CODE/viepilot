@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.43.0] - 2026-04-24
+
+### Enhanced
+- **vp-rollback**: AUQ checkpoint selection with pagination — structured `AskUserQuestion`
+  prompt replaces plain-text table; "Show N more →" option pages through older checkpoints;
+  `--limit N` flag controls page size (default: 10); `--list` flag unchanged; ENH-059
+  ToolSearch preload applied; text fallback on non-Claude Code adapters (ENH-075)
+
 ## [2.42.0] - 2026-04-24
 
 ### Added

@@ -7,8 +7,17 @@ Safe rollback to any ViePilot checkpoint with backup and state preservation.
 <step name="list_checkpoints">
 ## 1. List Available Checkpoints
 
+Determine page size and offset:
+```
+PAGE_SIZE = value of --limit flag (default: 10)
+OFFSET = 0  (increments by PAGE_SIZE when user selects "Show more")
+```
+
+Fetch current page of matching tags:
 ```bash
-git tag --sort=-creatordate | rg "(^vp-p|^-*vp-backup|^[a-z0-9._-]+-vp-p|^[a-z0-9._-]+-vp-backup)" | head -20
+git tag --sort=-creatordate \
+  | rg "(^vp-p|^-*vp-backup|^[a-z0-9._-]+-vp-p|^[a-z0-9._-]+-vp-backup)" \
+  | tail -n +$((OFFSET+1)) | head -$PAGE_SIZE
 # [a-z0-9._-]+ matches both legacy and enriched (prefix-branch-version-vp-p*) formats (ENH-050)
 ```
 
@@ -17,7 +26,16 @@ For each tag, get info:
 git log -1 --format="%h %ci %s" {tag}
 ```
 
-Display formatted list:
+Build label for each entry: `{tag}  {YYYY-MM-DD}  {commit subject}`
+
+Check if more tags exist beyond current page:
+```bash
+TOTAL=$(git tag --sort=-creatordate \
+  | rg "(^vp-p|^-*vp-backup|^[a-z0-9._-]+-vp-p|^[a-z0-9._-]+-vp-backup)" | wc -l)
+HAS_MORE = (OFFSET + PAGE_SIZE) < TOTAL
+```
+
+**If `--list` flag** → display plain-text table and stop:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  VIEPILOT CHECKPOINTS
@@ -31,21 +49,72 @@ Display formatted list:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+Stop here when `--list` flag active. Respects `--limit N` for table row count.
 
-If `--list` flag, stop here.
+**Otherwise (interactive selection) — AUQ checkpoint picker (ENH-075):**
+
+AUQ preload (ENH-059): call `ToolSearch` with `query: "select:AskUserQuestion"` before the
+first interactive prompt. If ToolSearch fails, fall back to plain numbered list.
+
+Call `AskUserQuestion`:
+```
+question: "Select a checkpoint to roll back to:"
+options:
+  - label: "{tag1}  {date1}  {desc1}"
+  - label: "{tag2}  {date2}  {desc2}"
+  - ...  (PAGE_SIZE entries)
+  - label: "Show {PAGE_SIZE} more checkpoints →"   ← only if HAS_MORE is true
+  - label: "Enter tag name manually"
+```
+
+**If user selects "Show {PAGE_SIZE} more →":**
+`OFFSET += PAGE_SIZE` → re-fetch next page → re-call AUQ with new options.
+Remove "Show more" when `(OFFSET + PAGE_SIZE) >= TOTAL`.
+Loop until user selects a checkpoint or "Enter manually".
+
+**If user selects "Enter tag name manually":**
+Accept tag name from the AUQ "Other" built-in text input, or plain-text prompt on
+non-AUQ adapters. Pass the entered string to Step 2 for validation.
+
+**Text fallback (non-AUQ adapters — Cursor/Codex/Copilot/Antigravity):**
+Display plain numbered list of the first PAGE_SIZE entries. User types a number or tag
+name. No interactive pagination — user can re-run with `--limit N` to see more.
+
+Pass selected tag name forward to Step 2.
 </step>
 
 <step name="select_target">
 ## 2. Select Rollback Target
 
-**If --to specified:**
-Validate tag exists.
+**If `--to` specified:**
+Use the provided tag directly. Validate it exists:
+```bash
+git tag -l "{tag}" | grep -q . || { echo "✖ Error: Checkpoint not found"; exit 1; }
+```
 
-**If --latest:**
-Select most recent checkpoint tag (project-scoped or legacy).
+**If `--latest`:**
+Select the most recent matching tag (first result from the tag list query, OFFSET=0).
 
-**Otherwise:**
-Ask user to select from list or enter tag name.
+**Otherwise — bind AUQ result from Step 1:**
+
+Extract the target tag from the user's selection:
+- If user selected a checkpoint label: take the first whitespace-delimited token.
+  e.g. `"viepilot-vp-main-2.42.0-vp-p108-t5-done  2026-04-24  Phase 108..."` → `viepilot-vp-main-2.42.0-vp-p108-t5-done`
+- If user selected "Enter tag name manually": use the text they typed (AUQ "Other" input,
+  or the plain-text string entered on non-AUQ adapters).
+
+Validate the extracted tag exists before proceeding:
+```bash
+git tag -l "{extracted_tag}" | grep -q . || {
+  echo "✖ Error: Checkpoint \"{extracted_tag}\" not found"
+  echo "  Hint: Run /vp-rollback --list to see available checkpoints (add --limit 50 for more) (add --limit 50 for more)"
+  exit 1
+}
+```
+
+**Text fallback (non-AUQ adapters):**
+User typed a number from the list or a raw tag name. Parse the number to look up
+the corresponding tag in the fetched page, or use the typed string directly.
 </step>
 
 <step name="preview_changes">
@@ -202,7 +271,7 @@ Update TRACKER.md progress accordingly.
 **If tag doesn't exist:**
 ```
 ✖ Error: Checkpoint "{tag}" not found
-  Hint: Run /vp-rollback --list to see available checkpoints
+  Hint: Run /vp-rollback --list to see available checkpoints (add --limit 50 for more)
 ```
 
 **If uncommitted changes:**
