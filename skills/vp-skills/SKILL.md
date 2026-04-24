@@ -11,6 +11,33 @@ Output this banner as the **first** thing on every invocation — before questio
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
+<version_check>
+## Version Update Check (ENH-072)
+
+After displaying the greeting banner, run:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" check-update --silent
+```
+
+**If exit code = 1** (update available — new version printed to stdout):
+Display notice banner before any other output:
+```
+┌──────────────────────────────────────────────────────────────────┐
+│ ✨ ViePilot {latest_version} available  (installed: {current})   │
+│    npm i -g viepilot && vp-tools install --target {adapter_id}   │
+└──────────────────────────────────────────────────────────────────┘
+```
+Replace `{latest_version}` with stdout from the command, `{current}` with the installed
+version, `{adapter_id}` with the active adapter (claude-code / cursor / antigravity / codex / copilot).
+
+**If exit code = 0 or command unavailable**: silent, continue.
+
+**Suppression rules:**
+- `--no-update-check` flag on skill invocation → skip this step entirely
+- `config.json` → `update.check: false` → skip this step entirely
+- Show at most once per session (`update_check_done` session guard)
+</version_check>
+
 
 <cursor_skill_adapter>
 ## A. Skill Invocation
