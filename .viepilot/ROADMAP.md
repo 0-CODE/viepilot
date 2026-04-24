@@ -2998,3 +2998,30 @@ pattern + JSON Patch overlays. Persona is injected silently into all vp-* skill 
 - [ ] `node -e "const c=require('./lib/viepilot-calibrate.cjs'); console.log(typeof c.runCalibration)"` → function
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.42.0`
+
+---
+
+### Phase 109: ENH-075 — vp-rollback AUQ Checkpoint Selection + Pagination
+**Goal**: Replace the static `head -20` plain-text checkpoint list in `vp-rollback` with
+a structured `AskUserQuestion` prompt. Default page: 10 most recent checkpoints + "Show 10
+more →" pagination option + "Enter tag manually". `--limit N` flag controls page size.
+`--list` flag keeps plain-text behavior unchanged.
+**Estimated Tasks**: 4
+**Status**: ✅ Complete → v2.43.0
+**Dependencies**: ENH-059 ✅ (AUQ ToolSearch preload)
+**Directory**: `.viepilot/phases/109-enh075-rollback-auq/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 109.1 | `workflows/rollback.md` Step 1 — AUQ block with paginated checkpoint list + ToolSearch preload | AUQ call present; head -20 replaced with head -$PAGE_SIZE; "Show more" + "Enter manually" options; --list bypasses AUQ | S |
+| 109.2 | `workflows/rollback.md` Step 2 — AUQ result binding: tag extraction from label, manual-entry path, tag validation | Step 2 references AUQ result; tag extracted from first token; git tag -l validation documented | S |
+| 109.3 | `skills/vp-rollback/SKILL.md` — `--limit N` flag + AUQ adapter compat table + ENH-059 preload note | --limit in flags list; AUQ compat table present; error hint updated | S |
+| 109.4 | Tests (≥15) + CHANGELOG [2.43.0] + version bump | ≥15 tests pass; CHANGELOG entry; package.json = 2.43.0 | S |
+
+**Verification**:
+- [ ] `grep "AskUserQuestion\|ToolSearch" workflows/rollback.md` shows both
+- [ ] `grep -- "--limit" skills/vp-rollback/SKILL.md` shows flag documented
+- [ ] `grep "Show.*more\|OFFSET\|offset" workflows/rollback.md` shows pagination
+- [ ] `grep "head -20" workflows/rollback.md` returns empty (hardcode removed)
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.43.0`

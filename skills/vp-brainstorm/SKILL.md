@@ -242,6 +242,8 @@ plain-text numbered list prompts — no configuration required.
 **Prompts using AskUserQuestion in this skill:**
 - Session intent (continue / review / new — Step 2)
 - Landing page layout selection (Step 4 — Layout A/B/C/D)
+- Mid-session structured choices (≥2 discrete named options — BUG-022): topic direction,
+  section priority, angle selection, and any numbered decision with enumerable options
 
 
 ### Skill Registry Integration (FEAT-020)

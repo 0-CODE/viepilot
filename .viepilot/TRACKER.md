@@ -182,19 +182,23 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-24 | Phase 108 planned: ENH-073 vp-persona (5 tasks — inferPersona + auto-switch + domain packs + skill+workflow injections + calibration + tests), target **2.42.0** | `/vp-evolve` | M1.37 |
 | 2026-04-24 | Phase 108 shipped: ENH-073 (inferPersona + autoSwitch + 5 domain packs + vp-persona skill + 19 skills injected + always-on calibration + 35 tests) — **2.42.0** | `/vp-auto` | M1.37 |
 | 2026-04-24 | ENH-074 logged: centralize shared framework files to ~/.viepilot/ — eliminate per-adapter duplication + fix version drift on npm update | `/vp-request` | Backlog |
+| 2026-04-24 | ENH-075 logged: vp-rollback AUQ checkpoint selection + show-more pagination + --limit flag | `/vp-request` | Backlog |
+| 2026-04-24 | Phase 109 planned: ENH-075 (4 tasks — rollback.md AUQ Steps 1+2 + SKILL.md --limit + tests), target **2.43.0** | `/vp-evolve` | M1.37 |
+| 2026-04-24 | Phase 109 shipped: ENH-075 (rollback.md AUQ + pagination + --limit + 20 tests) — **2.43.0** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-_ENH-074 logged. Phase 108 complete (ENH-073 → 2.42.0). Ready for /vp-evolve ENH-074 or publish._
+_Phase 109 complete (ENH-075 → 2.43.0). Ready for next request or publish._
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-074 | 🔧 | Centralize shared framework to ~/.viepilot/ — single install source, eliminate adapter version drift | high | new |
+| ENH-075 | 🔧 | vp-rollback AUQ checkpoint selection + Show more/older + --limit flag | medium | new |
+| ENH-074 | 🔧 | Centralize shared framework to ~/.viepilot/ — single install source, eliminate adapter version drift | high | ❌ wont_fix |
 | ENH-073 | 🔧 | vp-persona — fully automated cross-project identity: inferPersona() from files+git, auto-switch, auto-merge, domain packs, adaptive calibration | high | ✅ done (**2.42.0**) |
 | ENH-072 | 🔧 | vp-* skill invocation version update check — notice banner when new ViePilot version available (npm registry, 24h cache) | medium | ✅ done (**2.41.0**) |
 | BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | ✅ done (**2.39.1**) |

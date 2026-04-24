@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.43.1] - 2026-04-24
+
+### Fixed
+- **vp-brainstorm**: mid-session structured decision questions now use `AskUserQuestion`
+  on Claude Code terminal when ≥2 discrete named options are available; free-form
+  open questions remain conversational plain text; SKILL.md "Prompts using AUQ" list
+  updated (BUG-022)
+
 ## [2.43.0] - 2026-04-24
 
 ### Enhanced

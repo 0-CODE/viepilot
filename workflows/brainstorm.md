@@ -428,6 +428,27 @@ For each topic:
 4. Suggest alternatives if needed
 5. Record decisions
 
+### Mid-session Structured Choice Rule (BUG-022)
+
+When presenting a decision with **≥2 discrete named options** during Q&A (e.g. "Hero first
+or Features section?", "lean into multi-adapter or persona angle?", any numbered choice set),
+use adapter-aware prompts:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`. AUQ spec:
+>   - question: "{The direction/decision question}"
+>   - header: "{short label, ≤12 chars}"
+>   - options: one entry per discrete choice (2–4 options per AUQ call)
+>   - multiSelect: false (unless user explicitly wants multi-select)
+> **Cursor / Codex / Antigravity / Copilot:** present as plain numbered list.
+
+**Exempt from AUQ** (remain plain conversational text):
+- Open-ended questions with no discrete choices ("Anything else you'd like to add?")
+- Follow-up clarification questions ("Tell me more about X")
+- Questions where the expected answer is a free-form description
+
+**AUQ per decision, not per topic:** One AUQ call per structured decision point.
+Do not bundle multiple unrelated decisions into a single AUQ call.
+
 ### Landing Page Deep-Dive (activated contextually)
 If the user is brainstorming a landing page / homepage / marketing page:
 
