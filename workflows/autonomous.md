@@ -61,6 +61,16 @@ cat .viepilot/ROADMAP.md
 Read `~/.viepilot/config.json` → `COMMUNICATION_LANG` (default: `en`).
 Use `COMMUNICATION_LANG` for all banners, control-point messages, and user-facing output in this session.
 
+### Persona Context (ENH-073)
+After loading AI-GUIDE.md and TRACKER.md, run:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona auto-switch
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona context
+```
+Inject output as `## User Persona` block into each task's execution context.
+Use `persona.stacks` for stack preflight matching (prefer persona stacks over generic detection).
+Silent if command unavailable or errors — do not fail the phase.
+
 ### Skill Context Load (FEAT-020)
 
 After loading context files, load the project's skill decisions:

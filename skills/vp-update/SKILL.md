@@ -41,6 +41,16 @@ version, `{adapter_id}` with the active adapter (claude-code / cursor / antigrav
 - `config.json` → `update.check: false` → skip this step entirely
 - Show at most once per session (`update_check_done` session guard)
 </version_check>
+<persona_context>
+## Persona Context Injection (ENH-073)
+At skill start, run:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona auto-switch
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona context
+```
+Inject the output as `## User Persona` context before any task execution.
+Silent if command unavailable or errors.
+</persona_context>
 
 
 <cursor_skill_adapter>

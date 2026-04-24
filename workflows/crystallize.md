@@ -907,6 +907,20 @@ When `IS_BROWNFIELD=true`, the following table governs which steps execute:
 </step>
 
 <step name="analyze_brainstorm">
+## Step 0C: Persona output_style adaptation (ENH-073)
+
+Read active persona via:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona get
+```
+
+Apply `output_style` to document generation in Steps 1D and 1E:
+- `lean` → concise docs: summary sections, skip boilerplate headers, short descriptions
+- `balanced` → standard docs (default if persona unavailable)
+- `enterprise` → full docs: compliance sections, decision rationale appendix, detailed risk notes
+
+Silent if persona unavailable → use `balanced` default.
+
 ## Step 1: Analyze Brainstorm
 
 ```bash

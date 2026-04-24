@@ -121,6 +121,15 @@ Questions:
 
 If incompatible → suggest refactor first or discuss alternative.
 
+### Phase Template Suggestion (ENH-073)
+Read persona's phase template:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona context
+```
+If `persona.phase_template` is set and matches a domain pack (web-saas/data-science/mobile/devops/ai-product),
+suggest the domain pack's `phase_template.phases` as default phase ordering when generating tasks.
+User can override freely. Silent if persona unavailable.
+
 ### Smart Route to Brainstorm (when applicable)
 If the feature leans toward product discovery, UX, or landing page:
 - Route through advanced brainstorm instead of locking the phase immediately:
