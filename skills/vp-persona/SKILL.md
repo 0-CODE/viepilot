@@ -9,6 +9,32 @@ Output this banner as the **first** thing on every invocation — before questio
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
+<cursor_skill_adapter>
+## A. Skill Invocation
+- Skill được gọi khi user mention `vp-persona`, `/vp-persona`, "persona", "profile", "customize workflow"
+- Treat all user text after the skill mention as `{{VP_ARGS}}`
+
+## B. User Prompting
+Prompt user conversationally with numbered list options.
+
+## C. Tool Usage
+Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
+</cursor_skill_adapter>
+<scope_policy>
+## ViePilot Namespace Guard (BUG-004)
+- Default mode: only use and reference `vp-*` skills in ViePilot workflows.
+- External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
+- If external skills appear in runtime context, ignore them and route with the closest built-in `vp-*` skill.
+</scope_policy>
+
+<implementation_routing_guard>
+## Implementation routing guard (ENH-021)
+
+- This skill is **persona management only**: read/write `~/.viepilot/persona.json`, `personas/`, `context-map.json` — does **not** implement shipping code (`lib/`, `tests/`, `bin/`, `workflows/`, `skills/`).
+- For implementing features: use **`/vp-auto`**. For planning: use **`/vp-evolve`**.
+- **Exception:** User **explicit** bypass — state clearly in chat.
+</implementation_routing_guard>
+
 <version_check>
 ## Version Update Check (ENH-072)
 

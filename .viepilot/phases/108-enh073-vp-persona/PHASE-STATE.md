@@ -1,6 +1,6 @@
 # Phase 108 State — ENH-073: vp-persona Workflow Customization
 
-## Status: planned
+## Status: complete ✅ → v2.42.0
 
 ## Tasks
 | Task | Status | Notes |
@@ -9,7 +9,7 @@
 | 108.2 | ✅ done | Multi-context: context-map auto-populate + auto-switch + auto-merge + vp-tools persona subcommand |
 | 108.3 | ✅ done | Domain Packs: 5 built-in JSON packs + brainstorm.md injection + install-domain subcommand |
 | 108.4 | ✅ done | `skills/vp-persona/SKILL.md` + workflow injections (brainstorm/auto/crystallize/evolve + all vp-* skills) |
-| 108.5 | 🔄 in_progress | `lib/viepilot-calibrate.cjs` + traces + Reflexion + overlays + pending-review + tests ≥18 + CHANGELOG [2.42.0] |
+| 108.5 | ✅ done | `lib/viepilot-calibrate.cjs` + traces + Reflexion + overlays + pending-review + tests ≥18 + CHANGELOG [2.42.0] |
 
 ## Git Tags
 _none yet_

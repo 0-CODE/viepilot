@@ -180,19 +180,20 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-24 | ENH-073 logged: vp-persona — cross-project user identity, multi-persona switch+merge, domain packs (web-saas/data-science/mobile/devops/ai-product), persona-context.md injection | `/vp-brainstorm` + `/vp-request` | Backlog |
 | 2026-04-24 | ENH-073 redesigned: full automation (no wizard) — inferPersona() from files+git, auto-switch $PWD, auto-merge multi-domain, team_size from git, 🟡 non-blocking calibration | `/vp-request` review | Backlog |
 | 2026-04-24 | Phase 108 planned: ENH-073 vp-persona (5 tasks — inferPersona + auto-switch + domain packs + skill+workflow injections + calibration + tests), target **2.42.0** | `/vp-evolve` | M1.37 |
+| 2026-04-24 | Phase 108 shipped: ENH-073 (inferPersona + autoSwitch + 5 domain packs + vp-persona skill + 19 skills injected + always-on calibration + 35 tests) — **2.42.0** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-_Phase 108 planned for ENH-073 (vp-persona). Ready for /vp-auto --phase 108._
+_Phase 108 complete (ENH-073 → 2.42.0). Ready for next request or publish._
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-073 | 🔧 | vp-persona — fully automated cross-project identity: inferPersona() from files+git, auto-switch, auto-merge, domain packs, adaptive calibration | high | triaged (→ Phase 108) |
+| ENH-073 | 🔧 | vp-persona — fully automated cross-project identity: inferPersona() from files+git, auto-switch, auto-merge, domain packs, adaptive calibration | high | ✅ done (**2.42.0**) |
 | ENH-072 | 🔧 | vp-* skill invocation version update check — notice banner when new ViePilot version available (npm registry, 24h cache) | medium | ✅ done (**2.41.0**) |
 | BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | ✅ done (**2.39.1**) |
 | ENH-071 | 🔧 | vp-brainstorm Embedded Domain Mode — 10 gaps (hw-topology, pin-map, memory-layout, RTOS, protocol-matrix, power-budget, MCU toolchain, safety, UI-Direction suppression, firmware phase template) | medium | triaged (→ Phase 106) |

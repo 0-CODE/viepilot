@@ -2976,7 +2976,7 @@ project files + git — no wizard, no manual setup. Auto-switch on `$PWD` change
 multi-domain projects, 5 built-in domain packs, always-on adaptive calibration via Reflexion
 pattern + JSON Patch overlays. Persona is injected silently into all vp-* skill invocations.
 **Estimated Tasks**: 5
-**Status**: planned
+**Status**: ✅ Complete → v2.42.0
 **Dependencies**: ENH-071 ✅, FEAT-020 ✅, Phase 107 ✅
 **Directory**: `.viepilot/phases/108-enh073-vp-persona/`
 

@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.42.0] - 2026-04-24
+
+### Added
+- **ENH-073**: vp-persona — fully automated cross-project persona system (no wizard)
+  - `lib/viepilot-persona.cjs`: `inferPersona()` detects domain from project files + git shortlog (no setup required)
+  - Auto-switch persona on `$PWD` change; auto-merge when 2+ domain signals detected in same project
+  - `team_size` inferred from `git shortlog -sn`; `output_style` defaults lean, self-learned from calibration traces
+  - 3-layer resolution: project-override > context-map > global active persona
+  - `lib/viepilot-calibrate.cjs`: always-on adaptive calibration via Reflexion pattern
+    - Session traces written async to `~/.viepilot/traces/` after every session
+    - 🟢 low-risk changes (topic_skip, stack_add) auto-applied silently
+    - 🟡 medium-risk changes (output_style, phase_default) auto-applied + logged to `pending-review.md`
+    - 🔴 high-risk changes blocked (caller decides to prompt, max once per session)
+    - `guardrail_journal` prevents re-proposing rejected patterns
+    - JSON Patch RFC 6902 workflow overlays — base workflows never modified
+  - 5 built-in domain packs: `web-saas`, `data-science`, `mobile`, `devops`, `ai-product`
+    - Each: `topic_priority`, `extra_topics` with Q&A, `phase_template`, `architect_pages`, `stacks_hint`
+  - `vp-tools persona` subcommand: `get`/`infer`/`list`/`set`/`auto-switch`/`context`
+  - `skills/vp-persona/SKILL.md`: new skill for persona inspection and optional correction (`--refine`)
+  - `<persona_context>` block injected into all 19 `vp-*` SKILL.md files (including vp-persona itself)
+  - `workflows/brainstorm.md`: domain pack topic injection (Step 0B)
+  - `workflows/autonomous.md`: persona context injected per task
+  - `workflows/crystallize.md`: `output_style` adaptation (lean/balanced/enterprise)
+  - `workflows/evolve.md`: `phase_template` suggestion from domain pack
+  - `bin/viepilot.cjs`: `install-domain <pack-name>` subcommand for community packs
+  - 35 unit tests (phase108); full suite: 1618 tests pass
+
 ## [2.41.0] - 2026-04-24
 
 ### Added
