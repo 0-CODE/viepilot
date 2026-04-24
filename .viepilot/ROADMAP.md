@@ -2967,3 +2967,34 @@
 - [ ] `grep -l "version_check" skills/vp-*/SKILL.md | wc -l` = 17
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.41.0`
+
+---
+
+### Phase 108: ENH-073 — vp-persona Workflow Customization by Domain, Role & Interests
+**Goal**: Add a fully automated cross-project persona system. `inferPersona()` detects domain from
+project files + git — no wizard, no manual setup. Auto-switch on `$PWD` change, auto-merge for
+multi-domain projects, 5 built-in domain packs, always-on adaptive calibration via Reflexion
+pattern + JSON Patch overlays. Persona is injected silently into all vp-* skill invocations.
+**Estimated Tasks**: 5
+**Status**: planned
+**Dependencies**: ENH-071 ✅, FEAT-020 ✅, Phase 107 ✅
+**Directory**: `.viepilot/phases/108-enh073-vp-persona/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 108.1 | `lib/viepilot-persona.cjs` — inferPersona (project files + git), resolvePersona (3-layer), mergePersonas, generatePersonaContext | inferPersona detects domain+stacks+team_size+role; resolvePersona 3-layer works; all silent on error | M |
+| 108.2 | Multi-context: context-map auto-populate + auto-switch on $PWD + auto-merge; `vp-tools persona` subcommand (get/infer/list/set/auto-switch/context) | auto-switch silent; persona infer outputs JSON; context-map updated on detect | M |
+| 108.3 | 5 domain pack JSON files (`lib/domain-packs/`) + `workflows/brainstorm.md` domain pack topic injection + `install-domain` subcommand in `bin/viepilot.cjs` | All 5 packs valid JSON; brainstorm reorders topics + injects extra_topics; install-domain runs npm | M |
+| 108.4 | `skills/vp-persona/SKILL.md` (new skill) + `<persona_context>` block in all 18 vp-* SKILL.md + persona injections in autonomous/crystallize/evolve workflows | vp-persona skill exists; 18 skills have persona_context block; workflow injections present | M |
+| 108.5 | `lib/viepilot-calibrate.cjs` (traces + Reflexion + overlays + pending-review) + tests ≥18 + CHANGELOG [2.42.0] + version bump | All calibration exports work; ≥18 tests pass; version = 2.42.0 | L |
+
+**Verification**:
+- [ ] `node -e "const p=require('./lib/viepilot-persona.cjs'); p.inferPersona(process.cwd()).then(r=>console.log(r.domain, r.confidence))"` prints domain + number
+- [ ] `node bin/vp-tools.cjs persona infer .` outputs JSON with domain field
+- [ ] `node bin/vp-tools.cjs persona auto-switch` exits 0
+- [ ] `ls lib/domain-packs/ | wc -l` = 5
+- [ ] `grep -l "persona_context" skills/vp-*/SKILL.md | wc -l` ≥ 18
+- [ ] `test -f skills/vp-persona/SKILL.md && echo exists`
+- [ ] `node -e "const c=require('./lib/viepilot-calibrate.cjs'); console.log(typeof c.runCalibration)"` → function
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.42.0`
