@@ -6,8 +6,8 @@
 | Task | Status | Notes |
 |------|--------|-------|
 | 108.1 | ✅ done | `lib/viepilot-persona.cjs` — inferPersona + resolvePersona + persona-context.md |
-| 108.2 | 🔄 in_progress | Multi-context: context-map auto-populate + auto-switch + auto-merge + vp-tools persona subcommand |
-| 108.3 | ⏳ pending | Domain Packs: 5 built-in JSON packs + brainstorm.md injection + install-domain subcommand |
+| 108.2 | ✅ done | Multi-context: context-map auto-populate + auto-switch + auto-merge + vp-tools persona subcommand |
+| 108.3 | 🔄 in_progress | Domain Packs: 5 built-in JSON packs + brainstorm.md injection + install-domain subcommand |
 | 108.4 | ⏳ pending | `skills/vp-persona/SKILL.md` + workflow injections (brainstorm/auto/crystallize/evolve + all vp-* skills) |
 | 108.5 | ⏳ pending | `lib/viepilot-calibrate.cjs` + traces + Reflexion + overlays + pending-review + tests ≥18 + CHANGELOG [2.42.0] |
 

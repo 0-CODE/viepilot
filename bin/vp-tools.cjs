@@ -1204,6 +1204,80 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * ENH-073: Manage cross-project personas.
+   * persona get            → print active persona JSON
+   * persona infer [dir]    → run inferPersona, print result, update context-map
+   * persona list           → list all ~/.viepilot/personas/*.json
+   * persona set <name>     → set active persona by name
+   * persona auto-switch    → auto-detect and switch for cwd (called at skill start)
+   * persona context [dir]  → print persona-context.md content
+   */
+  'persona': (args) => {
+    const {
+      inferPersona, resolvePersona, generatePersonaContext,
+      readActivePersona, writePersona, setActivePersona, listPersonas,
+      updateContextMap, autoSwitch,
+    } = require('../lib/viepilot-persona.cjs');
+
+    const op = args[0] || 'get';
+    const dir = args[1] ? require('path').resolve(args[1]) : process.cwd();
+
+    if (op === 'get') {
+      const persona = readActivePersona();
+      if (!persona) { process.stdout.write('No active persona\n'); process.exit(0); }
+      process.stdout.write(JSON.stringify(persona, null, 2) + '\n');
+      process.exit(0);
+    }
+
+    if (op === 'list') {
+      const personas = listPersonas();
+      if (!personas.length) { process.stdout.write('No personas saved\n'); process.exit(0); }
+      for (const p of personas) {
+        const marker = p.active ? '[active] ' : '         ';
+        process.stdout.write(`${marker}${p.name}  domain:${p.domain}  confidence:${p.confidence}\n`);
+      }
+      process.exit(0);
+    }
+
+    if (op === 'set') {
+      const name = args[1];
+      if (!name) { process.stderr.write('Usage: persona set <name>\n'); process.exit(1); }
+      setActivePersona(name);
+      process.stdout.write(`Active persona set to: ${name}\n`);
+      process.exit(0);
+    }
+
+    if (op === 'infer') {
+      inferPersona(dir).then(persona => {
+        writePersona(persona.name, persona);
+        setActivePersona(persona.name);
+        updateContextMap(dir, persona.name);
+        process.stdout.write(JSON.stringify(persona, null, 2) + '\n');
+        process.exit(0);
+      }).catch(() => process.exit(0));
+      return;
+    }
+
+    if (op === 'auto-switch') {
+      autoSwitch(dir).then(() => process.exit(0)).catch(() => process.exit(0));
+      return;
+    }
+
+    if (op === 'context') {
+      (async () => {
+        let persona = resolvePersona(dir);
+        if (!persona) persona = await inferPersona(dir);
+        process.stdout.write(generatePersonaContext(persona) + '\n');
+        process.exit(0);
+      })().catch(() => process.exit(0));
+      return;
+    }
+
+    process.stderr.write(`Unknown persona op: ${op}\nUsage: persona get|infer|list|set|auto-switch|context\n`);
+    process.exit(1);
+  },
+
+  /**
    * Scan installed skills and rebuild ~/.viepilot/skill-registry.json (BUG-019)
    */
   'scan-skills': (_args) => {
@@ -1330,6 +1404,26 @@ ${colors.cyan}Examples:${colors.reset}
           'vp-tools check-update --force',
         ],
       },
+      'persona': {
+        usage: 'vp-tools persona <op> [dir]',
+        description: 'Manage cross-project personas (ENH-073)',
+        options: [
+          'get          Show active persona JSON',
+          'infer [dir]  Infer persona from project files + git',
+          'list         List all saved personas',
+          'set <name>   Set active persona by name',
+          'auto-switch  Auto-detect and switch persona for current directory',
+          'context [dir] Print persona-context.md content for current project',
+        ],
+        examples: [
+          'vp-tools persona get',
+          'vp-tools persona infer .',
+          'vp-tools persona list',
+          'vp-tools persona set auto-web-saas',
+          'vp-tools persona auto-switch',
+          'vp-tools persona context',
+        ],
+      },
       update: {
         usage: 'vp-tools update [--dry-run] [--yes] [--global]',
         description: 'Update viepilot to npm latest (local dependency, global install, or explicit --global)',
@@ -1391,6 +1485,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}get-registry${colors.reset} [--id <id>] Output global skill registry as JSON
   ${colors.bold}scan-skills${colors.reset}               Scan installed skills → ~/.viepilot/skill-registry.json
   ${colors.bold}check-update${colors.reset} [--silent]   Check for latest ViePilot version on npm (24h cached)
+  ${colors.bold}persona${colors.reset} <op>              Manage user personas (get|infer|list|set|auto-switch|context)
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
