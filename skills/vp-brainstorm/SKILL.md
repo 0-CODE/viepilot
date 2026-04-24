@@ -244,6 +244,8 @@ plain-text numbered list prompts — no configuration required.
 - Landing page layout selection (Step 4 — Layout A/B/C/D)
 - Mid-session structured choices (≥2 discrete named options — BUG-022): topic direction,
   section priority, angle selection, and any numbered decision with enumerable options
+- Session-transition/next-steps prompt (session-flow choices: save/crystallize, update UI
+  artifacts, continue discussing — BUG-023)
 
 
 ### Skill Registry Integration (FEAT-020)

@@ -449,6 +449,25 @@ use adapter-aware prompts:
 **AUQ per decision, not per topic:** One AUQ call per structured decision point.
 Do not bundle multiple unrelated decisions into a single AUQ call.
 
+### Mid-session Transition Prompt Rule (BUG-023)
+
+When the AI offers **session-flow choices** at a section or topic boundary — after presenting
+a table, completing an analysis, or finishing a discussion topic — use adapter-aware prompts:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`. Canonical AUQ spec:
+>   - question: "What would you like to do next?"
+>   - header: "Next step"
+>   - options (vary by context; always ≥2):
+>     - label: "Save session → /vp-crystallize", description: "Generate implementation specs"
+>     - label: "Update UI Direction artifacts", description: "Update index.html/notes.md now"
+>     - label: "Continue discussing", description: "Explore another section or topic"
+>   - multiSelect: false
+> **Cursor / Codex / Antigravity / Copilot:** present as plain numbered list.
+
+**Scope:** session-FLOW control choices only — distinct from BUG-022 (Q&A content/direction
+decisions during Q&A). Triggered when offering: save/crystallize, update artifacts, or
+continue/discuss more. NOT triggered for content questions about what to build or design.
+
 ### Landing Page Deep-Dive (activated contextually)
 If the user is brainstorming a landing page / homepage / marketing page:
 

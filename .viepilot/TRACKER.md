@@ -2,11 +2,11 @@
 
 ## Current State
 - **Milestone**: M1.37
-- **Current Phase**: —
-- **Last Completed Phase**: **106** — ✅ Complete (**ENH-071 vp-brainstorm Embedded Domain Mode** → **2.40.0**)
-- **Next Phase**: — (no planned phases)
-- **Current Task**: —
-- **Last Activity**: 2026-04-22 — Phase 103 complete: ENH-069 all 10 gaps fixed → v2.38.0
+- **Current Phase**: **111** — 🔄 In Progress (BUG-023: vp-brainstorm session-transition AUQ)
+- **Last Completed Phase**: **110** — ✅ Complete (**BUG-022 vp-brainstorm mid-session AUQ** → **2.43.1**)
+- **Next Phase**: — (no planned phases after 111)
+- **Current Task**: 111.1
+- **Last Activity**: 2026-04-24 — Phase 111 planned: BUG-023 (3 tasks), target 2.43.2
 
 ## Progress Overview
 ```
@@ -185,19 +185,26 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-24 | ENH-075 logged: vp-rollback AUQ checkpoint selection + show-more pagination + --limit flag | `/vp-request` | Backlog |
 | 2026-04-24 | Phase 109 planned: ENH-075 (4 tasks — rollback.md AUQ Steps 1+2 + SKILL.md --limit + tests), target **2.43.0** | `/vp-evolve` | M1.37 |
 | 2026-04-24 | Phase 109 shipped: ENH-075 (rollback.md AUQ + pagination + --limit + 20 tests) — **2.43.0** | `/vp-auto` | M1.37 |
+| 2026-04-24 | BUG-022 logged: vp-brainstorm mid-session structured questions not using AUQ on Claude Code terminal | `/vp-request` | Backlog |
+| 2026-04-24 | Phase 110 planned: BUG-022 (3 tasks — brainstorm.md rule + SKILL.md update + tests), target **2.43.1** | `/vp-evolve` | M1.37 |
+| 2026-04-24 | Phase 110 shipped: BUG-022 (mid-session AUQ rule + SKILL.md + 14 tests) — **2.43.1** | `/vp-auto` | M1.37 |
+| 2026-04-24 | BUG-023 logged: vp-brainstorm session transition prompt not using AUQ (distinct from BUG-022) | `/vp-request` | Backlog |
+| 2026-04-24 | Phase 111 planned: BUG-023 (3 tasks — brainstorm.md transition rule + SKILL.md update + tests), target **2.43.2** | `/vp-evolve` | M1.37 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-_Phase 109 complete (ENH-075 → 2.43.0). Ready for next request or publish._
+_Phase 111 in progress (BUG-023 → 2.43.2). Run /vp-auto --phase 111 to execute._
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-075 | 🔧 | vp-rollback AUQ checkpoint selection + Show more/older + --limit flag | medium | new |
+| BUG-023 | 🐛 | vp-brainstorm session transition prompt ("what to do next?") not using AUQ — separate from BUG-022 | medium | in_progress |
+| BUG-022 | 🐛 | vp-brainstorm mid-session structured questions not using AUQ — plain text on Claude Code terminal | medium | ✅ done (**2.43.1**) |
+| ENH-075 | 🔧 | vp-rollback AUQ checkpoint selection + Show more/older + --limit flag | medium | ✅ done (**2.43.0**) |
 | ENH-074 | 🔧 | Centralize shared framework to ~/.viepilot/ — single install source, eliminate adapter version drift | high | ❌ wont_fix |
 | ENH-073 | 🔧 | vp-persona — fully automated cross-project identity: inferPersona() from files+git, auto-switch, auto-merge, domain packs, adaptive calibration | high | ✅ done (**2.42.0**) |
 | ENH-072 | 🔧 | vp-* skill invocation version update check — notice banner when new ViePilot version available (npm registry, 24h cache) | medium | ✅ done (**2.41.0**) |

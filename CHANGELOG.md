@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.43.2] - 2026-04-25
+
+### Fixed
+- **BUG-023**: vp-brainstorm session-transition/next-steps prompt ("What would you like to
+  do next?" — crystallize / update UI artifacts / continue discussing) now uses
+  `AskUserQuestion` on Claude Code terminal; `workflows/brainstorm.md` +
+  `skills/vp-brainstorm/SKILL.md` updated (distinct from BUG-022 Q&A content choices)
+
 ## [2.43.1] - 2026-04-24
 
 ### Fixed

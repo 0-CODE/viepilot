@@ -3025,3 +3025,51 @@ more →" pagination option + "Enter tag manually". `--limit N` flag controls pa
 - [ ] `grep "head -20" workflows/rollback.md` returns empty (hardcode removed)
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.43.0`
+
+---
+
+### Phase 110: BUG-022 — vp-brainstorm mid-session AUQ for structured choices
+**Goal**: Fix missing `AskUserQuestion` calls for mid-session direction/decision questions
+in `vp-brainstorm`. Add a rule: when presenting ≥2 discrete named options during Q&A,
+use AUQ on Claude Code terminal. Free-form questions remain plain text. Update SKILL.md
+"Prompts using AUQ" list.
+**Estimated Tasks**: 3
+**Status**: ✅ Complete → v2.43.1
+**Dependencies**: ENH-059 ✅, Phase 109 ✅
+**Directory**: `.viepilot/phases/110-bug022-brainstorm-midsession-auq/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 110.1 | `workflows/brainstorm.md` — mid-session AUQ rule in `### Interactive Q&A` | Rule present; ≥2 options trigger; exemptions documented; per-decision constraint | S |
+| 110.2 | `skills/vp-brainstorm/SKILL.md` — expand "Prompts using AUQ" with mid-session entry | Mid-session entry + BUG-022 ref in prompts list | S |
+| 110.3 | Tests (≥10) + CHANGELOG [2.43.1] + version bump | ≥10 tests pass; CHANGELOG; package.json = 2.43.1 | S |
+
+**Verification**:
+- [ ] `grep "Mid-session\|BUG-022" workflows/brainstorm.md` shows rule
+- [ ] `grep "mid-session\|Mid-session" skills/vp-brainstorm/SKILL.md` shows entry
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.43.1`
+
+---
+
+## Phase 111 — BUG-023: vp-brainstorm session-transition prompt missing AUQ
+
+**Goal**: Fix missing `AskUserQuestion` for the mid-session session-FLOW transition prompt
+in `vp-brainstorm` — the "What would you like to do next?" control point that appears at
+section/topic boundaries (distinct from BUG-022 which covers Q&A content choices).
+**Estimated Tasks**: 3
+**Status**: 🔄 In Progress
+**Dependencies**: BUG-022 ✅ (Phase 110)
+**Directory**: `.viepilot/phases/111-bug023-brainstorm-transition-auq/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 111.1 | `workflows/brainstorm.md` — session-transition AUQ rule after BUG-022 rule | Rule present; session-flow scope; canonical options; scope note vs BUG-022 | S |
+| 111.2 | `skills/vp-brainstorm/SKILL.md` — add session-transition entry to "Prompts using AUQ" | Entry + BUG-023 ref present | S |
+| 111.3 | Tests (≥10) + CHANGELOG [2.43.2] + version bump | ≥10 tests pass; CHANGELOG; package.json = 2.43.2 | S |
+
+**Verification**:
+- [ ] `grep "BUG-023\|Mid-session Transition" workflows/brainstorm.md` shows rule
+- [ ] `grep "BUG-023\|session.transition" skills/vp-brainstorm/SKILL.md` shows entry
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.43.2`
