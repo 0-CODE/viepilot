@@ -2944,3 +2944,26 @@
 - [ ] `grep -c "Embedded Domain Mode" skills/vp-brainstorm/SKILL.md` ≥ 1
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.40.0`
+
+---
+
+### Phase 107: ENH-072 — vp-* Skill Invocation Version Update Check
+**Goal**: When any `vp-*` skill is invoked, check npm registry for a newer ViePilot version (cached 24h). If an update is available, display a non-blocking notice banner after the greeting banner. Adds `checkLatestVersion()` to `lib/viepilot-update.cjs`, a `check-update` subcommand to `bin/vp-tools.cjs`, and a `<version_check>` block to all 17 `vp-*` SKILL.md files.
+**Estimated Tasks**: 4
+**Status**: ⏳ Planned → v2.41.0
+**Dependencies**: ENH-056 ✅, ENH-059 ✅, Phase 106 ✅
+**Directory**: `.viepilot/phases/107-enh072-version-update-check/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 107.1 | `lib/viepilot-update.cjs` — add `checkLatestVersion()` + 24h cache in `~/.viepilot/update-cache.json` | Exports function; cache TTL works; silent on all errors | M |
+| 107.2 | `bin/vp-tools.cjs` — add `check-update` subcommand (`--silent`, `--json`, `--force`) | --silent exits 1 when update available; --json prints JSON; --force bypasses cache | M |
+| 107.3 | All 17 `skills/vp-*/SKILL.md` — add `<version_check>` block after `<greeting>` | Block present in all 17 files; correct position and content | M |
+| 107.4 | `tests/unit/` (≥10 tests) + `CHANGELOG.md` [2.41.0] + `package.json` 2.41.0 | All tests pass; full suite clean; version bumped | S |
+
+**Verification**:
+- [ ] `node -e "require('./lib/viepilot-update.cjs').checkLatestVersion" | head -1` prints `[Function: checkLatestVersion]`
+- [ ] `node bin/vp-tools.cjs check-update --json` prints JSON without error
+- [ ] `grep -l "version_check" skills/vp-*/SKILL.md | wc -l` = 17
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.41.0`
