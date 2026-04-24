@@ -1158,6 +1158,52 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * ENH-072: Check npm registry for newer ViePilot version (24h cached).
+   * --silent  exit 0 if up-to-date (no output); exit 1 + print latest if update available
+   * --json    print { installed, latest, has_update }; always exit 0
+   * --force   bypass 24h cache
+   */
+  'check-update': (args) => {
+    const silent = args.includes('--silent');
+    const json = args.includes('--json');
+    const force = args.includes('--force');
+    const { checkLatestVersion } = require('../lib/viepilot-update.cjs');
+
+    checkLatestVersion({ force })
+      .then(({ upToDate, installed, latest }) => {
+        const has_update = !upToDate;
+        if (json) {
+          process.stdout.write(JSON.stringify({ installed, latest, has_update }) + '\n');
+          process.exit(0);
+        }
+        if (silent) {
+          if (has_update) {
+            process.stdout.write(latest + '\n');
+            process.exit(1);
+          } else {
+            process.exit(0);
+          }
+        }
+        // default human-readable output
+        if (has_update) {
+          process.stdout.write(
+            `\n┌──────────────────────────────────────────────────────────────────┐\n` +
+            `│ ✨ ViePilot v${latest} available  (installed: v${installed})`.padEnd(69) + '│\n' +
+            `│    npm i -g viepilot && vp-tools install`.padEnd(69) + '│\n' +
+            `└──────────────────────────────────────────────────────────────────┘\n`
+          );
+          process.exit(1);
+        } else {
+          process.stdout.write(`ViePilot ${installed} is up to date.\n`);
+          process.exit(0);
+        }
+      })
+      .catch(() => {
+        process.exit(0);
+      });
+  },
+
+  /**
    * Scan installed skills and rebuild ~/.viepilot/skill-registry.json (BUG-019)
    */
   'scan-skills': (_args) => {
@@ -1270,6 +1316,20 @@ ${colors.cyan}Examples:${colors.reset}
         options: [],
         examples: ['vp-tools scan-skills'],
       },
+      'check-update': {
+        usage: 'vp-tools check-update [--silent] [--json] [--force]',
+        description: 'Check for latest ViePilot version on npm registry (24h cached)',
+        options: [
+          '--silent  Exit 0 if up-to-date (no output); exit 1 + print latest if update available',
+          '--json    Print { installed, latest, has_update }; always exit 0',
+          '--force   Bypass 24h cache and check now',
+        ],
+        examples: [
+          'vp-tools check-update --silent',
+          'vp-tools check-update --json',
+          'vp-tools check-update --force',
+        ],
+      },
       update: {
         usage: 'vp-tools update [--dry-run] [--yes] [--global]',
         description: 'Update viepilot to npm latest (local dependency, global install, or explicit --global)',
@@ -1330,6 +1390,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}save-state${colors.reset}               Save current state for precise resume
   ${colors.bold}get-registry${colors.reset} [--id <id>] Output global skill registry as JSON
   ${colors.bold}scan-skills${colors.reset}               Scan installed skills → ~/.viepilot/skill-registry.json
+  ${colors.bold}check-update${colors.reset} [--silent]   Check for latest ViePilot version on npm (24h cached)
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
