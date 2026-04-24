@@ -2950,7 +2950,7 @@
 ### Phase 107: ENH-072 — vp-* Skill Invocation Version Update Check
 **Goal**: When any `vp-*` skill is invoked, check npm registry for a newer ViePilot version (cached 24h). If an update is available, display a non-blocking notice banner after the greeting banner. Adds `checkLatestVersion()` to `lib/viepilot-update.cjs`, a `check-update` subcommand to `bin/vp-tools.cjs`, and a `<version_check>` block to all 17 `vp-*` SKILL.md files.
 **Estimated Tasks**: 4
-**Status**: ⏳ Planned → v2.41.0
+**Status**: ✅ Complete → v2.41.0
 **Dependencies**: ENH-056 ✅, ENH-059 ✅, Phase 106 ✅
 **Directory**: `.viepilot/phases/107-enh072-version-update-check/`
 

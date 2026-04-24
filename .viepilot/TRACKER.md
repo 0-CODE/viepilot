@@ -176,6 +176,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-23 | Phase 106 shipped: ENH-071 (brainstorm.md Embedded Domain Mode + 6 pages + crystallize exports + 36 tests) — **2.40.0** | `/vp-auto` | M1.37 |
 | 2026-04-23 | ENH-072 logged: vp-* skill invocation version update check — check-update CLI + `<version_check>` block in all vp-* SKILL.md + 24h npm registry cache | `/vp-request` | Backlog |
 | 2026-04-24 | Phase 107 planned: ENH-072 version update check (4 tasks — checkLatestVersion + check-update CLI + SKILL.md blocks + tests), target **2.41.0** | `/vp-evolve` | M1.37 |
+| 2026-04-24 | Phase 107 shipped: ENH-072 (checkLatestVersion + check-update CLI + 18 SKILL.md blocks + 16 tests) — **2.41.0** | `/vp-auto` | M1.37 |
 
 ## Blockers
 _None currently_
@@ -188,7 +189,7 @@ _Phase 89 complete (ENH-061 → 2.25.0). Ready for next request or publish._
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-072 | 🔧 | vp-* skill invocation version update check — notice banner when new ViePilot version available (npm registry, 24h cache) | medium | triaged (→ Phase 107) |
+| ENH-072 | 🔧 | vp-* skill invocation version update check — notice banner when new ViePilot version available (npm registry, 24h cache) | medium | ✅ done (**2.41.0**) |
 | BUG-021 | 🐛 | Antigravity adapter install path outdated — skills not discovered after Gemini rebrand (`.antigravity/` → `.gemini/antigravity/`) | high | ✅ done (**2.39.1**) |
 | ENH-071 | 🔧 | vp-brainstorm Embedded Domain Mode — 10 gaps (hw-topology, pin-map, memory-layout, RTOS, protocol-matrix, power-budget, MCU toolchain, safety, UI-Direction suppression, firmware phase template) | medium | triaged (→ Phase 106) |
 | BUG-017 | 🐛 | vp-evolve/vp-request Step 5/6 thiếu AUQ call trong `<process>` body — `@` workflow ref không auto-expand | high | triaged (→ Phase 95) |
