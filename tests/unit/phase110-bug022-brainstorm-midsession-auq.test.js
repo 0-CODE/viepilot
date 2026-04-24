@@ -81,10 +81,9 @@ describe('skills/vp-brainstorm/SKILL.md — expanded AUQ prompts list', () => {
 describe('version + changelog', () => {
   test('package.json version is 2.43.1 or later', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf8'));
-    const [major, minor, patch] = pkg.version.split('.').map(Number);
+    const [major, minor] = pkg.version.split('.').map(Number);
     expect(major).toBe(2);
-    expect(minor).toBe(43);
-    expect(patch).toBeGreaterThanOrEqual(1);
+    expect(minor).toBeGreaterThanOrEqual(43);
   });
 
   test('CHANGELOG contains [2.43.1] entry', () => {

@@ -1411,6 +1411,75 @@ If notes.md contains any of: `## hw_topology`, `## pin_map`, `## memory_layout`,
 
 ---
 
+### Step 1D.14 — Design.MD Export (ENH-076)
+
+**Trigger (gate fires when ANY of):**
+- `design.md` exists in `.viepilot/ui-direction/{session-id}/`
+- `notes.md` contains `## design_tokens` section
+- Brainstorm session text contains ≥3 design keywords: `color` / `font` / `brand` / `spacing` / `typography` / `palette` / `theme` / `rounded` / `style`
+
+**Skip conditions (gate does NOT fire when ANY of):**
+- `notes.md` has `design_md_status: skipped` (idempotent — user already skipped this session)
+- `notes.md` has `design_md_status: exported` (already exported this session)
+- Session has no UI components and no design keywords
+
+**Gate — AUQ (mandatory-acknowledge — user must select one option):**
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+>   - question: "Design tokens found in this session. What would you like to do with design.md?"
+>   - header: "design.md"
+>   - options:
+>     - label: "Export to project root" (Recommended)
+>       description: "Copy design.md, update ARCHITECTURE.md + PROJECT-CONTEXT.md"
+>     - label: "Finalize & export"
+>       description: "Complete any missing tokens via Q&A, then export"
+>     - label: "Skip this time"
+>       description: "Note: vp-auto will not apply brand tokens to UI tasks"
+> **Cursor / Codex / Antigravity / Copilot:** present as plain numbered list.
+
+**Export pipeline (options 1 + 2):**
+
+1. **Source:** `.viepilot/ui-direction/{session-id}/design.md`
+2. **Destination:** `{project-root}/design.md`
+   - If `design.md` already exists at project root → AUQ (or plain numbered list on non-terminal):
+     Override with new tokens / Merge (new fills gaps, existing takes precedence) / Keep existing / View diff
+3. **Update `ARCHITECTURE.md`** — append `## Design System` section:
+   ```markdown
+   ## Design System
+
+   > Generated from Design.MD spec (v1)
+   > Source: `.viepilot/ui-direction/{session-id}/design.md`
+   > Last updated: {crystallize-date}
+
+   | Category | Token | Value |
+   |----------|-------|-------|
+   | Colors | primary | {hex} |
+   | Colors | surface | {hex} |
+   | Typography | fontFamily | {font} |
+   | Spacing | base | {n}px |
+
+   **Full spec:** See `design.md` at project root.
+   ```
+4. **Update `PROJECT-CONTEXT.md`** — add field:
+   ```
+   design_md: true
+   ```
+5. **Update `notes.md`** — set:
+   ```yaml
+   design_md_status: exported
+   design_md_exported_at: {timestamp}
+   ```
+
+**Skip pipeline (option 3):**
+- Write to `notes.md`:
+  ```yaml
+  design_md_status: skipped
+  design_md_skipped_at: {timestamp}
+  ```
+- Show warning: `⚠️  design.md skipped — vp-auto will not apply brand tokens to UI tasks`
+
+---
+
 ### Step 1D-a: arch_to_ui_sync noted items → UI Pages → Component Map (ENH-069 Gap 5)
 
 After reading `notes.md → ## arch_to_ui_sync[]`, for each entry with `status: noted`:

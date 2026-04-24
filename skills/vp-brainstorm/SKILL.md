@@ -137,7 +137,7 @@ Optional flags:
 - `--list` : List all sessions
 - `--landing` : Prioritize the Landing Page layout discovery flow
 - `--research` : Enable proactive research suggestions during the session
-- `--ui` : Enable UI Direction mode (live HTML/CSS direction artifacts)
+- `--ui` : Enable UI Direction mode (live HTML/CSS direction artifacts + auto-generates `design.md` when design keywords present — ENH-076)
 - `--domain embedded` : Force-activate Embedded Domain Mode (hardware topology, RTOS, pin map, memory layout, protocol matrix, power budget pages + topic probes)
 </context>
 
@@ -215,6 +215,7 @@ Key steps:
 - [ ] **FEAT-010 + ENH-019 + ENH-020**: `/research-ui` (when `--ui`) runs all 3 phases, including **content stress pass** + **archetype recipes** + **`## UX walkthrough log`** (with **Stress findings**) when prototype is updated
 - [ ] `## Phases` present with Phase 1 having real content when scope is discussed
 - [ ] **FEAT-009**: intake completed, binding already present, **or** waiver with reason before Completed; session records **`## Project meta intake (FEAT-009)`**
+- [ ] **ENH-076**: `design.md` generated in session directory when UI mode active and ≥2 design keywords present; `notes.md ## design_tokens` populated
 - [ ] Next steps suggested
 </success_criteria>
 

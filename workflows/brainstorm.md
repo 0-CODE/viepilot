@@ -523,6 +523,71 @@ If the user is brainstorming a project with UI/UX or requests a visual design:
    - Update HTML/CSS direction directly
    - Record decision + rationale in `notes.md` (single source of truth for design intent)
 
+### Design Token Extraction (ENH-076)
+
+**Trigger:** UI Direction Mode active (`--ui` flag) OR ≥2 design keywords detected in session:
+`color` / `font` / `brand` / `spacing` / `typography` / `palette` / `theme` / `style`
+
+**Extraction process:**
+During Q&A, AI tracks design decisions and maps them to a TOKEN_MAP:
+- Color mentions → `tokens.colors.*` (primary, surface, accent, error, success, warning)
+- Font/typeface mentions → `tokens.typography.fontFamily`, `fontSize`
+- Size/scale/rhythm mentions → `tokens.spacing.base`, `tokens.spacing.scale`
+- Roundness/corner mentions → `tokens.rounded.*` (sm/md/lg/full)
+
+**Output — `.viepilot/ui-direction/{session-id}/design.md`** (Design.MD v1 spec):
+```yaml
+---
+name: "{project-name}"
+description: "{one-line brand description from session}"
+colors:
+  primary: "{hex}"
+  surface: "{hex}"
+  accent: "{hex}"
+typography:
+  fontFamily: "{font}, sans-serif"
+  fontSize:
+    base: 16
+spacing:
+  base: 8
+  scale: [4, 8, 16, 24, 32, 48]
+rounded:
+  sm: 4px
+  md: 8px
+---
+
+## Overview
+{Brand personality extracted from session}
+
+## Colors
+{Color rationale from session decisions}
+
+## Typography
+{Font rationale from session decisions}
+```
+
+**notes.md section added** (append to session notes.md):
+```yaml
+## design_tokens
+colors:
+  primary: "{hex}"
+typography:
+  fontFamily: "{font}"
+spacing_base: 8
+design_md_path: .viepilot/ui-direction/{session-id}/design.md
+design_md_generated: true
+```
+
+**After generation:** Show inline summary:
+```
+🎨 Design.MD generated: primary={hex} | font={font} | spacing={n}px
+   Path: .viepilot/ui-direction/{session-id}/design.md
+```
+
+**Incremental updates:** If user refines a color or font later in the session, update
+`design.md` and `notes.md ## design_tokens` in place (same as how `index.html` is updated
+incrementally as design decisions evolve).
+
 ### Skill Registry Integration (FEAT-020)
 
 **Trigger**: UI Direction Mode is active (at least one HTML file being generated or updated).

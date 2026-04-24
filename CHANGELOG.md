@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.44.0] - 2026-04-25
+
+### Enhanced
+- **ENH-076.1**: vp-brainstorm `--ui` mode now auto-extracts design tokens → generates
+  `design.md` (Design.MD v1 spec) in session directory alongside `index.html`; `notes.md`
+  gets `## design_tokens` YAML section with `design_md_path` pointer (ENH-076)
+- **ENH-076.2**: vp-crystallize Step 1D.14 — mandatory-acknowledge gate for design.md:
+  export to project root + `ARCHITECTURE.md ## Design System` + `PROJECT-CONTEXT.md` flag;
+  idempotent skip writes `design_md_status: skipped`; conflict handling: Override/Merge/Keep/Diff (ENH-076)
+
 ## [2.43.2] - 2026-04-25
 
 ### Fixed
