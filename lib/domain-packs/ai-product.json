@@ -1,0 +1,33 @@
+{
+  "id": "ai-product",
+  "label": "AI Product / LLM Application",
+  "topic_priority": ["llm-integration", "rag-pipeline", "prompt-mgmt", "eval", "ux", "guardrails"],
+  "extra_topics": [
+    {
+      "id": "llm-integration",
+      "label": "LLM Integration",
+      "questions": ["LLM provider (OpenAI/Anthropic/Gemini/local)?", "Model selection strategy (cost vs quality)?", "Streaming vs batch response?", "Fallback chain if primary model fails?"]
+    },
+    {
+      "id": "rag-pipeline",
+      "label": "RAG Pipeline",
+      "questions": ["Document ingestion format (PDF/HTML/Markdown)?", "Chunking strategy (fixed/semantic/hierarchical)?", "Vector DB (Pinecone/Qdrant/pgvector/Chroma)?", "Embedding model?", "Retrieval method (semantic/hybrid/BM25)?"]
+    },
+    {
+      "id": "prompt-mgmt",
+      "label": "Prompt Management",
+      "questions": ["Prompt versioning strategy?", "Prompt storage (DB/Git/Langfuse)?", "System prompt vs user prompt separation?", "Prompt injection protection?"]
+    },
+    {
+      "id": "eval-feedback",
+      "label": "Eval & Feedback Loop",
+      "questions": ["Eval framework (RAGAS/DeepEval/custom)?", "Human feedback collection (thumbs up/down/rubric)?", "Evals in CI/CD pipeline?", "Latency + cost tracking per request?"]
+    }
+  ],
+  "phase_template": {
+    "name": "ai-product",
+    "phases": ["LLM Wrapper & Auth", "Prompt Engineering & RAG", "Eval Pipeline", "UX & Feedback Loop", "Guardrails & Cost Control"]
+  },
+  "architect_pages": ["llm-arch.html", "rag-flow.html"],
+  "stacks_hint": ["langchain", "openai", "anthropic", "pgvector", "fastapi", "nextjs", "redis"]
+}

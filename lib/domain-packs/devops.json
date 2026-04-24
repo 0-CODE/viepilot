@@ -1,0 +1,33 @@
+{
+  "id": "devops",
+  "label": "DevOps / Platform Engineering",
+  "topic_priority": ["infra", "ci-cd", "observability", "slo", "incident-mgmt", "security"],
+  "extra_topics": [
+    {
+      "id": "iac",
+      "label": "Infrastructure as Code",
+      "questions": ["IaC tool (Terraform/Pulumi/CloudFormation/CDK)?", "Cloud provider (AWS/GCP/Azure/multi)?", "State backend (S3/GCS/Terraform Cloud)?", "Module/stack organization strategy?"]
+    },
+    {
+      "id": "ci-cd",
+      "label": "CI/CD Pipeline",
+      "questions": ["CI platform (GitHub Actions/GitLab CI/CircleCI/Jenkins)?", "Deploy strategy (blue-green/canary/rolling)?", "Secrets management (Vault/AWS SSM/GitHub Secrets)?", "PR-level preview environments?"]
+    },
+    {
+      "id": "slo-sla",
+      "label": "SLO / SLA",
+      "questions": ["Availability target (99.9%/99.99%)?", "Latency SLOs (p95/p99)?", "Error budget policy?", "SLO monitoring tool (Datadog/Prometheus/Grafana)?"]
+    },
+    {
+      "id": "incident-mgmt",
+      "label": "Incident Management",
+      "questions": ["On-call rotation tool (PagerDuty/OpsGenie/Rootly)?", "Runbook format and storage?", "Post-mortem process?", "Alert fatigue mitigation strategy?"]
+    }
+  ],
+  "phase_template": {
+    "name": "infra-ops",
+    "phases": ["Infrastructure Foundation", "CI/CD & Automation", "Observability & Alerting", "Runbooks & Incident Response"]
+  },
+  "architect_pages": ["infra-topology.html", "slo.html"],
+  "stacks_hint": ["terraform", "docker", "kubernetes", "prometheus", "grafana", "github-actions"]
+}

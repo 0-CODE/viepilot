@@ -1,0 +1,33 @@
+{
+  "id": "mobile",
+  "label": "Mobile App",
+  "topic_priority": ["auth", "core-features", "offline-sync", "push-notifications", "app-store", "deep-links"],
+  "extra_topics": [
+    {
+      "id": "push-notifications",
+      "label": "Push Notifications",
+      "questions": ["Push provider (FCM/APNs/OneSignal/Expo)?", "Notification categories and opt-in flow?", "Deep link handling from notification tap?", "Background/foreground handling?"]
+    },
+    {
+      "id": "offline-sync",
+      "label": "Offline Sync",
+      "questions": ["Offline-first or online-required?", "Conflict resolution strategy (last-write-wins/CRDT/manual)?", "Local storage (SQLite/Realm/AsyncStorage/Core Data)?", "Sync trigger (background/explicit/realtime)?"]
+    },
+    {
+      "id": "app-store",
+      "label": "App Store Submission",
+      "questions": ["Target platforms (iOS/Android/both)?", "App review checklist (privacy policy, ATT prompt, entitlements)?", "CI/CD for store deployment (Fastlane/EAS/Bitrise)?"]
+    },
+    {
+      "id": "deep-links",
+      "label": "Deep Links & Universal Links",
+      "questions": ["URL scheme vs universal links?", "Deferred deep linking (install → open specific screen)?", "Attribution provider (Branch/AppsFlyer/Adjust)?"]
+    }
+  ],
+  "phase_template": {
+    "name": "mobile-launch",
+    "phases": ["Auth & Navigation", "Core Features", "Offline & Sync", "Store Submission & Launch"]
+  },
+  "architect_pages": ["mobile-flow.html", "push.html"],
+  "stacks_hint": ["react-native", "expo", "flutter", "firebase", "postgresql"]
+}

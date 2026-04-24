@@ -32,8 +32,33 @@ If the user writes in a different language during the session, that takes preced
 If `~/.viepilot/config.json` is absent, default to `en` — do not fail.
 </step>
 
+<step name="persona_domain_pack">
+## 0B. Persona Domain Pack Integration (ENH-073)
+
+At session start, before presenting topics, run:
+```bash
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona auto-switch
+node "$HOME/.claude/viepilot/bin/vp-tools.cjs" persona context
+```
+
+Store the result as `PERSONA_CONTEXT`. If command unavailable or errors → `PERSONA_CONTEXT = null`, continue silently.
+
+**If `PERSONA_CONTEXT` is available:**
+1. Read `persona.domain` — load corresponding `lib/domain-packs/{domain}.json`
+   - If domain is array (merged persona): load all packs and union their fields
+2. Apply to topic list:
+   - Prepend `extra_topics` not already in template (injected before session topics)
+   - Reorder template topics by `topic_priority` (matching topics float to top)
+   - Remove topics whose id is in `persona.brainstorm.topic_skip`
+3. When phase discussion begins: suggest `phase_template.phases` from domain pack as default ordering
+4. When Architect Design Mode activates: add domain pack `architect_pages` to workspace
+5. If `persona.confidence < 0.6`: add inline note "(persona auto-detected, may be inaccurate — run /vp-persona to refine)" — not a blocking prompt
+
+**Persona context is silently injected into the session — no banner, no AUQ.**
+</step>
+
 <step name="detect_embedded_domain">
-## 0B. Detect Embedded Domain (ENH-071)
+## 0C. Detect Embedded Domain (ENH-071)
 
 Scan the user's **initial message** (and, on `--continue`, the prior session content) for embedded trigger keywords.
 

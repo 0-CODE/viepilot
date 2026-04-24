@@ -1,0 +1,33 @@
+{
+  "id": "web-saas",
+  "label": "Web SaaS",
+  "topic_priority": ["auth", "user-data", "api", "billing", "admin", "onboarding", "content-mgmt"],
+  "extra_topics": [
+    {
+      "id": "billing",
+      "label": "Billing & Subscriptions",
+      "questions": ["Payment provider (Stripe/Paddle/LemonSqueezy)?", "Pricing model (flat/usage/per-seat)?", "Free trial or freemium tier?", "Proration on plan change?"]
+    },
+    {
+      "id": "multi-tenant",
+      "label": "Multi-tenancy",
+      "questions": ["Tenant isolation: row-level, schema-per-tenant, or separate DB?", "How are tenants identified (subdomain/slug/org)?", "Cross-tenant data visibility rules?"]
+    },
+    {
+      "id": "onboarding",
+      "label": "User Onboarding",
+      "questions": ["Onboarding flow steps (email verify → profile → invite team)?", "Guided setup wizard?", "Empty-state design for new accounts?"]
+    },
+    {
+      "id": "trial-freemium",
+      "label": "Trial / Freemium",
+      "questions": ["Trial duration?", "Feature gating strategy (usage caps vs feature flags)?", "Upgrade CTA placement?"]
+    }
+  ],
+  "phase_template": {
+    "name": "lean-startup",
+    "phases": ["Auth & Identity", "Core Features", "Monetization", "Scale & Ops"]
+  },
+  "architect_pages": ["billing.html", "tenant.html"],
+  "stacks_hint": ["nextjs", "nestjs", "postgresql", "stripe", "redis", "tailwind"]
+}

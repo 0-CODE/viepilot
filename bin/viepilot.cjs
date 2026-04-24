@@ -567,6 +567,38 @@ async function main() {
     }
   }
 
+  if (command === 'install-domain') {
+    const packName = rest[0];
+    if (!packName) {
+      console.error('Usage: viepilot install-domain <pack-name>');
+      console.error('Example: viepilot install-domain fintech');
+      process.exit(1);
+    }
+    const npmPkg = `viepilot-domain-${packName}`;
+    const { execSync } = require('child_process');
+    const path = require('path');
+    const fs = require('fs');
+    try {
+      console.log(`Installing ${npmPkg}...`);
+      execSync(`npm install ${npmPkg}`, { stdio: 'inherit' });
+      // Copy domain-pack.json from installed package to lib/domain-packs/
+      const pkgRoot = path.dirname(require.resolve(`${npmPkg}/package.json`));
+      const packFile = path.join(pkgRoot, 'domain-pack.json');
+      if (fs.existsSync(packFile)) {
+        const dest = path.join(__dirname, '..', 'lib', 'domain-packs', `${packName}.json`);
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.copyFileSync(packFile, dest);
+        console.log(`Domain pack '${packName}' installed → lib/domain-packs/${packName}.json`);
+      } else {
+        console.warn(`Installed ${npmPkg} but no domain-pack.json found.`);
+      }
+      process.exit(0);
+    } catch (err) {
+      console.error(`Failed to install ${npmPkg}: ${err.message}`);
+      process.exit(1);
+    }
+  }
+
   if (command !== 'install' && command !== 'uninstall') {
     console.error(`Unknown command: ${command}`);
     printHelp();

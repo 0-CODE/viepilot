@@ -1,0 +1,33 @@
+{
+  "id": "data-science",
+  "label": "Data Science / ML",
+  "topic_priority": ["dataset", "eda", "model-training", "evaluation", "serving", "monitoring"],
+  "extra_topics": [
+    {
+      "id": "dataset",
+      "label": "Dataset Management",
+      "questions": ["Data sources (structured/unstructured/streaming)?", "Data versioning strategy (DVC/Delta Lake/LakeFS)?", "PII/sensitive data handling?", "Train/val/test split strategy?"]
+    },
+    {
+      "id": "model-versioning",
+      "label": "Model Versioning",
+      "questions": ["Model registry (MLflow/W&B/SageMaker)?", "Experiment tracking metadata?", "Artifact storage (S3/GCS/local)?"]
+    },
+    {
+      "id": "drift-monitoring",
+      "label": "Drift & Quality Monitoring",
+      "questions": ["Data drift detection (Evidently/WhyLogs/custom)?", "Model performance degradation alerts?", "Retraining trigger strategy?"]
+    },
+    {
+      "id": "eval-pipeline",
+      "label": "Evaluation Pipeline",
+      "questions": ["Offline eval metrics (AUC/F1/BLEU/ROUGE)?", "Human eval process?", "A/B testing framework for model versions?"]
+    }
+  ],
+  "phase_template": {
+    "name": "ml-pipeline",
+    "phases": ["Data Ingestion & EDA", "Feature Engineering & Training", "Evaluation & Registry", "Serving & API", "Monitoring & Retraining"]
+  },
+  "architect_pages": ["ml-pipeline.html", "data-lineage.html"],
+  "stacks_hint": ["python", "pandas", "pytorch", "fastapi", "mlflow", "postgresql", "redis"]
+}
