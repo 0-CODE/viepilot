@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.41.0] - 2026-04-24
+
+### Added
+- **ENH-072** — vp-* skill invocation version update check
+  - `lib/viepilot-update.cjs`: `checkLatestVersion()` — fetches latest version from npm registry (`https://registry.npmjs.org/viepilot/latest`) with 3s timeout; caches result 24h in `~/.viepilot/update-cache.json`; silent on all failures (network error, timeout, parse error, unreadable cache)
+  - `bin/vp-tools.cjs`: `check-update` subcommand — `--silent` exits 1 + prints latest when update available (exits 0 when up-to-date); `--json` prints `{ installed, latest, has_update }`; `--force` bypasses 24h cache
+  - All 18 `skills/vp-*/SKILL.md` files: `<version_check>` block inserted after `<greeting>` — runs `vp-tools check-update --silent` after the greeting banner; shows notice banner if exit=1; suppressed by `--no-update-check` flag or `config.json update.check: false`; shown at most once per session via `update_check_done` guard
+
 ## [2.40.0] - 2026-04-23
 
 ### Added
