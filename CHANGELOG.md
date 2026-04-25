@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.44.1] - 2026-04-25
+
+### Enhanced
+- **ENH-076.3**: vp-auto Preflight 5.5 — Design.MD TOKEN_MAP injection for UI tasks:
+  Level 1 silent context injection, Level 2 checklist items (UI ACs), Level 3 post-task
+  audit with auto-fix; backend-only tasks skip injection; monorepo nearest-file rule (ENH-076)
+
 ## [2.44.0] - 2026-04-25
 
 ### Enhanced

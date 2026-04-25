@@ -310,6 +310,55 @@ If stack cache is missing:
 - warn and optionally run quick research
 - then continue with explicit assumptions noted in task logs
 
+#### Preflight 5.5 — Design.MD Token Injection (ENH-076)
+
+After Stack Preflight, if `design.md` exists at project root (or nearest parent directory):
+
+**Step A — Build TOKEN_MAP** (parse YAML front matter):
+- `TOKEN_MAP.colors.*` — primary, surface, accent, error, success, warning
+- `TOKEN_MAP.typography.*` — fontFamily, fontSize, fontWeight, lineHeight
+- `TOKEN_MAP.spacing.*` — base, scale
+- `TOKEN_MAP.rounded.*` — sm, md, lg, full
+
+**Step B — UI task detection** (check task title + file paths + objective text):
+```
+UI_KEYWORDS = [
+  html, css, style, component, tailwind, layout, button, card,
+  form, page, ui, frontend, color, font, typography, responsive, design
+]
+```
+If NO UI_KEYWORDS matched → skip Design.MD injection entirely for this task.
+
+**Step C — Injection levels (when UI task detected):**
+
+- **Level 1 — Silent context injection (always):**
+  Token map injected as implicit constraint in execution context.
+  AI naturally applies brand tokens when generating HTML/CSS.
+  No output shown to user.
+
+- **Level 2 — Checklist items (when task has explicit UI acceptance criteria):**
+  Auto-append to task checklist:
+  ```
+  - [ ] Primary color uses TOKEN_MAP.colors.primary (or var(--color-primary))
+  - [ ] Font family matches TOKEN_MAP.typography.fontFamily
+  - [ ] Spacing follows TOKEN_MAP.spacing.base unit
+  ```
+
+- **Level 3 — Post-task design audit (when task output includes .html or .css files):**
+  After generating output: scan for token deviations.
+  Auto-fix: obvious wrong fonts or exact hex mismatches.
+  AUQ on Claude Code terminal when judgment call required.
+  Report:
+  ```
+  🎨 Design.MD check: ✅ Colors  ✅ Typography  ⚠️ 1 spacing deviation (auto-fixed)
+  ```
+
+**Edge cases:**
+- Backend-only task (no UI_KEYWORDS) → skip entirely
+- design.md missing a token → inject only present tokens, no fail
+- Monorepo → nearest `design.md` wins (task dir → parent → project root)
+- Token conflict with Tailwind config → AUQ: Use design.md / Use Tailwind config / Update both
+
 #### Scaffold-First Gate (BUG-020)
 
 When the stack preflight identifies a **framework stack** AND the current task is a **project setup / init task** (keywords in title or objective: "set up", "initialize", "create project", "scaffold", "bootstrap", "new project", "install Laravel/Next/Nest/Rails/Django"):
