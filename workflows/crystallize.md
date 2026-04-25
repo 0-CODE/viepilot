@@ -1478,6 +1478,34 @@ If notes.md contains any of: `## hw_topology`, `## pin_map`, `## memory_layout`,
   ```
 - Show warning: `⚠️  design.md skipped — vp-auto will not apply brand tokens to UI tasks`
 
+**Post-Export Handoff: vp-design --sync (ENH-077)**
+
+After **successful export** (export pipeline steps 1–5 complete), offer sync handoff:
+
+**Skip condition:** If no stylesheet target detected (no `tailwind.config.js`, no `.css`, no `.scss` files in project) → skip AUQ silently. Print:
+> `Note: no stylesheet target detected. Run /vp-design --sync after adding your stylesheets.`
+
+Otherwise:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+>   - question: "design.md exported to project root. Sync design tokens to your stylesheets now?"
+>   - header: "Sync tokens?"
+>   - options:
+>     - label: "Run /vp-design --sync now (Recommended)"
+>       description: "Auto-applies tokens to Tailwind / CSS vars / SCSS — stack auto-detected"
+>     - label: "Skip — run manually later"
+>       description: "Run /vp-design --sync yourself when ready"
+>
+> **Cursor / Codex / Antigravity / Copilot:** Text fallback:
+> ```
+> design.md exported. Next step:
+>   /vp-design --sync    Apply tokens to Tailwind / CSS / SCSS
+> ```
+
+**On selection:**
+- "Run /vp-design --sync now" → invoke `/vp-design --sync` skill
+- "Skip" → print: `Tip: run /vp-design --sync to apply design tokens to your stylesheets.`
+
 ---
 
 ### Step 1D-a: arch_to_ui_sync noted items → UI Pages → Component Map (ENH-069 Gap 5)

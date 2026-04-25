@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.2] - 2026-04-25
+
+### Enhanced
+- **ENH-077**: crystallize Step 1D.14 now offers AUQ post-export handoff —
+  after design.md exports to project root, prompts "Sync tokens to stylesheets via
+  /vp-design --sync?" with Run now / Skip options; silent skip when no stylesheet
+  target detected (tailwind.config.js / .css / .scss absent) (ENH-077)
+
 ## [2.45.1] - 2026-04-25
 
 ### Enhanced
