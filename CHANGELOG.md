@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.0] - 2026-04-25
+
+### Added
+- **ENH-076.4**: New skill `vp-design` — manage Design.MD design system files:
+  `--init` (Q&A from scratch or awesome-design-md import from 55+ brands),
+  `--sync` (tokens → Tailwind / CSS custom properties / SCSS auto-detected),
+  `--audit` (compliance report with ❌/⚠️/✅ severity levels),
+  `--import [brand]` (community template picker with Apply/Customize/Reference modes) (ENH-076)
+
 ## [2.44.1] - 2026-04-25
 
 ### Enhanced
