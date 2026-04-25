@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.1] - 2026-04-25
+
+### Enhanced
+- **ENH-076.5**: Architect workspace adds `design.html` page when design.md or design tokens
+  are present — visual color swatches grid, typography scale table, spacing grid, border-radius
+  samples, component token table; bidirectional sync with notes.md `## design_tokens`;
+  hub nav link added to `index.html` (ENH-076)
+
 ## [2.45.0] - 2026-04-25
 
 ### Added

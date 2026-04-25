@@ -801,6 +801,23 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `entity-mgmt.html` | Admin entity CRUD matrix: entity name, admin ops (C/R/U/D), soft delete flag, bulk actions, audit trail, multi-tenant scope; import/export summary table (ENH-068) |
 | `content.html` | Content types, lifecycle states, creator permission matrix, taxonomy tree, media storage config, SEO field schema |
 | `user-data.html` | User-owned data: profile field list, privacy rights matrix (export/erasure), connected OAuth providers, session/device management, 2FA config, consent log schema |
+| `design.html` | Design system visual reference: color swatches grid, typography scale table, spacing grid, border-radius samples, component token table (ENH-076) |
+
+**design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_tokens` in `notes.md`).
+
+**design.html content sections:**
+
+1. **Color Palette** — swatch grid: colored square + hex value + semantic label, grouped as Brand (primary/accent) | Neutral (surface/muted) | Semantic (error/success/warning)
+2. **Typography Scale** — table: Level | Font Family | Size | Weight | Line Height | Example text (H1 → H2 → H3 → Body → Caption → Code)
+3. **Spacing Grid** — visual row of boxes with increasing widths (4px, 8px, 16px, 24px, 32px, 48px), labeled spacing-1 through spacing-12
+4. **Shape / Border Radius** — 4 visual boxes showing sharp/subtle/rounded/pill radii with CSS var labels (`--rounded-sm` → `--rounded-full`)
+5. **Component Tokens** — table: Component | Token | Value (rendered only if `components:` section exists in design.md)
+
+**Sync rule:** When `notes.md ## design_tokens` is updated (e.g. via new UI direction keywords), regenerate `design.html` sections — same incremental update pattern as other Architect pages.
+
+**Hub nav:** Add `<a href="design.html">🎨 Design System</a>` to `index.html` nav when `design.html` is created. Update `## Pages inventory` in `notes.md`.
+
+**Format:** Pure HTML + inline `<style>`, no external CSS/JS dependencies — consistent with all other Architect workspace pages.
 
 #### Admin & Governance Detection (ENH-063)
 
