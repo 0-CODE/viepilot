@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.6] - 2026-04-27
+
+### Fixed
+- **BUG-026**: `vp-brainstorm` internal session sub-commands (`/save`, `/research-ui`,
+  `/review-arch`, `/sync-ui`) conflicted with Claude Code's `/` command prefix —
+  typed as slash commands they were intercepted as unknown skill invocations.
+  Fix: removed all slash sub-command documentation; replaced with proactive AUQ
+  triggers that fire on intent detection (multi-language save signals: "save",
+  "done", "xong", "lưu"; UI walkthrough offered on research intent; arch review
+  offered on review intent). Consistent behavior across ALL adapters — no
+  adapter-specific typing rules (BUG-026)
+
 ## [2.45.5] - 2026-04-27
 
 ### Enhanced

@@ -1178,7 +1178,7 @@ When the user mentions: `user story`, `use case`, `actor`, `persona`, `as a user
 
 1. After each **major decision** (tech stack, service boundary, data model) → update the related HTML section + update `notes.md`.
 2. When the user **changes a decision** → **incremental update**: only edit the related section; keep all other sections unchanged. Add `data-updated="true"` attribute + class `.updated` CSS highlight (yellow left border + "updated" badge) to the changed element.
-3. **`/review-arch`** command → ViePilot outputs a summary table of all `decisions` (from `notes.md`) + list of `open_questions` with status; ask the user to confirm before continuing.
+3. **Architecture review trigger** — when user asks to review decisions ("review", "check architecture", "summarize choices", "what did we decide", or equivalent intent): ViePilot proactively outputs a summary table of all `decisions` (from `notes.md`) + list of `open_questions` with status, then asks the user to confirm before continuing. **Claude Code (terminal) — REQUIRED:** use `AskUserQuestion` to offer the review; text fallback on other adapters.
 
 #### Incremental update rule
 
@@ -1457,8 +1457,8 @@ This mirrors **Architect Design Mode** which proactively banners when system arc
 
 #### Surface triggers (when to ask the user)
 Display a confirmation dialogue when any of the following conditions occur:
-- (a) **Topic ends** — user types `/topic` to switch to a new topic or says "next"
-- (b) **User types `/save` or `/review`**
+- (a) **Topic ends** — user says "next", "next topic", or switches subject
+- (b) **User signals session end** — says "save", "done", "xong", "finished", "ready", "crystallize", "ready for crystallize", or equivalent intent in any language
 - (c) **≥2 unique signals accumulated** in the buffer
 
 #### Confirmation dialogue template
@@ -1490,12 +1490,16 @@ mkdir -p .viepilot/ui-direction/{session-id}
 
 ### UI Direction — UX walkthrough & upgrade (FEAT-010)
 
-When inside **`/vp-brainstorm --ui`** or a `.viepilot/ui-direction/{session-id}/` already exists for the current session, the user can invoke:
+When inside **`/vp-brainstorm --ui`** or a `.viepilot/ui-direction/{session-id}/` already exists for the current session, the UX walkthrough pipeline is **proactively triggered via AUQ** (BUG-026) when:
+- User mentions "research", "test", "UX review", "walkthrough", "simulate user", or equivalent intent
+- OR: ≥1 UI signal accumulated AND user signals topic end
 
-- **`/research-ui`** — runs the full pipeline below
-- **`/research ui`** — **alias** of `/research-ui` (space after `research`; does not conflict with `/research {free topic}`)
+**Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+- question: "Run UX walkthrough? (3-phase: simulate user → UX research → update HTML)"
+- header: "UX Walkthrough"
+- options: [{ label: "Yes — run full walkthrough (Recommended)", description: "Simulate end-user + content stress + research + update prototype" }, { label: "Skip for now", description: "Continue brainstorm; offer again at session end" }]
 
-The user can include one line of context (e.g., product name **Trips**, persona, priority flow) — entered in the same message as the command.
+The user can include one line of context (e.g., product name, persona, priority flow) — in the same message or as a follow-up after selecting "Yes".
 
 Apply **the phases sequentially** (assistant does not skip a phase unless the user explicitly says “phase 1 only”):
 
@@ -1623,6 +1627,23 @@ After intake is **completed** or a **valid skip** (META already has profile) →
 <step name="save_session">
 ## 6. Save Session
 
+### Save Trigger (BUG-026)
+
+The save step fires when the AI detects session-end intent — **no slash command required**.
+
+**Save intent signals** (any language):
+- "save", "done", "finished", "ready", "crystallize", "ready for crystallize", "let's save", "that's it", "wrap up"
+- Equivalent phrases in the session language (e.g. "xong", "luu", or any clear session-end signal)
+- Or: conversation reaches natural end (all topics covered, no new questions)
+
+**Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
+- question: "Save session and prepare for /vp-crystallize?"
+- header: "Save Session"
+- options: [{ label: "Save + prepare for crystallize (Recommended)", description: "Write session file, then offer /vp-crystallize handoff" }, { label: "Continue brainstorming", description: "Not done yet — keep going" }]
+
+On "Save + prepare": proceed to Pre-Save validation below, then write file, then offer crystallize handoff.
+On "Continue brainstorming": resume conversation.
+
 ### Pre-Save Phase Assignment Validation (ENH-052)
 
 Before writing the session file, validate phase assignment completeness:
@@ -1648,7 +1669,7 @@ CHECK 4 (ENH-061): If both Architect workspace AND UI Direction workspace are ac
     1. Assign all features to phases (## Phases section)
     2. Ensure Phase 1 has at least one feature
 
-  Return to the conversation to assign phases, then /save again.
+  Return to the conversation to assign phases, then signal done when ready (e.g. "save" or "xong").
   ```
 - If scope is **not** locked (exploratory session — no feature assignments):
   → **Allow save** with `Status: In Progress` and add advisory note to session file:
@@ -1660,7 +1681,7 @@ CHECK 4 (ENH-061): If both Architect workspace AND UI Direction workspace are ac
   ```
   ⚠️  Coverage gap detected — these Phase 1 features have no Architect or UI coverage:
   - {feature name}
-  Consider running /sync-ui or adding these features to a workspace before /vp-crystallize.
+  Consider asking to sync UI or adding these features to a workspace before /vp-crystallize.
   Proceed with save? (yes / skip coverage for now)
   ```
 - If brownfield stub session (`IS_BROWNFIELD=true`): **skip this gate** — brownfield stubs intentionally have no phases.
