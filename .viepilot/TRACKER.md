@@ -2,11 +2,11 @@
 
 ## Current State
 - **Milestone**: M1.37
-- **Current Phase**: **111** — 🔄 In Progress (BUG-023: vp-brainstorm session-transition AUQ)
-- **Last Completed Phase**: **110** — ✅ Complete (**BUG-022 vp-brainstorm mid-session AUQ** → **2.43.1**)
-- **Next Phase**: — (no planned phases after 111)
-- **Current Task**: 111.1
-- **Last Activity**: 2026-04-24 — Phase 111 planned: BUG-023 (3 tasks), target 2.43.2
+- **Current Phase**: —
+- **Last Completed Phase**: **117** — ✅ Complete (**BUG-025 brownfield crystallize AUQ initial entry gate** → **2.45.4**)
+- **Next Phase**: —
+- **Current Task**: —
+- **Last Activity**: 2026-04-27 — Phase 117 complete: BUG-025 brownfield entry gate AUQ → v2.45.4
 
 ## Progress Overview
 ```
@@ -190,19 +190,27 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-24 | Phase 110 shipped: BUG-022 (mid-session AUQ rule + SKILL.md + 14 tests) — **2.43.1** | `/vp-auto` | M1.37 |
 | 2026-04-24 | BUG-023 logged: vp-brainstorm session transition prompt not using AUQ (distinct from BUG-022) | `/vp-request` | Backlog |
 | 2026-04-24 | Phase 111 planned: BUG-023 (3 tasks — brainstorm.md transition rule + SKILL.md update + tests), target **2.43.2** | `/vp-evolve` | M1.37 |
+| 2026-04-25 | Phase 111 shipped: BUG-023 (session-transition AUQ rule + SKILL.md + 15 tests) — **2.43.2** | `/vp-auto` | M1.37 |
+| 2026-04-25 | ENH-076 logged: Design.MD full integration (brainstorm+crystallize+auto+vp-design+architect) — XL scope | `/vp-request` | Backlog |
+| 2026-04-25 | Phases 112–115 planned: ENH-076 split into 4 phases (2.44.0 → 2.44.1 → 2.45.0 → 2.45.1) | `/vp-evolve` | M1.37 |
+| 2026-04-25 | Phases 112–115 shipped: ENH-076 complete (Design.MD full integration) — **2.45.1** | `/vp-auto` | M1.37 |
+| 2026-04-25 | ENH-077 logged: seamless handoff crystallize Step 1D.14 → vp-design --sync (AUQ after export) | `/vp-request` | Backlog |
+| 2026-04-25 | Phase 116 planned: ENH-077 (2 tasks — crystallize handoff AUQ + tests), target **2.45.2** | `/vp-evolve` | M1.37 |
+| 2026-04-25 | BUG-024 logged: install libFiles hard-coded — viepilot-persona.cjs + skill-registry.cjs missing from installed instances (Windows + all platforms) | `/vp-request` | Backlog |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-_Phase 111 in progress (BUG-023 → 2.43.2). Run /vp-auto --phase 111 to execute._
+_Phases 112–115 planned for ENH-076. Run /vp-auto --phase 112 to start implementation._
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-023 | 🐛 | vp-brainstorm session transition prompt ("what to do next?") not using AUQ — separate from BUG-022 | medium | in_progress |
+| ENH-076 | 🔧 | Design.MD full integration across ViePilot workflow (XL) — Phases 112–115 | high | planned |
+| BUG-023 | 🐛 | vp-brainstorm session transition prompt ("what to do next?") not using AUQ — separate from BUG-022 | medium | ✅ done (**2.43.2**) |
 | BUG-022 | 🐛 | vp-brainstorm mid-session structured questions not using AUQ — plain text on Claude Code terminal | medium | ✅ done (**2.43.1**) |
 | ENH-075 | 🔧 | vp-rollback AUQ checkpoint selection + Show more/older + --limit flag | medium | ✅ done (**2.43.0**) |
 | ENH-074 | 🔧 | Centralize shared framework to ~/.viepilot/ — single install source, eliminate adapter version drift | high | ❌ wont_fix |

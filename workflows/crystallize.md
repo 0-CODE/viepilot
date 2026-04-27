@@ -238,6 +238,36 @@ Store all metadata for template generation.
 >
 > Ask: "Continue? (y/n)" — abort if n.
 
+**Initial brownfield entry gate (BUG-025) — auto-detected only (no explicit `--brownfield` flag):**
+
+When brownfield was triggered automatically (not via `--brownfield`), present the mode-selection choice **before** running the scanner:
+
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable. AUQ spec:
+>   - question: "No brainstorm session found — this looks like an existing project. How would you like to proceed?"
+>   - header: "Brownfield Mode Detected"
+>   - options:
+>     - label: "Proceed with Brownfield Mode (Recommended)"
+>       description: "Scan codebase across 12 signal categories → auto-generate .viepilot/ artifacts"
+>     - label: "Run brainstorm first → /vp-brainstorm"
+>       description: "Capture vision/scope manually, then run /vp-crystallize to convert"
+>     - label: "Cancel"
+>       description: "Exit without changes"
+>   - multiSelect: false
+>
+> **Cursor / Codex / Antigravity / other:** use text menu below:
+> ```
+> No brainstorm session found — existing project detected.
+> 1. Proceed with Brownfield Mode — scan across 12 signal categories → generate .viepilot/ artifacts
+> 2. Run brainstorm first — /vp-brainstorm to capture vision/scope, then /vp-crystallize
+> 3. Cancel — exit without changes
+> Which would you like? (1 / 2 / 3)
+> ```
+>
+> **On selection:**
+> - "Proceed with Brownfield Mode" / "1" → continue to scanner below
+> - "Run brainstorm first" / "2" → print: "Run `/vp-brainstorm` to capture project vision, then `/vp-crystallize` to generate .viepilot/ artifacts." and exit
+> - "Cancel" / "3" → exit without changes
+
 **When brownfield mode is active:**
 1. Run the full 12-category codebase scanner (Signal Categories 1–12 below).
 2. Produce a structured **Scan Report** (see schema at end of this step).

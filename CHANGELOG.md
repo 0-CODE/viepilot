@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.4] - 2026-04-27
+
+### Fixed
+- **BUG-025**: brownfield crystallize initial mode-selection prompt ("Proceed / Run brainstorm
+  first / Cancel") was rendered as plain-text numbered list on Claude Code terminal because
+  `workflows/crystallize.md` Step 0-B had no AUQ spec for the auto-detected entry gate.
+  Fix: added adapter-aware `AskUserQuestion` block with 3 labelled options before scanner
+  execution; text fallback preserved for Cursor/Codex/Antigravity (BUG-025)
+
 ## [2.45.3] - 2026-04-25
 
 ### Fixed
