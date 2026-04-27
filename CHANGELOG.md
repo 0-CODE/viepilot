@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.3] - 2026-04-25
+
+### Fixed
+- **BUG-024**: `viepilot-install.cjs` hard-coded `libFiles` list caused `viepilot-persona.cjs`,
+  `skill-registry.cjs`, `skill-installer.cjs`, and `lib/adapters/`, `lib/hooks/`,
+  `lib/domain-packs/` subdirectories to be absent from all installed instances
+  (`~/.claude/viepilot/lib/`, `~/.cursor/viepilot/lib/`, Windows equivalents).
+  Fix: replaced explicit list with dynamic `lib/` directory scan — all files and
+  subdirectories now copied automatically. Affected: `persona auto-switch/context`,
+  `scan-skills`, `install-skill`, `uninstall-skill`, adapter detection (BUG-024)
+
 ## [2.45.2] - 2026-04-25
 
 ### Enhanced

@@ -303,10 +303,21 @@ describe('BUG-005: claude-code install env path (38.3)', () => {
   });
 });
 
-describe('BUG-006: all install targets have complete lib files (40.2)', () => {
-  const LIB_FILES = ['cli-shared.cjs', 'viepilot-info.cjs', 'viepilot-update.cjs', 'viepilot-install.cjs'];
+describe('BUG-006 + BUG-024: all install targets have complete lib files + subdirs', () => {
+  // BUG-024: extend to cover all lib/*.cjs files and lib/ subdirectories
+  const LIB_FILES = [
+    'cli-shared.cjs',
+    'viepilot-info.cjs',
+    'viepilot-update.cjs',
+    'viepilot-install.cjs',
+    'viepilot-config.cjs',
+    'viepilot-persona.cjs',
+    'skill-registry.cjs',
+    'skill-installer.cjs',
+  ];
+  const LIB_SUBDIRS = ['adapters', 'hooks', 'domain-packs'];
 
-  test('cursor target has all 4 lib copy steps in ~/.cursor/viepilot/lib/', () => {
+  test('cursor target has all lib copy steps in ~/.cursor/viepilot/lib/', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-cursor-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -319,9 +330,13 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
       expect(step).toBeDefined();
       expect(step.from).toContain(path.join('lib', f));
     }
+    for (const d of LIB_SUBDIRS) {
+      const step = plan.steps.find((s) => s.kind === 'copy_dir' && s.to === path.join(libDir, d));
+      expect(step).toBeDefined();
+    }
   });
 
-  test('claude-code target has all 4 lib copy steps in ~/.claude/viepilot/lib/', () => {
+  test('claude-code target has all lib copy steps in ~/.claude/viepilot/lib/', () => {
     const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-b006-claude-'));
     const plan = buildInstallPlan(
       REPO_ROOT,
@@ -333,6 +348,10 @@ describe('BUG-006: all install targets have complete lib files (40.2)', () => {
       const step = plan.steps.find((s) => s.kind === 'copy_file' && s.to === path.join(libDir, f));
       expect(step).toBeDefined();
       expect(step.from).toContain(path.join('lib', f));
+    }
+    for (const d of LIB_SUBDIRS) {
+      const step = plan.steps.find((s) => s.kind === 'copy_dir' && s.to === path.join(libDir, d));
+      expect(step).toBeDefined();
     }
   });
 
