@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.45.5] - 2026-04-27
+
+### Enhanced
+- **ENH-078**: `npx viepilot install` now prompts users to select their preferred
+  communication language (the language ViePilot uses for banners and AI prompts)
+  via keyboard selector or numbered-list fallback; chosen language written to
+  `~/.viepilot/config.json → language.communication`; supports 10 languages
+  (en, vi, fr, ja, de, es, zh, ko, pt, id); `--yes` mode skips prompt and
+  defaults to `en` (ENH-078)
+
 ## [2.45.4] - 2026-04-27
 
 ### Fixed

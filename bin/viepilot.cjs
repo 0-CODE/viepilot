@@ -17,6 +17,19 @@ const { buildInstallPlan, applyInstallPlan, resolveViepilotPackageRoot } = requi
 const { adapters: adapterMap } = require(path.join(__dirname, '..', 'lib', 'adapters', 'index.cjs'));
 
 // UI target list — keep cursor-agent and cursor-ide as distinct choices for users.
+const LANGUAGES = [
+  { id: 'en', label: 'English (en)' },
+  { id: 'vi', label: 'Vietnamese — Tiếng Việt (vi)' },
+  { id: 'fr', label: 'French — Français (fr)' },
+  { id: 'ja', label: 'Japanese — 日本語 (ja)' },
+  { id: 'de', label: 'German — Deutsch (de)' },
+  { id: 'es', label: 'Spanish — Español (es)' },
+  { id: 'zh', label: 'Chinese Simplified — 中文 (zh)' },
+  { id: 'ko', label: 'Korean — 한국어 (ko)' },
+  { id: 'pt', label: 'Portuguese — Português (pt)' },
+  { id: 'id', label: 'Indonesian — Bahasa Indonesia (id)' },
+];
+
 const TARGETS = [
   { id: 'claude-code',  label: adapterMap['claude-code'].name + ' (default)' },
   { id: 'cursor-agent', label: 'Cursor Agent' },
@@ -235,6 +248,19 @@ function ask(question) {
   });
 }
 
+async function interactiveLanguageSelection() {
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    console.log('\nSelect communication language (ViePilot banners and prompts):');
+    LANGUAGES.forEach((l, idx) => console.log(`  ${idx + 1}. ${l.label}`));
+    const answer = await ask('Language [1 = English]: ');
+    const idx = parseInt(answer, 10);
+    const lang = LANGUAGES[Number.isInteger(idx) && idx >= 1 && idx <= LANGUAGES.length ? idx - 1 : 0];
+    return lang.id;
+  }
+  const selected = await runKeyboardSelector(LANGUAGES, 'single', 'Select communication language');
+  return (selected && selected[0]) || 'en';
+}
+
 async function interactiveTargetSelection() {
   if (!process.stdin.isTTY || !process.stdout.isTTY) {
     console.log('\nSelect install targets (comma-separated numbers):');
@@ -261,7 +287,7 @@ async function interactiveTargetSelection() {
  * @param {boolean} dryRun
  * @returns {{ ok: boolean, code: number }}
  */
-function runInstallViaNode(selectedTargets, dryRun) {
+function runInstallViaNode(selectedTargets, dryRun, communicationLang = 'en') {
   const fallbackRoot = path.join(__dirname, '..');
   const pkgRoot = resolveViepilotPackageRoot(fallbackRoot) || fallbackRoot;
   const profile = selectedTargets[0] || 'claude-code';
@@ -269,6 +295,7 @@ function runInstallViaNode(selectedTargets, dryRun) {
     ...process.env,
     VIEPILOT_AUTO_YES: '1',
     VIEPILOT_INSTALL_PROFILE: profile,
+    VIEPILOT_COMM_LANG: communicationLang,
   };
   const wantPathShim = env.VIEPILOT_ADD_PATH === '1';
 
@@ -328,8 +355,14 @@ async function installCommand(rawArgs) {
     }
   }
 
+  let communicationLang = 'en';
+  if (!options.yes) {
+    communicationLang = await interactiveLanguageSelection();
+  }
+
   console.log(`\nSelected targets: ${selectedTargets.join(', ')}`);
-  const run = runInstallViaNode(selectedTargets, options.dryRun);
+  console.log(`Communication language: ${communicationLang}`);
+  const run = runInstallViaNode(selectedTargets, options.dryRun, communicationLang);
   const results = selectedTargets.map((target) => ({
     ok: run.ok,
     target,
