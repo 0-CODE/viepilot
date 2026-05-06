@@ -54,9 +54,14 @@ If `~/.viepilot/config.json` is absent, use defaults (en/en) — do not fail.
 | v2.32.0 | `## Admin & Governance` in PROJECT-CONTEXT.md | section absent AND `admin_imported` not in HANDOFF.json |
 | v2.33.0 | `## Content Management` in PROJECT-CONTEXT.md | section absent AND `content_imported` not in HANDOFF.json |
 | v2.34.0 | `## User Data Management` in PROJECT-CONTEXT.md | section absent AND `user_data_imported` not in HANDOFF.json |
+| v2.46.0 | UI/Design scan not run (Signal Cat 13) | `ui_signals_imported` absent from HANDOFF.json AND any UI trigger condition met: `.css`/`.scss` files > 5 OR `tailwind.config.js`/`tailwind.config.ts` exists OR component files (`.jsx/.tsx/.vue/.svelte`) > 10 |
 
 Cross-check: confirm section is actually absent from current `PROJECT-CONTEXT.md` before listing
 as a gap — avoids false positives for projects that have the content already.
+
+UI trigger re-check note: backend-only projects (no CSS, no Tailwind, no UI components) must
+NOT see "UI scan gap" — the trigger condition re-check prevents false-positive upgrade noise
+for CLI tools, data pipelines, and other non-UI projects.
 
 ### Upgrade menu
 
@@ -89,6 +94,10 @@ For each missing section, run only the corresponding Step 1D export item:
 - `## Admin & Governance` → Step 1D item 7 (ENH-063)
 - `## Content Management` → Step 1D item 8 (ENH-065)
 - `## User Data Management` → Step 1D item 9 (ENH-066)
+- UI/Design scan (v2.46.0, ENH-079) → Re-run Signal Category 13 (Sub-scans A/B/C) then
+  proceed through Step 0-D (AUQ gate + workspace generation). AUQ gate is preserved — user
+  can still choose to skip. No brainstorm supplement check required (reads codebase directly).
+  After gate: writes `ui_signals_imported` to HANDOFF.json per Task 121.2 spec.
 
 For each item:
 1. Check if architect `notes.md` has the corresponding YAML section (`## admin`, `## content`,
@@ -995,7 +1004,7 @@ After gap-filling is complete, write:
 - header: "Brownfield UI Reverse-Engineering"
 - options:
   a. "Yes — generate now (Recommended)" → proceed to workspace generation below
-  b. "Skip — I will create ui-direction manually" → set `ui_signals.workspace_generated: false`; add note to `open_questions[]`; continue
+  b. "Skip — I will create ui-direction manually" → set `ui_signals.workspace_generated: false`; add note to `open_questions[]`; write to `.viepilot/HANDOFF.json`: `{ "ui_signals_imported": false, "ui_signals_skipped_at": "{ISO-8601 timestamp}" }` (merge — do not overwrite unrelated fields); continue
 
 **Text fallback (non-terminal adapters):**
 ```
@@ -1068,6 +1077,18 @@ signal_category: 13
 ```
 
 After generation: set `ui_signals.workspace_generated: true` in Scan Report.
+
+Also write to `.viepilot/HANDOFF.json` (merge — do not overwrite unrelated fields):
+```json
+{
+  "ui_signals_imported": true,
+  "ui_signals_imported_at": "{ISO-8601 timestamp}",
+  "ui_signals_version": "2.46.0"
+}
+```
+This flag is used by Step 0-B upgrade re-scan (ENH-080) to detect whether Signal Cat 13 has
+been run for this project. A future `--upgrade` re-run can force re-evaluation by re-running
+Signal Cat 13 even when `ui_signals_imported: true` is present.
 
 **Reverse-engineered workspace notice:** The workspace is a documentation approximation
 from static code analysis — not a pixel-perfect rendering. `pages/*.html` stubs describe

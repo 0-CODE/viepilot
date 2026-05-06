@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.46.1] - 2026-05-06
+
+### Fixed
+- **ENH-080** Upgrade re-scan (ENH-067 Step 0-B) now detects Signal Category 13 gap for
+  projects crystallized before v2.46.0:
+  - Delta computation table extended with `v2.46.0` row: detection field `ui_signals_imported`
+    absent from HANDOFF.json; trigger re-check prevents false-positive for backend-only projects
+    (no CSS, no Tailwind, no UI component files)
+  - Step 0-D now persists `ui_signals_imported: true/false` + `ui_signals_imported_at`/
+    `ui_signals_skipped_at` to `HANDOFF.json` after workspace generation or skip — marks gap
+    as "evaluated"; prevents re-asking on every crystallize run; `--upgrade` forces re-evaluation
+  - Patch mode handler added: re-runs Signal Cat 13 (Sub-scans A/B/C) + Step 0-D when UI gap
+    detected; AUQ gate preserved; no brainstorm supplement check (reads codebase directly)
+
 ## [2.46.0] - 2026-04-27
 
 ### Added
