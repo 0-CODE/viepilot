@@ -3058,7 +3058,7 @@ use AUQ on Claude Code terminal. Free-form questions remain plain text. Update S
 in `vp-brainstorm` — the "What would you like to do next?" control point that appears at
 section/topic boundaries (distinct from BUG-022 which covers Q&A content choices).
 **Estimated Tasks**: 3
-**Status**: 🔄 In Progress
+**Status**: ✅ Complete → v2.43.2
 **Dependencies**: BUG-022 ✅ (Phase 110)
 **Directory**: `.viepilot/phases/111-bug023-brainstorm-transition-auq/`
 
@@ -3073,3 +3073,183 @@ section/topic boundaries (distinct from BUG-022 which covers Q&A content choices
 - [ ] `grep "BUG-023\|session.transition" skills/vp-brainstorm/SKILL.md` shows entry
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.43.2`
+
+---
+
+## Phase 112 — ENH-076.1+2: Design.MD — vp-brainstorm token extraction + vp-crystallize gate
+
+**Goal**: Foundational ENH-076 — brainstorm UI sessions auto-extract design tokens to `design.md`;
+crystallize gets mandatory-acknowledge gate (Step 1D.14) for design.md export.
+**Estimated Tasks**: 4
+**Status**: planned
+**Dependencies**: ENH-026 ✅, ENH-059 ✅, Phase 111 ✅
+**Directory**: `.viepilot/phases/112-enh076-design-md-brainstorm-crystallize/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 112.1 | `workflows/brainstorm.md` — design token extraction section + design.md output | Extraction rule; trigger; TOKEN_MAP; notes.md ## design_tokens | M |
+| 112.2 | `workflows/crystallize.md` — Step 1D.14 mandatory-acknowledge gate | Gate with 3-option AUQ; export pipeline; idempotent skip; conflict handling | M |
+| 112.3 | `skills/vp-brainstorm/SKILL.md` — design.md output note | ENH-076 reference; success_criteria update | S |
+| 112.4 | Tests (≥12) + CHANGELOG [2.44.0] + version bump | ≥12 tests; CHANGELOG; package.json = 2.44.0 | S |
+
+**Verification**:
+- [ ] `grep "Design Token\|ENH-076\|design.md" workflows/brainstorm.md` shows extraction rule
+- [ ] `grep "1D.14\|Design.MD\|design_md" workflows/crystallize.md` shows gate
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.44.0`
+
+---
+
+## Phase 113 — ENH-076.3: vp-auto Design.MD preflight injection
+
+**Goal**: Add Preflight 5.5 to `workflows/autonomous.md` — detect design.md, build TOKEN_MAP,
+inject into UI tasks at 3 levels (silent / checklist / post-audit).
+**Estimated Tasks**: 2
+**Status**: planned
+**Dependencies**: Phase 112 ✅
+**Directory**: `.viepilot/phases/113-enh076-design-md-auto-preflight/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 113.1 | `workflows/autonomous.md` — Preflight 5.5 + 3-level injection | Preflight section; TOKEN_MAP; UI_KEYWORDS; 3 levels; backend-skip; monorepo rule | M |
+| 113.2 | Tests (≥8) + CHANGELOG [2.44.1] + version bump | ≥8 tests; CHANGELOG; package.json = 2.44.1 | S |
+
+**Verification**:
+- [ ] `grep "Preflight 5.5\|TOKEN_MAP\|ENH-076" workflows/autonomous.md` shows preflight
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.44.1`
+
+---
+
+## Phase 114 — ENH-076.4: New skill vp-design
+
+**Goal**: Create `vp-design` skill with 4 commands: --init (Q&A + awesome-design-md import),
+--sync (tokens → Tailwind/CSS/SCSS), --audit (compliance report), --import [brand].
+**Estimated Tasks**: 3
+**Status**: planned
+**Dependencies**: Phase 112 ✅
+**Directory**: `.viepilot/phases/114-enh076-vp-design-skill/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 114.1 | `skills/vp-design/SKILL.md` — new skill definition | All 4 commands; AUQ usage; adapter compat | M |
+| 114.2 | `workflows/design.md` — workflow spec (init/sync/audit/import) | All 4 flows; Q&A steps; stack detection; catalog picker | L |
+| 114.3 | Tests (≥12) + CHANGELOG [2.45.0] + version bump | ≥12 tests; CHANGELOG; package.json = 2.45.0 | S |
+
+**Verification**:
+- [ ] `ls skills/vp-design/SKILL.md workflows/design.md` both exist
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.45.0`
+
+---
+
+## Phase 115 — ENH-076.5: Architect workspace design.html page
+
+**Goal**: Add `design.html` to Architect workspace — visual design token representation
+(color swatches, type scale, spacing grid, shape samples, component tokens).
+**Estimated Tasks**: 2
+**Status**: planned
+**Dependencies**: Phase 112 ✅, Phase 114 ✅
+**Directory**: `.viepilot/phases/115-enh076-architect-design-page/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 115.1 | `workflows/brainstorm.md` — design.html Architect page spec | Page in workspace table; trigger; 5 content sections; sync rule; hub nav | M |
+| 115.2 | Tests (≥6) + CHANGELOG [2.45.1] + version bump | ≥6 tests; CHANGELOG; package.json = 2.45.1 | S |
+
+**Verification**:
+- [ ] `grep "design.html" workflows/brainstorm.md` shows page spec
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.45.1`
+
+## Phase 116 — ENH-077: crystallize → vp-design seamless handoff
+
+**Goal**: After crystallize Step 1D.14 exports `design.md` to project root, automatically
+offer an AUQ prompt: "Sync tokens to stylesheets via `/vp-design --sync`?" — eliminating
+the manual step in the brainstorm → crystallize → sync pipeline.
+**Estimated Tasks**: 2
+**Status**: planned
+**Dependencies**: Phase 112 ✅, Phase 114 ✅ (ENH-076 complete)
+**Directory**: `.viepilot/phases/116-enh077-crystallize-design-handoff/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 116.1 | `workflows/crystallize.md` — add AUQ handoff after Step 1D.14 export success | AUQ present; 3 options (run now/skip/later); invokes vp-design --sync on select; idempotent | M |
+| 116.2 | Tests (≥6) + CHANGELOG [2.45.2] + version bump | ≥6 tests; CHANGELOG; package.json = 2.45.2 | S |
+
+**Verification**:
+- [ ] `grep "vp-design.*sync\|sync.*vp-design" workflows/crystallize.md` shows handoff spec
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.45.2`
+
+---
+
+## Phase 117 — BUG-025: brownfield crystallize AUQ initial entry gate
+
+**Goal**: Fix the brownfield mode initial mode-selection prompt in `workflows/crystallize.md`
+Step 0-B — add adapter-aware AskUserQuestion spec so Claude Code terminal calls AUQ instead
+of emitting plain-text 1/2/3.
+**Estimated Tasks**: 1
+**Status**: done ✅
+**Dependencies**: Phase 111 ✅ (BUG-023)
+**Directory**: N/A (single-file fix)
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 117.1 | `workflows/crystallize.md` Step 0-B + tests + CHANGELOG [2.45.4] | AUQ block before scanner; 11 tests; package.json = 2.45.4 | S |
+
+**Verification**:
+- [x] `grep "Brownfield Mode Detected" workflows/crystallize.md` shows AUQ spec
+- [x] `npm test` all pass (1766 tests)
+- [x] `package.json` version = `2.45.4`
+
+---
+
+## Phase 118 — ENH-078: Install communication language selection
+
+**Goal**: Add interactive language selection step to `npx viepilot install` — prompts
+user to choose communication language (AI banners/prompts); writes chosen language to
+`~/.viepilot/config.json → language.communication`. `--yes` mode defaults to `en`.
+**Estimated Tasks**: 3
+**Status**: planned
+**Dependencies**: Phase 49 ✅ (ENH-032 language config)
+**Directory**: `.viepilot/phases/118-enh078-install-language-selection/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 118.1 | `bin/viepilot.cjs` — `LANGUAGES` array + `interactiveLanguageSelection()` + wire to `runInstallViaNode` | Keyboard selector; `--yes` skip; `VIEPILOT_COMM_LANG` env thread | M |
+| 118.2 | `lib/viepilot-install.cjs` — thread `communicationLang` through `language_config_prompt` step | step.communicationLang used; TODO removed; dry-run log updated | S |
+| 118.3 | Tests (≥9) + CHANGELOG [2.45.5] + version bump | ≥9 tests; CHANGELOG; package.json = 2.45.5 | S |
+
+**Verification**:
+- [ ] `grep "VIEPILOT_COMM_LANG" bin/viepilot.cjs` shows env threading
+- [ ] `grep "interactiveLanguageSelection" bin/viepilot.cjs` shows function
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.45.5`
+
+---
+
+## Phase 120 — ENH-079: Signal Category 13 — Brownfield UI/Design Reverse-Engineering
+
+**Goal**: Add Signal Category 13 (UI/Design System Signals) to the brownfield scanner in
+`workflows/crystallize.md`. Reverse-engineers existing project UI into a complete
+`.viepilot/ui-direction/` workspace — design tokens, page/route inventory, component inventory.
+**Estimated Tasks**: 4
+**Status**: done ✅
+**Dependencies**: FEAT-018 ✅ (Brownfield), ENH-076 ✅ (Design.MD), ENH-077 ✅ (crystallize handoff)
+**Directory**: `.viepilot/phases/120-enh079-brownfield-ui-scan/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 120.1 | `workflows/crystallize.md` — Signal Category 13 spec (Sub-scans A/B/C) | 13 section + trigger + 8-framework table + UI library detection | M |
+| 120.2 | `workflows/crystallize.md` — Scan Report `ui_signals` schema + AUQ gate + workspace generation | Schema extended; AUQ gate; 4 artifact types; `reverse_engineered: true` | M |
+| 120.3 | `workflows/brainstorm.md` — brownfield stub import of ui_signals data | 3-case import logic; `reverse_engineered` handling; ENH-031 compliant | S |
+| 120.4 | Tests (≥12) + CHANGELOG [2.46.0] + version bump | ≥12 tests; CHANGELOG; package.json = 2.46.0 | S |
+
+**Verification**:
+- [ ] `grep "Signal Category 13" workflows/crystallize.md`
+- [ ] `grep "ui_signals" workflows/crystallize.md`
+- [ ] `grep "reverse_engineered" workflows/crystallize.md`
+- [ ] `grep "Brownfield UI Signal Import" workflows/brainstorm.md`
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.46.0`

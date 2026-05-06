@@ -334,6 +334,70 @@ Store the pending gap list. Re-surface the same AUQ at `/save` before writing th
 Proceed normally. Do **not** set `upgrade_supplement_version` — gap will re-surface on next open.
 </step>
 
+<step name="brownfield_ui_signal_import">
+### Step 3C: Brownfield UI Signal Import (ENH-079)
+
+**Trigger:** When the loaded session is a brownfield import stub (contains `session-brownfield-import.md` or `IS_BROWNFIELD=true`) AND the session's embedded Scan Report contains a `ui_signals` field.
+
+**Check:** Read session file for `ui_signals` YAML block under `## Scan Report`.
+
+---
+
+**Case 1 — workspace already generated** (`ui_signals.workspace_generated: true`):
+
+Display notice (no AUQ required):
+```
+UI workspace already generated at .viepilot/ui-direction/{session-id}/
+Open index.html to review {ui_pages.count} pages and {ui_components.total} components.
+```
+Continue brainstorm normally. Do not re-generate workspace.
+
+---
+
+**Case 2 — Signal 13 data present, workspace NOT yet generated** (`ui_signals.triggered: true`, `workspace_generated: false` or absent):
+
+Import into session notes.md:
+- `ui_pages.routes[]` → populate `## pages_inventory` section
+- `ui_components` data → populate `## components_inventory` section
+- `ui_tokens` summary → populate `## design_tokens` section
+- Set notes.md front matter: `reverse_engineered: true`
+
+Display import summary:
+```
+Imported Signal 13 data: {ui_pages.count} pages, {ui_components.total} components,
+{ui_tokens.detected} tokens detected ({ui_tokens.assumed} assumed).
+```
+
+**Claude Code (terminal) — REQUIRED:** Offer workspace generation via AUQ:
+- question: "Signal 13 data imported. Generate full ui-direction workspace now?"
+- header: "UI Workspace"
+- options:
+  a. "Yes — generate workspace (Recommended)" → run workspace generation (Step 0-D logic from crystallize.md)
+  b. "Continue brainstorm first" → proceed; workspace generation remains available
+
+**Text fallback:**
+```
+Signal 13 data imported.
+  1. Generate ui-direction workspace now (Recommended)
+  2. Continue brainstorm first
+```
+
+---
+
+**Case 3 — `ui_signals` not present** (Signal 13 not triggered for this project):
+
+Skip this step entirely. Proceed to Step 4 normally.
+
+---
+
+**Reverse-engineered workspace handling:**
+
+When `notes.md` front matter contains `reverse_engineered: true`:
+- Display "(Reverse-engineered)" badge in session header instead of standard brainstorm banner
+- Skip "missing brainstorm" warnings in vp-audit and vp-crystallize
+- Do not treat session as an incomplete brainstorm — it is a valid documentation artifact
+</step>
+
 <step name="brainstorm_mode">
 ## 4. Brainstorm Mode
 

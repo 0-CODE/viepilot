@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.46.0] - 2026-04-27
+
+### Added
+- **ENH-079** Signal Category 13 — UI/Design System Signals in brownfield scanner
+  (`workflows/crystallize.md`). When an existing project has a real UI layer, the
+  brownfield scan now reverse-engineers it into a complete `.viepilot/ui-direction/`
+  workspace automatically:
+  - Sub-scan A: CSS custom properties (`--color-*`, `--font-*`, `--spacing-*`, `--radius-*`),
+    Tailwind config (`theme.extend.colors`, `fontFamily`, `spacing`, `borderRadius`),
+    SCSS variables, design token JSON files → Design.MD v1 `design.md`
+  - Sub-scan B: Page/route inventory for 8 framework types (Next.js App Router, Next.js Pages
+    Router, React Router, Vue Router, Angular, Nuxt 3, SvelteKit, plain HTML) →
+    `index.html` hub + `pages/{slug}.html` stubs per discovered route
+  - Sub-scan C: Component inventory via file glob + UI library detection from `package.json`
+    (shadcn/ui, Material UI, Chakra UI, Ant Design, Headless UI, Bootstrap, Radix) →
+    `notes.md ## components_inventory`
+  - AUQ gate: "Generate ui-direction workspace?" before reverse-engineering (skippable)
+  - Scan Report `ui_signals` field: `triggered`, `workspace_generated`, `ui_tokens`,
+    `ui_pages`, `ui_components`
+  - `notes.md` front matter: `reverse_engineered: true` flag — distinguishes auto-generated
+    sessions from manually crafted brainstorm sessions
+  - `workflows/brainstorm.md` Step 3C: imports Signal 13 data when brownfield stub contains
+    `ui_signals`; handles 3 cases (workspace generated / data present / not triggered);
+    offers on-demand workspace generation via AUQ
+
 ## [2.45.6] - 2026-04-27
 
 ### Fixed

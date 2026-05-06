@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **117** — ✅ Complete (**BUG-025 brownfield crystallize AUQ initial entry gate** → **2.45.4**)
+- **Last Completed Phase**: **120** — ✅ Complete (**ENH-079 Signal Cat 13 brownfield UI reverse-engineering** → **2.46.0**)
 - **Next Phase**: —
 - **Current Task**: —
-- **Last Activity**: 2026-04-27 — Phase 117 complete: BUG-025 brownfield entry gate AUQ → v2.45.4
+- **Last Activity**: 2026-04-27 — Phase 120 shipped: Signal Category 13 + ui_signals schema + AUQ gate + brainstorm import (17 tests → v2.46.0)
 
 ## Progress Overview
 ```

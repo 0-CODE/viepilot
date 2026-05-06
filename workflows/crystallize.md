@@ -676,6 +676,99 @@ Rule: `secondary_languages[]` = languages with ≥5 files that are not `primary_
 
 ---
 
+### Signal Category 13 — UI/Design System Signals
+
+**Trigger condition (ANY of):**
+- `.css` or `.scss` files > 5 in the project
+- `tailwind.config.js` or `tailwind.config.ts` exists
+- Component files (`.jsx`, `.tsx`, `.vue`, `.svelte`) > 10
+- Route config files detected (see Sub-scan B sources below)
+
+**Runs after:** Signal Category 12.
+**Output stored in:** `ui_signals` Scan Report field.
+
+---
+
+#### Sub-scan A — Design Token Extraction
+
+**Sources (priority order):**
+
+1. `tailwind.config.js` / `tailwind.config.ts`
+   - Extract: `theme.extend.colors`, `theme.colors`, `theme.fontFamily`, `theme.spacing`, `theme.borderRadius`
+
+2. CSS custom properties in `*.css` / `globals.css` / `variables.css` / `_variables.scss`
+   - `--color-*`, `--primary-*`, `--bg-*`, `--text-*` → TOKEN_MAP.colors
+   - `--font-*`, `--text-size-*` → TOKEN_MAP.typography
+   - `--spacing-*`, `--gap-*`, `--padding-*` → TOKEN_MAP.spacing
+   - `--radius-*`, `--rounded-*` → TOKEN_MAP.rounded
+
+3. SCSS variables: `$color-primary`, `$font-size-base`, `$spacing-unit`, etc.
+
+4. Design token JSON files: `tokens.json`, `design-tokens.json`, `theme.json`
+
+**Output:** Populate TOKEN_MAP for workspace generation step.
+- ASSUMED prefix for any token not found in any source.
+- Track `source_files[]` — list of all files scanned.
+
+**Scan Report field:** `ui_tokens: { detected: N, assumed: M, source_files: [] }`
+
+---
+
+#### Sub-scan B — Page/Route Inventory
+
+| Framework | Detection method | Route extraction |
+|-----------|-----------------|-----------------|
+| Next.js 13+ App Router | `app/` directory with `page.tsx` or `page.jsx` | Directory structure → route paths |
+| Next.js Pages Router | `pages/` directory (exclude `api/` and `_` prefixes) | Directory structure → route paths |
+| React Router | `src/routes/*.{jsx,tsx}`, `src/App.{jsx,tsx}` | Parse `<Route path="...">` attrs |
+| Vue Router | `src/router/index.{js,ts}` | Parse `routes: [{ path, component }]` |
+| Angular | `src/app/app-routing.module.ts` | Parse `Routes` array |
+| Nuxt 3 | `pages/` directory | Directory structure → route paths |
+| Plain HTML | `*.html` at root, `src/`, `public/` | File names → page names |
+| SvelteKit | `src/routes/+page.svelte` | Directory structure |
+
+**Scan Report field:** `ui_pages: { count: N, routes: [], framework: string }`
+
+Framework values: `"next-app"` | `"next-pages"` | `"react-router"` | `"vue-router"` | `"angular"` | `"nuxt3"` | `"sveltekit"` | `"html"` | `"unknown"`
+
+---
+
+#### Sub-scan C — Component Inventory
+
+**Sources:**
+
+1. Component file globs:
+   - `src/components/**/*.{jsx,tsx,vue,svelte}`
+   - `components/**/*.{jsx,tsx,vue}`
+   - `app/components/**/*`
+
+2. UI library detection from `package.json` dependencies:
+   - `@mui/material` → Material UI
+   - `@chakra-ui/react` → Chakra UI
+   - `@shadcn/ui` or `components/ui/` directory → shadcn/ui
+   - `antd` → Ant Design
+   - `@headlessui/react` → Headless UI
+   - `react-bootstrap` → Bootstrap
+   - `@radix-ui/*` → Radix primitives
+
+3. Common component pattern detection (by filename):
+   - Button, Modal, Dialog, Card, Form, Input, Select, Table, Navbar, Sidebar, Footer, Header
+
+**Scan Report field:**
+```yaml
+ui_components:
+  total: N
+  ui_library: string    # "shadcn/ui" | "Material UI" | "Chakra UI" | "Ant Design" | "Headless UI" | "Bootstrap" | "Radix" | "none"
+  categories:
+    layout: N
+    forms: N
+    navigation: N
+    data-display: N
+    feedback: N
+```
+
+---
+
 ### Scan Report Schema (finalized)
 
 After running all 12 signal categories, produce this structured Scan Report:
@@ -741,6 +834,26 @@ top_contributors: []
 docs_extracted: []             # { file, summary, key_facts[] }
 language_distribution: {}      # { ts: 142, java: 38, ... }
 open_questions: []             # root-level open questions (includes rollup from modules)
+ui_signals:                    # present only when Signal Category 13 triggered
+  triggered: bool
+  workspace_generated: bool    # true after workspace generation step completes
+  ui_tokens:
+    detected: N                # tokens extracted from sources
+    assumed: M                 # tokens filled with ASSUMED values
+    source_files: []           # files scanned (tailwind.config.js, globals.css, etc.)
+  ui_pages:
+    count: N
+    routes: []                 # [ { path, name, source_file } ]
+    framework: string          # "next-app" | "next-pages" | "react-router" | "vue-router" | "angular" | "nuxt3" | "sveltekit" | "html" | "unknown"
+  ui_components:
+    total: N
+    ui_library: string         # "shadcn/ui" | "Material UI" | "Chakra UI" | "Ant Design" | "Headless UI" | "Bootstrap" | "Radix" | "none"
+    categories:
+      layout: N
+      forms: N
+      navigation: N
+      data-display: N
+      feedback: N
 ```
 
 ---
@@ -868,6 +981,99 @@ After gap-filling is complete, write:
 ```
 
 **Purpose:** This stub allows `vp-audit` and other ViePilot tools to not error on missing brainstorm session files. The presence of `session-brownfield-import.md` is treated as a valid brownfield import.
+
+---
+
+### UI Workspace Generation Gate (Step 0-D)
+
+**Condition:** Run only when `ui_signals.triggered: true` in the Scan Report.
+
+#### AUQ Gate — Brownfield UI Reverse-Engineering
+
+**Claude Code (terminal) — REQUIRED:** Call AskUserQuestion:
+- question: "UI signals detected — generate ui-direction workspace from existing code?"
+- header: "Brownfield UI Reverse-Engineering"
+- options:
+  a. "Yes — generate now (Recommended)" → proceed to workspace generation below
+  b. "Skip — I will create ui-direction manually" → set `ui_signals.workspace_generated: false`; add note to `open_questions[]`; continue
+
+**Text fallback (non-terminal adapters):**
+```
+UI signals detected. Options:
+  1. Yes — generate ui-direction workspace now (Recommended)
+  2. Skip — create ui-direction manually later
+```
+
+#### Workspace Generation
+
+When user selects "Yes — generate now":
+
+Generate session ID: `brownfield-{YYYY-MM-DD}` (or reuse existing if re-running).
+
+Create artifacts under `.viepilot/ui-direction/{session-id}/`:
+
+**`design.md`** (Design.MD v1 format):
+- Populate colors, typography, spacing, rounded from TOKEN_MAP (Sub-scan A)
+- Prefix ASSUMED for any token not extracted from source
+- Add `## Source` section listing all scanned files and extraction method
+
+**`notes.md`**:
+```markdown
+---
+reverse_engineered: true
+source_project: {project_name}
+scan_date: {ISO date}
+signal_category: 13
+---
+
+## pages_inventory
+
+| Route | Page Name | Source File | Status |
+|-------|-----------|-------------|--------|
+{one row per route from ui_pages.routes[]}
+
+## components_inventory
+
+| Component | Type | File | UI Library |
+|-----------|------|------|------------|
+{one row per component from ui_components scan}
+
+## design_tokens
+
+- Detected: {ui_tokens.detected} tokens
+- Assumed: {ui_tokens.assumed} tokens
+- Sources: {ui_tokens.source_files[]}
+```
+
+**`index.html`** hub page:
+- Header: project name + UI library badge (if `ui_library != "none"`)
+- Table of contents: one link per page stub
+- Each entry: route path + source file reference
+
+**`pages/{slug}.html`** stubs — one per discovered route:
+- Page title (from route name) + route path
+- "Reverse-engineered from: {source file}"
+- Component list (if detectable via import analysis)
+- Placeholder section for handover notes
+
+**Generated artifact tree:**
+```
+.viepilot/ui-direction/
+  brownfield-{YYYY-MM-DD}/
+    design.md          ← design tokens (Design.MD v1)
+    notes.md           ← pages_inventory + components_inventory + design_tokens
+    index.html         ← hub page with all discovered pages linked
+    pages/
+      {slug}.html      ← one per discovered route/page
+```
+
+After generation: set `ui_signals.workspace_generated: true` in Scan Report.
+
+**Reverse-engineered workspace notice:** The workspace is a documentation approximation
+from static code analysis — not a pixel-perfect rendering. `pages/*.html` stubs describe
+what exists based on file structure and imports. The `reverse_engineered: true` flag allows
+downstream tools (`vp-audit`, `vp-crystallize`) to adjust expectations (e.g., skip
+"missing brainstorm" warnings).
 
 ---
 
