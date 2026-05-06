@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.47.0] - 2026-05-06
+
+### Added
+- **ENH-081** Brownfield Scan Trace Log — `BROWNFIELD-TRACE.md` real-time trace artifact
+  (`workflows/crystallize.md`). Before any signal category scanning begins, crystallize now
+  writes `.viepilot/BROWNFIELD-TRACE.md` to disk with all 13 categories pre-populated as
+  `planned`. Full feature set:
+  - **Trace initialization + resume detection**: on session start, checks for existing trace;
+    if `Status: scan_complete` → AUQ offers skip re-scan or re-scan from scratch; if trace is
+    mid-scan (interrupted) → AUQ offers resume from the last completed signal category
+  - **Per-Category Update Protocol (ENH-081)**: on category start → row moves to `scanning`;
+    on completion → row moves to `done`/`assumed`/`skipped` with file count, signals found,
+    start time, and duration; `## Files Read Log` appended with `[x]` (read) / `[ ]` (not found)
+    per file probed
+  - **Coverage gate (ENH-081)**: before presenting Scan Report, counts remaining `planned` rows;
+    non-blocking warning if any categories were not executed; sets `Status: scan_complete` in
+    trace header after gate passes
+  - **Gap Filling Log (ENH-081)**: each user response during Step 0-B-ii gap-filling is
+    immediately appended to `## Gap Filling Log` — no batching
+  - **Step Completion tracking**: `## Step Completion` rows updated after Step 0-C (Brainstorm
+    Stub) and Step 0-D (UI Workspace, 3 cases: done / skipped / N/A)
+
 ## [2.46.1] - 2026-05-06
 
 ### Fixed

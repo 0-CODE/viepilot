@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **120** — ✅ Complete (**ENH-079 Signal Cat 13 brownfield UI reverse-engineering** → **2.46.0**)
+- **Last Completed Phase**: **122** — ✅ Complete (**ENH-081 Brownfield Scan Trace Log** → **2.47.0**)
 - **Next Phase**: —
 - **Current Task**: —
-- **Last Activity**: 2026-04-27 — Phase 120 shipped: Signal Category 13 + ui_signals schema + AUQ gate + brainstorm import (17 tests → v2.46.0)
+- **Last Activity**: 2026-05-06 — Phase 122 shipped: ENH-081 BROWNFIELD-TRACE.md real-time trace log (4 tasks → v2.47.0)
 
 ## Progress Overview
 ```

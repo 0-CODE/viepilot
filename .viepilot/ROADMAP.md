@@ -3253,3 +3253,60 @@ user to choose communication language (AI banners/prompts); writes chosen langua
 - [ ] `grep "Brownfield UI Signal Import" workflows/brainstorm.md`
 - [ ] `npm test` all pass
 - [ ] `package.json` version = `2.46.0`
+
+---
+
+## Phase 121 — ENH-080: Upgrade Re-scan Awareness for Signal Category 13
+
+**Goal**: Hook Signal Category 13 into the ENH-067 upgrade re-scan mechanism so that projects
+crystallized before v2.46.0 are offered a retroactive UI scan. Three targeted edits to
+`workflows/crystallize.md`: delta table v2.46.0 row, HANDOFF.json persistence after Step 0-D,
+and Patch mode UI scan handler.
+**Estimated Tasks**: 4
+**Status**: done ✅
+**Dependencies**: ENH-067 ✅ (Upgrade Re-scan), ENH-079 ✅ (Signal Cat 13)
+**Directory**: `.viepilot/phases/121-enh080-upgrade-rescan-signal13/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 121.1 | `workflows/crystallize.md` Step 0-B delta table: v2.46.0 row | Row present; `ui_signals_imported` field; trigger re-check | S |
+| 121.2 | `workflows/crystallize.md` Step 0-D: persist `ui_signals_imported` to HANDOFF.json | Success + skip paths; merge not overwrite | S |
+| 121.3 | `workflows/crystallize.md` Step 0-B Patch mode: UI scan handler | Handler listed; AUQ gate preserved; no brainstorm supplement | S |
+| 121.4 | Tests (≥8) + CHANGELOG [2.46.1] + version bump | ≥8 tests; CHANGELOG; package.json = 2.46.1 | S |
+
+**Verification**:
+- [ ] `grep "v2.46.0" workflows/crystallize.md` (delta table row)
+- [ ] `grep "ui_signals_imported" workflows/crystallize.md`
+- [ ] `grep "ui_signals_skipped_at" workflows/crystallize.md`
+- [ ] `grep "UI/Design scan.*ENH-079" workflows/crystallize.md` (patch handler)
+- [ ] `npm test` all pass
+- [ ] `package.json` version = `2.46.1`
+
+---
+
+## Phase 122 — ENH-081: Brownfield Scan Trace Log (BROWNFIELD-TRACE.md)
+
+**Goal**: Add real-time scan trace log to `workflows/crystallize.md` brownfield mode. Written
+to disk BEFORE scanning begins, updated per-category, coverage-gated before Scan Report
+presentation. Gives full coverage visibility, resume detection for interrupted scans, and
+a vp-audit-readable artifact.
+**Estimated Tasks**: 4
+**Status**: done ✅
+**Shipped**: 2026-05-06 — v2.47.0
+**Dependencies**: FEAT-018 ✅ (Brownfield), ENH-079 ✅ (Signal Cat 13)
+**Directory**: `.viepilot/phases/122-enh081-brownfield-trace-log/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 122.1 | Trace initialization + resume detection (before Step 0-B scanning) | Trace created; all 13 "planned"; resume/interrupted AUQ | M |
+| 122.2 | Per-category update protocol (during Signal Cat 1–13) | On-start/complete spec; Files Read Log; status transitions; example | M |
+| 122.3 | Coverage gate + Gap Filling Log + Step Completion tracking | Gate warns planned rows; Gap log appends; 0-C/0-D rows | M |
+| 122.4 | Tests (≥10) + CHANGELOG [2.47.0] + version bump | ≥10 tests; CHANGELOG; package.json = 2.47.0 | S |
+
+**Verification**:
+- [x] `grep "BROWNFIELD-TRACE.md" workflows/crystallize.md`
+- [x] `grep "Per-Category Update Protocol" workflows/crystallize.md`
+- [x] `grep "Coverage gate.*ENH-081" workflows/crystallize.md`
+- [x] `grep "scan_complete" workflows/crystallize.md`
+- [x] `npm test` all pass (1847/1847)
+- [x] `package.json` version = `2.47.0`

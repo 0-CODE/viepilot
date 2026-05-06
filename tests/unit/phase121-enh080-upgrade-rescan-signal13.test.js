@@ -82,8 +82,10 @@ describe('Phase 121 — ENH-080: Upgrade re-scan awareness for Signal Category 1
 
   // ── package.json + CHANGELOG ──────────────────────────────────────────────
 
-  test('package.json version is 2.46.1', () => {
-    expect(pkg.version).toBe('2.46.1');
+  test('package.json version is 2.46.x or higher', () => {
+    const [major, minor] = pkg.version.split('.').map(Number);
+    expect(major).toBe(2);
+    expect(minor).toBeGreaterThanOrEqual(46);
   });
 
   test('CHANGELOG has [2.46.1] entry with ENH-080 mention', () => {
