@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.49.0] - 2026-05-17
+
+### Added
+- **ENH-083** `vp-intake` — SharePoint sharing link + xlsx direct download support (Phase 124):
+  - **SharePoint anonymous sharing link** adapter: URLs matching `/:x:/g/` or `/:x:/r/` are
+    resolved via the SharePoint WOPI viewer page — `FileGetUrl` (temp-auth token) is scraped
+    from the HTML and used to download the xlsx file without OAuth credentials
+  - **xlsx parser** using SheetJS (`xlsx` npm package): downloaded xlsx Buffer is parsed to
+    `rows[][]` matching the Graph API response format; falls back to first sheet when the
+    configured sheet name is not found
+  - **`sharing_url` field** in `channels.json` (`excel_m365` type): optional alternative to
+    `workbook_id` for SharePoint "Anyone with the link" files; no credentials required
+  - **Redirect-following HTTP client** (`httpsGetRaw`): browser User-Agent, follows 301/302/307
+    chains needed for SharePoint sharing link flow
+  - **Routing logic in `readExcelM365`**: `sharing_url` present → anonymous WOPI flow;
+    `workbook_id` present → Graph API (OAuth); neither present → `AuthRequiredError` with guide
+  - **BUG_KEYWORDS extended**: `performance`, `slow`, `timeout`, `hang`, `freeze`,
+    `unresponsive`, `chậm`, `treo`, `tắc`, `không phản hồi` — "performance issue" now correctly
+    classifies as BUG instead of UNCLEAR
+  - **19 new tests** (1897 total): keyword expansion (8 tests), `isSharingLink` detection (5
+    tests), routing logic (3 tests), `parseXlsxBuffer` (3 tests)
+
 ## [2.48.0] - 2026-05-17
 
 ### Added

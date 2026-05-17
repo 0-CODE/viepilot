@@ -3,10 +3,10 @@
 ## Current State
 - **Milestone**: M1.37
 - **Current Phase**: —
-- **Last Completed Phase**: **123** — ✅ Complete (**ENH-082 Ticket Intake Channels / vp-intake** → **2.48.0**)
+- **Last Completed Phase**: **124** — ✅ Complete (**ENH-083 SharePoint sharing link + xlsx + BUG keywords** → **2.49.0**)
 - **Next Phase**: —
 - **Current Task**: —
-- **Last Activity**: 2026-05-17 — Phase 123 shipped: ENH-082 vp-intake skill (8 tasks → v2.48.0)
+- **Last Activity**: 2026-05-17 — Phase 124 shipped: ENH-083 SharePoint WOPI adapter + xlsx parser + BUG keyword expansion (4 tasks → v2.49.0)
 
 ## Progress Overview
 ```
@@ -209,6 +209,7 @@ _Phases 112–115 planned for ENH-076. Run /vp-auto --phase 112 to start impleme
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-083 | 🔧 | vp-intake: SharePoint sharing link + xlsx parser + BUG keyword "performance" | high | new |
 | ENH-082 | 🔧 | Ticket Intake Channels — Excel/M365 + Google Sheets + CSV + Triage Workflow + Write-back | high | ✅ done (**2.48.0**) |
 | ENH-076 | 🔧 | Design.MD full integration across ViePilot workflow (XL) — Phases 112–115 | high | planned |
 | BUG-023 | 🐛 | vp-brainstorm session transition prompt ("what to do next?") not using AUQ — separate from BUG-022 | medium | ✅ done (**2.43.2**) |

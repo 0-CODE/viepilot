@@ -1,6 +1,6 @@
 {
   "name": "viepilot",
-  "version": "2.48.0",
+  "version": "2.49.0",
   "description": "**Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**",
   "main": "index.js",
   "bin": {
@@ -74,7 +74,8 @@
   },
   "dependencies": {
     "docx": "^9.0.0",
-    "pptxgenjs": "^3.12.0"
+    "pptxgenjs": "^3.12.0",
+    "xlsx": "^0.18.5"
   },
   "optionalDependencies": {
     "@googleapis/slides": "^1.0.0"
