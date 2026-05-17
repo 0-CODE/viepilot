@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.50.0] - 2026-05-17
+
+### Added
+- **ENH-084** `vp-intake` Setup Wizard — AUQ-driven channel configuration (Phase 125):
+  - **Auto-trigger**: wizard runs automatically when `channels.json` has no real channels
+    (only scaffold stubs with `-example` IDs or `REPLACE_WITH_*` values)
+  - **`--setup` / `--config` flags**: force wizard even when channels already exist
+  - **4-type wizard** via `lib/intake/setup-wizard.cjs`: CSV/TSV, Google Sheets, Excel M365
+    (Graph API), SharePoint Sharing Link — collects all required fields via AUQ + free-text
+  - **Credentials guide**: for Google Sheets and M365, wizard prints step-by-step setup
+    instructions before asking for config values (no live validation)
+  - **Preview + confirm**: shows JSON preview of channel config before writing
+  - **`appendChannel()`**: strips scaffold stubs, preserves non-stub channels, appends new
+  - **`isStubChannel()` / `hasRealChannels()`**: stub detection helpers in `channels.cjs`
+  - **Auto-select after wizard**: if exactly 1 channel created → skips channel selection AUQ
+  - **`validateChannel` fix**: accepts `sharing_url` as valid alternative to `workbook_id`
+    for `excel_m365` channels (ENH-083 compatibility)
+  - **18 new tests** (1915 total): stub detection (5), hasRealChannels (5), appendChannel (2),
+    slugify (3), extractSpreadsheetId (3)
+  - `vp-intake` skill version bumped to **v1.1.0**
+
 ## [2.49.0] - 2026-05-17
 
 ### Added

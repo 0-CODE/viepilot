@@ -1,7 +1,7 @@
 ---
 name: vp-intake
 description: "Import and triage tickets from Excel/M365 Online, Google Sheets, or CSV/TSV files — classify as BUG/ENH, accept/decline via AskUserQuestion, write back to source, generate TRIAGE report"
-version: 1.0.0
+version: 1.1.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-INTAKE  v1.0.0 (fw 2.48.0)
+ VIEPILOT ► VP-INTAKE  v1.1.0 (fw 2.50.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -78,19 +78,52 @@ session report.
 Optional flags:
 - `--channel <id>` : Skip channel selection, use this channel ID directly
 - `--dry-run` : Classify and show tickets without creating requests or writing back
+- `--setup` : Force setup wizard — configure a new channel now (even if channels already exist)
+- `--config` : Alias for `--setup`
 
 **Supported channel types:**
 | Type | Auth | Config field |
 |------|------|-------------|
 | `csv` | None | `path` (local file) |
 | `google_sheets` | Service Account JSON | `spreadsheet_id` + `sheet_name` |
-| `excel_m365` | Azure App Registration | `workbook_id` + `sheet_name` |
+| `excel_m365` (Graph API) | Azure App Registration | `workbook_id` + `sheet_name` |
+| `excel_m365` (sharing link) | None — anonymous | `sharing_url` |
 
 **Config file:** `.viepilot/intake/channels.json`
 **Credentials dir:** `.viepilot/.credentials/` (gitignored)
 </context>
 
 <process>
+
+### Step 0: Setup wizard detection (ENH-084)
+
+**Check wizard trigger conditions:**
+
+```js
+const args = parseArgs(VP_ARGS);
+const forceSetup = args.includes('--setup') || args.includes('--config');
+
+// Init dir + load channels
+initIntakeDir(projectRoot);          // lib/intake/channels.cjs
+const { channels } = loadChannels(projectRoot);
+const needsSetup = forceSetup || !hasRealChannels(channels);  // lib/intake/channels.cjs
+```
+
+**If `needsSetup` is true:**
+
+Call `runSetupWizard(projectRoot, askFn)` from `lib/intake/setup-wizard.cjs`.
+
+`askFn` wraps `AskUserQuestion` for structured option prompts, and falls back to free-text
+input for open-ended fields (column names, file paths, URLs).
+
+After wizard completes:
+- Reload channels from channels.json
+- If exactly 1 channel was just created → auto-select it and skip Step 3 (go to Step 4)
+- Otherwise → continue to Step 3 (channel select AUQ with all available real channels)
+
+**If `needsSetup` is false** and no `--setup` flag → skip Step 0 entirely, continue to Step 1.
+
+---
 
 ### Step 1: Init intake directory
 
@@ -102,13 +135,11 @@ This creates `.viepilot/intake/channels.json` (scaffold) and `.viepilot/.credent
 
 ### Step 2: Load channels
 
-Read `.viepilot/intake/channels.json`. If no channels configured (only example stubs remain),
-tell the user:
+Read `.viepilot/intake/channels.json`. If no real channels exist after Step 0:
 
 ```
 No channels configured yet.
-Edit .viepilot/intake/channels.json to add your ticket sources.
-Run vp-tools intake-init to see the config scaffold.
+Run /vp-intake --setup to configure a channel interactively.
 ```
 
 ### Step 3: Select channel (AUQ single-select)
@@ -188,6 +219,8 @@ options:
 </process>
 
 <success_criteria>
+- [ ] Setup wizard triggers automatically when no real channels exist (or --setup flag)
+- [ ] Wizard collects channel config via AUQ and writes to channels.json
 - [ ] Channels loaded from `.viepilot/intake/channels.json`
 - [ ] Correct adapter dispatched based on channel type
 - [ ] Tickets classified as BUG / ENH / UNCLEAR
@@ -211,6 +244,7 @@ options:
 | GitHub Copilot | ✅ Text fallback | Via `.agent.md` |
 
 **Prompts in this skill:**
+- Setup wizard: channel type, display name, field config, preview+confirm (Step 0)
 - Channel selection (Step 3)
 - Ticket accept/decline multi-select (Step 5)
 - Decline reason (Step 5)
@@ -218,6 +252,8 @@ options:
 - Next action (Step 8)
 
 ## Capabilities
+- **Setup wizard** (`--setup`): AUQ-driven channel configuration — writes directly to channels.json
+- Read tickets from SharePoint sharing links (anonymous WOPI download, no credentials)
 - Read tickets from Excel/Microsoft 365 Online via Microsoft Graph API
 - Read tickets from Google Sheets via Sheets API v4
 - Read tickets from local CSV/TSV files
