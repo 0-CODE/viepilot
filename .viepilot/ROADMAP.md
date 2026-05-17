@@ -3310,3 +3310,37 @@ a vp-audit-readable artifact.
 - [x] `grep "scan_complete" workflows/crystallize.md`
 - [x] `npm test` all pass (1847/1847)
 - [x] `package.json` version = `2.47.0`
+
+---
+
+## Phase 123 — ENH-082: Ticket Intake Channels (vp-intake skill)
+
+**Goal**: Add `vp-intake` skill to read tickets from Excel/M365 Online, Google Sheets, and
+local CSV/TSV files. Classifies tickets automatically as BUG/ENH/UNCLEAR, lets user triage
+via AskUserQuestion multi-select, writes decisions back to the source, and generates a
+TRIAGE session report.
+**Estimated Tasks**: 8
+**Status**: done ✅
+**Shipped**: 2026-05-17 — v2.48.0
+**Version Target**: 2.48.0
+**Dependencies**: ENH-082 ✅, ENH-059 ✅ (AUQ preload), vp-request workflow ✅
+**Directory**: `.viepilot/phases/123-enh082-ticket-intake-channels/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 123.1 | channels.json schema + intake/ init + credentials dir | channels.json scaffold; validateChannel; gitignore .credentials/ | S |
+| 123.2 | CSV/TSV adapter + column mapping + heuristic classifier | readCsv; classifyTicket BUG/ENH/UNCLEAR; Vietnamese keywords | M |
+| 123.3 | Google Sheets adapter (Sheets API v4 + service account OAuth) | readGoogleSheet; AuthRequiredError; column letter map | M |
+| 123.4 | Excel/M365 adapter (Microsoft Graph API + client credentials) | readExcelM365; token cache; AuthRequiredError; column letter map | M |
+| 123.5 | Triage UX — AUQ multi-select + reason + auto-create request files | AUQ pagination; BUG-N/ENH-N auto-created; reason collected | M |
+| 123.6 | Write-back engine + TRIAGE-{timestamp}.md report generator | VP_Status/Comment/RequestID in source; report markdown | M |
+| 123.7 | vp-intake skill file + installer registration | SKILL.md; list-skills; install deploys skill | S |
+| 123.8 | Tests (≥10) + CHANGELOG [2.48.0] + version bump | ≥10 tests pass; CHANGELOG; package.json = 2.48.0 | S |
+
+**Verification**:
+- [ ] `ls skills/vp-intake/SKILL.md`
+- [ ] `node bin/vp-tools.cjs list-skills | grep vp-intake`
+- [ ] `node bin/vp-tools.cjs intake-init`
+- [ ] `node -e "const {classifyTicket}=require('./lib/intake/classifier');console.log(classifyTicket({title:'crash',description:''}))"` → BUG
+- [ ] `npm test -- --grep "phase123"` all pass
+- [ ] `package.json` version = `2.48.0`

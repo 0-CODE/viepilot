@@ -113,8 +113,10 @@ describe('Phase 122 — ENH-081: Brownfield Scan Trace Log', () => {
 
   // ── package.json + CHANGELOG ──────────────────────────────────────────────
 
-  test('package.json version is 2.47.0', () => {
-    expect(pkg.version).toBe('2.47.0');
+  test('package.json version is 2.47.0 or later', () => {
+    const [major, minor] = pkg.version.split('.').map(Number);
+    expect(major).toBeGreaterThanOrEqual(2);
+    if (major === 2) expect(minor).toBeGreaterThanOrEqual(47);
   });
 
   test('CHANGELOG has [2.47.0] entry with ENH-081 mention', () => {

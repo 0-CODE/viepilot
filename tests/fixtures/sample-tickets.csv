@@ -1,0 +1,8 @@
+ticket_id,summary,details,author,created_at,status
+T-001,Login crash on mobile,App crashes when tapping login button on iOS,alice,2026-05-01,open
+T-002,Add dark mode,Users requested dark theme support,bob,2026-05-02,open
+T-003,,,,,
+T-004,Performance issue in dashboard,Dashboard takes 8 seconds to load,carol,2026-05-03,open
+T-005,lỗi đăng nhập sau khi reset password,Không thể đăng nhập sau khi đổi mật khẩu,dave,2026-05-04,open
+T-006,thêm tính năng xuất báo cáo PDF,Cần xuất report sang PDF,eve,2026-05-05,open
+T-007,Just a note,,frank,2026-05-06,open

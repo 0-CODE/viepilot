@@ -1289,6 +1289,21 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Initialize .viepilot/intake/ directory with channels.json scaffold (ENH-082)
+   */
+  'intake-init': (_args) => {
+    const { initIntakeDir } = require('../lib/intake/channels.cjs');
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([projectCheck]);
+    const projectRoot = projectCheck.value;
+    const { channelsPath, credentialsDir } = initIntakeDir(projectRoot);
+    console.log(formatSuccess('intake/ initialized'));
+    console.log(`  channels.json : ${channelsPath}`);
+    console.log(`  credentials   : ${credentialsDir}`);
+    console.log('\nEdit .viepilot/intake/channels.json to configure your ticket channels.');
+  },
+
+  /**
    * Help
    */
   help: (args) => {

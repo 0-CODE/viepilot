@@ -7,3 +7,6 @@ node_modules/
 
 # Local brainstorm sessions (project-specific, not framework code)
 docs/brainstorm/
+
+# ViePilot OAuth credentials (ENH-082)
+.viepilot/.credentials/

@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.48.0] - 2026-05-17
+
+### Added
+- **ENH-082** `vp-intake` skill — import and triage tickets from external sources (Phase 123):
+  - **Excel/Microsoft 365 Online** adapter via Microsoft Graph API (client credentials OAuth 2.0)
+  - **Google Sheets** adapter via Sheets API v4 (Service Account OAuth 2.0)
+  - **CSV/TSV local file** adapter with configurable column mapping
+  - **Heuristic classifier** auto-assigns `BUG` / `ENH` / `UNCLEAR` per ticket; supports
+    English and Vietnamese keywords; BUG takes precedence over ENH
+  - **AskUserQuestion triage**: multi-select accept/decline per ticket (paginated at 4/page);
+    UNCLEAR tickets get a 3-choice prompt (Accept as BUG / Accept as ENH / Decline)
+  - **Reason collection**: declined tickets prompt user for decline reason via AUQ single-select
+  - **Auto-create request files**: accepted tickets generate `.viepilot/requests/BUG-N.md` or
+    `ENH-N.md` with source channel attribution
+  - **Write-back engine**: updates `VP_Status`, `VP_Comment`, `VP_RequestID` columns in source
+    (CSV overwrite, Google Sheets batchUpdate); write-back failure is non-fatal
+  - **TRIAGE session report**: `.viepilot/intake/TRIAGE-{timestamp}.md` generated after every
+    session with accepted/declined/unclear summary tables
+  - **`channels.json` config**: `.viepilot/intake/channels.json` supports multiple concurrent
+    channels; validated schema with required field checks
+  - **`vp-tools intake-init`** command: scaffolds `.viepilot/intake/channels.json` (3 example
+    channels), creates `.viepilot/.credentials/` (gitignored) — idempotent
+
 ## [2.47.0] - 2026-05-06
 
 ### Added
