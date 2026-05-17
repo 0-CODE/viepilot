@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.50.1] - 2026-05-17
+
+### Fixed
+- **BUG** SharePoint sharing link download: forward FedAuth session cookies from WOPI page
+  redirect chain to the `download.aspx` download request — without these cookies the download
+  returned HTTP 401 or an HTML error page even though incognito browser worked fine.
+  `httpsGetRaw` now accumulates `Set-Cookie` headers across all hops; `downloadXlsx` retries
+  with cookies when the initial response is not a valid xlsx binary.
+
 ## [2.50.0] - 2026-05-17
 
 ### Added
