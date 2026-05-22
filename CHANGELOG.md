@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.51.0] - 2026-05-22
+
+### Added — ENH-085: Mobile UI Direction Breakdown Quality (Phase 126)
+- `design.md` schema: `screens` breakpoints (mobile/tablet/desktop/wide) + `strategy` field + `## Responsive Components` table; `--sync` maps screens → Tailwind `theme.extend.screens`
+- Brainstorm: **Mobile Design Direction sub-phase** — AUQ 1 (viewport strategy: mobile-first/desktop-first/mobile-only/desktop-only) + AUQ 2 multi-select device scope (phone/tablet/desktop/wide), fires when mobile/responsive/breakpoint/viewport/touch keywords detected
+- Brainstorm: Per-breakpoint `<details>` sections in `pages/*.html` — Phone/Tablet/Desktop layout + navigation strategy (lookup table by page type), CSS block for `.responsive-breakdown`
+- Brainstorm: **Component Responsive Map** table auto-generated in `notes.md` (≥7 rows: Nav/Grid/Table/Modal/Forms/Buttons/Images + Navigation Pattern Detail + Tailwind utility reference); guard against duplicate generation
+- Sub-scan A (crystallize): Extracts `theme.screens` / `theme.extend.screens` from `tailwind.config.js` (fallback to Tailwind defaults); scans JSX/TSX/Vue/Svelte for `sm:/md:/lg:/xl:/2xl:` patterns; infers mobile-first vs. desktop-first strategy; emits RESPONSIVE SUMMARY block
+- Crystallize: **Step 1A-iv** — consumes responsive metadata from 4 sources (notes.md Component Responsive Map, session context, pages/*.html breakpoint sections, Sub-scan A); emits `## Responsive Implementation Notes` in ARCHITECTURE.md with per-page responsive target table and high-priority component list
+- 27 tests in `tests/unit/phase126-enh085-mobile-ui-direction.test.js`
+
 ## [2.50.1] - 2026-05-17
 
 ### Fixed
