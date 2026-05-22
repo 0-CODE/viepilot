@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Milestone**: v3.0 — Phases 127–132 → v3.0.0, Phase 133 → v3.1.0
 **Breaking changes**: `cursor_skill_adapter` removed from all SKILL.md; new `<adapter id="...">` 5-block standard
 
-#### Phase 127 — Adapter Detection + ADAPTER_CONTEXT + Validate (planned)
+#### Phase 127 — Adapter Detection + ADAPTER_CONTEXT + Validate ✅
 - `vp-tools detect-adapter`: heuristic adapter detection at session start (env vars + process parent)
 - `lib/adapter-context.cjs`: ADAPTER_CONTEXT schema with tools{}, interactive, subagent, orchestration{} per adapter (5 adapters)
 - `vp-tools validate --adapter <id>`: checks tool availability, warns on limitations

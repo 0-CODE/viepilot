@@ -95,6 +95,39 @@ Build `SKILL_CONTEXT_MAP` in session memory:
 
 **If `## Skills` section absent or empty**: silent no-op — `SKILL_CONTEXT_MAP = { required: [], optional: [] }`.
 
+### ADAPTER_CONTEXT Injection (FEAT-021 Phase 127)
+
+Detect the active adapter and inject its capability map into session context. Skills use
+ADAPTER_CONTEXT to select correct tool names and fallback chains — no inline compat tables.
+
+```bash
+ADAPTER_CONTEXT_JSON=$(node "$HOME/.claude/viepilot/bin/vp-tools.cjs" detect-adapter --json 2>/dev/null \
+  || node "$(pwd)/bin/vp-tools.cjs" detect-adapter --json 2>/dev/null \
+  || echo '{"adapter":"claude-code","interactive_mode":"AUQ","orchestration":{"parallel":true,"teams":true},"capabilities":["shell","read","write","edit","search","agent","interactive"]}')
+```
+
+Parse into session variables:
+- `ADAPTER_ID` — e.g. `"claude-code"`
+- `ADAPTER_INTERACTIVE` — `"AUQ"` | `"text"` | `"none"`
+- `ADAPTER_PARALLEL` — `true` | `false` (orchestration.parallel)
+- `ADAPTER_TOOLS` — tools{} map (use `ctx.tools.shell` → correct tool name)
+
+**Shell tool resolution** (use `ADAPTER_TOOLS.shell` for all bash/cmd execution in tasks):
+| Adapter | Shell tool |
+|---|---|
+| claude-code | `Bash` |
+| cursor-agent | `run_terminal_cmd` |
+| antigravity | `shell` |
+| codex | `container.exec` |
+| copilot | `runCommands` |
+
+**Interactive fallback chain** (based on `ADAPTER_INTERACTIVE`):
+1. `"AUQ"` → call `AskUserQuestion` (preload via ToolSearch first)
+2. `"text"` → show numbered list in plain text
+3. `"none"` → proceed with defaults (log decision)
+
+Silent on error — do not fail the phase. Fallback: assume `claude-code` defaults.
+
 ### Tag Prefix Resolution (ENH-050)
 Resolve the enriched git tag prefix once at session start. All task/phase tags use `${TAG_PREFIX}`.
 

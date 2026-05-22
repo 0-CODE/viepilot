@@ -1304,6 +1304,126 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Detect active adapter from environment heuristics (FEAT-021 Phase 127)
+   * Usage: vp-tools detect-adapter [--json]
+   */
+  'detect-adapter': (args) => {
+    const { detectAdapter, getAdapterContext } = require('../lib/adapter-context.cjs');
+    const jsonMode = args.includes('--json');
+    const adapterId = detectAdapter();
+    const ctx = getAdapterContext(adapterId);
+
+    if (jsonMode) {
+      const output = {
+        adapter: adapterId,
+        name: ctx.name,
+        interactive_mode: ctx.interactive,
+        subagent: ctx.subagent,
+        orchestration: ctx.orchestration,
+        hooks_count: ctx.hooks.count,
+        mcp: ctx.mcp,
+        capabilities: Object.entries(ctx.tools)
+          .filter(([, v]) => v !== null)
+          .map(([k]) => k),
+      };
+      console.log(JSON.stringify(output, null, 2));
+      return;
+    }
+
+    console.log(`\n${colors.bold}Active Adapter:${colors.reset} ${ctx.name} (${adapterId})`);
+    console.log(`\n${colors.cyan}Interactive:${colors.reset}    ${ctx.interactive}`);
+    console.log(`${colors.cyan}Subagent:${colors.reset}       ${ctx.subagent}`);
+    console.log(`${colors.cyan}Parallel exec:${colors.reset}  ${ctx.orchestration.parallel}`);
+    console.log(`${colors.cyan}Agent Teams:${colors.reset}    ${ctx.orchestration.teams}`);
+    console.log(`${colors.cyan}Hooks:${colors.reset}          ${ctx.hooks.count} events`);
+    console.log(`${colors.cyan}MCP limit:${colors.reset}      ${ctx.mcp.tool_limit !== null ? ctx.mcp.tool_limit + ' tools' : 'none'}`);
+    console.log(`\n${colors.cyan}Tool names:${colors.reset}`);
+    Object.entries(ctx.tools)
+      .filter(([, v]) => v !== null)
+      .forEach(([k, v]) => console.log(`  ${k.padEnd(14)} → ${v}`));
+    console.log();
+  },
+
+  /**
+   * Validate adapter capability requirements (FEAT-021 Phase 127)
+   * Usage: vp-tools validate --adapter <id>
+   */
+  validate: (args) => {
+    const { getAdapterContext, listAdapterIds } = require('../lib/adapter-context.cjs');
+    const adapterIdx = args.indexOf('--adapter');
+    const adapterId = adapterIdx !== -1 ? args[adapterIdx + 1] : null;
+
+    if (!adapterId) {
+      console.error(formatError('--adapter <id> is required', `Known adapters: ${listAdapterIds().join(', ')}`));
+      process.exitCode = 1;
+      return;
+    }
+
+    let ctx;
+    try {
+      ctx = getAdapterContext(adapterId);
+    } catch (e) {
+      console.error(formatError(e.message));
+      process.exitCode = 1;
+      return;
+    }
+
+    const warnings = [];
+    const errors = [];
+
+    // Critical tool checks
+    if (!ctx.tools.shell) errors.push('No shell/command execution tool — vp-auto cannot run bash commands');
+    if (!ctx.tools.read && !ctx.tools.write) errors.push('No file read or write tool — skill execution will be severely limited');
+    if (!ctx.tools.edit && !ctx.tools.write) errors.push('No file edit/write tool — cannot implement code changes');
+
+    // AUQ interactive check
+    if (ctx.interactive === 'none') {
+      warnings.push('No interactive prompts (AUQ/AskQuestion) — all prompts will be skipped or use defaults');
+    } else if (ctx.interactive === 'text-plan-only' || ctx.interactive === 'text') {
+      warnings.push(`Interactive mode is "${ctx.interactive}" — AUQ not available; text list fallback will be used`);
+    }
+
+    // Orchestration
+    if (!ctx.orchestration.parallel) {
+      warnings.push('Parallel task execution not supported — vp-auto will run in sequential mode (higher token usage)');
+    }
+
+    // MCP limit
+    if (ctx.mcp.tool_limit !== null) {
+      warnings.push(`MCP tool limit: ${ctx.mcp.tool_limit} tools — verify your MCP server count stays within limit`);
+    }
+
+    // Hooks
+    if (ctx.hooks.count === 0) {
+      warnings.push('No hook events supported — PreToolUse/PostToolUse gates will not fire');
+    }
+
+    // Antigravity deprecation
+    if (ctx.deprecation_notice) {
+      warnings.push(`DEPRECATION: ${ctx.deprecation_notice}`);
+    }
+
+    // Output
+    console.log(`\n${colors.bold}ViePilot Capability Validation${colors.reset}`);
+    console.log(`${colors.cyan}Adapter:${colors.reset} ${ctx.name} (${adapterId})\n`);
+
+    if (errors.length === 0 && warnings.length === 0) {
+      console.log(formatSuccess('All capability checks passed — adapter fully supported'));
+      return;
+    }
+
+    errors.forEach(e => console.log(formatError(`CRITICAL: ${e}`)));
+    warnings.forEach(w => console.log(formatWarning(`WARN: ${w}`)));
+
+    if (errors.length > 0) {
+      console.log(`\n${colors.red}${errors.length} critical gap(s) detected. Some ViePilot features will not work on this adapter.${colors.reset}`);
+      process.exitCode = 1;
+    } else {
+      console.log(`\n${colors.yellow}${warnings.length} warning(s). ViePilot will work with limitations on this adapter.${colors.reset}`);
+    }
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -1501,6 +1621,8 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}scan-skills${colors.reset}               Scan installed skills → ~/.viepilot/skill-registry.json
   ${colors.bold}check-update${colors.reset} [--silent]   Check for latest ViePilot version on npm (24h cached)
   ${colors.bold}persona${colors.reset} <op>              Manage user personas (get|infer|list|set|auto-switch|context)
+  ${colors.bold}detect-adapter${colors.reset} [--json]   Detect active adapter (claude-code/cursor/antigravity/codex/copilot)
+  ${colors.bold}validate${colors.reset} --adapter <id>   Validate adapter capability requirements; exits 1 on critical gaps
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
