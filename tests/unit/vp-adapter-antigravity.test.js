@@ -48,10 +48,11 @@ describe('FEAT-014: Antigravity adapter shape', () => {
     expect(a.pathRewrite).toBeUndefined();
   });
 
-  test('antigravity hooks.configFile is null (no hooks system)', () => {
+  test('antigravity hooks.configFile is null (no programmatic hooks system)', () => {
     const a = getAdapter('antigravity');
     expect(a.hooks.configFile).toBeNull();
-    expect(a.hooks.supportedEvents).toEqual([]);
+    // Phase 131 (FEAT-021): Antigravity v1 supports 3 declarative hook events
+    expect(a.hooks.supportedEvents).toEqual(['before_tool', 'after_file_edit', 'session_start']);
   });
 });
 

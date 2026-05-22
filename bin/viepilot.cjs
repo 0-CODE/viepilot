@@ -383,6 +383,7 @@ async function installCommand(rawArgs) {
     const a = adapterMap[target];
     if (a && !seenAdapters.has(a.id)) {
       seenAdapters.add(a.id);
+      if (a.deprecationNotice) console.log(`\n${a.deprecationNotice}`);
       console.log(`- ${a.name}: ${a.postInstallHint || 'run /vp-status'}`);
     }
   }

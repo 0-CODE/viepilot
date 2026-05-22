@@ -34,9 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.claude/agents/vp-quality-gate.md`: Sonnet test runner + output checker
 - PreToolUse/PostToolUse hooks as workflow gates via `vp-tools hooks install --adapter claude-code`
 
-#### Phase 131 — Antigravity Path Fix + Deprecation Notice (planned)
-- Antigravity adapter installs to both `~/.gemini/antigravity/skills/` and `.agents/skills/<name>/` (project path)
-- `vp-tools install --target antigravity` shows Gemini CLI deprecation notice (deprecated June 18, 2026)
+#### Phase 131 — Antigravity Path Fix + Deprecation Notice ✅
+- Antigravity adapter adds `projectSkillsDir: '.agents/skills'` for project-level skill installs alongside global `~/.gemini/antigravity/skills/`
+- `vp-tools install --target antigravity` shows Gemini CLI deprecation notice (Gemini CLI deprecated June 18, 2026; successor: Antigravity CLI)
+- `isAvailable()` now also detects `.agents/` directory in cwd for project-scoped setups
+- Deprecation notice links to both project (`.agents/skills/`) and global (`~/.gemini/antigravity/skills/`) skill paths
+- 8 new tests: `tests/unit/phase131-feat021-antigravity-path-fix.test.js`
 
 #### Phase 132 — Tests + CHANGELOG + v3.0.0 Bump (planned)
 - ≥15 new tests covering adapter detection, ADAPTER_CONTEXT, validate, 5-block standard, workflow adapter paths
