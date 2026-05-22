@@ -2,12 +2,12 @@
 
 ## Current State
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
-- **Current Phase**: **136** — BUG-029 + ENH-089: Excel/Sheets Intake Agents (planned)
-- **Last Completed Phase**: **135** ✅ (ENH-086 + BUG-028 native agents promotion → v3.2.0)
+- **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
+- **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: 137 (ENH-087 validation) → 138 (ENH-088 schedule)
+- **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phases 136-138 planned: BUG-029 + ENH-089 + ENH-087 + ENH-088
+- **Last Activity**: 2026-05-23 — Phases 136-138 complete: v3.3.0 → v3.4.0 → v3.5.0
 
 ## Progress Overview
 ```

@@ -3623,10 +3623,10 @@ All 21 SKILL.md files contain `<cursor_skill_adapter>` blocks that reference Cur
 | 132. Tests + CHANGELOG + v3.0.0 | ✅ done | 3 | ≥15 tests + version bump |
 | 133. vp-auto orchestration refactor | ✅ done | 6 | Fan-out + Agent Teams + model tiering → v3.1.0 |
 | 134. BUG-027 claudeAgentsDir install fix | ✅ done | 3 | vp-task-executor/planner/gate → ~/.claude/agents/ → v3.1.1 |
-| 135. ENH-086 + BUG-028 Native Agents | 🔄 planned | 5 | Promote 6 workflow agents to native CC agents → v3.2.0 |
-| 136. BUG-029 + ENH-089 Intake Agents | 🔄 planned | 5 | Excel M365 write-back fix + excel/sheets native agents → v3.3.0 |
-| 137. ENH-087 Intake Validation | 🔄 planned | 4 | Parallel codebase validation fan-out before triage → v3.4.0 |
-| 138. ENH-088 Intake Schedule | 🔄 planned | 5 | CronCreate schedule + --auto headless mode + pending-review → v3.5.0 |
+| 135. ENH-086 + BUG-028 Native Agents | ✅ done | 5 | Promote 6 workflow agents to native CC agents → v3.2.0 |
+| 136. BUG-029 + ENH-089 Intake Agents | ✅ done | 5 | Excel M365 write-back fix + excel/sheets native agents → v3.3.0 |
+| 137. ENH-087 Intake Validation | ✅ done | 4 | Parallel codebase validation fan-out before triage → v3.4.0 |
+| 138. ENH-088 Intake Schedule | ✅ done | 5 | CronCreate schedule + --auto headless mode + pending-review → v3.5.0 |
 
 **Total v3**: 53 tasks across 12 phases
 
