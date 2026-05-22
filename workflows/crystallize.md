@@ -4,12 +4,20 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 
 ## Adapter Compatibility
 
-| Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
-|---------|----------------------|-----------------------|-----------|----------------------|
-| Interactive prompts | ✅ `AskUserQuestion` tool — **REQUIRED** | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+Detected at session start via `vp-tools detect-adapter` → ADAPTER_CONTEXT. Use ADAPTER_CONTEXT.interactive to select prompt mode.
 
-**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu below if the tool returns an error or is unavailable.
-**Cursor / Codex CLI / Antigravity / other adapters:** `AskUserQuestion` not available — use text menus below.
+| Feature | claude-code | cursor-agent | antigravity | codex | copilot |
+|---------|------------|--------------|-------------|-------|---------|
+| Interactive (ADAPTER_CONTEXT.interactive) | `AUQ` | `text` | `none` | `none` | `text` |
+| Prompt tool | `AskUserQuestion` | text fallback | text fallback | text fallback | text fallback |
+| Shell tool (Sub-scan A) | `Bash` | `run_terminal_cmd` | `shell` | `container.exec` | `runCommands` |
+
+**Interactive fallback chain** (read from ADAPTER_CONTEXT.interactive):
+1. `"AUQ"` → call `AskUserQuestion` (preload via ToolSearch first)
+2. `"text"` → show plain-text numbered list
+3. `"none"` → proceed with session defaults (log decision)
+
+**Sub-scan A shell tool**: use `ADAPTER_CONTEXT.tools.shell` — `Bash` on claude-code, `run_terminal_cmd` on cursor-agent, `shell` on antigravity.
 
 ## ViePilot Skill Scope Policy (BUG-004)
 

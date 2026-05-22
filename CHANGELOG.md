@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Claude Code now has correct tool names: `Bash` (not Shell), `Read` (not ReadFile), `Grep` (not rg), `Edit`/`Write` (not ApplyPatch), `Agent` (not Subagent)
 - Documented in `docs/dev/adapter-blocks.md`
 
-#### Phase 129 — Workflow Adapter-Aware Execution Paths (planned)
+#### Phase 129 — Workflow Adapter-Aware Execution Paths ✅
 - All 4 core workflows (autonomous, brainstorm, crystallize, design) read ADAPTER_CONTEXT
 - Unified fallback chains: AUQ → text list → defaults (interactive); Bash/run_terminal_cmd/shell/container.exec (shell)
 - No more per-workflow inline compat tables

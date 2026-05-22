@@ -5,12 +5,18 @@ Allows research inline within the same brainstorm session when needed.
 
 ## Adapter Compatibility
 
-| Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
-|---------|----------------------|-----------------------|-----------|----------------------|
-| Interactive prompts | ✅ `AskUserQuestion` tool — **REQUIRED** | ❌ text fallback | ❌ text fallback | ❌ text fallback |
+Detected at session start via `vp-tools detect-adapter` → ADAPTER_CONTEXT. Use ADAPTER_CONTEXT.interactive to select prompt mode.
 
-**Claude Code (terminal):** Always call `AskUserQuestion` first. Only fall back to the plain-text menu below if the tool returns an error or is unavailable.
-**Cursor / Codex CLI / Antigravity / other adapters:** `AskUserQuestion` not available — use text menus below.
+| Feature | claude-code | cursor-agent | antigravity | codex | copilot |
+|---------|------------|--------------|-------------|-------|---------|
+| Interactive (ADAPTER_CONTEXT.interactive) | `AUQ` | `text` | `none` | `none` | `text` |
+| Prompt tool | `AskUserQuestion` | text list | defaults | defaults | text list |
+| Shell tool | `Bash` | `run_terminal_cmd` | `shell` | `container.exec` | `runCommands` |
+
+**Interactive fallback chain** (read from ADAPTER_CONTEXT.interactive):
+1. `"AUQ"` → call `AskUserQuestion` (preload via ToolSearch first)
+2. `"text"` → show plain-text numbered list
+3. `"none"` → proceed with session defaults (log decision)
 
 ## ViePilot Skill Scope Policy (BUG-004)
 
@@ -22,7 +28,24 @@ Allows research inline within the same brainstorm session when needed.
 <process>
 
 <step name="detect_session_language">
-## 0. Detect Session Language (ENH-032)
+## 0. ADAPTER_CONTEXT Load (FEAT-021)
+
+Detect active adapter and inject capability context. All interactive prompts in this workflow
+use ADAPTER_CONTEXT.interactive to select the correct prompt mode.
+
+```bash
+ADAPTER_CONTEXT_JSON=$(node "$HOME/.claude/viepilot/bin/vp-tools.cjs" detect-adapter --json 2>/dev/null \
+  || node "$(pwd)/bin/vp-tools.cjs" detect-adapter --json 2>/dev/null \
+  || echo '{"adapter":"claude-code","interactive_mode":"AUQ","orchestration":{"parallel":true}}')
+```
+
+Parse `interactive_mode` from JSON:
+- `"AUQ"` → use `AskUserQuestion` tool (preload via ToolSearch first)
+- `"text"` or `"none"` → use plain-text numbered list fallback
+
+Silent on error — fallback assumes claude-code defaults. Continue without blocking.
+
+## 0B. Detect Session Language (ENH-032)
 
 Read `~/.viepilot/config.json` → set `BRAINSTORM_LANG`:
 - `BRAINSTORM_LANG` = `language.document` from config (default: `en`)

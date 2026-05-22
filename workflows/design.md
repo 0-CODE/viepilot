@@ -4,6 +4,28 @@ community import), syncing tokens to stylesheets (Tailwind/CSS/SCSS), auditing c
 and importing brand templates from the awesome-design-md catalog.
 </purpose>
 
+<adapter_context>
+## ADAPTER_CONTEXT (FEAT-021)
+
+At skill start, read ADAPTER_CONTEXT to determine shell tool for --sync file operations:
+
+```bash
+ADAPTER_CONTEXT_JSON=$(node "$HOME/.claude/viepilot/bin/vp-tools.cjs" detect-adapter --json 2>/dev/null \
+  || echo '{"adapter":"claude-code","tools":{"shell":"Bash"}}')
+```
+
+Shell tool by adapter:
+| Adapter | Shell tool | Notes |
+|---|---|---|
+| claude-code | `Bash` | Full file I/O |
+| cursor-agent | `run_terminal_cmd` | Full file I/O |
+| antigravity | `shell` | Via MCP plugins |
+| codex | `container.exec` | Sandboxed |
+| copilot | `runCommands` | Limited |
+
+Silent on error — fall back to `Bash` (claude-code default).
+</adapter_context>
+
 <process>
 
 <step name="command_router">
