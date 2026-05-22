@@ -1,6 +1,6 @@
 # Phase 139 State — Browser Agent Suite (ENH-090+091+092+093)
 
-## Status: 🔄 in_progress
+## Status: ✅ done
 
 ## Tasks
 | ID | Title | Status |
@@ -9,7 +9,7 @@
 | 139.2 | browser-audit-agent.md + lib/audit/browser-runner.cjs + vp-audit --visual flag | ✅ done |
 | 139.3 | research-agent upgrade + workflows/brainstorm.md + vp-brainstorm SKILL.md | ✅ done |
 | 139.4 | lib/request/url-enricher.cjs + workflows/request.md URL detection + vp-request SKILL.md | ✅ done |
-| 139.5 | Contract tests + CHANGELOG [3.6.0] + version bump | 🔄 in_progress |
+| 139.5 | Contract tests + CHANGELOG [3.6.0] + version bump | ✅ done |
 
 ## Version Target
 3.5.0 → **3.6.0**
@@ -29,4 +29,4 @@ All tasks in this phase depend on `vercel-labs/agent-browser` being available as
 Each agent/adapter MUST emit a clear error if the skill is not installed, rather than failing silently.
 
 ## Started: 2026-05-23
-## Completed: —
+## Completed: 2026-05-23

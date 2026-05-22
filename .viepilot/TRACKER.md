@@ -5,9 +5,12 @@
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: 139 (ENH-090–093 browser-agent suite) — planned, ready for /vp-auto
+- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–139 → v3.6.0
+- **Current Phase**: ~~139~~ — all phases 136-139 ✅ done (v3.6.0)
+- **Last Completed Phase**: **139** ✅ (ENH-090-093 browser agent suite → v3.6.0)
+- **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phase 139 planned: browser-intake-agent + browser-audit-agent + research-agent++ + vp-request URL enrichment → v3.6.0
+- **Last Activity**: 2026-05-23 — Phase 139 complete: browser-intake + audit + research + request URL enrichment → v3.6.0
 
 ## Progress Overview
 ```
