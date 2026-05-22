@@ -37,6 +37,27 @@ Agent({
 
 See `agents/` directory for full agent specifications.
 
+## v3 Orchestration Agents (Phase 130 — FEAT-021)
+
+On Claude Code adapter (when `ADAPTER_CONTEXT.orchestration.parallel == true`), three dedicated
+subagent definitions in `agents/claude-code/` handle orchestrated execution:
+
+| Agent | File | Model | Role |
+|-------|------|-------|------|
+| vp-task-executor | `agents/claude-code/vp-task-executor.md` | claude-haiku-4-5 | Implements a single task contract; fresh context window per task |
+| vp-phase-planner | `agents/claude-code/vp-phase-planner.md` | claude-sonnet-4-6 | Reads phase, builds dependency graph, identifies parallel clusters |
+| vp-quality-gate | `agents/claude-code/vp-quality-gate.md` | claude-sonnet-4-6 | Runs verification commands; reports PASS/FAIL/PARTIAL |
+
+**Fan-out pattern** (implemented in Phase 133):
+```
+vp-phase-planner → clusters → Agent(vp-task-executor) × N (parallel) → Agent(vp-quality-gate)
+```
+
+**PreToolUse/PostToolUse hooks** (Claude Code only, registered via `vp-tools hooks install --adapter claude-code`):
+- `PreToolUse` on `Write`/`Edit` in task scope: validates path is repo-relative (BUG-009 gate)
+- `PostToolUse` on `Bash`: captures command output for quality-gate evidence log
+- Hook config lives in `~/.claude/settings.json` → `hooks` array
+
 <process>
 
 > **AUQ preload — Claude Code adapter (ENH-059):** At session start, before any interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred schema. Required on Claude Code (terminal). Skip only if `ToolSearch` returns an error → use text fallback for that session.

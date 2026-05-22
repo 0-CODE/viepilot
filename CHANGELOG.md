@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Unified fallback chains: AUQ → text list → defaults (interactive); Bash/run_terminal_cmd/shell/container.exec (shell)
 - No more per-workflow inline compat tables
 
-#### Phase 130 — Claude Code Agent Definitions + Hooks (planned)
+#### Phase 130 — Claude Code Agent Definitions + Hooks ✅
 - `.claude/agents/vp-task-executor.md`: Haiku model worker (Read/Edit/Write/Bash/Glob/Grep, maxTurns=30)
 - `.claude/agents/vp-phase-planner.md`: Sonnet dependency resolver
 - `.claude/agents/vp-quality-gate.md`: Sonnet test runner + output checker
