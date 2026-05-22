@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.2.0] - 2026-05-22
+
+### Added — ENH-086: 6 workflow agents promoted to native Claude Code agents (Phase 135)
+- `agents/claude-code/changelog-agent.md`, `tracker-agent.md`, `research-agent.md`,
+  `file-scanner-agent.md`, `test-generator-agent.md`, `doc-sync-agent.md` — all 6 now
+  installed to `~/.claude/agents/` and visible in Claude Code's `/agents` dialog
+- `research-agent` uses `claude-sonnet-4-6`; other 5 use `claude-haiku-4-5`
+- 11 new tests: `tests/unit/phase135-enh086-native-agents.test.js`
+
+### Fixed — BUG-028: test-generator-agent + file-scanner-agent wired (Phase 135)
+- `workflows/autonomous.md`: `test-generator-agent` invocation block added before
+  git-persistence gate, triggered on last task of phase when `## Acceptance Criteria` present
+- `skills/vp-audit/SKILL.md`: Tier 1 + Tier 2 scan steps invoke `file-scanner-agent`
+  (subagent_type) for repo-wide Glob+Grep; non-Claude-Code fallback retained
+
+### Changed
+- `workflows/autonomous.md`: tracker-agent, changelog-agent, doc-sync-agent invocations
+  use `subagent_type: "X-agent"` directly (no prompt-injection "Load agents/X.md" preamble)
+- `workflows/request.md`: research-agent feasibility gate uses `subagent_type: "research-agent"`
+- `docs/dev/agents.md`: architecture diagram updated to show all 9 native agents in
+  `~/.claude/agents/`; adapter table updated; invocation pattern updated
+
+### Fixed — BUG-027 tracking (Phase 135)
+- TRACKER.md and ROADMAP.md updated to reflect BUG-027 as done (code fix shipped in v3.1.1)
+
+---
+
 ## [3.1.1] - 2026-05-22
 
 ### Fixed — BUG-027: claudeAgentsDir wired into install plan (Phase 134)

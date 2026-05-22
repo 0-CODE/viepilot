@@ -18,76 +18,83 @@ that run in parallel or in sequence without polluting the calling skill's conver
 
 ## Architecture
 
+Since v3.2.0 (ENH-086), all 9 agents are **native Claude Code agent definitions** installed
+to `~/.claude/agents/` and visible in the `/agents` dialog.
+
 ```
-vp-* skill (orchestrator)
+~/.claude/agents/                        ← All 9 agents visible in /agents (v3.2.0+)
     │
-    ├── tracker-agent      ← .viepilot/TRACKER.md read/write
-    ├── research-agent     ← WebSearch + WebFetch (isolated context)
-    ├── file-scanner-agent ← Glob + Grep (repo-wide scanning)
-    ├── changelog-agent    ← CHANGELOG + version bump (single authority)
-    ├── test-generator-agent ← tests/*.test.js generation + run
-    └── doc-sync-agent     ← skills/*/SKILL.md bulk update
+    ├── vp-task-executor.md              ← Task implementation worker
+    ├── vp-phase-planner.md              ← Phase dependency + cluster planner
+    ├── vp-quality-gate.md               ← Verification runner
+    ├── tracker-agent.md                 ← .viepilot/TRACKER.md read/write
+    ├── research-agent.md                ← WebSearch + WebFetch (isolated context)
+    ├── file-scanner-agent.md            ← Glob + Grep (repo-wide scanning)
+    ├── changelog-agent.md               ← CHANGELOG + version bump (single authority)
+    ├── test-generator-agent.md          ← tests/*.test.js generation + run
+    └── doc-sync-agent.md                ← skills/*/SKILL.md bulk update
+
+~/.claude/viepilot/agents/               ← Spec files retained for non-CC adapters
+    └── (same 6 workflow agents, spec format for Cursor/Codex/Antigravity)
 ```
 
-Agent definitions live in `agents/` at the repo root. They are installed to
-`{viepilotDir}/agents/` alongside workflows and templates.
+Native definitions live in `agents/claude-code/` and spec files in `agents/`.
+Both are installed by `vp-tools install --target claude-code`.
 
 ## Agent Catalog
 
 ### tracker-agent
-**File**: `agents/tracker-agent.md`
+**Files**: `agents/tracker-agent.md` (spec), `agents/claude-code/tracker-agent.md` (native, v3.2.0+)
 **Purpose**: Read/write TRACKER.md — phase status, task status, decision log, request table.
 **When to invoke**: vp-auto (task start/complete/phase complete), vp-request (Step 5), vp-evolve (phase creation).
-**Claude Code subagent_type**: `general-purpose`
+**Claude Code subagent_type**: `tracker-agent` (native since v3.2.0)
 
 ### research-agent
-**File**: `agents/research-agent.md`
+**Files**: `agents/research-agent.md` (spec), `agents/claude-code/research-agent.md` (native, v3.2.0+)
 **Purpose**: WebSearch + WebFetch + summarize for feasibility studies and tech research.
 **When to invoke**: vp-request (Step 2B — auto-triggered for Feature/platform requests), vp-brainstorm (external validation).
-**Claude Code subagent_type**: `general-purpose`
+**Claude Code subagent_type**: `research-agent` (native since v3.2.0; uses claude-sonnet-4-6)
 
 ### file-scanner-agent
-**File**: `agents/file-scanner-agent.md`
+**Files**: `agents/file-scanner-agent.md` (spec), `agents/claude-code/file-scanner-agent.md` (native, v3.2.0+)
 **Purpose**: Glob + Grep across repo to find affected files, detect stale refs.
-**When to invoke**: vp-audit (Tier 1–4), vp-evolve (impact analysis), vp-rollback (state restore).
-**Claude Code subagent_type**: `Explore` (specialized for codebase scanning)
+**When to invoke**: vp-audit (Tier 1+2 scan steps), vp-evolve (impact analysis), vp-rollback (state restore).
+**Claude Code subagent_type**: `file-scanner-agent` (native since v3.2.0)
 
 ### changelog-agent
-**File**: `agents/changelog-agent.md`
+**Files**: `agents/changelog-agent.md` (spec), `agents/claude-code/changelog-agent.md` (native, v3.2.0+)
 **Purpose**: Atomically append CHANGELOG entry + bump package.json version.
 **When to invoke**: vp-auto post-phase (last task), vp-evolve (milestone ship).
-**Claude Code subagent_type**: `general-purpose`
+**Claude Code subagent_type**: `changelog-agent` (native since v3.2.0)
 **Note**: Single authority for version bumps — resolves ENH-053.
 
 ### test-generator-agent
-**File**: `agents/test-generator-agent.md`
+**Files**: `agents/test-generator-agent.md` (spec), `agents/claude-code/test-generator-agent.md` (native, v3.2.0+)
 **Purpose**: Generate contract tests from acceptance criteria, run suite, report pass/fail.
-**When to invoke**: Last task of each phase (the `N.last` contract-test task pattern).
-**Claude Code subagent_type**: `general-purpose`
+**When to invoke**: Last task of each phase — triggered by `autonomous.md` when task has `## Acceptance Criteria`.
+**Claude Code subagent_type**: `test-generator-agent` (native since v3.2.0)
 
 ### doc-sync-agent
-**File**: `agents/doc-sync-agent.md`
+**Files**: `agents/doc-sync-agent.md` (spec), `agents/claude-code/doc-sync-agent.md` (native, v3.2.0+)
 **Purpose**: Bulk-apply the same change to ≥5 `.md` files (adapter rows, banners, etc.).
 **When to invoke**: Auto-triggered by autonomous.md when task Paths block has ≥5 identical file types.
-**Claude Code subagent_type**: `general-purpose`
+**Claude Code subagent_type**: `doc-sync-agent` (native since v3.2.0)
 
 ## Invocation Patterns
 
-### Claude Code (terminal)
+### Claude Code (terminal) — v3.2.0+
 
-Use the `Agent` tool with the appropriate `subagent_type`:
+Use the agent's name directly as `subagent_type`:
 
 ```js
 Agent({
-  subagent_type: "general-purpose",  // or "Explore" for file-scanner
-  description: "{agent-name}: {operation-summary}",
-  prompt: `
-    Load agents/{agent-name}.md for the full specification.
-    Execute operation: {operation}
-    Inputs: {inputs}
-  `
+  subagent_type: "changelog-agent",   // direct native agent type
+  description: "Bump to {version} + CHANGELOG",
+  prompt: "version: {version}. date: {today}. entries: {entries}."
 })
 ```
+
+No "Load agents/X.md" preamble needed — the system prompt is baked into the native definition.
 
 ### Cursor / Codex / Antigravity
 
@@ -98,12 +105,12 @@ describes the exact steps — follow them as a scoped sub-prompt.
 
 | Agent | Claude Code | Cursor | Codex | Antigravity |
 |-------|------------|--------|-------|-------------|
-| tracker-agent | Subagent (general-purpose) | Inline | Inline | Inline |
-| research-agent | Subagent (general-purpose) | Inline if web available | Inline if web available | Inline if web available |
-| file-scanner-agent | Subagent (Explore) | Inline | Inline | Inline |
-| changelog-agent | Subagent (general-purpose) | Inline | Inline | Inline |
-| test-generator-agent | Subagent (general-purpose) | Inline | Inline | Inline |
-| doc-sync-agent | Subagent (general-purpose) | Sequential inline | Sequential inline | Sequential inline |
+| tracker-agent | Native: `tracker-agent` (v3.2.0+) | Inline | Inline | Inline |
+| research-agent | Native: `research-agent` (v3.2.0+) | Inline if web available | Inline if web available | Inline if web available |
+| file-scanner-agent | Native: `file-scanner-agent` (v3.2.0+) | Inline | Inline | Inline |
+| changelog-agent | Native: `changelog-agent` (v3.2.0+) | Inline | Inline | Inline |
+| test-generator-agent | Native: `test-generator-agent` (v3.2.0+) | Inline | Inline | Inline |
+| doc-sync-agent | Native: `doc-sync-agent` (v3.2.0+) | Sequential inline | Sequential inline | Sequential inline |
 
 ## Adding a New Agent
 
@@ -115,12 +122,15 @@ describes the exact steps — follow them as a scoped sub-prompt.
    - `## Adapter Behavior` (table covering all 4 adapters)
    - `## Notes`
 
-2. Add the agent to the delegation table in `workflows/autonomous.md`
+2. Create `agents/claude-code/{name}-agent.md` with YAML frontmatter (name, description,
+   model, tools, disallowedTools) and focused system prompt. Reference `vp-task-executor.md`.
+
+3. Add the agent to the delegation table in `workflows/autonomous.md`
    under `## Agent Delegation`.
 
-3. Wire invocation into the relevant workflow steps.
+4. Wire invocation into the relevant workflow steps using `subagent_type: "{name}-agent"`.
 
-4. Add to `installSubdirs` in the adapter that should include `agents/`.
+5. `claudeAgentsSrc: 'agents/claude-code'` already covers all files — no install config change needed.
 
 5. Write a contract test in `tests/unit/` verifying the file exists and has required sections.
 
