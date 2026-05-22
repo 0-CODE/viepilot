@@ -309,11 +309,20 @@ if (channel.type === 'excel_m365') {
     prompt: `op: read. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
   })
 } else if (channel.type === 'browser') {
-  // Claude Code: use native browser-intake-agent (requires vercel-labs/agent-browser)
-  Agent({ subagent_type: "browser-intake-agent",
-    description: "browser-intake-agent: read tickets from public URL",
-    prompt: `op: read_url. url: ${channel.url}. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
-  })
+  // SharePoint xlsx sharing links → excel-intake-agent (ENH-094)
+  const { detectUrlType } = require('lib/intake/adapters/browser.cjs');
+  if (detectUrlType(channel.url) === 'sharepoint-xlsx') {
+    Agent({ subagent_type: "excel-intake-agent",
+      description: "excel-intake-agent: read SharePoint xlsx via sharing_url",
+      prompt: `op: read. channel_config: ${JSON.stringify({ ...channel, type: 'excel_m365', sharing_url: channel.url })}. projectRoot: ${projectRoot}`
+    })
+  } else {
+    // All other browser URLs → browser-intake-agent (requires vercel-labs/agent-browser)
+    Agent({ subagent_type: "browser-intake-agent",
+      description: "browser-intake-agent: read tickets from public URL",
+      prompt: `op: read_url. url: ${channel.url}. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
+    })
+  }
 }
 ```
 

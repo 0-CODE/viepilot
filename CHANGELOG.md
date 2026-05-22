@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.1] - 2026-05-23
+
+### Fixed
+- **ENH-094** `lib/intake/adapters/browser.cjs` — add `sharepoint-xlsx` pattern (`/sharepoint\.com\/:[a-z]:\/r\//`) to `URL_PATTERNS`; SharePoint xlsx sharing URLs now detected correctly instead of falling through as `generic-table`
+- **ENH-094** `skills/vp-intake/SKILL.md` — browser channel dispatch now routes `sharepoint-xlsx` URLs to `excel-intake-agent` (sharing_url mode) instead of `browser-intake-agent`
+
+---
+
 ## [3.6.0] - 2026-05-23
 
 ### Added

@@ -221,3 +221,40 @@ describe('Phase 139 — Skill/workflow documentation', () => {
     expect(content).toMatch(/research-agent/);
   });
 });
+
+// ---------------------------------------------------------------------------
+// ENH-094: SharePoint xlsx routing fix in browser.cjs URL_PATTERNS
+// ---------------------------------------------------------------------------
+
+describe('Phase 139 — ENH-094: SharePoint xlsx URL routing', () => {
+  const browserAdapter = require('../../lib/intake/adapters/browser.cjs');
+
+  test('URL_PATTERNS includes sharepoint-xlsx entry', () => {
+    expect(browserAdapter.URL_PATTERNS).toHaveProperty('sharepoint-xlsx');
+  });
+
+  test('detectUrlType returns sharepoint-xlsx for /:x:/r/ pattern', () => {
+    const url = 'https://contoso-my.sharepoint.com/:x:/r/personal/user/Documents/file.xlsx?web=1&e=abc';
+    expect(browserAdapter.detectUrlType(url)).toBe('sharepoint-xlsx');
+  });
+
+  test('detectUrlType returns sharepoint-xlsx for /:w:/r/ pattern (Word)', () => {
+    const url = 'https://contoso-my.sharepoint.com/:w:/r/personal/user/Documents/doc.docx';
+    expect(browserAdapter.detectUrlType(url)).toBe('sharepoint-xlsx');
+  });
+
+  test('isKnownPublicSource returns true for sharepoint-xlsx URL', () => {
+    const url = 'https://contoso.sharepoint.com/:x:/r/sites/team/Shared/file.xlsx';
+    expect(browserAdapter.isKnownPublicSource(url)).toBe(true);
+  });
+
+  test('detectUrlType still returns generic-table for non-SharePoint URL', () => {
+    expect(browserAdapter.detectUrlType('https://example.com/data.xlsx')).toBe('generic-table');
+  });
+
+  test('vp-intake SKILL.md routes sharepoint-xlsx to excel-intake-agent', () => {
+    const content = fs.readFileSync(path.join(ROOT, 'skills', 'vp-intake', 'SKILL.md'), 'utf8');
+    expect(content).toMatch(/sharepoint-xlsx/);
+    expect(content).toMatch(/excel-intake-agent.*sharepoint|sharepoint.*excel-intake-agent/s);
+  });
+});

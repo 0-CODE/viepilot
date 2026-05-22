@@ -10,7 +10,7 @@
 - **Last Completed Phase**: **139** ✅ (ENH-090-093 browser agent suite → v3.6.0)
 - **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phase 139 complete: browser-intake + audit + research + request URL enrichment → v3.6.0
+- **Last Activity**: 2026-05-23 — ENH-094 patch: SharePoint xlsx URL_PATTERNS fix + SKILL.md routing → v3.6.1
 
 ## Progress Overview
 ```
@@ -32,6 +32,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-23 | ENH-094 patch: sharepoint-xlsx pattern added to browser.cjs URL_PATTERNS + SKILL.md routing fix → v3.6.1 | Live test discovered gap: SharePoint sharing link fell through as generic-table | Post-139 |
 | 2026-05-23 | Phase 139 planned: ENH-090-093 browser-agent suite (5 tasks) → v3.6.0 | `/vp-evolve` Add Feature | M3.0 |
 | 2026-05-23 | ENH-093 logged: vp-request URL enrichment — auto-fill from GitHub/Jira/Notion/Trello URLs | User request | Backlog |
 | 2026-05-23 | ENH-092 logged: research-agent upgrade — agent-browser for JS-rendered competitor research | User request | Backlog |
