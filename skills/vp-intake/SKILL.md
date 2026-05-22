@@ -249,6 +249,35 @@ Read {N} tickets from {channel.name}
 
 If 0 tickets found, exit with message "No tickets found in this channel."
 
+### Step 4.5: Parallel Codebase Validation (ENH-087)
+
+> Skip entirely if `--skip-validation` flag is set.
+
+Call `validateTickets(classifiedTickets, projectRoot)` from `lib/intake/validator.cjs`.
+Fan-out: one validation per ticket (batched ≤10 concurrently via `Promise.all`).
+
+**Claude Code adapter** — each ticket dispatches a `file-scanner-agent`:
+```js
+// Inside validateTicket (CC path override):
+Agent({ subagent_type: "file-scanner-agent",
+  description: `file-scanner-agent: validate "${ticket.title}"`,
+  prompt: `keywords: ${JSON.stringify(keywords)}. projectRoot: ${projectRoot}. requests_dir: .viepilot/requests/`
+})
+```
+
+**Non-CC adapters** — inline `grep` + request scan (no agent spawn).
+
+Display progress during validation:
+```
+Validating {N} tickets against codebase... (parallel)
+  ✅ "Login button broken"      — found: src/components/LoginButton.tsx
+  ⚠️ "Add CSV export"           — similar: ENH-045
+  ❓ "Fix the performance issue" — no codebase match
+```
+
+Validation results are attached as `ticket._validation` and shown as badges in Step 5 AUQ.
+`--skip-validation` flag: skip Step 4.5 entirely, proceed directly to Step 5.
+
 ### Step 5: Triage (AUQ multi-select)
 
 Call `runTriage(tickets, channel, projectRoot, askFn)` from `lib/intake/triage-ux.cjs`.

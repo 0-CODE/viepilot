@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.4.0] - 2026-05-23
+
+### Added — ENH-087: parallel codebase validation (Step 4.5) before triage in vp-intake (Phase 137)
+### Added — lib/intake/validator.cjs: `validateTickets`, `extractKeywords`, `validateTicket` (fan-out + duplicate detection)
+### Changed — triage-ux.cjs: `_validation` badge shown per ticket in AUQ display
+
+---
+
 ## [3.3.0] - 2026-05-23
 
 ### Added — ENH-089: `excel-intake-agent` + `sheets-intake-agent` native CC agents (Phase 136)
