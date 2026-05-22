@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [3.0.0] - 2026-05-22
+
 ### v3.0.0 — Per-Adapter Intelligence Refactor (FEAT-021)
 
 **Milestone**: v3.0 — Phases 127–132 → v3.0.0, Phase 133 → v3.1.0
@@ -41,9 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deprecation notice links to both project (`.agents/skills/`) and global (`~/.gemini/antigravity/skills/`) skill paths
 - 8 new tests: `tests/unit/phase131-feat021-antigravity-path-fix.test.js`
 
-#### Phase 132 — Tests + CHANGELOG + v3.0.0 Bump (planned)
-- ≥15 new tests covering adapter detection, ADAPTER_CONTEXT, validate, 5-block standard, workflow adapter paths
-- Version bump: 2.51.0 → 3.0.0
+#### Phase 132 — Tests + CHANGELOG + v3.0.0 Bump ✅
+- 25 new integration + contract tests covering: ADAPTER_CONTEXT completeness, adapter tool mappings, 5-block standard across all SKILL.md, workflow adapter-aware paths, claude-code agent definitions, antigravity Phase 131 additions
+- `tests/unit/phase132-feat021-integration.test.js`: 13 integration tests (adapter detection, ADAPTER_CONTEXT schema, detect-adapter --json, validate --adapter)
+- `tests/unit/phase132-feat021-contracts.test.js`: 12 contract tests (5-block standard, workflow adapter refs, adapter property contracts)
+- Version bump: 2.51.0 → 3.0.0; CHANGELOG [3.0.0] finalized
 
 #### Phase 133 — vp-auto Orchestration Refactor (planned → v3.1.0)
 - autonomous.md: task dependency graph + runnable cluster identification

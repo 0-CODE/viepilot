@@ -112,8 +112,8 @@ describe('Phase 112 — ENH-076: Design.MD brainstorm extraction + crystallize g
   describe('112.4 — version + CHANGELOG', () => {
     test('package.json version is 2.44.0 or later', () => {
       const [major, minor] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(44);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(44);
     });
 
     test('CHANGELOG contains [2.44.0] entry', () => {

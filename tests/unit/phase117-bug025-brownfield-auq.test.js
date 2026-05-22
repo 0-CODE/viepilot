@@ -61,9 +61,11 @@ describe('Phase 117 — BUG-025: brownfield crystallize AUQ initial entry gate',
 
   describe('117.2 — version and changelog', () => {
     test('package.json version is at least 2.45.4', () => {
-      const [, minor, patch] = pkg.version.split('.').map(Number);
-      expect(minor).toBeGreaterThanOrEqual(45);
-      if (minor === 45) expect(patch).toBeGreaterThanOrEqual(4);
+      const [major, minor, patch] = pkg.version.split(".").map(Number);
+      if (major < 3) {
+        expect(minor).toBeGreaterThanOrEqual(45);
+        if (minor === 45) expect(patch).toBeGreaterThanOrEqual(4);
+      }
     });
 
     test('CHANGELOG has [2.45.4] entry', () => {

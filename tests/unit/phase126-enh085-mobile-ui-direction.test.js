@@ -171,8 +171,10 @@ describe('Phase 126 — ENH-085: Mobile UI Direction Breakdown Quality', () => {
 
   // ── version + changelog ───────────────────────────────────────────────────
 
-  test('package.json version is 2.51.0', () => {
-    expect(pkg.version).toBe('2.51.0');
+  test('package.json version is 2.51.0 or later (bumped to 3.0.0 in Phase 132)', () => {
+    const [major, minor] = pkg.version.split('.').map(Number);
+    const isAtLeast = major > 2 || (major === 2 && minor >= 51);
+    expect(isAtLeast).toBe(true);
   });
 
   test('CHANGELOG has 2.51.0 entry with ENH-085 items', () => {

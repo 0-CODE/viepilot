@@ -52,8 +52,8 @@ describe('Phase 116 — ENH-077: crystallize → vp-design seamless handoff', ()
   describe('116.2 — version + CHANGELOG', () => {
     test('package.json version is 2.45.2 or later', () => {
       const [major, minor, patch] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(45);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(45);
       if (minor === 45) expect(patch).toBeGreaterThanOrEqual(2);
     });
 

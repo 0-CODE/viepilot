@@ -82,8 +82,8 @@ describe('version + changelog', () => {
   test('package.json version is 2.43.1 or later', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf8'));
     const [major, minor] = pkg.version.split('.').map(Number);
-    expect(major).toBe(2);
-    expect(minor).toBeGreaterThanOrEqual(43);
+    expect(major).toBeGreaterThanOrEqual(2);
+    if (major < 3) expect(minor).toBeGreaterThanOrEqual(43);
   });
 
   test('CHANGELOG contains [2.43.1] entry', () => {

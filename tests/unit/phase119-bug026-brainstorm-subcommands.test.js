@@ -89,9 +89,11 @@ describe('Phase 119 — BUG-026: vp-brainstorm sub-commands → proactive AUQ tr
 
   describe('119.3 — version and changelog', () => {
     test('package.json version is at least 2.45.6', () => {
-      const [, minor, patch] = pkg.version.split('.').map(Number);
-      expect(minor).toBeGreaterThanOrEqual(45);
-      if (minor === 45) expect(patch).toBeGreaterThanOrEqual(6);
+      const [major, minor, patch] = pkg.version.split(".").map(Number);
+      if (major < 3) {
+        expect(minor).toBeGreaterThanOrEqual(45);
+        if (minor === 45) expect(patch).toBeGreaterThanOrEqual(6);
+      }
     });
 
     test('CHANGELOG has [2.45.6] entry', () => {

@@ -46,8 +46,8 @@ describe('Phase 115 — ENH-076.5: Architect workspace design.html', () => {
   describe('115.2 — version + CHANGELOG', () => {
     test('package.json version is 2.45.1 or later', () => {
       const [major, minor, patch] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(45);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(45);
       if (minor === 45) expect(patch).toBeGreaterThanOrEqual(1);
     });
 

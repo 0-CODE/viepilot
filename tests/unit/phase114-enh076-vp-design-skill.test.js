@@ -107,8 +107,8 @@ describe('Phase 114 — ENH-076.4: vp-design skill', () => {
   describe('114.3 — version + CHANGELOG', () => {
     test('package.json version is 2.45.0 or later', () => {
       const [major, minor] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(45);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(45);
     });
 
     test('CHANGELOG contains [2.45.0] entry', () => {

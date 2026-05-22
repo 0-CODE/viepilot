@@ -62,8 +62,8 @@ describe('Phase 113 — ENH-076.3: vp-auto Design.MD preflight injection', () =>
   describe('113.2 — version + CHANGELOG', () => {
     test('package.json version is 2.44.1 or later', () => {
       const [major, minor] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(44);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(44);
     });
 
     test('CHANGELOG contains [2.44.1] entry', () => {

@@ -116,8 +116,8 @@ describe('Phase 120 — ENH-079: Signal Category 13 — Brownfield UI/Design Rev
 
   test('package.json version is 2.46.x or later (ENH-079 introduced 2.46.0)', () => {
     const [major, minor] = pkg.version.split('.').map(Number);
-    expect(major).toBe(2);
-    expect(minor).toBeGreaterThanOrEqual(46);
+    expect(major).toBeGreaterThanOrEqual(2);
+    if (major < 3) expect(minor).toBeGreaterThanOrEqual(46);
   });
 
   test('CHANGELOG has [2.46.0] entry with ENH-079 mention', () => {

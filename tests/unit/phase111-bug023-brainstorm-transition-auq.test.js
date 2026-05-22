@@ -89,8 +89,8 @@ describe('Phase 111 — BUG-023: vp-brainstorm session-transition AUQ rule', () 
   describe('111.3 — version + CHANGELOG', () => {
     test('package.json version is 2.43.2 or later', () => {
       const [major, minor, patch] = pkg.version.split('.').map(Number);
-      expect(major).toBe(2);
-      expect(minor).toBeGreaterThanOrEqual(43);
+      expect(major).toBeGreaterThanOrEqual(2);
+      if (major < 3) expect(minor).toBeGreaterThanOrEqual(43);
       if (minor === 43) expect(patch).toBeGreaterThanOrEqual(2);
     });
 

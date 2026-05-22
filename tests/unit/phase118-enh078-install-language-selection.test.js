@@ -87,9 +87,11 @@ describe('Phase 118 — ENH-078: install communication language selection', () =
 
   describe('118.3 — version and changelog', () => {
     test('package.json version is at least 2.45.5', () => {
-      const [, minor, patch] = pkg.version.split('.').map(Number);
-      expect(minor).toBeGreaterThanOrEqual(45);
-      if (minor === 45) expect(patch).toBeGreaterThanOrEqual(5);
+      const [major, minor, patch] = pkg.version.split(".").map(Number);
+      if (major < 3) {
+        expect(minor).toBeGreaterThanOrEqual(45);
+        if (minor === 45) expect(patch).toBeGreaterThanOrEqual(5);
+      }
     });
 
     test('CHANGELOG has [2.45.5] entry', () => {
