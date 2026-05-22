@@ -789,6 +789,15 @@ Rule: `secondary_languages[]` = languages with ≥5 files that are not `primary_
 
 1. `tailwind.config.js` / `tailwind.config.ts`
    - Extract: `theme.extend.colors`, `theme.colors`, `theme.fontFamily`, `theme.spacing`, `theme.borderRadius`
+   - **ENH-085 — Breakpoint extraction:** also read `theme.screens` / `theme.extend.screens`
+     - If present: record custom breakpoint values (e.g., `{ sm: '640px', md: '768px', lg: '1024px' }`)
+     - If absent: use Tailwind defaults `{ sm: 640, md: 768, lg: 1024, xl: 1280, '2xl': 1536 }` (report as "Tailwind defaults")
+   - **ENH-085 — Responsive utility detection:** after token scan, grep component source files for responsive prefix patterns:
+     - Scan: `src/**/*.{jsx,tsx,vue,svelte}`, `pages/**/*.{jsx,tsx}`, `app/**/*.{jsx,tsx,svelte}`
+     - Pattern: `\b(sm|md|lg|xl|2xl):[a-zA-Z0-9-]+`
+     - Count occurrences per file; identify top 10 files by responsive class count
+     - Track which prefixes are used (sm/md/lg/xl/2xl) and their relative frequency
+     - Infer strategy: if sm: > 40% of total responsive classes → `mobile-first`; if xl:/2xl: > 40% → `desktop-first`; else → `mixed`
 
 2. CSS custom properties in `*.css` / `globals.css` / `variables.css` / `_variables.scss`
    - `--color-*`, `--primary-*`, `--bg-*`, `--text-*` → TOKEN_MAP.colors
@@ -804,7 +813,38 @@ Rule: `secondary_languages[]` = languages with ≥5 files that are not `primary_
 - ASSUMED prefix for any token not found in any source.
 - Track `source_files[]` — list of all files scanned.
 
-**Scan Report field:** `ui_tokens: { detected: N, assumed: M, source_files: [] }`
+**Scan Report field:**
+```yaml
+ui_tokens:
+  detected: N
+  assumed: M
+  source_files: []
+  # ENH-085 — responsive additions (present only when tailwind detected):
+  breakpoints: { sm: 640, md: 768, lg: 1024, xl: 1280 }    # custom or Tailwind defaults
+  breakpoints_source: custom | tailwind-defaults
+  responsive_utilities:
+    prefixes_used: [sm, md, lg, xl]
+    strategy_inference: mobile-first | desktop-first | mixed | unknown
+    top_responsive_files:
+      - { file: "src/components/Nav.tsx", prefixes: [sm, md, lg], count: 34 }
+      - { file: "src/layouts/Dashboard.tsx", prefixes: [md, lg], count: 21 }
+    # (top 10 files by responsive class count; omitted if no responsive classes found)
+```
+
+**RESPONSIVE SUMMARY block** (appended to Sub-scan A output when breakpoints detected):
+```
+📱 RESPONSIVE SUMMARY
+──────────────────────────────────────────────────
+Breakpoints: sm(640) md(768) lg(1024) xl(1280) [source: tailwind-defaults]
+Strategy inference: mobile-first (sm: dominant — 52% of responsive classes)
+Top responsive files:
+  src/components/Nav.tsx           — 34 responsive classes [sm, md, lg]
+  src/layouts/Dashboard.tsx        — 21 responsive classes [md, lg]
+  src/components/DataTable.tsx     — 15 responsive classes [sm, md]
+```
+
+> If no `tailwind.config.js` found → skip breakpoint extraction and responsive utility detection silently.
+> If no responsive classes found in source → emit `strategy_inference: unknown`, omit top_responsive_files.
 
 ---
 
