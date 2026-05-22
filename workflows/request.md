@@ -104,14 +104,9 @@ If triggered:
 **Claude Code (terminal) — invoke research-agent:**
 ```
 Agent({
-  subagent_type: "general-purpose",
-  description: "research-agent: feasibility study for {topic}",
-  prompt: `
-    Load agents/research-agent.md for full spec.
-    Topic: {extracted from user description}
-    Questions: ["What SDK/API exists?", "What are integration points?", "What config dir/convention?", "Feasibility rating?"]
-    Return a ## Research Findings section + ## Sources.
-  `
+  subagent_type: "research-agent",
+  description: "Feasibility study: {topic}",
+  prompt: "topic: {extracted from user description}. questions: [\"What SDK/API exists?\", \"What are integration points?\", \"What config dir/convention?\", \"Feasibility rating?\"]"
 })
 ```
 

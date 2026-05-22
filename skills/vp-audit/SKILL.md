@@ -229,6 +229,17 @@ Execute workflow from `@$HOME/{envToolDir}/workflows/audit.md`
 **Step 0**: Detect project type (viepilot framework vs user project)
 
 **Step 1 — Tier 1**: ViePilot State Consistency
+
+**Claude Code — invoke file-scanner-agent for state file discovery:**
+```
+Agent({ subagent_type: "file-scanner-agent",
+  description: "file-scanner-agent: scan state files for stale phase refs",
+  prompt: "patterns: [\".viepilot/phases/*/PHASE-STATE.md\"]. keywords: [\"in_progress\", \"planned\"]. context: Find phases with stale in_progress or planned status."
+})
+```
+Non-Claude Code: run Glob/Grep inline.
+
+Then cross-check results against:
 ```bash
 # TRACKER.md vs PHASE-STATE.md
 # ROADMAP.md vs PHASE-STATE.md
@@ -237,6 +248,17 @@ Execute workflow from `@$HOME/{envToolDir}/workflows/audit.md`
 ```
 
 **Step 2 — Tier 2**: Project Documentation Drift
+
+**Claude Code — invoke file-scanner-agent for docs drift scan:**
+```
+Agent({ subagent_type: "file-scanner-agent",
+  description: "file-scanner-agent: scan docs for stale refs and placeholder URLs",
+  prompt: "patterns: [\"docs/**/*.md\", \"README.md\", \"CHANGELOG.md\"]. keywords: [\"your-org\", \"YOUR_USERNAME\", \"TODO\", \"placeholder\"]. context: Find stale placeholder refs and docs drift."
+})
+```
+Non-Claude Code: run Glob/Grep inline.
+
+Then check:
 ```bash
 # Detect version: package.json / pom.xml / pyproject.toml
 # README.md version mention
