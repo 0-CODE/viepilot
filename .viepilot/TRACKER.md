@@ -1,12 +1,13 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Milestone**: M1.37
-- **Current Phase**: **126** — ENH-085 Mobile UI Direction Breakdown Quality (7 tasks → v2.51.0)
-- **Last Completed Phase**: **125** — ✅ Complete (**ENH-084 vp-intake setup wizard** → **2.50.0**)
-- **Next Phase**: —
-- **Current Task**: 126.1
-- **Last Activity**: 2026-05-22 — Phase 126 planned: ENH-085 Mobile UI Direction (7 tasks → v2.51.0)
+- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–133 → v3.0.0/v3.1.0
+- **Current Phase**: **127** — FEAT-021 Adapter Detection + ADAPTER_CONTEXT + Validate (planned)
+- **Last Completed Phase**: **126** ✅ (ENH-085 Mobile UI Direction → 2.51.0)
+- **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
+- **Next Phase**: 127 (first of v3)
+- **Current Task**: —
+- **Last Activity**: 2026-05-22 — v3 ROADMAP created (Phases 127-133); M1.37 archived; ready for /vp-auto --from 127
 
 ## Progress Overview
 ```
@@ -199,19 +200,25 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-25 | BUG-024 logged: install libFiles hard-coded — viepilot-persona.cjs + skill-registry.cjs missing from installed instances (Windows + all platforms) | `/vp-request` | Backlog |
 | 2026-05-21 | ENH-085 logged: Mobile UI Direction breakdown quality — breakpoints/responsive variants/mobile-first strategy/component map all absent from workflow chain | `/vp-request` | Backlog |
 | 2026-05-22 | Phase 126 planned: ENH-085 (7 tasks — design.md schema + brainstorm mobile sub-phase + per-breakpoint HTML + component map + Sub-scan A breakpoints + crystallize consumption), target **2.51.0** | `/vp-evolve` | M1.37 |
+| 2026-05-22 | Phase 126 shipped: ENH-085 Mobile UI Direction (7 tasks, 27 tests) — **2.51.0** | `/vp-auto` | M1.37 |
+| 2026-05-22 | FEAT-021 logged: v3 Milestone — Per-Adapter Intelligence Refactor (agent layer broken on Claude Code, workflow/agent disconnect, per-adapter logic, XL scope, research required) | `/vp-request` | v3 |
+| 2026-05-22 | FEAT-021 brainstorm complete: 6 topics, 7 phases planned (127-133), orchestration topic added — vp-auto to use Agent/Task tool fan-out + Agent Teams; orchestration critical path added as Phase 133 | `/vp-brainstorm` | v3 |
+| 2026-05-22 | M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md` (Phases 53-126, v2.0.0-2.51.0) | `/vp-evolve --milestone` | M1.37 close |
+| 2026-05-22 | v3 ROADMAP created: Phases 127-133, 31 tasks, target v3.0.0 + v3.1.0; CHANGELOG [Unreleased] updated | `/vp-evolve --milestone` | v3 |
 
 ## Blockers
 _None currently_
 
 ## Next Action
-_Phases 112–115 planned for ENH-076. Run /vp-auto --phase 112 to start implementation._
+_v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect-adapter + ADAPTER_CONTEXT + validate)._
 
 ## Backlog
 
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-085 | 🔧 | Mobile UI Direction breakdown quality — breakpoints, responsive variants, mobile-first strategy, component map | high | new |
+| FEAT-021 | ✨ | v3 Milestone: Per-Adapter Intelligence Refactor — 7 phases (127-133), adapter blocks + ADAPTER_CONTEXT + orchestration refactor → v3.0.0 | critical | brainstorm_complete → /vp-evolve |
+| ENH-085 | 🔧 | Mobile UI Direction breakdown quality — breakpoints, responsive variants, mobile-first strategy, component map | high | ✅ done (**2.51.0**) |
 | ENH-084 | 🔧 | vp-intake: AUQ-driven channel config setup wizard | high | ✅ done (**2.50.0**) |
 | ENH-083 | 🔧 | vp-intake: SharePoint sharing link + xlsx parser + BUG keyword "performance" | high | ✅ done (**2.49.0**) |
 | ENH-082 | 🔧 | Ticket Intake Channels — Excel/M365 + Google Sheets + CSV + Triage Workflow + Write-back | high | ✅ done (**2.48.0**) |

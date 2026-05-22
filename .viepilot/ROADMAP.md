@@ -3400,7 +3400,8 @@ Direction sub-phase in brainstorm (AUQ for strategy + device scope), per-breakpo
 sections in `pages/*.html`, Component Responsive Map in `notes.md`, Tailwind breakpoint
 extraction in Sub-scan A, and responsive implementation notes in crystallize.
 **Estimated Tasks**: 7
-**Status**: planned
+**Status**: done ✅
+**Shipped**: 2026-05-22 — v2.51.0
 **Version Target**: 2.51.0
 **Dependencies**: ENH-079 ✅ (Sub-scan A), ENH-076 ✅ (Design.MD integration)
 **Directory**: `.viepilot/phases/126-enh085-mobile-ui-direction/`
@@ -3416,11 +3417,210 @@ extraction in Sub-scan A, and responsive implementation notes in crystallize.
 | 126.7 | Tests (≥10) + CHANGELOG [2.51.0] + version bump | ≥10 tests pass; CHANGELOG; package.json = 2.51.0 | S |
 
 **Verification**:
-- [ ] `grep -A5 "screens:" workflows/design.md`
-- [ ] `grep -n "Mobile Design Direction" workflows/brainstorm.md`
-- [ ] `grep -n "responsive-breakdown" workflows/brainstorm.md`
-- [ ] `grep -n "Component Responsive Map" workflows/brainstorm.md`
-- [ ] `grep -n "theme.screens\|responsive_utilities" workflows/brainstorm.md`
-- [ ] `grep -n "Responsive Implementation Notes" workflows/crystallize.md`
-- [ ] `npm test -- --grep "phase126"` all pass (≥10)
-- [ ] `package.json` version = `2.51.0`
+- [x] `grep -A5 "screens:" workflows/design.md`
+- [x] `grep -n "Mobile Design Direction" workflows/brainstorm.md`
+- [x] `grep -n "responsive-breakdown" workflows/brainstorm.md`
+- [x] `grep -n "Component Responsive Map" workflows/brainstorm.md`
+- [x] `grep -n "theme.screens\|responsive_utilities" workflows/brainstorm.md`
+- [x] `grep -n "Responsive Implementation Notes" workflows/crystallize.md`
+- [x] `npm test -- --grep "phase126"` all pass (27/27)
+- [x] `package.json` version = `2.51.0`
+
+---
+
+---
+
+## Milestone: v3.0 — Per-Adapter Intelligence Refactor
+
+### Overview
+- **Version Target**: 3.0.0 (from 2.51.0)
+- **Goal**: Full adapter abstraction layer refactor — fix broken Claude Code agent layer, replace `cursor_skill_adapter` with per-adapter `<adapter>` blocks, inject ADAPTER_CONTEXT at session start, refactor vp-auto to use orchestrator/worker model for token-efficient parallel execution
+- **Phases**: 127–133
+- **Status**: 🔄 planning
+- **Brainstorm**: `docs/brainstorm/session-2026-05-22.md` (completed)
+- **Request**: `.viepilot/requests/FEAT-021.md`
+
+### Root Cause Being Fixed
+All 21 SKILL.md files contain `<cursor_skill_adapter>` blocks that reference Cursor-specific tool names (`Shell`, `ReadFile`, `rg`, `ApplyPatch`, `Subagent`) which do not exist on Claude Code. These are silently ignored, causing the entire adapter-specific logic to fail on Claude Code. Additionally, vp-auto runs all tasks on the main agent thread causing excessive token waste.
+
+---
+
+## Phase 127 — FEAT-021: Adapter Detection + ADAPTER_CONTEXT + Validate
+
+**Goal**: Implement `vp-tools detect-adapter` (heuristic detection), ADAPTER_CONTEXT JSON injection at session start, and `vp-tools validate --adapter <id>` capability checker.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.0.0-alpha.1
+**Dependencies**: Phase 126 ✅
+**Directory**: `.viepilot/phases/127-feat021-adapter-detection/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 127.1 | `vp-tools detect-adapter` command (heuristic: env vars + process parent) | Outputs JSON `{ adapter, capabilities[], interactive_mode }` | M |
+| 127.2 | ADAPTER_CONTEXT schema + 5-adapter capability map (lib/adapter-context.cjs) | JSON schema with tools{}, interactive, subagent, orchestration{} per adapter | M |
+| 127.3 | Session-start ADAPTER_CONTEXT injection in autonomous.md | Every skill session reads ADAPTER_CONTEXT at start; no more inline compat tables | M |
+| 127.4 | `vp-tools validate --adapter <id>` command | Checks tool availability; warns on limitations (e.g., Cursor 40-tool limit); exits 1 on critical gaps | M |
+| 127.5 | Tests (≥8) + CHANGELOG update | ≥8 tests; CHANGELOG [Unreleased] entry | S |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs detect-adapter` outputs valid JSON
+- [ ] `node bin/vp-tools.cjs validate --adapter claude-code` exits 0
+- [ ] `node bin/vp-tools.cjs validate --adapter cursor-agent` warns on 40-tool limit
+- [ ] `npm test -- --grep "phase127"` all pass
+
+---
+
+## Phase 128 — FEAT-021: SKILL.md 5-Block Adapter Standard (21 files)
+
+**Goal**: Replace `<cursor_skill_adapter>` with 5 `<adapter id="...">` blocks in all 21 SKILL.md files across the repo.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.0.0-alpha.2
+**Dependencies**: Phase 127 ✅
+**Directory**: `.viepilot/phases/128-feat021-skill-adapter-blocks/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 128.1 | Define canonical 5-block `<adapter>` template (claude-code, cursor-agent, antigravity, codex, copilot) | Template with correct tool names per adapter; documented in `docs/dev/adapter-blocks.md` | S |
+| 128.2 | Migrate core skills (vp-auto, vp-brainstorm, vp-request, vp-evolve, vp-crystallize) | 5 SKILL.md files updated; cursor_skill_adapter removed | M |
+| 128.3 | Migrate remaining 16 SKILL.md files (batch) | All 21 files have 5-block adapter standard; 0 cursor_skill_adapter remaining | L |
+| 128.4 | Tests (≥6) + CHANGELOG update | `grep -r cursor_skill_adapter skills/` returns 0 results; ≥6 contract tests | S |
+
+**Verification**:
+- [ ] `grep -r "cursor_skill_adapter" skills/` → 0 results
+- [ ] `grep -r '<adapter id="claude-code">' skills/` → ≥21 results
+- [ ] `npm test -- --grep "phase128"` all pass
+
+---
+
+## Phase 129 — FEAT-021: Workflow Adapter-Aware Execution Paths
+
+**Goal**: Update all 4 core workflows (brainstorm.md, crystallize.md, autonomous.md, design.md) to read ADAPTER_CONTEXT and use adapter-aware fallback chains instead of inline compat tables.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.0.0-alpha.3
+**Dependencies**: Phase 127 ✅, Phase 128 ✅
+**Directory**: `.viepilot/phases/129-feat021-workflow-adapter-paths/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 129.1 | autonomous.md: ADAPTER_CONTEXT read at session start; shell fallback chain | Reads detect-adapter output; uses correct shell tool per adapter | M |
+| 129.2 | brainstorm.md: AUQ fallback chain (AUQ → text → defaults) from ADAPTER_CONTEXT | interactive_mode gates AUQ vs. text list; no inline compat tables | M |
+| 129.3 | crystallize.md: adapter-aware tool references + Sub-scan A shell routing | Shell commands route through ADAPTER_CONTEXT.tools.shell | M |
+| 129.4 | design.md: adapter-aware sync command + fallback for non-Claude-Code adapters | --sync uses correct shell tool; graceful degradation on Antigravity/Codex | S |
+| 129.5 | Tests (≥6) + CHANGELOG update | Workflow adapter fallback behavior tested per adapter; ≥6 tests | S |
+
+**Verification**:
+- [ ] `grep -n "ADAPTER_CONTEXT" workflows/autonomous.md` → ≥3 hits
+- [ ] `grep -n "ADAPTER_CONTEXT" workflows/brainstorm.md` → ≥2 hits
+- [ ] `npm test -- --grep "phase129"` all pass
+
+---
+
+## Phase 130 — FEAT-021: Claude Code Agent Definitions + Hooks Upgrade
+
+**Goal**: Create `.claude/agents/` YAML-frontmatter subagent definitions for vp-* roles; validate and extend PreToolUse/PostToolUse hook usage as workflow gates.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.0.0-alpha.4
+**Dependencies**: Phase 127 ✅
+**Directory**: `.viepilot/phases/130-feat021-claude-agent-definitions/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 130.1 | `.claude/agents/vp-task-executor.md` — Haiku model, file impl worker | YAML frontmatter: model=haiku, tools restricted to Read/Edit/Write/Bash/Glob/Grep, maxTurns=30 | M |
+| 130.2 | `.claude/agents/vp-phase-planner.md` — Sonnet, dependency resolver | Reads PHASE-STATE.md; outputs runnable task clusters; no file editing | M |
+| 130.3 | `.claude/agents/vp-quality-gate.md` — Sonnet, test runner + output checker | Runs verification commands; reports PASS/FAIL with evidence | M |
+| 130.4 | PreToolUse/PostToolUse hooks: workflow gates (task-start gate, commit gate) | hooks registered via `vp-tools hooks install --adapter claude-code`; gate on .claude/hooks/ | M |
+| 130.5 | Tests (≥4) + CHANGELOG update | Agent YAML frontmatter valid; hook event names match 28-event spec; ≥4 tests | S |
+
+**Verification**:
+- [ ] `ls .claude/agents/` → 3 files
+- [ ] `cat .claude/agents/vp-task-executor.md` → model: claude-haiku-4-5
+- [ ] `npm test -- --grep "phase130"` all pass
+
+---
+
+## Phase 131 — FEAT-021: Antigravity Path Fix + Gemini CLI Deprecation Notice
+
+**Goal**: Add `.agents/skills/` project path support for Antigravity adapter; add Gemini CLI deprecation notice to install flow.
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.0.0-alpha.5
+**Dependencies**: Phase 127 ✅
+**Directory**: `.viepilot/phases/131-feat021-antigravity-path-fix/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 131.1 | Antigravity adapter: add `.agents/skills/` project path support alongside global | Install copies to both `~/.gemini/antigravity/skills/` and `.agents/skills/<name>/` | M |
+| 131.2 | Gemini CLI deprecation notice in install flow + docs | `vp-tools install --target antigravity` shows deprecation notice; links to Antigravity migration | S |
+| 131.3 | Tests (≥3) + CHANGELOG update | Project path install tested; deprecation notice output tested; ≥3 tests | S |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs install --target antigravity` shows deprecation notice
+- [ ] Skill copied to `.agents/skills/<name>/SKILL.md`
+- [ ] `npm test -- --grep "phase131"` all pass
+
+---
+
+## Phase 132 — FEAT-021: Tests (≥15) + CHANGELOG + v3.0.0 Bump
+
+**Goal**: Full test suite for v3 changes, CHANGELOG finalization, and version bump to 3.0.0.
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.0.0
+**Dependencies**: Phases 127–131 ✅
+**Directory**: `.viepilot/phases/132-feat021-tests-changelog-v3/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 132.1 | Integration tests: adapter detection + ADAPTER_CONTEXT + validate (≥8 new tests) | End-to-end: detect → ADAPTER_CONTEXT → skill execution on claude-code adapter | M |
+| 132.2 | Contract tests: 5-block adapter standard + workflow adapter paths (≥7 new tests) | SKILL.md grep tests; workflow adapter-aware path tests | S |
+| 132.3 | CHANGELOG [3.0.0] + version bump + README badge update | `package.json` version = 3.0.0; CHANGELOG; README version badge | S |
+
+**Verification**:
+- [ ] `npm test` all pass; no regressions
+- [ ] `package.json` version = `3.0.0`
+- [ ] `grep "3.0.0" CHANGELOG.md`
+
+---
+
+## Phase 133 — FEAT-021: vp-auto Orchestration Refactor (Agent/Task Fan-out)
+
+**Goal**: Refactor vp-auto's autonomous execution from single-agent serial to orchestrator/worker model using Claude Code's `Agent` tool for parallel task dispatch. Includes Agent Teams support for large phases and model tiering (Haiku workers, Sonnet orchestrator).
+**Estimated Tasks**: 6
+**Status**: planned
+**Version Target**: 3.1.0
+**Dependencies**: Phase 130 ✅ (agent definitions), Phase 132 ✅ (v3.0.0 shipped)
+**Directory**: `.viepilot/phases/133-feat021-vp-auto-orchestration/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 133.1 | autonomous.md: orchestrator loop — dependency graph + runnable cluster identification | Reads PHASE-STATE.md; builds task dependency graph; identifies independent task clusters per phase | M |
+| 133.2 | autonomous.md: fan-out dispatch — parallel Agent tool calls per cluster | Dispatches `Agent(worker, task_prompt)` for each independent task; collects results; updates PHASE-STATE.md | L |
+| 133.3 | autonomous.md: Agent Teams mode for large homogeneous phases | When `ADAPTER_CONTEXT.orchestration.teams == true` AND task count ≥8: uses shared TodoWrite task list for teammate coordination | L |
+| 133.4 | autonomous.md: adapter fallback — sequential mode when `orchestration.parallel == false` | Cursor/Copilot/Antigravity/Codex fall back to current single-agent serial execution; claude-code uses fan-out | M |
+| 133.5 | autonomous.md: model tiering — Haiku for workers, Sonnet for orchestrator + quality gate | `ADAPTER_CONTEXT.orchestration.model_override` used in Agent call; worker uses haiku, orchestrator sonnet | M |
+| 133.6 | Tests (≥8) + CHANGELOG [3.1.0] + version bump | Fan-out dispatch logic tested; sequential fallback tested; model tiering tested; ≥8 tests | S |
+
+**Verification**:
+- [ ] `grep -n "fan-out\|cluster\|orchestrator" workflows/autonomous.md` → ≥3 hits
+- [ ] `grep -n "ADAPTER_CONTEXT.orchestration" workflows/autonomous.md` → ≥2 hits
+- [ ] `npm test -- --grep "phase133"` all pass
+- [ ] `package.json` version = `3.1.0`
+
+---
+
+## Progress Summary (v3.0)
+
+| Phase | Status | Tasks | Description |
+|-------|--------|-------|-------------|
+| 127. Adapter Detection + ADAPTER_CONTEXT | 🔄 planned | 5 | detect-adapter + validate command |
+| 128. SKILL.md 5-block adapter standard | 🔄 planned | 4 | Replace cursor_skill_adapter (21 files) |
+| 129. Workflow adapter-aware paths | 🔄 planned | 5 | 4 core workflows adapter-aware |
+| 130. Claude Code agent definitions + hooks | 🔄 planned | 5 | .claude/agents/ + PreToolUse/PostToolUse |
+| 131. Antigravity path fix | 🔄 planned | 3 | .agents/skills/ + deprecation notice |
+| 132. Tests + CHANGELOG + v3.0.0 | 🔄 planned | 3 | ≥15 tests + version bump |
+| 133. vp-auto orchestration refactor | 🔄 planned | 6 | Fan-out + Agent Teams + model tiering → v3.1.0 |
+
+**Total v3**: 31 tasks across 7 phases

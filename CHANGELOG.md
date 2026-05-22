@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### v3.0.0 — Per-Adapter Intelligence Refactor (FEAT-021)
+
+**Milestone**: v3.0 — Phases 127–132 → v3.0.0, Phase 133 → v3.1.0
+**Breaking changes**: `cursor_skill_adapter` removed from all SKILL.md; new `<adapter id="...">` 5-block standard
+
+#### Phase 127 — Adapter Detection + ADAPTER_CONTEXT + Validate (planned)
+- `vp-tools detect-adapter`: heuristic adapter detection at session start (env vars + process parent)
+- `lib/adapter-context.cjs`: ADAPTER_CONTEXT schema with tools{}, interactive, subagent, orchestration{} per adapter (5 adapters)
+- `vp-tools validate --adapter <id>`: checks tool availability, warns on limitations
+- ADAPTER_CONTEXT injection at session start in autonomous.md
+
+#### Phase 128 — SKILL.md 5-Block Adapter Standard (planned)
+- Replace `<cursor_skill_adapter>` with `<adapter id="claude-code|cursor-agent|antigravity|codex|copilot">` in all 21 SKILL.md files
+- Claude Code now has correct tool names: `Bash` (not Shell), `Read` (not ReadFile), `Grep` (not rg), `Edit`/`Write` (not ApplyPatch), `Agent` (not Subagent)
+- Documented in `docs/dev/adapter-blocks.md`
+
+#### Phase 129 — Workflow Adapter-Aware Execution Paths (planned)
+- All 4 core workflows (autonomous, brainstorm, crystallize, design) read ADAPTER_CONTEXT
+- Unified fallback chains: AUQ → text list → defaults (interactive); Bash/run_terminal_cmd/shell/container.exec (shell)
+- No more per-workflow inline compat tables
+
+#### Phase 130 — Claude Code Agent Definitions + Hooks (planned)
+- `.claude/agents/vp-task-executor.md`: Haiku model worker (Read/Edit/Write/Bash/Glob/Grep, maxTurns=30)
+- `.claude/agents/vp-phase-planner.md`: Sonnet dependency resolver
+- `.claude/agents/vp-quality-gate.md`: Sonnet test runner + output checker
+- PreToolUse/PostToolUse hooks as workflow gates via `vp-tools hooks install --adapter claude-code`
+
+#### Phase 131 — Antigravity Path Fix + Deprecation Notice (planned)
+- Antigravity adapter installs to both `~/.gemini/antigravity/skills/` and `.agents/skills/<name>/` (project path)
+- `vp-tools install --target antigravity` shows Gemini CLI deprecation notice (deprecated June 18, 2026)
+
+#### Phase 132 — Tests + CHANGELOG + v3.0.0 Bump (planned)
+- ≥15 new tests covering adapter detection, ADAPTER_CONTEXT, validate, 5-block standard, workflow adapter paths
+- Version bump: 2.51.0 → 3.0.0
+
+#### Phase 133 — vp-auto Orchestration Refactor (planned → v3.1.0)
+- autonomous.md: task dependency graph + runnable cluster identification
+- Fan-out dispatch: parallel `Agent` tool calls for independent tasks within a cluster
+- Agent Teams mode for large homogeneous phases (task count ≥8 + ADAPTER_CONTEXT.orchestration.teams)
+- Model tiering: Haiku workers for routine file edits, Sonnet for orchestrator + quality gate
+- Adapter fallback: sequential mode when `orchestration.parallel == false` (Cursor/Copilot/Antigravity/Codex)
+- Target: ≥60% token reduction vs. single-agent for typical 7-task phase
+
 ## [2.51.0] - 2026-05-22
 
 ### Added — ENH-085: Mobile UI Direction Breakdown Quality (Phase 126)
