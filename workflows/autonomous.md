@@ -586,9 +586,9 @@ IF (Paths block contains ≥5 files of the same type, e.g., skills/*/SKILL.md)
   OR (task description matches: "update all N files", "add row to all skills", "sync across N files")
 → Invoke doc-sync-agent instead of N sequential edits:
 
-   Agent({ subagent_type: "general-purpose",
+   Agent({ subagent_type: "doc-sync-agent",
      description: "doc-sync-agent: {change_mode} across {file_pattern}",
-     prompt: "Load agents/doc-sync-agent.md. Pattern: {glob}. Mode: {change_mode}. Anchor: {anchor}. Content: {content}."
+     prompt: "file_pattern: {glob}. change_mode: {change_mode}. anchor: {anchor}. content: {content}."
    })
    Non-Claude Code: apply changes sequentially inline.
 
@@ -643,6 +643,21 @@ quality_gate:
   - automated_tests_pass: true
   - no_lint_errors: true
 ```
+
+#### Test Generation — test-generator-agent (ENH-057, BUG-028 fix)
+
+**Trigger**: current task is the last task in the phase AND task.md contains `## Acceptance Criteria`
+
+**Claude Code — invoke test-generator-agent:**
+```
+Agent({ subagent_type: "test-generator-agent",
+  description: "test-generator-agent: generate + run contract tests for phase {phase}",
+  prompt: "task_file: {task_md_path}. test_output_path: tests/unit/phase{phase}-{task}-contract.test.js. phase_number: {phase}. task_number: {task}."
+})
+```
+Non-Claude Code: generate test file inline from acceptance criteria, then run `npm test`.
+
+If test-generator-agent reports FAIL: **do NOT** mark task complete — fix failing criteria first.
 
 #### Git Persistence Gate (BUG-003)
 Before marking a task PASS, require durable git persistence:
@@ -703,9 +718,9 @@ update:
 
 **Tracker updates — invoke tracker-agent:**
 ```
-Agent({ subagent_type: "general-purpose",
-  description: "tracker-agent: update task {phase}.{task} → {status}",
-  prompt: "Load agents/tracker-agent.md. Operation: update-task-status. Phase: {phase}. Task: {task}. Status: {status}."
+Agent({ subagent_type: "tracker-agent",
+  description: "Update task {phase}.{task} → {status}",
+  prompt: "operation: update-task-status. phase: {phase}. task: {task}. status: {status}."
 })
 ```
 Non-Claude Code: update TRACKER.md inline as before.
@@ -776,9 +791,9 @@ Before phase-level verification, run a UI stub check:
 
    **Version bump — invoke changelog-agent (ENH-057, ENH-053 fix):**
    ```
-   Agent({ subagent_type: "general-purpose",
-     description: "changelog-agent: bump to {version} + CHANGELOG [{version}]",
-     prompt: "Load agents/changelog-agent.md. Version: {version}. Date: {today}. Entries: {phase_summary_bullets}. Files: package.json + CHANGELOG.md."
+   Agent({ subagent_type: "changelog-agent",
+     description: "Bump to {version} + CHANGELOG [{version}]",
+     prompt: "version: {version}. date: {today}. entries: {phase_summary_bullets}."
    })
    ```
    Non-Claude Code: update CHANGELOG.md + package.json inline as before.
