@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.0] - 2026-05-22
+
+### v3.1.0 — vp-auto Orchestration Refactor (FEAT-021 Phase 133)
+
+#### Phase 133 — vp-auto Orchestration Refactor ✅
+- `autonomous.md`: orchestration mode selection — `ADAPTER_PARALLEL` flag gates fan-out vs sequential
+- `autonomous.md`: dependency resolution via `vp-phase-planner` agent → `clusters` JSON (can_parallel, sequential_fallback)
+- `autonomous.md`: fan-out dispatch — parallel `Agent(vp-task-executor)` calls per cluster; simultaneous execution
+- `autonomous.md`: model tiering — Haiku workers for routine file edits, Sonnet for planner + quality gate
+- `autonomous.md`: Agent Teams mode for large phases (task count ≥ 8 + `orchestration.teams == true`)
+- `autonomous.md`: sequential fallback for Cursor/Antigravity/Codex/Copilot (`orchestration.parallel == false`)
+- `autonomous.md`: quality gate after each cluster via `Agent(vp-quality-gate)` — PASS/FAIL/PARTIAL routing
+- 13 new tests: `tests/unit/phase133-feat021-vp-auto-orchestration.test.js`
+
+---
+
 ## [3.0.0] - 2026-05-22
 
 ### v3.0.0 — Per-Adapter Intelligence Refactor (FEAT-021)

@@ -224,9 +224,92 @@ cat .viepilot/phases/{phase}/PHASE-STATE.md
 
 Check if phase already has completed tasks → resume from next task.
 
+### 3b. Orchestration Mode Selection (Phase 133 — FEAT-021)
+
+Before entering the task loop, check `ADAPTER_PARALLEL` (set in ADAPTER_CONTEXT Injection step):
+
+```
+IF ADAPTER_PARALLEL == true AND ADAPTER_ID == "claude-code":
+  → ORCHESTRATOR MODE: fan-out dispatch via Agent tool (section 3b-orch)
+ELSE:
+  → SEQUENTIAL MODE: single-agent serial execution (section 3b-seq)
+```
+
+**Agent Teams mode** (when `ADAPTER_CONTEXT.orchestration.teams == true` AND pending task count ≥ 8):
+- Set `TEAMS_MODE = true`
+- Activate shared TodoWrite task list for teammate coordination
+- Each Agent worker reads from the shared list rather than receiving an explicit task prompt
+
+#### 3b-orch: Orchestrator Fan-out (Claude Code only)
+
+When `ADAPTER_PARALLEL == true`:
+
+**Step 1 — Dependency resolution** (via `vp-phase-planner` agent):
+```
+Agent(
+  subagent_type: "vp-phase-planner",
+  prompt: "Analyze phase {N} tasks in .viepilot/phases/{dir}/PHASE-STATE.md.
+           Return JSON: { clusters: [ { tasks: [id,...], can_parallel: bool,
+           sequential_fallback: [id,...] } ] }
+           Only include incomplete tasks."
+)
+```
+
+Parse `clusters` JSON from agent output. Each cluster is a set of independent tasks that can run in parallel.
+
+**Step 2 — Fan-out dispatch** (parallel `Agent` calls per cluster):
+```
+FOR each cluster in clusters:
+  IF cluster.can_parallel == true AND cluster.tasks.length > 1:
+    → Dispatch tasks in parallel:
+    FOR EACH task_id in cluster.tasks (simultaneously):
+      Agent(
+        subagent_type: "vp-task-executor",
+        prompt: "Execute task {task_id} in phase {N}.
+                 Task file: .viepilot/phases/{dir}/tasks/{task_id}.md
+                 PHASE-STATE: .viepilot/phases/{dir}/PHASE-STATE.md
+                 Repo root: {cwd}
+                 Return: TASK_RESULT: PASS|FAIL|PARTIAL + summary"
+      )
+    Collect all TASK_RESULT outputs before advancing.
+  ELSE:
+    → Execute tasks in sequence (cluster.sequential_fallback order)
+    Agent(vp-task-executor, single task)
+```
+
+**Model tiering** (`ADAPTER_CONTEXT.orchestration.model_override`):
+- Worker agent (vp-task-executor): `claude-haiku-4-5` — routine file edits, low token cost
+- Planner/gate agent (vp-phase-planner, vp-quality-gate): `claude-sonnet-4-6` — reasoning, dependency analysis
+- Orchestrator (main agent): retains current model — coordination only, no implementation
+
+**Step 3 — Quality gate** (after each cluster completes):
+```
+Agent(
+  subagent_type: "vp-quality-gate",
+  prompt: "Run verification for phase {N} cluster {C}.
+           Tasks completed: {task_ids}
+           Check: acceptance criteria, tests, lint.
+           Return: QUALITY_GATE: PASS|FAIL|PARTIAL + findings"
+)
+```
+
+On `QUALITY_GATE: FAIL` or `PARTIAL` → route to control point (retry cluster / skip / stop).
+On `QUALITY_GATE: PASS` → update PHASE-STATE.md (all cluster tasks → done), update TRACKER.md, continue.
+
+**Teams mode** (when `TEAMS_MODE == true`):
+- Write all pending task IDs to shared `TodoWrite` list at phase start
+- Each `Agent(vp-task-executor)` reads next available task from shared list
+- Prevents duplicate execution when dispatching ≥ 8 tasks concurrently
+
+#### 3b-seq: Sequential Mode (non-Claude Code adapters)
+
+When `ADAPTER_PARALLEL == false` (Cursor / Antigravity / Codex / Copilot):
+
+Execute tasks one at a time in the main agent context. No fan-out, no subagent dispatch.
+
 ### 3b. Execute Tasks Loop
 
-For each task in phase:
+For each task in phase (sequential mode) or per cluster (orchestrator mode):
 
 #### Load Task Context
 ```yaml
