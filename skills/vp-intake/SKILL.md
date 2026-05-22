@@ -130,6 +130,9 @@ Optional flags:
 - `--setup` : Force setup wizard — configure a new channel now (even if channels already exist)
 - `--config` : Alias for `--setup`
 - `--skip-validation` : Skip Step 4.5 codebase validation (faster, no file-scanner-agent spawn)
+- `--schedule "CRON"` : Create a CronCreate schedule for automated intake (Claude Code only)
+- `--unschedule` : Delete the existing intake schedule (CronDelete)
+- `--auto` : Run in headless auto mode — set by scheduler only, not for manual use
 
 **Supported channel types:**
 | Type | Auth | Config field |
@@ -144,6 +147,76 @@ Optional flags:
 </context>
 
 <process>
+
+### --schedule flag (ENH-088, Claude Code only)
+
+```js
+// --schedule "0 9 * * 1"
+// ToolSearch("select:CronCreate") must be called first (deferred tool)
+CronCreate({ schedule: cronExpression, prompt: `/vp-intake --channel ${channelId} --auto` })
+// Then write schedule.json via lib/intake/auto-intake.cjs createSchedule()
+```
+Write `.viepilot/intake/schedule.json` with `{ cron, schedule_id, channel_id, created }`.
+Output: `✅ Intake scheduled: ${humanReadableCron(cronExpression)}`
+
+**Non-CC adapters**: print the following and exit:
+```
+Scheduling requires Claude Code. Use cron + CLI instead.
+Suggested: cron "0 9 * * 1 claude /vp-intake --channel default --auto"
+```
+
+### --unschedule flag (ENH-088)
+
+```js
+// ToolSearch("select:CronDelete") must be called first
+const { schedule_id } = readSchedule()   // lib/intake/auto-intake.cjs
+CronDelete({ schedule_id })
+deleteSchedule(projectRoot)              // removes schedule.json
+```
+Output: `✅ Intake schedule removed`
+If no schedule.json exists: `No intake schedule found.`
+
+### --auto mode (ENH-088, headless — set by scheduler only)
+
+When `--auto` flag is present:
+1. Skip Step 0 setup wizard, Step 3 channel select (use `--channel` arg), Step 5 AUQ triage
+2. Call `runAutoIntake(tickets, channel, { projectRoot })` from `lib/intake/auto-intake.cjs`
+3. Auto-accept tickets with `confidence ≥ 0.7` → create request files
+4. Queue lower-confidence tickets → append to `.viepilot/intake/pending-review.json`
+5. Print auto-run summary and exit
+
+Output format:
+```
+[AUTO INTAKE] Channel: {name} | {N} tickets classified
+Auto-accepted ({N}): BUG-030, ENH-090 (confidence ≥ 0.7)
+Queued for review ({N}): TICKET-007 (confidence 0.4)
+Report: .viepilot/intake/TRIAGE-auto-{timestamp}.md
+```
+
+### Pending Review Queue (ENH-088, manual runs only)
+
+At the start of every manual `/vp-intake` (before Step 0), check for queued items:
+
+```js
+const { readSchedule } = require('lib/intake/auto-intake.cjs');
+const pendingPath = '.viepilot/intake/pending-review.json';
+if (fs.existsSync(pendingPath)) {
+  const pending = JSON.parse(fs.readFileSync(pendingPath));
+  if (pending.items && pending.items.length > 0) {
+    // Show AUQ:
+    const lastDate = pending.items[pending.items.length - 1].queued_at?.split('T')[0];
+    AskUserQuestion({
+      question: `⚠️ ${pending.items.length} tickets in pending-review queue (from last auto-run ${lastDate}). Process them now?`,
+      options: [
+        { label: 'Yes', description: 'Load pending items into triage' },
+        { label: 'Skip', description: 'Proceed with fresh intake' },
+      ]
+    })
+    // If Yes: inject pending.items into the ticket list for Step 4 onwards
+    // If Skip: continue normally
+  }
+}
+```
 
 ### Step 0: Setup wizard detection (ENH-084)
 
@@ -239,7 +312,8 @@ if (channel.type === 'excel_m365') {
 - `excel_m365` → `lib/intake/adapters/excel-m365.cjs` → `readExcelM365(channel, projectRoot)`
 
 For each ticket, call `classifyTicket(ticket)` from `lib/intake/classifier.cjs`.
-Attach `ticket._classified = 'BUG' | 'ENH' | 'UNCLEAR'`.
+Returns `{ classified: 'BUG'|'ENH'|'UNCLEAR', confidence: 0.0–1.0 }`.
+Attach `ticket._classified = result.classified` and `ticket._confidence = result.confidence`.
 
 Display classification summary:
 ```

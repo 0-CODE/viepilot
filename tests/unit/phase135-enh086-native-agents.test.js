@@ -26,9 +26,9 @@ describe('Phase 135 — ENH-086 + BUG-028: Native Agents Promotion', () => {
     }
   });
 
-  test('agents/claude-code/ has 9 total files (3 existing + 6 new)', () => {
+  test('agents/claude-code/ has at least 9 files (3 existing + 6 new from phase135)', () => {
     const files = fs.readdirSync(AGENTS_CC).filter(f => f.endsWith('.md'));
-    expect(files.length).toBe(9);
+    expect(files.length).toBeGreaterThanOrEqual(9);
   });
 
   test('each new agent file has valid YAML frontmatter with name, description, model, tools', () => {

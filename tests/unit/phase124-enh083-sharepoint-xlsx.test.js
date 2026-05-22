@@ -19,35 +19,35 @@ const {
 
 describe('Phase 124 — ENH-083: Classifier — performance/slow/timeout keywords', () => {
   test('"performance issue" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'performance issue in dashboard', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'performance issue in dashboard', description: '' }).classified).toBe('BUG');
   });
 
   test('"slow response" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'slow response on checkout page', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'slow response on checkout page', description: '' }).classified).toBe('BUG');
   });
 
   test('"timeout error" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'timeout error when saving', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'timeout error when saving', description: '' }).classified).toBe('BUG');
   });
 
   test('"hang" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'app hang after upload', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'app hang after upload', description: '' }).classified).toBe('BUG');
   });
 
   test('"freeze" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'UI freeze on mobile', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'UI freeze on mobile', description: '' }).classified).toBe('BUG');
   });
 
   test('Vietnamese "chậm" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'trang web chậm quá', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'trang web chậm quá', description: '' }).classified).toBe('BUG');
   });
 
   test('Vietnamese "treo" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'ứng dụng bị treo', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'ứng dụng bị treo', description: '' }).classified).toBe('BUG');
   });
 
   test('Vietnamese "tắc" classifies as BUG', () => {
-    expect(classifyTicket({ title: 'hệ thống bị tắc', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'hệ thống bị tắc', description: '' }).classified).toBe('BUG');
   });
 });
 

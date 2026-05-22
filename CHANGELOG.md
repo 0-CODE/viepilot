@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.5.0] - 2026-05-23
+
+### Added — ENH-088: `--schedule`/`--unschedule` flags + `--auto` headless intake mode (Phase 138)
+### Added — lib/intake/auto-intake.cjs: `runAutoIntake`, `createSchedule`, `deleteSchedule`, `appendPendingReview`
+### Added — vp-intake SKILL.md: pending-review queue check at manual run start
+### Changed — lib/intake/classifier.cjs: returns `{ classified, confidence: 0.0–1.0 }` (was plain string)
+
+---
+
 ## [3.4.0] - 2026-05-23
 
 ### Added — ENH-087: parallel codebase validation (Step 4.5) before triage in vp-intake (Phase 137)

@@ -20,36 +20,36 @@ const FIXTURES = path.join(__dirname, '..', 'fixtures');
 
 describe('Phase 123 — ENH-082: Ticket Intake — classifier', () => {
   test('classifyTicket returns BUG for "login crash"', () => {
-    expect(classifyTicket({ title: 'login crash', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'login crash', description: '' }).classified).toBe('BUG');
   });
 
   test('classifyTicket returns ENH for "add export feature"', () => {
-    expect(classifyTicket({ title: 'add export feature', description: '' })).toBe('ENH');
+    expect(classifyTicket({ title: 'add export feature', description: '' }).classified).toBe('ENH');
   });
 
   test('classifyTicket returns UNCLEAR for neutral text', () => {
-    expect(classifyTicket({ title: 'quarterly review', description: '' })).toBe('UNCLEAR');
+    expect(classifyTicket({ title: 'quarterly review', description: '' }).classified).toBe('UNCLEAR');
   });
 
   test('classifyTicket returns BUG for Vietnamese "lỗi đăng nhập"', () => {
-    expect(classifyTicket({ title: 'lỗi đăng nhập', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'lỗi đăng nhập', description: '' }).classified).toBe('BUG');
   });
 
   test('classifyTicket returns ENH for Vietnamese "thêm tính năng xuất báo cáo"', () => {
-    expect(classifyTicket({ title: 'thêm tính năng xuất báo cáo', description: '' })).toBe('ENH');
+    expect(classifyTicket({ title: 'thêm tính năng xuất báo cáo', description: '' }).classified).toBe('ENH');
   });
 
   test('BUG takes precedence when both signals present', () => {
-    expect(classifyTicket({ title: 'fix the new feature crash', description: '' })).toBe('BUG');
+    expect(classifyTicket({ title: 'fix the new feature crash', description: '' }).classified).toBe('BUG');
   });
 
   test('classifyTicket is case-insensitive', () => {
-    expect(classifyTicket({ title: 'LOGIN CRASH', description: '' })).toBe('BUG');
-    expect(classifyTicket({ title: 'ADD FEATURE', description: '' })).toBe('ENH');
+    expect(classifyTicket({ title: 'LOGIN CRASH', description: '' }).classified).toBe('BUG');
+    expect(classifyTicket({ title: 'ADD FEATURE', description: '' }).classified).toBe('ENH');
   });
 
   test('classifyTicket checks description as well as title', () => {
-    expect(classifyTicket({ title: 'unknown issue', description: 'app crashes on startup' })).toBe('BUG');
+    expect(classifyTicket({ title: 'unknown issue', description: 'app crashes on startup' }).classified).toBe('BUG');
   });
 });
 
