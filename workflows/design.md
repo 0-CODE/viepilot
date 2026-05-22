@@ -207,6 +207,13 @@ rounded:
   md: "{radius}px"
   lg: "{radius * 2}px"
   full: "9999px"
+# ─── Responsive Breakpoints ────────────────────────────────
+screens:
+  mobile:  "0–767px"
+  tablet:  "768–1023px"
+  desktop: "1024–1279px"
+  wide:    "1280px+"
+strategy: mobile-first
 ---
 
 # Design System — {brand_name}
@@ -237,6 +244,21 @@ Base unit: {n}px. Scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128
 
 ## Border Radius
 sm={rounded.sm} · md={rounded.md} · lg={rounded.lg} · full={rounded.full}
+
+## Responsive Breakpoints
+**Strategy:** {strategy} | **Breakpoints:** mobile(0–767px) · tablet(768–1023px) · desktop(1024–1279px) · wide(1280px+)
+
+## Responsive Components
+
+| Component   | Mobile (≤767px)       | Tablet (768–1023px)   | Desktop (≥1024px)   |
+|-------------|----------------------|----------------------|---------------------|
+| Navigation  | Hamburger drawer     | Tab bar               | Full horizontal     |
+| Layout grid | 1 column             | 2 columns             | 3+ columns          |
+| Modal       | Bottom sheet         | Centered dialog       | Centered dialog     |
+| Data table  | Card list            | Scrollable table      | Full table          |
+| Forms       | Stacked single-col   | 2-col grouped         | 2-col grouped       |
+| Buttons CTA | Full-width           | Auto / inline         | Auto / inline       |
+| Images      | 100% width, cropped  | 50–75% width          | Fixed aspect ratio  |
 
 ## Components
 > Extend this section per component as your design system grows.
@@ -359,7 +381,9 @@ TOKEN_MAP = {
   colors: { primary, surface, surface_secondary, error, success, warning, text_primary, text_secondary },
   typography: { font_sans, font_mono, scale_ratio, heading_line_height, body_line_height },
   spacing: { base, scale[] },
-  rounded: { sm, md, lg, full }
+  rounded: { sm, md, lg, full },
+  screens: { mobile, tablet, desktop, wide },   // optional — present only when screens: block exists
+  strategy: "mobile-first" | "desktop-first"    // optional — defaults to mobile-first when absent
 }
 ```
 
@@ -412,9 +436,20 @@ theme: {
       lg: '{rounded.lg}',
       full: '{rounded.full}',
     },
+    // Responsive breakpoints — emitted only when screens: block exists in design.md
+    // Strategy: {strategy} (mobile-first = min-width; desktop-first = max-width)
+    screens: {
+      mobile: '0px',      // base — mobile-first (no prefix needed)
+      tablet: '768px',    // md: breakpoint
+      desktop: '1024px',  // lg: breakpoint
+      wide: '1280px',     // xl: breakpoint
+    },
   },
 },
 ```
+
+> **Note:** `screens` block is skipped gracefully if `TOKEN_MAP.screens` is absent (backward-compat).
+> Custom px values from `design.md` override the defaults above.
 
 **CSS custom properties mode** — inject into `:root` block in target CSS file:
 ```css
@@ -434,6 +469,10 @@ theme: {
   --rounded-md: {rounded.md};
   --rounded-lg: {rounded.lg};
   --rounded-full: {rounded.full};
+  /* Responsive breakpoints (emitted only when screens: block present in design.md) */
+  --screen-tablet: 768px;
+  --screen-desktop: 1024px;
+  --screen-wide: 1280px;
 }
 ```
 
