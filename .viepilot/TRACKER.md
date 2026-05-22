@@ -5,9 +5,9 @@
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: — (all planned phases complete)
+- **Next Phase**: 139 (ENH-090–093 browser-agent suite) — planned, ready for /vp-auto
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phases 136-138 complete: v3.3.0 → v3.4.0 → v3.5.0
+- **Last Activity**: 2026-05-23 — Phase 139 planned: browser-intake-agent + browser-audit-agent + research-agent++ + vp-request URL enrichment → v3.6.0
 
 ## Progress Overview
 ```
@@ -29,6 +29,11 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-23 | Phase 139 planned: ENH-090-093 browser-agent suite (5 tasks) → v3.6.0 | `/vp-evolve` Add Feature | M3.0 |
+| 2026-05-23 | ENH-093 logged: vp-request URL enrichment — auto-fill from GitHub/Jira/Notion/Trello URLs | User request | Backlog |
+| 2026-05-23 | ENH-092 logged: research-agent upgrade — agent-browser for JS-rendered competitor research | User request | Backlog |
+| 2026-05-23 | ENH-091 logged: browser-audit-agent — visual/functional audit of running dev server | User request | Backlog |
+| 2026-05-23 | ENH-090 logged: browser-intake-agent (vercel-labs/agent-browser) for public link reading | User request — Google Sheets share, GitHub Issues, Jira, Trello, Notion | Backlog |
 | 2026-04-02 | Log FEAT-001 for Claude Code parity | User request via /vp-request | Backlog |
 | 2026-04-02 | Phase 34 planned (docs + Jest contracts), target ship **1.9.3** | `/vp-evolve` Add Feature | M1.29 |
 | 2026-04-02 | Phase 34 shipped: Claude Code setup doc + contracts + **1.9.3** | `/vp-auto` | M1.29 |

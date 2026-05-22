@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.0] - 2026-05-23
+
+### Added
+- **ENH-090** `browser-intake-agent` (agents/claude-code/) — reads publicly shared URLs (Google Sheets, GitHub Issues, Jira, Trello, Notion) for vp-intake via `vercel-labs/agent-browser`
+- **ENH-090** `lib/intake/adapters/browser.cjs` — URL type detector + browser channel dispatcher; supports google-sheets / github-issues / jira / trello / notion / generic
+- **ENH-090** `skills/vp-intake/SKILL.md` — new `browser` channel type with `url` field; fallback chain: agent-browser → WebFetch → manual
+- **ENH-091** `browser-audit-agent` (agents/claude-code/) — visual + functional dev server audit ops: audit_routes, visual_check, accessibility_check
+- **ENH-091** `lib/audit/browser-runner.cjs` — browser audit orchestrator; writes `.viepilot/audit/visual-report-{timestamp}.md`; baseline save/compare
+- **ENH-091** `skills/vp-audit/SKILL.md` — `--visual` / `--browser <url>` flags for runtime browser audit
+- **ENH-092** `agents/claude-code/research-agent.md` upgraded — new ops: `browse_url`, `compare_products`, `extract_pricing` for JS-rendered competitor/doc research
+- **ENH-092** `workflows/brainstorm.md` Step 3 — URL research block: dispatch research-agent with browse_url when reference URL provided
+- **ENH-093** `lib/request/url-enricher.cjs` — URL auto-enricher; routes GitHub/Linear/Jira/Trello/Notion URLs to browser-intake-agent for pre-fill extraction
+- **ENH-093** `workflows/request.md` — URL detection pre-step before Step 1; shows extracted fields with confirm/edit prompt
+- **ENH-093** `skills/vp-request/SKILL.md` — URL auto-enrichment documentation with examples for all 5 tracker sources
+
+---
+
 ## [3.5.0] - 2026-05-23
 
 ### Added — ENH-088: `--schedule`/`--unschedule` flags + `--auto` headless intake mode (Phase 138)

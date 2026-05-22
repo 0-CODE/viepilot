@@ -3738,3 +3738,34 @@ for autonomous background intake runs. Scheduled runs use --auto mode with confi
 - [ ] `grep "confidence" lib/intake/classifier.cjs` → ≥1 hit
 - [ ] `npm test -- --grep "phase138"` all pass
 - [ ] `package.json` version = `3.5.0`
+
+---
+
+## Phase 139 — ENH-090+091+092+093: Browser Agent Suite
+
+**Goal**: Add native browser automation support across ViePilot using `vercel-labs/agent-browser`
+(Rust-based, AI-optimized, ref-based element selection). Delivers: `browser-intake-agent` for
+public-link intake, `browser-audit-agent` for visual/functional dev-server audit, upgraded
+`research-agent` with deep JS-rendered research, and vp-request URL auto-enrichment from
+GitHub/Jira/Notion/Trello.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.6.0
+**Dependencies**: Phase 138 ✅; External: `vercel-labs/agent-browser` (user installs via `npx skills add vercel-labs/agent-browser`)
+**Directory**: `.viepilot/phases/139-enh090-093-browser-agent/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 139.1 | browser-intake-agent.md + lib/intake/adapters/browser.cjs + vp-intake browser channel | agent-browser ops: read_url/screenshot/detect_type; browser channel in SKILL.md | M |
+| 139.2 | browser-audit-agent.md + lib/audit/browser-runner.cjs + vp-audit --visual flag | audit_routes/visual_check/accessibility_check ops; --visual flag in vp-audit SKILL.md | M |
+| 139.3 | research-agent upgrade + workflows/brainstorm.md + vp-brainstorm SKILL.md | browse_url/compare_products/extract_pricing ops; URL research block in brainstorm | M |
+| 139.4 | lib/request/url-enricher.cjs + workflows/request.md URL detection + vp-request SKILL.md | URL routing table (GitHub/Jira/Linear/Trello/Notion); pre-fill AUQ confirm | M |
+| 139.5 | Contract tests + CHANGELOG [3.6.0] + version bump | ≥12 tests pass; version = 3.6.0 | S |
+
+**Verification**:
+- [ ] `ls agents/claude-code/browser-intake-agent.md agents/claude-code/browser-audit-agent.md` → both exist
+- [ ] `grep "browser\|agent-browser" skills/vp-intake/SKILL.md` → ≥2 hits
+- [ ] `grep "browse_url\|compare_products" agents/claude-code/research-agent.md` → ≥1 hit
+- [ ] `grep "url-enricher\|github\.com.*issues" workflows/request.md` → ≥1 hit
+- [ ] `npm test -- --grep "phase139"` all pass
+- [ ] `package.json` version = `3.6.0`

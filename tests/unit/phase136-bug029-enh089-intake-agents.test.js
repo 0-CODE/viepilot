@@ -18,9 +18,9 @@ test('phase136 — sheets-intake-agent.md exists', () => {
   expect(exists('agents/claude-code/sheets-intake-agent.md')).toBe(true);
 });
 
-test('phase136 — agents/claude-code has 11 files total', () => {
+test('phase136 — agents/claude-code has at least 11 files (phase136 added excel + sheets; later phases add more)', () => {
   const files = fs.readdirSync(path.join(ROOT, 'agents/claude-code')).filter(f => f.endsWith('.md'));
-  expect(files.length).toBe(11);
+  expect(files.length).toBeGreaterThanOrEqual(11);
 });
 
 test('phase136 — excel-intake-agent.md has valid name frontmatter', () => {

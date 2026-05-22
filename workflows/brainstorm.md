@@ -277,6 +277,38 @@ If the user chooses to continue:
 5. If the session already has a **`## Phases`** section: briefly summarize existing phases; all subsequent updates must **merge** into that section (no silent deletion) unless the user explicitly requests narrowing/expanding scope.
 </step>
 
+<step name="reference_url_research">
+### Step 3A: Reference URL Research (ENH-092)
+
+**Trigger**: User provides a URL in their brainstorm input (competitor, reference app, documentation site).
+
+URL pattern detection: `https?://` present in user message before or during Step 3.
+
+When triggered:
+1. Extract URL from user message
+2. Dispatch research-agent with browser research op:
+   ```js
+   Agent({ subagent_type: "research-agent",
+     description: "research-agent: browse reference URL for brainstorm context",
+     prompt: `op: browse_url. url: "${url}". extract_focus: "features,ux-patterns,pricing,tech-stack". topic: "${sessionTitle}"` })
+   ```
+3. Present findings as `## Reference Research` section in brainstorm output:
+   - Key features / capabilities
+   - UX patterns observed
+   - Pricing model (if applicable)
+   - Tech stack clues
+4. Use findings as context for subsequent brainstorm questions
+5. If agent-browser not available: attempt WebFetch fallback (static HTML only — warn if empty)
+
+**Multiple URLs**: if user provides 2+ URLs, dispatch `compare_products` op:
+```js
+Agent({ subagent_type: "research-agent",
+  prompt: `op: compare_products. urls: ${JSON.stringify(urls)}. topic: "${sessionTitle}"` })
+```
+
+**Non-CC adapters**: skip agent dispatch, use WebFetch directly on the URL.
+</step>
+
 <step name="upgrade_gap_detection">
 ### Step 3B: Upgrade Gap Detection (ENH-067)
 

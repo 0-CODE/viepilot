@@ -52,6 +52,57 @@ DEBT_COUNT=$(ls .viepilot/requests/DEBT-*.md 2>/dev/null | wc -l)
 ```
 </step>
 
+<step name="url_enrichment">
+## 1B. URL Enrichment Pre-Step (ENH-093)
+
+**Trigger**: `{{VP_ARGS}}` contains a URL matching a known issue tracker pattern.
+
+Run URL detection before Step 2:
+```js
+const { detectIssueUrl } = require('lib/request/url-enricher.cjs');
+const result = detectIssueUrl(VP_ARGS);
+```
+
+**On match** (github / linear / jira / trello / notion):
+
+**Claude Code adapter** — dispatch browser-intake-agent:
+```js
+Agent({ subagent_type: "browser-intake-agent",
+  description: "browser-intake-agent: extract request details from issue URL",
+  prompt: `op: read_url. url: ${result.url}. extract_mode: ticket. projectRoot: ${projectRoot}` })
+```
+
+On success, display pre-fill preview and ask user to confirm:
+```
+Context extracted from: {url}
+
+  Title:       {title}
+  Type:        {type} (detected from labels)
+  Description: {description preview}
+  Priority:    {priority}
+```
+
+**AUQ prompt** (Claude Code terminal):
+```
+question: "Review extracted details — confirm or edit?"
+options:
+  - label: "Confirm — use these details"
+    description: "Skip redundant questions, proceed to acceptance criteria"
+  - label: "Edit — adjust before proceeding"
+    description: "Return to Step 2 with pre-filled values"
+```
+
+On "Confirm": skip Step 2 gather questions, jump directly to Step 3 (create request file) using extracted values.
+On "Edit": proceed to Step 2 with extracted values pre-loaded as defaults.
+
+**On no match / extraction failure / agent-browser not available**:
+- Skip enrichment silently
+- Proceed normally from Step 2
+- URL stored as `related_url` in request file if present
+
+**Non-CC adapters**: skip Agent dispatch entirely, proceed from Step 2. URL stored as `related_url`.
+</step>
+
 <step name="detect_type">
 ## 2. Detect Request Type
 

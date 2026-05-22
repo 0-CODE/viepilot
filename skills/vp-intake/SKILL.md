@@ -141,6 +141,11 @@ Optional flags:
 | `google_sheets` | Service Account JSON | `spreadsheet_id` + `sheet_name` |
 | `excel_m365` (Graph API) | Azure App Registration | `workbook_id` + `sheet_name` |
 | `excel_m365` (sharing link) | None — anonymous | `sharing_url` |
+| `browser` | None — public URL only | `url` (https://...) |
+
+**`browser` channel** — reads any publicly accessible URL via `vercel-labs/agent-browser`.
+Supports: Google Sheets share links, GitHub Issues lists, Jira public boards, Trello boards, Notion pages.
+Prerequisite (Claude Code only): `npx skills add vercel-labs/agent-browser`
 
 **Config file:** `.viepilot/intake/channels.json`
 **Credentials dir:** `.viepilot/.credentials/` (gitignored)
@@ -289,7 +294,7 @@ Continue with intake — read-only is acceptable for triage.
 
 ### Step 4: Read and classify tickets
 
-**Claude Code adapter** — dispatch via native agents for Excel/Sheets:
+**Claude Code adapter** — dispatch via native agents for Excel/Sheets/Browser:
 ```js
 if (channel.type === 'excel_m365') {
   // Claude Code: use native excel-intake-agent
@@ -303,6 +308,12 @@ if (channel.type === 'excel_m365') {
     description: "sheets-intake-agent: read tickets from Google Sheets",
     prompt: `op: read. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
   })
+} else if (channel.type === 'browser') {
+  // Claude Code: use native browser-intake-agent (requires vercel-labs/agent-browser)
+  Agent({ subagent_type: "browser-intake-agent",
+    description: "browser-intake-agent: read tickets from public URL",
+    prompt: `op: read_url. url: ${channel.url}. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
+  })
 }
 ```
 
@@ -310,6 +321,7 @@ if (channel.type === 'excel_m365') {
 - `csv` → `lib/intake/adapters/csv.cjs` → `readCsv(channel, projectRoot)`
 - `google_sheets` → `lib/intake/adapters/google-sheets.cjs` → `readGoogleSheet(channel, projectRoot)`
 - `excel_m365` → `lib/intake/adapters/excel-m365.cjs` → `readExcelM365(channel, projectRoot)`
+- `browser` → `lib/intake/adapters/browser.cjs` → `readBrowserUrl(channel, projectRoot)` (throws — CC only)
 
 For each ticket, call `classifyTicket(ticket)` from `lib/intake/classifier.cjs`.
 Returns `{ classified: 'BUG'|'ENH'|'UNCLEAR', confidence: 0.0–1.0 }`.
@@ -380,6 +392,9 @@ if (channel.type === 'excel_m365') {
     description: "sheets-intake-agent: write triage results back to Google Sheets",
     prompt: `op: write. channel_config: ${JSON.stringify(channel)}. tickets: ${JSON.stringify(triageResult)}. projectRoot: ${projectRoot}`
   })
+} else if (channel.type === 'browser') {
+  // browser channels are read-only — no write-back (public URLs, no auth)
+  console.log(`ℹ️  Browser channel "${channel.name}" is read-only — skipping write-back.`);
 } else {
   await writeback(channel, triageResult, projectRoot);       // lib/intake/writeback.cjs (csv + non-agent path)
 }

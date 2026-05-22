@@ -199,6 +199,8 @@ Optional flags:
 - `--tier3`      : Run Tier 3 (stack best-practice) only
 - `--tier4`      : Run Tier 4 (framework integrity) only
 - `--no-autolog` : Skip auto-logging of gaps to `.viepilot/requests/`; report-only mode
+- `--visual`     : Run browser-based visual + functional audit of running dev server (ENH-091; requires agent-browser)
+- `--browser <url>` : Specify base URL for browser audit (default: `http://localhost:3000`)
 
 ### Auto-Log Behavior (ENH-070)
 
@@ -277,6 +279,29 @@ Then check:
 **Step 4 — Tier 4**: Framework Integrity (conditional)
 
 **Step 5**: Generate full report
+
+**Step 5B**: Browser Audit (when `--visual` flag present, Claude Code adapter only)
+
+```
+When --visual is passed:
+1. Resolve base URL: --browser <url> → config.json audit.baseUrl → http://localhost:3000
+2. Dispatch browser-audit-agent:
+   Agent({ subagent_type: "browser-audit-agent",
+     description: "browser-audit-agent: audit running dev server",
+     prompt: `op: audit_routes. baseUrl: ${baseUrl}. projectRoot: ${projectRoot}` })
+3. On success: call writeAuditReport(result, projectRoot) → lib/audit/browser-runner.cjs
+4. Report path shown to user: .viepilot/audit/visual-report-{timestamp}.md
+5. On agent-browser not installed: show prerequisite message, skip browser audit (non-blocking)
+
+After audit_routes: optionally run accessibility_check on same routes:
+   Agent({ subagent_type: "browser-audit-agent",
+     prompt: `op: accessibility_check. baseUrl: ${baseUrl}. routes: ${JSON.stringify(routes)}. projectRoot: ${projectRoot}` })
+
+Baseline management:
+- --visual first run: saves screenshots to .viepilot/audit/baselines/{slug}.png
+- Subsequent runs: compares current vs baseline (visual_check op)
+- --update-baseline: forces baseline refresh (passes updateBaseline: true to agent)
+```
 
 **Step 6**: Auto-fix (if requested)
 </process>

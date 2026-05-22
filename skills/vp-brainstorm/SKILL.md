@@ -201,6 +201,23 @@ Optional flags:
 - `--research` : Enable proactive research suggestions during the session
 - `--ui` : Enable UI Direction mode (live HTML/CSS direction artifacts + auto-generates `design.md` when design keywords present — ENH-076)
 - `--domain embedded` : Force-activate Embedded Domain Mode (hardware topology, RTOS, pin map, memory layout, protocol matrix, power budget pages + topic probes)
+
+### Reference URL Input (ENH-092)
+
+When user provides a URL during brainstorm (competitor app, documentation, reference product):
+- research-agent is dispatched with `op: browse_url` using `vercel-labs/agent-browser`
+- Extracted insights added as `## Reference Research` section in session output
+- Covers: features, UX patterns, pricing model, tech stack clues
+- Available as context for crystallize step
+- Falls back to WebFetch if agent-browser not installed (static HTML only — warns if page is JS-rendered)
+
+**Examples:**
+```
+/vp-brainstorm I want to build a task manager. Reference: https://linear.app
+/vp-brainstorm --new Compare these two tools: https://notion.so https://coda.io
+```
+
+**Multiple URLs**: dispatches `compare_products` op → side-by-side comparison table.
 </context>
 
 ### Embedded Domain Mode (ENH-071)

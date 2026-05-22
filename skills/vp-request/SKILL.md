@@ -159,6 +159,26 @@ Optional flags:
 - `--brainstorm` : Brainstorm continuation mode
 - `--list` : List pending requests
 - `--quick` : Quick mode (minimal questions)
+
+### URL Auto-Enrichment (ENH-093)
+
+If your request originates from an existing issue tracker, pass the URL directly:
+
+```
+/vp-request https://github.com/org/repo/issues/123
+/vp-request https://company.atlassian.net/browse/PROJ-456
+/vp-request https://trello.com/c/cardId/card-title
+/vp-request https://linear.app/team/issue/ENG-789
+/vp-request https://notion.so/page-slug-abc123
+```
+
+ViePilot automatically extracts: title, type, description, priority — you confirm or edit.
+Requires: `browser-intake-agent` + `vercel-labs/agent-browser` (`npx skills add vercel-labs/agent-browser`).
+
+**Supported sources**: GitHub Issues, Linear, Jira (Atlassian), Trello, Notion.
+
+When extraction is unavailable (non-CC adapter or agent-browser not installed), the URL is stored
+as a `related_url` field in the request file and the normal question flow proceeds.
 </context>
 
 <process>
