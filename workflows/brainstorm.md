@@ -671,7 +671,7 @@ Map brainstorm UI signal keywords to capability tags:
 | UI Signal keywords | Capability match |
 |-------------------|-----------------|
 | `component`, `layout`, `screen`, `page`, `UI`, `UX` | `ui-generation`, `component-design` |
-| `responsive`, `mobile`, `grid` | `responsive-layout` |
+| `responsive`, `mobile`, `grid`, `breakpoint`, `viewport`, `adaptive`, `touch`, `swipe`, `safe-area`, `hamburger` | `responsive-layout` |
 | `design`, `theme`, `color`, `typography` | `design-system`, `design-tokens` |
 | `form`, `button`, `input`, `modal` | `component-design` |
 
@@ -698,6 +698,55 @@ After the session's first UI artifact is generated (or updated), append to `note
 
 If `## skills_used` already exists: merge (add new skills, update applied_at).
 If no skills matched or registry absent: omit `## skills_used` section.
+
+### Mobile Design Direction Sub-Phase (ENH-085)
+
+**Trigger:** UI Direction Mode is active AND any of these keywords appear in the session:
+`mobile` · `responsive` · `breakpoint` · `viewport` · `adaptive` · `touch` · `swipe`
+`safe-area` · `hamburger` · `tablet` · `phone` · `narrow` · `narrow screen` · `screen size`
+
+**When triggered — fire TWO sequential AUQ prompts before HTML generation begins:**
+
+**AUQ 1 — Viewport Strategy:**
+```
+question: "What is the responsive design strategy for this project?"
+options:
+  - label: "Mobile-first (Recommended)"
+    description: "Base styles target mobile; breakpoints (md:, lg:) scale up. Default for most web apps."
+  - label: "Desktop-first"
+    description: "Full desktop layout; shrink down with max-width breakpoints."
+  - label: "Mobile only"
+    description: "No desktop variant needed (PWA, native-style app, mobile-specific tool)."
+  - label: "Desktop only"
+    description: "Internal tool or dashboard — no mobile support required."
+```
+
+**AUQ 2 — Target Device Scope (multiSelect: true):**
+```
+question: "Which device types need UI direction?"
+multiSelect: true
+options:
+  - label: "Phone (≤767px)"
+    description: "Small screens, touch-first, vertical scroll, hamburger nav."
+  - label: "Tablet (768–1023px)"
+    description: "Medium screens, touch+pointer, hybrid layouts."
+  - label: "Desktop (≥1024px)"
+    description: "Large screens, pointer-first, dense information layouts."
+  - label: "Wide / TV (≥1280px)"
+    description: "Very large screens, 3+ column layouts, dashboard displays."
+```
+
+**Store answers as session context:**
+```yaml
+responsive_strategy: mobile-first | desktop-first | mobile-only | desktop-only
+target_devices: [phone, tablet, desktop, wide]   # subset based on AUQ selections
+```
+
+**Fallback (if AUQ not available):** set `responsive_strategy: mobile-first`, `target_devices: [phone, tablet, desktop]` silently.
+
+**Skip conditions:**
+- No mobile/responsive keywords in session → skip entirely (non-mobile project)
+- `responsive_strategy` already set in session context (resume) → skip AUQ, reuse stored values
 
 **Required hook (multi-page only)**
 
