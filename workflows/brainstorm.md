@@ -748,6 +748,47 @@ target_devices: [phone, tablet, desktop, wide]   # subset based on AUQ selection
 - No mobile/responsive keywords in session → skip entirely (non-mobile project)
 - `responsive_strategy` already set in session context (resume) → skip AUQ, reuse stored values
 
+**Component Responsive Map in notes.md (ENH-085)**
+
+After the Mobile Design Direction AUQ completes (or on session resume with `responsive_strategy` set),
+append a `## Component Responsive Map` section to `notes.md`:
+
+```markdown
+## Component Responsive Map
+
+> ViePilot ENH-085 — Strategy: {responsive_strategy} | Devices: {target_devices joined with ", "}
+> Generated: {date}
+
+| Component      | Mobile (≤767px)        | Tablet (768–1023px)    | Desktop (≥1024px)    |
+|----------------|------------------------|------------------------|----------------------|
+| Navigation     | {mobile_nav}           | {tablet_nav}           | {desktop_nav}        |
+| Layout grid    | 1 column, full-width   | 2 columns              | 3+ columns / sidebar |
+| Data table     | Card list (stacked)    | Scrollable table       | Full table + filters |
+| Modal / dialog | Bottom sheet           | Centered dialog        | Centered dialog      |
+| Forms          | Single column          | 2-col grouped          | 2-col grouped        |
+| Buttons (CTA)  | Full-width             | Auto / inline          | Auto / inline        |
+| Images / media | 100% width, cropped    | 50–75% width           | Fixed aspect ratio   |
+
+### Navigation Pattern Detail
+- **Mobile**: {mobile_nav_detail}
+- **Tablet**: {tablet_nav_detail}
+- **Desktop**: {desktop_nav_detail}
+
+### Responsive Utilities Reference (Tailwind)
+```
+Mobile base  →  no prefix     (e.g., flex flex-col p-4)
+Tablet       →  `md:` prefix  (e.g., md:flex-row md:grid-cols-2)
+Desktop      →  `lg:` prefix  (e.g., lg:grid-cols-3 lg:sidebar-fixed)
+Wide         →  `xl:` prefix  (e.g., xl:max-w-7xl xl:px-12)
+```
+```
+
+Nav values for the table: use Navigation strategy lookup table defined in the per-breakpoint HTML section above.
+
+**Guard:** If `notes.md` already contains `## Component Responsive Map` → skip (do not overwrite).
+
+**Skip:** If `responsive_strategy` is null (non-mobile session) → omit section entirely.
+
 **Required hook (multi-page only)**
 
 When the `pages/` directory exists or any `pages/*.html` is added / renamed / removed:
