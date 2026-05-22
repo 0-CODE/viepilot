@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.1] - 2026-05-22
+
+### Fixed — BUG-027: claudeAgentsDir wired into install plan (Phase 134)
+- `lib/viepilot-install.cjs`: `buildInstallPlan` now reads `adapter.claudeAgentsSrc` +
+  `adapter.claudeAgentsDir` and adds copy steps for each `.md` in `agents/claude-code/`
+  to `~/.claude/agents/` (native Claude Code agents directory)
+- After install: `~/.claude/agents/vp-task-executor.md`, `vp-phase-planner.md`,
+  `vp-quality-gate.md` are present and the fan-out orchestration in `autonomous.md` works
+- 5 new tests: `tests/unit/phase134-bug027-claude-agents-install.test.js`
+
+---
+
 ## [3.1.0] - 2026-05-22
 
 ### v3.1.0 — vp-auto Orchestration Refactor (FEAT-021 Phase 133)

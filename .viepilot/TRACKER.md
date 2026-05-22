@@ -2,12 +2,13 @@
 
 ## Current State
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–133 → v3.0.0/v3.1.0
-- **Current Phase**: **127** — FEAT-021 Adapter Detection + ADAPTER_CONTEXT + Validate (planned)
-- **Last Completed Phase**: **126** ✅ (ENH-085 Mobile UI Direction → 2.51.0)
+- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021)
+- **Current Phase**: **128** — FEAT-021 SKILL.md 5-block adapter standard (21 files)
+- **Last Completed Phase**: **127** ✅ (detect-adapter + ADAPTER_CONTEXT + validate)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: 127 (first of v3)
+- **Next Phase**: 128
 - **Current Task**: —
-- **Last Activity**: 2026-05-22 — v3 ROADMAP created (Phases 127-133); M1.37 archived; ready for /vp-auto --from 127
+- **Last Activity**: 2026-05-22 — Phase 127 shipped: adapter-context.cjs + detect-adapter + validate + 32 tests
 
 ## Progress Overview
 ```
@@ -205,6 +206,7 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-05-22 | FEAT-021 brainstorm complete: 6 topics, 7 phases planned (127-133), orchestration topic added — vp-auto to use Agent/Task tool fan-out + Agent Teams; orchestration critical path added as Phase 133 | `/vp-brainstorm` | v3 |
 | 2026-05-22 | M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md` (Phases 53-126, v2.0.0-2.51.0) | `/vp-evolve --milestone` | M1.37 close |
 | 2026-05-22 | v3 ROADMAP created: Phases 127-133, 31 tasks, target v3.0.0 + v3.1.0; CHANGELOG [Unreleased] updated | `/vp-evolve --milestone` | v3 |
+| 2026-05-22 | Phase 127 shipped: lib/adapter-context.cjs (5 adapters, tool maps, orchestration caps) + vp-tools detect-adapter + validate + autonomous.md injection + 32 tests | `/vp-auto` | Phase 127 |
 
 ## Blockers
 _None currently_
@@ -217,7 +219,8 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| FEAT-021 | ✨ | v3 Milestone: Per-Adapter Intelligence Refactor — 7 phases (127-133), adapter blocks + ADAPTER_CONTEXT + orchestration refactor → v3.0.0 | critical | brainstorm_complete → /vp-evolve |
+| BUG-027 | 🐛 | claudeAgentsDir not wired into install — vp-task-executor/planner/gate NOT copied to ~/.claude/agents/ | high | new |
+| FEAT-021 | ✨ | v3 Milestone: Per-Adapter Intelligence Refactor — 7 phases (127-133), adapter blocks + ADAPTER_CONTEXT + orchestration refactor → v3.1.0 | critical | ✅ done |
 | ENH-085 | 🔧 | Mobile UI Direction breakdown quality — breakpoints, responsive variants, mobile-first strategy, component map | high | ✅ done (**2.51.0**) |
 | ENH-084 | 🔧 | vp-intake: AUQ-driven channel config setup wizard | high | ✅ done (**2.50.0**) |
 | ENH-083 | 🔧 | vp-intake: SharePoint sharing link + xlsx parser + BUG keyword "performance" | high | ✅ done (**2.49.0**) |
