@@ -1,14 +1,13 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–133 → v3.0.0/v3.1.0
-- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021)
-- **Current Phase**: **128** — FEAT-021 SKILL.md 5-block adapter standard (21 files)
-- **Last Completed Phase**: **127** ✅ (detect-adapter + ADAPTER_CONTEXT + validate)
+- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–135 → v3.2.0
+- **Current Phase**: **135** — ENH-086 + BUG-028: Native Agents Promotion (planned)
+- **Last Completed Phase**: **134** ✅ (BUG-027 claudeAgentsDir install fix → v3.1.1)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: 128
+- **Next Phase**: 135
 - **Current Task**: —
-- **Last Activity**: 2026-05-22 — Phase 127 shipped: adapter-context.cjs + detect-adapter + validate + 32 tests
+- **Last Activity**: 2026-05-22 — Phase 135 planned: ENH-086 + BUG-028 native agents promotion
 
 ## Progress Overview
 ```
@@ -219,7 +218,9 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| BUG-027 | 🐛 | claudeAgentsDir not wired into install — vp-task-executor/planner/gate NOT copied to ~/.claude/agents/ | high | new |
+| ENH-086 | 🔧 | Promote 6 workflow agents to native Claude Code agent types — visible in /agents dialog | medium | new |
+| BUG-028 | 🐛 | test-generator-agent + file-scanner-agent not wired — ENH-057 Phase 83 incomplete | medium | new |
+| BUG-027 | 🐛 | claudeAgentsDir not wired into install — vp-task-executor/planner/gate NOT copied to ~/.claude/agents/ | high | ✅ done (**3.1.1**) |
 | FEAT-021 | ✨ | v3 Milestone: Per-Adapter Intelligence Refactor — 7 phases (127-133), adapter blocks + ADAPTER_CONTEXT + orchestration refactor → v3.1.0 | critical | ✅ done |
 | ENH-085 | 🔧 | Mobile UI Direction breakdown quality — breakpoints, responsive variants, mobile-first strategy, component map | high | ✅ done (**2.51.0**) |
 | ENH-084 | 🔧 | vp-intake: AUQ-driven channel config setup wizard | high | ✅ done (**2.50.0**) |

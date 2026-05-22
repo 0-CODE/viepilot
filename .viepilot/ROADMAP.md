@@ -3615,12 +3615,43 @@ All 21 SKILL.md files contain `<cursor_skill_adapter>` blocks that reference Cur
 
 | Phase | Status | Tasks | Description |
 |-------|--------|-------|-------------|
-| 127. Adapter Detection + ADAPTER_CONTEXT | 🔄 planned | 5 | detect-adapter + validate command |
-| 128. SKILL.md 5-block adapter standard | 🔄 planned | 4 | Replace cursor_skill_adapter (21 files) |
-| 129. Workflow adapter-aware paths | 🔄 planned | 5 | 4 core workflows adapter-aware |
-| 130. Claude Code agent definitions + hooks | 🔄 planned | 5 | .claude/agents/ + PreToolUse/PostToolUse |
-| 131. Antigravity path fix | 🔄 planned | 3 | .agents/skills/ + deprecation notice |
-| 132. Tests + CHANGELOG + v3.0.0 | 🔄 planned | 3 | ≥15 tests + version bump |
-| 133. vp-auto orchestration refactor | 🔄 planned | 6 | Fan-out + Agent Teams + model tiering → v3.1.0 |
+| 127. Adapter Detection + ADAPTER_CONTEXT | ✅ done | 5 | detect-adapter + validate command |
+| 128. SKILL.md 5-block adapter standard | ✅ done | 4 | Replace cursor_skill_adapter (21 files) |
+| 129. Workflow adapter-aware paths | ✅ done | 5 | 4 core workflows adapter-aware |
+| 130. Claude Code agent definitions + hooks | ✅ done | 5 | .claude/agents/ + PreToolUse/PostToolUse |
+| 131. Antigravity path fix | ✅ done | 3 | .agents/skills/ + deprecation notice |
+| 132. Tests + CHANGELOG + v3.0.0 | ✅ done | 3 | ≥15 tests + version bump |
+| 133. vp-auto orchestration refactor | ✅ done | 6 | Fan-out + Agent Teams + model tiering → v3.1.0 |
+| 134. BUG-027 claudeAgentsDir install fix | ✅ done | 3 | vp-task-executor/planner/gate → ~/.claude/agents/ → v3.1.1 |
+| 135. ENH-086 + BUG-028 Native Agents | 🔄 planned | 5 | Promote 6 workflow agents to native CC agents → v3.2.0 |
 
-**Total v3**: 31 tasks across 7 phases
+**Total v3**: 39 tasks across 9 phases
+
+---
+
+## Phase 135 — ENH-086 + BUG-028: Native Agents Promotion
+
+**Goal**: Promote 6 ViePilot workflow agents to native Claude Code agent definitions
+(visible in `/agents`). Wire test-generator-agent + file-scanner-agent into their
+intended invocation points.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.2.0
+**Dependencies**: Phase 134 ✅ (claudeAgentsDir install path)
+**Directory**: `.viepilot/phases/135-enh086-native-agents/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 135.1 | Fix stale tracking: BUG-027 → done, ROADMAP v3.0 progress sync | TRACKER BUG-027 = done(v3.1.1); ROADMAP phases 127-134 all ✅ | S |
+| 135.2 | Create 6 native agent defs in `agents/claude-code/` | 9 total files in agents/claude-code/; valid frontmatter; research=sonnet | M |
+| 135.3 | autonomous.md: replace prompt-injection + add test-generator-agent block | subagent_type for tracker/changelog/doc-sync; test-gen invocation block | M |
+| 135.4 | Wire file-scanner-agent into vp-audit + request.md research-agent | file-scanner ≥2 hits in vp-audit; research-agent subagent_type in request.md | M |
+| 135.5 | Contract tests + docs/dev/agents.md + CHANGELOG [3.2.0] + version bump | ≥9 tests pass; docs updated; version = 3.2.0 | S |
+
+**Verification**:
+- [ ] `ls ~/.claude/agents/ | wc -l` → 9 after install
+- [ ] `grep "subagent_type.*changelog-agent\|subagent_type.*tracker-agent" workflows/autonomous.md` → ≥2 hits
+- [ ] `grep "subagent_type.*test-generator-agent" workflows/autonomous.md` → ≥1 hit
+- [ ] `grep "file-scanner-agent" skills/vp-audit/SKILL.md | wc -l` → ≥2
+- [ ] `npm test -- --grep "phase135"` all pass
+- [ ] `package.json` version = `3.2.0`
