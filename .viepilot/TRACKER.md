@@ -2,11 +2,11 @@
 
 ## Current State
 - **Milestone**: M1.37
-- **Current Phase**: —
-- **Last Completed Phase**: **124** — ✅ Complete (**ENH-083 SharePoint sharing link + xlsx + BUG keywords** → **2.49.0**)
+- **Current Phase**: **126** — ENH-085 Mobile UI Direction Breakdown Quality (7 tasks → v2.51.0)
+- **Last Completed Phase**: **125** — ✅ Complete (**ENH-084 vp-intake setup wizard** → **2.50.0**)
 - **Next Phase**: —
-- **Current Task**: —
-- **Last Activity**: 2026-05-17 — Phase 124 shipped: ENH-083 SharePoint WOPI adapter + xlsx parser + BUG keyword expansion (4 tasks → v2.49.0)
+- **Current Task**: 126.1
+- **Last Activity**: 2026-05-22 — Phase 126 planned: ENH-085 Mobile UI Direction (7 tasks → v2.51.0)
 
 ## Progress Overview
 ```
@@ -197,6 +197,8 @@ Phase 35 (ENH-022)    [██████████] done
 | 2026-04-25 | ENH-077 logged: seamless handoff crystallize Step 1D.14 → vp-design --sync (AUQ after export) | `/vp-request` | Backlog |
 | 2026-04-25 | Phase 116 planned: ENH-077 (2 tasks — crystallize handoff AUQ + tests), target **2.45.2** | `/vp-evolve` | M1.37 |
 | 2026-04-25 | BUG-024 logged: install libFiles hard-coded — viepilot-persona.cjs + skill-registry.cjs missing from installed instances (Windows + all platforms) | `/vp-request` | Backlog |
+| 2026-05-21 | ENH-085 logged: Mobile UI Direction breakdown quality — breakpoints/responsive variants/mobile-first strategy/component map all absent from workflow chain | `/vp-request` | Backlog |
+| 2026-05-22 | Phase 126 planned: ENH-085 (7 tasks — design.md schema + brainstorm mobile sub-phase + per-breakpoint HTML + component map + Sub-scan A breakpoints + crystallize consumption), target **2.51.0** | `/vp-evolve` | M1.37 |
 
 ## Blockers
 _None currently_
@@ -209,7 +211,9 @@ _Phases 112–115 planned for ENH-076. Run /vp-auto --phase 112 to start impleme
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-083 | 🔧 | vp-intake: SharePoint sharing link + xlsx parser + BUG keyword "performance" | high | new |
+| ENH-085 | 🔧 | Mobile UI Direction breakdown quality — breakpoints, responsive variants, mobile-first strategy, component map | high | new |
+| ENH-084 | 🔧 | vp-intake: AUQ-driven channel config setup wizard | high | ✅ done (**2.50.0**) |
+| ENH-083 | 🔧 | vp-intake: SharePoint sharing link + xlsx parser + BUG keyword "performance" | high | ✅ done (**2.49.0**) |
 | ENH-082 | 🔧 | Ticket Intake Channels — Excel/M365 + Google Sheets + CSV + Triage Workflow + Write-back | high | ✅ done (**2.48.0**) |
 | ENH-076 | 🔧 | Design.MD full integration across ViePilot workflow (XL) — Phases 112–115 | high | planned |
 | BUG-023 | 🐛 | vp-brainstorm session transition prompt ("what to do next?") not using AUQ — separate from BUG-022 | medium | ✅ done (**2.43.2**) |

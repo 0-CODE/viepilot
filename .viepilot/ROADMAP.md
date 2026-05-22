@@ -3344,3 +3344,83 @@ TRIAGE session report.
 - [ ] `node -e "const {classifyTicket}=require('./lib/intake/classifier');console.log(classifyTicket({title:'crash',description:''}))"` → BUG
 - [ ] `npm test -- --grep "phase123"` all pass
 - [ ] `package.json` version = `2.48.0`
+
+---
+
+## Phase 124 — ENH-083: SharePoint Sharing Link + XLSX Parser + BUG Keywords
+
+**Goal**: Add SharePoint sharing link support to vp-intake (WOPI/download.aspx + FedAuth cookie chain), xlsx binary parser, and expand BUG keyword list with "performance".
+**Estimated Tasks**: 4
+**Status**: done ✅
+**Shipped**: 2026-05-17 — v2.49.0
+**Version Target**: 2.49.0
+**Directory**: `.viepilot/phases/124-enh083-sharepoint-sharing-link/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 124.1 | SharePoint sharing link resolver + WOPI adapter | Resolve sharing link → download URL; FedAuth cookie forwarding | M |
+| 124.2 | xlsx binary parser (no ExcelJS dependency) | Parse .xlsx buffer; column mapping; error handling | M |
+| 124.3 | BUG keyword expansion ("performance", "chậm", "lag") | classifyTicket detects new keywords | S |
+| 124.4 | Tests (≥8) + CHANGELOG [2.49.0] + version bump | ≥8 tests; CHANGELOG; package.json = 2.49.0 | S |
+
+**Verification**:
+- [x] `npm test -- --grep "phase124"` all pass
+- [x] `package.json` version = `2.49.0`
+
+---
+
+## Phase 125 — ENH-084: vp-intake Setup Wizard (AUQ-driven channel config)
+
+**Goal**: Add an interactive setup wizard to vp-intake so users can configure intake channels (SharePoint, Google Sheets, CSV) step-by-step via AUQ prompts without manually editing channels.json.
+**Estimated Tasks**: 5
+**Status**: done ✅
+**Shipped**: 2026-05-17 — v2.50.0
+**Version Target**: 2.50.0
+**Directory**: `.viepilot/phases/125-enh084-intake-setup-wizard/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 125.1 | Setup wizard entry point + channel type AUQ | `vp-intake --setup`; AUQ channel type selection | S |
+| 125.2 | SharePoint wizard flow (tenant, site, file path, cookie) | AUQ-driven; validates connection; saves to channels.json | M |
+| 125.3 | Google Sheets wizard flow (sheet URL, service account) | AUQ-driven; validates API access; saves credentials ref | M |
+| 125.4 | CSV/TSV wizard flow (file path, column mapping) | AUQ-driven; preview first 5 rows; saves mapping | M |
+| 125.5 | Tests (≥8) + CHANGELOG [2.50.0] + version bump | ≥8 tests; CHANGELOG; package.json = 2.50.0 | S |
+
+**Verification**:
+- [x] `npm test -- --grep "phase125"` all pass
+- [x] `package.json` version = `2.50.0`
+
+---
+
+## Phase 126 — ENH-085: Mobile UI Direction Breakdown Quality
+
+**Goal**: Elevate ViePilot's mobile UI Direction from a superficial trigger keyword to a fully
+structured responsive design workflow. Adds breakpoint schema to `design.md`, Mobile Design
+Direction sub-phase in brainstorm (AUQ for strategy + device scope), per-breakpoint HTML
+sections in `pages/*.html`, Component Responsive Map in `notes.md`, Tailwind breakpoint
+extraction in Sub-scan A, and responsive implementation notes in crystallize.
+**Estimated Tasks**: 7
+**Status**: planned
+**Version Target**: 2.51.0
+**Dependencies**: ENH-079 ✅ (Sub-scan A), ENH-076 ✅ (Design.MD integration)
+**Directory**: `.viepilot/phases/126-enh085-mobile-ui-direction/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 126.1 | `design.md`: screens + strategy + responsive_components schema | YAML has screens/strategy; prose has Responsive Components table; --sync maps screens → Tailwind | S |
+| 126.2 | brainstorm: Mobile Design Direction sub-phase (AUQ strategy + device scope) | AUQ fires on mobile keywords; responsive_strategy + target_devices stored; new keywords added | M |
+| 126.3 | brainstorm: per-breakpoint `<details>` sections in pages/*.html | HTML has responsive-breakdown div; sections per active device; nav strategy inferred from page type | M |
+| 126.4 | brainstorm: Component Responsive Map in notes.md | notes.md has table ≥7 rows; guard vs. duplication; skipped on non-mobile session | S |
+| 126.5 | Sub-scan A: theme.screens extraction + sm:/md:/lg: class detection | Reads tailwind screens; scans JSX/Vue/Svelte; infers strategy; emits RESPONSIVE SUMMARY | M |
+| 126.6 | crystallize: consume breakpoint metadata → impl targets | Step 1A/1D read responsive context; Responsive Implementation Notes in architecture output | M |
+| 126.7 | Tests (≥10) + CHANGELOG [2.51.0] + version bump | ≥10 tests pass; CHANGELOG; package.json = 2.51.0 | S |
+
+**Verification**:
+- [ ] `grep -A5 "screens:" workflows/design.md`
+- [ ] `grep -n "Mobile Design Direction" workflows/brainstorm.md`
+- [ ] `grep -n "responsive-breakdown" workflows/brainstorm.md`
+- [ ] `grep -n "Component Responsive Map" workflows/brainstorm.md`
+- [ ] `grep -n "theme.screens\|responsive_utilities" workflows/brainstorm.md`
+- [ ] `grep -n "Responsive Implementation Notes" workflows/crystallize.md`
+- [ ] `npm test -- --grep "phase126"` all pass (≥10)
+- [ ] `package.json` version = `2.51.0`
