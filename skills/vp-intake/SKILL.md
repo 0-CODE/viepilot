@@ -129,6 +129,7 @@ Optional flags:
 - `--dry-run` : Classify and show tickets without creating requests or writing back
 - `--setup` : Force setup wizard — configure a new channel now (even if channels already exist)
 - `--config` : Alias for `--setup`
+- `--skip-validation` : Skip Step 4.5 codebase validation (faster, no file-scanner-agent spawn)
 
 **Supported channel types:**
 | Type | Auth | Config field |
@@ -199,9 +200,40 @@ header: "Channel"
 options: one per channel — label: "{channel.name} ({channel.type})", description: "{channel.id}"
 ```
 
+### Step 3.5: Sharing URL guard (ENH-089)
+
+Before reading, check for `sharing_url` on `excel_m365` channels:
+```
+if (channel.type === 'excel_m365' && channel.sharing_url) {
+  // Print warning — write-back will be disabled for this session
+  console.warn(
+    `⚠️  Channel "${channel.name}" uses a sharing_url — write-back is read-only for sharing links.\n` +
+    `   To enable write-back: configure workbook_id + .viepilot/.credentials/m365-credentials.json`
+  );
+}
+```
+Continue with intake — read-only is acceptable for triage.
+
 ### Step 4: Read and classify tickets
 
-Dispatch to the correct adapter based on `channel.type`:
+**Claude Code adapter** — dispatch via native agents for Excel/Sheets:
+```js
+if (channel.type === 'excel_m365') {
+  // Claude Code: use native excel-intake-agent
+  Agent({ subagent_type: "excel-intake-agent",
+    description: "excel-intake-agent: read tickets from Excel M365",
+    prompt: `op: read. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
+  })
+} else if (channel.type === 'google_sheets') {
+  // Claude Code: use native sheets-intake-agent
+  Agent({ subagent_type: "sheets-intake-agent",
+    description: "sheets-intake-agent: read tickets from Google Sheets",
+    prompt: `op: read. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
+  })
+}
+```
+
+**Non-CC adapters** — inline adapter dispatch (unchanged):
 - `csv` → `lib/intake/adapters/csv.cjs` → `readCsv(channel, projectRoot)`
 - `google_sheets` → `lib/intake/adapters/google-sheets.cjs` → `readGoogleSheet(channel, projectRoot)`
 - `excel_m365` → `lib/intake/adapters/excel-m365.cjs` → `readExcelM365(channel, projectRoot)`
@@ -233,8 +265,29 @@ UNCLEAR tickets get a 3-choice prompt: "Accept as BUG / Accept as ENH / Decline"
 
 ### Step 6: Write-back + Report
 
+**Claude Code adapter** — dispatch via native agents for Excel/Sheets write-back:
 ```js
-await writeback(channel, triageResult, projectRoot);         // lib/intake/writeback.cjs
+if (channel.type === 'excel_m365') {
+  Agent({ subagent_type: "excel-intake-agent",
+    description: "excel-intake-agent: write triage results back to Excel M365",
+    prompt: `op: write. channel_config: ${JSON.stringify(channel)}. tickets: ${JSON.stringify(triageResult)}. projectRoot: ${projectRoot}`
+  })
+} else if (channel.type === 'google_sheets') {
+  Agent({ subagent_type: "sheets-intake-agent",
+    description: "sheets-intake-agent: write triage results back to Google Sheets",
+    prompt: `op: write. channel_config: ${JSON.stringify(channel)}. tickets: ${JSON.stringify(triageResult)}. projectRoot: ${projectRoot}`
+  })
+} else {
+  await writeback(channel, triageResult, projectRoot);       // lib/intake/writeback.cjs (csv + non-agent path)
+}
+```
+
+**Non-CC adapters** — all types via `lib/intake/writeback.cjs`:
+```js
+await writeback(channel, triageResult, projectRoot);
+```
+
+```js
 const reportPath = generateTriageReport(channel, triageResult, projectRoot);  // lib/intake/report.cjs
 ```
 

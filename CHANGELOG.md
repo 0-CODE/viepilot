@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.3.0] - 2026-05-23
+
+### Added — ENH-089: `excel-intake-agent` + `sheets-intake-agent` native CC agents (Phase 136)
+### Fixed — BUG-029: Excel M365 write-back stub replaced with Graph API PATCH implementation
+### Changed — vp-intake SKILL.md: Excel/Sheets dispatch via native agents on CC adapter (Step 4 + Step 6)
+
+---
+
 ## [3.2.0] - 2026-05-22
 
 ### Added — ENH-086: 6 workflow agents promoted to native Claude Code agents (Phase 135)
