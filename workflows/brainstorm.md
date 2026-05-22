@@ -756,6 +756,76 @@ When the `pages/` directory exists or any `pages/*.html` is added / renamed / re
 - Immediately update the **`## Pages inventory`** section in `notes.md` (table: Slug | File | Title | Purpose | Key sections | Nav to) — must match 100% of the current `pages/*.html` file set.
 - Do not end a topic / do not consider the UI session “synced” if the inventory diverges from files on disk.
 
+**Per-breakpoint sections in pages/*.html (ENH-085)**
+
+When `responsive_strategy` is set (from Mobile Design Direction sub-phase), append a
+`<div class="responsive-breakdown">` section to the bottom of every generated `pages/{slug}.html`:
+
+```html
+<!-- Responsive Breakdown — ViePilot ENH-085 -->
+<div class="responsive-breakdown">
+  <h2>Responsive Breakdown</h2>
+  <!-- Render only sections for active target_devices -->
+
+  <!-- Phone section: render when target_devices includes "phone" -->
+  <details open>
+    <summary>📱 Mobile (≤767px)</summary>
+    <div class="breakpoint-notes">
+      <p><strong>Layout:</strong> {mobile_layout}</p>
+      <p><strong>Navigation:</strong> {mobile_nav}</p>
+      <ul>{mobile_key_changes}</ul>
+    </div>
+  </details>
+
+  <!-- Tablet section: render when target_devices includes "tablet" -->
+  <details>
+    <summary>💻 Tablet (768–1023px)</summary>
+    <div class="breakpoint-notes">
+      <p><strong>Layout:</strong> {tablet_layout}</p>
+      <p><strong>Navigation:</strong> {tablet_nav}</p>
+      <ul>{tablet_key_changes}</ul>
+    </div>
+  </details>
+
+  <!-- Desktop section: render when target_devices includes "desktop" -->
+  <details>
+    <summary>🖥 Desktop (≥1024px)</summary>
+    <div class="breakpoint-notes">
+      <p><strong>Layout:</strong> {desktop_layout}</p>
+      <p><strong>Navigation:</strong> {desktop_nav}</p>
+    </div>
+  </details>
+</div>
+```
+
+**`<details open>`** = primary breakpoint (phone if mobile-first, desktop if desktop-first).
+
+**Navigation strategy lookup** (infer from page purpose):
+
+| Page purpose | Mobile nav | Tablet nav | Desktop nav |
+|---|---|---|---|
+| App / dashboard | Hamburger drawer | Bottom tab bar | Left sidebar |
+| Marketing / landing | Hamburger menu | Hamburger menu | Full horizontal nav |
+| E-commerce | Bottom tab (Home/Search/Cart/Profile) | Tab bar + filters | Full nav + mega menu |
+| Admin / internal | Bottom nav (compact) | Collapsible sidebar | Full left sidebar |
+| Auth (login/signup) | Single-column form | Centered card | Centered card |
+| Content / reader | Bottom nav | Collapsed sidebar | Persistent sidebar |
+
+**Skip conditions:**
+- `responsive_strategy` absent → skip block entirely
+- `responsive_strategy: mobile-only` → render Phone section only (no details wrapper needed)
+- `responsive_strategy: desktop-only` → render Desktop section only
+
+**CSS to append to shared `style.css`** (once per workspace, not per page):
+
+```css
+/* ENH-085 — Responsive Breakdown */
+.responsive-breakdown{margin-top:2rem;border-top:2px solid #e5e7eb;padding-top:1.5rem}
+.responsive-breakdown details{margin-bottom:1rem;border:1px solid #e5e7eb;border-radius:8px;padding:1rem}
+.responsive-breakdown summary{font-weight:600;cursor:pointer;padding:.25rem 0;user-select:none}
+.breakpoint-notes{padding-top:.75rem}
+```
+
 3. If the user sends references/components (including 21st.dev prompts/links), record clearly:
    - reference source
    - the UI area it applies to (page slug if multi-page)
