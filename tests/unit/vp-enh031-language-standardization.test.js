@@ -4,14 +4,15 @@
  * ENH-031 Language Standardization contracts
  *
  * Verifies that workflow files and SKILL.md files contain no Vietnamese prose
- * outside of cursor_skill_adapter invocation trigger blocks and designated
- * scan-target data patterns (UI scope signal keywords in crystallize / brainstorm).
+ * outside of adapter invocation trigger blocks and designated scan-target data
+ * patterns (UI scope signal keywords in crystallize / brainstorm).
  *
  * Policy:
  *   - All narrative prose, headers, bullet descriptions, and inline comments
  *     must be in English.
- *   - Vietnamese is ONLY allowed inside <cursor_skill_adapter> blocks
- *     (invocation keyword trigger strings).
+ *   - Vietnamese is ONLY allowed inside <adapter id="..."> blocks
+ *     (invocation keyword trigger strings) — replaces old <cursor_skill_adapter>
+ *     per Phase 128 FEAT-021 migration.
  *   - UI scope signal keywords (màu, màn hình, etc.) in crystallize.md and
  *     brainstorm.md are scan-target data — not prose — and are also exempt.
  */
@@ -30,11 +31,15 @@ function read(relPath) {
 const VIEPILOT_CHARS = /[àáảãạăắằẳẵặâấầẩẫậđèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵÀÁẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐÈÉẺẼẸÊẾỀỂỄỆÌÍỈĨỊÒÓỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÙÚỦŨỤƯỨỪỬỮỰỲÝỶỸỴ]/;
 
 /**
- * Strip content inside cursor_skill_adapter blocks.
- * Returns content with those blocks replaced by empty placeholders.
+ * Strip content inside adapter blocks (both old cursor_skill_adapter and new <adapter id="...">).
+ * Vietnamese is allowed inside these blocks (invocation keyword trigger strings).
  */
 function stripCursorSkillAdapter(content) {
-  return content.replace(/<cursor_skill_adapter>[\s\S]*?<\/cursor_skill_adapter>/g, '<cursor_skill_adapter>[STRIPPED]</cursor_skill_adapter>');
+  // Strip new-style <adapter id="...">...</adapter> blocks (Phase 128+)
+  let stripped = content.replace(/<adapter id="[^"]*">[\s\S]*?<\/adapter>/g, '<adapter>[STRIPPED]</adapter>');
+  // Strip old-style <cursor_skill_adapter> blocks (backward compat — none should exist after Phase 128)
+  stripped = stripped.replace(/<cursor_skill_adapter>[\s\S]*?<\/cursor_skill_adapter>/g, '<cursor_skill_adapter>[STRIPPED]</cursor_skill_adapter>');
+  return stripped;
 }
 
 /**
@@ -93,9 +98,9 @@ describe('ENH-031 — workflow files: no Vietnamese prose outside invocation tri
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Test 2: No Vietnamese prose in SKILL.md files (outside cursor_skill_adapter)
+// Test 2: No Vietnamese prose in SKILL.md files (outside adapter blocks)
 // ─────────────────────────────────────────────────────────────────────────────
-describe('ENH-031 — SKILL.md files: no Vietnamese prose outside cursor_skill_adapter', () => {
+describe('ENH-031 — SKILL.md files: no Vietnamese prose outside adapter blocks', () => {
   const skillFiles = glob.sync('skills/vp-*/SKILL.md', { cwd: ROOT });
 
   test('SKILL.md files exist', () => {
@@ -103,7 +108,7 @@ describe('ENH-031 — SKILL.md files: no Vietnamese prose outside cursor_skill_a
   });
 
   skillFiles.forEach((relPath) => {
-    test(`${relPath}: no Vietnamese outside cursor_skill_adapter`, () => {
+    test(`${relPath}: no Vietnamese outside adapter blocks`, () => {
       const raw = read(relPath);
       const stripped = stripCursorSkillAdapter(raw);
       const hits = findVietnameseLines(stripped);
@@ -113,18 +118,18 @@ describe('ENH-031 — SKILL.md files: no Vietnamese prose outside cursor_skill_a
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Test 3: cursor_skill_adapter blocks are intact and non-empty
+// Test 3: <adapter> blocks are intact and non-empty (Phase 128 — replaces cursor_skill_adapter)
 // ─────────────────────────────────────────────────────────────────────────────
-describe('ENH-031 — SKILL.md files: cursor_skill_adapter block structure intact', () => {
+describe('ENH-031 — SKILL.md files: adapter block structure intact', () => {
   const skillFiles = glob.sync('skills/vp-*/SKILL.md', { cwd: ROOT });
 
   skillFiles.forEach((relPath) => {
-    test(`${relPath}: has non-empty cursor_skill_adapter block`, () => {
+    test(`${relPath}: has non-empty <adapter id="claude-code"> block`, () => {
       const content = read(relPath);
-      expect(content).toMatch(/<cursor_skill_adapter>/);
-      expect(content).toMatch(/<\/cursor_skill_adapter>/);
+      expect(content).toMatch(/<adapter id="claude-code">/);
+      expect(content).not.toMatch(/<cursor_skill_adapter>/);
       // Block must contain at least one meaningful (non-tag) line
-      const blockMatch = content.match(/<cursor_skill_adapter>([\s\S]*?)<\/cursor_skill_adapter>/);
+      const blockMatch = content.match(/<adapter id="claude-code">([\s\S]*?)<\/adapter>/);
       expect(blockMatch).not.toBeNull();
       const blockBody = blockMatch[1].trim();
       expect(blockBody.length).toBeGreaterThan(0);

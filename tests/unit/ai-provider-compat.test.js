@@ -60,9 +60,15 @@ describe('Skill files: structure conformance', () => {
   test.each(skills)('$name: has required XML-like sections', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
 
-    // cursor_skill_adapter block required for Cursor AI
-    expect(content).toContain('<cursor_skill_adapter>');
-    expect(content).toContain('</cursor_skill_adapter>');
+    // Phase 128 (FEAT-021): cursor_skill_adapter replaced by 5-block <adapter> standard
+    // Each skill must have all 5 adapter blocks
+    expect(content).toContain('<adapter id="claude-code">');
+    expect(content).toContain('<adapter id="cursor-agent">');
+    expect(content).toContain('<adapter id="antigravity">');
+    expect(content).toContain('<adapter id="codex">');
+    expect(content).toContain('<adapter id="copilot">');
+    // No more cursor_skill_adapter (the bug that caused silent failures on Claude Code)
+    expect(content).not.toContain('<cursor_skill_adapter>');
 
     // objective block required — tells AI what the skill does
     expect(content).toContain('<objective>');
@@ -73,13 +79,13 @@ describe('Skill files: structure conformance', () => {
     expect(content).toContain('</success_criteria>');
   });
 
-  test.each(skills)('$name: cursor_skill_adapter has Skill Invocation section', ({ name, path: skillPath }) => {
+  test.each(skills)('$name: adapter blocks have Skill Invocation section', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
     // Must describe how the skill is triggered
     expect(content).toContain('Skill Invocation');
   });
 
-  test.each(skills)('$name: cursor_skill_adapter has Tool Usage section', ({ name, path: skillPath }) => {
+  test.each(skills)('$name: adapter blocks have Tool Usage section', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
     // Must list tools so AI knows what it can use
     expect(content).toContain('Tool Usage');

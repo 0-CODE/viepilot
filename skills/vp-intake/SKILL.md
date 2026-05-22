@@ -37,7 +37,7 @@ Inject the output as `## User Persona` context before any task execution.
 Silent if command unavailable or errors.
 </persona_context>
 
-<cursor_skill_adapter>
+<adapter id="claude-code">
 ## A. Skill Invocation
 - Skill được gọi khi user mention `vp-intake`, `/vp-intake`, "import tickets", "nhập ticket", "đọc ticket từ", "triage ticket"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
@@ -46,8 +46,57 @@ Silent if command unavailable or errors.
 Prompt user conversationally with options.
 
 ## C. Tool Usage
-Use Cursor tools: `Shell`, `ReadFile`, `Glob`, `rg`, `ApplyPatch`, `WebSearch`, `WebFetch`, `Subagent`
-</cursor_skill_adapter>
+Use Claude Code tools: `Bash` (shell), `Read` (file), `Edit` + `Write` (file write/patch),
+`Grep` (search), `Glob` (file patterns), `LS`, `WebSearch`, `WebFetch`,
+`Agent` (spawn subagent — multi-level nesting supported)
+Interactive: `AskUserQuestion` (deferred — preload via ToolSearch before first call)
+</adapter>
+
+<adapter id="cursor-agent">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+
+## C. Tool Usage
+Use Cursor tools: `run_terminal_cmd` (shell), `read_file` (read), `edit_file` (write/edit),
+`grep_search` (search), `web_search`, `codebase_search`, `list_dir`, `file_search`
+Interactive: text list fallback (AskQuestion available in Plan Mode only; Agent Mode = text)
+Subagent: `/multitask` (user command, single-level only — not a callable tool)
+MCP limit: 40 tools
+</adapter>
+
+<adapter id="antigravity">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+Skill discovery: LLM-driven (automatic, no slash command needed).
+
+## C. Tool Usage
+Use Antigravity tools: `shell` (cmd), `file_read`, `file_write`, MCP plugins
+Interactive: text fallback (TUI-based; no formal AskUserQuestion)
+Skill path: `.agents/skills/<skill>/SKILL.md` (project) or `~/.gemini/antigravity/skills/` (global)
+Note: Gemini CLI deprecated June 18, 2026 — use Antigravity CLI.
+</adapter>
+
+<adapter id="codex">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+
+## C. Tool Usage
+Use Codex tools: `container.exec` (sandboxed shell), `apply_patch` (file write), `web_search`
+Interactive: text fallback (TUI Tab/Enter injection)
+Config: `~/.codex/config.toml`
+</adapter>
+
+<adapter id="copilot">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+Discovery: User-driven (`@agent-name` in GitHub Copilot Chat).
+
+## C. Tool Usage
+Use Copilot tools: `runCommands` (shell), `read`/`readfile` (read), `edit`/`editFiles` (write),
+`code_search`, `find_references`
+Interactive: `askQuestions` (main agent only — NOT available in subagents; VS Code issue #293745)
+Skill path: `.github/agents/<name>.agent.md`
+</adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.

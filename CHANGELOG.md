@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `vp-tools validate --adapter <id>`: checks tool availability, warns on limitations
 - ADAPTER_CONTEXT injection at session start in autonomous.md
 
-#### Phase 128 — SKILL.md 5-Block Adapter Standard (planned)
+#### Phase 128 — SKILL.md 5-Block Adapter Standard ✅
 - Replace `<cursor_skill_adapter>` with `<adapter id="claude-code|cursor-agent|antigravity|codex|copilot">` in all 21 SKILL.md files
 - Claude Code now has correct tool names: `Bash` (not Shell), `Read` (not ReadFile), `Grep` (not rg), `Edit`/`Write` (not ApplyPatch), `Agent` (not Subagent)
 - Documented in `docs/dev/adapter-blocks.md`
