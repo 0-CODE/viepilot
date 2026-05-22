@@ -1,13 +1,13 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–135 → v3.2.0
-- **Current Phase**: **135** — ENH-086 + BUG-028: Native Agents Promotion (planned)
-- **Last Completed Phase**: **134** ✅ (BUG-027 claudeAgentsDir install fix → v3.1.1)
+- **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
+- **Current Phase**: **136** — BUG-029 + ENH-089: Excel/Sheets Intake Agents (planned)
+- **Last Completed Phase**: **135** ✅ (ENH-086 + BUG-028 native agents promotion → v3.2.0)
 - **Previous Milestone**: M1.37 archived → `.viepilot/milestones/M1.37-SUMMARY.md`
-- **Next Phase**: 135
+- **Next Phase**: 137 (ENH-087 validation) → 138 (ENH-088 schedule)
 - **Current Task**: —
-- **Last Activity**: 2026-05-22 — Phase 135 planned: ENH-086 + BUG-028 native agents promotion
+- **Last Activity**: 2026-05-23 — Phases 136-138 planned: BUG-029 + ENH-089 + ENH-087 + ENH-088
 
 ## Progress Overview
 ```
@@ -218,7 +218,11 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-086 | 🔧 | Promote 6 workflow agents to native Claude Code agent types — visible in /agents dialog | medium | new |
+| ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
+| BUG-029 | 🐛 | vp-intake Excel M365 write-back stub — writeback.cjs task 123.4 never implemented | high | new |
+| ENH-088 | 🔧 | vp-intake: scheduled auto-intake — CronCreate/CronDelete + full auto request creation | medium | new |
+| ENH-087 | 🔧 | vp-intake: agent-based codebase validation before triage — parallel file-scanner fan-out | medium | new |
+| ENH-086 | 🔧 | Promote 6 workflow agents to native Claude Code agent types — visible in /agents dialog | medium | ✅ done (**3.2.0**) |
 | BUG-028 | 🐛 | test-generator-agent + file-scanner-agent not wired — ENH-057 Phase 83 incomplete | medium | new |
 | BUG-027 | 🐛 | claudeAgentsDir not wired into install — vp-task-executor/planner/gate NOT copied to ~/.claude/agents/ | high | ✅ done (**3.1.1**) |
 | FEAT-021 | ✨ | v3 Milestone: Per-Adapter Intelligence Refactor — 7 phases (127-133), adapter blocks + ADAPTER_CONTEXT + orchestration refactor → v3.1.0 | critical | ✅ done |

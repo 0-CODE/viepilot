@@ -3624,8 +3624,11 @@ All 21 SKILL.md files contain `<cursor_skill_adapter>` blocks that reference Cur
 | 133. vp-auto orchestration refactor | ✅ done | 6 | Fan-out + Agent Teams + model tiering → v3.1.0 |
 | 134. BUG-027 claudeAgentsDir install fix | ✅ done | 3 | vp-task-executor/planner/gate → ~/.claude/agents/ → v3.1.1 |
 | 135. ENH-086 + BUG-028 Native Agents | 🔄 planned | 5 | Promote 6 workflow agents to native CC agents → v3.2.0 |
+| 136. BUG-029 + ENH-089 Intake Agents | 🔄 planned | 5 | Excel M365 write-back fix + excel/sheets native agents → v3.3.0 |
+| 137. ENH-087 Intake Validation | 🔄 planned | 4 | Parallel codebase validation fan-out before triage → v3.4.0 |
+| 138. ENH-088 Intake Schedule | 🔄 planned | 5 | CronCreate schedule + --auto headless mode + pending-review → v3.5.0 |
 
-**Total v3**: 39 tasks across 9 phases
+**Total v3**: 53 tasks across 12 phases
 
 ---
 
@@ -3655,3 +3658,83 @@ intended invocation points.
 - [ ] `grep "file-scanner-agent" skills/vp-audit/SKILL.md | wc -l` → ≥2
 - [ ] `npm test -- --grep "phase135"` all pass
 - [ ] `package.json` version = `3.2.0`
+
+---
+
+## Phase 136 — BUG-029 + ENH-089: Excel/Sheets Intake Agents
+
+**Goal**: Fix the permanent Excel M365 write-back stub and promote Excel Online + Google Sheets
+I/O to dedicated native Claude Code agents for isolated auth, read, and write operations.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.3.0
+**Dependencies**: Phase 135 ✅ (claudeAgentsSrc install path established)
+**Directory**: `.viepilot/phases/136-bug029-enh089-intake-agents/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 136.1 | writebackExcelM365 in writeback.cjs | Real Graph API PATCH; sharing_url guard | M |
+| 136.2 | excel-intake-agent.md (native CC agent) | read/write/check-auth ops; sonnet model | M |
+| 136.3 | sheets-intake-agent.md (native CC agent) | read/write/check-auth ops; haiku model | S |
+| 136.4 | vp-intake SKILL.md agent dispatch | Excel/Sheets via native agents on CC adapter | M |
+| 136.5 | Contract tests + CHANGELOG [3.3.0] + version bump | ≥8 tests pass; version = 3.3.0 | S |
+
+**Verification**:
+- [ ] `grep "writebackExcelM365\|PATCH.*workbook" lib/intake/writeback.cjs` → ≥1 hit
+- [ ] `grep "sharing_url.*read-only\|read-only.*sharing" skills/vp-intake/SKILL.md` → ≥1 hit
+- [ ] `ls agents/claude-code/ | wc -l` → 11 after phase (9 + 2 new)
+- [ ] `npm test -- --grep "phase136"` all pass
+- [ ] `package.json` version = `3.3.0`
+
+---
+
+## Phase 137 — ENH-087: Parallel Codebase Validation
+
+**Goal**: Add Step 4.5 to vp-intake: spawn file-scanner-agent instances in parallel to validate
+each ticket's claims against the codebase and check for duplicate requests before triage.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.4.0
+**Dependencies**: Phase 135 ✅ (file-scanner-agent native); Phase 136 recommended
+**Directory**: `.viepilot/phases/137-enh087-intake-validation/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 137.1 | lib/intake/validator.cjs — fan-out + keyword extract + duplicate check | validateTickets export; file-scanner-agent dispatch | M |
+| 137.2 | vp-intake SKILL.md — Step 4.5 block + --skip-validation flag | Step 4.5 in SKILL.md; --skip-validation in flags | S |
+| 137.3 | lib/intake/triage-ux.cjs — _validation badge in AUQ display | _validation badge rendered per ticket | S |
+| 137.4 | Contract tests + CHANGELOG [3.4.0] + version bump | ≥6 tests pass; version = 3.4.0 | S |
+
+**Verification**:
+- [ ] `grep "validateTickets\|Step 4.5" skills/vp-intake/SKILL.md` → ≥1 hit
+- [ ] `ls lib/intake/validator.cjs` → exists
+- [ ] `grep "_validation\|badge" lib/intake/triage-ux.cjs` → ≥1 hit
+- [ ] `npm test -- --grep "phase137"` all pass
+- [ ] `package.json` version = `3.4.0`
+
+---
+
+## Phase 138 — ENH-088: Intake Schedule
+
+**Goal**: Add --schedule/--unschedule flags to vp-intake that create/delete a CronCreate schedule
+for autonomous background intake runs. Scheduled runs use --auto mode with confidence scoring.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.5.0
+**Dependencies**: Phase 136 recommended; Phase 137 optional
+**Directory**: `.viepilot/phases/138-enh088-intake-schedule/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 138.1 | lib/intake/classifier.cjs — add confidence field | { classified, confidence: 0.0–1.0 } returned | S |
+| 138.2 | lib/intake/auto-intake.cjs — --auto mode + pending-review.json | runAutoIntake; CONFIDENCE_THRESHOLD=0.7; accumulates pending-review | M |
+| 138.3 | skills/vp-intake/SKILL.md — --schedule/--unschedule + pending review | CronCreate/Delete; pending-review AUQ at start | M |
+| 138.4 | Schedule management: CronCreate/CronDelete + schedule.json | createSchedule/deleteSchedule; non-CC fallback | M |
+| 138.5 | Contract tests + CHANGELOG [3.5.0] + version bump | ≥8 tests pass; version = 3.5.0 | S |
+
+**Verification**:
+- [ ] `grep "schedule\|CronCreate\|--auto" skills/vp-intake/SKILL.md` → ≥3 hits
+- [ ] `ls lib/intake/auto-intake.cjs` → exists
+- [ ] `grep "confidence" lib/intake/classifier.cjs` → ≥1 hit
+- [ ] `npm test -- --grep "phase138"` all pass
+- [ ] `package.json` version = `3.5.0`
