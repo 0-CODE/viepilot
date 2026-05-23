@@ -20,10 +20,13 @@
 - **Current Task**: —
 - **Current Phase**: ~~142~~ — ✅ done (v3.7.2)
 - **Last Completed Phase**: **142** ✅ (ENH-097 full orchestrator delegation — state + git via subagents → v3.7.2)
-- **Current Phase**: **143** — DEBT-001: README + Docs Drift Sync → v3.7.3
-- **Next Phase**: 143 (pending)
+- **Current Phase**: ~~143~~ — ✅ done (v3.7.3)
+- **Last Completed Phase**: **143** ✅ (DEBT-001 README + docs drift sync → v3.7.3)
+- **Current Phase**: ~~144~~ — ✅ done (v3.8.0)
+- **Last Completed Phase**: **144** ✅ (ENH-098 stakeholder agent gate → v3.8.0)
+- **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phase 143 planned: DEBT-001 README + docs sync → v3.7.3
+- **Last Activity**: 2026-05-24 — Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0
 
 ## Progress Overview
 ```
@@ -37,7 +40,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ### Current Version
 ```
-2.17.0 (released — ENH-050 git tag branch+version enrichment)
+3.8.0 (released — ENH-098 stakeholder agent gate)
 ```
 
 
@@ -45,6 +48,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-24 | Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0 (2246 tests, 5 tasks PASS) | ENH-098: two-phase stakeholder gate — brainstorm generates agents, crystallize Step 1G runs parallel fan-out review | 144 |
+| 2026-05-24 | Phase 143 complete: DEBT-001 README + docs drift sync → v3.7.3 | README/docs drifted since v3.1.1; synced badges, counts, skills-reference, architecture | 143 |
 | 2026-05-23 | Phase 142 planned: ENH-097 full orchestrator delegation — state + git via subagents (4 tasks) → v3.7.2 | `/vp-evolve` Add Feature | M3.0 |
 | 2026-05-23 | DEBT-001 logged: README + docs drifted since v3.1.1 — badges, counts, skills-reference 6 missing skills, architecture model outdated | User: drift accumulated across phases 130-142 | Backlog |
 | 2026-05-23 | ENH-097 logged: state updates (TRACKER, HANDOFF, ROADMAP) and git (tag, push) still inline on main orchestrator | User: all stages must delegate — orchestrator = read + spawn only | Backlog |

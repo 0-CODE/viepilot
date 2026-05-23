@@ -1,33 +1,35 @@
 {
   "milestone": "M3.0",
   "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
-  "phase": 143,
-  "phase_name": "DEBT-001-readme-docs-sync",
+  "phase": 144,
+  "phase_name": "ENH-098-stakeholder-agent-gate",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-05-23T00:00:00Z",
+  "last_activity": "2026-05-24T00:00:00Z",
   "version": {
-    "current": "3.7.3",
+    "current": "3.8.0",
     "next": null
   },
   "progress": {
-    "phases_total": 143,
-    "phases_completed": 143,
-    "tasks_total": 4,
-    "tasks_completed": 4,
+    "phases_total": 144,
+    "phases_completed": 144,
+    "tasks_total": 5,
+    "tasks_completed": 5,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 143 complete: DEBT-001 README + docs drift sync → v3.7.3",
-      "2225 tests passing.",
-      "README badges/tables updated: version 3.7.3, 21 skills, 14 workflows, 2210 tests.",
-      "docs/skills-reference.md: vp-design, vp-intake, vp-persona added (21 skills total).",
-      "docs/dev/architecture.md: ENH-096/097 orchestration model documented."
+      "Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0",
+      "2246 tests passing across 113 suites.",
+      "workflows/brainstorm.md: stakeholder generation gate added (step 6B, end of session).",
+      "workflows/crystallize.md: Step 1G stakeholder review gate added (parallel fan-out, synthesis, PROJECT-CONTEXT enrichment).",
+      "templates/stakeholder-agent.md: canonical template for generated stakeholder agent files.",
+      "SKILL.md files updated for vp-crystallize (Step 1G) and vp-brainstorm (ENH-098).",
+      "--no-stakeholders flag available on both /vp-brainstorm and /vp-crystallize."
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-05-23T00:00:00Z"
+  "updated_at": "2026-05-24T00:00:00Z"
 }
