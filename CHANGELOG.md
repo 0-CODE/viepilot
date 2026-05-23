@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.7.2] - 2026-05-23
+
+### Added — ENH-097: vp-auto Full Orchestrator Delegation (Phase 142)
+- **agents/claude-code/vp-git-agent.md** — new agent for phase-level git ops: create-tag, push-branch, push-tags, push-all, git-status; orchestrator spawns instead of running git inline
+- **agents/claude-code/tracker-agent.md** — new ops: `update-handoff` (HANDOFF.json patch), `update-roadmap-phase` (ROADMAP.md phase status update); Write tool added
+
+### Changed — ENH-097
+- **workflows/autonomous.md** — ENH-096 whitelist tightened: orchestrator Bash = read-only git checks only; all state writes and git ops now go through tracker-agent / vp-git-agent / changelog-agent
+- **workflows/autonomous.md** — §4 Update State: full tracker-agent spawn patterns for task-status, handoff, roadmap sync
+- **workflows/autonomous.md** — §5 Phase Complete: git tagging and push delegated to vp-git-agent; TRACKER.md sync to tracker-agent
+
+---
+
 ## [3.7.1] - 2026-05-23
 
 ### Changed — ENH-096: vp-auto Orchestrator Enforcement (Phase 141)
