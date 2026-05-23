@@ -9,8 +9,8 @@ const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'))
 
 describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   describe('README.md badges', () => {
-    it('version badge is 3.7.3', () => {
-      expect(readme).toMatch(/version-3\.7\.3/);
+    it('version badge is 3.8.0', () => {
+      expect(readme).toMatch(/version-3\.8\.0/);
     });
     it('skills badge is 21', () => {
       expect(readme).toMatch(/skills-21/);
@@ -67,8 +67,8 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.7.3', () => {
-      expect(pkg.version).toBe('3.7.3');
+    it('version is 3.8.0', () => {
+      expect(pkg.version).toBe('3.8.0');
     });
   });
 });
