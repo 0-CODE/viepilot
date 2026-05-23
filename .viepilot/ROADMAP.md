@@ -3801,3 +3801,92 @@ notify source rows when vp-auto completes a task created from intake.
 - [ ] `grep "Intake Source" skills/vp-intake/SKILL.md` → ≥1 hit
 - [ ] `npm test -- --grep "phase140"` ≥20 tests pass
 - [ ] `package.json` version = `3.7.0`
+
+---
+
+## Phase 141 — ENH-096: vp-auto Orchestrator Enforcement (Hard Delegate to vp-task-executor)
+
+**Goal**: Prevent the vp-auto main agent from implementing tasks inline. Add an explicit ⛔ hard
+stop in `workflows/autonomous.md` before the task execution loop, an orchestrator-only operation
+whitelist, and a concrete vp-task-executor spawn template. Single-task phases must also go
+through vp-task-executor (no "only 1 task so I'll do it inline" shortcut).
+**Estimated Tasks**: 2
+**Status**: ✅ done
+**Version Target**: 3.7.1
+**Completed**: 2026-05-23
+**Dependencies**: Phase 140 ✅ (ENH-095 complete); FEAT-021 ✅ (fan-out model designed)
+**Directory**: `.viepilot/phases/141-enh096-orchestrator-enforcement/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 141.1 | workflows/autonomous.md — ⛔ hard stop + orchestrator whitelist + concrete vp-task-executor spawn template | `grep "ORCHESTRATOR STOP" workflows/autonomous.md` → ≥1 hit; whitelist block present; spawn template has exact prompt text with task_path/phase_dir/cwd placeholders | M |
+| 141.2 | Contract tests + CHANGELOG [3.7.1] + version bump | ≥6 tests pass; `package.json` version = `3.7.1` | S |
+
+**Verification**:
+- [ ] `grep "ORCHESTRATOR STOP" workflows/autonomous.md` → ≥1 hit
+- [ ] `grep "orchestrator.*whitelist\|permitted.*orchestrator\|Orchestrator.*may.*only" workflows/autonomous.md` → ≥1 hit
+- [ ] `grep "vp-task-executor" workflows/autonomous.md` count ≥ previous (spawn template present)
+- [ ] `npm test -- --grep "phase141"` ≥6 tests pass
+- [ ] `package.json` version = `3.7.1`
+
+---
+
+## Phase 142 — ENH-097: vp-auto Full Orchestrator Delegation (State + Git via Subagents)
+
+**Goal**: Complete the orchestrator cleanup started in ENH-096. Delegate ALL writes and git
+operations to subagents — orchestrator becomes read + spawn only. New `vp-git-agent` for
+git tag/push; extended `tracker-agent` for HANDOFF.json and ROADMAP.md updates;
+`autonomous.md` whitelist tightened to read-only Bash only.
+**Estimated Tasks**: 4
+**Status**: ✅ done
+**Version Target**: 3.7.2
+**Completed**: 2026-05-23
+**Dependencies**: Phase 141 ✅ (ENH-096 — implementation delegation + hard stop); tracker-agent ✅; changelog-agent ✅
+**Directory**: `.viepilot/phases/142-enh097-full-orchestrator-delegation/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 142.1 | agents/claude-code/vp-git-agent.md — new agent (create-tag, push-branch, push-tags, push-all, git-status) | file exists; GIT_RESULT format; model haiku-4-5 | S | ✅ with 142.2 |
+| 142.2 | agents/claude-code/tracker-agent.md — extend with update-handoff + update-roadmap-phase | both ops documented; Write tool added | S | ✅ with 142.1 |
+| 142.3 | workflows/autonomous.md — tighten ENH-096 whitelist + wire tracker-agent/vp-git-agent in §4 + §5 | no inline git tag/push; update-handoff/roadmap-phase/push-all spawn patterns present | M | after 142.1+142.2 |
+| 142.4 | Contract tests + CHANGELOG [3.7.2] + version bump | 13 tests pass; version = 3.7.2 | S | after 142.3 |
+
+**Verification**:
+- [ ] `agents/claude-code/vp-git-agent.md` exists with create-tag, push-all, GIT_RESULT
+- [ ] `grep "update-handoff" agents/claude-code/tracker-agent.md` → ≥1 hit
+- [ ] `grep "push-all" workflows/autonomous.md` → ≥1 hit
+- [ ] `grep "update-handoff" workflows/autonomous.md` → ≥1 hit
+- [ ] `npm test -- --grep "phase142"` ≥13 tests pass
+- [ ] `package.json` version = `3.7.2`
+
+---
+
+## Phase 143 — DEBT-001: README + Docs Drift Sync (v3.7.3)
+
+**Goal**: Bring README.md, docs/skills-reference.md, and docs/dev/architecture.md in sync
+with the actual codebase state at v3.7.3. Badges, metric tables, and skill count are all
+stale since v3.1.1. Three skills (vp-design, vp-intake, vp-persona) are missing from
+skills-reference.md. Architecture docs do not reflect ENH-096/097 delegation model.
+**Estimated Tasks**: 4
+**Status**: pending
+**Version Target**: 3.7.3
+**Dependencies**: Phase 142 ✅
+**Directory**: `.viepilot/phases/143-debt001-readme-docs-sync/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 143.1 | README.md — badges (version/skills/workflows/tests) + Project Scale + Completion Status + versioning note | version badge=3.7.3, skills=21, workflows=14, tests=2210; no stale 3.1.1 or 2.19.0 | M | ✅ with 143.2+143.3 |
+| 143.2 | docs/skills-reference.md — add vp-design, vp-intake, vp-persona sections | 3 `## /vp-*` headings added; total ≥ 21 | M | ✅ with 143.1+143.3 |
+| 143.3 | docs/dev/architecture.md — orchestration model (ENH-096/097): agent roles table, read+spawn-only note | vp-git-agent + tracker-agent present; GIT_RESULT referenced | S | ✅ with 143.1+143.2 |
+| 143.4 | CHANGELOG [3.7.3] + version bump + contract tests | 13 tests pass; version = 3.7.3; git clean | S | after 143.1+143.2+143.3 |
+
+**Verification**:
+- [ ] `grep "version-3.7.3" README.md` → 1 hit
+- [ ] `grep "skills-21" README.md` → 1 hit
+- [ ] `grep "2210" README.md` → ≥1 hit (tests count)
+- [ ] `grep "^## /vp-design" docs/skills-reference.md` → 1 hit
+- [ ] `grep "^## /vp-intake" docs/skills-reference.md` → 1 hit
+- [ ] `grep "^## /vp-persona" docs/skills-reference.md` → 1 hit
+- [ ] `grep "vp-git-agent" docs/dev/architecture.md` → ≥1 hit
+- [ ] `npm test -- --grep "phase143"` ≥13 tests pass
+- [ ] `package.json` version = `3.7.3`

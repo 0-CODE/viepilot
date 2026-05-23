@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- (phase 143) sync README.md badges + tables to v3.7.3 (skills: 21, workflows: 14, tests: 2210)
+- (phase 143) add vp-design, vp-intake, vp-persona to docs/skills-reference.md
+- (phase 143) update docs/dev/architecture.md orchestration model (ENH-096/097 delegation)
+
 ---
 
 ## [3.7.2] - 2026-05-23

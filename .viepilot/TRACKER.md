@@ -14,7 +14,16 @@
 - **Last Completed Phase**: **140** ✅ (ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0)
 - **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — Phase 140 complete: ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0
+- **Current Phase**: ~~141~~ — ✅ done (v3.7.1)
+- **Last Completed Phase**: **141** ✅ (ENH-096 vp-auto orchestrator enforcement — hard delegate to vp-task-executor → v3.7.1)
+- **Next Phase**: — (all planned phases complete)
+- **Current Task**: —
+- **Current Phase**: ~~142~~ — ✅ done (v3.7.2)
+- **Last Completed Phase**: **142** ✅ (ENH-097 full orchestrator delegation — state + git via subagents → v3.7.2)
+- **Current Phase**: **143** — DEBT-001: README + Docs Drift Sync → v3.7.3
+- **Next Phase**: 143 (pending)
+- **Current Task**: —
+- **Last Activity**: 2026-05-23 — Phase 143 planned: DEBT-001 README + docs sync → v3.7.3
 
 ## Progress Overview
 ```
@@ -36,6 +45,11 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-23 | Phase 142 planned: ENH-097 full orchestrator delegation — state + git via subagents (4 tasks) → v3.7.2 | `/vp-evolve` Add Feature | M3.0 |
+| 2026-05-23 | DEBT-001 logged: README + docs drifted since v3.1.1 — badges, counts, skills-reference 6 missing skills, architecture model outdated | User: drift accumulated across phases 130-142 | Backlog |
+| 2026-05-23 | ENH-097 logged: state updates (TRACKER, HANDOFF, ROADMAP) and git (tag, push) still inline on main orchestrator | User: all stages must delegate — orchestrator = read + spawn only | Backlog |
+| 2026-05-23 | Phase 141 planned: ENH-096 vp-auto orchestrator enforcement — hard delegate to vp-task-executor (2 tasks) → v3.7.1 | `/vp-evolve` Add Feature | M3.0 |
+| 2026-05-23 | ENH-096 logged: vp-auto main agent still implements tasks inline instead of spawning vp-task-executor | User: dirty orchestrator context degrades multi-task phases | Backlog |
 | 2026-05-23 | Phase 140 planned: ENH-095 AI-driven intake manifest + post-task write-back (5 tasks) → v3.7.0 | `/vp-evolve` Add Feature | M3.0 |
 | 2026-05-23 | ENH-095 logged: AI-driven intake manifest + post-task write-back callback | User: replace HEADER_ALIASES hardcode with excel-intake-agent `analyze_structure` op + manifest TTL + write result back to source row | Backlog |
 | 2026-05-23 | ENH-094 patch: sharepoint-xlsx pattern added to browser.cjs URL_PATTERNS + SKILL.md routing fix → v3.6.1 | Live test discovered gap: SharePoint sharing link fell through as generic-table | Post-139 |
@@ -233,6 +247,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
 | ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
 | BUG-029 | 🐛 | vp-intake Excel M365 write-back stub — writeback.cjs task 123.4 never implemented | high | new |
 | ENH-088 | 🔧 | vp-intake: scheduled auto-intake — CronCreate/CronDelete + full auto request creation | medium | new |
