@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- (phase 144) vp-brainstorm Stakeholder Generation Gate — infers domain stakeholders, creates `.claude/agents/` files at end of session (ENH-098)
+- (phase 144) vp-crystallize Step 1G Stakeholder Review Gate — parallel fan-out + synthesis enriches PROJECT-CONTEXT.md before ROADMAP lock (ENH-098)
+- (phase 144) `templates/stakeholder-agent.md` — canonical stakeholder agent template (haiku-4-5, Read-only, Gaps/Risks/Suggestions)
+
 ---
 
 ## [3.7.3] - 2026-05-23
