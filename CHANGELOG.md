@@ -7,10 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+---
+
+## [3.7.3] - 2026-05-23
+
 ### Documentation
-- (phase 143) sync README.md badges + tables to v3.7.3 (skills: 21, workflows: 14, tests: 2210)
-- (phase 143) add vp-design, vp-intake, vp-persona to docs/skills-reference.md
-- (phase 143) update docs/dev/architecture.md orchestration model (ENH-096/097 delegation)
+- sync README.md badges to v3.7.3: version, skills (21), workflows (14), tests (2210 passing)
+- add vp-design, vp-intake, vp-persona sections to docs/skills-reference.md (21 skills total)
+- update docs/dev/architecture.md orchestration model — ENH-096/097 delegation: tracker-agent, vp-git-agent, read+spawn-only orchestrator
+- remove confusing dual-version paragraph from README.md versioning note
 
 ---
 
