@@ -216,6 +216,32 @@ User Request
 | No external runtime | Works with any AI assistant |
 | CommonJS (no ESM) | Maximum Node.js compatibility |
 
+## Agent Orchestration Model (ENH-096/097)
+
+As of v3.7.2, the vp-auto orchestrator is **read + spawn only**. It never calls Edit, Write, or Bash for any write operation. All work is delegated to specialized subagents:
+
+| Agent | Role | Tools Permitted |
+|-------|------|-----------------|
+| vp-auto orchestrator | Read state, spawn workers, gate phase transitions | Read, Bash (read-only git only), Agent |
+| vp-task-executor | All implementation — code, docs, config edits | Read, Edit, Write, MultiEdit, Bash, Glob, Grep, LS |
+| vp-quality-gate | Run verification commands, report PASS/FAIL | Read, Bash, Grep, Glob, LS |
+| vp-phase-planner | Build dependency graph, identify parallel task clusters | Read, Glob, Grep, LS |
+| tracker-agent | Write state files: PHASE-STATE.md, TRACKER.md, HANDOFF.json, ROADMAP.md | Read, Edit, Write |
+| vp-git-agent | Git operations: create-tag, push-branch, push-tags, push-all, git-status | Bash only |
+| changelog-agent | Write CHANGELOG.md entries for features and fixes | Read, Edit, Write |
+
+**Result formats:**
+- `TASK_RESULT: PASS | FAIL | PARTIAL` — returned by vp-task-executor and vp-quality-gate
+- `GIT_RESULT: PASS | FAIL | SKIP` — returned by vp-git-agent
+
+**Orchestration flow:**
+1. Orchestrator reads PHASE-STATE.md + task contracts
+2. Spawns tracker-agent → set tasks `in_progress`
+3. Spawns vp-task-executor(s) — parallel fan-out for independent tasks
+4. Spawns vp-quality-gate for each completed task
+5. On PASS: spawns tracker-agent → mark task done, update HANDOFF.json
+6. On phase complete: spawns vp-git-agent (tag + push), tracker-agent (ROADMAP update), changelog-agent
+
 ## Extension Points
 
 | Point | How to Extend |
