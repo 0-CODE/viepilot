@@ -130,6 +130,7 @@ Optional flags:
 - `--setup` : Force setup wizard — configure a new channel now (even if channels already exist)
 - `--config` : Alias for `--setup`
 - `--skip-validation` : Skip Step 4.5 codebase validation (faster, no file-scanner-agent spawn)
+- `--analyze` : Force re-analysis of source file structure via `analyze_structure` op, even if a fresh manifest exists (ENH-095)
 - `--schedule "CRON"` : Create a CronCreate schedule for automated intake (Claude Code only)
 - `--unschedule` : Delete the existing intake schedule (CronDelete)
 - `--auto` : Run in headless auto mode — set by scheduler only, not for manual use
@@ -292,6 +293,53 @@ if (channel.type === 'excel_m365' && channel.sharing_url) {
 ```
 Continue with intake — read-only is acceptable for triage.
 
+### Step 3.6: Manifest Lifecycle (ENH-095) — Claude Code only
+
+Before reading tickets, check for an existing intake manifest and use it for column mapping.
+Non-CC adapters skip this step and fall back to `autoDetectColumnMap()` as before.
+
+```js
+const { loadManifest, isManifestFresh, saveManifest, getColumnMap } = require('lib/intake/manifest.cjs');
+
+const channelId = channel.id || channel.name.toLowerCase().replace(/\s+/g, '-');
+const ttlDays   = config?.intake?.manifest_ttl_days ?? 7;
+const existing  = loadManifest(channelId, projectRoot);
+const forceAnalyze = flags.includes('--analyze');
+
+let manifest = null;
+
+if (existing && isManifestFresh(existing, ttlDays) && !forceAnalyze) {
+  // Use cached manifest — skip re-analysis
+  manifest = existing;
+  console.log(`[vp-intake] Manifest: .viepilot/intake/${channelId}-manifest.json (${existing.analyzed_at})`);
+
+} else if (channel.type === 'excel_m365' || channel.type === 'google_sheets') {
+  // Dispatch analyze_structure — AI reads entire file and maps structure
+  const agentType = channel.type === 'excel_m365' ? 'excel-intake-agent' : 'sheets-intake-agent';
+  const result = await Agent({
+    subagent_type: agentType,
+    description: `${agentType}: analyze_structure`,
+    prompt: `op: analyze_structure. channel_config: ${JSON.stringify(channel)}. projectRoot: ${projectRoot}`
+  });
+  if (result && !result.error) {
+    manifest = typeof result === 'string' ? JSON.parse(result) : result;
+    saveManifest(channelId, manifest, projectRoot);
+    console.log(`[vp-intake] Manifest saved → .viepilot/intake/${channelId}-manifest.json`);
+  }
+}
+
+// Override column_map from manifest when not explicitly configured
+if (manifest && !channel.column_map) {
+  const detectedMap = getColumnMap(manifest, channel.sheet_name || null);
+  if (detectedMap && Object.keys(detectedMap).length > 0) {
+    channel = { ...channel, column_map: detectedMap };
+    console.log(`[vp-intake] Column map from manifest: ${JSON.stringify(detectedMap)}`);
+  }
+}
+```
+
+**`--analyze` flag**: forces re-analysis even if manifest is fresh (e.g., source file structure changed).
+
 ### Step 4: Read and classify tickets
 
 **Claude Code adapter** — dispatch via native agents for Excel/Sheets/Browser:
@@ -387,6 +435,26 @@ async function askFn(question, options, multiSelect) {
 For each ticket: AUQ multi-select to accept/decline, then AUQ single-select for decline reason.
 UNCLEAR tickets get a 3-choice prompt: "Accept as BUG / Accept as ENH / Decline".
 
+### Step 5.5: Embed Intake Source in accepted-ticket request files (ENH-095)
+
+When creating `.viepilot/requests/BUG-N.md` or `ENH-N.md` for an accepted ticket,
+append the following block so `vp-auto` can write back task completion to the source row:
+
+```markdown
+## Intake Source
+- channel_id:    {channelId}
+- sheet_name:    {channel.sheet_name || null}
+- source_row:    {ticket._source_row}
+- manifest_path: .viepilot/intake/{channelId}-manifest.json
+- channel_type:  {channel.type}
+- workbook_id:   {channel.workbook_id || null}
+- sharing_url:   {channel.sharing_url || null}
+```
+
+This block is read by `vp-auto` post-PASS hook to call `writebackIntakeResponse()`.
+For read-only channels (`sharing_url`, `browser`, `csv`), write-back will be skipped
+silently — the block is still written for traceability.
+
 ### Step 6: Write-back + Report
 
 **Claude Code adapter** — dispatch via native agents for Excel/Sheets write-back:
@@ -428,6 +496,7 @@ Write-back failure → warn (non-fatal), report is still generated.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
  Channel: {channel.name}
+ Manifest: .viepilot/intake/{channelId}-manifest.json  (shown only when manifest was used)
  Accepted: {N} → {request IDs}
  Declined: {N}
  Report: .viepilot/intake/TRIAGE-{timestamp}.md
@@ -455,7 +524,8 @@ options:
 - [ ] Tickets classified as BUG / ENH / UNCLEAR
 - [ ] AUQ multi-select triage completed with accept/decline per ticket
 - [ ] Decline reasons collected and attached
-- [ ] Accepted tickets auto-create `.viepilot/requests/` files
+- [ ] Accepted tickets auto-create `.viepilot/requests/` files with `## Intake Source` block for write-back traceability
+- [ ] Manifest Lifecycle (ENH-095): manifest checked/analyzed before Step 4; column_map overridden from manifest when not explicitly set; `--analyze` flag forces re-analysis
 - [ ] Write-back updates source (non-fatal on failure)
 - [ ] TRIAGE session report generated at `.viepilot/intake/TRIAGE-{timestamp}.md`
 </success_criteria>

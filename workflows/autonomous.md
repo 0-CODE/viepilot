@@ -692,6 +692,30 @@ If any check fails:
 - Update TRACKER.md immediately
 - Update HANDOFF.json immediately
 - Update CHANGELOG.md if feature/fix
+
+**Post-PASS: Intake Write-back (ENH-095)**
+
+After the above state updates, check the task `.md` for an `## Intake Source` block:
+```
+## Intake Source
+- channel_id:    trip-tracking-bug
+- sheet_name:    BUG
+- source_row:    1
+- manifest_path: .viepilot/intake/trip-tracking-bug-manifest.json
+- channel_type:  excel_m365
+- workbook_id:   {workbook_id or null}
+- sharing_url:   {sharing_url or null}
+```
+
+If the block is present:
+1. Parse the fields from the block
+2. Load manifest from `manifest_path` via `lib/intake/manifest.cjs → loadManifest()`
+3. Call `getWriteBackConfig(manifest, sheet_name)` → get `response_col`
+4. Build `response = { status: 'Fixed ✓', phaseTask: 'vp-p{N}-t{M}', version: currentVersion, date: YYYY-MM-DD }`
+5. Call `lib/intake/writeback.cjs → writebackIntakeResponse(channel, source_row, response, projectRoot, sheet_name, response_col)`
+6. Log: `[vp-auto] Intake write-back: row {source_row} → col {response_col}: "{text}" — {success|failed}`
+7. **Write-back failure is non-fatal** — log to stderr and continue to next task regardless
+
 - Move to next task
 
 **PARTIAL (some checks fail):**

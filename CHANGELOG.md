@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.7.0] - 2026-05-23
+
+### Added — ENH-095: AI-Driven Intake Intelligence — Manifest + Post-task Write-back (Phase 140)
+- **lib/intake/manifest.cjs** — new manifest module: `saveManifest`, `loadManifest`, `isManifestFresh` (TTL-based), `getColumnMap`, `getWriteBackConfig`, `manifestPath`, `slugify`; manifest stored at `.viepilot/intake/{channel_id}-manifest.json`
+- **agents/claude-code/excel-intake-agent.md** — new `Op: analyze_structure` section: AI reads all sheets, determines purpose/header rows/column semantics/write_back config, outputs structured JSON manifest; no hardcoded IDs
+- **agents/claude-code/sheets-intake-agent.md** — matching `Op: analyze_structure` parity section
+- **skills/vp-intake/SKILL.md** — manifest lifecycle workflow (check TTL → `--analyze` op → save manifest → use `getColumnMap`); new `## Intake Source` block embedded in accepted-ticket request files for post-task traceability
+- **lib/intake/writeback.cjs** — new `writebackIntakeResponse(channel, sourceRow, response, projectRoot, sheetName, responseCol)`: writes status back to source row after PASS; `sharing_url` = read-only skip; `workbook_id` = Graph API PATCH; CSV/browser = silent skip
+- **workflows/autonomous.md** — Post-PASS Intake Write-back hook (ENH-095): reads `## Intake Source` block from task.md, loads manifest, calls `writebackIntakeResponse`; non-fatal on failure
+
+---
+
 ## [3.6.2] - 2026-05-23
 
 ### Fixed

@@ -10,7 +10,11 @@
 - **Last Completed Phase**: **139** ✅ (ENH-090-093 browser agent suite → v3.6.0)
 - **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-23 — ENH-094 patch: SharePoint xlsx URL_PATTERNS fix + SKILL.md routing → v3.6.1
+- **Current Phase**: ~~140~~ — ✅ done (v3.7.0)
+- **Last Completed Phase**: **140** ✅ (ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0)
+- **Next Phase**: — (all planned phases complete)
+- **Current Task**: —
+- **Last Activity**: 2026-05-23 — Phase 140 complete: ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0
 
 ## Progress Overview
 ```
@@ -32,6 +36,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-23 | Phase 140 planned: ENH-095 AI-driven intake manifest + post-task write-back (5 tasks) → v3.7.0 | `/vp-evolve` Add Feature | M3.0 |
+| 2026-05-23 | ENH-095 logged: AI-driven intake manifest + post-task write-back callback | User: replace HEADER_ALIASES hardcode with excel-intake-agent `analyze_structure` op + manifest TTL + write result back to source row | Backlog |
 | 2026-05-23 | ENH-094 patch: sharepoint-xlsx pattern added to browser.cjs URL_PATTERNS + SKILL.md routing fix → v3.6.1 | Live test discovered gap: SharePoint sharing link fell through as generic-table | Post-139 |
 | 2026-05-23 | Phase 139 planned: ENH-090-093 browser-agent suite (5 tasks) → v3.6.0 | `/vp-evolve` Add Feature | M3.0 |
 | 2026-05-23 | ENH-093 logged: vp-request URL enrichment — auto-fill from GitHub/Jira/Notion/Trello URLs | User request | Backlog |

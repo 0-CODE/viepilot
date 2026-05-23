@@ -1,30 +1,30 @@
 {
-  "milestone": "M1.39",
-  "milestone_name": "All planned phases complete",
-  "phase": 122,
-  "phase_name": "ENH-081-brownfield-trace-log",
+  "milestone": "M3.0",
+  "milestone_name": "Per-Adapter Intelligence Refactor + Intake Intelligence",
+  "phase": 140,
+  "phase_name": "ENH-095-intake-manifest-writeback",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-05-06T00:00:00Z",
+  "last_activity": "2026-05-23T00:00:00Z",
   "version": {
-    "current": "2.47.0",
+    "current": "3.7.0",
     "next": null
   },
   "progress": {
-    "phases_total": 82,
-    "phases_completed": 82,
-    "tasks_total": 0,
-    "tasks_completed": 0,
+    "phases_total": 140,
+    "phases_completed": 140,
+    "tasks_total": 5,
+    "tasks_completed": 5,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 122 complete: ENH-081 BROWNFIELD-TRACE.md real-time scan trace log \u2192 2.47.0",
-      "1847 tests passing."
+      "Phase 140 complete: ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0",
+      "2169 tests passing (1 pre-existing failure: validators.test.js vp-tools progress)."
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-05-06T00:00:00Z"
+  "updated_at": "2026-05-23T00:00:00Z"
 }

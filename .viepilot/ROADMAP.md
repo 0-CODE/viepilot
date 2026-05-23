@@ -3769,3 +3769,35 @@ GitHub/Jira/Notion/Trello.
 - [ ] `grep "url-enricher\|github\.com.*issues" workflows/request.md` → ≥1 hit
 - [ ] `npm test -- --grep "phase139"` all pass
 - [ ] `package.json` version = `3.6.0`
+
+---
+
+## Phase 140 — ENH-095: AI-Driven Intake Intelligence (Manifest + Post-task Write-back)
+
+**Goal**: Replace hardcoded `HEADER_ALIASES` column detection with AI-driven `analyze_structure`
+op that reads the entire source file, understands sheet purposes and column semantics, and saves
+an intake manifest (`.viepilot/intake/{channel_id}-manifest.json`). Extend write-back to
+notify source rows when vp-auto completes a task created from intake.
+**Estimated Tasks**: 5
+**Status**: ✅ done
+**Version Target**: 3.7.0
+**Completed**: 2026-05-23
+**Dependencies**: Phase 139 ✅ (excel-intake-agent exists); BUG-030 ✅ (autoDetectColumnMap foundation)
+**Directory**: `.viepilot/phases/140-enh095-intake-manifest-writeback/`
+
+| Task | Description | Acceptance Criteria | Complexity |
+|------|-------------|---------------------|------------|
+| 140.1 | lib/intake/manifest.cjs — new module (save/load/TTL/getColumnMap/getWriteBackConfig) | All manifest CRUD functions pass unit tests; TTL logic correct | M |
+| 140.2 | excel-intake-agent.md + sheets-intake-agent.md — analyze_structure op | Op doc covers: full-file read, sheet purpose detection, column semantic mapping, manifest JSON output | M |
+| 140.3 | skills/vp-intake/SKILL.md — manifest lifecycle workflow (check → analyze → save → use) | SKILL.md has Manifest Lifecycle section; --analyze flag; column_map override from manifest | M |
+| 140.4 | lib/intake/writeback.cjs writebackIntakeResponse() + workflows/autonomous.md post-PASS hook + task template ## Intake Source block | write-back function exported; post-PASS hook in autonomous.md; task template updated | M |
+| 140.5 | Contract tests + CHANGELOG [3.7.0] + version bump | ≥20 tests pass; version = 3.7.0 | S |
+
+**Verification**:
+- [ ] `lib/intake/manifest.cjs` exists and exports saveManifest/loadManifest/isManifestFresh/getColumnMap/getWriteBackConfig
+- [ ] `grep "analyze_structure" agents/claude-code/excel-intake-agent.md` → ≥1 hit
+- [ ] `grep "Manifest Lifecycle" skills/vp-intake/SKILL.md` → ≥1 hit
+- [ ] `grep "Post-PASS.*Intake\|writebackIntakeResponse" workflows/autonomous.md` → ≥1 hit
+- [ ] `grep "Intake Source" skills/vp-intake/SKILL.md` → ≥1 hit
+- [ ] `npm test -- --grep "phase140"` ≥20 tests pass
+- [ ] `package.json` version = `3.7.0`

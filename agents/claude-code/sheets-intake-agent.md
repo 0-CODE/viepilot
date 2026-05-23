@@ -105,3 +105,35 @@ All operations return JSON on stdout:
   "error": "..."        // on failure
 }
 ```
+
+---
+
+## Op: analyze_structure (ENH-095)
+
+Reads the entire Google Sheet and uses AI reasoning to understand the structure of every
+tab — returning a manifest JSON describing sheet purposes and column semantics.
+The manifest is saved by the caller (vp-intake SKILL.md) via `lib/intake/manifest.cjs`.
+
+### Input
+- `op: analyze_structure`
+- `channel_config` — full channel object (must include `spreadsheet_id`)
+- `projectRoot` — absolute path to repo root
+
+### Steps
+1. Fetch all sheet tabs via Sheets API: `GET /v4/spreadsheets/{spreadsheetId}?includeGridData=false`
+2. For each tab, fetch rows 0–22 via: `GET /v4/spreadsheets/{id}/values/{tab}!A1:Z22`
+3. For each tab:
+   a. Determine purpose: ticket-list / summary / metadata / skip
+   b. Locate header row (first row with ≥3 distinct non-empty cells)
+   c. Map each column to a semantic field: `id`, `title`, `description`, `status`, etc.
+   d. Determine `data_start_row` and `write_back.response_col` (first empty column after data)
+4. Return manifest JSON identical in shape to the excel-intake-agent output
+5. Do NOT call `saveManifest` — caller handles persistence
+
+### Output
+Same manifest JSON shape as `excel-intake-agent analyze_structure`.
+`"analyzer"` field should be `"sheets-intake-agent@v1"`.
+
+### Error handling
+- API call fails → `{ "error": "...", "success": false }`
+- Tab has no data → include with `"purpose": "empty"`, `"columns": {}`
