@@ -239,7 +239,7 @@ Check if phase already has completed tasks → resume from next task.
 >
 > The orchestrator is permitted ONLY to:
 > - `Read` — read PHASE-STATE.md, TRACKER.md, HANDOFF.json, task files, ROADMAP.md (read-only)
-> - `Bash` — read-only git checks ONLY: `git status --porcelain`, `git rev-list --count @{u}..HEAD`, `node bin/vp-tools.cjs git-persistence --strict`
+> - `Bash` — read-only git checks ONLY: `git status --porcelain` (BUG-013: `??` lines = untracked, not dirty), `git rev-list --count @{u}..HEAD`, `node bin/vp-tools.cjs git-persistence --strict`
 > - `Agent` — spawn vp-task-executor, vp-quality-gate, vp-phase-planner, tracker-agent, vp-git-agent, changelog-agent
 >
 > The orchestrator MUST NOT call Edit, Write, or Bash for ANY writes — including state files.
