@@ -2205,6 +2205,90 @@ Run when BOTH `architect_read_complete: true` AND `ui_direction_read_complete: t
 **Skip condition**: if only one workspace is present (not both) → silently skip Step 1F (single-workspace is valid).
 </step>
 
+<step name="stakeholder_review_gate">
+---
+
+## Step 1G: Stakeholder Review Gate (ENH-098)
+
+**Trigger**: Runs automatically after Step 1F, before Step 2.
+
+**Skip conditions**:
+- `--no-stakeholders` flag passed to `/vp-crystallize`
+- `config.json → crystallize.stakeholders.enabled: false`
+- No `.claude/agents/{project-slug}-*.md` files found (gate is silently skipped)
+- Non-Claude-Code adapter (Cursor, Codex, Copilot): skip gracefully
+
+### Step 1G.1 — Discover Stakeholder Agents
+
+```bash
+# Find project stakeholder agents
+ls .claude/agents/ | grep "^{project_slug}-"
+```
+
+If 0 files found: print notice "No stakeholder agents found — skipping Step 1G. Run `/vp-brainstorm` first to generate stakeholder agents, or use `--no-stakeholders` to suppress."
+Then continue to Step 2.
+
+If files found: proceed.
+
+### Step 1G.2 — Parallel Stakeholder Review
+
+Spawn all found stakeholder agents simultaneously (parallel fan-out):
+
+For each `.claude/agents/{project_slug}-{role_slug}.md`:
+```
+Agent({
+  subagent: "{project_slug}-{role_slug}",
+  prompt: "Read .viepilot/PROJECT-CONTEXT.md. Return your structured review (Gaps/Risks/Suggestions)."
+})
+```
+
+Collect all results. Each result is a structured document with three sections:
+- `### Gaps` — missing or vague definitions
+- `### Risks` — execution concerns from this role's perspective
+- `### Suggestions` — specific additions to strengthen the context
+
+### Step 1G.3 — Synthesis
+
+After all agents return:
+
+1. **Aggregate**: collect all Gaps, Risks, Suggestions across all stakeholders
+2. **Deduplicate**: merge identical or near-identical points
+3. **Rank**: sort by frequency (raised by ≥2 stakeholders = high priority) and severity
+4. **Conflict resolution**: if stakeholders disagree (e.g., CTO wants more tech detail, PM wants less), note both perspectives and use the more conservative approach
+5. **Filter**: discard suggestions that are already addressed in PROJECT-CONTEXT.md
+
+### Step 1G.4 — Enrich PROJECT-CONTEXT.md
+
+Apply the top-ranked suggestions to `.viepilot/PROJECT-CONTEXT.md`:
+
+- Add missing sections (e.g., `## Security Considerations`, `## Success Metrics`)
+- Expand vague definitions with the suggested specifics
+- Flag unresolved conflicts as `> ⚠️ Open question: {conflict}` inline
+- Do NOT remove or replace existing content — only add/clarify
+
+### Step 1G.5 — Stakeholder Review Summary Banner
+
+Display to user:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STAKEHOLDER REVIEW COMPLETE ✓
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ Stakeholders reviewed: {N}
+ Gaps found: {count} ({high-priority} high priority)
+ Risks flagged: {count}
+ Enrichments applied: {count} additions to PROJECT-CONTEXT.md
+ Open questions: {count} (flagged inline for your review)
+
+ Reviewers: {role_1}, {role_2}, ..., {role_N}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Then continue to Step 2 (ROADMAP generation).
+
+</step>
+
 <step name="generate_ai_guide">
 ## Step 2: Generate AI-GUIDE.md
 
