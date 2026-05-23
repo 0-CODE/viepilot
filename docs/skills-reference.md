@@ -547,3 +547,99 @@ Full guide: `docs/user/features/proposal.md`
 - Fallback: `~/.cursor/viepilot/bin/vp-tools.cjs` for Cursor adapter.
 - Registry file: `~/.viepilot/skill-registry.json` — shared across all projects.
 - Confirmation AUQ prompt before destructive `uninstall` (Claude Code terminal only).
+
+---
+
+## /vp-design
+
+Visual/UI direction skill. Generates UI architecture: component map, color system, typography,
+responsive breakpoints, and Pencil design file integration.
+
+### Triggers
+`vp-design`, `/vp-design`, "thiết kế UI", "UI direction", "design system"
+
+### Flags
+- `--new` : Start fresh UI direction session
+- `--component <name>` : Design a specific component
+- `--mobile` : Mobile-first emphasis
+- `--architect` : Generate Architect HTML view alongside
+
+### Flow
+1. Collect product goals + target audience + brand constraints
+2. Generate UI direction: color palette, typography, spacing scale, component inventory
+3. Output Pencil design stubs (if Pencil MCP available) or Architect HTML fallback
+4. Write `docs/ui-direction.md` and `PROJECT-CONTEXT.md ## UI Direction`
+
+### Output
+- `docs/ui-direction.md` (created/updated)
+- `PROJECT-CONTEXT.md` UI Direction section (locked by `/vp-crystallize` Step 1E)
+- Optional: Pencil `.pen` file stubs via `mcp__pencil__batch_design`
+
+### Adapter-Aware Prompts
+Uses `AskUserQuestion` on Claude Code terminal for design-direction questions.
+
+---
+
+## /vp-intake
+
+Structured intake from Google Sheets, Excel (M365), CSV files, and browser URLs. Reads rows
+from a configured source, creates ViePilot request files, and optionally writes results back.
+
+### Triggers
+`vp-intake`, `/vp-intake`, "đọc intake", "intake từ sheet", "load requests from sheet"
+
+### Flags
+- `--channel <id>` : Force a specific intake channel (sheets/excel/csv/browser)
+- `--dry-run` : Parse and triage without writing request files
+- `--no-writeback` : Skip writing results back to source
+- `--setup` : Launch AUQ-driven channel configuration wizard (ENH-084)
+
+### Flow
+1. Load intake manifest (`~/.viepilot/intake-manifests/<project>.json`) or prompt setup
+2. Read rows from configured channel (Google Sheets via API, Excel via M365 Graph, CSV, or browser-agent for public URLs)
+3. Triage each row: detect type (bug/feature/enhancement/debt), extract title/description
+4. Create `.viepilot/requests/{TYPE}-{N}.md` for each valid row
+5. Write-back status column to source row (if writable channel)
+
+### Output
+- `.viepilot/requests/{TYPE}-{N}.md` per intake row
+- Intake manifest updated with last-read cursor
+- Source row status updated (write-back, if enabled)
+
+### Adapters
+Full support: Claude Code. Partial: Cursor (no AUQ). Text fallback: Codex/Copilot/Antigravity.
+
+---
+
+## /vp-persona
+
+Manages the global developer persona profile stored in `~/.viepilot/config.json`. Persona
+controls output style, stack preferences, and team-size assumptions injected into every skill.
+
+### Triggers
+`vp-persona`, `/vp-persona`, "cấu hình persona", "set persona", "developer profile"
+
+### Flags
+- `--set` : Interactively set persona fields
+- `--show` : Print current active persona
+- `--auto-switch` : Switch persona based on current project stack (used internally by skills)
+- `--context` : Print persona as `## User Persona` block (used by skill banners)
+
+### Persona Fields
+| Field | Values | Default |
+|-------|--------|---------|
+| `role` | backend / frontend / fullstack / devops / data / mobile | backend |
+| `domain` | web-saas / mobile / api / data / infra / other | web-saas |
+| `stacks` | comma-separated list | — |
+| `outputStyle` | lean / verbose | lean |
+| `phaseTemplate` | lean-startup / enterprise / research | lean-startup |
+| `teamSize` | solo / small / medium / large | solo |
+
+### Flow
+1. `vp-tools persona auto-switch` — detects stack from package.json / pyproject.toml / build.gradle
+2. `vp-tools persona context` — outputs `## User Persona` markdown block
+3. Skills inject this block silently before task execution
+
+### Output
+- `~/.viepilot/config.json` updated
+- `## User Persona` injected into each skill session
