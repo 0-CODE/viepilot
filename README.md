@@ -2,15 +2,15 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-3.1.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.7.3-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-18-purple.svg)](#skills-reference)
-[![Workflows](https://img.shields.io/badge/workflows-13-orange.svg)](#workflows)
+[![Skills](https://img.shields.io/badge/skills-21-purple.svg)](#skills-reference)
+[![Workflows](https://img.shields.io/badge/workflows-14-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-17-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-1324%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-2210%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Versioning:** Shield **2.19.0** is the **ViePilot framework SemVer** tracked in `.viepilot/TRACKER.md` and `CHANGELOG.md`. The npm `package.json` field `version` (**2.19.0**) is the Node package identifier for this repo; use the framework version for milestone releases and docs.
+**Version**: `3.7.3` — tracked in `package.json`, `CHANGELOG.md`, and `.viepilot/TRACKER.md`.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -28,13 +28,13 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~51,713+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
-| Skills | **18** |
-| Workflows | **12** |
+| Total LOC | **~94,739+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Skills | **21** |
+| Workflows | **14** |
 | Templates | **17** (Project: 12, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
-| Tests | **607** (34 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009/010/011/012/013/015 + ENH-021~037 routing/language/architect/adapter + BUG-009~013 guards + viepilot-info/update/install/adapters) |
-| ViePilot phases (local `.viepilot`) | **62** phase cycles — **v2.4.0** FEAT-015 Codex adapter; **v2.3.x** ENH-036~037 installer cleanup; **v2.0.0** FEAT-013 dynamic adapters; **v1.x** M1.29 (FEAT-001~013); xem `CHANGELOG.md` |
+| Tests | **2210** (111 suites: unit + integration + AI compat + README metrics + UI direction + ENH contracts + scope policy + FEAT-009/010/011/012/013/015 + ENH-021~037 routing/language/architect/adapter + BUG-009~013 guards + viepilot-info/update/install/adapters) |
+| ViePilot phases (local `.viepilot`) | **142** phase cycles — **v3.7.x** ENH-095~097 orchestrator delegation; **v3.0.0** M3.0 Per-Adapter Intelligence; **v2.4.0** FEAT-015 Codex; **v2.0.0** FEAT-013 dynamic adapters; xem `CHANGELOG.md` |
 | Standards | 5 (SemVer, Commits, Changelog, Comments, Contributors) |
 
 > Metric `Total LOC` có thể được refresh tự động bằng `npm run readme:sync` (dùng `cloc`; nếu thiếu `cloc` script sẽ fallback an toàn).
@@ -43,29 +43,29 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Thành phần / Component | Số lượng / Count | Mô tả / Description |
 |------------------------|------------------|---------------------|
-| Skill Definitions | **17** | SKILL.md files với trigger, process, success criteria |
-| Workflow Files | **12** | Step-by-step execution guides |
+| Skill Definitions | **21** | SKILL.md files với trigger, process, success criteria |
+| Workflow Files | **14** | Step-by-step execution guides |
 | Project Templates | 12 | AI-GUIDE, ARCHITECTURE, VIEPILOT-META, README, SYSTEM-RULES, etc. |
 | Phase Templates | 5 | SPEC, PHASE-STATE, TASK, VERIFICATION, SUMMARY |
 | CLI Tools | 2 | vp-tools.cjs (**17** subcommands) + viepilot.cjs (guided installer) |
-| Test Files | 34 | Jest: 33 unit + 1 integration (contracts, installer + Claude paths, info/update, FEAT-009/010/011~015, ENH-021~037, BUG-009~013 guards, adapter tests, scope policy, …) |
+| Test Files | 111 | Jest: 111 test files (contracts, installer + Claude paths, info/update, FEAT-009/010/011~015, ENH-021~037, BUG-009~013 guards, adapter tests, scope policy, …) |
 
 ---
 
 ## Độ hoàn thiện / Completion Status
 
 ```
-Tổng thể / Overall:  ████████████████████  ~99% ✅ Latest **v2.4.0** FEAT-015 Codex adapter; **v2.3.x** ENH-036~037 installer cleanup; **v2.1.x** BUG-009~013; **v2.0.0** FEAT-013 dynamic adapters
+Tổng thể / Overall:  ████████████████████  ~99% ✅ Latest **v3.7.3** ENH-095~097 orchestrator delegation; **v3.0.0** M3.0 Per-Adapter Intelligence; **v2.4.0** FEAT-015 Codex adapter; **v2.0.0** FEAT-013 dynamic adapters
 ```
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
 |-----------------|------------|----------|
-| Core Skills (18) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, info, request, evolve, docs, update, task, debug, rollback, audit, ui-components, proposal, **skills** |
-| Workflows (13) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
+| Core Skills (21) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, info, request, evolve, docs, update, task, debug, rollback, audit, ui-components, proposal, skills, **design, intake, persona** |
+| Workflows (14) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
 | Project Templates (12) | ✅ Hoàn thiện | Placeholders cho customization (+ `VIEPILOT-META` FEAT-009) |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
 | CLI Tools (18) | ✅ Hoàn thiện | vp-tools 17 subcommands + viepilot installer; bundle `info` / `update` |
-| Tests (957) | ✅ Hoàn thiện | Unit, integration, AI compat, workflow contracts, installer, scope policy, FEAT-009~015, ENH-021~048, BUG-009~013, adapter tests, AskUserQuestion adapter-aware prompts |
+| Tests (2210) | ✅ Hoàn thiện | Unit, integration, AI compat, workflow contracts, installer, scope policy, FEAT-009~015, ENH-021~048, BUG-009~013, adapter tests, AskUserQuestion adapter-aware prompts |
 | CI/CD | ✅ Hoàn thiện | GitHub Actions, Node 18/20/22 matrix, coverage >80% |
 | Documentation | ✅ Hoàn thiện | dev/, user/, api/, videos/, examples/, troubleshooting |
 | Standards | ✅ Hoàn thiện | SemVer, Conventional Commits, Keep a Changelog |
