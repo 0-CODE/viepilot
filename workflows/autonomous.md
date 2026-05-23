@@ -238,10 +238,12 @@ Check if phase already has completed tasks → resume from next task.
 > across subsequent tasks.
 >
 > The orchestrator is permitted ONLY to:
-> - `Read` — read PHASE-STATE.md, TRACKER.md, task files, ROADMAP.md (state only)
-> - `Bash` — `git status`, `git tag`, `git push`, `npx jest` (verification only), `node vp-tools.cjs` commands
-> - `Agent` — spawn vp-task-executor, vp-quality-gate, vp-phase-planner subagents
-> - `Edit`/`Write` — ONLY `.viepilot/` state files, `CHANGELOG.md`, `README.md` badges/counts
+> - `Read` — read PHASE-STATE.md, TRACKER.md, HANDOFF.json, task files, ROADMAP.md (read-only)
+> - `Bash` — read-only git checks ONLY: `git status --porcelain`, `git rev-list --count @{u}..HEAD`, `node bin/vp-tools.cjs git-persistence --strict`
+> - `Agent` — spawn vp-task-executor, vp-quality-gate, vp-phase-planner, tracker-agent, vp-git-agent, changelog-agent
+>
+> The orchestrator MUST NOT call Edit, Write, or Bash for ANY writes — including state files.
+> All writes and git operations go through subagents (ENH-097).
 >
 > All implementation (file edits, test runs for implementation, commits) MUST go through
 > `vp-task-executor`. This applies even when there is only one task in the phase.
@@ -783,14 +785,28 @@ update:
   - CHANGELOG.md: if feature/fix completed  ← via changelog-agent at end of phase (ENH-057)
 ```
 
-**Tracker updates — invoke tracker-agent:**
+**State updates — spawn subagents (Claude Code, ENH-097):**
+
 ```
+# Task status (PHASE-STATE.md + TRACKER.md current state):
 Agent({ subagent_type: "tracker-agent",
-  description: "Update task {phase}.{task} → {status}",
-  prompt: "operation: update-task-status. phase: {phase}. task: {task}. status: {status}."
+  description: "Update task {N}.{task_id} → {status}",
+  prompt: "operation: update-task-status. phase: {N}. task: {task_id}. status: {status}."
+})
+
+# HANDOFF.json update:
+Agent({ subagent_type: "tracker-agent",
+  description: "Update HANDOFF.json — phase {N} task {task_id}",
+  prompt: "operation: update-handoff. phase: {N}. phase_name: {phase_name}. task: {task_id}. task_name: {task_name}. status: {status}. version: {version}. tasks_total: {T}. tasks_completed: {C}. notes: [\"{note}\"]."
+})
+
+# ROADMAP.md phase status sync (after phase complete):
+Agent({ subagent_type: "tracker-agent",
+  description: "Update ROADMAP.md — phase {N} done",
+  prompt: "operation: update-roadmap-phase. phase_number: {N}. status: ✅ done. completed_date: {today}."
 })
 ```
-Non-Claude Code: update TRACKER.md inline as before.
+Non-Claude Code: update TRACKER.md, HANDOFF.json, ROADMAP.md inline as before.
 
 Rule:
 - Never defer state updates to end-of-phase only.
@@ -852,7 +868,13 @@ Before phase-level verification, run a UI stub check:
    | smarttrack-*/pom.xml (8 files) | 1.1 |   ← WRONG: glob pattern
    | smarttrack-*/src/** (7 files)  | 1.1 |   ← WRONG: summarized
    ```
-4. Create git tag: `{TAG_PREFIX}-vp-p{phase}-complete` (e.g. `git tag "${TAG_PREFIX}-vp-p${PHASE}-complete"`)
+4. Create phase-complete git tag — spawn vp-git-agent:
+   ```
+   Agent({ subagent_type: "vp-git-agent",
+     description: "Tag phase {N} complete",
+     prompt: "operation: create-tag. tag_name: {TAG_PREFIX}-vp-p{N}-complete."
+   })
+   ```
 5. Check version bump needed — apply `.viepilot/SYSTEM-RULES.md → Version Bump Rules`:
    - Features added → MINOR; Fixes only → PATCH; Mixed → MINOR; Breaking → MAJOR
 
@@ -868,13 +890,22 @@ Before phase-level verification, run a UI stub check:
    > changelog-agent is the **single authority** for version bumps. Both autonomous.md and
    > evolve.md invoke it — never do inline version bumps (resolves ENH-053).
 
-6. Update TRACKER.md
-7. Push all changes:
-   ```bash
-   git push
-   git push --tags
-   node bin/vp-tools.cjs git-persistence --strict
+6. Update TRACKER.md current state — spawn tracker-agent:
    ```
+   Agent({ subagent_type: "tracker-agent",
+     description: "Update TRACKER.md — phase {N} complete",
+     prompt: "operation: update-current-state. data: Last completed phase {N} — {phase_name}. version: {version}."
+   })
+   ```
+7. Push branch + tags — spawn vp-git-agent:
+   ```
+   Agent({ subagent_type: "vp-git-agent",
+     description: "Push phase {N} complete",
+     prompt: "operation: push-all."
+   })
+   ```
+   Then verify persistence (orchestrator may call this read-only check directly):
+   `node bin/vp-tools.cjs git-persistence --strict`
 
 ### 5a. Sync ROADMAP.md (after every phase complete)
 
