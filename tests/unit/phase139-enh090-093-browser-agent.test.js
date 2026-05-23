@@ -238,6 +238,11 @@ describe('Phase 139 — ENH-094: SharePoint xlsx URL routing', () => {
     expect(browserAdapter.detectUrlType(url)).toBe('sharepoint-xlsx');
   });
 
+  test('detectUrlType returns sharepoint-xlsx for /:x:/g/ pattern (item share with token)', () => {
+    const url = 'https://contoso-my.sharepoint.com/:x:/g/personal/user/IQA5Oc_3pVh2Q6lQ?e=0Wsomm';
+    expect(browserAdapter.detectUrlType(url)).toBe('sharepoint-xlsx');
+  });
+
   test('detectUrlType returns sharepoint-xlsx for /:w:/r/ pattern (Word)', () => {
     const url = 'https://contoso-my.sharepoint.com/:w:/r/personal/user/Documents/doc.docx';
     expect(browserAdapter.detectUrlType(url)).toBe('sharepoint-xlsx');
