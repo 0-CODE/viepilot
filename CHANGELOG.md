@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.7.1] - 2026-05-23
+
+### Changed — ENH-096: vp-auto Orchestrator Enforcement (Phase 141)
+- **workflows/autonomous.md** — ⛔ hard stop block: explicit prohibition on inline implementation in orchestrator context; lists forbidden ops (Edit/Write on lib/bin/tests/agents/skills); enforces delegation even for single-task phases
+- **workflows/autonomous.md** — orchestrator-only whitelist: Read (state files), Bash (git/vp-tools), Agent (spawn workers), Edit/Write (.viepilot/ state only)
+- **workflows/autonomous.md** — concrete `Agent(vp-task-executor)` spawn template with exact prompt text and all placeholder fields ({task_path}, {phase_dir}, {cwd}, {projectPrefix})
+
+---
+
 ## [3.7.0] - 2026-05-23
 
 ### Added — ENH-095: AI-Driven Intake Intelligence — Manifest + Post-task Write-back (Phase 140)
