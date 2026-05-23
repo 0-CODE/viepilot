@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [3.6.1] - 2026-05-23
+## [3.6.2] - 2026-05-23
 
 ### Fixed
+- **BUG-030** `lib/intake/adapters/excel-m365.cjs` — `parseRowsWithColumnMap` now handles missing `column_map` gracefully: auto-detects columns from header row using Vietnamese/English aliases (`HEADER_ALIASES`), warns to stderr with detected mapping, falls back to empty map instead of crashing with `TypeError`
+- **BUG-030** Export `autoDetectColumnMap` + `HEADER_ALIASES` for testing and external use
 - **ENH-094** `lib/intake/adapters/browser.cjs` — add `sharepoint-xlsx` pattern (`/sharepoint\.com\/:[a-z]:\/r\//`) to `URL_PATTERNS`; SharePoint xlsx sharing URLs now detected correctly instead of falling through as `generic-table`
 - **ENH-094** `skills/vp-intake/SKILL.md` — browser channel dispatch now routes `sharepoint-xlsx` URLs to `excel-intake-agent` (sharing_url mode) instead of `browser-intake-agent`
 

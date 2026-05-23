@@ -11,6 +11,8 @@ const {
   clearTokenCache,
   isSharingLink,
   parseXlsxBuffer,
+  autoDetectColumnMap,
+  HEADER_ALIASES,
 } = require('../../lib/intake/adapters/excel-m365.cjs');
 
 // ---------------------------------------------------------------------------
@@ -163,5 +165,57 @@ describe('Phase 124 — ENH-083: parseXlsxBuffer', () => {
 
     const rows = parseXlsxBuffer(buf, 'Empty');
     expect(Array.isArray(rows)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// BUG-030: autoDetectColumnMap — column_map undefined / auto-detect
+// ---------------------------------------------------------------------------
+
+describe('BUG-030: autoDetectColumnMap', () => {
+  test('HEADER_ALIASES is exported and has required fields', () => {
+    expect(HEADER_ALIASES).toHaveProperty('id');
+    expect(HEADER_ALIASES).toHaveProperty('title');
+    expect(HEADER_ALIASES).toHaveProperty('description');
+    expect(HEADER_ALIASES).toHaveProperty('status');
+  });
+
+  test('autoDetectColumnMap maps STT → id (column A)', () => {
+    const header = ['STT', 'Tên', 'Mô tả'];
+    const map = autoDetectColumnMap(header);
+    expect(map.id).toBe('A');
+  });
+
+  test('autoDetectColumnMap maps "Mô tả lỗi" → description (column B)', () => {
+    const header = ['', 'Mô tả lỗi', ''];
+    const map = autoDetectColumnMap(header);
+    expect(map.description).toBe('B');
+  });
+
+  test('autoDetectColumnMap maps Vietnamese "Màn hình" → title', () => {
+    const header = ['STT', 'Màn hình', 'Mô tả lỗi', 'Thao tác', 'Hình ảnh', ''];
+    const map = autoDetectColumnMap(header);
+    expect(map.title).toBe('B');
+    expect(map.description).toBe('C');
+  });
+
+  test('autoDetectColumnMap maps English "title" header', () => {
+    const header = ['ID', 'Title', 'Description', 'Status'];
+    const map = autoDetectColumnMap(header);
+    expect(map.title).toBe('B');
+    expect(map.description).toBe('C');
+    expect(map.status).toBe('D');
+  });
+
+  test('autoDetectColumnMap returns empty object for empty header', () => {
+    const map = autoDetectColumnMap([]);
+    expect(map).toEqual({});
+  });
+
+  test('autoDetectColumnMap handles columns beyond Z (AA, AB)', () => {
+    const header = Array(27).fill('');
+    header[26] = 'Title';
+    const map = autoDetectColumnMap(header);
+    expect(map.title).toBe('AA');
   });
 });
