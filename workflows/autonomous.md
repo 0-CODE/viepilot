@@ -226,6 +226,26 @@ Check if phase already has completed tasks → resume from next task.
 
 ### 3b. Orchestration Mode Selection (Phase 133 — FEAT-021)
 
+> ⛔ **ORCHESTRATOR STOP — Implementation Delegation Rule (ENH-096)**
+>
+> On Claude Code adapter, the main orchestrator agent MUST NOT:
+> - Call `Edit`, `Write`, or `MultiEdit` on implementation files (`lib/`, `bin/`, `tests/`, `agents/`, `skills/`, `workflows/` shipping content)
+> - Run `Bash` commands that write source code (e.g. `cat >`, `tee`, compiler/bundler invocations for production output)
+> - Implement features, fix bugs, or write tests inline in this context
+>
+> **Inline implementation is a framework violation.** It fills the orchestrator's context with
+> implementation tokens (file diffs, test output, compile logs), degrading orchestration quality
+> across subsequent tasks.
+>
+> The orchestrator is permitted ONLY to:
+> - `Read` — read PHASE-STATE.md, TRACKER.md, task files, ROADMAP.md (state only)
+> - `Bash` — `git status`, `git tag`, `git push`, `npx jest` (verification only), `node vp-tools.cjs` commands
+> - `Agent` — spawn vp-task-executor, vp-quality-gate, vp-phase-planner subagents
+> - `Edit`/`Write` — ONLY `.viepilot/` state files, `CHANGELOG.md`, `README.md` badges/counts
+>
+> All implementation (file edits, test runs for implementation, commits) MUST go through
+> `vp-task-executor`. This applies even when there is only one task in the phase.
+
 Before entering the task loop, check `ADAPTER_PARALLEL` (set in ADAPTER_CONTEXT Injection step):
 
 ```
@@ -276,6 +296,29 @@ FOR each cluster in clusters:
     → Execute tasks in sequence (cluster.sequential_fallback order)
     Agent(vp-task-executor, single task)
 ```
+
+**Spawn Template (copy-paste verbatim — do not paraphrase):**
+```
+Agent({
+  subagent_type: "vp-task-executor",
+  description: "Execute task {task_id} — phase {N}",
+  prompt: `Execute ViePilot task {task_id} for phase {N}.
+
+Task file: {task_path}
+Phase state: {phase_dir}/PHASE-STATE.md
+Repo root: {cwd}
+
+Read the task file completely, implement all acceptance criteria, run verification
+commands, commit with message format: {projectPrefix}-vp-p{N}-t{task_id}: <summary>,
+then report:
+TASK_RESULT: PASS|FAIL|PARTIAL
+Committed: <sha> — <message>
+Criteria: ✅/❌ per item`
+})
+```
+
+Replace `{task_id}`, `{N}`, `{task_path}`, `{phase_dir}`, `{cwd}`, `{projectPrefix}` with actual values.
+The orchestrator MUST NOT call Edit/Write/Bash for implementation — the subagent handles all of that.
 
 **Model tiering** (`ADAPTER_CONTEXT.orchestration.model_override`):
 - Worker agent (vp-task-executor): `claude-haiku-4-5` — routine file edits, low token cost
