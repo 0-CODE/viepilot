@@ -201,6 +201,7 @@ Optional flags:
 - `--research` : Enable proactive research suggestions during the session
 - `--ui` : Enable UI Direction mode (live HTML/CSS direction artifacts + auto-generates `design.md` when design keywords present — ENH-076)
 - `--domain embedded` : Force-activate Embedded Domain Mode (hardware topology, RTOS, pin map, memory layout, protocol matrix, power budget pages + topic probes)
+- `--no-stakeholders` : Skip stakeholder agent generation at session end
 
 ### Reference URL Input (ENH-092)
 
@@ -279,6 +280,11 @@ Key steps:
 9. Before completing the session: **step 5 — Project meta intake (FEAT-009)** in `workflows/brainstorm.md` when binding is missing; sequential Q&A + profile-map disambiguation + write global profile + `.viepilot/META.md`
 10. Save session with structured format (including **`## Project meta intake (FEAT-009)`**, research notes + UI direction references + **`## Phases`**)
 11. Suggest next action: `/vp-crystallize`
+
+**Stakeholder Generation (ENH-098):**
+At session end (scope locked), automatically infers project stakeholders from the domain and
+creates `.claude/agents/{project-slug}-{role}.md` agent files. These are consumed by
+`/vp-crystallize` Step 1G for parallel context review. Skip with `--no-stakeholders`.
 </process>
 
 <success_criteria>

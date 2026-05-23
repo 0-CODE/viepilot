@@ -58,6 +58,9 @@ Silent if command unavailable or errors.
 - Skill được gọi khi user mention `vp-crystallize`, `/vp-crystallize`, hoặc "crystallize", "setup project"
 - Treat all user text after the skill mention as `{{VP_ARGS}}`
 
+**Flags:**
+- `--no-stakeholders` : Skip the Step 1G Stakeholder Review Gate (ENH-098)
+
 ## B. User Prompting
 Prompt user conversationally with numbered list options.
 
@@ -434,3 +437,14 @@ and injects skill best practices per task without re-prompting.
 Install skills: `vp-tools install-skill <source>`
 Registry: `vp-tools scan-skills`
 Docs: `docs/user/features/skill-registry.md`
+
+### Step 1F — Cross-Reference Gate
+
+Validates coverage matrix when both Architect and UI Direction workspaces are present.
+Warns on Phase 1 features with no architect OR UI coverage (non-blocking).
+
+### Step 1G — Stakeholder Review Gate (ENH-098)
+
+After scope lock, spawns `.claude/agents/` stakeholder agents in parallel fan-out,
+collects gap analysis (Gaps/Risks/Suggestions), synthesizes feedback to enrich
+PROJECT-CONTEXT.md before ROADMAP generation. Can be skipped with `--no-stakeholders` flag.
