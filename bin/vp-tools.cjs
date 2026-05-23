@@ -1639,7 +1639,7 @@ ${colors.gray}Run 'vp-tools help <command>' for detailed help on a specific comm
 
 // Helper function for progress bars
 function createProgressBar(percent, width = 10) {
-  const filled = Math.round(percent / (100 / width));
+  const filled = Math.min(Math.round(percent / (100 / width)), width);
   const empty = width - filled;
   return `[${colors.green}${'█'.repeat(filled)}${colors.gray}${'░'.repeat(empty)}${colors.reset}]`;
 }
