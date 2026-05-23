@@ -2111,6 +2111,107 @@ git push
 ```
 </step>
 
+<step name="stakeholder_gate">
+## 6B. Stakeholder Generation Gate (ENH-098)
+
+Executed automatically after scope is locked and summary is written.
+Skipped if: `--no-stakeholders` flag present in session context, or `config.json → crystallize.stakeholders.enabled: false`.
+
+### Step S1: Infer Stakeholders
+
+From the brainstorm summary, extract:
+- `domain`: the product domain (web-saas, mobile, api, data, e-commerce, infra, other)
+- `product_type`: what kind of product (SaaS, marketplace, internal tool, SDK, mobile app, etc.)
+- `team_size`: from PROJECT-META or persona context (solo/small/medium/large)
+- `project_slug`: short kebab-case name derived from project title (e.g., "myapp", "invoice-app")
+
+Determine stakeholder count:
+- solo + simple domain: 3 stakeholders
+- medium complexity: 4–5 stakeholders
+- enterprise / regulated (fintech, health, legal): 6 stakeholders
+
+Generate stakeholder list based on domain. Examples:
+
+| Domain | Stakeholders |
+|--------|--------------|
+| **web-saas** | cto, product-manager, ux-lead, end-user, business-owner |
+| **mobile** | product-owner, mobile-developer, end-user, app-store-reviewer |
+| **api/platform** | platform-engineer, api-consumer, devops-lead, sre |
+| **e-commerce** | business-owner, customer, marketing-manager, logistics-manager |
+| **data/ml** | data-scientist, ml-engineer, business-analyst, end-user |
+| **other** | infer contextually from brainstorm content |
+
+### Step S2: Write Agent Files
+
+For each stakeholder, create a file at `.claude/agents/{project_slug}-{role_slug}.md` using the template from `templates/stakeholder-agent.md`.
+
+Template structure:
+```markdown
+---
+name: {project_slug}-{role_slug}
+description: Stakeholder reviewer for {PROJECT_NAME}. Reviews project context from the
+  perspective of a {ROLE_TITLE}. Returns gap analysis (Gaps/Risks/Suggestions).
+model: claude-haiku-4-5
+tools:
+  - Read
+---
+
+You are a {ROLE_TITLE} reviewing the project definition for **{PROJECT_NAME}**.
+
+## Your Perspective
+{2-3 sentence role description — who you are, what you own, what matters to you}
+
+## What You Care About
+{4-6 bullet points of specific concerns from this role's angle}
+
+## Your Task
+Read `.viepilot/PROJECT-CONTEXT.md`. Return a structured review with three sections:
+
+### Gaps
+(sections/definitions that are vague, missing, or contradictory from your perspective)
+
+### Risks
+(concerns or red flags that could cause execution problems)
+
+### Suggestions
+(specific additions or clarifications to strengthen the context)
+
+Keep each item to 1 sentence. Maximum 5 items per section.
+```
+
+Substitute variables:
+- `{{project_slug}}` → kebab-case project identifier
+- `{{role_slug}}` → kebab-case role identifier
+- `{{PROJECT_NAME}}` → Full project name
+- `{{ROLE_TITLE}}` → Human-readable role title
+- `{{ROLE_DESCRIPTION}}` → 2-3 sentence persona description
+- `{{ROLE_CONCERNS}}` → 4-6 bullet list of role-specific concerns
+
+Write each file using the Edit/Write tool. Path is relative to project root (where `.claude/` lives).
+
+> **Note**: `.claude/agents/` is the project-level agents directory for Claude Code.
+> For other adapters (Cursor, Codex): skip this step gracefully — agent files won't be created,
+> and the crystallize Step 1G will detect no agents and skip the review gate.
+
+### Step S3: Record in Summary
+
+Append a `## Stakeholders Generated` section to the brainstorm session summary output:
+
+```markdown
+## Stakeholders Generated
+
+The following stakeholder agents have been created in `.claude/agents/`:
+
+| File | Role | Perspective |
+|------|------|-------------|
+| `{project_slug}-cto.md` | CTO | Technical feasibility, stack, security |
+| `{project_slug}-product-manager.md` | Product Manager | Scope, user stories, priorities |
+| ... | ... | ... |
+
+These agents will be called in vp-crystallize Step 1G to review PROJECT-CONTEXT.md.
+```
+</step>
+
 <step name="arch_to_ui_sync">
 ## 6C. Architect → UI Direction Sync (ENH-061)
 
