@@ -1,27 +1,30 @@
 {
   "milestone": "M3.0",
-  "milestone_name": "Per-Adapter Intelligence Refactor + Intake Intelligence",
-  "phase": 140,
-  "phase_name": "ENH-095-intake-manifest-writeback",
+  "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
+  "phase": 143,
+  "phase_name": "DEBT-001-readme-docs-sync",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-05-23T00:00:00Z",
   "version": {
-    "current": "3.7.0",
+    "current": "3.7.3",
     "next": null
   },
   "progress": {
-    "phases_total": 140,
-    "phases_completed": 140,
-    "tasks_total": 5,
-    "tasks_completed": 5,
+    "phases_total": 143,
+    "phases_completed": 143,
+    "tasks_total": 4,
+    "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 140 complete: ENH-095 AI-driven intake manifest + post-task write-back → v3.7.0",
-      "2169 tests passing (1 pre-existing failure: validators.test.js vp-tools progress)."
+      "Phase 143 complete: DEBT-001 README + docs drift sync → v3.7.3",
+      "2225 tests passing.",
+      "README badges/tables updated: version 3.7.3, 21 skills, 14 workflows, 2210 tests.",
+      "docs/skills-reference.md: vp-design, vp-intake, vp-persona added (21 skills total).",
+      "docs/dev/architecture.md: ENH-096/097 orchestration model documented."
     ]
   },
   "checkpoints": [],
