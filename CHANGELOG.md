@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.11.0] - 2026-05-25
+
+### Added
+- ENH-100: New `/vp-qa` skill — scan-first QA agent team generator
+- ENH-100: Phase 1 (Research) reads codebase structure, detects stack, samples source files,
+  reads stack reference docs, then LLM decides domains + agent count
+- ENH-100: Phase 2 (Generate) — LLM writes agent files directly using Write tool;
+  content fully determined by research output (no templates)
+- ENH-100: Adapter-specific output — Claude Code: `.claude/agents/` (multi-agent
+  orchestrator + subagents); Codex: `AGENTS.md` append; Cursor: `.cursor/rules/` MDC;
+  Antigravity: `.agents/skills/`; Copilot: `.github/agents/`
+- ENH-100: `lib/qa-router.cjs` — adapter path mapping (resolveOutputSpec, expectedPaths)
+- ENH-100: `agents/qa-templates/rules/` — stack reference docs for Node.js, Python,
+  Java, Go, Ruby (LLM reads during research phase for stack-specific anti-patterns)
+- ENH-100: Generated `qa-orchestrator` creates `.viepilot/requests/BUG-{N}.md` entries
+  with AskUserQuestion accept/decline + `/vp-evolve` suggestion
+
+---
+
 ## [3.10.0] - 2026-05-25
 
 ### Added

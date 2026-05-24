@@ -10,8 +10,8 @@ const skillDirs = fs.readdirSync(SKILLS_DIR).filter(d =>
 
 describe('Phase 128 — FEAT-021: SKILL.md 5-block adapter standard', () => {
 
-  test('all 21 SKILL.md files exist', () => {
-    expect(skillDirs).toHaveLength(21);
+  test('all 22 SKILL.md files exist', () => {
+    expect(skillDirs).toHaveLength(22);
   });
 
   test('no SKILL.md contains cursor_skill_adapter (root bug fixed)', () => {
@@ -22,7 +22,7 @@ describe('Phase 128 — FEAT-021: SKILL.md 5-block adapter standard', () => {
     expect(withBug).toHaveLength(0);
   });
 
-  test('all 21 SKILL.md contain <adapter id="claude-code"> block', () => {
+  test('all 22 SKILL.md contain <adapter id="claude-code"> block', () => {
     const missing = skillDirs.filter(d => {
       const src = fs.readFileSync(path.join(SKILLS_DIR, d, 'SKILL.md'), 'utf8');
       return !src.includes('<adapter id="claude-code">');

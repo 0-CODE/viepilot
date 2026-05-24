@@ -67,8 +67,8 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.10.0', () => {
-      expect(pkg.version).toBe('3.10.0');
+    it('version is 3.11.0', () => {
+      expect(pkg.version).toBe('3.11.0');
     });
   });
 });

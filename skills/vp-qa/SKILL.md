@@ -154,10 +154,6 @@ scanning instructions to detected backend dirs, framework patterns, and known is
 will create `.viepilot/requests/BUG-{N}.md` for any QA issues found, and prompt user to accept/decline.
 </objective>
 
-<execution_context>
-@$HOME/{envToolDir}/workflows/qa.md
-</execution_context>
-
 <context>
 Optional flags:
 - `/vp-qa` — auto-detect adapter + stack, generate QA team

@@ -72,8 +72,8 @@ describe('Phase 147 — ENH-101: crystallize adapter context files', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.10.0', () => {
-      expect(pkg.version).toBe('3.10.0');
+    it('version is 3.11.0', () => {
+      expect(pkg.version).toBe('3.11.0');
     });
   });
 });

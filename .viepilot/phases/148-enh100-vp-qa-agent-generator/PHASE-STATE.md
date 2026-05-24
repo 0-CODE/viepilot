@@ -5,10 +5,10 @@
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 148.1 | skills/vp-qa/SKILL.md — skill definition (LLM-driven scan + generate flow) | pending |
-| 148.2 | lib/qa-router.cjs — adapter path mapping (where to write per adapter) | pending |
-| 148.3 | agents/qa-templates/rules/ — stack reference docs (LLM reads, not templates) | pending |
-| 148.4 | Contract tests + CHANGELOG [3.11.0] + version bump | pending |
+| 148.1 | skills/vp-qa/SKILL.md — skill definition (LLM-driven scan + generate flow) | done |
+| 148.2 | lib/qa-router.cjs — adapter path mapping (where to write per adapter) | done |
+| 148.3 | agents/qa-templates/rules/ — stack reference docs (LLM reads, not templates) | done |
+| 148.4 | Contract tests + CHANGELOG [3.11.0] + version bump | in_progress |
 
 ## Version Target
 3.10.0 → **3.11.0**
