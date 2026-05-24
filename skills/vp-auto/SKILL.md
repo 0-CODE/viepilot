@@ -67,6 +67,22 @@ Use Claude Code tools: `Bash` (shell), `Read` (file), `Edit` + `Write` (file wri
 `Agent` (spawn subagent — multi-level nesting supported)
 Interactive: `AskUserQuestion` (deferred — preload via ToolSearch before first call)
 
+**Additional tools (ENH-099):**
+- `Monitor` — run command in background, each output line fed back to Claude; use for
+  `npm test --watchAll=false`, dev server tail, CI polling mid-conversation
+- `CronCreate` / `CronDelete` / `CronList` — in-session scheduled prompts (survive
+  `--resume`); use for periodic quality checks during long autonomous phases
+- `EnterWorktree` / `ExitWorktree` — isolated git worktree per task; auto-cleanup on
+  exit if no changes; use for parallel task execution without branch conflicts
+  (not available to subagents)
+- `LSP` — code intelligence: type errors after each edit, jump to definition, find
+  references; requires code intelligence plugin; replaces post-edit `tsc --noEmit`
+- `PushNotification` — desktop + phone push on phase complete or control-point pause
+  (Anthropic infra only; not available on Bedrock/Vertex)
+- `EnterPlanMode` / `ExitPlanMode` — plan gate before implementation: EnterPlanMode
+  switches to read-only planning; ExitPlanMode presents plan for approval before any
+  file edits are made
+
 ## D. Subagent Spawning
 Use `Agent` tool for subagent dispatch. For parallel task execution: fan-out with multiple
 `Agent` calls per cluster (see ADAPTER_CONTEXT.orchestration — claude-code supports parallel: true).
