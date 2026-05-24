@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.10.0] - 2026-05-25
+
+### Added
+- ENH-101: `vp-crystallize` now generates adapter-specific AI context files at Step 1F
+- ENH-101: New `vp-tools context-files` subcommand generates CLAUDE.md (Claude Code),
+  GEMINI.md (Antigravity), AGENTS.md (Codex), .cursorrules + .cursor/rules/ (Cursor),
+  .github/copilot-instructions.md (Copilot) from `.viepilot/` sources
+- ENH-101: `--all` flag generates all 5 adapter files simultaneously
+- ENH-101: Content sourced from AI-GUIDE.md, PROJECT-CONTEXT.md, SYSTEM-RULES.md, STACKS.md
+
+---
+
 ## [3.9.1] - 2026-05-25
 
 ### Fixed

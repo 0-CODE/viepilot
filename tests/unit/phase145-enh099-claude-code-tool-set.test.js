@@ -78,8 +78,8 @@ describe('Phase 145 — ENH-099: Claude Code Tool Set Adapter Docs', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.9.1', () => {
-      expect(pkg.version).toBe('3.9.1');
+    it('version is 3.10.0', () => {
+      expect(pkg.version).toBe('3.10.0');
     });
   });
 });
