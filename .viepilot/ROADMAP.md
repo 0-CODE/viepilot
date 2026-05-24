@@ -4002,7 +4002,8 @@ Phase 1: research codebase (stack detection, file sampling, domain selection).
 Phase 2: generate adapter-specific agents (Claude Code: `.claude/agents/` multi-agent;
 Codex: `AGENTS.md` sequential; Cursor: `.cursor/rules/` MDC; Antigravity: `.agents/skills/`;
 Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries + AskUserQuestion.
-**Estimated Tasks**: 6
+**Estimated Tasks**: 4
+**Architecture**: LLM-generates-directly (no template engine — LLM writes agent content from research output)
 **Status**: pending
 **Version Target**: 3.11.0
 **Dependencies**: Phase 147 ✅
@@ -4010,12 +4011,10 @@ Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries
 
 | Task | Description | Acceptance Criteria | Complexity | Parallel |
 |------|-------------|---------------------|------------|---------|
-| 148.1 | skills/vp-qa/SKILL.md — skill definition (scan-first + AskUserQuestion) | file exists; VP-QA banner; scan phases documented; all 5 adapter sections | S | parallel 148.2 |
-| 148.2 | lib/qa-generator.cjs — adapter detection + generation dispatch | exports generateQaAgents + writeAgentFiles; claude-code → .claude/agents/; codex → AGENTS.md | M | parallel 148.1 |
-| 148.3 | agents/qa-templates/claude-code/ — orchestrator + 4 subagent templates | 5 files; YAML frontmatter; STACK_RULES placeholder; disallowedTools on scanners | M | parallel 148.2 |
-| 148.4 | agents/qa-templates/{codex,cursor,antigravity,copilot}/ — single-file templates | 4 files; correct frontmatter per adapter; DOMAINS_BLOCK placeholder | M | parallel 148.3 |
-| 148.5 | agents/qa-templates/rules/{node,python,java,go,ruby}.md — stack rule blocks | 5 files; each has Completeness/Security/Performance/Context sections | S | parallel 148.3 |
-| 148.6 | Contract tests + CHANGELOG [3.11.0] + version bump | tests pass; version = 3.11.0; git clean + pushed | S | after 148.1-148.5 |
+| 148.1 | skills/vp-qa/SKILL.md — LLM-driven scan-first skill (research → LLM generates agent files using Write tool) | file exists; VP-QA banner; all 5 adapters; research + generate + AskUserQuestion phases | S | parallel 148.2/148.3 |
+| 148.2 | lib/qa-router.cjs — adapter path mapping only (resolveOutputSpec, expectedPaths) | resolveOutputSpec; codex → AGENTS.md append; cursor → .cursor/rules/; fallback to claude-code | S | parallel 148.1 |
+| 148.3 | agents/qa-templates/rules/{node,python,java,go,ruby}.md — stack reference docs (LLM reads, not templates) | 5 files; 4 sections each; stack-specific anti-patterns | S | parallel 148.1 |
+| 148.4 | Contract tests + CHANGELOG [3.11.0] + version bump | tests pass; version = 3.11.0; git clean + pushed | S | after 148.1-148.3 |
 
 **Verification**:
 - [ ] `/vp-qa` can be invoked and generates agent files in target project
