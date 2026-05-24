@@ -4005,7 +4005,7 @@ Codex: `AGENTS.md` sequential; Cursor: `.cursor/rules/` MDC; Antigravity: `.agen
 Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries + AskUserQuestion.
 **Estimated Tasks**: 4
 **Architecture**: LLM-generates-directly (no template engine — LLM writes agent content from research output)
-**Status**: pending
+**Status**: done ✅ (2026-05-25)
 **Version Target**: 3.11.0
 **Dependencies**: Phase 147 ✅
 **Directory**: `.viepilot/phases/148-enh100-vp-qa-agent-generator/`
@@ -4018,7 +4018,7 @@ Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries
 | 148.4 | Contract tests + CHANGELOG [3.11.0] + version bump | tests pass; version = 3.11.0; git clean + pushed | S | after 148.1-148.3 |
 
 **Verification**:
-- [ ] `/vp-qa` can be invoked and generates agent files in target project
-- [ ] `npx jest tests/unit/phase148-enh100-vp-qa-agent-generator.test.js --no-coverage` → all pass
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.11.0`
-- [ ] `grep "\[3.11.0\]" CHANGELOG.md` → ≥1 hit
+- [x] `/vp-qa` can be invoked and generates agent files in target project
+- [x] `npx jest tests/unit/phase148-enh100-vp-qa-agent-generator.test.js --no-coverage` → all pass
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.11.0`
+- [x] `grep "\[3.11.0\]" CHANGELOG.md` → ≥1 hit

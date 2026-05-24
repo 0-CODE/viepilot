@@ -30,9 +30,11 @@
 - **Last Completed Phase**: **146** ✅ (BUG-031 hooks install wrong path fix → v3.9.1)
 - **Current Phase**: ~~147~~ — ✅ done (v3.10.0)
 - **Last Completed Phase**: **147** ✅ (ENH-101 vp-crystallize adapter context files → v3.10.0)
-- **Current Phase**: **148** — ENH-100: vp-qa scan-first QA agent generator → v3.11.0
-- **Current Task**: 148.1 — skills/vp-qa/SKILL.md
-- **Last Activity**: 2026-05-25 — Phase 147 complete: ENH-101 adapter context files → v3.10.0
+- **Current Phase**: ~~148~~ — ✅ done (v3.11.0)
+- **Last Completed Phase**: **148** ✅ (ENH-100 vp-qa scan-first QA agent generator → v3.11.0)
+- **Next Phase**: — (all planned phases complete)
+- **Current Task**: —
+- **Last Activity**: 2026-05-25 — Phase 148 complete: ENH-100 vp-qa scan-first QA agent generator → v3.11.0
 
 ## Progress Overview
 ```
@@ -48,7 +50,7 @@ Phase 35 (ENH-022)    [██████████] done
 ```
 3.9.1 (released — BUG-031 hooks install wrong path fix)
 3.10.0 (released — ENH-101 vp-crystallize adapter context files)
-3.11.0 (planned — ENH-100 vp-qa scan-first QA agent generator)
+3.11.0 (released — ENH-100 vp-qa scan-first QA agent generator)
 ```
 
 

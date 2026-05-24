@@ -643,3 +643,39 @@ controls output style, stack preferences, and team-size assumptions injected int
 ### Output
 - `~/.viepilot/config.json` updated
 - `## User Persona` injected into each skill session
+
+---
+
+## /vp-qa
+
+**Version**: v1.0.0 (fw 2.19.0)
+**Phase**: 148 (ENH-100)
+
+Scan-first QA agent team generator. Researches the codebase first (stack detection, file sampling,
+domain mapping), then generates a context-tailored QA agent team using the Write tool directly — no
+templates. Number of agents and their domains are determined by research output.
+
+### Triggers
+`vp-qa`, `/vp-qa`, "qa agents", "generate qa team", "quality assurance agents"
+
+### Flags
+- `/vp-qa` — auto-detect adapter + stack, generate QA team
+- `/vp-qa --run` — generate + immediately invoke qa-orchestrator
+- `/vp-qa --focus sec` — bias research toward security domains
+- `/vp-qa --focus perf` — bias research toward performance domains
+- `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot)
+
+### Output by Adapter
+| Adapter | Output Location | Format |
+|---------|----------------|--------|
+| claude-code | `.claude/agents/qa-orchestrator.md` + `*-scanner.md` | Multi-file, parallel fan-out |
+| cursor-agent | `.cursor/rules/qa-checklist.mdc` | Single MDC rule file |
+| codex | `AGENTS.md` (appended) | `## QA Agent Instructions` section |
+| antigravity | `.agents/skills/qa-orchestrator/SKILL.md` | Multi-file skill |
+| copilot | `.github/agents/qa-orchestrator.agent.md` | Single agent file |
+
+### Flow
+1. **Research phase**: reads codebase, detects stack, samples files, reads `agents/qa-templates/rules/{stack}.md`
+2. **Adapter routing**: `lib/qa-router.cjs` determines output spec
+3. **LLM generates**: Write tool creates agent files directly from research output
+4. **Post-scan**: generated `qa-orchestrator` creates `.viepilot/requests/BUG-{N}.md` entries; `AskUserQuestion` for accept/decline
