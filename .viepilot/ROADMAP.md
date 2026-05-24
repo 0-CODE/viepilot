@@ -3889,4 +3889,56 @@ skills-reference.md. Architecture docs do not reflect ENH-096/097 delegation mod
 - [ ] `grep "^## /vp-persona" docs/skills-reference.md` → 1 hit
 - [ ] `grep "vp-git-agent" docs/dev/architecture.md` → ≥1 hit
 - [ ] `npm test -- --grep "phase143"` ≥13 tests pass
+
+## Phase 144 — ENH-098: vp-crystallize Stakeholder Agent Gate (v3.8.0) ✅ done
+
+**Goal**: Add stakeholder AI gate: brainstorm generates `.claude/agents/{slug}.md` files at
+session end; crystallize Step 1G spawns them in parallel fan-out, collects gap analysis
+(Gaps/Risks/Suggestions), synthesizes feedback to enrich PROJECT-CONTEXT.md before ROADMAP lock.
+**Estimated Tasks**: 5
+**Status**: ✅ done
+**Version Target**: 3.8.0
+**Dependencies**: Phase 143 ✅
+**Directory**: `.viepilot/phases/144-enh098-stakeholder-agent-gate/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 144.1 | workflows/brainstorm.md — stakeholder generation gate (end of session, step 6B) | `no-stakeholders` flag present; `.claude/agents` path referenced; ENH-098 mentioned | M | ✅ with 144.2+144.3 |
+| 144.2 | workflows/crystallize.md — Step 1G stakeholder review gate (after 1F, before Step 2) | Step 1G section; parallel/fan-out; synthesis; `STAKEHOLDER REVIEW` banner | M | ✅ with 144.1+144.3 |
+| 144.3 | templates/stakeholder-agent.md — canonical agent template | `claude-haiku-4-5` model; Gaps/Risks/Suggestions sections; tools: Read | S | ✅ with 144.1+144.2 |
+| 144.4 | SKILL.md updates: vp-crystallize + vp-brainstorm (document new gates) | Step 1G in vp-crystallize; ENH-098 in vp-brainstorm; no-stakeholders flag | S | after 144.1+144.2 |
+| 144.5 | Contract tests + CHANGELOG [3.8.0] + version bump | 21 tests pass; version = 3.8.0; git clean | M | after all |
+
+**Verification**:
+- [x] `npx jest tests/unit/phase144-enh098-stakeholder-agent-gate.test.js` → 21 tests pass
+- [x] `node -e "require('./package.json').version"` → `3.8.0`
+- [x] `grep "\[3.8.0\]" CHANGELOG.md` → ≥1 hit
+- [x] git tag `vp-p144-complete` pushed ✅
+
+## Phase 145 — ENH-099: Claude Code Tool Set — Adapter Docs + Autonomous Workflow Updates (v3.9.0)
+
+**Goal**: Bring ViePilot's Claude Code adapter documentation in line with the full 40+ tool
+inventory (2026-05-24 research). Add Monitor, CronCreate/Delete/List, EnterWorktree/ExitWorktree,
+LSP, PushNotification, EnterPlanMode/ExitPlanMode to vp-auto SKILL.md. Fix TodoWrite deprecation
+in autonomous.md. Expand hooks docs (28 events) and add Agent Teams section in agents.md.
+**Estimated Tasks**: 4
+**Status**: pending
+**Version Target**: 3.9.0
+**Dependencies**: Phase 144 ✅
+**Directory**: `.viepilot/phases/145-enh099-claude-code-tool-set-adapter-docs/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 145.1 | skills/vp-auto/SKILL.md — add Monitor, CronCreate/Delete/List, EnterWorktree/ExitWorktree, LSP, PushNotification, EnterPlanMode/ExitPlanMode to Claude Code adapter tool section | 8 new tools present in ## C. Tool Usage | M | ✅ with 145.2+145.3 |
+| 145.2 | workflows/autonomous.md — fix TodoWrite→TaskCreate (lines 262+345), add Monitor quality-gate pattern, add PushNotification on phase complete | TodoWrite absent; Monitor pattern present; PushNotification present | M | ✅ with 145.1+145.3 |
+| 145.3 | docs/dev/agents.md — expand hooks section (28 events table), add Agent Teams experimental section (SendMessage, TeamCreate/Delete) | hooks table ≥20 events; TeamCreate/SendMessage referenced | M | ✅ with 145.1+145.2 |
+| 145.4 | Contract tests + CHANGELOG [3.9.0] + version bump | tests pass; version = 3.9.0; git clean | S | after 145.1+145.2+145.3 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase145-enh099-claude-code-tool-set.test.js` → all tests pass
+- [ ] `grep "Monitor\|CronCreate\|EnterWorktree\|LSP\|PushNotification" skills/vp-auto/SKILL.md` → ≥5 hits
+- [ ] `grep -c "TodoWrite" workflows/autonomous.md` → 0
+- [ ] `grep "TeamCreate\|SendMessage" docs/dev/agents.md` → ≥1 hit
+- [ ] `node -e "require('./package.json').version"` → `3.9.0`
+- [ ] `grep "\[3.9.0\]" CHANGELOG.md` → ≥1 hit
 - [ ] `package.json` version = `3.7.3`
