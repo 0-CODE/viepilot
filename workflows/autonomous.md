@@ -74,6 +74,13 @@ Parse `{{VP_ARGS}}` for flags:
 Load context:
 ```bash
 cat .viepilot/AI-GUIDE.md
+
+# Size guard — auto-compact if TRACKER.md is bloated (> 400 lines)
+if [ -f ".viepilot/TRACKER.md" ] && [ "$(wc -l < .viepilot/TRACKER.md)" -gt 400 ]; then
+  echo "⚠️ TRACKER.md is large ($(wc -l < .viepilot/TRACKER.md) lines) — auto-compacting..."
+  node bin/vp-tools.cjs tracker compact --keep 5
+fi
+
 cat .viepilot/TRACKER.md
 cat .viepilot/ROADMAP.md
 ```
@@ -907,9 +914,10 @@ After phase quality gate passes, send a desktop + phone alert:
    ```
    Agent({ subagent_type: "tracker-agent",
      description: "Update TRACKER.md — phase {N} complete",
-     prompt: "operation: update-current-state. data: Last completed phase {N} — {phase_name}. version: {version}."
+     prompt: "operation: rewrite-current-state. data: Last completed phase {N} — {phase_name}. version: {version}. IMPORTANT: REPLACE the entire '## Current State' section (find the section, overwrite it) — do NOT append new lines. The section must stay ≤ 20 lines total. Also cap '## Decision Log' table at 20 rows — if > 20 rows exist, archive older rows to .viepilot/TRACKER-HISTORY.md."
    })
    ```
+   > Rescue bloated TRACKER.md: `node bin/vp-tools.cjs tracker compact [--keep N]` (DEBT-002)
 7. Push branch + tags — spawn vp-git-agent:
    ```
    Agent({ subagent_type: "vp-git-agent",
