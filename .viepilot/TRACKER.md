@@ -24,10 +24,11 @@
 - **Last Completed Phase**: **143** ✅ (DEBT-001 README + docs drift sync → v3.7.3)
 - **Current Phase**: ~~144~~ — ✅ done (v3.8.0)
 - **Last Completed Phase**: **144** ✅ (ENH-098 stakeholder agent gate → v3.8.0)
-- **Current Phase**: **145** — ENH-099: Claude Code Tool Set — Adapter Docs + Autonomous Workflow Updates → v3.9.0
-- **Next Phase**: 145 (pending — ready for /vp-auto)
+- **Current Phase**: ~~145~~ — ✅ done (v3.9.0)
+- **Last Completed Phase**: **145** ✅ (ENH-099 Claude Code tool set adapter docs → v3.9.0)
+- **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-24 — Phase 145 planned: ENH-099 Claude Code tool set docs → v3.9.0
+- **Last Activity**: 2026-05-24 — Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0
 
 ## Progress Overview
 ```
@@ -41,7 +42,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ### Current Version
 ```
-3.8.0 (released — ENH-098 stakeholder agent gate)
+3.9.0 (released — ENH-099 Claude Code tool set adapter docs)
 ```
 
 
@@ -49,6 +50,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-24 | Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0 (2267 tests, 4 tasks PASS) | 8 new tools in vp-auto; autonomous.md TodoWrite fix + Monitor + PushNotification; agents.md 28-event hooks + Agent Teams | 145 |
 | 2026-05-24 | Phase 145 planned: ENH-099 Claude Code tool set adapter docs (4 tasks) → v3.9.0 | vp-auto SKILL.md 8 new tools; autonomous.md TodoWrite fix + Monitor + Push; agents.md 28-event hooks + Agent Teams | 145 |
 | 2026-05-24 | ENH-099 logged: Claude Code full tool inventory research — 40+ tools, 28 hook events; Monitor/Worktree/LSP/PlanMode/PushNotification gaps + TodoWrite deprecation impact | User: research request via /vp-request WebSearch+WebFetch | Backlog |
 | 2026-05-24 | Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0 (2246 tests, 5 tasks PASS) | ENH-098: two-phase stakeholder gate — brainstorm generates agents, crystallize Step 1G runs parallel fan-out review | 144 |

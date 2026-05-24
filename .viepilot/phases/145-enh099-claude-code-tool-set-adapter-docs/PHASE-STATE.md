@@ -1,14 +1,14 @@
 # Phase 145 State — ENH-099: Claude Code Tool Set — Adapter Docs + Autonomous Workflow Updates
 
-## Status: pending
+## Status: done
 
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 145.1 | skills/vp-auto/SKILL.md — add 8 new Claude Code tools to adapter section | pending |
-| 145.2 | workflows/autonomous.md — TodoWrite→TaskCreate + Monitor + PushNotification patterns | pending |
-| 145.3 | docs/dev/agents.md — expand hooks (28 events) + Agent Teams experimental section | pending |
-| 145.4 | Contract tests + CHANGELOG [3.9.0] + version bump | pending |
+| 145.1 | skills/vp-auto/SKILL.md — add 8 new Claude Code tools to adapter section | ✅ done |
+| 145.2 | workflows/autonomous.md — TodoWrite→TaskCreate + Monitor + PushNotification patterns | ✅ done |
+| 145.3 | docs/dev/agents.md — expand hooks (28 events) + Agent Teams experimental section | ✅ done |
+| 145.4 | Contract tests + CHANGELOG [3.9.0] + version bump | ✅ done |
 
 ## Version Target
 3.8.0 → **3.9.0**
@@ -30,5 +30,5 @@
 - 145.1, 145.2, 145.3 independent → run in parallel
 - 145.4 gates on all three
 
-## Started: —
-## Completed: —
+## Started: 2026-05-24
+## Completed: 2026-05-24

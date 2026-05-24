@@ -1,32 +1,31 @@
 {
   "milestone": "M3.0",
   "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
-  "phase": 144,
-  "phase_name": "ENH-098-stakeholder-agent-gate",
+  "phase": 145,
+  "phase_name": "ENH-099-claude-code-tool-set-adapter-docs",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-05-24T00:00:00Z",
   "version": {
-    "current": "3.8.0",
+    "current": "3.9.0",
     "next": null
   },
   "progress": {
-    "phases_total": 144,
-    "phases_completed": 144,
-    "tasks_total": 5,
-    "tasks_completed": 5,
+    "phases_total": 145,
+    "phases_completed": 145,
+    "tasks_total": 4,
+    "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0",
-      "2246 tests passing across 113 suites.",
-      "workflows/brainstorm.md: stakeholder generation gate added (step 6B, end of session).",
-      "workflows/crystallize.md: Step 1G stakeholder review gate added (parallel fan-out, synthesis, PROJECT-CONTEXT enrichment).",
-      "templates/stakeholder-agent.md: canonical template for generated stakeholder agent files.",
-      "SKILL.md files updated for vp-crystallize (Step 1G) and vp-brainstorm (ENH-098).",
-      "--no-stakeholders flag available on both /vp-brainstorm and /vp-crystallize."
+      "Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0",
+      "2267 tests passing across 114 suites.",
+      "skills/vp-auto/SKILL.md: 8 new tools added (Monitor, CronCreate/Delete/List, EnterWorktree/ExitWorktree, LSP, PushNotification, EnterPlanMode/ExitPlanMode).",
+      "workflows/autonomous.md: TodoWrite→TaskCreate fix; Monitor quality-gate pattern; PushNotification phase-complete.",
+      "docs/dev/agents.md: 28-event hooks table; Agent Teams experimental section (TeamCreate, TeamDelete, SendMessage).",
+      "ENH-099 research source: code.claude.com/docs/en/tools-reference (fetched 2026-05-24)."
     ]
   },
   "checkpoints": [],
