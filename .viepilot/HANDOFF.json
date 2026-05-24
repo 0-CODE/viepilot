@@ -1,34 +1,32 @@
 {
   "milestone": "M3.0",
   "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
-  "phase": 148,
-  "phase_name": "ENH-100-vp-qa-agent-generator",
+  "phase": 149,
+  "phase_name": "DEBT-002-tracker-compact",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-05-25T00:00:00Z",
   "version": {
-    "current": "3.11.0",
+    "current": "3.12.0",
     "next": null
   },
   "progress": {
-    "phases_total": 148,
-    "phases_completed": 148,
+    "phases_total": 149,
+    "phases_completed": 149,
     "tasks_total": 4,
     "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
+      "Phase 149 complete: DEBT-002 TRACKER.md compaction → v3.12.0",
+      "2334 tests passing across 118 suites.",
+      "lib/tracker-compact.cjs: compact() + rewriteCurrentState() — rescue bloated TRACKER.md.",
+      "bin/vp-tools.cjs: tracker compact [--keep N] subcommand added.",
+      "workflows/autonomous.md: rewrite-not-append (rewrite-current-state op) + size guard (>400 lines) + Decision Log cap (20 rows).",
       "Phase 148 complete: ENH-100 vp-qa scan-first QA agent generator → v3.11.0",
-      "2321 tests passing across 117 suites.",
-      "skills/vp-qa/SKILL.md: scan-first LLM-generates-directly skill (all 5 adapters).",
-      "lib/qa-router.cjs: adapter → output path mapping (claude-code/cursor/codex/antigravity/copilot).",
-      "agents/qa-templates/rules/: stack reference docs (node/python/java/go/ruby).",
-      "Phase 147 complete: ENH-101 vp-crystallize adapter context files → v3.10.0",
-      "lib/context-file-generators.cjs: 7 exports (generateClaudeMd/GeminiMd/AgentsMd/CursorRules/CursorMdc/CopilotInstructions/generateAll).",
-      "workflows/crystallize.md: Step 1F added — generates CLAUDE.md/GEMINI.md/AGENTS.md/.cursorrules/.cursor/rules/.github/copilot-instructions.md.",
-      "bin/vp-tools.cjs: context-files [--all] subcommand added."
+      "Phase 147 complete: ENH-101 vp-crystallize adapter context files → v3.10.0"
     ]
   },
   "checkpoints": [],

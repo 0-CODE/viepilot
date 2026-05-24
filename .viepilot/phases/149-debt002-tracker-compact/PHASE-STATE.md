@@ -1,14 +1,14 @@
 # Phase 149 State — DEBT-002: TRACKER.md compaction
 
-## Status: pending
+## Status: done
 
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 149.1 | lib/tracker-compact.cjs — compact logic (extract history, rewrite TRACKER.md) | pending |
-| 149.2 | bin/vp-tools.cjs — tracker compact [--keep N] subcommand | pending |
-| 149.3 | workflows/autonomous.md — rewrite-not-append + size guard + Decision Log cap | pending |
-| 149.4 | Contract tests + CHANGELOG [3.12.0] + version bump | pending |
+| 149.1 | lib/tracker-compact.cjs — compact logic (extract history, rewrite TRACKER.md) | done |
+| 149.2 | bin/vp-tools.cjs — tracker compact [--keep N] subcommand | done |
+| 149.3 | workflows/autonomous.md — rewrite-not-append + size guard + Decision Log cap | done |
+| 149.4 | Contract tests + CHANGELOG [3.12.0] + version bump | done |
 
 ## Version Target
 3.11.0 → **3.12.0**
@@ -28,5 +28,5 @@
 ## Dependencies
 - Phase 148 ✅
 
-## Started: —
-## Completed: —
+## Started: 2026-05-25
+## Completed: 2026-05-25

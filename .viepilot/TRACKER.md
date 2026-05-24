@@ -32,9 +32,11 @@
 - **Last Completed Phase**: **147** ✅ (ENH-101 vp-crystallize adapter context files → v3.10.0)
 - **Current Phase**: ~~148~~ — ✅ done (v3.11.0)
 - **Last Completed Phase**: **148** ✅ (ENH-100 vp-qa scan-first QA agent generator → v3.11.0)
-- **Current Phase**: **149** — DEBT-002: TRACKER.md compaction → v3.12.0
-- **Current Task**: 149.1 — lib/tracker-compact.cjs
-- **Last Activity**: 2026-05-25 — Phase 149 planned: DEBT-002 TRACKER.md compaction
+- **Current Phase**: ~~149~~ — ✅ done (v3.12.0)
+- **Last Completed Phase**: **149** ✅ (DEBT-002 TRACKER.md compaction → v3.12.0)
+- **Next Phase**: — (all planned phases complete)
+- **Current Task**: —
+- **Last Activity**: 2026-05-25 — Phase 149 complete: DEBT-002 TRACKER.md compaction → v3.12.0
 
 ## Progress Overview
 ```
@@ -51,7 +53,7 @@ Phase 35 (ENH-022)    [██████████] done
 3.9.1 (released — BUG-031 hooks install wrong path fix)
 3.10.0 (released — ENH-101 vp-crystallize adapter context files)
 3.11.0 (released — ENH-100 vp-qa scan-first QA agent generator)
-3.12.0 (planned — DEBT-002 TRACKER.md compaction)
+3.12.0 (released — DEBT-002 TRACKER.md compaction)
 ```
 
 
