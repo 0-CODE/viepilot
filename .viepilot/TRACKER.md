@@ -50,6 +50,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-25 | BUG-031 logged: hooks install writes wrong path ~/.viepilot/hooks/ (never created); correct path is {adapter.viepilotDir}/lib/hooks/; Stop hook exits non-zero every turn | User: Windows dev, /doctor reports non-blocking status code | Backlog |
 | 2026-05-24 | Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0 (2267 tests, 4 tasks PASS) | 8 new tools in vp-auto; autonomous.md TodoWrite fix + Monitor + PushNotification; agents.md 28-event hooks + Agent Teams | 145 |
 | 2026-05-24 | Phase 145 planned: ENH-099 Claude Code tool set adapter docs (4 tasks) → v3.9.0 | vp-auto SKILL.md 8 new tools; autonomous.md TodoWrite fix + Monitor + Push; agents.md 28-event hooks + Agent Teams | 145 |
 | 2026-05-24 | ENH-099 logged: Claude Code full tool inventory research — 40+ tools, 28 hook events; Monitor/Worktree/LSP/PlanMode/PushNotification gaps + TodoWrite deprecation impact | User: research request via /vp-request WebSearch+WebFetch | Backlog |
