@@ -1390,6 +1390,70 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Compact bloated TRACKER.md and archive history (DEBT-002)
+   * Usage: vp-tools tracker compact [--keep N] [--dry-run] [--path <file>]
+   */
+  tracker: (args) => {
+    const sub = args[0];
+
+    if (!sub || sub === 'help') {
+      console.log(`${colors.cyan}Usage:${colors.reset}
+  vp-tools tracker compact [--keep N] [--dry-run] [--path <file>]
+
+${colors.cyan}Subcommands:${colors.reset}
+  compact   Compact bloated TRACKER.md, archive history
+
+${colors.cyan}Options:${colors.reset}
+  --keep N       Number of rows to keep (default: 5)
+  --dry-run      Preview changes without writing
+  --path <file>  Path to TRACKER.md (default: .viepilot/TRACKER.md)
+
+${colors.cyan}Examples:${colors.reset}
+  ${colors.gray}$${colors.reset} vp-tools tracker compact
+  ${colors.gray}$${colors.reset} vp-tools tracker compact --keep 10 --dry-run
+  ${colors.gray}$${colors.reset} vp-tools tracker compact --path /path/to/TRACKER.md`);
+      return;
+    }
+
+    if (sub === 'compact') {
+      // Parse options
+      const keepIdx = args.indexOf('--keep');
+      const keepN = keepIdx !== -1 ? parseInt(args[keepIdx + 1], 10) : 5;
+      const isDryRun = args.includes('--dry-run');
+
+      const pathIdx = args.indexOf('--path');
+      const argPath = pathIdx !== -1 ? args[pathIdx + 1] : null;
+
+      const trackerPath = argPath || path.join(process.cwd(), '.viepilot', 'TRACKER.md');
+
+      try {
+        const { compact } = require(path.join(__dirname, '../lib/tracker-compact.cjs'));
+        const result = compact(trackerPath, { keep: keepN, dryRun: isDryRun });
+
+        if (isDryRun) {
+          console.log(`[dry-run] Would compact ${trackerPath}`);
+          console.log(`  Lines to remove:  ${result.linesRemoved}`);
+          console.log(`  Rows to archive:  ${result.rowsArchived}`);
+          console.log('  No files written.');
+        } else {
+          console.log(formatSuccess(`Compacted ${trackerPath}`));
+          console.log(`  Lines removed:  ${result.linesRemoved}`);
+          console.log(`  Rows archived:  ${result.rowsArchived}`);
+          console.log(`  History file:   ${result.historyFile}`);
+          console.log(`  Result:         ${result.trackerLines} lines remaining`);
+        }
+        process.exit(0);
+      } catch (err) {
+        console.error(formatError('tracker compact error:', err.message));
+        process.exit(1);
+      }
+    }
+
+    console.error(formatError(`Unknown tracker subcommand: ${sub}`, 'Use: compact'));
+    process.exit(1);
+  },
+
+  /**
    * Validate adapter capability requirements (FEAT-021 Phase 127)
    * Usage: vp-tools validate --adapter <id>
    */
@@ -1618,6 +1682,20 @@ ${colors.cyan}Examples:${colors.reset}
           'vp-tools update --global --dry-run',
         ],
       },
+      'tracker': {
+        usage: 'vp-tools tracker compact [--keep N] [--dry-run] [--path <file>]',
+        description: 'Compact bloated TRACKER.md and archive history',
+        options: [
+          '--keep N: Number of rows to keep (default: 5)',
+          '--dry-run: Preview changes without writing',
+          '--path <file>: Path to TRACKER.md (default: .viepilot/TRACKER.md)',
+        ],
+        examples: [
+          'vp-tools tracker compact',
+          'vp-tools tracker compact --keep 10 --dry-run',
+          'vp-tools tracker compact --path /path/to/TRACKER.md',
+        ],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -1669,6 +1747,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}persona${colors.reset} <op>              Manage user personas (get|infer|list|set|auto-switch|context)
   ${colors.bold}detect-adapter${colors.reset} [--json]   Detect active adapter (claude-code/cursor/antigravity/codex/copilot)
   ${colors.bold}validate${colors.reset} --adapter <id>   Validate adapter capability requirements; exits 1 on critical gaps
+  ${colors.bold}tracker${colors.reset} compact [--keep N] Compact bloated TRACKER.md, archive history
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
