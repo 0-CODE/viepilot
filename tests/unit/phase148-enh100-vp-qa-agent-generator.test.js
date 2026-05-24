@@ -101,8 +101,8 @@ describe('Phase 148 — ENH-100: vp-qa scan-first QA agent generator', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.11.0', () => {
-      expect(pkg.version).toBe('3.11.0');
+    it('version is 3.12.0', () => {
+      expect(pkg.version).toBe('3.12.0');
     });
   });
 });

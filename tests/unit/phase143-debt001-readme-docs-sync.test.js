@@ -48,9 +48,9 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
     it('has vp-persona section', () => {
       expect(skillsRef).toMatch(/^## \/vp-persona/m);
     });
-    it('has 21 skill sections total', () => {
+    it('has 22 skill sections total', () => {
       const count = (skillsRef.match(/^## \/vp-/gm) || []).length;
-      expect(count).toBe(21);
+      expect(count).toBe(22);
     });
   });
 
@@ -67,8 +67,8 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.11.0', () => {
-      expect(pkg.version).toBe('3.11.0');
+    it('version is 3.12.0', () => {
+      expect(pkg.version).toBe('3.12.0');
     });
   });
 });

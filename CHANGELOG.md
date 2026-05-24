@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.12.0] - 2026-05-25
+### Changed
+- `workflows/autonomous.md`: tracker-agent now rewrites Current State block (find-and-replace)
+  instead of appending — TRACKER.md stays ≤ 20 lines regardless of phase count (DEBT-002)
+- `workflows/autonomous.md`: auto-compact size guard — if TRACKER.md > 400 lines, runs
+  `vp-tools tracker compact` before reading (DEBT-002)
+- `workflows/autonomous.md`: Decision Log capped at 20 rows; older rows archived to TRACKER-HISTORY.md
+
+### Added
+- `lib/tracker-compact.cjs`: compact() + rewriteCurrentState() — rescue tool for bloated TRACKER.md files
+- `bin/vp-tools.cjs`: `tracker compact [--keep N]` subcommand — compact bloated TRACKER.md, archive history to TRACKER-HISTORY.md
+
+---
+
 ## [3.11.0] - 2026-05-25
 
 ### Added
