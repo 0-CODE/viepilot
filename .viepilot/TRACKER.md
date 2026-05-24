@@ -48,6 +48,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-24 | ENH-099 logged: Claude Code full tool inventory research — 40+ tools, 28 hook events; Monitor/Worktree/LSP/PlanMode/PushNotification gaps + TodoWrite deprecation impact | User: research request via /vp-request WebSearch+WebFetch | Backlog |
 | 2026-05-24 | Phase 144 complete: ENH-098 stakeholder agent gate → v3.8.0 (2246 tests, 5 tasks PASS) | ENH-098: two-phase stakeholder gate — brainstorm generates agents, crystallize Step 1G runs parallel fan-out review | 144 |
 | 2026-05-24 | Phase 143 complete: DEBT-001 README + docs drift sync → v3.7.3 | README/docs drifted since v3.1.1; synced badges, counts, skills-reference, architecture | 143 |
 | 2026-05-23 | Phase 142 planned: ENH-097 full orchestrator delegation — state + git via subagents (4 tasks) → v3.7.2 | `/vp-evolve` Add Feature | M3.0 |
