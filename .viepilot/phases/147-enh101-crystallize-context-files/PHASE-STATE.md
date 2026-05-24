@@ -5,8 +5,8 @@
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 147.1 | lib/context-file-generators.cjs — 5 adapter content builders | pending |
-| 147.2 | workflows/crystallize.md — Step 1F: generate adapter context files | pending |
+| 147.1 | lib/context-file-generators.cjs — 5 adapter content builders | done |
+| 147.2 | workflows/crystallize.md — Step 1F: generate adapter context files | done |
 | 147.3 | Contract tests + CHANGELOG [3.10.0] + version bump | pending |
 
 ## Version Target

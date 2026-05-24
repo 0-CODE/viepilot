@@ -2172,8 +2172,40 @@ Append to `.viepilot/PROJECT-CONTEXT.md`:
 **Lock semantics**: once written, `## Skills` is the authoritative skill decision for the project. `vp-auto` reads it and **never re-prompts**.
 </step>
 
+<step name="adapter_context_files">
+## Step 1F: Generate Adapter Context Files (ENH-101)
+
+Generate the native AI context file for the active adapter so it starts with full project context.
+
+**Detect adapter and generate:**
+```bash
+node bin/vp-tools.cjs context-files
+# or with --all to generate all 5 adapters at once:
+node bin/vp-tools.cjs context-files --all
+```
+
+**What gets generated:**
+| Adapter | File |
+|---------|------|
+| Claude Code | `CLAUDE.md` (project root) |
+| Cursor | `.cursorrules` + `.cursor/rules/viepilot-context.mdc` |
+| Codex | `AGENTS.md` (project root) |
+| Antigravity | `GEMINI.md` (project root) |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+
+**Content sources** (from `.viepilot/` — skip if not yet generated):
+- `AI-GUIDE.md` → navigation + architecture summary
+- `PROJECT-CONTEXT.md` → domain knowledge, business rules
+- `SYSTEM-RULES.md` → coding standards, patterns
+- `STACKS.md` → tech stack, versions
+
+**Note**: Re-running overwrites existing files with latest `.viepilot/` content.
+Step 1F is non-blocking — if `.viepilot/` sources are incomplete, outputs a partial file
+with a `<!-- viepilot: incomplete -->` comment at the top as a re-run reminder.
+</step>
+
 <step name="cross_reference_gate">
-## Step 1F: Cross-Reference Gate (ENH-064)
+## Step 1G: Cross-Reference Gate (ENH-064)
 
 Run when BOTH `architect_read_complete: true` AND `ui_direction_read_complete: true` are set in working notes:
 
@@ -2208,9 +2240,9 @@ Run when BOTH `architect_read_complete: true` AND `ui_direction_read_complete: t
 <step name="stakeholder_review_gate">
 ---
 
-## Step 1G: Stakeholder Review Gate (ENH-098)
+## Step 1H: Stakeholder Review Gate (ENH-098)
 
-**Trigger**: Runs automatically after Step 1F, before Step 2.
+**Trigger**: Runs automatically after Step 1G, before Step 2.
 
 **Skip conditions**:
 - `--no-stakeholders` flag passed to `/vp-crystallize`

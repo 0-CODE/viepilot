@@ -1211,6 +1211,44 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * ENH-101: Generate adapter context files (CLAUDE.md, GEMINI.md, AGENTS.md, .cursorrules, .github/copilot-instructions.md)
+   * Usage: vp-tools context-files [--all]
+   */
+  'context-files': (args) => {
+    const { generateAll, generateClaudeMd, generateGeminiMd, generateAgentsMd,
+            generateCursorRules, generateCursorMdc, generateCopilotInstructions }
+      = require('../lib/context-file-generators.cjs');
+    const allFlag = args.includes('--all');
+    const projectRoot = process.cwd();
+
+    // detect adapter
+    const adapterCtx = require('../lib/adapter-context.cjs');
+    const adapterId = adapterCtx.detectAdapter ? adapterCtx.detectAdapter() : 'claude-code';
+
+    const targets = allFlag ? generateAll(projectRoot) : (() => {
+      const map = {
+        'claude-code':  [{ path: 'CLAUDE.md', content: generateClaudeMd(projectRoot) }],
+        'antigravity':  [{ path: 'GEMINI.md',  content: generateGeminiMd(projectRoot) }],
+        'codex':        [{ path: 'AGENTS.md',  content: generateAgentsMd(projectRoot) }],
+        'cursor-agent': [
+          { path: '.cursorrules', content: generateCursorRules(projectRoot) },
+          { path: '.cursor/rules/viepilot-context.mdc', content: generateCursorMdc(projectRoot) },
+        ],
+        'copilot': [{ path: '.github/copilot-instructions.md', content: generateCopilotInstructions(projectRoot) }],
+      };
+      return map[adapterId] || map['claude-code'];
+    })();
+
+    for (const { path: relPath, content } of targets) {
+      const absPath = require('path').join(projectRoot, relPath);
+      require('fs').mkdirSync(require('path').dirname(absPath), { recursive: true });
+      require('fs').writeFileSync(absPath, content, 'utf8');
+      console.log(formatSuccess(`Written: ${relPath}`));
+    }
+    process.exit(0);
+  },
+
+  /**
    * ENH-073: Manage cross-project personas.
    * persona get            → print active persona JSON
    * persona infer [dir]    → run inferPersona, print result, update context-map
@@ -1627,6 +1665,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}get-registry${colors.reset} [--id <id>] Output global skill registry as JSON
   ${colors.bold}scan-skills${colors.reset}               Scan installed skills → ~/.viepilot/skill-registry.json
   ${colors.bold}check-update${colors.reset} [--silent]   Check for latest ViePilot version on npm (24h cached)
+  ${colors.bold}context-files${colors.reset} [--all]     Generate adapter context files (CLAUDE.md, GEMINI.md, etc.)
   ${colors.bold}persona${colors.reset} <op>              Manage user personas (get|infer|list|set|auto-switch|context)
   ${colors.bold}detect-adapter${colors.reset} [--json]   Detect active adapter (claude-code/cursor/antigravity/codex/copilot)
   ${colors.bold}validate${colors.reset} --adapter <id>   Validate adapter capability requirements; exits 1 on critical gaps
