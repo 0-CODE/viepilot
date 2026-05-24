@@ -52,6 +52,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-25 | ENH-101 logged: vp-crystallize generates adapter context files — CLAUDE.md (Claude Code), .cursor/rules/ (Cursor), AGENTS.md (Codex), GEMINI.md (Antigravity), .github/copilot-instructions.md (Copilot); LLM-distilled from .viepilot/ sources | User: crystallize should generate CLAUDE.md + similar for all adapters | Backlog |
+| 2026-05-25 | ENH-100 updated: vp-qa design corrected — scan-first approach (research codebase before generating agents); number and types of subagents determined dynamically by research output, not hardcoded templates | User correction: agents must be context-driven, not template-driven | Backlog |
 | 2026-05-25 | ENH-100 logged: vp-qa skill — project-level QA agent team generator (orchestrator + 4 specialist subagents: completeness, security, performance, context); stack-aware templates; vp-request integration; AskUserQuestion interactive flow | User: manual prompt pattern for Claude Code agents → first-class ViePilot feature | Backlog |
 | 2026-05-25 | BUG-031 logged: hooks install writes wrong path ~/.viepilot/hooks/ (never created); correct path is {adapter.viepilotDir}/lib/hooks/; Stop hook exits non-zero every turn | User: Windows dev, /doctor reports non-blocking status code | Backlog |
 | 2026-05-24 | Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0 (2267 tests, 4 tasks PASS) | 8 new tools in vp-auto; autonomous.md TodoWrite fix + Monitor + PushNotification; agents.md 28-event hooks + Agent Teams | 145 |
