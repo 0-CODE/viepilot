@@ -1,34 +1,33 @@
 {
   "milestone": "M3.0",
   "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
-  "phase": 145,
-  "phase_name": "ENH-099-claude-code-tool-set-adapter-docs",
+  "phase": 146,
+  "phase_name": "BUG-031-hooks-wrong-path-fix",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-05-24T00:00:00Z",
+  "last_activity": "2026-05-25T00:00:00Z",
   "version": {
-    "current": "3.9.0",
+    "current": "3.9.1",
     "next": null
   },
   "progress": {
-    "phases_total": 145,
-    "phases_completed": 145,
-    "tasks_total": 4,
-    "tasks_completed": 4,
+    "phases_total": 146,
+    "phases_completed": 146,
+    "tasks_total": 2,
+    "tasks_completed": 2,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0",
-      "2267 tests passing across 114 suites.",
-      "skills/vp-auto/SKILL.md: 8 new tools added (Monitor, CronCreate/Delete/List, EnterWorktree/ExitWorktree, LSP, PushNotification, EnterPlanMode/ExitPlanMode).",
-      "workflows/autonomous.md: TodoWrite→TaskCreate fix; Monitor quality-gate pattern; PushNotification phase-complete.",
-      "docs/dev/agents.md: 28-event hooks table; Agent Teams experimental section (TeamCreate, TeamDelete, SendMessage).",
-      "ENH-099 research source: code.claude.com/docs/en/tools-reference (fetched 2026-05-24)."
+      "Phase 146 complete: BUG-031 hooks install wrong path fix → v3.9.1",
+      "2271 tests passing across 115 suites.",
+      "bin/vp-tools.cjs: fixed lines 1010+1027 — path.join(home, '.viepilot', 'hooks', ...) → path.join(adapter.viepilotDir(home), 'lib', 'hooks', ...).",
+      "Added migration filter: settings.hooks.Stop.filter removes stale wrong-path entries before idempotency check.",
+      "BUG-031 reported by user: Windows hook path C:\\Users\\dev\\.viepilot\\hooks\\brainstorm-staleness.cjs never existed → Stop hook non-zero exit every turn."
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-05-24T00:00:00Z"
+  "updated_at": "2026-05-25T00:00:00Z"
 }

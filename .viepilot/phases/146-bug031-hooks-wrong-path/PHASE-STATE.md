@@ -1,12 +1,12 @@
 # Phase 146 State — BUG-031: hooks install wrong path fix
 
-## Status: pending
+## Status: done
 
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 146.1 | bin/vp-tools.cjs — fix hook path + migration for stale entries | pending |
-| 146.2 | Contract tests + CHANGELOG [3.9.1] + version bump | pending |
+| 146.1 | bin/vp-tools.cjs — fix hook path + migration for stale entries | done |
+| 146.2 | Contract tests + CHANGELOG [3.9.1] + version bump | done |
 
 ## Version Target
 3.9.0 → **3.9.1**
@@ -24,5 +24,5 @@ instead of using `adapter.viepilotDir(home)`. For Claude Code: correct path is
 - Lines 1010 + 1027: replace hardcoded path with `path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'brainstorm-staleness.cjs')`
 - idempotency check: must also detect old wrong-path entries and replace them (currently skips if any entry exists, leaving stale entries unrepaired)
 
-## Started: —
-## Completed: —
+## Started: 2026-05-25
+## Completed: 2026-05-25

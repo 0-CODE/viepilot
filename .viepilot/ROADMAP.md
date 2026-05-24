@@ -3949,8 +3949,9 @@ in autonomous.md. Expand hooks docs (28 events) and add Agent Teams section in a
 (actual install location). Stop hook exits non-zero every turn → /doctor noise. Also add
 migration to detect and replace existing wrong-path entries in settings.json.
 **Estimated Tasks**: 2
-**Status**: pending
+**Status**: ✅ done
 **Version Target**: 3.9.1
+**Completed**: 2026-05-25
 **Dependencies**: Phase 145 ✅
 **Directory**: `.viepilot/phases/146-bug031-hooks-wrong-path/`
 
