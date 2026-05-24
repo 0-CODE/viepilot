@@ -28,9 +28,10 @@
 - **Last Completed Phase**: **145** ✅ (ENH-099 Claude Code tool set adapter docs → v3.9.0)
 - **Current Phase**: ~~146~~ — ✅ done (v3.9.1)
 - **Last Completed Phase**: **146** ✅ (BUG-031 hooks install wrong path fix → v3.9.1)
-- **Next Phase**: — (all planned phases complete)
-- **Current Task**: —
-- **Last Activity**: 2026-05-25 — Phase 146 complete: BUG-031 hooks install wrong path fix → v3.9.1
+- **Current Phase**: **147** — ENH-101: vp-crystallize → adapter context files → v3.10.0
+- **Next Phase**: **148** — ENH-100: vp-qa scan-first QA agent generator → v3.11.0
+- **Current Task**: 147.1 — lib/context-file-generators.cjs
+- **Last Activity**: 2026-05-25 — Phases 147+148 planned: ENH-101 + ENH-100
 
 ## Progress Overview
 ```
@@ -45,6 +46,8 @@ Phase 35 (ENH-022)    [██████████] done
 ### Current Version
 ```
 3.9.1 (released — BUG-031 hooks install wrong path fix)
+3.10.0 (planned — ENH-101 vp-crystallize adapter context files)
+3.11.0 (planned — ENH-100 vp-qa scan-first QA agent generator)
 ```
 
 

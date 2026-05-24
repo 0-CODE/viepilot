@@ -3967,3 +3967,58 @@ migration to detect and replace existing wrong-path entries in settings.json.
 - [ ] `node -e "require('./package.json').version"` → `3.9.1`
 - [ ] `grep "\[3.9.1\]" CHANGELOG.md` → ≥1 hit
 - [ ] `package.json` version = `3.7.3`
+
+## Phase 147 — ENH-101: vp-crystallize → adapter context files (v3.10.0)
+
+**Goal**: Add Step 1F to `vp-crystallize` that generates the adapter-specific AI context
+file for the project — `CLAUDE.md` (Claude Code), `.cursor/rules/` (Cursor), `AGENTS.md`
+(Codex), `GEMINI.md` (Antigravity), `.github/copilot-instructions.md` (Copilot) — distilled
+from `.viepilot/AI-GUIDE.md`, `PROJECT-CONTEXT.md`, `SYSTEM-RULES.md`, and `STACKS.md`.
+Also expose `vp-tools context-files [--all]` as a standalone subcommand.
+**Estimated Tasks**: 3
+**Status**: pending
+**Version Target**: 3.10.0
+**Dependencies**: Phase 146 ✅
+**Directory**: `.viepilot/phases/147-enh101-crystallize-context-files/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 147.1 | lib/context-file-generators.cjs — 5 adapter content builders + generateAll | exports 7 functions; generateAll returns 6 entries; no throws | S | — |
+| 147.2 | workflows/crystallize.md Step 1F + vp-tools context-files subcommand | Step 1F present; `node bin/vp-tools.cjs context-files` creates CLAUDE.md; --all creates 6 files | M | after 147.1 |
+| 147.3 | Contract tests + CHANGELOG [3.10.0] + version bump | tests pass; version = 3.10.0; git clean + pushed | S | after 147.2 |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs context-files` creates CLAUDE.md in cwd
+- [ ] `node bin/vp-tools.cjs context-files --all` creates 6 adapter files
+- [ ] `cat CLAUDE.md | grep "ViePilot Workflow"` → ≥1 hit
+- [ ] `npx jest tests/unit/phase147-enh101-crystallize-context-files.test.js --no-coverage` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.10.0`
+- [ ] `grep "\[3.10.0\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 148 — ENH-100: vp-qa scan-first QA agent team generator (v3.11.0)
+
+**Goal**: New `/vp-qa` skill that generates a context-tailored backend QA agent team.
+Phase 1: research codebase (stack detection, file sampling, domain selection).
+Phase 2: generate adapter-specific agents (Claude Code: `.claude/agents/` multi-agent;
+Codex: `AGENTS.md` sequential; Cursor: `.cursor/rules/` MDC; Antigravity: `.agents/skills/`;
+Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries + AskUserQuestion.
+**Estimated Tasks**: 6
+**Status**: pending
+**Version Target**: 3.11.0
+**Dependencies**: Phase 147 ✅
+**Directory**: `.viepilot/phases/148-enh100-vp-qa-agent-generator/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 148.1 | skills/vp-qa/SKILL.md — skill definition (scan-first + AskUserQuestion) | file exists; VP-QA banner; scan phases documented; all 5 adapter sections | S | parallel 148.2 |
+| 148.2 | lib/qa-generator.cjs — adapter detection + generation dispatch | exports generateQaAgents + writeAgentFiles; claude-code → .claude/agents/; codex → AGENTS.md | M | parallel 148.1 |
+| 148.3 | agents/qa-templates/claude-code/ — orchestrator + 4 subagent templates | 5 files; YAML frontmatter; STACK_RULES placeholder; disallowedTools on scanners | M | parallel 148.2 |
+| 148.4 | agents/qa-templates/{codex,cursor,antigravity,copilot}/ — single-file templates | 4 files; correct frontmatter per adapter; DOMAINS_BLOCK placeholder | M | parallel 148.3 |
+| 148.5 | agents/qa-templates/rules/{node,python,java,go,ruby}.md — stack rule blocks | 5 files; each has Completeness/Security/Performance/Context sections | S | parallel 148.3 |
+| 148.6 | Contract tests + CHANGELOG [3.11.0] + version bump | tests pass; version = 3.11.0; git clean + pushed | S | after 148.1-148.5 |
+
+**Verification**:
+- [ ] `/vp-qa` can be invoked and generates agent files in target project
+- [ ] `npx jest tests/unit/phase148-enh100-vp-qa-agent-generator.test.js --no-coverage` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.11.0`
+- [ ] `grep "\[3.11.0\]" CHANGELOG.md` → ≥1 hit
