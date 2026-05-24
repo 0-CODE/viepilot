@@ -3976,8 +3976,9 @@ file for the project — `CLAUDE.md` (Claude Code), `.cursor/rules/` (Cursor), `
 from `.viepilot/AI-GUIDE.md`, `PROJECT-CONTEXT.md`, `SYSTEM-RULES.md`, and `STACKS.md`.
 Also expose `vp-tools context-files [--all]` as a standalone subcommand.
 **Estimated Tasks**: 3
-**Status**: pending
+**Status**: ✅ done
 **Version Target**: 3.10.0
+**Completed**: 2026-05-25
 **Dependencies**: Phase 146 ✅
 **Directory**: `.viepilot/phases/147-enh101-crystallize-context-files/`
 
