@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.9.0] - 2026-05-24
+
+### Changed
+- ENH-099: skills/vp-auto/SKILL.md — Claude Code adapter tool section expanded with 8 new
+  tools: Monitor, CronCreate/Delete/List, EnterWorktree/ExitWorktree, LSP, PushNotification,
+  EnterPlanMode/ExitPlanMode (sourced from official tools-reference, May 2026)
+- ENH-099: workflows/autonomous.md — TodoWrite deprecated references replaced with
+  TaskCreate/TaskList (disabled since Claude Code v2.1.142); Monitor quality-gate pattern
+  and PushNotification phase-complete notification added
+- ENH-099: docs/dev/agents.md — full 28-event hooks inventory table added; Agent Teams
+  experimental section (TeamCreate, TeamDelete, SendMessage) documented
+
+---
+
 ## [3.8.0] - 2026-05-24
 
 ### Added
