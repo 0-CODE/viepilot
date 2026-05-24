@@ -139,3 +139,85 @@ describes the exact steps — follow them as a scoped sub-prompt.
 - File: `agents/{name}-agent.md` (kebab-case, always ends in `-agent`)
 - Reference: `{name}-agent` (e.g., `tracker-agent`, not `tracker`)
 - Invocation: `Load agents/{name}-agent.md for full spec.`
+
+## Hook Events Reference (ENH-099)
+
+Complete list of 28 hook events supported in Claude Code (as of May 2026).
+Source: [code.claude.com/docs/en/hooks](https://code.claude.com/docs/en/hooks)
+
+| Hook | Fires When | Blocking | Key ViePilot Use |
+|------|-----------|---------|-----------------|
+| `SessionStart` | Session begins/resumes | No | Inject context, set env, watch paths |
+| `SessionEnd` | Session terminates | No | Cleanup, logging |
+| `UserPromptSubmit` | User submits prompt | Yes | Block/augment prompts; set session title |
+| `UserPromptExpansion` | Slash command expands | Yes | Audit `/vp-*` invocations |
+| `PreToolUse` | Before any tool executes | Yes | Block destructive commands, log ops |
+| `PostToolUse` | After tool succeeds | No | Validate output, add context |
+| `PostToolUseFailure` | After tool fails | No | Log failures |
+| `PostToolBatch` | After parallel tools resolve | Yes | Validate parallel fan-out batch results |
+| `PermissionRequest` | Permission dialog appears | Yes | Auto-approve known safe patterns |
+| `PermissionDenied` | Tool call denied | No | Signal retry allowed |
+| `Stop` | Claude finishes responding | Yes | Continue autonomous loop without re-prompt |
+| `StopFailure` | Turn ends due to API error | No | Error logging |
+| `Notification` | Claude Code sends notification | No | Desktop notification / terminal bell |
+| `SubagentStart` | Subagent spawned | No | Log agent start, inject context |
+| `SubagentStop` | Subagent finishes | Yes | Block premature stop, collect output |
+| `TaskCreated` | TaskCreate tool used | Yes | Enforce naming conventions |
+| `TaskCompleted` | Task marked complete | Yes | Trigger quality gate automatically |
+| `TeammateIdle` | Agent team teammate idle | Yes | Keep agent alive / assign next task |
+| `CwdChanged` | Working directory changes | No | Reactive env setup (direnv) |
+| `FileChanged` | Watched file changes | No | React to test/code file saves |
+| `ConfigChange` | Config file changes | Yes | Block unexpected config changes |
+| `WorktreeCreate` | Worktree being created | Yes | Custom worktree setup |
+| `WorktreeRemove` | Worktree being removed | No | Cleanup |
+| `PreCompact` | Before context compaction | Yes | Block compaction during critical phase steps |
+| `PostCompact` | After compaction completes | No | Re-inject phase context |
+| `Setup` | `--init-only` / `-p --init` | No | One-time dependency installation |
+| `InstructionsLoaded` | CLAUDE.md / rules loaded | No | Audit logging |
+| `Elicitation` | MCP server requests user input | Yes | Auto-respond to MCP prompts |
+
+### Exit code behavior
+- **Exit 0**: success; JSON output processed
+- **Exit 2**: blocking error; stderr shown, event blocked
+- **Other non-zero**: non-blocking; first line of stderr shown
+
+### Most impactful hooks for ViePilot autonomous runs
+- `TaskCreated` + `TaskCompleted` → hook-driven quality gates (no manual trigger needed)
+- `PreCompact` + `PostCompact` → protect long phases from mid-run context loss
+- `SubagentStart` + `SubagentStop` → trace agent orchestration
+- `Stop` → enables fully autonomous `/vp-auto` without re-prompting
+- `PostToolBatch` → validate parallel fan-out results (ENH-096/097 pattern)
+
+## Agent Teams (Experimental)
+
+Agent Teams allow multiple Claude Code sessions to communicate via message passing.
+Requires: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable.
+
+### Tools
+
+| Tool | Description |
+|------|-------------|
+| `TeamCreate` | Create a named team with multiple teammate sessions |
+| `TeamDelete` | Disband team and clean up all teammate processes |
+| `SendMessage` | Send a message to a teammate by name, or resume a stopped subagent |
+
+### Architecture
+
+```
+TeamCreate → defines lead + teammates
+TeamLead   → assigns tasks via SendMessage
+Teammates  → work independently, respond via SendMessage back to lead
+TeamDelete → cleanup after all work complete
+```
+
+### ViePilot roadmap
+
+Agent Teams represent a future upgrade path for the vp-auto orchestration model (ENH-096/097).
+Currently, vp-auto uses fire-and-forget `Agent` spawning (no back-and-forth). Agent Teams
+would enable:
+- Lead orchestrator assigns tasks AND receives status updates
+- Teammates can ask questions mid-task
+- Better handling of inter-task dependency resolution
+
+**Status**: experimental — requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`.
+Not yet used in ViePilot workflows. Tracked via ENH-099.
