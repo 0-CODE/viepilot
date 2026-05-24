@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.9.1] - 2026-05-25
+
+### Fixed
+- BUG-031: `vp-tools hooks install` wrote wrong hook path (`~/.viepilot/hooks/
+  brainstorm-staleness.cjs`) which does not exist; corrected to
+  `{adapter.viepilotDir}/lib/hooks/brainstorm-staleness.cjs`; Stop hook no longer
+  exits non-zero each turn
+- BUG-031: `vp-tools hooks install` (re-run) now detects and removes stale wrong-path
+  entries from settings.json before writing the correct entry
+
+---
+
 ## [3.9.0] - 2026-05-24
 
 ### Changed
