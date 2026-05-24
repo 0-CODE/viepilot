@@ -3941,4 +3941,28 @@ in autonomous.md. Expand hooks docs (28 events) and add Agent Teams section in a
 - [ ] `grep "TeamCreate\|SendMessage" docs/dev/agents.md` → ≥1 hit
 - [ ] `node -e "require('./package.json').version"` → `3.9.0`
 - [ ] `grep "\[3.9.0\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 146 — BUG-031: hooks install wrong path fix (v3.9.1)
+
+**Goal**: Fix `vp-tools hooks install` writing `~/.viepilot/hooks/brainstorm-staleness.cjs`
+(hardcoded, never created) instead of `{adapter.viepilotDir}/lib/hooks/brainstorm-staleness.cjs`
+(actual install location). Stop hook exits non-zero every turn → /doctor noise. Also add
+migration to detect and replace existing wrong-path entries in settings.json.
+**Estimated Tasks**: 2
+**Status**: pending
+**Version Target**: 3.9.1
+**Dependencies**: Phase 145 ✅
+**Directory**: `.viepilot/phases/146-bug031-hooks-wrong-path/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 146.1 | bin/vp-tools.cjs — fix hook path (lines 1010+1027) + replace old wrong-path entries on re-install | `~/.viepilot/hooks/` absent from scaffold/install output; correct adapter path used; migration removes stale entry | S | — |
+| 146.2 | Contract tests + CHANGELOG [3.9.1] + version bump | tests pass; version = 3.9.1; git clean + pushed | S | after 146.1 |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs hooks scaffold 2>&1 | grep -v "\.viepilot/hooks"` → no stale path in output
+- [ ] `grep "\.viepilot.hooks.brainstorm" bin/vp-tools.cjs` → 0 hits (hardcoded path removed)
+- [ ] `npx jest tests/unit/phase146-bug031-hooks-wrong-path.test.js --no-coverage` → all tests pass
+- [ ] `node -e "require('./package.json').version"` → `3.9.1`
+- [ ] `grep "\[3.9.1\]" CHANGELOG.md` → ≥1 hit
 - [ ] `package.json` version = `3.7.3`

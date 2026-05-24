@@ -26,9 +26,10 @@
 - **Last Completed Phase**: **144** ✅ (ENH-098 stakeholder agent gate → v3.8.0)
 - **Current Phase**: ~~145~~ — ✅ done (v3.9.0)
 - **Last Completed Phase**: **145** ✅ (ENH-099 Claude Code tool set adapter docs → v3.9.0)
+- **Current Phase**: **146** — BUG-031: hooks install wrong path fix → v3.9.1
 - **Next Phase**: — (all planned phases complete)
-- **Current Task**: —
-- **Last Activity**: 2026-05-24 — Phase 145 complete: ENH-099 Claude Code tool set adapter docs → v3.9.0
+- **Current Task**: 146.1 — fix bin/vp-tools.cjs hook path + migration
+- **Last Activity**: 2026-05-25 — Phase 146 planned: BUG-031 hooks install wrong path fix → v3.9.1
 
 ## Progress Overview
 ```
@@ -43,6 +44,7 @@ Phase 35 (ENH-022)    [██████████] done
 ### Current Version
 ```
 3.9.0 (released — ENH-099 Claude Code tool set adapter docs)
+3.9.1 (planned — BUG-031 hooks install wrong path fix)
 ```
 
 
