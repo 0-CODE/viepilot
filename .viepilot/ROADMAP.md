@@ -4022,3 +4022,27 @@ Copilot: `.github/agents/`). Generated orchestrator creates `vp-request` entries
 - [x] `npx jest tests/unit/phase148-enh100-vp-qa-agent-generator.test.js --no-coverage` → all pass
 - [x] `node -e "console.log(require('./package.json').version)"` → `3.11.0`
 - [x] `grep "\[3.11.0\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 149 — DEBT-002: TRACKER.md compaction (v3.12.0)
+
+**Goal**: Fix TRACKER.md unbounded growth. Real projects hit 31 459 tokens → exceeds 25 000 token
+read limit. Two-layer fix: stop future growth at the root (rewrite-not-append), plus rescue command
+for already-bloated files (`vp-tools tracker compact`).
+**Estimated Tasks**: 4
+**Status**: pending
+**Version Target**: 3.12.0
+**Dependencies**: Phase 148 ✅
+**Directory**: `.viepilot/phases/149-debt002-tracker-compact/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 149.1 | lib/tracker-compact.cjs — compact() + rewriteCurrentState() | exports exist; compact shrinks TRACKER.md; no data loss; rewriteCurrentState replaces not appends | S | parallel 149.3 |
+| 149.2 | bin/vp-tools.cjs — tracker compact [--keep N] subcommand | exit 0; dry-run works; help entry exists | S | after 149.1 |
+| 149.3 | workflows/autonomous.md — rewrite-not-append + size guard + Decision Log cap | rewrite-current-state present; update-current-state removed; auto-compact guard present | S | parallel 149.1 |
+| 149.4 | Contract tests + CHANGELOG [3.12.0] + version bump | tests pass; version = 3.12.0; git clean + pushed | S | after 149.1-149.3 |
+
+**Verification**:
+- [ ] `node bin/vp-tools.cjs tracker compact --dry-run` exits 0
+- [ ] `npx jest tests/unit/phase149-debt002-tracker-compact.test.js` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.12.0`
+- [ ] `grep "\[3.12.0\]" CHANGELOG.md` → ≥1 hit

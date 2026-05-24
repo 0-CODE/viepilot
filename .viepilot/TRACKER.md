@@ -32,9 +32,9 @@
 - **Last Completed Phase**: **147** ✅ (ENH-101 vp-crystallize adapter context files → v3.10.0)
 - **Current Phase**: ~~148~~ — ✅ done (v3.11.0)
 - **Last Completed Phase**: **148** ✅ (ENH-100 vp-qa scan-first QA agent generator → v3.11.0)
-- **Next Phase**: — (all planned phases complete)
-- **Current Task**: —
-- **Last Activity**: 2026-05-25 — Phase 148 complete: ENH-100 vp-qa scan-first QA agent generator → v3.11.0
+- **Current Phase**: **149** — DEBT-002: TRACKER.md compaction → v3.12.0
+- **Current Task**: 149.1 — lib/tracker-compact.cjs
+- **Last Activity**: 2026-05-25 — Phase 149 planned: DEBT-002 TRACKER.md compaction
 
 ## Progress Overview
 ```
@@ -51,6 +51,7 @@ Phase 35 (ENH-022)    [██████████] done
 3.9.1 (released — BUG-031 hooks install wrong path fix)
 3.10.0 (released — ENH-101 vp-crystallize adapter context files)
 3.11.0 (released — ENH-100 vp-qa scan-first QA agent generator)
+3.12.0 (planned — DEBT-002 TRACKER.md compaction)
 ```
 
 
@@ -58,6 +59,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-25 | DEBT-002 logged: TRACKER.md unbounded growth (31 459 tokens observed in real project) — rewrite-not-append fix + tracker compact command + auto-compact guard | Real project hit 25 000 token read limit; file unreadable | Backlog |
 | 2026-05-25 | ENH-101 logged: vp-crystallize generates adapter context files — CLAUDE.md (Claude Code), .cursor/rules/ (Cursor), AGENTS.md (Codex), GEMINI.md (Antigravity), .github/copilot-instructions.md (Copilot); LLM-distilled from .viepilot/ sources | User: crystallize should generate CLAUDE.md + similar for all adapters | Backlog |
 | 2026-05-25 | ENH-100 updated (×2): vp-qa scan-first design + adapter-aware output — Claude Code = .claude/agents/ (parallel fan-out), Codex = AGENTS.md section (sequential), Cursor = .cursor/rules/ MDC, Antigravity = .agents/skills/, Copilot = .github/agents/ | User: Codex và các adapter khác cần được hỗ trợ | Backlog |
 | 2026-05-25 | ENH-100 logged: vp-qa skill — project-level QA agent team generator (orchestrator + 4 specialist subagents: completeness, security, performance, context); stack-aware templates; vp-request integration; AskUserQuestion interactive flow | User: manual prompt pattern for Claude Code agents → first-class ViePilot feature | Backlog |
