@@ -259,7 +259,7 @@ ELSE:
 
 **Agent Teams mode** (when `ADAPTER_CONTEXT.orchestration.teams == true` AND pending task count ≥ 8):
 - Set `TEAMS_MODE = true`
-- Activate shared TodoWrite task list for teammate coordination
+- Activate shared TaskCreate/TaskList task list for teammate coordination
 - Each Agent worker reads from the shared list rather than receiving an explicit task prompt
 
 #### 3b-orch: Orchestrator Fan-out (Claude Code only)
@@ -342,7 +342,7 @@ On `QUALITY_GATE: FAIL` or `PARTIAL` → route to control point (retry cluster /
 On `QUALITY_GATE: PASS` → update PHASE-STATE.md (all cluster tasks → done), update TRACKER.md, continue.
 
 **Teams mode** (when `TEAMS_MODE == true`):
-- Write all pending task IDs to shared `TodoWrite` list at phase start
+- Write all pending task IDs to shared task list via `TaskCreate` at phase start
 - Each `Agent(vp-task-executor)` reads next available task from shared list
 - Prevents duplicate execution when dispatching ≥ 8 tasks concurrently
 
@@ -689,6 +689,13 @@ quality_gate:
   - no_lint_errors: true
 ```
 
+**Monitor pattern (ENH-099) — long-running verifications:**
+For tests or builds that take minutes, use the `Monitor` tool instead of blocking `Bash`:
+```
+Monitor: tail -f test-output.log — react when output contains "FAIL" or "Tests: N failed"
+```
+This keeps the agentic loop active while the background process runs.
+
 #### Test Generation — test-generator-agent (ENH-057, BUG-028 fix)
 
 **Trigger**: current task is the last task in the phase AND task.md contains `## Acceptance Criteria`
@@ -844,6 +851,12 @@ Before phase-level verification, run a UI stub check:
 1. Run phase-level verification
 2. Check phase quality gate
 3. Write SUMMARY.md using `templates/phase/SUMMARY.md` as base.
+
+**PushNotification (ENH-099, optional):**
+After phase quality gate passes, send a desktop + phone alert:
+- Message: "Phase {N} — {name} complete ✅ ({tasks} tasks, {tests} tests)"
+- Requires Anthropic-hosted Claude Code (not available on Bedrock/Vertex).
+- Call: `PushNotification` tool with the summary message.
 
    Populate `{{CREATED_FILES}}`, `{{MODIFIED_FILES}}`, `{{DELETED_FILES}}` from git:
    ```bash
