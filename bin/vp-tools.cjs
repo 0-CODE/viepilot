@@ -1007,7 +1007,7 @@ ${colors.cyan}Examples:${colors.reset}
             matcher: {},
             hooks: [{
               type: 'command',
-              command: `node ${path.join(home, '.viepilot', 'hooks', 'brainstorm-staleness.cjs')}`
+              command: `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'brainstorm-staleness.cjs')}`
             }]
           }]
         }
@@ -1024,7 +1024,7 @@ ${colors.cyan}Examples:${colors.reset}
       }
       const home = os.homedir();
       const configPath = adapter.hooks.configFile(home);
-      const hookCommand = `node ${path.join(home, '.viepilot', 'hooks', 'brainstorm-staleness.cjs')}`;
+      const hookCommand = `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'brainstorm-staleness.cjs')}`;
 
       // Read existing settings.json (create if missing)
       let settings = {};
@@ -1032,15 +1032,22 @@ ${colors.cyan}Examples:${colors.reset}
         try { settings = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_e) { settings = {}; }
       }
 
-      // Merge hook entry — idempotent check
+      // Merge hook entry — migration + idempotent check
       if (!settings.hooks) settings.hooks = {};
       if (!settings.hooks.Stop) settings.hooks.Stop = [];
 
+      // Step A: remove any stale entry with the OLD wrong path
+      const wrongPath = `node ${path.join(home, '.viepilot', 'hooks', 'brainstorm-staleness.cjs')}`;
+      settings.hooks.Stop = settings.hooks.Stop.filter((entry) =>
+        !(Array.isArray(entry.hooks) &&
+          entry.hooks.some((h) => h.type === 'command' && h.command === wrongPath))
+      );
+
+      // Step B: idempotent check for correct path
       const alreadyInstalled = settings.hooks.Stop.some((entry) =>
         Array.isArray(entry.hooks) &&
         entry.hooks.some((h) => h.type === 'command' && h.command === hookCommand)
       );
-
       if (alreadyInstalled) {
         console.log(formatSuccess('ViePilot staleness hook already installed.'));
         console.log(`  Config: ${configPath}`);
