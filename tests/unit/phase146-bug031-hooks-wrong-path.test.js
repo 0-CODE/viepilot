@@ -22,8 +22,8 @@ describe('Phase 146 — BUG-031: hooks install wrong path fix', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.12.0', () => {
-      expect(pkg.version).toBe('3.12.0');
+    it('version is 3.12.1', () => {
+      expect(pkg.version).toBe('3.12.1');
     });
   });
 });

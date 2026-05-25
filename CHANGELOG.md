@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.12.1] - 2026-05-26
+### Fixed
+- `bin/vp-tools.cjs` `check-update --silent`: OS session guard file (`/tmp/vp-update-check-{today}.done`) — subsequent skill invocations skip npm call entirely, exit with 0 stdout (0 tokens) (DEBT-003)
+- `lib/viepilot-update.cjs`: reduce version cache TTL 24h → 6h for more timely update notices (DEBT-003)
+
+---
+
 ## [3.12.0] - 2026-05-25
 ### Changed
 - `workflows/autonomous.md`: tracker-agent now rewrites Current State block (find-and-replace)

@@ -151,8 +151,8 @@ describe('Phase 149 — DEBT-002: TRACKER.md Compaction', () => {
   });
 
   describe('G) version', () => {
-    it('package.json version is 3.12.0', () => {
-      expect(pkg.version).toBe('3.12.0');
+    it('package.json version is 3.12.1', () => {
+      expect(pkg.version).toBe('3.12.1');
     });
   });
 });
