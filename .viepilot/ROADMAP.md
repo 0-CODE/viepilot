@@ -4046,3 +4046,24 @@ for already-bloated files (`vp-tools tracker compact`).
 - [x] `npx jest tests/unit/phase149-debt002-tracker-compact.test.js` → all pass
 - [x] `node -e "console.log(require('./package.json').version)"` → `3.12.0`
 - [x] `grep "\[3.12.0\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 150 — DEBT-003: check-update OS session guard (v3.12.1)
+
+**Goal**: Eliminate 1 000–2 000 token init cost of `check-update --silent` on every skill start.
+OS session guard file written after first check — subsequent calls in same OS session exit with 0 stdout (0 tokens). Also reduced TTL 24h → 6h.
+**Estimated Tasks**: 2
+**Status**: done ✅ (2026-05-26)
+**Version Target**: 3.12.1
+**Dependencies**: Phase 149 ✅
+**Directory**: `.viepilot/phases/150-debt003-update-check-cache/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 150.1 | bin/vp-tools.cjs + lib/viepilot-update.cjs — OS guard file + 6h TTL | guard written; fast-path exits < 800ms, 0 stdout; TTL = 6h | S | — |
+| 150.2 | Contract tests + CHANGELOG [3.12.1] + version bump | tests pass; version = 3.12.1; git clean + pushed | S | after 150.1 |
+
+**Verification**:
+- [x] Second `check-update --silent` in same OS session exits < 800ms, no stdout
+- [x] `npx jest tests/unit/phase150-debt003-update-check-cache.test.js` → all pass
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.12.1`
+- [x] `grep "\[3.12.1\]" CHANGELOG.md` → ≥1 hit

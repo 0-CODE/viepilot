@@ -1,35 +1,35 @@
 {
   "milestone": "M3.0",
   "milestone_name": "Per-Adapter Intelligence Refactor + Intake + Orchestrator Delegation",
-  "phase": 149,
-  "phase_name": "DEBT-002-tracker-compact",
+  "phase": 150,
+  "phase_name": "DEBT-003-update-check-session-guard",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
-  "last_activity": "2026-05-25T00:00:00Z",
+  "last_activity": "2026-05-26T00:00:00Z",
   "version": {
-    "current": "3.12.0",
+    "current": "3.12.1",
     "next": null
   },
   "progress": {
-    "phases_total": 149,
-    "phases_completed": 149,
-    "tasks_total": 4,
-    "tasks_completed": 4,
+    "phases_total": 150,
+    "phases_completed": 150,
+    "tasks_total": 2,
+    "tasks_completed": 2,
     "percentage": 100
   },
   "context": {
     "notes": [
+      "Phase 150 complete: DEBT-003 check-update OS session guard → v3.12.1",
+      "2344 tests passing across 119 suites.",
+      "bin/vp-tools.cjs: OS session guard /tmp/vp-update-check-{today}.done — second+ skill invocations = 0 stdout, 0 tokens.",
+      "lib/viepilot-update.cjs: TTL reduced 24h → 6h.",
       "Phase 149 complete: DEBT-002 TRACKER.md compaction → v3.12.0",
-      "2334 tests passing across 118 suites.",
-      "lib/tracker-compact.cjs: compact() + rewriteCurrentState() — rescue bloated TRACKER.md.",
-      "bin/vp-tools.cjs: tracker compact [--keep N] subcommand added.",
-      "workflows/autonomous.md: rewrite-not-append (rewrite-current-state op) + size guard (>400 lines) + Decision Log cap (20 rows).",
       "Phase 148 complete: ENH-100 vp-qa scan-first QA agent generator → v3.11.0",
       "Phase 147 complete: ENH-101 vp-crystallize adapter context files → v3.10.0"
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-05-25T00:00:00Z"
+  "updated_at": "2026-05-26T00:00:00Z"
 }

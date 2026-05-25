@@ -1,12 +1,12 @@
 # Phase 150 State — DEBT-003: check-update OS session guard + version cache
 
-## Status: pending
+## Status: done
 
 ## Tasks
 | ID | Title | Status |
 |----|-------|--------|
-| 150.1 | bin/vp-tools.cjs + lib/viepilot-update.cjs — OS session guard + 6h TTL | pending |
-| 150.2 | Contract tests + CHANGELOG [3.12.1] + version bump | pending |
+| 150.1 | bin/vp-tools.cjs + lib/viepilot-update.cjs — OS session guard + 6h TTL | done |
+| 150.2 | Contract tests + CHANGELOG [3.12.1] + version bump | done |
 
 ## Version Target
 3.12.0 → **3.12.1**
@@ -24,5 +24,5 @@
 ## Dependencies
 - Phase 149 ✅
 
-## Started: —
-## Completed: —
+## Started: 2026-05-26
+## Completed: 2026-05-26
