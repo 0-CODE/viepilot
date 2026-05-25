@@ -1174,10 +1174,43 @@ ${colors.cyan}Examples:${colors.reset}
     const silent = args.includes('--silent');
     const json = args.includes('--json');
     const force = args.includes('--force');
+
+    // OS session guard — skip npm check if already done today (DEBT-003)
+    if (!force && !json) {
+      const _os = require('os');
+      const _today = new Date().toISOString().split('T')[0];
+      const _guardFile = require('path').join(_os.tmpdir(), `vp-update-check-${_today}.done`);
+      if (fs.existsSync(_guardFile)) {
+        try {
+          const _g = JSON.parse(fs.readFileSync(_guardFile, 'utf8'));
+          if (silent) {
+            if (_g.updateAvailable) { process.stdout.write(_g.latest + '\n'); process.exit(1); }
+            process.exit(0);
+          }
+          process.exit(0);
+        } catch (_) { /* corrupt guard — fall through */ }
+      }
+    }
+
     const { checkLatestVersion } = require('../lib/viepilot-update.cjs');
 
     checkLatestVersion({ force })
       .then(({ upToDate, installed, latest }) => {
+        // Write OS session guard for subsequent skill inits (DEBT-003)
+        if (silent || !json) {
+          try {
+            const _os2 = require('os');
+            const _today2 = new Date().toISOString().split('T')[0];
+            const _gf = require('path').join(_os2.tmpdir(), `vp-update-check-${_today2}.done`);
+            fs.writeFileSync(_gf, JSON.stringify({
+              updateAvailable: !upToDate,
+              latest,
+              installed,
+              checkedAt: new Date().toISOString()
+            }));
+          } catch (_) { /* non-fatal */ }
+        }
+
         const has_update = !upToDate;
         if (json) {
           process.stdout.write(JSON.stringify({ installed, latest, has_update }) + '\n');
