@@ -4067,3 +4067,27 @@ OS session guard file written after first check — subsequent calls in same OS 
 - [x] `npx jest tests/unit/phase150-debt003-update-check-cache.test.js` → all pass
 - [x] `node -e "console.log(require('./package.json').version)"` → `3.12.1`
 - [x] `grep "\[3.12.1\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 151 — BUG-032: install version-mismatch warning + skill log clarity (v3.12.2)
+
+**Goal**: Fix `npx viepilot install` silently missing new skills when the installed package is
+behind npm latest. Two-pronged: (1) `installCommand` warns when installed < npm latest so users
+know to upgrade first; (2) `applyInstallPlan` logs `new: {path}` for first-time skill installs,
+making newly-added skills (e.g. `vp-qa`) visible in the output instead of silent.
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.12.2
+**Dependencies**: Phase 150 ✅
+**Directory**: `.viepilot/phases/151-bug032-install-version-warning/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 151.1 | lib/viepilot-install.cjs — `new:` log prefix when copy_dir creates a new dest | `new:` in logs when dest missing; no log when dest exists; dry-run unchanged | S | — |
+| 151.2 | bin/viepilot.cjs — installCommand version-mismatch warning (installed < npm latest) | warning printed when behind; silent when up-to-date; install never aborted on error | S | after 151.1 |
+| 151.3 | Contract tests + CHANGELOG [3.12.2] + version bump | 7 tests pass; version = 3.12.2; CHANGELOG updated | S | after 151.1-2 |
+
+**Verification**:
+- [ ] `node bin/viepilot.cjs install --dry-run --target claude-code --yes` → exits 0, no crash
+- [ ] `npx jest tests/unit/phase151-bug032-install-version-warning.test.js --no-coverage` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.12.2`
+- [ ] `grep "\[3.12.2\]" CHANGELOG.md` → ≥1 hit

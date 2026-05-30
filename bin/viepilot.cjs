@@ -15,6 +15,12 @@ const { buildInstallPlan, applyInstallPlan, resolveViepilotPackageRoot } = requi
   'viepilot-install.cjs',
 ));
 const { adapters: adapterMap } = require(path.join(__dirname, '..', 'lib', 'adapters', 'index.cjs'));
+const { readInstalledVersion, fetchLatestNpmVersion } = require(path.join(
+  __dirname, '..', 'lib', 'viepilot-info.cjs'
+));
+const { compareSemver } = require(path.join(
+  __dirname, '..', 'lib', 'viepilot-update.cjs'
+));
 
 // UI target list — keep cursor-agent and cursor-ide as distinct choices for users.
 const LANGUAGES = [
@@ -362,6 +368,30 @@ async function installCommand(rawArgs) {
 
   console.log(`\nSelected targets: ${selectedTargets.join(', ')}`);
   console.log(`Communication language: ${communicationLang}`);
+
+  // BUG-032: warn when installed version is behind npm latest — new skills may be missing
+  try {
+    const pkgRoot = resolveViepilotPackageRoot(__dirname);
+    const installed = pkgRoot ? readInstalledVersion(pkgRoot) : null;
+    const latest = fetchLatestNpmVersion();
+    if (installed && latest.ok && compareSemver(installed, latest.version) < 0) {
+      const line1 = `⚠  viepilot@${installed} is behind npm@${latest.version}`;
+      const line2 = '   New skills in the latest version may not be installed.';
+      const line3 = '   Upgrade first:';
+      const line4 = '     npm i -g viepilot && vp-tools install';
+      const W = 65;
+      const bar = '─'.repeat(W);
+      console.log(`\n┌${bar}┐`);
+      console.log(`│ ${line1.padEnd(W - 1)}│`);
+      console.log(`│ ${line2.padEnd(W - 1)}│`);
+      console.log(`│ ${line3.padEnd(W - 1)}│`);
+      console.log(`│ ${line4.padEnd(W - 1)}│`);
+      console.log(`└${bar}┘`);
+    }
+  } catch (_) {
+    // non-blocking — network or fs errors must not abort install
+  }
+
   const run = runInstallViaNode(selectedTargets, options.dryRun, communicationLang);
   const results = selectedTargets.map((target) => ({
     ok: run.ok,

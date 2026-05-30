@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.12.2] - 2026-05-30
+### Fixed
+- BUG-032: `npx viepilot install` silently missed new skills (e.g. `vp-qa`) when the globally-installed package was behind npm latest (2.50.1 vs 3.12.1). `installCommand` now prints a non-blocking version-mismatch warning with the upgrade command when installed < npm latest.
+- BUG-032: `applyInstallPlan` now logs `new: {path}` when a `copy_dir` step creates a directory for the first time, making newly-added skills visible in the install output instead of appearing silently.
+
+---
+
 ## [3.12.1] - 2026-05-26
 ### Fixed
 - `bin/vp-tools.cjs` `check-update --silent`: OS session guard file (`/tmp/vp-update-check-{today}.done`) — subsequent skill invocations skip npm call entirely, exit with 0 stdout (0 tokens) (DEBT-003)

@@ -36,7 +36,8 @@
 - **Last Completed Phase**: **150** ✅ (DEBT-003 check-update OS session guard → v3.12.1)
 - **Next Phase**: — (all planned phases complete)
 - **Current Task**: —
-- **Last Activity**: 2026-05-26 — Phase 150 complete: DEBT-003 check-update session guard → v3.12.1
+- **Current Phase**: 151 (planned — BUG-032 install version-mismatch warning → v3.12.2)
+- **Last Activity**: 2026-05-30 — Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity → v3.12.2
 
 ## Progress Overview
 ```
@@ -62,6 +63,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-05-30 | Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity (3 tasks → v3.12.2) | `/vp-evolve` | 151 |
+| 2026-05-30 | BUG-032 logged: `npx viepilot install` misses new skills from newer npm — `vp-qa` absent (installed 2.50.1, npm 3.12.1); root cause: npx resolves cached binary; fix: version mismatch warning + `new:` log prefix | `/vp-request` | Backlog |
 | 2026-05-25 | DEBT-002 logged: TRACKER.md unbounded growth (31 459 tokens observed in real project) — rewrite-not-append fix + tracker compact command + auto-compact guard | Real project hit 25 000 token read limit; file unreadable | Backlog |
 | 2026-05-25 | ENH-101 logged: vp-crystallize generates adapter context files — CLAUDE.md (Claude Code), .cursor/rules/ (Cursor), AGENTS.md (Codex), GEMINI.md (Antigravity), .github/copilot-instructions.md (Copilot); LLM-distilled from .viepilot/ sources | User: crystallize should generate CLAUDE.md + similar for all adapters | Backlog |
 | 2026-05-25 | ENH-100 updated (×2): vp-qa scan-first design + adapter-aware output — Claude Code = .claude/agents/ (parallel fan-out), Codex = AGENTS.md section (sequential), Cursor = .cursor/rules/ MDC, Antigravity = .agents/skills/, Copilot = .github/agents/ | User: Codex và các adapter khác cần được hỗ trợ | Backlog |
@@ -274,6 +277,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
 | DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
 | ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
 | BUG-029 | 🐛 | vp-intake Excel M365 write-back stub — writeback.cjs task 123.4 never implemented | high | new |
