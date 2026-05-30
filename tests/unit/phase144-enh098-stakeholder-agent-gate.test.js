@@ -87,7 +87,7 @@ describe('Phase 144 — ENH-098: Stakeholder Agent Gate', () => {
 
   describe('package.json', () => {
     it('version is 3.12.1', () => {
-      expect(pkg.version).toBe('3.12.1');
+      expect(pkg.version).toBe('3.12.2');
     });
   });
 });

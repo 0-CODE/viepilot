@@ -105,7 +105,7 @@ describe('Phase 150 — DEBT-003: check-update OS session guard', () => {
     test('package.json version is 3.12.1', () => {
       delete require.cache[require.resolve(path.join(ROOT, 'package.json'))];
       const pkg = require(path.join(ROOT, 'package.json'));
-      expect(pkg.version).toBe('3.12.1');
+      expect(pkg.version).toBe('3.12.2');
     });
   });
 });
