@@ -5,6 +5,20 @@ All notable changes to ViePilot will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.0] — 2026-06-02
+
+### Added
+- **ENH-102** `vp-design` v2.0.0 — Aesthetic Commitment Framework (Phase 152)
+  - Embed Anthropic frontend-design 4-dimension guidelines (Typography/Color/Motion/Composition)
+    directly into `workflows/design.md` — adapter-independent, no external skill install needed
+  - `--init` Step 0: aesthetic direction AUQ before brand Q&A
+    (Minimal/Editorial · Bold/Expressive · Dark/Premium · Custom)
+  - Font list updated: Inter/Arial/Roboto removed; Syne, Bricolage Grotesque, DM Serif Display added
+  - `aesthetic_direction` field added to `design.md` YAML front matter
+  - Source attribution: anthropics/claude-code plugins/frontend-design (Apache 2.0)
+
+---
+
 ## [Unreleased]
 
 ---

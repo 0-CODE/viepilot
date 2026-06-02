@@ -5,7 +5,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-DESIGN  v1.0.0 (fw 2.45.0)
+ VIEPILOT ► VP-DESIGN  v2.0.0 (fw 3.13.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -129,7 +129,7 @@ Implements the [Design.MD v1 spec](https://github.com/google-labs-code/design.md
 a Google Labs open standard (Apache 2.0) for describing visual design systems to AI coding agents.
 
 **Commands:**
-- `--init` : Create `design.md` from scratch via Q&A, or import from awesome-design-md community library (55+ brand examples)
+- `--init` : Create `design.md` via Q&A (aesthetic direction → brand → color → typography → spacing) or import from awesome-design-md community library (55+ brand examples). Embeds Aesthetic Commitment Framework — avoids "AI slop" defaults (Inter/purple gradients)
 - `--sync` : Sync design.md tokens → Tailwind config / CSS custom properties / SCSS variables
 - `--audit` : Scan project HTML/CSS files for compliance; report deviations (❌ / ⚠️ / ✅)
 - `--import [brand]` : Fetch community template from awesome-design-md (Linear, Notion, Stripe, Vercel, Figma...)
@@ -144,6 +144,14 @@ a Google Labs open standard (Apache 2.0) for describing visual design systems to
 
 **After:** `design.md` is ready for `/vp-crystallize` (Step 1D.14 export) and
 `/vp-auto` (Preflight 5.5 token injection into UI tasks)
+
+**Aesthetic Commitment Framework (ENH-102):**
+Embedded from Anthropic's frontend-design skill guidelines (Apache 2.0). Adapter-independent —
+no external skill installation required. Forces deliberate aesthetic choice across 4 dimensions:
+Typography (distinctive fonts, avoid Inter/Arial) · Color (cohesive theme, avoid purple gradients) ·
+Motion (intentional animations) · Composition (asymmetry, hierarchy). Activated in `--init` flow
+via Step 0 aesthetic direction AUQ. `aesthetic_direction` field stored in design.md front matter
+and forwarded to brainstorm --ui HTML generation context.
 </objective>
 
 <execution_context>
@@ -172,6 +180,11 @@ a Google Labs open standard (Apache 2.0) for describing visual design systems to
 Execute workflow from `@$HOME/.claude/viepilot/workflows/design.md`
 
 ### --init flow (Q&A from scratch)
+
+0. **Aesthetic Direction:** (NEW — ENH-102)
+   - Commit to aesthetic direction before brand Q&A
+   - Options: Minimal/Editorial · Bold/Expressive · Dark/Premium · Custom
+   - Stored as `aesthetic_direction` in design.md YAML front matter
 
 1. **Brand identity:**
    - Brand name?
@@ -243,6 +256,9 @@ When user says "import" or triggers `--import`:
 - [ ] `--audit` produces severity-categorized compliance report
 - [ ] `--import` fetches community template and applies per user choice
 - [ ] AUQ used for catalog picker, conflict resolution, apply mode
+- [ ] `--init` Step 0 asks aesthetic direction before brand Q&A
+- [ ] Font options exclude Inter/Arial/Roboto; include Syne, Bricolage Grotesque, DM Serif
+- [ ] `design.md` YAML includes `aesthetic_direction` field
 </success_criteria>
 
 ## Adapter Compatibility

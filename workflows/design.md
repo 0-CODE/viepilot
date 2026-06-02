@@ -74,6 +74,55 @@ Same apply logic as init_import. Falls back to Q&A if fetch fails.
 
 ---
 
+## Aesthetic Commitment Framework
+
+> Sourced from anthropics/claude-code — plugins/frontend-design (Apache 2.0).
+> Embedded for adapter-independence: works on Claude Code, Cursor, Codex, Antigravity, Copilot
+> without requiring the external skill to be installed.
+
+Before generating any HTML, CSS, or design tokens, Claude MUST commit to an aesthetic direction.
+Generic defaults ("AI slop") are explicitly prohibited.
+
+### Dimension 1 — Typography
+- AVOID: Inter, Roboto, Arial, Space Grotesk (overused, no personality)
+- CHOOSE: fonts with character — DM Serif Display, Syne, Plus Jakarta Sans, Bricolage Grotesque,
+  Clash Display, Fraunces, Cabinet Grotesk, Satoshi, or any distinctive pairing
+- Pair a display font (headings) with a body font (prose) — never use one font for both
+- Font choice must reinforce the aesthetic direction
+
+### Dimension 2 — Color & Theme
+- AVOID: generic purple gradients (#6366f1 → #8b5cf6), cookie-cutter palettes
+- CHOOSE: cohesive theme with one dominant color + sharp accent; derive surface/background from brand
+- Use CSS custom properties (--color-primary, --color-surface, etc.) — never raw hex in components
+- Dark/light contrast must be deliberate, not default
+
+### Dimension 3 — Motion
+- AVOID: scattered micro-interactions with no narrative
+- CHOOSE: high-impact orchestrated animations — scroll-triggers, entrance sequences, hover reveals
+- Complexity matches vision: maximalist = elaborate; minimalist = precision timing only
+- Motion must feel intentional, not decorative
+
+### Dimension 4 — Composition
+- AVOID: symmetric centered layouts, equal padding everywhere, predictable grid
+- CHOOSE: asymmetry, generous negative space, overlap, unexpected element placement
+- Visual hierarchy through size/weight contrast, not just color
+- "Boldness and refined minimalism both work — the key is intentionality, not intensity"
+
+### Aesthetic Direction Options
+When running `--init`, Claude asks user to commit to one direction before brand Q&A:
+
+| Direction | Character |
+|-----------|-----------|
+| `minimal-editorial` | Clean whitespace, editorial typography, restrained palette |
+| `bold-expressive` | Strong type, high-contrast color, geometric shapes |
+| `brutalist` | Raw structure visible, stark contrast, no ornament |
+| `retro-futuristic` | Nostalgic motifs + clean tech, mixed eras |
+| `organic-warm` | Rounded forms, earthy palette, approachable texture |
+| `dark-premium` | Deep surfaces, glowing accents, sophisticated motion |
+| `custom` | User describes their own direction |
+
+---
+
 ## Command Router
 
 Parse the first recognized flag from args:
@@ -100,6 +149,25 @@ Check if `--import` is also present (or user says "import"/"from community"):
 ---
 
 ### Mode A: Q&A from Scratch
+
+**Step 0 — Aesthetic Direction**
+
+```
+AUQ prompt: "What aesthetic direction should this design commit to?"
+  options:
+    - label: "Minimal / Editorial"
+      description: "Clean whitespace, restrained typography, quiet sophistication"
+    - label: "Bold / Expressive"
+      description: "Strong type hierarchy, high contrast, energetic color"
+    - label: "Dark / Premium"
+      description: "Deep surfaces, glowing accents, refined motion"
+    - label: "Custom — I'll describe it"
+      description: "Describe your own direction in 2-3 words"
+```
+
+Store as `aesthetic_direction: "{choice}"` in design.md YAML front matter.
+
+---
 
 **Step 1 — Brand Identity**
 
@@ -136,11 +204,13 @@ If "Enter hex manually" → prompt: "Enter hex color (e.g. #ff5500):"
 ```
 AUQ prompt: "Font family:"
   options:
-    - "Inter — versatile, modern UI standard"
-    - "Geist — clean, developer-focused (Vercel)"
+    - "Syne — geometric, editorial personality"
+    - "DM Serif Display / DM Sans — editorial contrast pairing"
+    - "Bricolage Grotesque — expressive variable font"
     - "Plus Jakarta Sans — friendly, contemporary"
-    - "DM Sans — geometric, approachable"
-    - "Custom — specify font name"
+    - "Custom — specify font name or pairing"
+
+Note: Direction `{aesthetic_direction}` selected — font choices filtered accordingly.
 ```
 
 ```
@@ -206,6 +276,7 @@ Write `design.md` with the following structure:
 
 ```markdown
 ---
+aesthetic_direction: "{direction}"
 colors:
   primary: "{hex}"
   surface: "{hex}"
