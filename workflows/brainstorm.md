@@ -414,7 +414,7 @@ Continue brainstorm normally. Do not re-generate workspace.
 Import into session notes.md:
 - `ui_pages.routes[]` → populate `## pages_inventory` section
 - `ui_components` data → populate `## components_inventory` section
-- `ui_tokens` summary → populate `## design_tokens` section
+- `ui_tokens` summary → populate `## design_system` section
 - Set notes.md front matter: `reverse_engineered: true`
 
 Display import summary:
@@ -639,73 +639,103 @@ If the user is brainstorming a project with UI/UX or requests a visual design:
 
 1. Create a direction workspace for the current session (minimum `style.css` + `notes.md`; HTML per chosen layout).
 2. Each time the user changes a requirement/layout/component:
-   - Update HTML/CSS direction directly
+   - **Before writing HTML/CSS:** load aesthetic context (see ENH-103 Aesthetic Context Injection below)
+   - Update HTML/CSS direction with aesthetic context active
    - Record decision + rationale in `notes.md` (single source of truth for design intent)
 
-### Design Token Extraction (ENH-076)
+### Design System Delegate Hook (ENH-103)
 
-**Trigger:** UI Direction Mode active (`--ui` flag) OR ≥2 design keywords detected in session:
-`color` / `font` / `brand` / `spacing` / `typography` / `palette` / `theme` / `style`
+**When:** UI Direction Mode activates (user selects "Both" or "UI Direction only" at scope-lock AUQ).
 
-**Extraction process:**
-During Q&A, AI tracks design decisions and maps them to a TOKEN_MAP:
-- Color mentions → `tokens.colors.*` (primary, surface, accent, error, success, warning)
-- Font/typeface mentions → `tokens.typography.fontFamily`, `fontSize`
-- Size/scale/rhythm mentions → `tokens.spacing.base`, `tokens.spacing.scale`
-- Roundness/corner mentions → `tokens.rounded.*` (sm/md/lg/full)
+**Step — Check design.md presence:**
 
-**Output — `.viepilot/ui-direction/{session-id}/design.md`** (Design.MD v1 spec):
+Look for `design.md` in:
+1. `.viepilot/ui-direction/{session-id}/design.md` (session-scoped)
+2. `design.md` (project root)
+
+**If design.md EXISTS:**
+- Parse YAML front matter → extract `aesthetic_direction` + TOKEN_MAP
+- Show inline summary:
+  ```
+  🎨 Design system loaded: {aesthetic_direction} · primary={hex} · font={font}
+  ```
+- Proceed to HTML generation with aesthetic context active
+
+**If design.md ABSENT:**
+- Show AUQ:
+  ```
+  question: "No design system found. Create one before generating UI?"
+  options:
+    - label: "Create with /vp-design --init (Recommended)"
+      description: "Aesthetic direction + brand tokens → consistent, non-generic HTML"
+    - label: "Skip — generate HTML without design tokens"
+      description: "Continue brainstorm; design.md can be created later with /vp-design"
+  ```
+- **Option 1 (Create):** Trigger vp-design --init flow inline. After design.md is written, continue UI Direction with loaded aesthetic context.
+- **Option 2 (Skip):** Proceed without design tokens. Log `design_skipped: true` in notes.md. HTML generation will use default tokens — Aesthetic Commitment Framework still applied from vp-design embedded guidelines (adapter-independent).
+
+**notes.md update (both paths):**
+Append to notes.md:
 ```yaml
----
-name: "{project-name}"
-description: "{one-line brand description from session}"
-colors:
-  primary: "{hex}"
-  surface: "{hex}"
-  accent: "{hex}"
-typography:
-  fontFamily: "{font}, sans-serif"
-  fontSize:
-    base: 16
-spacing:
-  base: 8
-  scale: [4, 8, 16, 24, 32, 48]
-rounded:
-  sm: 4px
-  md: 8px
----
-
-## Overview
-{Brand personality extracted from session}
-
-## Colors
-{Color rationale from session decisions}
-
-## Typography
-{Font rationale from session decisions}
+## design_system
+design_md_path: "{path or null}"
+aesthetic_direction: "{value or null}"
+design_skipped: {true|false}
 ```
 
-**notes.md section added** (append to session notes.md):
-```yaml
-## design_tokens
-colors:
-  primary: "{hex}"
-typography:
-  fontFamily: "{font}"
-spacing_base: 8
-design_md_path: .viepilot/ui-direction/{session-id}/design.md
-design_md_generated: true
+### Aesthetic Context Injection (ENH-103)
+
+**When:** Any HTML file is about to be created or updated in UI Direction Mode.
+
+**Step 1 — Build aesthetic context:**
+
+```
+AESTHETIC_CONTEXT = {}
+
+// Source A: design.md (primary — session or project root)
+if design.md loaded:
+  AESTHETIC_CONTEXT.direction    = design.md.aesthetic_direction
+  AESTHETIC_CONTEXT.primary      = design.md.colors.primary
+  AESTHETIC_CONTEXT.font         = design.md.typography.font_sans
+  AESTHETIC_CONTEXT.spacing_base = design.md.spacing.base
+  AESTHETIC_CONTEXT.rounded      = design.md.rounded.md
+
+// Source B: Aesthetic Commitment Framework (always active — from workflows/design.md)
+// Applied regardless of whether design.md exists (adapter-independent baseline)
+AESTHETIC_CONTEXT.framework_rules = [
+  "Avoid Inter, Roboto, Arial — choose distinctive fonts",
+  "Avoid purple gradients — use cohesive brand-derived palette",
+  "Motion must be intentional — not decorative micro-interactions",
+  "Use asymmetry and negative space for composition"
+]
+
+// Source C: external frontend-design skill (opt-in, if installed via skill registry)
+if skill_registry has 'frontend-design':
+  merge skill.best_practices into AESTHETIC_CONTEXT.framework_rules
 ```
 
-**After generation:** Show inline summary:
-```
-🎨 Design.MD generated: primary={hex} | font={font} | spacing={n}px
-   Path: .viepilot/ui-direction/{session-id}/design.md
+**Step 2 — Inject as generation context:**
+
+AESTHETIC_CONTEXT is prepended as implicit constraint before HTML generation:
+- `direction` guides overall aesthetic choices (typography pairing, layout approach)
+- `primary`/`font`/`spacing_base`/`rounded` → CSS custom properties in generated `<style>` block
+- `framework_rules` → constraints Claude applies during generation (no explicit output to user)
+
+**Step 3 — CSS custom properties (when TOKEN_MAP present):**
+
+Ensure generated `style.css` / inline `<style>` includes:
+```css
+:root {
+  --color-primary: {primary};
+  --font-sans: '{font}', sans-serif;
+  --spacing-base: {spacing_base}px;
+  --radius-md: {rounded};
+}
 ```
 
-**Incremental updates:** If user refines a color or font later in the session, update
-`design.md` and `notes.md ## design_tokens` in place (same as how `index.html` is updated
-incrementally as design decisions evolve).
+**Fallback (no design.md, no external skill):**
+Apply `framework_rules` from Source B alone — prevents AI slop defaults even without brand tokens.
+Proceed silently, no warning shown to user.
 
 ### Skill Registry Integration (FEAT-020)
 
@@ -1082,7 +1112,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `user-data.html` | User-owned data: profile field list, privacy rights matrix (export/erasure), connected OAuth providers, session/device management, 2FA config, consent log schema |
 | `design.html` | Design system visual reference: color swatches grid, typography scale table, spacing grid, border-radius samples, component token table (ENH-076) |
 
-**design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_tokens` in `notes.md`).
+**design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_system` in `notes.md`).
 
 **design.html content sections:**
 
@@ -1092,7 +1122,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 4. **Shape / Border Radius** — 4 visual boxes showing sharp/subtle/rounded/pill radii with CSS var labels (`--rounded-sm` → `--rounded-full`)
 5. **Component Tokens** — table: Component | Token | Value (rendered only if `components:` section exists in design.md)
 
-**Sync rule:** When `notes.md ## design_tokens` is updated (e.g. via new UI direction keywords), regenerate `design.html` sections — same incremental update pattern as other Architect pages.
+**Sync rule:** When `notes.md ## design_system` is updated (e.g. via new UI direction keywords), regenerate `design.html` sections — same incremental update pattern as other Architect pages.
 
 **Hub nav:** Add `<a href="design.html">🎨 Design System</a>` to `index.html` nav when `design.html` is created. Update `## Pages inventory` in `notes.md`.
 
