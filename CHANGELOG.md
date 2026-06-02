@@ -5,6 +5,23 @@ All notable changes to ViePilot will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.0] — 2026-06-02
+
+### Changed
+- **ENH-103** `vp-brainstorm --ui` delegate → `vp-design` (Phase 153)
+  - Removed ENH-076 Design Token Extraction duplication from `workflows/brainstorm.md`
+  - Added Design System Delegate Hook: checks `design.md` presence when UI Direction activates;
+    offers `/vp-design --init` when absent; `design_skipped` flag for explicit bypass
+  - Added Aesthetic Context Injection: 3-layer model (embedded framework baseline /
+    design.md tokens / external frontend-design skill opt-in) applied before every HTML generation
+  - FEAT-020 Skill Registry upgraded to layered model: external `frontend-design` skill
+    merges INTO embedded baseline (not replaces); graceful fallback when skill absent
+  - `vp-auto` Preflight 5.5: `TOKEN_MAP.aesthetic_direction` read from design.md;
+    Aesthetic Commitment Framework rules active in Level 1 silent context injection
+  - notes.md schema: `## design_tokens` → `## design_system` (includes aesthetic_direction + layers)
+
+---
+
 ## [3.13.0] — 2026-06-02
 
 ### Added
