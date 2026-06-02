@@ -38,6 +38,8 @@
 - **Current Task**: —
 - **Current Phase**: 151 (planned — BUG-032 install version-mismatch warning → v3.12.2)
 - **Last Activity**: 2026-05-30 — Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity → v3.12.2
+- **Current Phase**: 152 (planned — ENH-102 vp-design v2.0 Aesthetic Commitment Framework → v3.13.0)
+- **Last Activity**: 2026-06-02 — Phase 152-153 planned: ENH-102 vp-design aesthetic framework + ENH-103 brainstorm --ui delegate
 
 ## Progress Overview
 ```
@@ -63,6 +65,9 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-02 | Phase 152-153 planned: ENH-102 vp-design v2.0 Aesthetic Commitment Framework + ENH-103 brainstorm --ui delegate → vp-design (8 tasks → v3.13.0, v3.14.0) | `/vp-evolve` Add Feature | 152-153 |
+| 2026-06-02 | ENH-102 logged: embed Anthropic frontend-design 4-dimension guidelines into workflows/design.md; upgrade --init with aesthetic direction AUQ + font list cleanup; aesthetic_direction in design.md YAML | External skill is adapter-specific (only Claude Code); embedding makes it adapter-independent | Backlog |
+| 2026-06-02 | ENH-103 logged: remove ENH-076 Design Token Extraction duplication from brainstorm.md; add Design System Delegate Hook (check design.md → offer vp-design --init); add Aesthetic Context Injection 3-layer model; upgrade FEAT-020 to layered merge; Preflight 5.5 reads aesthetic_direction | ENH-076 duplicated design.md generation logic in 2 places; FEAT-020 passive registry lookup silently failed on non-CC adapters | Backlog |
 | 2026-05-30 | Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity (3 tasks → v3.12.2) | `/vp-evolve` | 151 |
 | 2026-05-30 | BUG-032 logged: `npx viepilot install` misses new skills from newer npm — `vp-qa` absent (installed 2.50.1, npm 3.12.1); root cause: npx resolves cached binary; fix: version mismatch warning + `new:` log prefix | `/vp-request` | Backlog |
 | 2026-05-25 | DEBT-002 logged: TRACKER.md unbounded growth (31 459 tokens observed in real project) — rewrite-not-append fix + tracker compact command + auto-compact guard | Real project hit 25 000 token read limit; file unreadable | Backlog |

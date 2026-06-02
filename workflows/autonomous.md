@@ -504,6 +504,7 @@ If stack cache is missing:
 After Stack Preflight, if `design.md` exists at project root (or nearest parent directory):
 
 **Step A — Build TOKEN_MAP** (parse YAML front matter):
+- `TOKEN_MAP.aesthetic_direction` — e.g. "minimal-editorial", "bold-expressive" (ENH-103; optional field)
 - `TOKEN_MAP.colors.*` — primary, surface, accent, error, success, warning
 - `TOKEN_MAP.typography.*` — fontFamily, fontSize, fontWeight, lineHeight
 - `TOKEN_MAP.spacing.*` — base, scale
@@ -521,8 +522,11 @@ If NO UI_KEYWORDS matched → skip Design.MD injection entirely for this task.
 **Step C — Injection levels (when UI task detected):**
 
 - **Level 1 — Silent context injection (always):**
-  Token map injected as implicit constraint in execution context.
-  AI naturally applies brand tokens when generating HTML/CSS.
+  Token map + aesthetic direction injected as implicit constraint in execution context.
+  When `TOKEN_MAP.aesthetic_direction` is set, the Aesthetic Commitment Framework rules
+  (from `workflows/design.md ## Aesthetic Commitment Framework`) are also active:
+  distinctive fonts enforced, purple-gradient default suppressed, intentional motion expected.
+  AI naturally applies brand tokens + aesthetic direction when generating HTML/CSS.
   No output shown to user.
 
 - **Level 2 — Checklist items (when task has explicit UI acceptance criteria):**
@@ -539,8 +543,9 @@ If NO UI_KEYWORDS matched → skip Design.MD injection entirely for this task.
   AUQ on Claude Code terminal when judgment call required.
   Report:
   ```
-  🎨 Design.MD check: ✅ Colors  ✅ Typography  ⚠️ 1 spacing deviation (auto-fixed)
+  🎨 Design.MD check: ✅ {aesthetic_direction}  ✅ Colors  ✅ Typography  ⚠️ 1 spacing deviation (auto-fixed)
   ```
+  (aesthetic_direction shown only when set in design.md)
 
 **Edge cases:**
 - Backend-only task (no UI_KEYWORDS) → skip entirely

@@ -762,23 +762,40 @@ Map brainstorm UI signal keywords to capability tags:
 
 For each registered skill: if `skill.capabilities` intersects matched capability tags → skill is **active**.
 
-**Step — Silent apply:**
-- For each active skill: prepend `skill.best_practices[]` to the context used for HTML generation
-- **No banner, no prompt, no mention to user** — best practices blend into generated output
-- This is background-only, like Background UI Extraction (ENH-026)
+**Step — Layered aesthetic context (ENH-103 upgrade):**
+
+Context is built in priority order (later layers enhance, not replace):
+
+| Layer | Source | Always present? |
+|-------|--------|----------------|
+| 1 — baseline | `## Aesthetic Commitment Framework` in `workflows/design.md` | ✅ Yes — adapter-independent |
+| 2 — tokens | `design.md` front matter (`aesthetic_direction`, TOKEN_MAP) | When design.md exists |
+| 3 — opt-in | `frontend-design` skill from `skill-registry.json` | Only if installed |
+
+**Layer 3 merge rule:** if `frontend-design` present in registry AND `skill.capabilities` intersects
+UI signal tags → merge `skill.best_practices[]` INTO the Layer 1 `framework_rules` array.
+Result: external skill enhances the baseline, does not replace it.
+
+**Silent apply (unchanged from FEAT-020):** merged context injected into HTML generation — no banner, no prompt.
+**Graceful fallback:** if Layer 3 skill is absent → no warning; Layer 1 baseline always active.
 
 **Step — Record in notes.md:**
 After the session's first UI artifact is generated (or updated), append to `notes.md`:
 
 ```yaml
 ## skills_used
-- id: frontend-design
-  version: null
-  trigger: ui-generation signal
-  applied_at: brainstorm-session
-  best_practices_applied:
-    - Mobile-first
-    - Design tokens
+aesthetic_context_layers:
+  - layer: 1
+    source: "vp-design embedded framework"
+    always_present: true
+  - layer: 2
+    source: "design.md"
+    present: {true|false}
+    aesthetic_direction: "{value|null}"
+  - layer: 3
+    source: "frontend-design (external skill)"
+    present: {true|false}
+    best_practices_merged: {count}
 ```
 
 If `## skills_used` already exists: merge (add new skills, update applied_at).

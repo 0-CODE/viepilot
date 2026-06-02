@@ -4091,3 +4091,57 @@ making newly-added skills (e.g. `vp-qa`) visible in the output instead of silent
 - [ ] `npx jest tests/unit/phase151-bug032-install-version-warning.test.js --no-coverage` → all pass
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.12.2`
 - [ ] `grep "\[3.12.2\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 152 — ENH-102: vp-design v2.0 Aesthetic Commitment Framework (v3.13.0)
+
+**Goal**: Embed Anthropic's frontend-design 4-dimension aesthetic guidelines (Typography/Color/Motion/Composition)
+directly into `workflows/design.md` — self-contained, adapter-independent, no external skill install needed.
+Upgrade `vp-design --init` with aesthetic direction AUQ (Step 0), remove Inter from recommended fonts,
+add `aesthetic_direction` field to design.md YAML output. Eliminates "AI slop" defaults at design system init time.
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.13.0
+**Dependencies**: Phase 151 ✅
+**Directory**: `.viepilot/phases/152-enh102-vp-design-aesthetic/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 152.1 | workflows/design.md — add `## Aesthetic Commitment Framework` section; upgrade --init Q&A (Step 0 aesthetic direction AUQ + font list without Inter) | section present; 4 dimensions documented; font list updated; aesthetic_direction in YAML template | M | — |
+| 152.2 | skills/vp-design/SKILL.md — bump v2.0.0; update objective + process to reflect aesthetic commitment | banner v2.0.0; objective mentions Aesthetic Commitment Framework; Step 0 in process | S | parallel 152.1 |
+| 152.3 | Contract tests + CHANGELOG [3.13.0] + version bump | 8 tests pass; version = 3.13.0; CHANGELOG updated | S | after 152.1-2 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase152-enh102-vp-design-aesthetic.test.js --no-coverage` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.13.0`
+- [ ] `grep "\[3.13.0\]" CHANGELOG.md` → ≥1 hit
+- [ ] `grep "Aesthetic Commitment Framework" workflows/design.md` → ≥1 hit
+- [ ] `grep "aesthetic_direction" workflows/design.md` → ≥1 hit
+
+## Phase 153 — ENH-103: brainstorm --ui delegate → vp-design (v3.14.0)
+
+**Goal**: Remove ENH-076 Design Token Extraction duplication from `workflows/brainstorm.md`.
+Add delegate hook: when UI Direction activates, check design.md present → offer vp-design --init if absent.
+Add Aesthetic Context Injection (3-layer model: embedded framework baseline / design.md tokens / external opt-in).
+Upgrade FEAT-020 skill registry to layered merge model. Update vp-auto Preflight 5.5 to read `aesthetic_direction`.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.14.0
+**Dependencies**: Phase 152 ✅
+**Directory**: `.viepilot/phases/153-enh103-brainstorm-ui-delegate/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 153.1 | workflows/brainstorm.md — remove ENH-076 Design Token Extraction; add Design System Delegate Hook (ENH-103) with AUQ offer vp-design --init when design.md absent | ENH-076 block gone; delegate hook present; design_skipped field in notes.md schema | M | — |
+| 153.2 | workflows/brainstorm.md — add Aesthetic Context Injection section (3 sources: design.md / embedded framework / external opt-in); update HTML generation rule to load aesthetic context first | section present; 3 sources documented; fallback documented; CSS custom props step present | M | parallel 153.3 |
+| 153.3 | workflows/brainstorm.md — upgrade FEAT-020 skill registry to 3-layer model; Layer 3 merges INTO Layer 1 (not replaces); notes.md ## skills_used → ## aesthetic_context_layers | 3-layer table present; merge rule documented; graceful fallback when external skill absent | S | parallel 153.2 |
+| 153.4 | workflows/autonomous.md — Preflight 5.5: add TOKEN_MAP.aesthetic_direction; Level 1 injection includes ACF rules when aesthetic_direction set | aesthetic_direction in Step A; Level 1 description updated; Level 3 report shows direction | S | parallel 153.2-3 |
+| 153.5 | Contract tests + CHANGELOG [3.14.0] + version bump | 10 tests pass; version = 3.14.0; CHANGELOG updated | S | after 153.1-4 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase153-enh103-brainstorm-ui-delegate.test.js --no-coverage` → all pass
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.14.0`
+- [ ] `grep "\[3.14.0\]" CHANGELOG.md` → ≥1 hit
+- [ ] `grep "Design Token Extraction (ENH-076)" workflows/brainstorm.md` → 0 hits (removed)
+- [ ] `grep "Design System Delegate Hook" workflows/brainstorm.md` → ≥1 hit
+- [ ] `grep "Aesthetic Context Injection" workflows/brainstorm.md` → ≥1 hit
+- [ ] `grep "aesthetic_direction" workflows/autonomous.md` → ≥1 hit
