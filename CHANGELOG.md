@@ -5,6 +5,17 @@ All notable changes to ViePilot will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [3.15.0] — 2026-06-04
+
+### Added
+- **ENH-104** CI/CD-aware version bump protocol (Phase 154)
+  - `workflows/crystallize.md` Step 6: when `deployment_signals[]` non-empty, appends `## Version Bump Protocol (CI/CD)` to generated `SYSTEM-RULES.md` with project-specific CI/CD file checklist
+  - `workflows/evolve.md` Step 4: new sub-step 4b reads `SYSTEM-RULES.md ## Version Bump Protocol` and greps each listed CI/CD file for stale `{old_version}` refs before committing bump
+  - `templates/project/SYSTEM-RULES.md`: added `### Version Bump Protocol (CI/CD)` placeholder comment
+  - 3 contract tests covering crystallize injection, empty-signals guard, and evolve grep audit
+
 ## [3.14.0] — 2026-06-02
 
 ### Changed

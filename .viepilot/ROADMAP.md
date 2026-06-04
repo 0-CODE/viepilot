@@ -4145,3 +4145,28 @@ Upgrade FEAT-020 skill registry to layered merge model. Update vp-auto Preflight
 - [ ] `grep "Design System Delegate Hook" workflows/brainstorm.md` → ≥1 hit
 - [ ] `grep "Aesthetic Context Injection" workflows/brainstorm.md` → ≥1 hit
 - [ ] `grep "aesthetic_direction" workflows/autonomous.md` → ≥1 hit
+
+## Phase 154 — ENH-104: CI/CD-Aware Version Bump Protocol (v3.15.0)
+
+**Goal**: Close the feedback loop between crystallize CI/CD detection and evolve version bump.
+When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `## Version Bump Protocol (CI/CD)` section listing all discovered CI/CD files. `vp-evolve` Step 4 reads that section and audits each file for stale `{old_version}` refs before committing the bump.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.15.0
+**Dependencies**: Phase 153 ✅
+**Directory**: `.viepilot/phases/154-enh104-cicd-version-bump/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 154.1 | `workflows/crystallize.md` Step 6: when `deployment_signals[]` non-empty, append `## Version Bump Protocol (CI/CD)` block to SYSTEM-RULES.md listing each file_path + platform label + pre-commit grep command | Section present when signals non-empty; section absent when empty; heading exactly `## Version Bump Protocol (CI/CD)` | M | — |
+| 154.2 | `templates/project/SYSTEM-RULES.md`: add `### Version Bump Protocol (CI/CD)` placeholder comment in `<versioning>` block | Comment present in template; template still generates valid SYSTEM-RULES.md | S | parallel 154.1 |
+| 154.3 | `workflows/evolve.md` Step 4: add sub-step 4b — read `SYSTEM-RULES.md ## Version Bump Protocol` and grep listed CI/CD files for `{old_version}`; show matches with file:line context; prompt inline update; skip gracefully when section absent | Sub-step 4b present; grep logic documented; absent section → info note, no error; missing file → warning, non-blocking | M | after 154.1 |
+| 154.4 | Contract tests (3): crystallize signals→section, crystallize empty→no section, evolve Step4 grep audit | All 3 tests pass; `npm test -- --testPathPattern=phase154` green | S | after 154.1-3 |
+
+**Verification**:
+- [ ] `grep -n "Version Bump Protocol" workflows/crystallize.md` → ≥1 hit in Step 6
+- [ ] `grep -n "Version Bump Protocol" templates/project/SYSTEM-RULES.md` → ≥1 hit
+- [ ] `grep -n "Version Bump Protocol\|CI/CD.*grep\|deployment_signals" workflows/evolve.md` → ≥1 hit in Step 4
+- [ ] `npm test -- --testPathPattern=phase154` → 3 passed
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.15.0`
+- [ ] `grep "\[3.15.0\]" CHANGELOG.md` → ≥1 hit

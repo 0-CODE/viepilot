@@ -40,6 +40,8 @@
 - **Last Activity**: 2026-05-30 — Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity → v3.12.2
 - **Current Phase**: 152 (planned — ENH-102 vp-design v2.0 Aesthetic Commitment Framework → v3.13.0)
 - **Last Activity**: 2026-06-02 — Phase 152-153 planned: ENH-102 vp-design aesthetic framework + ENH-103 brainstorm --ui delegate
+- **Current Phase**: 154 (planned — ENH-104 CI/CD-aware version bump protocol → v3.15.0)
+- **Last Activity**: 2026-06-04 — Phase 154 planned: ENH-104 CI/CD version bump protocol (4 tasks → v3.15.0)
 
 ## Progress Overview
 ```
@@ -65,6 +67,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-04 | Phase 154 planned: ENH-104 CI/CD-aware version bump protocol — crystallize Step 6 generates Version Bump Protocol from deployment_signals; evolve Step 4 adds grep audit sub-step (4 tasks → v3.15.0) | Production feedback: vp-evolve silently leaves stale version refs in Dockerfile/CI after bump | 154 |
+| 2026-06-04 | ENH-104 logged (renumbered from ENH-102 conflict): CI/CD version bump protocol gap — deployment_signals[] collected at crystallize time but not fed into SYSTEM-RULES.md or evolve.md | `/vp-request` production feedback | Backlog |
 | 2026-06-02 | Phase 152-153 planned: ENH-102 vp-design v2.0 Aesthetic Commitment Framework + ENH-103 brainstorm --ui delegate → vp-design (8 tasks → v3.13.0, v3.14.0) | `/vp-evolve` Add Feature | 152-153 |
 | 2026-06-02 | ENH-102 logged: embed Anthropic frontend-design 4-dimension guidelines into workflows/design.md; upgrade --init with aesthetic direction AUQ + font list cleanup; aesthetic_direction in design.md YAML | External skill is adapter-specific (only Claude Code); embedding makes it adapter-independent | Backlog |
 | 2026-06-02 | ENH-103 logged: remove ENH-076 Design Token Extraction duplication from brainstorm.md; add Design System Delegate Hook (check design.md → offer vp-design --init); add Aesthetic Context Injection 3-layer model; upgrade FEAT-020 to layered merge; Preflight 5.5 reads aesthetic_direction | ENH-076 duplicated design.md generation logic in 2 places; FEAT-020 passive registry lookup silently failed on non-CC adapters | Backlog |
@@ -282,6 +286,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-104 | 🔧 | CI/CD-aware version bump protocol — crystallize writes bump checklist from deployment_signals; evolve Step 4 audits CI/CD files before commit | high | triaged |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
 | DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
 | ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
