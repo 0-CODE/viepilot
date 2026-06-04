@@ -317,6 +317,33 @@ Update in:
 - TRACKER.md
 - pom.xml / package.json / version file
 - CHANGELOG.md [Unreleased] section
+
+**4b. CI/CD Version Ref Audit (ENH-104)**
+
+After updating standard files, audit CI/CD files for stale version refs:
+
+1. Read `.viepilot/SYSTEM-RULES.md` → look for `## Version Bump Protocol (CI/CD)` section
+   - **Section absent:** print `ℹ No CI/CD version refs to audit (no deployment_signals detected at crystallize time).` → skip to Step 5.
+   - **Section present:** extract the bullet list under `**Project CI/CD files (auto-detected at crystallize time):**` → collect each `file_path`
+
+2. For each listed `file_path`:
+   ```bash
+   grep -n "{old_version}" {file_path}
+   ```
+   - No matches → print `✓ {file_path} — no stale refs`
+   - Matches found → display each with file:line context:
+     ```
+     ⚠ {file_path}:{line_number} — {matched_line_content}
+     ```
+
+3. If **any** matches found across all CI/CD files:
+   - Print: `Found {N} stale version ref(s) in CI/CD files. Update now?`
+   - For each match: offer inline replacement of `{old_version}` → `{new_version}`
+   - Log updated files in Step 5 evolve summary banner under `Changes:`
+
+4. File listed but **not found** in repo:
+   - Print `⚠ {file_path} listed in Version Bump Protocol but not found — stale signal, skipping.`
+   - Non-blocking: continue to next file
 </step>
 
 <step name="confirm">
