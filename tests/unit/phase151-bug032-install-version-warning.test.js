@@ -88,9 +88,12 @@ describe('Phase 151 — BUG-032: install version-mismatch warning + skill log cl
   });
 
   describe('151.3 — version + changelog', () => {
-    it('package.json version is 3.12.2', () => {
+    it('package.json version is >= 3.12.2 (bumped at BUG-032, advanced since)', () => {
       const pkg = require(path.join(__dirname, '../../package.json'));
-      expect(pkg.version).toBe('3.12.2');
+      const [maj, min, pat] = pkg.version.split('.').map(Number);
+      const [eMaj, eMin, ePat] = [3, 12, 2];
+      const isGte = maj > eMaj || (maj === eMaj && min > eMin) || (maj === eMaj && min === eMin && pat >= ePat);
+      expect(isGte).toBe(true);
     });
 
     it('CHANGELOG.md has [3.12.2] entry', () => {
