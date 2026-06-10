@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.16.0] — 2026-06-09
+
+### Fixed
+- **BUG-033** Fixed 6 `AskUserQuestion` `header` field violations (>12 chars) in
+  `workflows/crystallize.md` and `workflows/brainstorm.md` that caused
+  `InputValidationError` on Claude Code at runtime
+
+### Added
+- **ENH-105** AUQ Best Practices — concrete call template + anti-patterns table
+  in `docs/user/features/interactive-prompts.md`
+- **ENH-105** `scripts/lint-auq.cjs` — scans `skills/` and `workflows/` for AUQ
+  `header` violations; wired as `npm run lint:auq` and added to release checklist
+
 ## [3.15.0] — 2026-06-04
 
 ### Added

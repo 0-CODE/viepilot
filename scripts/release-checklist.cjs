@@ -22,6 +22,7 @@ try {
   console.log(changelogHead);
 
   section('Prepublish Verification');
+  console.log('Run: npm run lint:auq');
   console.log('Run: npm run verify:release');
 
   section('Publish');

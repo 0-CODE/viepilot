@@ -261,7 +261,7 @@ When brownfield was triggered automatically (not via `--brownfield`), present th
 
 > **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. Only fall back to text menu if the tool errors or is unavailable. AUQ spec:
 >   - question: "No brainstorm session found — this looks like an existing project. How would you like to proceed?"
->   - header: "Brownfield Mode Detected"
+>   - header: "Brownfield"
 >   - options:
 >     - label: "Proceed with Brownfield Mode (Recommended)"
 >       description: "Scan codebase across 12 signal categories → auto-generate .viepilot/ artifacts"
@@ -296,7 +296,7 @@ When brownfield was triggered automatically (not via `--brownfield`), present th
 2. **If exists AND `Status: scan_complete`** — prior scan completed. Offer resume via AUQ:
    ```
    question: "Prior scan found (completed {date}). Re-scan or resume from gap-filling?"
-   header: "Brownfield Trace"
+   header: "BF Trace"
    options:
      a. "Resume — skip re-scan, go to gap-filling (Recommended)"
      b. "Re-scan from scratch — overwrite trace"
@@ -308,7 +308,7 @@ When brownfield was triggered automatically (not via `--brownfield`), present th
    last shows `scanning` → identify interrupted category N. Offer via AUQ:
    ```
    question: "Prior scan interrupted at Signal Cat {N} — {Category Name}. How to proceed?"
-   header: "Interrupted Scan"
+   header: "Interrupted"
    options:
      a. "Resume from Signal Cat {N} (Recommended)"
      b. "Re-scan from scratch"
@@ -1238,7 +1238,7 @@ After gap-filling is complete, write:
 
 **Claude Code (terminal) — REQUIRED:** Call AskUserQuestion:
 - question: "UI signals detected — generate ui-direction workspace from existing code?"
-- header: "Brownfield UI Reverse-Engineering"
+- header: "BF UI Scan"
 - options:
   a. "Yes — generate now (Recommended)" → proceed to workspace generation below
   b. "Skip — I will create ui-direction manually" → set `ui_signals.workspace_generated: false`; add note to `open_questions[]`; write to `.viepilot/HANDOFF.json`: `{ "ui_signals_imported": false, "ui_signals_skipped_at": "{ISO-8601 timestamp}" }` (merge — do not overwrite unrelated fields); continue

@@ -1156,7 +1156,7 @@ At session start, scan initial message for admin keywords. If **≥1 keyword** f
 > **Adapter-aware prompt:**
 > **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion` tool. AUQ spec:
 >   - question: "I noticed your project may involve admin or governance capabilities. Should we discuss Admin & Governance (Topic 6)?"
->   - header: "Admin & Governance"
+>   - header: "Admin"
 >   - options: [{ label: "Yes — explore admin panel, user management, monitoring, audit logs", description: "Recommended for multi-user/SaaS projects" }, { label: "Not needed — single-user or admin-free project", description: "" }, { label: "Later — add to notes, continue current topic", description: "" }]
 >
 > **Text fallback:**
@@ -1822,7 +1822,7 @@ When inside **`/vp-brainstorm --ui`** or a `.viepilot/ui-direction/{session-id}/
 
 **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`:
 - question: "Run UX walkthrough? (3-phase: simulate user → UX research → update HTML)"
-- header: "UX Walkthrough"
+- header: "UX Walk"
 - options: [{ label: "Yes — run full walkthrough (Recommended)", description: "Simulate end-user + content stress + research + update prototype" }, { label: "Skip for now", description: "Continue brainstorm; offer again at session end" }]
 
 The user can include one line of context (e.g., product name, persona, priority flow) — in the same message or as a follow-up after selecting "Yes".

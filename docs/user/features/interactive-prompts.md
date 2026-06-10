@@ -61,12 +61,65 @@ No configuration needed. The fallback is automatic.
 
 ## AskUserQuestion Tool Constraints
 
-When using Claude Code, the tool has these constraints:
-- **1–4 questions** per call
-- **2–4 options** per question
-- Optional `multiSelect: true` for non-exclusive choices
-- Optional `preview` field for visual comparisons (code/layout mockups)
-- Automatic "Other" option always appended by the UI
+The `AskUserQuestion` tool has a strict JSON schema. Violating any constraint causes
+`InputValidationError: invalid parameter` and the prompt silently fails.
+
+| Field | Rule |
+|-------|------|
+| `questions` | Array, 1–4 items |
+| `question` | String, full sentence ending in `?` |
+| `header` | String, **≤ 12 characters** — chip label shown above options |
+| `multiSelect` | Boolean, required (default: false) |
+| `options` | Array, **2–4 items** (UI appends an automatic "Other" option) |
+| `options[].label` | String, 1–5 words |
+| `options[].description` | String, 1–2 sentences — **required** |
+| `options[].preview` | String, optional — only valid when `multiSelect: false` |
+
+---
+
+## Correct Call Template
+
+Copy-paste ready — all fields shown with annotations:
+
+```javascript
+{
+  questions: [
+    {
+      question: "Which approach should we use?",  // full sentence ending with ?
+      header: "Approach",                          // ≤12 chars — REQUIRED, chip label
+      multiSelect: false,                          // bool — REQUIRED
+      options: [                                   // 2–4 items
+        {
+          label: "Option A",                       // 1–5 words
+          description: "Explain the tradeoff.",    // 1–2 sentences — REQUIRED
+          // preview: "optional markdown block"    // single-select only
+        },
+        {
+          label: "Option B",
+          description: "Another tradeoff.",
+        }
+        // add up to 2 more options (max 4 total)
+      ]
+    }
+    // add up to 3 more questions (max 4 total)
+  ]
+}
+```
+
+---
+
+## Anti-Patterns (Common Failures)
+
+| Pattern | Bad ❌ | Good ✅ | Error |
+|---------|--------|---------|-------|
+| `header` >12 chars | `"Brownfield Mode"` (15) | `"Brownfield"` (10) | `InputValidationError` |
+| `header` >12 chars | `"Admin & Governance"` (18) | `"Admin"` (5) | `InputValidationError` |
+| <2 options | `options: [{label:"A",description:"..."}]` | add a second option | `InputValidationError` |
+| >4 options | 5 options in one call | split or rephrase to ≤4 | `InputValidationError` |
+| missing `description` | `{label: "MIT"}` | `{label: "MIT", description: "Permissive open-source."}` | `InputValidationError` |
+| `preview` + multiSelect | `multiSelect: true, preview: "..."` | previews only work with `multiSelect: false` | `InputValidationError` |
+| >4 questions per call | 5 questions | split into 2 `AskUserQuestion` calls | `InputValidationError` |
+| no ToolSearch preload | call AUQ before ToolSearch | call ToolSearch first at session start | `Tool not found` |
 
 ---
 
