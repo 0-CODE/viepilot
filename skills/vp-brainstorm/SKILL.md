@@ -225,6 +225,8 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 
 **Activation**: Automatically when ≥2 embedded keywords detected, or via `--domain embedded` flag. One-time `🔌 Embedded Domain Mode activated` banner shown.
 
+**Hardware Intake Gate (ENH-106):** when `embedded_domain: true`, a **dependency-aware** gate runs before any topic probe / Topic Q&A, requiring MCU + toolchain + ≥1 of {datasheet, schematic, pin declaration}. `gate_status: deferred` is allowed through brainstorm/crystallize, but `/vp-auto` blocks any task that references an un-provided pin/register/datasheet. Stored in `notes.md ## hw_intake`.
+
 **Topic probes injected when `embedded_domain: true`:**
 - **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
 - **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy

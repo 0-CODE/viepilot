@@ -113,6 +113,53 @@ Scan the user's **initial message** (and, on `--continue`, the prior session con
 
 ---
 
+### Hardware Intake Gate (ENH-106)
+
+**Runs only when `embedded_domain: true`**, immediately after the activation banner and
+**BEFORE** any embedded topic probe or Topic Q&A. Embedded design must be grounded in real
+hardware facts — pin map / topology are **inputs**, not things the AI infers. This gate makes
+that explicit while staying non-blocking for early-stage projects.
+
+**Required intake fields:**
+1. **MCU/SoC family + package** (required)
+2. **Toolchain** (required — GCC-ARM / IAR / Keil / ESP-IDF / Zephyr west / …)
+3. **At least ONE** hardware ground-truth source:
+   - datasheet reference (path or URL), OR
+   - schematic file (path — KiCad/Altium/Eagle/PADS), OR
+   - pin declaration table (filled inline — see ENH-107 pin template)
+
+**If any required field is missing** — adapter-aware prompt:
+> **Claude Code (terminal) — REQUIRED:** Call `AskUserQuestion`. AUQ spec:
+>   - question: "Embedded intake needs MCU + toolchain + (datasheet/schematic/pin map). How to proceed?"
+>   - header: "HW Gate"
+>   - options:
+>     - { label: "Provide now", description: "Enter MCU/toolchain + datasheet/schematic/pin map before continuing" }
+>     - { label: "Defer (bổ sung sau)", description: "Continue brainstorm; mark gate_status: deferred — vp-auto will block hardware-dependent tasks until provided" }
+>   - multiSelect: false
+> **Text fallback:** numbered list of the two options above.
+
+**Dependency-aware gate policy (OQ1):**
+- `gate_status: passed` → all hardware facts present; downstream tasks run normally.
+- `gate_status: deferred` → **passes** brainstorm and crystallize (you can still spec phases),
+  **but** `/vp-auto` refuses to execute any task whose contract references a pin / register /
+  datasheet that is still un-provided, prompting the user to supply it at execution time.
+  Soft at planning, hard at execution of the dependent task.
+
+**Write `notes.md ## hw_intake` YAML:**
+```yaml
+## hw_intake
+mcu: ""               # e.g. STM32F411RE
+package: ""           # e.g. LQFP64
+dev_board: ""         # e.g. Nucleo-F411RE or "first article"
+toolchain: ""         # e.g. GCC-ARM + CMake + OpenOCD
+datasheets: []        # paths or URLs — citation anchors (ENH-107)
+schematics: []        # paths (KiCad/Altium/Eagle/PADS)
+pinmap_source: ""     # declared | datasheet | deferred
+gate_status: passed   # passed | deferred
+```
+
+---
+
 ### Embedded Topic Probes (ENH-071)
 
 #### MCU/Toolchain Sub-Topic (Gap 2)
