@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned — Milestone v3.2 Embedded Domain Hardening (Phases 157–160)
+Source: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices).
+Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase through `/vp-auto`:
+- **ENH-109** Secure Firmware Lifecycle (bootloader/OTA/security) (Phase 157 → 3.18.0)
+- **ENH-110** Embedded Testing & Verification (Phase 158 → 3.19.0)
+- **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
+- **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
+
+## [3.17.0] — 2026-06-19
+
+### Added
+- **ENH-106** Hardware Intake Gate — dependency-aware gate in `workflows/brainstorm.md`
+  requiring MCU + toolchain + ≥1 of {datasheet, schematic, pin declaration} before embedded
+  Topic Q&A; `gate_status: deferred` passes planning, enforced per-task at `/vp-auto`
+  (`notes.md ## hw_intake`)
+- **ENH-107** Datasheet/Schematic Ingestion (v1: manual + citation) — pin map as a declared
+  input with a `source` column (datasheet/schematic/assumed); datasheet/schematic stored as
+  citation anchors; `## Datasheet References` + `Source` column crystallize exports
+- **ENH-108** Embedded Verification Contract — 2-tier (host-verifiable + hardware-in-loop)
+  firmware task verification emitted by crystallize and consumed by `vp-quality-gate`
+  (HIL gated behind probe detection / human checkpoint)
+
 ## [3.16.0] — 2026-06-09
 
 ### Fixed
