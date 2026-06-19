@@ -1435,13 +1435,24 @@ power_rails: []     # [{ rail, source, voltage_v, max_ma }]
 **Trigger**: GPIO / pin / pinout / assignment / alternate function keywords AND `embedded_domain: true` OR when `hw-topology.html` is created (auto-companion).
 
 **Content**:
-- Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction (IN/OUT/AF) | Pull (Up/Down/None) | Voltage Level | Notes
+- Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction (IN/OUT/AF) | Pull (Up/Down/None) | Voltage Level | **Source** | Notes
 - Conflict detection: if two rows share the same GPIO name with conflicting functions → highlight row in red and note conflict
+
+**Datasheet/Schematic Ingestion (ENH-107) — pin declaration as a first-class input:**
+- This is the **pin declaration template** the user fills (the Hardware Intake Gate, ENH-106,
+  accepts a filled pin map as one of its ground-truth sources).
+- Each pin row carries a **`source`** field: `datasheet` | `schematic` | `assumed`.
+  Rows sourced from the datasheet/schematic stored in `## hw_intake.datasheets[] / .schematics[]`
+  are traceable; `assumed` rows are flagged downstream by the ENH-108 verification contract.
+- **v1 is manual** (user declares pins; datasheet/schematic are stored as citation anchors).
+  **Fast-follow ENH (do NOT auto-trust):** LLM-assist auto-extract of pin/register from the
+  datasheet PDF with **mandatory per-item human confirmation** (`source: datasheet-extracted-confirmed`).
 
 **notes.md YAML section**:
 ```yaml
 ## pin_map
-pins: []        # [{ pin_num, gpio_name, function, peripheral, direction, pull, voltage_v, notes }]
+pins: []        # [{ pin_num, gpio_name, function, peripheral, direction, pull, voltage_v, source, notes }]
+                #   source: datasheet | schematic | assumed
 conflicts: []   # auto-detected: [{ gpio_name, conflicting_functions: [] }]
 ```
 

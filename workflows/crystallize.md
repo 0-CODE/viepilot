@@ -1920,11 +1920,18 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
 
 13. **Embedded Domain Export (ENH-071)**
 
-If notes.md contains any of: `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`:
+If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`:
 
   a. Set `embedded_export: true` in working notes.
 
   b. Export to `ARCHITECTURE.md` (append in order, skip sections whose YAML is empty/absent):
+
+  - **`## Datasheet References`** ← from `## hw_intake` + `## pin_map` sources (ENH-107)
+    - Citation table: Component | Datasheet (path/URL) | Section/Page | Used for
+    - Lists every `datasheets[]` / `schematics[]` entry from `## hw_intake` as the project's
+      hardware ground-truth anchors. Firmware task contracts cite these (audit trail).
+    - Record `hw_intake.gate_status`; if `deferred`, note: "⚠️ Hardware intake deferred —
+      vp-auto will block tasks referencing un-provided pins/registers until supplied."
 
   - **`## Hardware Architecture`** ← from `## hw_topology`
     - MCU/SoC spec table: Family | Core | Flash (KB) | RAM (KB)
@@ -1933,7 +1940,9 @@ If notes.md contains any of: `## hw_topology`, `## pin_map`, `## memory_layout`,
     - Power rails table: Rail | Source | Voltage | Max current (mA)
 
   - **`## Hardware Interface`** ← from `## pin_map`
-    - Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction | Pull | Voltage | Notes
+    - Pin assignment table: Pin# | GPIO Name | Alt Function | Peripheral | Direction | Pull | Voltage | **Source** | Notes
+    - The `Source` column (`datasheet` | `schematic` | `assumed`) makes ground-truth vs inferred
+      pins visible; `assumed` pins are flagged for review by the ENH-108 verification contract.
     - Conflicts list (if any)
 
   - **`## Memory Map`** ← from `## memory_layout`

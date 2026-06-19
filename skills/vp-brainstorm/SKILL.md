@@ -227,6 +227,8 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 
 **Hardware Intake Gate (ENH-106):** when `embedded_domain: true`, a **dependency-aware** gate runs before any topic probe / Topic Q&A, requiring MCU + toolchain + ≥1 of {datasheet, schematic, pin declaration}. `gate_status: deferred` is allowed through brainstorm/crystallize, but `/vp-auto` blocks any task that references an un-provided pin/register/datasheet. Stored in `notes.md ## hw_intake`.
 
+**Datasheet/Schematic Ingestion (ENH-107, v1 manual + cite):** pin map is a **declared input** via the pin template; each pin row carries `source: datasheet | schematic | assumed`; datasheet/schematic stored as citation anchors in `## hw_intake`. crystallize exports `## Datasheet References` + a `Source` column in `## Hardware Interface`. Auto-extract from PDF (LLM-assist + human confirm) is a fast-follow ENH — never auto-trusted.
+
 **Topic probes injected when `embedded_domain: true`:**
 - **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
 - **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy

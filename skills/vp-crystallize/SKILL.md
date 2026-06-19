@@ -185,6 +185,12 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **User Data Management Export (ENH-066):**
 - Step 1D item 9: if `user-data.html` or `notes.md ## user_data` exists in architect workspace → append `## User Data Management` table to `.viepilot/PROJECT-CONTEXT.md` (columns: Capability | Supported | Notes) with 8 capability rows (profile editing, notification prefs, privacy settings, data export, right to erasure, connected accounts, session management, 2FA). Records `user_data_imported` and `user_data_capabilities_count` in working notes.
 
+**Embedded Datasheet Export (ENH-107):**
+- Step 1D item 13 (Embedded Domain Export): if `notes.md ## hw_intake` exists → append `## Datasheet References` (Component | Datasheet | Section/Page | Used for) to `ARCHITECTURE.md` from `hw_intake.datasheets[] / .schematics[]`, and add a `Source` column (`datasheet`/`schematic`/`assumed`) to the `## Hardware Interface` pin table. Records `hw_intake.gate_status`; `deferred` is surfaced as a vp-auto blocking note for hardware-dependent tasks.
+
+**Embedded Verification Contract (ENH-108):**
+- For `embedded_domain` projects, generated firmware task contracts carry a 2-tier `## Verification` block — 🟢 host-verifiable (cross-compile, MISRA/cppcheck, host unit test, map-size vs memory budget, register-write vs datasheet) run autonomously by `vp-quality-gate`, and 🟡 hardware-in-loop (flash + smoke) gated behind probe detection or a human checkpoint.
+
 **Crystallize version stamps (ENH-067):**
 - Generated `PROJECT-CONTEXT.md` includes `<!-- crystallize_version: {semver} -->` as its first line.
 - `HANDOFF.json` records `crystallize_version` and `crystallized_at` fields.
