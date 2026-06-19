@@ -4170,3 +4170,147 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [ ] `npm test -- --testPathPattern=phase154` → 3 passed
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.15.0`
 - [ ] `grep "\[3.15.0\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 155 — BUG-033 + ENH-105: AUQ Best Practices & Header Fix (v3.16.0)
+
+**Goal**: Fix 6 `AskUserQuestion` header violations causing `InputValidationError`, add a concrete AUQ call template + anti-patterns doc, and wire a `lint:auq` script to prevent future regressions.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.16.0
+**Dependencies**: Phase 154 ✅
+**Directory**: `.viepilot/phases/155-bug033-enh105-auq-best-practices/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 155.1 | `workflows/crystallize.md` + `workflows/brainstorm.md` — fix 6 header >12 chars violations (BUG-033) | `grep -rn 'header:.*".{13,}"' workflows/ skills/` → 0 matches | S | parallel 155.2 |
+| 155.2 | `docs/user/features/interactive-prompts.md` — add call template + anti-patterns table (ENH-105 docs) | `## Correct Call Template` + `## Anti-Patterns` sections present; ≤12 char rule emphasized | S | parallel 155.1 |
+| 155.3 | `scripts/lint-auq.cjs` + `package.json lint:auq` + `scripts/release-checklist.cjs` (ENH-105 tooling) | `npm run lint:auq` exits 0; script in package.json; release-checklist wired | M | after 155.1 |
+| 155.4 | Contract tests (4) + CHANGELOG [3.16.0] + version bump | 4 tests pass; version = 3.16.0; CHANGELOG updated | S | after 155.1-3 |
+
+**Verification**:
+- [ ] `grep -rn 'header:.*".{13,}"' workflows/ skills/` → 0 matches
+- [ ] `npm run lint:auq` → `lint:auq — 0 violations ✓`
+- [ ] `grep "≤ 12\|Anti-Patterns\|Call Template" docs/user/features/interactive-prompts.md` → ≥3 hits
+- [ ] `npm test -- --testPathPatterns=phase155 --no-coverage` → 4 passed
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.16.0`
+- [ ] `grep "\[3.16.0\]" CHANGELOG.md` → ≥1 hit
+
+---
+
+# Milestone v3.2 — Embedded Domain Hardening (Phases 156–160)
+
+> Source: `docs/brainstorm/session-2026-06-19.md` — 7 ENH nâng cấp Embedded Domain Mode (ENH-071).
+> Reference research: embedder.com + Beningo/Memfault/Dojo Five intake best practices.
+> Goal: dự án nhúng chạy trên rail `brainstorm → crystallize → vp-auto` như một domain bình thường —
+> bằng cách bơm **ground truth** (datasheet/pin/schematic) + **self-verification** (2-tier verify contract).
+
+## Phase 156 — ENH-106 + ENH-107 + ENH-108: Embedded Autonomy Foundation (v3.17.0) ✅ done
+
+**Goal**: Biến hardware ground-truth (datasheet/pin/schematic) thành **input bắt buộc, có truy vết** ở brainstorm, và cấp cho vp-auto một **verification contract 2 tầng** để firmware task tự verify. Đây là xương sống làm embedded tự hành được trên rail ViePilot.
+**Estimated Tasks**: 4
+**Status**: ✅ done (v3.17.0) — 10 contract tests pass; branch `feat/phase156-embedded-autonomy-foundation`
+**Version Target**: 3.17.0
+**Dependencies**: Phase 155 ✅; ENH-071 Embedded Domain Mode (đã ship)
+**Directory**: `.viepilot/phases/156-enh106-107-108-embedded-autonomy-foundation/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 156.1 | **ENH-106 Hardware Intake Gate** — `workflows/brainstorm.md` step `detect_embedded_domain`: thêm gate TRƯỚC Topic Q&A, bắt buộc MCU+toolchain + ≥1 trong {datasheet, schematic, pin declaration}; **dependency-aware** (`deferred` qua brainstorm/crystallize, vp-auto chặn task phụ thuộc); `notes.md ## hw_intake`. + SKILL.md doc | `grep -c "Hardware Intake Gate\|hw_intake\|gate_status" workflows/brainstorm.md` ≥3; gate chạy trước Topic Q&A; dependency-aware policy documented | M | parallel 156.2 |
+| 156.2 | **ENH-107 Datasheet/Schematic Ingestion (v1: manual + cite)** — pin/peripheral template table; datasheet(PDF)+schematic lưu làm citation anchor; `pin_map`/`hw_topology` thêm cột `source: datasheet\|assumed`; crystallize export `## Datasheet References` + `## Hardware Interface` (pin map có cột nguồn). `workflows/brainstorm.md` + `workflows/crystallize.md` + 2 SKILL.md | `grep -c "Datasheet References\|source: datasheet\|pin declaration" workflows/` ≥3; fast-follow (auto-extract+confirm) ghi là ENH riêng, KHÔNG auto-trust | M | parallel 156.1 |
+| 156.3 | **ENH-108 Embedded Verification Contract** — `workflows/crystallize.md`: firmware task contract mang verify 2 tầng — 🟢 host-verifiable (cross-compile target, MISRA/cppcheck, Unity host test, map-size vs memory budget, **register-write đối chiếu datasheet**) + 🟡 HIL (flash+smoke qua probe hoặc human checkpoint). `vp-quality-gate` agent đọc tầng verify; nối gate `deferred` của ENH-106 | `grep -c "host-verifiable\|hardware-in-loop\|verification contract\|register.*datasheet" workflows/crystallize.md` ≥3; agent vp-quality-gate đọc 2-tier | L | after 156.1-2 |
+| 156.4 | Contract tests (≥6) + CHANGELOG [3.17.0] + version bump 3.17.0 (changelog-agent) | `npm test -- --testPathPatterns=phase156 --no-coverage` → ≥6 passed; version=3.17.0; CHANGELOG có [3.17.0] | S | after 156.1-3 |
+
+**Verification**:
+- [ ] `grep -c "Hardware Intake Gate" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "## hw_intake\|gate_status: deferred" workflows/brainstorm.md` → ≥2
+- [ ] `grep -c "Datasheet References\|source: datasheet" workflows/crystallize.md` → ≥1
+- [ ] `grep -cE "host-verifiable|hardware-in-loop" workflows/crystallize.md` → ≥2
+- [ ] `npm test -- --testPathPatterns=phase156 --no-coverage` → ≥6 passed
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.17.0`
+
+## Phase 157 — ENH-109: Secure Firmware Lifecycle (v3.18.0)
+
+**Goal**: Lấp lỗ hổng #8+#10 (bootloader/OTA + security) — topic probe + architect page riêng + crystallize export. Bổ sung market certs (FCC/CE/UL/RoHS) + SBOM vào safety probe.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.18.0
+**Dependencies**: Phase 156
+**Directory**: `.viepilot/phases/157-enh109-secure-firmware-lifecycle/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 157.1 | Topic probe `🔐 Secure Firmware Lifecycle` trong `workflows/brainstorm.md` (bootloader/OTA transport/image signing/A-B partition/anti-rollback/secure boot/key storage/debug-lock RDP/provisioning) + market certs+SBOM vào safety probe; `notes.md ## secure_lifecycle` | `grep -c "secure_lifecycle\|anti-rollback\|debug-lock" workflows/brainstorm.md` ≥2 | M | parallel 157.2 |
+| 157.2 | Architect page `secure-lifecycle.html` generation rules + dòng trong Page Boundary Rules + hub nav; cập nhật bảng "Embedded Architect pages" (6→7) | brainstorm.md có `secure-lifecycle.html` + Page Boundary row | M | parallel 157.1 |
+| 157.3 | crystallize Step 1D export: `## Bootloader & OTA` + `## Security Architecture` từ `## secure_lifecycle` → ARCHITECTURE.md | `grep -c "Bootloader & OTA\|Security Architecture" workflows/crystallize.md` ≥2 | M | after 157.1 |
+| 157.4 | tests (≥4) + CHANGELOG [3.18.0] + version 3.18.0 | `npm test -- --testPathPatterns=phase157` → ≥4 passed; version=3.18.0 | S | after 157.1-3 |
+
+**Verification**:
+- [ ] `grep -c "secure_lifecycle" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "secure-lifecycle.html" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "Bootloader & OTA\|Security Architecture" workflows/crystallize.md` → ≥1
+- [ ] `npm test -- --testPathPatterns=phase157 --no-coverage` → ≥4 passed
+
+## Phase 158 — ENH-110: Embedded Testing & Verification (v3.19.0)
+
+**Goal**: Lấp lỗ hổng #11 — topic + architect page cho chiến lược test firmware; nối với verification contract ENH-108.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.19.0
+**Dependencies**: Phase 156 (ENH-108)
+**Directory**: `.viepilot/phases/158-enh110-embedded-testing-verification/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 158.1 | Topic probe `🧪 Testing & Verification` (host UT Unity/CMock, static analysis MISRA/cppcheck, HIL, firmware CI, test jig, coverage target, fault injection); `notes.md ## test_strategy` | `grep -c "test_strategy\|hardware-in-the-loop\|fault injection" workflows/brainstorm.md` ≥2 | M | parallel 158.2 |
+| 158.2 | Architect page `test-strategy.html` + Page Boundary row + nav (7→8 pages) | brainstorm.md có `test-strategy.html` + boundary row | M | parallel 158.1 |
+| 158.3 | crystallize export `## Test & Verification Strategy`; cross-link ENH-108 verification contract | `grep -c "Test & Verification Strategy" workflows/crystallize.md` ≥1 | M | after 158.1 |
+| 158.4 | tests (≥4) + CHANGELOG [3.19.0] + version 3.19.0 | `npm test -- --testPathPatterns=phase158` → ≥4 passed | S | after 158.1-3 |
+
+**Verification**:
+- [ ] `grep -c "test_strategy" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "test-strategy.html" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "Test & Verification Strategy" workflows/crystallize.md` → ≥1
+- [ ] `npm test -- --testPathPatterns=phase158 --no-coverage` → ≥4 passed
+
+## Phase 159 — ENH-111: Production & Manufacturing (v3.20.0)
+
+**Goal**: Lấp lỗ hổng #12 — production firmware khác hẳn dev firmware: factory test, provisioning, calibration, serialization.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.20.0
+**Dependencies**: Phase 157 (provisioning ↔ security keys)
+**Directory**: `.viepilot/phases/159-enh111-production-manufacturing/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 159.1 | Topic probe `🏭 Production & Manufacturing` (factory programming, golden-image/factory-test mode, provisioning/serialization, calibration sensor/ADC/RF, traceability DB); `notes.md ## production` | `grep -c "## production\|factory test\|provisioning" workflows/brainstorm.md` ≥2 | M | parallel 159.2 |
+| 159.2 | Architect page `production.html` + Page Boundary row + nav (8→9 pages) | brainstorm.md có `production.html` + boundary row | M | parallel 159.1 |
+| 159.3 | crystallize export `## Production & Manufacturing` → PROJECT-CONTEXT.md | `grep -c "Production & Manufacturing" workflows/crystallize.md` ≥1 | M | after 159.1 |
+| 159.4 | tests (≥4) + CHANGELOG [3.20.0] + version 3.20.0 | `npm test -- --testPathPatterns=phase159` → ≥4 passed | S | after 159.1-3 |
+
+**Verification**:
+- [ ] `grep -c "## production" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "production.html" workflows/brainstorm.md` → ≥1
+- [ ] `grep -c "Production & Manufacturing" workflows/crystallize.md` → ≥1
+- [ ] `npm test -- --testPathPatterns=phase159 --no-coverage` → ≥4 passed
+
+## Phase 160 — ENH-112: 3-Phase Rollout + Success Metrics (v3.21.0)
+
+**Goal**: Lấp lỗ hổng #13 (engagement) — khung tiếp nhận embedder.com: Discovery → Bring-up Demo trên HW thật → Pilot; chốt success-metrics + lab-equipment inventory từ intake. Đóng milestone + sync docs (ENH-071 page table 6→9).
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.21.0
+**Dependencies**: Phases 156–159
+**Directory**: `.viepilot/phases/160-enh112-rollout-success-metrics/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 160.1 | Embedded engagement template (Discovery→Bring-up Demo→Pilot) + `success_metrics` + `lab_equipment` probes; mở rộng Firmware Phase Template; `notes.md ## success_metrics`, `## lab_equipment` | `grep -c "success_metrics\|lab_equipment\|Bring-up Demo" workflows/brainstorm.md` ≥2 | M | parallel 160.2 |
+| 160.2 | crystallize export `## Success Metrics` + `## Lab Equipment` → PROJECT-CONTEXT.md; sync ENH-071 page table (6→9 pages) trong SKILL.md vp-brainstorm + workflow | `grep -c "Success Metrics\|Lab Equipment" workflows/crystallize.md` ≥1; page table = 9 | M | after 160.1 |
+| 160.3 | tests (≥3) + CHANGELOG [3.21.0] + version 3.21.0 + docs drift sync | `npm test -- --testPathPatterns=phase160` → ≥3 passed; version=3.21.0 | S | after 160.1-2 |
+
+**Verification**:
+- [ ] `grep -c "success_metrics\|lab_equipment" workflows/brainstorm.md` → ≥2
+- [ ] `grep -c "Success Metrics\|Lab Equipment" workflows/crystallize.md` → ≥1
+- [ ] `npm test -- --testPathPatterns=phase160 --no-coverage` → ≥3 passed
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.21.0`

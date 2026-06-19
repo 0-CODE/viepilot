@@ -1,6 +1,12 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
+- **Milestone**: **v3.2** — Embedded Domain Hardening (Phases 156–160) — in progress
+- **Last Completed Phase**: **156** ✅ (ENH-106+107+108 Embedded Autonomy Foundation → v3.17.0; 10 tests) — on branch `feat/phase156-embedded-autonomy-foundation` (not yet pushed/merged)
+- **Next Phase**: **157** (planned — ENH-109 Secure Firmware Lifecycle → v3.18.0)
+- **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · 157 (v3.18.0) · 158 (v3.19.0) · 159 (v3.20.0) · 160 (v3.21.0)
+- **Source**: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices)
+- **Last Released Phase**: **155** ✅ (BUG-033 + ENH-105 → v3.16.0)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -42,6 +48,8 @@
 - **Last Activity**: 2026-06-02 — Phase 152-153 planned: ENH-102 vp-design aesthetic framework + ENH-103 brainstorm --ui delegate
 - **Current Phase**: 154 (planned — ENH-104 CI/CD-aware version bump protocol → v3.15.0)
 - **Last Activity**: 2026-06-04 — Phase 154 planned: ENH-104 CI/CD version bump protocol (4 tasks → v3.15.0)
+- **Current Phase**: 155 (planned — BUG-033 + ENH-105 AUQ best practices + header fix → v3.16.0)
+- **Last Activity**: 2026-06-09 — Phase 155 planned: fix 6 AUQ header violations + lint:auq + docs (4 tasks → v3.16.0)
 
 ## Progress Overview
 ```
@@ -67,6 +75,11 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-19 | Milestone v3.2 planned: Phases 156–160 (ENH-106..112) Embedded Domain Hardening — Hardware Intake Gate, Datasheet/Schematic Ingestion, Embedded Verification Contract, Secure Firmware Lifecycle, Testing & Verification, Production & Manufacturing, 3-Phase Rollout. Routed crystallize→evolve (self-hosted repo, must not overwrite Phase 1–155) | Embedded intake was "lúng túng": ENH-071 inferred pin/topology instead of requiring datasheet/schematic input; no firmware self-verification for vp-auto. Research embedder.com + Beningo/Memfault/Dojo Five | 156-160 |
+| 2026-06-19 | OQ resolutions: (1) gate = dependency-aware; (2) ingestion v1 = manual + datasheet citation anchor (auto-extract = fast-follow ENH, no auto-trust); (3) 3 new architect pages (secure-lifecycle/test-strategy/production) | Brainstorm session-2026-06-19 AUQ decisions | 156-159 |
+| 2026-06-09 | Phase 155 planned: BUG-033 (6 AUQ header >12 chars violations) + ENH-105 (lint:auq + call template + anti-patterns) → v3.16.0 | Production feedback: AUQ InputValidationError from header violations; no lint guard existed | 155 |
+| 2026-06-09 | BUG-033 logged: 6 header violations in crystallize.md/brainstorm.md (e.g. "Brownfield Mode Detected" 24 chars) cause InputValidationError | `/vp-request` production feedback | Backlog |
+| 2026-06-09 | ENH-105 logged: AUQ call template + anti-patterns table + lint:auq script | `/vp-request` production feedback | Backlog |
 | 2026-06-04 | Phase 154 planned: ENH-104 CI/CD-aware version bump protocol — crystallize Step 6 generates Version Bump Protocol from deployment_signals; evolve Step 4 adds grep audit sub-step (4 tasks → v3.15.0) | Production feedback: vp-evolve silently leaves stale version refs in Dockerfile/CI after bump | 154 |
 | 2026-06-04 | ENH-104 logged (renumbered from ENH-102 conflict): CI/CD version bump protocol gap — deployment_signals[] collected at crystallize time but not fed into SYSTEM-RULES.md or evolve.md | `/vp-request` production feedback | Backlog |
 | 2026-06-02 | Phase 152-153 planned: ENH-102 vp-design v2.0 Aesthetic Commitment Framework + ENH-103 brainstorm --ui delegate → vp-design (8 tasks → v3.13.0, v3.14.0) | `/vp-evolve` Add Feature | 152-153 |
@@ -286,13 +299,15 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| BUG-033 | 🐛 | AUQ `header` >12 chars violations — 6 broken specs in crystallize.md + brainstorm.md causing InputValidationError | high | triaged |
+| ENH-105 | 🔧 | AUQ Best Practices — call template + anti-patterns table + lint:auq script + release-checklist wiring | medium | triaged |
 | ENH-104 | 🔧 | CI/CD-aware version bump protocol — crystallize writes bump checklist from deployment_signals; evolve Step 4 audits CI/CD files before commit | high | triaged |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
 | DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
-| ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
-| BUG-029 | 🐛 | vp-intake Excel M365 write-back stub — writeback.cjs task 123.4 never implemented | high | new |
-| ENH-088 | 🔧 | vp-intake: scheduled auto-intake — CronCreate/CronDelete + full auto request creation | medium | new |
-| ENH-087 | 🔧 | vp-intake: agent-based codebase validation before triage — parallel file-scanner fan-out | medium | new |
+| ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | ✅ done (**3.3.0** Phase 136) |
+| BUG-029 | 🐛 | vp-intake Excel M365 write-back stub — writeback.cjs task 123.4 never implemented | high | ✅ done (**3.3.0** Phase 136) |
+| ENH-088 | 🔧 | vp-intake: scheduled auto-intake — CronCreate/CronDelete + full auto request creation | medium | ✅ done (**3.5.0** Phase 138) |
+| ENH-087 | 🔧 | vp-intake: agent-based codebase validation before triage — parallel file-scanner fan-out | medium | ✅ done (**3.4.0** Phase 137) |
 | ENH-086 | 🔧 | Promote 6 workflow agents to native Claude Code agent types — visible in /agents dialog | medium | ✅ done (**3.2.0**) |
 | BUG-028 | 🐛 | test-generator-agent + file-scanner-agent not wired — ENH-057 Phase 83 incomplete | medium | new |
 | BUG-027 | 🐛 | claudeAgentsDir not wired into install — vp-task-executor/planner/gate NOT copied to ~/.claude/agents/ | high | ✅ done (**3.1.1**) |
