@@ -48,6 +48,22 @@ Results:
 Summary: 2 pass, 1 fail
 ```
 
+## Embedded Verification Contract (ENH-108)
+
+When a task's `## Verification` block contains the marker `Verification (Embedded — ENH-108)`
+(two tiers — 🟢 host-verifiable and 🟡 hardware-in-loop), apply tier-aware handling:
+
+- **🟢 Host-verifiable items** — run autonomously like any other command (cross-compile for
+  target, MISRA/cppcheck, Unity/CMock host tests, map-file size vs memory budget, register-write
+  vs datasheet check). PASS/FAIL as normal.
+- **🟡 Hardware-in-loop items** (flash + smoke via probe) — run ONLY if a debug probe is detected
+  (env var `VP_HIL_PROBE` set, or config flag). If no probe → emit verdict
+  `⏸ HUMAN-CHECKPOINT` for that item (NOT FAIL) and mark the gate `PARTIAL` pending hardware.
+- **Dependency-aware gate (ENH-106):** before running, read `notes.md ## hw_intake.gate_status`.
+  If `deferred` AND the task references a pin/register/datasheet not present → report
+  `❌ BLOCKED: hardware intake deferred — required ground-truth missing` (do not run host/HIL
+  verify on un-provided hardware facts).
+
 ## Rules
 
 - Run each verification command exactly as specified in task.md

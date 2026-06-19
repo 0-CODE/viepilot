@@ -2590,6 +2590,33 @@ If `PROJECT-CONTEXT.md` contains `## Embedded Domain` with `embedded: true`:
 3. **Add Phase 1: Board Bring-Up task** if not already in ROADMAP and `embedded: true`:
    - Automatically include "Board Bring-Up verification" as Phase 1 Task 1 (clock config, GPIO init, UART console confirm, LED blink)
    - Only added if no equivalent task already exists.
+
+4. **Embedded Verification Contract (ENH-108)** — when `embedded: true`, every generated firmware
+   task's `## Verification` block is emitted in **two tiers** — `host-verifiable` (run autonomously)
+   and `hardware-in-loop` (needs board) — so `vp-auto`/`vp-quality-gate` can self-verify firmware
+   the way it self-verifies web (test + lint). Without this, the embedded artifacts are
+   documentation only and vp-auto runs blind.
+
+   ```markdown
+   ### Verification (Embedded — ENH-108)
+
+   **🟢 Host-verifiable (vp-auto runs autonomously):**
+   - [ ] Cross-compile for target: `<build cmd>` → 0 errors; `.text + .data` fits flash/RAM budget
+   - [ ] Static analysis: `<cppcheck/clang-tidy + MISRA ruleset>` → 0 new violations
+   - [ ] Host unit tests: `<Unity/CMock/Ceedling cmd>` → all pass
+   - [ ] Map-file size check: section sizes ≤ budget from `notes.md ## memory_layout`
+   - [ ] Register-write audit: every peripheral register write cites a datasheet section
+         (sourced pins from ENH-107); `assumed` pins flagged for review
+
+   **🟡 Hardware-in-loop (needs board — auto if probe connected, else human checkpoint):**
+   - [ ] Flash + smoke test via `<J-Link/OpenOCD>` → boots, console banner OK
+   - [ ] Scenario smoke per task acceptance
+   ```
+
+   **Dependency-aware enforcement (ties to ENH-106):** before running a firmware task,
+   `vp-auto`/`vp-quality-gate` reads `hw_intake.gate_status`. If `deferred` AND the task
+   references a pin/register/datasheet not yet provided → the task is **blocked** at execution
+   with a targeted prompt to supply it (do not run host/HIL verify on missing ground truth).
 </step>
 
 <step name="generate_schemas">
