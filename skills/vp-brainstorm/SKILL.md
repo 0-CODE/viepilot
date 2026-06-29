@@ -233,6 +233,8 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 
 **Testing & Verification (ENH-110):** when `embedded_domain: true`, a `🧪 Testing & Verification` topic probe (triggered by test/Unity/cppcheck/MISRA/HIL/CI/coverage/fault-injection keywords) captures host unit framework (Unity+CMock/Ceedling), static analysis (MISRA+cppcheck/clang-tidy), HIL setup, firmware CI, test jig, coverage target (gcov/lcov), and fault-injection scenarios → `notes.md ## test_strategy`. crystallize exports `## Test & Verification Strategy` (project-level strategy, cross-linked to the ENH-108 per-task 2-tier contract).
 
+**Production & Manufacturing (ENH-111):** when `embedded_domain: true`, a `🏭 Production & Manufacturing` topic probe (triggered by production/factory/gang-programmer/DFU/golden-image/calibration/serialization/provisioning/traceability keywords) captures factory programming method, factory-test mode (POST/loopback/RF), provisioning/serialization (serial/X.509/PSK → OTP/secure element), calibration, and traceability → `notes.md ## production`. crystallize exports `## Production & Manufacturing` (factory-line execution, cross-linked to the ENH-109 provisioning/keys).
+
 **Topic probes injected when `embedded_domain: true`:**
 - **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
 - **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy
@@ -240,6 +242,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 - **Safety/Compliance** (Gap 10): IEC 61508/ISO 26262/DO-178C, watchdog, fault handlers, market certs (FCC/CE/UL/RoHS) + SBOM (ENH-109) (triggered by safety/SIL/ASIL keywords)
 - **Secure Firmware Lifecycle** (Gaps #8/#10, ENH-109): bootloader, OTA, image signing, secure boot, key storage, provisioning (triggered by bootloader/OTA/secure-boot keywords)
 - **Testing & Verification** (Gap #11, ENH-110): host unit test, static analysis, HIL, firmware CI, test jig, coverage, fault injection (triggered by test/Unity/cppcheck/HIL/CI keywords)
+- **Production & Manufacturing** (Gap #12, ENH-111): factory programming, factory-test mode, provisioning/serialization, calibration, traceability (triggered by production/factory/calibration/serialization keywords)
 - **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
 
 **8 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
@@ -262,7 +265,7 @@ Pages linked in `index.html` under an **Embedded** nav section.
 - Hardware context confirmed by: GPIO / SPI / I2C / driver / framebuffer / ILI9341 / SSD1306 / LVGL / u8g2 keywords
 - `🎨 UI Direction Mode?` banner suppressed when all display signals have hardware context
 
-**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`
+**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`, `## production`
 
 **crystallize Step 1D item 13 exports:**
 - `## Hardware Architecture` (from `hw_topology`)

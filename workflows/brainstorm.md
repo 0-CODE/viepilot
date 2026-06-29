@@ -329,6 +329,39 @@ fault_injection: []   # [brownout, comm-error, WDT, sensor-fault]
 Cross-reference: the **per-task** verification gates are emitted by the ENH-108 2-tier contract
 (🟢 host-verifiable / 🟡 hardware-in-loop); this probe captures the **project-level** strategy.
 
+#### Production & Manufacturing Topic (ENH-111) — Gap #12
+**Trigger**: production / manufacturing / factory / gang programmer / DFU / golden image / factory
+test / POST / calibration / serialization / provisioning / traceability / OTP / fuse keywords in
+session AND `embedded_domain: true`.
+
+```
+🏭 Production & Manufacturing — capture how units are programmed, tested, and keyed on the line:
+
+1. Factory programming method?
+   (gang programmer / DFU over USB / SWD jig / SD-card golden image)
+2. Factory-test mode?
+   (POST / peripheral loopback / RF power check / none)
+3. Provisioning / serialization?
+   (serial number / X.509 device cert / PSK → OTP / secure element)
+4. Calibration?
+   (sensor offset+gain / ADC / RF tuning / none)
+5. Traceability?
+   (per-unit DB record / MES integration / none)
+```
+
+→ Store in `notes.md ## production` YAML section:
+```yaml
+## production
+programming_method: ""   # gang programmer | DFU | SWD jig | SD golden image
+factory_test: []         # [POST, peripheral-loopback, RF-power-check]
+provisioning: []         # [serial, X.509-cert, PSK]; storage: OTP | secure-element
+calibration: []          # [sensor-offset-gain, ADC, RF-tuning]
+traceability: ""         # per-unit DB | MES | none
+```
+
+Cross-reference: keys/certs are **defined** in `## secure_lifecycle` (ENH-109); this probe captures
+the **factory-line execution** that burns/installs them per unit.
+
 #### Firmware Phase Ordering Template (Gap 9)
 When `embedded_domain: true`, at the **Phase Assignment** step, offer the standard firmware phase template before free-form phase entry:
 
