@@ -15,6 +15,14 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.19.0] - 2026-06-29
+
+### Added
+- **ENH-110** `🧪 Testing & Verification` brainstorm topic probe (host unit Unity+CMock/Ceedling, static analysis MISRA+cppcheck/clang-tidy, HIL setup, firmware CI, test jig, coverage target gcov/lcov, fault injection brownout/comm-error/WDT) → `notes.md ## test_strategy`
+- **ENH-110** 8th embedded Architect page `test-strategy.html` (test pyramid diagram, test layer table, coverage/fault-injection table) + Embedded nav link + Page Boundary row (bumps embedded page count 7→8)
+- **ENH-110** crystallize Step 1D item 13 exports `## Test & Verification Strategy` to ARCHITECTURE.md from `## test_strategy`, cross-linked to the ENH-108 2-tier per-task verification contract (READ-ONLY for vp-auto)
+- **Phase 158** 12 contract tests in tests/unit/phase158-embedded-testing-verification.test.js
+
 ## [3.18.0] - 2026-06-29
 
 ### Added

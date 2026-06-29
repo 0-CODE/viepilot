@@ -35,18 +35,23 @@ describe('Phase 157 — ENH-109: Secure Firmware Lifecycle', () => {
     expect(brainstorm).toMatch(/secure-lifecycle\.html.*Secure Firmware Lifecycle \(ENH-109\)/s);
   });
 
-  it('157.2 Embedded nav links secure-lifecycle.html and count bumped to 7 pages', () => {
+  it('157.2 Embedded nav links secure-lifecycle.html (page count >= 7, bumped from 6)', () => {
     expect(brainstorm).toMatch(/<a href="secure-lifecycle\.html">/);
-    expect(brainstorm).toMatch(/All 7 pages below/);
+    // count is bumped by later phases; assert the line exists with a count >= 7
+    const m = brainstorm.match(/All (\d+) pages below/);
+    expect(m).not.toBeNull();
+    expect(Number(m[1])).toBeGreaterThanOrEqual(7);
   });
 
   it('157.2 Page Boundary delineates secure-lifecycle vs memory-layout', () => {
     expect(brainstorm).toMatch(/secure-lifecycle\.html.*Bootloader\/OTA flow/);
   });
 
-  it('157.2 vp-brainstorm SKILL.md lists secure-lifecycle.html and 7 pages', () => {
+  it('157.2 vp-brainstorm SKILL.md lists secure-lifecycle.html (page count >= 7)', () => {
     expect(bsSkill).toMatch(/secure-lifecycle\.html/);
-    expect(bsSkill).toMatch(/7 new Architect workspace pages/);
+    const m = bsSkill.match(/(\d+) new Architect workspace pages/);
+    expect(m).not.toBeNull();
+    expect(Number(m[1])).toBeGreaterThanOrEqual(7);
   });
 
   // --- 157.3: crystallize export ---
