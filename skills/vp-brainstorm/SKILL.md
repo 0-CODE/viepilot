@@ -245,7 +245,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 - **Production & Manufacturing** (Gap #12, ENH-111): factory programming, factory-test mode, provisioning/serialization, calibration, traceability (triggered by production/factory/calibration/serialization keywords)
 - **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
 
-**8 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
+**9 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
 
 | Page | Trigger | Content |
 |------|---------|---------|
@@ -257,6 +257,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 | `power-budget.html` | Battery/sleep/power/µA/mAh keywords | Power modes table + battery life estimate |
 | `secure-lifecycle.html` | Bootloader/OTA/secure-boot/signing/provisioning keywords (ENH-109) | Boot/OTA flow diagram + signing chain table + key inventory + anti-rollback/RDP notes |
 | `test-strategy.html` | Test/Unity/cppcheck/MISRA/HIL/CI/coverage keywords (ENH-110) | Test pyramid diagram + test layer table + coverage/fault-injection table (cross-links ENH-108 contract) |
+| `production.html` | Production/factory/gang-programmer/calibration/serialization/traceability keywords (ENH-111) | Factory line diagram + programming/test/calibration tables + provisioning/serialization table |
 
 Pages linked in `index.html` under an **Embedded** nav section.
 

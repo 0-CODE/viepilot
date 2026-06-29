@@ -1293,6 +1293,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `secure-lifecycle.html` | Bootloader/OTA flow, image signing chain, key inventory + storage, secure boot, anti-rollback, debug-lock/RDP, provisioning (ENH-109) — NOT raw flash/RAM region addresses, which stay in `memory-layout.html` |
 | `memory-layout.html` | Flash + RAM region addresses, sizes, linker constraints, OTA slot partition layout (ENH-071) — bootloader/signing/keys live in `secure-lifecycle.html` |
 | `test-strategy.html` | Project-level firmware test layers (host unit/static analysis/HIL/CI), test jig, coverage target, fault injection (ENH-110) — NOT per-task pass/fail gates (those are the ENH-108 2-tier `## Verification` block in each task contract) |
+| `production.html` | Factory-line execution: programming method, factory-test (POST/loopback/RF), provisioning/serialization (serial/cert/PSK → OTP/secure element), calibration, traceability (ENH-111) — NOT key/signing definitions (`secure-lifecycle.html`) nor dev/CI test strategy (`test-strategy.html`) |
 
 **design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_system` in `notes.md`).
 
@@ -1519,7 +1520,7 @@ AND session has no `## Admin Entity Management` / `## entity_mgmt` coverage:
 
 #### Embedded Domain Architect Pages (ENH-071 Gaps 1, 4, 5, 8)
 
-All 8 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
+All 9 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
 
 ---
 
@@ -1686,6 +1687,25 @@ task contract; and NOT security/signing, which lives in `secure-lifecycle.html`.
 
 ---
 
+##### `production.html` — Production & Manufacturing (ENH-111)
+
+**Trigger**: production / manufacturing / factory / gang programmer / DFU / golden image / factory
+test / POST / calibration / serialization / provisioning / traceability keywords AND `embedded_domain: true`.
+
+**Content**:
+- Factory line Mermaid `graph LR`: program → factory-test (POST) → provision/serialize → calibrate → trace
+- Programming method table: Method | Tool | Throughput | Notes
+- Factory-test + calibration table: Step | What it verifies | Pass criteria | Tooling
+- Provisioning/serialization table: Item | Source | Storage (OTP/secure element) | Per-unit?
+
+**notes.md**: uses `## production` section written by the ENH-111 probe (no new section — same YAML).
+
+**Boundary**: covers the **factory-line execution** (program/test/provision/calibrate/trace) — NOT
+the key/signing **definitions** (those live in `secure-lifecycle.html`, ENH-109) and NOT the dev/CI
+test strategy (`test-strategy.html`, ENH-110). Production burns/installs the keys defined upstream.
+
+---
+
 #### Embedded Workspace Layout (ENH-071)
 
 When `embedded_domain: true` and Architect Mode is active, the `index.html` hub includes an **Embedded** nav section after the standard pages:
@@ -1700,6 +1720,7 @@ When `embedded_domain: true` and Architect Mode is active, the `index.html` hub 
 <a href="power-budget.html">🔋 Power Budget</a>
 <a href="secure-lifecycle.html">🔐 Secure Lifecycle</a>
 <a href="test-strategy.html">🧪 Test Strategy</a>
+<a href="production.html">🏭 Production</a>
 ```
 
 Pages are only linked when they have been created (missing pages are omitted from nav).
