@@ -197,6 +197,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Test & Verification Strategy Export (ENH-110):**
 - Step 1D item 13: if `notes.md ## test_strategy` exists → append `## Test & Verification Strategy` (test layer table, host unit framework, static analysis, HIL + test jig, firmware CI, coverage target, fault injection) to `ARCHITECTURE.md`. Cross-linked to the ENH-108 per-task 2-tier verification contract: this is the project-level strategy those per-task gates implement. READ-ONLY for `vp-auto`.
 
+**Production & Manufacturing Export (ENH-111):**
+- Step 1D item 13: if `notes.md ## production` exists → append `## Production & Manufacturing` (factory line summary, programming method + throughput, factory-test + calibration steps, provisioning/serialization table with OTP/secure-element storage) to `ARCHITECTURE.md`. Cross-linked to `## Security Architecture` (ENH-109): keys/certs are defined there, this is the factory-line execution that burns/installs them per unit. READ-ONLY for `vp-auto`.
+
 **Crystallize version stamps (ENH-067):**
 - Generated `PROJECT-CONTEXT.md` includes `<!-- crystallize_version: {semver} -->` as its first line.
 - `HANDOFF.json` records `crystallize_version` and `crystallized_at` fields.
