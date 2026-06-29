@@ -194,6 +194,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Secure Firmware Lifecycle Export (ENH-109):**
 - Step 1D item 13: if `notes.md ## secure_lifecycle` exists → append `## Bootloader & OTA` (boot flow, A/B partition, anti-rollback, OTA strategy table + flow diagram) and `## Security Architecture` (image signing chain, key storage + provisioning, secure boot/root-of-trust, debug-lock/RDP, market certs + SBOM from `## safety_config`) to `ARCHITECTURE.md`. Both sections are READ-ONLY for `vp-auto` (read before implementing bootloader/OTA tasks, never overwrite).
 
+**Test & Verification Strategy Export (ENH-110):**
+- Step 1D item 13: if `notes.md ## test_strategy` exists → append `## Test & Verification Strategy` (test layer table, host unit framework, static analysis, HIL + test jig, firmware CI, coverage target, fault injection) to `ARCHITECTURE.md`. Cross-linked to the ENH-108 per-task 2-tier verification contract: this is the project-level strategy those per-task gates implement. READ-ONLY for `vp-auto`.
+
 **Crystallize version stamps (ENH-067):**
 - Generated `PROJECT-CONTEXT.md` includes `<!-- crystallize_version: {semver} -->` as its first line.
 - `HANDOFF.json` records `crystallize_version` and `crystallized_at` fields.

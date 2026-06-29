@@ -1920,7 +1920,7 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
 
 13. **Embedded Domain Export (ENH-071)**
 
-If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`:
+If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`:
 
   a. Set `embedded_export: true` in working notes.
 
@@ -1990,6 +1990,15 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
     - Debug lock / readout protection (RDP level / JTAG lock)
     - Compliance: market certifications + SBOM requirement (from `## safety_config`)
 
+  - **`## Test & Verification Strategy`** ← from `## test_strategy` (ENH-110)
+    - Test layer table: Layer | Tooling | Runs on | Blocking gate | Notes
+    - Host unit framework (Unity+CMock/Ceedling) + static analysis config (MISRA+cppcheck/clang-tidy)
+    - HIL setup + test jig; firmware CI summary
+    - Coverage target (gcov/lcov) + fault-injection scenarios (brownout/comm-error/WDT)
+    - **Cross-link**: per-task verification is enforced by the ENH-108 2-tier contract
+      (🟢 host-verifiable run by `vp-quality-gate`; 🟡 hardware-in-loop gated). This section is the
+      project-level strategy those per-task gates implement.
+
   c. Write to `.viepilot/PROJECT-CONTEXT.md`:
   ```
   ## Embedded Domain
@@ -2000,9 +2009,10 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
   This flag is read by `vp-auto` at runtime: scaffold-first gate selects the correct embedded toolchain stack instead of web framework scaffolding.
 
   d. **Hardware sections are READ-ONLY for `vp-auto`** (same protection as ui-direction artifacts).
-     This includes `## Bootloader & OTA` + `## Security Architecture` (ENH-109).
-     `vp-auto` MUST read hardware + security sections before implementing driver/bootloader/OTA
-     tasks — never overwrite them.
+     This includes `## Bootloader & OTA` + `## Security Architecture` (ENH-109) and
+     `## Test & Verification Strategy` (ENH-110).
+     `vp-auto` MUST read hardware + security + test-strategy sections before implementing
+     driver/bootloader/OTA/test tasks — never overwrite them.
 
 ---
 
