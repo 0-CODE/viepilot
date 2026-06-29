@@ -2,9 +2,9 @@
 
 ## Current State
 - **Milestone**: **v3.2** — Embedded Domain Hardening (Phases 156–160) — in progress
-- **Last Completed Phase**: **158** ✅ (ENH-110 Embedded Testing & Verification → v3.19.0; 12 tests) — on `main`, tag `vp-p158-complete`
-- **Next Phase**: **159** (planned — ENH-111 Production & Manufacturing → v3.20.0)
-- **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · ~~157 (v3.18.0)~~ ✅ · ~~158 (v3.19.0)~~ ✅ · 159 (v3.20.0) · 160 (v3.21.0)
+- **Last Completed Phase**: **159** ✅ (ENH-111 Production & Manufacturing → v3.20.0; 12 tests) — on `main`, tag `vp-p159-complete`
+- **Next Phase**: **160** (planned — ENH-112 3-Phase Rollout + Success Metrics → v3.21.0; closes milestone v3.2)
+- **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · ~~157 (v3.18.0)~~ ✅ · ~~158 (v3.19.0)~~ ✅ · ~~159 (v3.20.0)~~ ✅ · 160 (v3.21.0)
 - **Source**: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices)
 - **Last Released Phase**: **155** ✅ (BUG-033 + ENH-105 → v3.16.0)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
@@ -75,6 +75,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-29 | Phase 159 complete: ENH-111 Production & Manufacturing → v3.20.0 (12 tests). `🏭 Production & Manufacturing` brainstorm probe + `## production`; 9th architect page `production.html` (count 8→9); crystallize export `## Production & Manufacturing` → ARCHITECTURE.md (NOT PROJECT-CONTEXT.md as SPEC said — sibling consistency) cross-linked to ENH-109 keys | Gap #12 production firmware ≠ dev firmware; factory test/provisioning/calibration/serialization needed at intake | 159 |
 | 2026-06-29 | Phase 158 complete: ENH-110 Embedded Testing & Verification → v3.19.0 (12 tests). `🧪 Testing & Verification` brainstorm probe + `## test_strategy`; 8th architect page `test-strategy.html` (count 7→8); crystallize export `## Test & Verification Strategy` cross-linked to ENH-108. Made phase157/158 page-count asserts resilient (`>=N`) | Gap #11 firmware test strategy needed at intake; count-bump broke phase157 hard-coded "7 pages" assert → fixed pattern | 158 |
 | 2026-06-29 | Phase 157 complete: ENH-109 Secure Firmware Lifecycle → v3.18.0 (12 tests). `🔐 Secure Firmware Lifecycle` brainstorm probe + `## secure_lifecycle`; safety probe + market certs (FCC/CE/UL/RoHS) + SBOM; 7th architect page `secure-lifecycle.html`; crystallize exports `## Bootloader & OTA` + `## Security Architecture` (READ-ONLY for vp-auto) | Embedded intake gaps #8 (Bootloader/OTA) + #10 (Security) were absent/buried in safety; now first-class | 157 |
 | 2026-06-19 | Milestone v3.2 planned: Phases 156–160 (ENH-106..112) Embedded Domain Hardening — Hardware Intake Gate, Datasheet/Schematic Ingestion, Embedded Verification Contract, Secure Firmware Lifecycle, Testing & Verification, Production & Manufacturing, 3-Phase Rollout. Routed crystallize→evolve (self-hosted repo, must not overwrite Phase 1–155) | Embedded intake was "lúng túng": ENH-071 inferred pin/topology instead of requiring datasheet/schematic input; no firmware self-verification for vp-auto. Research embedder.com + Beningo/Memfault/Dojo Five | 156-160 |

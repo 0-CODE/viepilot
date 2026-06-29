@@ -1,33 +1,33 @@
 {
   "milestone": "v3.2",
   "milestone_name": "Embedded Domain Hardening (Phases 156–160)",
-  "phase": 158,
-  "phase_name": "ENH-110-embedded-testing-verification",
+  "phase": 159,
+  "phase_name": "ENH-111-production-manufacturing",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-06-29T00:00:00Z",
   "version": {
-    "current": "3.19.0",
+    "current": "3.20.0",
     "next": null
   },
   "progress": {
     "phases_total": 160,
-    "phases_completed": 158,
+    "phases_completed": 159,
     "tasks_total": 4,
     "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 158 complete: ENH-110 Embedded Testing & Verification → v3.19.0 (12 contract tests pass).",
-      "brainstorm.md: 🧪 Testing & Verification topic probe → notes.md ## test_strategy (host unit Unity+CMock, MISRA+cppcheck, HIL, CI, test jig, coverage, fault injection).",
-      "8th embedded architect page test-strategy.html + Embedded nav + Page Boundary row (count 7→8).",
-      "crystallize.md Step 1D item 13: exports ## Test & Verification Strategy, cross-linked to ENH-108 2-tier contract (READ-ONLY for vp-auto).",
-      "phase158 bumped page count → made phase157/158 page-count assertions resilient (>=N) to avoid breaking on future bumps.",
-      "Full suite: 19 pre-existing failures (phases 112–153 docs drift) — unchanged; phase 158 introduced zero net new failures.",
-      "Next: Phase 159 — ENH-111 Production & Manufacturing → v3.20.0.",
-      "Phase 157 complete: ENH-109 Secure Firmware Lifecycle → v3.18.0."
+      "Phase 159 complete: ENH-111 Production & Manufacturing → v3.20.0 (12 contract tests pass).",
+      "brainstorm.md: 🏭 Production & Manufacturing topic probe → notes.md ## production (factory programming, factory-test POST/loopback/RF, provisioning serial/X.509/PSK → OTP/secure-element, calibration, traceability MES).",
+      "9th embedded architect page production.html + Embedded nav + Page Boundary row (count 8→9).",
+      "crystallize.md Step 1D item 13: exports ## Production & Manufacturing → ARCHITECTURE.md (sibling consistency, not PROJECT-CONTEXT.md as SPEC text said), cross-linked to ENH-109 keys (READ-ONLY for vp-auto).",
+      "Resilient >=N page-count asserts held through 8→9 bump; phase157/158/159 = 36/36 pass.",
+      "Full suite: 19 pre-existing failures (phases 112–153 docs drift) — unchanged; zero net new failures.",
+      "Next: Phase 160 — ENH-112 3-Phase Rollout + Success Metrics → v3.21.0 (closes milestone v3.2; triggers README/milestone updates).",
+      "Phase 158 complete: ENH-110 Embedded Testing & Verification → v3.19.0."
     ]
   },
   "checkpoints": [],

@@ -4272,11 +4272,11 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [x] `grep -c "Test & Verification Strategy" workflows/crystallize.md` → ≥1
 - [x] `npm test -- --testPathPatterns=phase158 --no-coverage` → 12 passed
 
-## Phase 159 — ENH-111: Production & Manufacturing (v3.20.0)
+## Phase 159 — ENH-111: Production & Manufacturing (v3.20.0) ✅ done
 
 **Goal**: Lấp lỗ hổng #12 — production firmware khác hẳn dev firmware: factory test, provisioning, calibration, serialization.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: ✅ done (v3.20.0) — 12 contract tests pass; tag `vp-p159-complete`. Export target = ARCHITECTURE.md (consistent with ENH-109/110 siblings, not PROJECT-CONTEXT.md as SPEC text said)
 **Version Target**: 3.20.0
 **Dependencies**: Phase 157 (provisioning ↔ security keys)
 **Directory**: `.viepilot/phases/159-enh111-production-manufacturing/`
@@ -4289,10 +4289,10 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 | 159.4 | tests (≥4) + CHANGELOG [3.20.0] + version 3.20.0 | `npm test -- --testPathPatterns=phase159` → ≥4 passed | S | after 159.1-3 |
 
 **Verification**:
-- [ ] `grep -c "## production" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "production.html" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "Production & Manufacturing" workflows/crystallize.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase159 --no-coverage` → ≥4 passed
+- [x] `grep -c "## production" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "production.html" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "Production & Manufacturing" workflows/crystallize.md` → ≥1
+- [x] `npm test -- --testPathPatterns=phase159 --no-coverage` → 12 passed
 
 ## Phase 160 — ENH-112: 3-Phase Rollout + Success Metrics (v3.21.0)
 
