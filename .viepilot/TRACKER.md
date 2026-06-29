@@ -2,9 +2,9 @@
 
 ## Current State
 - **Milestone**: **v3.2** — Embedded Domain Hardening (Phases 156–160) — in progress
-- **Last Completed Phase**: **156** ✅ (ENH-106+107+108 Embedded Autonomy Foundation → v3.17.0; 10 tests) — on branch `feat/phase156-embedded-autonomy-foundation` (not yet pushed/merged)
-- **Next Phase**: **157** (planned — ENH-109 Secure Firmware Lifecycle → v3.18.0)
-- **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · 157 (v3.18.0) · 158 (v3.19.0) · 159 (v3.20.0) · 160 (v3.21.0)
+- **Last Completed Phase**: **157** ✅ (ENH-109 Secure Firmware Lifecycle → v3.18.0; 12 tests) — on `main`, tag `vp-p157-complete`
+- **Next Phase**: **158** (planned — ENH-110 Embedded Testing & Verification → v3.19.0)
+- **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · ~~157 (v3.18.0)~~ ✅ · 158 (v3.19.0) · 159 (v3.20.0) · 160 (v3.21.0)
 - **Source**: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices)
 - **Last Released Phase**: **155** ✅ (BUG-033 + ENH-105 → v3.16.0)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
@@ -75,6 +75,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-29 | Phase 157 complete: ENH-109 Secure Firmware Lifecycle → v3.18.0 (12 tests). `🔐 Secure Firmware Lifecycle` brainstorm probe + `## secure_lifecycle`; safety probe + market certs (FCC/CE/UL/RoHS) + SBOM; 7th architect page `secure-lifecycle.html`; crystallize exports `## Bootloader & OTA` + `## Security Architecture` (READ-ONLY for vp-auto) | Embedded intake gaps #8 (Bootloader/OTA) + #10 (Security) were absent/buried in safety; now first-class | 157 |
 | 2026-06-19 | Milestone v3.2 planned: Phases 156–160 (ENH-106..112) Embedded Domain Hardening — Hardware Intake Gate, Datasheet/Schematic Ingestion, Embedded Verification Contract, Secure Firmware Lifecycle, Testing & Verification, Production & Manufacturing, 3-Phase Rollout. Routed crystallize→evolve (self-hosted repo, must not overwrite Phase 1–155) | Embedded intake was "lúng túng": ENH-071 inferred pin/topology instead of requiring datasheet/schematic input; no firmware self-verification for vp-auto. Research embedder.com + Beningo/Memfault/Dojo Five | 156-160 |
 | 2026-06-19 | OQ resolutions: (1) gate = dependency-aware; (2) ingestion v1 = manual + datasheet citation anchor (auto-extract = fast-follow ENH, no auto-trust); (3) 3 new architect pages (secure-lifecycle/test-strategy/production) | Brainstorm session-2026-06-19 AUQ decisions | 156-159 |
 | 2026-06-09 | Phase 155 planned: BUG-033 (6 AUQ header >12 chars violations) + ENH-105 (lint:auq + call template + anti-patterns) → v3.16.0 | Production feedback: AUQ InputValidationError from header violations; no lint guard existed | 155 |

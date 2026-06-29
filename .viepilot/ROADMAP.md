@@ -4228,11 +4228,11 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [ ] `npm test -- --testPathPatterns=phase156 --no-coverage` → ≥6 passed
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.17.0`
 
-## Phase 157 — ENH-109: Secure Firmware Lifecycle (v3.18.0)
+## Phase 157 — ENH-109: Secure Firmware Lifecycle (v3.18.0) ✅ done
 
 **Goal**: Lấp lỗ hổng #8+#10 (bootloader/OTA + security) — topic probe + architect page riêng + crystallize export. Bổ sung market certs (FCC/CE/UL/RoHS) + SBOM vào safety probe.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: ✅ done (v3.18.0) — 12 contract tests pass; tags `vp-p157-complete`
 **Version Target**: 3.18.0
 **Dependencies**: Phase 156
 **Directory**: `.viepilot/phases/157-enh109-secure-firmware-lifecycle/`
@@ -4245,10 +4245,10 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 | 157.4 | tests (≥4) + CHANGELOG [3.18.0] + version 3.18.0 | `npm test -- --testPathPatterns=phase157` → ≥4 passed; version=3.18.0 | S | after 157.1-3 |
 
 **Verification**:
-- [ ] `grep -c "secure_lifecycle" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "secure-lifecycle.html" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "Bootloader & OTA\|Security Architecture" workflows/crystallize.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase157 --no-coverage` → ≥4 passed
+- [x] `grep -c "secure_lifecycle" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "secure-lifecycle.html" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "Bootloader & OTA\|Security Architecture" workflows/crystallize.md` → ≥1
+- [x] `npm test -- --testPathPatterns=phase157 --no-coverage` → 12 passed
 
 ## Phase 158 — ENH-110: Embedded Testing & Verification (v3.19.0)
 
