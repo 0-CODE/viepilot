@@ -389,6 +389,63 @@ Phase 7: OTA & Production
 ```
 
 → Store phases in `notes.md ## phases` with `domain: embedded` tag.
+
+#### Embedded Engagement Template (ENH-112) — Gap #13
+When `embedded_domain: true`, at the Phase Assignment step (alongside the Firmware Phase Template),
+offer the 3-phase embedded engagement motion (embedder.com-style clean rollout). Each phase maps onto
+existing intake artifacts so nothing is re-collected:
+
+```
+🚀 Embedded Engagement — staged rollout (de-risks hardware work):
+
+Phase A: Discovery
+  (Hardware Intake Gate ENH-106 + datasheet/schematic ingestion ENH-107 — establish ground truth)
+Phase B: Bring-up Demo on real hardware
+  (Board Bring-Up verified on the actual target; ENH-108 🟡 hardware-in-loop tier proves it runs)
+Phase C: Pilot
+  (success metrics agreed BEFORE work begins; measured on real units — see Success Metrics below)
+
+1. Use this engagement motion
+2. Skip (single-phase delivery)
+```
+
+#### Success Metrics Topic (ENH-112)
+**Trigger**: success metric / KPI / acceptance / pilot / sign-off / target keywords AND `embedded_domain: true`.
+
+```
+📊 Success Metrics — agree these BEFORE work begins (Pilot sign-off gate):
+
+1. Metric name? (e.g. boot time, sleep current, OTA success rate, throughput)
+2. Target value? (with unit)
+3. How measured? (tool / method / test condition)
+4. Acceptance gate? (pass threshold for Pilot sign-off)
+```
+
+→ Store in `notes.md ## success_metrics` YAML section:
+```yaml
+## success_metrics
+metrics: []   # [{ name, target, unit, how_measured, acceptance_gate }]
+```
+
+#### Lab Equipment Topic (ENH-112)
+**Trigger**: J-Link / ST-Link / logic analyzer / oscilloscope / scope / power profiler / signal
+generator / lab / bench keywords AND `embedded_domain: true`.
+
+```
+🔬 Lab Equipment — bench inventory needed to develop/verify this product:
+
+1. Debug probe? (J-Link / ST-Link / Black Magic / none)
+2. Logic analyzer? (Saleae / vendor / none)
+3. Power profiler? (Nordic PPK2 / Joulescope / Otii / none)
+4. Oscilloscope / signal generator? (model / none)
+5. Environmental chamber or other rig? (if applicable)
+```
+
+→ Store in `notes.md ## lab_equipment` YAML section:
+```yaml
+## lab_equipment
+equipment: []   # [{ item, purpose, required_for }]  # required_for: bring-up | HIL | calibration | production
+```
 </step>
 
 <step name="detect_sessions">

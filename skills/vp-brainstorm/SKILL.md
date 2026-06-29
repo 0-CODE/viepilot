@@ -235,6 +235,8 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 
 **Production & Manufacturing (ENH-111):** when `embedded_domain: true`, a `🏭 Production & Manufacturing` topic probe (triggered by production/factory/gang-programmer/DFU/golden-image/calibration/serialization/provisioning/traceability keywords) captures factory programming method, factory-test mode (POST/loopback/RF), provisioning/serialization (serial/X.509/PSK → OTP/secure element), calibration, and traceability → `notes.md ## production`. crystallize exports `## Production & Manufacturing` (factory-line execution, cross-linked to the ENH-109 provisioning/keys).
 
+**3-Phase Engagement + Success Metrics (ENH-112):** when `embedded_domain: true`, the Phase Assignment step offers a 3-phase engagement template — **Discovery** (ENH-106 gate + ENH-107 ingestion) → **Bring-up Demo** on real hardware (ENH-108 🟡 HIL tier) → **Pilot** (success metrics agreed before work). Two probes capture `notes.md ## success_metrics` (metric/target/how-measured/acceptance gate) and `## lab_equipment` (debug probe/logic analyzer/power profiler/scope). crystallize exports `## Success Metrics` + `## Lab Equipment`.
+
 **Topic probes injected when `embedded_domain: true`:**
 - **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
 - **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy
@@ -266,7 +268,7 @@ Pages linked in `index.html` under an **Embedded** nav section.
 - Hardware context confirmed by: GPIO / SPI / I2C / driver / framebuffer / ILI9341 / SSD1306 / LVGL / u8g2 keywords
 - `🎨 UI Direction Mode?` banner suppressed when all display signals have hardware context
 
-**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`, `## production`
+**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`, `## production`, `## success_metrics`, `## lab_equipment`
 
 **crystallize Step 1D item 13 exports:**
 - `## Hardware Architecture` (from `hw_topology`)
