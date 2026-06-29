@@ -1920,7 +1920,7 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
 
 13. **Embedded Domain Export (ENH-071)**
 
-If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`:
+If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`:
 
   a. Set `embedded_export: true` in working notes.
 
@@ -1975,6 +1975,20 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
     - Watchdog configuration
     - Fault handler strategy
     - Safe state definition
+    - Market certifications (FCC/CE/UL/RoHS) + SBOM format (SPDX/CycloneDX) — ENH-109
+
+  - **`## Bootloader & OTA`** ← from `## secure_lifecycle` (ENH-109)
+    - Boot flow summary: bootloader type (MCUboot/vendor/custom), A/B partition, anti-rollback counter
+    - OTA strategy table: Transport | Image format | Verify step | Swap strategy | Notes
+    - Mermaid boot/OTA flow diagram (mirrors `secure-lifecycle.html`)
+    - OTA slot addresses referenced from `## Memory Map` (declared once, not duplicated)
+
+  - **`## Security Architecture`** ← from `## secure_lifecycle` + `## safety_config` certs/SBOM (ENH-109)
+    - Image signing chain table: Stage | Algorithm (RSA/ECDSA+SHA-256) | Key | Storage
+    - Key storage + provisioning summary (eFuse/TrustZone/ATECC608; factory key injection / per-device cert)
+    - Secure boot / root-of-trust (hardware/software/none)
+    - Debug lock / readout protection (RDP level / JTAG lock)
+    - Compliance: market certifications + SBOM requirement (from `## safety_config`)
 
   c. Write to `.viepilot/PROJECT-CONTEXT.md`:
   ```
@@ -1986,7 +2000,9 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
   This flag is read by `vp-auto` at runtime: scaffold-first gate selects the correct embedded toolchain stack instead of web framework scaffolding.
 
   d. **Hardware sections are READ-ONLY for `vp-auto`** (same protection as ui-direction artifacts).
-     `vp-auto` MUST read hardware sections before implementing driver tasks — never overwrite them.
+     This includes `## Bootloader & OTA` + `## Security Architecture` (ENH-109).
+     `vp-auto` MUST read hardware + security sections before implementing driver/bootloader/OTA
+     tasks — never overwrite them.
 
 ---
 
