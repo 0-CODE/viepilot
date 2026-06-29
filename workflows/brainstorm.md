@@ -1259,6 +1259,7 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `design.html` | Design system visual reference: color swatches grid, typography scale table, spacing grid, border-radius samples, component token table (ENH-076) |
 | `secure-lifecycle.html` | Bootloader/OTA flow, image signing chain, key inventory + storage, secure boot, anti-rollback, debug-lock/RDP, provisioning (ENH-109) — NOT raw flash/RAM region addresses, which stay in `memory-layout.html` |
 | `memory-layout.html` | Flash + RAM region addresses, sizes, linker constraints, OTA slot partition layout (ENH-071) — bootloader/signing/keys live in `secure-lifecycle.html` |
+| `test-strategy.html` | Project-level firmware test layers (host unit/static analysis/HIL/CI), test jig, coverage target, fault injection (ENH-110) — NOT per-task pass/fail gates (those are the ENH-108 2-tier `## Verification` block in each task contract) |
 
 **design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_system` in `notes.md`).
 
@@ -1485,7 +1486,7 @@ AND session has no `## Admin Entity Management` / `## entity_mgmt` coverage:
 
 #### Embedded Domain Architect Pages (ENH-071 Gaps 1, 4, 5, 8)
 
-All 7 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
+All 8 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
 
 ---
 
@@ -1632,6 +1633,26 @@ declared once in `memory-layout.html` and referenced (not duplicated) here.
 
 ---
 
+##### `test-strategy.html` — Testing & Verification (ENH-110)
+
+**Trigger**: test / unit test / Unity / CMock / cppcheck / MISRA / clang-tidy / coverage / HIL /
+hardware-in-loop / CI / test jig / fault injection keywords AND `embedded_domain: true`.
+
+**Content**:
+- Test pyramid Mermaid `graph TD`: host unit (Unity/CMock) → static analysis (MISRA/cppcheck) →
+  HIL smoke → CI gate
+- Test layer table: Layer | Tooling | Where it runs | Blocking gate? | Notes
+- Coverage + fault-injection table: Target % | Tool (gcov/lcov) | Fault scenarios (brownout/comm/WDT)
+- Cross-reference note: maps to the ENH-108 2-tier verification contract (🟢 host / 🟡 HIL)
+
+**notes.md**: uses `## test_strategy` section written by the ENH-110 probe (no new section — same YAML).
+
+**Boundary**: covers project-level test layers, CI, jig, and coverage strategy — NOT per-task
+pass/fail gates, which are emitted as the ENH-108 2-tier `## Verification` block in each firmware
+task contract; and NOT security/signing, which lives in `secure-lifecycle.html`.
+
+---
+
 #### Embedded Workspace Layout (ENH-071)
 
 When `embedded_domain: true` and Architect Mode is active, the `index.html` hub includes an **Embedded** nav section after the standard pages:
@@ -1645,6 +1666,7 @@ When `embedded_domain: true` and Architect Mode is active, the `index.html` hub 
 <a href="rtos-scheduler.html">⏱️ RTOS Scheduler</a>
 <a href="power-budget.html">🔋 Power Budget</a>
 <a href="secure-lifecycle.html">🔐 Secure Lifecycle</a>
+<a href="test-strategy.html">🧪 Test Strategy</a>
 ```
 
 Pages are only linked when they have been created (missing pages are omitted from nav).

@@ -242,7 +242,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 - **Testing & Verification** (Gap #11, ENH-110): host unit test, static analysis, HIL, firmware CI, test jig, coverage, fault injection (triggered by test/Unity/cppcheck/HIL/CI keywords)
 - **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
 
-**7 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
+**8 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
 
 | Page | Trigger | Content |
 |------|---------|---------|
@@ -253,6 +253,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 | `rtos-scheduler.html` | RTOS/FreeRTOS/task/ISR/scheduler keywords | Task priority table + ISR table + state diagram (≤5 tasks) |
 | `power-budget.html` | Battery/sleep/power/µA/mAh keywords | Power modes table + battery life estimate |
 | `secure-lifecycle.html` | Bootloader/OTA/secure-boot/signing/provisioning keywords (ENH-109) | Boot/OTA flow diagram + signing chain table + key inventory + anti-rollback/RDP notes |
+| `test-strategy.html` | Test/Unity/cppcheck/MISRA/HIL/CI/coverage keywords (ENH-110) | Test pyramid diagram + test layer table + coverage/fault-injection table (cross-links ENH-108 contract) |
 
 Pages linked in `index.html` under an **Embedded** nav section.
 
