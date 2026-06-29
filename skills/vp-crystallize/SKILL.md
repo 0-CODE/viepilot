@@ -200,6 +200,9 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 **Production & Manufacturing Export (ENH-111):**
 - Step 1D item 13: if `notes.md ## production` exists → append `## Production & Manufacturing` (factory line summary, programming method + throughput, factory-test + calibration steps, provisioning/serialization table with OTP/secure-element storage) to `ARCHITECTURE.md`. Cross-linked to `## Security Architecture` (ENH-109): keys/certs are defined there, this is the factory-line execution that burns/installs them per unit. READ-ONLY for `vp-auto`.
 
+**Success Metrics + Lab Equipment Export (ENH-112):**
+- Step 1D item 13: if `notes.md ## success_metrics` / `## lab_equipment` exist → append `## Success Metrics` (Metric | Target | How measured | Pilot acceptance gate — agreed before work begins) and `## Lab Equipment` (Equipment | Purpose | Required for) to `ARCHITECTURE.md`. Part of the ENH-112 3-phase engagement (Discovery → Bring-up Demo → Pilot). READ-ONLY for `vp-auto`.
+
 **Crystallize version stamps (ENH-067):**
 - Generated `PROJECT-CONTEXT.md` includes `<!-- crystallize_version: {semver} -->` as its first line.
 - `HANDOFF.json` records `crystallize_version` and `crystallized_at` fields.

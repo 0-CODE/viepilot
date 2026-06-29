@@ -1920,7 +1920,7 @@ Do NOT proceed to data extraction until `architect_read_complete: true`.
 
 13. **Embedded Domain Export (ENH-071)**
 
-If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`, `## production`:
+If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`, `## test_strategy`, `## production`, `## success_metrics`, `## lab_equipment`:
 
   a. Set `embedded_export: true` in working notes.
 
@@ -2007,6 +2007,13 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
     - **Cross-link**: keys/certs are defined in `## Security Architecture` (ENH-109); this section
       is the factory-line execution that burns/installs them per unit.
 
+  - **`## Success Metrics`** ← from `## success_metrics` (ENH-112)
+    - Table: Metric | Target | How measured | Pilot acceptance gate
+    - Note: metrics are agreed **before** work begins (Pilot phase of the 3-phase engagement).
+
+  - **`## Lab Equipment`** ← from `## lab_equipment` (ENH-112)
+    - Table: Equipment | Purpose | Required for (bring-up / HIL / calibration / production)
+
   c. Write to `.viepilot/PROJECT-CONTEXT.md`:
   ```
   ## Embedded Domain
@@ -2018,9 +2025,10 @@ If notes.md contains any of: `## hw_intake`, `## hw_topology`, `## pin_map`, `##
 
   d. **Hardware sections are READ-ONLY for `vp-auto`** (same protection as ui-direction artifacts).
      This includes `## Bootloader & OTA` + `## Security Architecture` (ENH-109),
-     `## Test & Verification Strategy` (ENH-110), and `## Production & Manufacturing` (ENH-111).
-     `vp-auto` MUST read hardware + security + test-strategy + production sections before implementing
-     driver/bootloader/OTA/test/production tasks — never overwrite them.
+     `## Test & Verification Strategy` (ENH-110), `## Production & Manufacturing` (ENH-111),
+     and `## Success Metrics` + `## Lab Equipment` (ENH-112).
+     `vp-auto` MUST read hardware + security + test-strategy + production + success-metric sections
+     before implementing driver/bootloader/OTA/test/production tasks — never overwrite them.
 
 ---
 
