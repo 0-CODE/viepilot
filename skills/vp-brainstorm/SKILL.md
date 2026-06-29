@@ -239,7 +239,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 - **Secure Firmware Lifecycle** (Gaps #8/#10, ENH-109): bootloader, OTA, image signing, secure boot, key storage, provisioning (triggered by bootloader/OTA/secure-boot keywords)
 - **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
 
-**6 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
+**7 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
 
 | Page | Trigger | Content |
 |------|---------|---------|
@@ -249,6 +249,7 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 | `protocol-matrix.html` | CAN/I2C/SPI/BLE/LoRa/MQTT/Modbus keywords | Bus protocol + wireless connectivity tables (distinct from `apis.html` HTTP REST) |
 | `rtos-scheduler.html` | RTOS/FreeRTOS/task/ISR/scheduler keywords | Task priority table + ISR table + state diagram (≤5 tasks) |
 | `power-budget.html` | Battery/sleep/power/µA/mAh keywords | Power modes table + battery life estimate |
+| `secure-lifecycle.html` | Bootloader/OTA/secure-boot/signing/provisioning keywords (ENH-109) | Boot/OTA flow diagram + signing chain table + key inventory + anti-rollback/RDP notes |
 
 Pages linked in `index.html` under an **Embedded** nav section.
 

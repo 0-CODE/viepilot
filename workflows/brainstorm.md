@@ -1219,6 +1219,8 @@ Activate Architect Design Mode so I can create an HTML visualization?
 | `content.html` | Content types, lifecycle states, creator permission matrix, taxonomy tree, media storage config, SEO field schema |
 | `user-data.html` | User-owned data: profile field list, privacy rights matrix (export/erasure), connected OAuth providers, session/device management, 2FA config, consent log schema |
 | `design.html` | Design system visual reference: color swatches grid, typography scale table, spacing grid, border-radius samples, component token table (ENH-076) |
+| `secure-lifecycle.html` | Bootloader/OTA flow, image signing chain, key inventory + storage, secure boot, anti-rollback, debug-lock/RDP, provisioning (ENH-109) — NOT raw flash/RAM region addresses, which stay in `memory-layout.html` |
+| `memory-layout.html` | Flash + RAM region addresses, sizes, linker constraints, OTA slot partition layout (ENH-071) — bootloader/signing/keys live in `secure-lifecycle.html` |
 
 **design.html trigger:** Architect Mode active AND (`design.md` present in session dir OR `## design_system` in `notes.md`).
 
@@ -1445,7 +1447,7 @@ AND session has no `## Admin Entity Management` / `## entity_mgmt` coverage:
 
 #### Embedded Domain Architect Pages (ENH-071 Gaps 1, 4, 5, 8)
 
-All 6 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
+All 7 pages below are only created when **`embedded_domain: true`** AND Architect Mode is active. Each page follows the standard workspace pattern: create HTML in `.viepilot/architect/{session-id}/`, link in `index.html` nav under an **Embedded** section, update `## Pages inventory` in `notes.md`.
 
 ---
 
@@ -1571,6 +1573,27 @@ wireless: []        # [{ protocol, role, endpoint, notes }]
 
 ---
 
+##### `secure-lifecycle.html` — Secure Firmware Lifecycle (ENH-109)
+
+**Trigger**: bootloader / OTA / secure boot / signing / RSA / ECDSA / anti-rollback / eFuse /
+TrustZone / ATECC / RDP / readout protection / provisioning / root-of-trust / MCUboot keywords
+AND `embedded_domain: true`.
+
+**Content**:
+- Boot/OTA flow Mermaid `graph TD`: power-on → bootloader → signature verify → A/B slot select →
+  application; plus the OTA path (download → verify → stage → swap → anti-rollback bump)
+- Signing chain table: Stage | Algorithm | Key | Storage | Notes
+- Key inventory table: Key | Purpose | Storage (eFuse/TrustZone/ATECC) | Provisioned at
+- Anti-rollback + debug-lock/RDP notes; secure-boot / root-of-trust summary
+
+**notes.md**: uses `## secure_lifecycle` section written by the ENH-109 probe (no new section — same YAML).
+
+**Boundary**: covers bootloader/OTA partitions, signing keys, and provisioning — NOT raw flash/RAM
+region addresses, which stay in `memory-layout.html`. When both exist, OTA slot addresses are
+declared once in `memory-layout.html` and referenced (not duplicated) here.
+
+---
+
 #### Embedded Workspace Layout (ENH-071)
 
 When `embedded_domain: true` and Architect Mode is active, the `index.html` hub includes an **Embedded** nav section after the standard pages:
@@ -1583,6 +1606,7 @@ When `embedded_domain: true` and Architect Mode is active, the `index.html` hub 
 <a href="protocol-matrix.html">📡 Protocol Matrix</a>
 <a href="rtos-scheduler.html">⏱️ RTOS Scheduler</a>
 <a href="power-budget.html">🔋 Power Budget</a>
+<a href="secure-lifecycle.html">🔐 Secure Lifecycle</a>
 ```
 
 Pages are only linked when they have been created (missing pages are omitted from nav).
