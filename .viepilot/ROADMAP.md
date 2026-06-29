@@ -4250,11 +4250,11 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [x] `grep -c "Bootloader & OTA\|Security Architecture" workflows/crystallize.md` → ≥1
 - [x] `npm test -- --testPathPatterns=phase157 --no-coverage` → 12 passed
 
-## Phase 158 — ENH-110: Embedded Testing & Verification (v3.19.0)
+## Phase 158 — ENH-110: Embedded Testing & Verification (v3.19.0) ✅ done
 
 **Goal**: Lấp lỗ hổng #11 — topic + architect page cho chiến lược test firmware; nối với verification contract ENH-108.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: ✅ done (v3.19.0) — 12 contract tests pass; tag `vp-p158-complete`
 **Version Target**: 3.19.0
 **Dependencies**: Phase 156 (ENH-108)
 **Directory**: `.viepilot/phases/158-enh110-embedded-testing-verification/`
@@ -4267,10 +4267,10 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 | 158.4 | tests (≥4) + CHANGELOG [3.19.0] + version 3.19.0 | `npm test -- --testPathPatterns=phase158` → ≥4 passed | S | after 158.1-3 |
 
 **Verification**:
-- [ ] `grep -c "test_strategy" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "test-strategy.html" workflows/brainstorm.md` → ≥1
-- [ ] `grep -c "Test & Verification Strategy" workflows/crystallize.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase158 --no-coverage` → ≥4 passed
+- [x] `grep -c "test_strategy" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "test-strategy.html" workflows/brainstorm.md` → ≥1
+- [x] `grep -c "Test & Verification Strategy" workflows/crystallize.md` → ≥1
+- [x] `npm test -- --testPathPatterns=phase158 --no-coverage` → 12 passed
 
 ## Phase 159 — ENH-111: Production & Manufacturing (v3.20.0)
 

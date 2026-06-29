@@ -1,32 +1,33 @@
 {
   "milestone": "v3.2",
   "milestone_name": "Embedded Domain Hardening (Phases 156–160)",
-  "phase": 157,
-  "phase_name": "ENH-109-secure-firmware-lifecycle",
+  "phase": 158,
+  "phase_name": "ENH-110-embedded-testing-verification",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-06-29T00:00:00Z",
   "version": {
-    "current": "3.18.0",
+    "current": "3.19.0",
     "next": null
   },
   "progress": {
     "phases_total": 160,
-    "phases_completed": 157,
+    "phases_completed": 158,
     "tasks_total": 4,
     "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 157 complete: ENH-109 Secure Firmware Lifecycle → v3.18.0 (12 contract tests pass).",
-      "brainstorm.md: 🔐 Secure Firmware Lifecycle topic probe → notes.md ## secure_lifecycle; safety probe + market certs (FCC/CE/UL/RoHS) + SBOM.",
-      "7th embedded architect page secure-lifecycle.html + Embedded nav + Page Boundary rows (count 6→7).",
-      "crystallize.md Step 1D item 13: exports ## Bootloader & OTA + ## Security Architecture (READ-ONLY for vp-auto).",
-      "Full suite: 19 pre-existing failures (phases 112–153 docs drift) — unrelated to ENH-109; phase 157 introduced zero new failures.",
-      "Next: Phase 158 — ENH-110 Embedded Testing & Verification → v3.19.0.",
-      "Phase 156 complete: ENH-106+107+108 Embedded Autonomy Foundation → v3.17.0."
+      "Phase 158 complete: ENH-110 Embedded Testing & Verification → v3.19.0 (12 contract tests pass).",
+      "brainstorm.md: 🧪 Testing & Verification topic probe → notes.md ## test_strategy (host unit Unity+CMock, MISRA+cppcheck, HIL, CI, test jig, coverage, fault injection).",
+      "8th embedded architect page test-strategy.html + Embedded nav + Page Boundary row (count 7→8).",
+      "crystallize.md Step 1D item 13: exports ## Test & Verification Strategy, cross-linked to ENH-108 2-tier contract (READ-ONLY for vp-auto).",
+      "phase158 bumped page count → made phase157/158 page-count assertions resilient (>=N) to avoid breaking on future bumps.",
+      "Full suite: 19 pre-existing failures (phases 112–153 docs drift) — unchanged; phase 158 introduced zero net new failures.",
+      "Next: Phase 159 — ENH-111 Production & Manufacturing → v3.20.0.",
+      "Phase 157 complete: ENH-109 Secure Firmware Lifecycle → v3.18.0."
     ]
   },
   "checkpoints": [],
