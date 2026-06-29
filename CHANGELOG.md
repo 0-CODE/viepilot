@@ -15,6 +15,18 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.21.0] - 2026-06-29
+
+### Added
+- **ENH-112** 3-phase embedded engagement template in brainstorm (Discovery → Bring-up Demo on real hardware → Pilot with success metrics agreed before work), mapped onto ENH-106/107/108 intake artifacts
+- **ENH-112** `📊 Success Metrics` + `🔬 Lab Equipment` brainstorm probes → `notes.md ## success_metrics` / `## lab_equipment`
+- **ENH-112** crystallize Step 1D item 13 exports `## Success Metrics` + `## Lab Equipment` to ARCHITECTURE.md (READ-ONLY for vp-auto)
+- **Phase 160** contract tests in tests/unit/phase160-rollout-success-metrics.test.js
+
+### Changed
+- Synced ENH-071 embedded Architect page count 6→9 in vp-brainstorm SKILL.md (milestone v3.2 added secure-lifecycle, test-strategy, production pages)
+- Milestone v3.2 Embedded Domain Hardening complete (Phases 156–160, ENH-106 through ENH-112)
+
 ## [3.20.0] - 2026-06-29
 
 ### Added

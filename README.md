@@ -2,15 +2,15 @@
 
 **Autonomous Vibe Coding Framework / Bộ khung phát triển tự động có kiểm soát**
 
-[![Version](https://img.shields.io/badge/version-3.8.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-3.21.0-blue.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Skills](https://img.shields.io/badge/skills-21-purple.svg)](#skills-reference)
+[![Skills](https://img.shields.io/badge/skills-22-purple.svg)](#skills-reference)
 [![Workflows](https://img.shields.io/badge/workflows-14-orange.svg)](#workflows)
 [![Templates](https://img.shields.io/badge/templates-18-cyan.svg)](#templates)
-[![Tests](https://img.shields.io/badge/tests-2210%20passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-2419%20passing-brightgreen.svg)](tests/)
 [![GitHub](https://img.shields.io/github/stars/0-CODE/viepilot?style=social)](https://github.com/0-CODE/viepilot)
 
-**Version**: `3.8.0` — tracked in `package.json`, `CHANGELOG.md`, and `.viepilot/TRACKER.md`.
+**Version**: `3.21.0` — tracked in `package.json`, `CHANGELOG.md`, and `.viepilot/TRACKER.md`.
 
 ViePilot là bộ skill framework cho phép AI assistant (Claude, GPT, etc.) phát triển dự án một cách **tự động**, **có kiểm soát**, và **có thể khôi phục**. Thiết kế theo các tiêu chuẩn chuyên nghiệp: Semantic Versioning, Conventional Commits, Keep a Changelog.
 
@@ -28,8 +28,8 @@ Nếu ViePilot giúp ích cho bạn, bạn có thể ủng hộ một ly cafe:
 
 | Chỉ số / Metric | Giá trị / Value |
 |-----------------|-----------------|
-| Total LOC | **~94,739+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
-| Skills | **21** |
+| Total LOC | **~104,551+** (`.md`, `.js`, `.cjs`, `.yml`, `.json`, `.sh`; không gồm `node_modules`) |
+| Skills | **22** |
 | Workflows | **14** |
 | Templates | **18** (Project: 13, Phase: 5) |
 | CLI Commands | **18** (`vp-tools` 17 subcommands + `viepilot` installer) |
@@ -60,7 +60,7 @@ Tổng thể / Overall:  ██████████████████�
 
 | Lĩnh vực / Area | Trạng thái | Chi tiết |
 |-----------------|------------|----------|
-| Core Skills (21) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, info, request, evolve, docs, update, task, debug, rollback, audit, ui-components, proposal, skills, **design, intake, persona** |
+| Core Skills (22) | ✅ Hoàn thiện | brainstorm, crystallize, auto, pause, resume, status, info, request, evolve, docs, update, task, debug, rollback, audit, ui-components, proposal, skills, design, intake, persona, **qa** |
 | Workflows (14) | ✅ Hoàn thiện | Full step-by-step guides với success criteria |
 | Project Templates (12) | ✅ Hoàn thiện | Placeholders cho customization (+ `VIEPILOT-META` FEAT-009) |
 | Phase Templates (5) | ✅ Hoàn thiện | Task tracking, verification, summary |
