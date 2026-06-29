@@ -291,6 +291,44 @@ debug_lock: ""        # RDP level | debug fuse | JTAG lock | none
 provisioning: ""      # factory key injection | per-device cert | none
 ```
 
+#### Testing & Verification Topic (ENH-110) — Gap #11
+**Trigger**: test / unit test / Unity / CMock / Ceedling / cppcheck / MISRA / clang-tidy / coverage /
+HIL / hardware-in-loop / CI / test jig / fault injection keywords in session AND `embedded_domain: true`.
+
+```
+🧪 Testing & Verification — capture the firmware test strategy (drives CI, jigs, board procurement):
+
+1. Host unit test framework?
+   (Unity + CMock / Ceedling / GoogleTest / none)
+2. Static analysis?
+   (MISRA C + cppcheck / clang-tidy / PC-lint / none)
+3. HIL (hardware-in-loop) setup?
+   (dev-board farm / single board + probe / none)
+4. Firmware CI?
+   (GitHub Actions cross-compile / GitLab CI / Jenkins / none)
+5. Test jig / fixture?
+   (custom jig / eval board / none)
+6. Coverage target?
+   (% line/branch; tool: gcov / lcov on host)
+7. Fault injection scenarios?
+   (brownout / comm-error / WDT timeout / sensor fault / none)
+```
+
+→ Store in `notes.md ## test_strategy` YAML section:
+```yaml
+## test_strategy
+host_unit: ""         # Unity+CMock | Ceedling | GoogleTest | none
+static_analysis: ""   # MISRA+cppcheck | clang-tidy | PC-lint | none
+hil_setup: ""         # board farm | single board + probe | none
+ci: ""                # GitHub Actions | GitLab | Jenkins | none
+test_jig: ""          # custom jig | eval board | none
+coverage_target: ""   # e.g. "80% line / 70% branch (gcov)"
+fault_injection: []   # [brownout, comm-error, WDT, sensor-fault]
+```
+
+Cross-reference: the **per-task** verification gates are emitted by the ENH-108 2-tier contract
+(🟢 host-verifiable / 🟡 hardware-in-loop); this probe captures the **project-level** strategy.
+
 #### Firmware Phase Ordering Template (Gap 9)
 When `embedded_domain: true`, at the **Phase Assignment** step, offer the standard firmware phase template before free-form phase entry:
 
