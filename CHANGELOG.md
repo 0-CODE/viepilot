@@ -15,6 +15,15 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.18.0] - 2026-06-29
+
+### Added
+- **ENH-109** Secure Firmware Lifecycle — brainstorm topic probe (bootloader, OTA transport, image signing RSA/ECDSA+SHA-256, A/B partition + anti-rollback, secure boot/root-of-trust, key storage eFuse/TrustZone/ATECC608, debug-lock/RDP, device provisioning) → `notes.md ## secure_lifecycle`
+- **ENH-109** Safety/Compliance probe extended with market certifications (FCC/CE/UL/RoHS) + SBOM (SPDX/CycloneDX)
+- **ENH-109** 7th embedded Architect page `secure-lifecycle.html` (boot/OTA flow diagram, signing chain table, key inventory) + Embedded nav link + Page Boundary row (bumps embedded page count 6→7)
+- **ENH-109** crystallize Step 1D item 13 exports `## Bootloader & OTA` + `## Security Architecture` to ARCHITECTURE.md from `## secure_lifecycle` (READ-ONLY for vp-auto)
+- **Phase 157** 12 contract tests in tests/unit/phase157-secure-firmware-lifecycle.test.js
+
 ## [3.17.0] — 2026-06-19
 
 ### Added
