@@ -229,11 +229,14 @@ When user provides a URL during brainstorm (competitor app, documentation, refer
 
 **Datasheet/Schematic Ingestion (ENH-107, v1 manual + cite):** pin map is a **declared input** via the pin template; each pin row carries `source: datasheet | schematic | assumed`; datasheet/schematic stored as citation anchors in `## hw_intake`. crystallize exports `## Datasheet References` + a `Source` column in `## Hardware Interface`. Auto-extract from PDF (LLM-assist + human confirm) is a fast-follow ENH — never auto-trusted.
 
+**Secure Firmware Lifecycle (ENH-109):** when `embedded_domain: true`, a `🔐 Secure Firmware Lifecycle` topic probe (triggered by bootloader/OTA/secure-boot/signing/provisioning/key-storage keywords) captures bootloader (MCUboot/vendor/custom), OTA transport, image signing (RSA/ECDSA+SHA-256), A/B partition + anti-rollback, secure boot/root-of-trust, key storage (eFuse/TrustZone/ATECC608), debug-lock/RDP, and provisioning → `notes.md ## secure_lifecycle`. The Safety/Compliance probe is extended with market certifications (FCC/CE/UL/RoHS) + SBOM (SPDX/CycloneDX). crystallize exports `## Bootloader & OTA` + `## Security Architecture` to ARCHITECTURE.md.
+
 **Topic probes injected when `embedded_domain: true`:**
 - **MCU/Toolchain** (Gap 2): MCU family, toolchain (GCC-ARM/Keil/IAR), build system (CMake/PlatformIO/West), debug interface (SWD/JTAG), flasher, SDK/HAL
 - **RTOS/Scheduling** (Gap 3): bare-metal vs RTOS choice, task list, ISR table, resource protection strategy
 - **Power Budget** (Gap 7): supply type, sleep modes, current targets, battery life (triggered by battery/power/sleep keywords)
-- **Safety/Compliance** (Gap 10): IEC 61508/ISO 26262/DO-178C, watchdog, fault handlers (triggered by safety/SIL/ASIL keywords)
+- **Safety/Compliance** (Gap 10): IEC 61508/ISO 26262/DO-178C, watchdog, fault handlers, market certs (FCC/CE/UL/RoHS) + SBOM (ENH-109) (triggered by safety/SIL/ASIL keywords)
+- **Secure Firmware Lifecycle** (Gaps #8/#10, ENH-109): bootloader, OTA, image signing, secure boot, key storage, provisioning (triggered by bootloader/OTA/secure-boot keywords)
 - **Firmware Phase Template** (Gap 9): Board Bring-Up → Drivers → RTOS → Middleware → Application → Integration Test → OTA
 
 **6 new Architect workspace pages** (in `.viepilot/architect/{session-id}/`):
@@ -254,7 +257,7 @@ Pages linked in `index.html` under an **Embedded** nav section.
 - Hardware context confirmed by: GPIO / SPI / I2C / driver / framebuffer / ILI9341 / SSD1306 / LVGL / u8g2 keywords
 - `🎨 UI Direction Mode?` banner suppressed when all display signals have hardware context
 
-**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`
+**notes.md YAML sections written:** `## hw_topology`, `## pin_map`, `## memory_layout`, `## protocols`, `## rtos_config`, `## embedded_toolchain`, `## power_budget`, `## safety_config`, `## secure_lifecycle`
 
 **crystallize Step 1D item 13 exports:**
 - `## Hardware Architecture` (from `hw_topology`)

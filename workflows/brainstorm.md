@@ -243,9 +243,53 @@ When `embedded_domain: true`, add as a brainstorm topic after architecture/compo
 5. Safe state definition?
    (what is the safe fallback on error detection?)
 6. Diagnostic coverage requirements? (if applicable)
+7. Market certifications? (ENH-109)
+   (FCC / CE / UL / RoHS / none — multiple allowed)
+8. SBOM (Software Bill of Materials) required? (ENH-109)
+   (yes + format: SPDX / CycloneDX / no)
 ```
 
-→ Store in `notes.md ## safety_config` YAML section.
+→ Store in `notes.md ## safety_config` YAML section (now also `certifications: []` + `sbom`).
+
+#### Secure Firmware Lifecycle Topic (ENH-109) — Gaps #8 (Bootloader/OTA) + #10 (Security)
+**Trigger**: bootloader / OTA / secure boot / signing / RSA / ECDSA / anti-rollback / eFuse /
+TrustZone / ATECC / RDP / readout protection / provisioning / root-of-trust / MCUboot keywords in
+session AND `embedded_domain: true`.
+
+```
+🔐 Secure Firmware Lifecycle — capture bootloader, OTA, and security requirements:
+
+1. Bootloader?
+   (MCUboot / vendor (e.g. ST/ESP-IDF/nRF) / custom / none)
+2. OTA update transport?
+   (BLE / Wi-Fi / cellular / wired (UART/USB/CAN) / none)
+3. Image signing?
+   (RSA-2048 / ECDSA-P256 + SHA-256 / Ed25519 / none)
+4. A/B partition + anti-rollback counter?
+   (A/B dual-bank / single-bank + backup / none; rollback counter: yes/no)
+5. Secure boot / root-of-trust?
+   (hardware root-of-trust / software verify / none)
+6. Key storage?
+   (eFuse / TrustZone (CryptoCell/PSA) / ATECC608 secure element / flash / none)
+7. Debug lock / readout protection?
+   (RDP level / debug fuse / JTAG lock / none)
+8. Device provisioning flow?
+   (factory key injection / per-device identity cert / none)
+```
+
+→ Store in `notes.md ## secure_lifecycle` YAML section:
+```yaml
+## secure_lifecycle
+bootloader: ""        # MCUboot | vendor | custom | none
+ota_transport: ""     # BLE | Wi-Fi | cellular | wired | none
+image_signing: ""     # RSA-2048 | ECDSA-P256+SHA-256 | Ed25519 | none
+ab_partition: ""      # A/B | single+backup | none
+anti_rollback: false  # rollback counter present
+secure_boot: ""       # hardware | software | none
+key_storage: ""       # eFuse | TrustZone | ATECC608 | flash | none
+debug_lock: ""        # RDP level | debug fuse | JTAG lock | none
+provisioning: ""      # factory key injection | per-device cert | none
+```
 
 #### Firmware Phase Ordering Template (Gap 9)
 When `embedded_domain: true`, at the **Phase Assignment** step, offer the standard firmware phase template before free-form phase entry:
