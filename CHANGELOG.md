@@ -15,6 +15,14 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.20.0] - 2026-06-29
+
+### Added
+- **ENH-111** `🏭 Production & Manufacturing` brainstorm topic probe (factory programming method gang-programmer/DFU/SWD-jig/SD-golden-image, factory-test mode POST/loopback/RF, provisioning/serialization serial/X.509/PSK → OTP/secure-element, calibration, traceability MES) → `notes.md ## production`
+- **ENH-111** 9th embedded Architect page `production.html` (factory line diagram, programming/test/calibration tables, provisioning/serialization table) + Embedded nav link + Page Boundary row (bumps embedded page count 8→9)
+- **ENH-111** crystallize Step 1D item 13 exports `## Production & Manufacturing` to ARCHITECTURE.md from `## production`, cross-linked to the ENH-109 Security Architecture provisioning/keys (READ-ONLY for vp-auto)
+- **Phase 159** 12 contract tests in tests/unit/phase159-production-manufacturing.test.js
+
 ## [3.19.0] - 2026-06-29
 
 ### Added
