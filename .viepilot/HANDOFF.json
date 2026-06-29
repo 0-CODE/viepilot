@@ -1,33 +1,32 @@
 {
   "milestone": "v3.2",
-  "milestone_name": "Embedded Domain Hardening (Phases 156–160)",
-  "phase": 159,
-  "phase_name": "ENH-111-production-manufacturing",
+  "milestone_name": "Embedded Domain Hardening (Phases 156–160) — COMPLETE",
+  "phase": 160,
+  "phase_name": "ENH-112-rollout-success-metrics",
   "task": null,
   "task_name": null,
-  "status": "phase_complete",
+  "status": "milestone_complete",
   "last_activity": "2026-06-29T00:00:00Z",
   "version": {
-    "current": "3.20.0",
+    "current": "3.21.0",
     "next": null
   },
   "progress": {
     "phases_total": 160,
-    "phases_completed": 159,
-    "tasks_total": 4,
-    "tasks_completed": 4,
+    "phases_completed": 160,
+    "tasks_total": 3,
+    "tasks_completed": 3,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 159 complete: ENH-111 Production & Manufacturing → v3.20.0 (12 contract tests pass).",
-      "brainstorm.md: 🏭 Production & Manufacturing topic probe → notes.md ## production (factory programming, factory-test POST/loopback/RF, provisioning serial/X.509/PSK → OTP/secure-element, calibration, traceability MES).",
-      "9th embedded architect page production.html + Embedded nav + Page Boundary row (count 8→9).",
-      "crystallize.md Step 1D item 13: exports ## Production & Manufacturing → ARCHITECTURE.md (sibling consistency, not PROJECT-CONTEXT.md as SPEC text said), cross-linked to ENH-109 keys (READ-ONLY for vp-auto).",
-      "Resilient >=N page-count asserts held through 8→9 bump; phase157/158/159 = 36/36 pass.",
-      "Full suite: 19 pre-existing failures (phases 112–153 docs drift) — unchanged; zero net new failures.",
-      "Next: Phase 160 — ENH-112 3-Phase Rollout + Success Metrics → v3.21.0 (closes milestone v3.2; triggers README/milestone updates).",
-      "Phase 158 complete: ENH-110 Embedded Testing & Verification → v3.19.0."
+      "MILESTONE v3.2 COMPLETE (phases 156–160, ENH-106..112 → v3.21.0).",
+      "Phase 160: ENH-112 3-phase engagement template (Discovery → Bring-up Demo → Pilot) + ## success_metrics + ## lab_equipment probes; crystallize exports ## Success Metrics + ## Lab Equipment; synced ENH-071 page count 6→9.",
+      "README badges synced: version 3.8.0→3.21.0, skills 21→22 (+vp-qa), tests→2419, LOC.",
+      "Embedded Architect pages 6→9 (secure-lifecycle, test-strategy, production). Intake gaps #8/#10/#11/#12/#13 closed.",
+      "Tests: phases 157–160 = 44/44 pass (8 in phase160). Full suite: 19 pre-existing failures across 13 suites (phases 112–153 docs-sync/hooks) — UNCHANGED by this milestone, zero net new.",
+      "FOLLOW-UP DEBT (flagged, not done): (1) 19 pre-existing test failures need a /vp-debug cleanup phase; (2) README narrative beyond badges still references v3.7.x / phase count 142 — deeper drift sync like DEBT-001.",
+      "Suggested next: /vp-docs to regenerate docs, or a DEBT phase for the above."
     ]
   },
   "checkpoints": [],

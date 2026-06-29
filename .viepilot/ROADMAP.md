@@ -4197,8 +4197,9 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 
 ---
 
-# Milestone v3.2 — Embedded Domain Hardening (Phases 156–160)
+# Milestone v3.2 — Embedded Domain Hardening (Phases 156–160) ✅ COMPLETE (2026-06-29 → v3.21.0)
 
+> **Status**: ✅ All 5 phases done (ENH-106..112). Embedded Architect pages 6→9; intake gaps #8/#10/#11/#12/#13 closed; 44 contract tests across phases 156–160.
 > Source: `docs/brainstorm/session-2026-06-19.md` — 7 ENH nâng cấp Embedded Domain Mode (ENH-071).
 > Reference research: embedder.com + Beningo/Memfault/Dojo Five intake best practices.
 > Goal: dự án nhúng chạy trên rail `brainstorm → crystallize → vp-auto` như một domain bình thường —
@@ -4294,11 +4295,11 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [x] `grep -c "Production & Manufacturing" workflows/crystallize.md` → ≥1
 - [x] `npm test -- --testPathPatterns=phase159 --no-coverage` → 12 passed
 
-## Phase 160 — ENH-112: 3-Phase Rollout + Success Metrics (v3.21.0)
+## Phase 160 — ENH-112: 3-Phase Rollout + Success Metrics (v3.21.0) ✅ done
 
 **Goal**: Lấp lỗ hổng #13 (engagement) — khung tiếp nhận embedder.com: Discovery → Bring-up Demo trên HW thật → Pilot; chốt success-metrics + lab-equipment inventory từ intake. Đóng milestone + sync docs (ENH-071 page table 6→9).
 **Estimated Tasks**: 3
-**Status**: planned
+**Status**: ✅ done (v3.21.0) — 8 contract tests pass; tag `vp-p160-complete`. **Closes milestone v3.2.** (export → ARCHITECTURE.md, sibling consistency)
 **Version Target**: 3.21.0
 **Dependencies**: Phases 156–159
 **Directory**: `.viepilot/phases/160-enh112-rollout-success-metrics/`
@@ -4310,7 +4311,7 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 | 160.3 | tests (≥3) + CHANGELOG [3.21.0] + version 3.21.0 + docs drift sync | `npm test -- --testPathPatterns=phase160` → ≥3 passed; version=3.21.0 | S | after 160.1-2 |
 
 **Verification**:
-- [ ] `grep -c "success_metrics\|lab_equipment" workflows/brainstorm.md` → ≥2
-- [ ] `grep -c "Success Metrics\|Lab Equipment" workflows/crystallize.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase160 --no-coverage` → ≥3 passed
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.21.0`
+- [x] `grep -c "success_metrics\|lab_equipment" workflows/brainstorm.md` → ≥2
+- [x] `grep -c "Success Metrics\|Lab Equipment" workflows/crystallize.md` → ≥1
+- [x] `npm test -- --testPathPatterns=phase160 --no-coverage` → 8 passed
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.21.0`
