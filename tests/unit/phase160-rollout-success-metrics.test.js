@@ -51,8 +51,10 @@ describe('Phase 160 — ENH-112: 3-Phase Rollout + Success Metrics', () => {
     expect(Number(m[1])).toBeGreaterThanOrEqual(9);
   });
 
-  // --- 160.3: version ---
-  it('160.3 package.json version is 3.21.0', () => {
-    expect(pkg.version).toBe('3.21.0');
+  // --- 160.3: version (resilient: shape + floor, not literal — per feedback-resilient-page-count-asserts) ---
+  it('160.3 package.json version is valid SemVer >= 3.21.0 (shape+floor, not literal)', () => {
+    expect(pkg.version).toMatch(/^\d+\.\d+\.\d+$/);
+    const [maj, min] = pkg.version.split('.').map(Number);
+    expect(maj > 3 || (maj === 3 && min >= 21)).toBe(true);
   });
 });

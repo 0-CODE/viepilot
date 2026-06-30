@@ -15,6 +15,17 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.22.0] - 2026-06-30
+
+### Added
+- **ENH-113** vp-qa `qa-feature-coverage-scanner` — product-completeness / spec-gap auditor that does bidirectional gap analysis (spec→code coverage matrix + out-of-spec domain/governance checklist reusing ENH-063/065/066 surfaces) with a greenfield/thin-spec fallback
+- **ENH-113** qa-orchestrator extended with a separate 'Feature Gaps' group — importance scoring (impact × spec-status), AUQ accept/decline (headers ≤12 chars), emits FEAT-{N}/ENH-{N} requests (not BUG), writes .viepilot/qa/feature-coverage-report.md, final routing to /vp-evolve preserved
+- **ENH-113** `/vp-qa --focus coverage` flag
+- **Phase 161** contract tests in tests/unit/phase161-enh113-qa-feature-coverage.test.js (resilient asserts)
+
+### Changed
+- vp-qa SKILL.md version 1.0.0 → 1.1.0
+
 ## [3.21.0] - 2026-06-29
 
 ### Added
