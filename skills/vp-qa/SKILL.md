@@ -220,11 +220,16 @@ Based on research summary, generate agent content and write using Write tool.
   - Model: claude-opus (or latest)
   - maxTurns: 30
   - Knows about backend dirs found, stack version, patterns to look for
-  - References each specialist subagent by name
-  - Receives domain reports, groups by severity
-  - Creates `.viepilot/requests/BUG-{N}.md` for accepted issues
-  - Uses AskUserQuestion for critical/high severity group acceptance
-  - Final AskUserQuestion: "N issues logged. Run /vp-evolve to plan fixes?"
+  - References each specialist subagent by name (incl. `qa-feature-coverage-scanner`)
+  - Receives domain reports, groups defect findings by severity
+  - **Feature Gaps group (ENH-113)**: keeps `qa-feature-coverage-scanner` output in a SEPARATE
+    "Feature Gaps" group, distinct from severity-grouped bugs (one orchestrator, one AUQ session)
+  - Creates `.viepilot/requests/BUG-{N}.md` for accepted defects; `FEAT-{N}.md` / `ENH-{N}.md` for
+    accepted feature gaps (ENH-113 — see behavior section for scoring + classification)
+  - Uses AskUserQuestion for critical/high severity group acceptance (defects) AND per importance
+    group for feature gaps (AUQ **headers ≤12 chars** — BUG-033/ENH-105)
+  - Writes `.viepilot/qa/feature-coverage-report.md` when the coverage scanner ran
+  - Final AskUserQuestion: "N issues + M feature gaps logged. Run /vp-evolve to plan?"
 
 - Write `qa-{domain}-scanner.md` for each recommended domain (e.g., qa-security-scanner, qa-performance-scanner)
   - Name: "vp-qa {domain} scanner"
@@ -307,13 +312,30 @@ Next actions:
 ### Generated qa-orchestrator Behavior (in target project, when run)
 
 When user runs the generated `qa-orchestrator`:
-1. Fan out to specialist subagents (claude-code) or scan sequentially (others)
-2. Collect issue reports from each domain scanner
-3. Group issues by severity (critical/high/medium/low)
+1. Fan out to specialist subagents (claude-code) or scan sequentially (others) — incl. `qa-feature-coverage-scanner`
+2. Collect issue reports from each domain scanner + the feature-coverage gap list
+3. Group **defect** issues by severity (critical/high/medium/low)
 4. For critical/high: AskUserQuestion per group (accept → create vp-request BUG-{N}, decline → skip)
 5. For medium/low: one batch confirm
 6. Create `.viepilot/requests/BUG-{N}.md` for each accepted issue
-7. Final AskUserQuestion: "N issues logged. Run /vp-evolve to plan fixes?"
+
+**Feature Gaps handling (ENH-113) — separate group, same orchestrator/AUQ session:**
+7. Score each feature gap by **importance = impact (core/domain/governance/nice-to-have) × spec-status
+   (declared-missing > out-of-spec-standard > optional)** → critical/high/medium/low. Suggested matrix:
+   - declared-missing + core → **critical**
+   - declared-missing + domain/governance → **high**
+   - out-of-spec-standard + governance → **high**
+   - out-of-spec-standard + domain → **medium**
+   - optional / nice-to-have → **low**
+8. AskUserQuestion per importance group (accept/decline; **headers ≤12 chars** — BUG-033/ENH-105).
+   Text fallback (numbered list) on non-claude-code adapters.
+9. On accept, classify by kind: wholly new capability → `.viepilot/requests/FEAT-{N}.md`; missing part
+   of an existing feature → `.viepilot/requests/ENH-{N}.md` (standard vp-request schema — NOT BUG-{N}).
+   Dedupe against existing `.viepilot/requests/` + ROADMAP before creating.
+10. Write `.viepilot/qa/feature-coverage-report.md` — spec→code coverage matrix + gap list + (if it
+    ran without specs) an explicit **fallback-mode** note + an optional one-line coverage score.
+11. Final AskUserQuestion: "N issues + M feature gaps logged. Run /vp-evolve to plan?" → routes to
+    `/vp-evolve` → `/vp-auto` (same lane, ENH-021).
 </process>
 
 ## Adapter Compatibility
@@ -336,4 +358,5 @@ Before the first interactive prompt (Phase 4), call `ToolSearch` with `query: "s
 - [ ] Phase 4 AskUserQuestion shown (claude-code) or text fallback (others)
 - [ ] Generated agents ready to execute qa-orchestrator
 - [ ] Generated qa-orchestrator creates .viepilot/requests/BUG-{N}.md for found issues
+- [ ] Generated team includes `qa-feature-coverage-scanner`; orchestrator creates FEAT-{N}/ENH-{N} for accepted feature gaps and writes `.viepilot/qa/feature-coverage-report.md` (ENH-113)
 </success_criteria>
