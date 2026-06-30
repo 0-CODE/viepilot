@@ -4320,13 +4320,13 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 
 # Post-v3.2 Feature Phases
 
-## Phase 161 — ENH-113: vp-qa Feature Coverage / Spec-Gap Auditor (v3.22.0)
+## Phase 161 — ENH-113: vp-qa Feature Coverage / Spec-Gap Auditor (v3.22.0) ✅ done
 
 **Goal**: New vp-qa scanner that judges product completeness via bidirectional gap analysis
 (spec→code coverage matrix + out-of-spec domain/governance checklist), emitting FEAT/ENH requests
 (not BUG) through the existing qa-orchestrator AUQ accept/decline → /vp-evolve lane.
 **Estimated Tasks**: 3
-**Status**: planned
+**Status**: ✅ done (v3.22.0) — 10 contract tests pass; tag `vp-p161-complete`. vp-qa SKILL 1.0.0→1.1.0
 **Version Target**: 3.22.0 (MINOR)
 **Dependencies**: ENH-100 (vp-qa base); consistency anchors ENH-063/065/066, BUG-033/ENH-105, ENH-021
 **Source**: `.viepilot/requests/ENH-113.md` + brainstorm `docs/brainstorm/session-2026-06-30.md` (D1–D6 locked)
@@ -4339,8 +4339,8 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 | 161.3 | tests (≥4, resilient asserts) + SKILL.md 1.0.0→1.1.0 + CHANGELOG [3.22.0] + version 3.22.0 | `npm test -- --testPathPatterns=phase161` → ≥4 passed; version=3.22.0; no NEW full-suite failures | S | after 161.1-2 |
 
 **Verification**:
-- [ ] `grep -c "qa-feature-coverage-scanner" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `grep -cE "Feature Gaps|feature-coverage-report" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `grep -c "\-\-focus coverage" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -c "qa-feature-coverage-scanner" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -cE "Feature Gaps|feature-coverage-report" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -c "\-\-focus coverage" skills/vp-qa/SKILL.md` → ≥1
 - [ ] `npm test -- --testPathPatterns=phase161 --no-coverage` → ≥4 passed
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.22.0`

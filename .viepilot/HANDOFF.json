@@ -1,35 +1,35 @@
 {
-  "milestone": "v3.2",
-  "milestone_name": "Embedded Domain Hardening (Phases 156–160) — COMPLETE",
-  "phase": 160,
-  "phase_name": "ENH-112-rollout-success-metrics",
+  "milestone": "post-v3.2",
+  "milestone_name": "Post-v3.2 Feature Phases",
+  "phase": 161,
+  "phase_name": "ENH-113-qa-feature-coverage",
   "task": null,
   "task_name": null,
-  "status": "milestone_complete",
-  "last_activity": "2026-06-29T00:00:00Z",
+  "status": "phase_complete",
+  "last_activity": "2026-06-30T00:00:00Z",
   "version": {
-    "current": "3.21.0",
+    "current": "3.22.0",
     "next": null
   },
   "progress": {
-    "phases_total": 160,
-    "phases_completed": 160,
+    "phases_total": 161,
+    "phases_completed": 161,
     "tasks_total": 3,
     "tasks_completed": 3,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "MILESTONE v3.2 COMPLETE (phases 156–160, ENH-106..112 → v3.21.0).",
-      "Phase 160: ENH-112 3-phase engagement template (Discovery → Bring-up Demo → Pilot) + ## success_metrics + ## lab_equipment probes; crystallize exports ## Success Metrics + ## Lab Equipment; synced ENH-071 page count 6→9.",
-      "README badges synced: version 3.8.0→3.21.0, skills 21→22 (+vp-qa), tests→2419, LOC.",
-      "Embedded Architect pages 6→9 (secure-lifecycle, test-strategy, production). Intake gaps #8/#10/#11/#12/#13 closed.",
-      "Tests: phases 157–160 = 44/44 pass (8 in phase160). Full suite: 19 pre-existing failures across 13 suites (phases 112–153 docs-sync/hooks) — UNCHANGED by this milestone, zero net new.",
-      "FOLLOW-UP DEBT (flagged, not done): (1) 19 pre-existing test failures need a /vp-debug cleanup phase; (2) README narrative beyond badges still references v3.7.x / phase count 142 — deeper drift sync like DEBT-001.",
-      "Suggested next: /vp-docs to regenerate docs, or a DEBT phase for the above."
+      "Phase 161 complete: ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0 (10 contract tests pass).",
+      "skills/vp-qa/SKILL.md: new qa-feature-coverage-scanner (bidirectional spec→code coverage matrix + out-of-spec domain/governance checklist reusing ENH-063/065/066; greenfield fallback never silent-empty); orchestrator Feature Gaps group + importance scoring (impact × spec-status) + AUQ (≤12-char headers) + FEAT/ENH emission (not BUG) + .viepilot/qa/feature-coverage-report.md; --focus coverage flag. SKILL version 1.0.0→1.1.0.",
+      "Design locked in docs/brainstorm/session-2026-06-30.md (D1–D6).",
+      "Full suite: 13 failing suites = the DEBT-004 set (no NEW suite). The vp-qa v1.1.0 bump exposed a brittle banner literal in already-red phase148 — logged into DEBT-004 Group A/B.",
+      "phase161 tests use resilient (shape+floor) version asserts; also fixed phase160's own hard-coded version literal that the bump exposed.",
+      "Next: DEBT-004 to clear brittle drift-locked test suites and restore a fully green baseline.",
+      "Milestone v3.2 (Embedded Domain Hardening, phases 156–160) closed at v3.21.0."
     ]
   },
   "checkpoints": [],
   "created_at": "2026-03-30T20:55:00Z",
-  "updated_at": "2026-06-29T00:00:00Z"
+  "updated_at": "2026-06-30T00:00:00Z"
 }

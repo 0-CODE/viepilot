@@ -2,8 +2,8 @@
 
 ## Current State
 - **Milestone**: **v3.2** — Embedded Domain Hardening (Phases 156–160) — ✅ **COMPLETE** (2026-06-29 → v3.21.0)
-- **Last Completed Phase**: **160** ✅ (ENH-112 3-Phase Rollout + Success Metrics → v3.21.0; 8 tests) — on `main`, tag `vp-p160-complete`. **Milestone v3.2 closed.**
-- **Next Phase**: **161** (planned — ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0; 3 tasks). Also in backlog: DEBT-004 (19 pre-existing test failures)
+- **Last Completed Phase**: **161** ✅ (ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0; 10 tests) — on `main`, tag `vp-p161-complete`. (Milestone v3.2 closed at 160.)
+- **Next Phase**: — (backlog: **DEBT-004** — brittle drift-locked test suites; now also incl. phase148 vp-qa banner literal exposed by the v1.0.0→1.1.0 bump)
 - **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · ~~157 (v3.18.0)~~ ✅ · ~~158 (v3.19.0)~~ ✅ · ~~159 (v3.20.0)~~ ✅ · ~~160 (v3.21.0)~~ ✅
 - **Source**: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices)
 - **Last Released Phase**: **155** ✅ (BUG-033 + ENH-105 → v3.16.0)
@@ -75,6 +75,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-06-30 | Phase 161 complete: ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0 (10 tests). qa-feature-coverage-scanner (bidirectional spec↔code gap analysis, governance baseline ENH-063/065/066, greenfield fallback); orchestrator Feature Gaps group + importance scoring + FEAT/ENH emission + feature-coverage-report.md; `--focus coverage`; vp-qa SKILL 1.0.0→1.1.0. Full suite: 13 failing suites = DEBT-004 set, no new suite; bump exposed phase148 banner literal → added to DEBT-004 | Implement ENH-113 from locked D1–D6; resilient asserts per saved lesson | 161 |
 | 2026-06-30 | Phase 161 planned (/vp-evolve Add Feature): ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0, 3 tasks. Design D1–D6 locked (brainstorm 2026-06-30): same orchestrator + Feature Gaps group; importance = impact × spec-status; new=FEAT/extension=ENH; greenfield fallback checklist; governance baseline ENH-063/065/066; spec sources + dedupe. SPEC at .viepilot/phases/161-enh113-qa-feature-coverage/ | Route request→brainstorm→evolve per ENH-021 lane; ready for /vp-auto | 161 |
 | 2026-06-30 | ENH-113 logged: vp-qa Feature Coverage / Spec-Gap Auditor agent — new scanner does bidirectional gap analysis (spec→code coverage matrix + out-of-spec domain/governance checklist reusing ENH-063/065/066), emits FEAT/ENH requests (not BUG) via the existing qa-orchestrator AUQ accept/decline + /vp-evolve flow; writes feature-coverage-report.md; `--focus coverage`. Must stay consistent with vp-qa Phases 1–4 + adapter routing | User: QA should also judge product completeness & find missing/out-of-spec features incl. admin/governance, then route to evolve like existing agents | Backlog |
 | 2026-06-29 | DEBT-004 logged: 19 pre-existing test failures across 13 suites = brittle drift-locked contract tests. 3 root causes: (A) hard-coded `pkg.version` asserts ×10 suites; (B) phase143 README badge literals ×4; (C) obsolete content asserts for removed/renamed features (ENH-076 section removed by ENH-103, "Brownfield Mode Detected" renamed by BUG-033, ENH-031 Vietnamese-prose lint). Fix: assert shape+floor/consistency not literals; retire obsolete; SYSTEM-RULES anti-pattern rule. Test-only, no product change. → route /vp-evolve | Green gate already broken → real regressions invisible; same anti-pattern as feedback-resilient-page-count-asserts | Backlog |
