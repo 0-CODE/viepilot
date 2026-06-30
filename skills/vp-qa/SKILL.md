@@ -160,6 +160,7 @@ Optional flags:
 - `/vp-qa --run` — generate + immediately invoke qa-orchestrator
 - `/vp-qa --focus sec` — bias research toward security domains
 - `/vp-qa --focus perf` — bias research toward performance domains
+- `/vp-qa --focus coverage` — bias research toward product feature-completeness / spec-gap audit (ENH-113)
 - `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot)
 </context>
 
@@ -175,6 +176,12 @@ Before writing any agent file, understand the project:
 5. Count file sizes, service count, DB layer presence
 6. Read `.viepilot/requests/` to list known existing issues (avoid duplicate reporting)
 7. Read `agents/qa-templates/rules/{stack}.md` from project lib (if exists) for stack-specific patterns
+8. **Spec-source discovery for feature coverage (ENH-113)**: gather the project's *declared* feature
+   set from `.viepilot/PROJECT-CONTEXT.md` (domains, `## Skills`, scope), `.viepilot/ROADMAP.md`
+   (planned features + status), `.viepilot/ARCHITECTURE.md` (components + admin/content/user-data
+   sections), `docs/brainstorm/session-*.md`, and architect `feature-map.html` / `notes.md ## features`
+   (whichever exist). List sources found vs absent — drives the `qa-feature-coverage-scanner` and its
+   greenfield fallback. Keep token-light: record paths, don't inline contents.
 
 **Build research summary:**
 ```
@@ -186,6 +193,7 @@ Before writing any agent file, understand the project:
 - recommendedDomains: string[] (scan areas relevant to this project)
 - recommendedAgentCount: number (2 for small, 4-5 for large/complex)
 - knownIssues: string[] (from .viepilot/requests/, avoid duplicates)
+- specSources: string[] (declared-feature sources found — PROJECT-CONTEXT/ROADMAP/ARCHITECTURE/brainstorm/feature-map; empty ⇒ greenfield/thin-spec → coverage scanner runs fallback mode)
 ```
 
 ### Phase 2: Determine Output Location
@@ -227,14 +235,39 @@ Based on research summary, generate agent content and write using Write tool.
   - Produces structured report of issues found in that domain
   - Returns report to orchestrator
 
+- Write `qa-feature-coverage-scanner.md` — **product completeness / spec-gap auditor (ENH-113)**
+  - Name: "vp-qa feature coverage scanner"
+  - Description: "Audit {projectName} product completeness vs spec (feature gaps, not defects)"
+  - Model: claude-opus (judgment-heavy gap analysis — unlike the haiku domain scanners)
+  - maxTurns: 20
+  - **Bidirectional gap analysis:**
+    1. **spec→code coverage matrix** — for each *declared* feature (from `specSources`), classify
+       `implemented | partial | missing` with file evidence (or absence) from `backendDirs`.
+    2. **out-of-spec checklist** — important features standard for the project's domains that are
+       absent from BOTH spec and code. Governance baseline reuses the framework surfaces:
+       **admin (ENH-063)**: authn/authz, RBAC/role hierarchy, audit log, billing/subscription,
+       rate-limit/quota, monitoring/health, alerts; **content (ENH-065)**: content types, lifecycle
+       states, creator permissions, taxonomy, media, SEO; **user-data (ENH-066)**: profile fields,
+       privacy rights (export/erasure), session/device mgmt, 2FA, consent log — plus per-domain norms.
+  - **Greenfield / thin-spec fallback**: if `specSources` is empty/thin, skip the spec→code direction
+    and run ONLY the out-of-spec checklist; the report MUST state it ran in **fallback mode**; never
+    return a silent-empty result; do NOT hallucinate an inferred spec.
+  - **Dedupe**: skip any gap already present in `.viepilot/requests/` or `.viepilot/ROADMAP.md`.
+  - Produces a structured **gap list** — each item `{ title, kind: feature|enhancement, domain,
+    source: spec-gap|out-of-spec, importance, rationale, evidence }` — returned to the orchestrator
+    (importance scoring + request creation handled by the orchestrator, see its behavior section).
+
 - Each file has correct YAML frontmatter (name, description, model, maxTurns, tools)
 - Content NOT generic — references specific dirs, patterns, concerns found during Phase 1
 
 **For other adapters (single-file mode):**
 - Write one combined file with all domain instructions
 - Sequential scanning procedure using that adapter's shell tools
-- Same vp-request output format (BUG-{N}.md files)
-- Single AskUserQuestion for all issues found at end
+- **Include the feature-coverage audit (ENH-113)** as a section in the combined file — same
+  bidirectional analysis + governance baseline + greenfield fallback as the claude-code scanner,
+  run sequentially.
+- Same vp-request output format (BUG-{N}.md for defects; FEAT-{N}/ENH-{N} for feature gaps — ENH-113)
+- Single AskUserQuestion for all issues + feature gaps found at end
 
 ### Phase 4: AskUserQuestion (claude-code only)
 
