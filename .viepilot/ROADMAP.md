@@ -4372,3 +4372,28 @@ Reuses browser-audit-agent + browser-runner.cjs; composes with ENH-113.
 - [ ] `grep -c "live-qa-report" skills/vp-qa/SKILL.md` → ≥1
 - [ ] `npm test -- --testPathPatterns=phase162 --no-coverage` → ≥4 passed
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.23.0`
+
+## Phase 163 — DEBT-004: Brittle drift-locked test cleanup (v3.22.1)
+
+**Goal**: Restore `npm test` → 0 failures by fixing 23 brittle tests across 13 suites (hard-coded
+version/badge literals + obsolete content asserts). Test/docs-only, no product change. Adds a
+SYSTEM-RULES prevention rule. **Runs before Phase 162 execution** to give a clean green baseline.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.22.1 (PATCH)
+**Dependencies**: none (independent of Phase 162). Anchor: `feedback-resilient-page-count-asserts`.
+**Source**: `.viepilot/requests/DEBT-004.md`
+**Directory**: `.viepilot/phases/163-debt004-brittle-test-cleanup/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 163.1 | Group A — SemVer shape+floor asserts across 9 version-literal suites (phase144/145/146/147/148/149/150/152/153) + phase148 banner | no `expect(pkg.version).toBe('` in those suites; they pass | M | parallel 163.2/163.3 |
+| 163.2 | Group B — phase143 README badges → consistency (badge == package.json / computed skill+workflow counts) | phase143 passes; asserts no frozen literals | S | parallel 163.1/163.3 |
+| 163.3 | Group C — retire/repoint obsolete asserts: phase112 (ENH-076 removed by ENH-103), phase117 (≤12-char header + guard), vp-enh031 (Vietnamese sweep/allowlist) | phase112/117/vp-enh031 pass | M | parallel 163.1/163.2 |
+| 163.4 | Group D — SYSTEM-RULES prevention rule + CHANGELOG [3.22.1] + version 3.22.1 + verify 0 failures | full `npm test` = 0 failed; version=3.22.1 | S | after 163.1-3 |
+
+**Verification**:
+- [ ] `npm test -- --no-coverage` → **0 failed** (suites + tests)
+- [ ] `grep -rl "expect(pkg.version).toBe('" tests/unit/` → none
+- [ ] `grep -c "hard-code" .viepilot/SYSTEM-RULES.md` → ≥1
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.22.1`
