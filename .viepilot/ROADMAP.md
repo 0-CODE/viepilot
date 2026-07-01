@@ -4342,5 +4342,33 @@ When `deployment_signals[]` is non-empty, `SYSTEM-RULES.md` gets a generated `##
 - [x] `grep -c "qa-feature-coverage-scanner" skills/vp-qa/SKILL.md` → ≥1
 - [x] `grep -cE "Feature Gaps|feature-coverage-report" skills/vp-qa/SKILL.md` → ≥1
 - [x] `grep -c "\-\-focus coverage" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase161 --no-coverage` → ≥4 passed
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.22.0`
+- [x] `npm test -- --testPathPatterns=phase161 --no-coverage` → 10 passed
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.22.0`
+
+## Phase 162 — ENH-114: vp-qa Live Role-Based Visual QA `--live` (v3.23.0)
+
+**Goal**: `/vp-qa --live` mode — per-role feature matrix → seed users per role → agent-browser drives
+the running app + screenshots → `qa-design-reviewer` evaluates real UI vs spec + vp-design ENH-102 →
+UI-adjustment proposals; findings → BUG (functional) / ENH-FEAT (UI) via qa-orchestrator AUQ → /vp-evolve.
+Reuses browser-audit-agent + browser-runner.cjs; composes with ENH-113.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.23.0 (MINOR)
+**Dependencies**: ENH-100 + ENH-113; reuse browser-audit-agent/browser-runner.cjs/qa-router.cjs/vp-design(ENH-102); prereq `vercel-labs/agent-browser`
+**Source**: `.viepilot/requests/ENH-114.md` + brainstorm `docs/brainstorm/session-2026-07-01.md` (D1–D5 locked)
+**Directory**: `.viepilot/phases/162-enh114-live-role-visual-qa/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 162.1 | `--live` mode + role-matrix builder (D5) + role-seeder (D1) + prereq gating/graceful degrade (D3) | `grep -cE "\-\-live\|role.matrix\|role-seeder" skills/vp-qa/SKILL.md` ≥2 | M | parallel 162.2 |
+| 162.2 | live-driver (reuse browser-audit-agent/browser-runner + screenshots) + `qa-design-reviewer` (D4) + combined mode | `grep -cE "qa-design-reviewer\|browser-audit-agent" skills/vp-qa/SKILL.md` ≥2 | M | after 162.1 |
+| 162.3 | orchestrator: functional→BUG / UI→ENH-FEAT + AUQ (≤12-char headers) + `live-qa-report.md` + boundary note vs vp-audit --visual (D2) | `grep -c "live-qa-report" skills/vp-qa/SKILL.md` ≥1 | M | after 162.2 |
+| 162.4 | tests (≥4, resilient) + vp-qa SKILL 1.1.0→1.2.0 + CHANGELOG [3.23.0] + version 3.23.0 | `npm test -- --testPathPatterns=phase162` → ≥4 passed; version=3.23.0; no NEW full-suite failures | S | after 162.1-3 |
+
+**Verification**:
+- [ ] `grep -c "\-\-live" skills/vp-qa/SKILL.md` → ≥1
+- [ ] `grep -c "qa-design-reviewer" skills/vp-qa/SKILL.md` → ≥1
+- [ ] `grep -cE "browser-audit-agent|browser-runner" skills/vp-qa/SKILL.md` → ≥1
+- [ ] `grep -c "live-qa-report" skills/vp-qa/SKILL.md` → ≥1
+- [ ] `npm test -- --testPathPatterns=phase162 --no-coverage` → ≥4 passed
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.23.0`
