@@ -385,6 +385,22 @@ When user runs the generated `qa-orchestrator`:
     ran without specs) an explicit **fallback-mode** note + an optional one-line coverage score.
 11. Final AskUserQuestion: "N issues + M feature gaps logged. Run /vp-evolve to plan?" → routes to
     `/vp-evolve` → `/vp-auto` (same lane, ENH-021).
+
+**Live QA handling (ENH-114) — `--live` mode, aggregated in the same orchestrator/AUQ session:**
+12. Collect the live-driver functional results + `qa-design-reviewer` verdicts (per-screen + cross-screen).
+13. **Functional failures** (route unreachable, form/nav broken) → group by severity → AUQ →
+    `.viepilot/requests/BUG-{N}.md` (same defect flow as steps 3–6).
+14. **UI-adjustment proposals** → AUQ accept/decline per importance group (**headers ≤12 chars**);
+    on accept classify: a **missing role-screen** (feature absent for a role) → `FEAT-{N}.md`; a fix to
+    an existing screen → `ENH-{N}.md`. Dedupe against `.viepilot/requests/` + ROADMAP.
+15. Write **`.viepilot/qa/live-qa-report.md`** — per-role coverage matrix + screenshot links +
+    Design-QA verdicts (per-screen + cross-screen) + a fallback-mode note if it degraded to static.
+16. Final AskUserQuestion: "N issues + M UI proposals logged. Run /vp-evolve to plan?" → `/vp-evolve` → `/vp-auto`.
+
+**Boundary — `vp-qa --live` vs `vp-audit --visual` (ENH-114):** `vp-audit --visual` audits a running
+app for **regression vs a saved baseline** (visual diff, a11y). `vp-qa --live` judges **correctness** —
+is each role's intended feature present/usable and is the UI good per the vp-design ENH-102 aesthetic
+framework — with **no baseline**. Both reuse `browser-audit-agent` / `browser-runner.cjs`; they do not duplicate it.
 </process>
 
 ## Adapter Compatibility
@@ -408,4 +424,5 @@ Before the first interactive prompt (Phase 4), call `ToolSearch` with `query: "s
 - [ ] Generated agents ready to execute qa-orchestrator
 - [ ] Generated qa-orchestrator creates .viepilot/requests/BUG-{N}.md for found issues
 - [ ] Generated team includes `qa-feature-coverage-scanner`; orchestrator creates FEAT-{N}/ENH-{N} for accepted feature gaps and writes `.viepilot/qa/feature-coverage-report.md` (ENH-113)
+- [ ] `--live` mode (ENH-114): seeds roles + drives app (reusing browser-audit-agent) + `qa-design-reviewer`; orchestrator emits BUG (functional) / ENH-FEAT (UI) and writes `.viepilot/qa/live-qa-report.md`; degrades to static coverage if prereqs missing
 </success_criteria>
