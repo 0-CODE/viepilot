@@ -4373,13 +4373,13 @@ Reuses browser-audit-agent + browser-runner.cjs; composes with ENH-113.
 - [ ] `npm test -- --testPathPatterns=phase162 --no-coverage` → ≥4 passed
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.23.0`
 
-## Phase 163 — DEBT-004: Brittle drift-locked test cleanup (v3.22.1)
+## Phase 163 — DEBT-004: Brittle drift-locked test cleanup (v3.22.1) ✅ done
 
 **Goal**: Restore `npm test` → 0 failures by fixing 23 brittle tests across 13 suites (hard-coded
 version/badge literals + obsolete content asserts). Test/docs-only, no product change. Adds a
 SYSTEM-RULES prevention rule. **Runs before Phase 162 execution** to give a clean green baseline.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: ✅ done (v3.22.1) — full suite **2448/2448 passing (0 failures)**; tag `vp-p163-complete`
 **Version Target**: 3.22.1 (PATCH)
 **Dependencies**: none (independent of Phase 162). Anchor: `feedback-resilient-page-count-asserts`.
 **Source**: `.viepilot/requests/DEBT-004.md`
@@ -4393,7 +4393,7 @@ SYSTEM-RULES prevention rule. **Runs before Phase 162 execution** to give a clea
 | 163.4 | Group D — SYSTEM-RULES prevention rule + CHANGELOG [3.22.1] + version 3.22.1 + verify 0 failures | full `npm test` = 0 failed; version=3.22.1 | S | after 163.1-3 |
 
 **Verification**:
-- [ ] `npm test -- --no-coverage` → **0 failed** (suites + tests)
-- [ ] `grep -rl "expect(pkg.version).toBe('" tests/unit/` → none
-- [ ] `grep -c "hard-code" .viepilot/SYSTEM-RULES.md` → ≥1
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.22.1`
+- [x] `npm test -- --no-coverage` → **0 failed** (2448/2448)
+- [x] `grep -rl "expect(pkg.version).toBe('" tests/unit/` → none
+- [x] `grep -c "hard-code" .viepilot/SYSTEM-RULES.md` → 3
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.22.1`
