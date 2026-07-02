@@ -17,35 +17,23 @@ const changelog = fs.readFileSync(CHANGELOG, 'utf8');
 
 describe('Phase 112 — ENH-076: Design.MD brainstorm extraction + crystallize gate', () => {
 
-  describe('112.1 — brainstorm.md: Design Token Extraction section', () => {
-    test('has ### Design Token Extraction (ENH-076) heading', () => {
-      expect(brainstorm).toMatch(/###\s+Design Token Extraction.*ENH-076/);
+  // DEBT-004 (phase 163): ENH-103 (phase 153) removed the inline "Design Token Extraction" section
+  // from brainstorm.md and replaced it with the Design System Delegate Hook (delegates to
+  // vp-design --init). Assertions repointed to the ENH-103 successor; the design.md capability now
+  // lives in vp-design. crystallize-side ENH-076 export (112.2) is unchanged and still asserted below.
+  describe('112.1 — brainstorm.md: Design System Delegate Hook (ENH-103, supersedes ENH-076 inline)', () => {
+    test('has Design System Delegate Hook (ENH-103) heading', () => {
+      expect(brainstorm).toMatch(/Design System Delegate Hook \(ENH-103\)/);
     });
 
-    test('documents trigger conditions (--ui OR design keywords)', () => {
-      const block = brainstorm.split('### Design Token Extraction')[1].split('### ')[0];
-      expect(block).toMatch(/--ui|UI Direction/);
-      expect(block).toMatch(/color.*font.*brand|design keywords/i);
+    test('delegate hook triggers vp-design --init for design.md', () => {
+      const block = brainstorm.split('Design System Delegate Hook')[1].split('\n### ')[0];
+      expect(block).toMatch(/vp-design --init/);
+      expect(block).toMatch(/design\.md/);
     });
 
-    test('specifies TOKEN_MAP extraction process', () => {
-      const block = brainstorm.split('### Design Token Extraction')[1].split('### ')[0];
-      expect(block).toMatch(/TOKEN_MAP|tokens\.colors/);
-    });
-
-    test('specifies design.md output path in session directory', () => {
-      const block = brainstorm.split('### Design Token Extraction')[1].split('### ')[0];
-      expect(block).toMatch(/ui-direction.*session.*design\.md|design\.md.*session/i);
-    });
-
-    test('specifies notes.md ## design_tokens section', () => {
-      const block = brainstorm.split('### Design Token Extraction')[1].split('### ')[0];
-      expect(block).toMatch(/design_tokens/);
-    });
-
-    test('specifies design_md_path field in notes.md', () => {
-      const block = brainstorm.split('### Design Token Extraction')[1].split('### ')[0];
-      expect(block).toMatch(/design_md_path/);
+    test('aesthetic context injection documented (ENH-103)', () => {
+      expect(brainstorm).toMatch(/Aesthetic Context Injection \(ENH-103\)/);
     });
   });
 

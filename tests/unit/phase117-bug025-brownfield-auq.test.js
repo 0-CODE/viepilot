@@ -18,8 +18,17 @@ describe('Phase 117 — BUG-025: brownfield crystallize AUQ initial entry gate',
       expect(crystallize).toMatch(/BUG-025/);
     });
 
+    // DEBT-004 (phase 163): BUG-033 shortened the AUQ header to ≤12 chars, renaming the old
+    // "Brownfield Mode Detected" (24 chars). Assert the current gate anchor + header instead.
     test('AUQ spec present for initial brownfield entry gate', () => {
-      expect(crystallize).toMatch(/Brownfield Mode Detected/);
+      expect(crystallize).toMatch(/Initial brownfield entry gate \(BUG-025\)/);
+      expect(crystallize).toMatch(/header:\s*"Brownfield"/);
+    });
+
+    test('brownfield AUQ header is <=12 chars (BUG-033 guard)', () => {
+      const m = crystallize.match(/header:\s*"([^"]*[Bb]rownfield[^"]*)"/);
+      expect(m).not.toBeNull();
+      expect(m[1].length).toBeLessThanOrEqual(12);
     });
 
     test('initial entry gate AUQ has 3 options: Proceed, Brainstorm, Cancel', () => {
@@ -29,7 +38,7 @@ describe('Phase 117 — BUG-025: brownfield crystallize AUQ initial entry gate',
     });
 
     test('AUQ spec appears BEFORE the scanner execution block', () => {
-      const gateIdx = crystallize.indexOf('Brownfield Mode Detected');
+      const gateIdx = crystallize.indexOf('Initial brownfield entry gate (BUG-025)');
       const scannerIdx = crystallize.indexOf('When brownfield mode is active:');
       expect(gateIdx).toBeGreaterThan(-1);
       expect(scannerIdx).toBeGreaterThan(-1);

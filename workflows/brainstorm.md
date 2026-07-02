@@ -134,7 +134,7 @@ that explicit while staying non-blocking for early-stage projects.
 >   - header: "HW Gate"
 >   - options:
 >     - { label: "Provide now", description: "Enter MCU/toolchain + datasheet/schematic/pin map before continuing" }
->     - { label: "Defer (bổ sung sau)", description: "Continue brainstorm; mark gate_status: deferred — vp-auto will block hardware-dependent tasks until provided" }
+>     - { label: "Defer (add later)", description: "Continue brainstorm; mark gate_status: deferred — vp-auto will block hardware-dependent tasks until provided" }
 >   - multiSelect: false
 > **Text fallback:** numbered list of the two options above.
 
