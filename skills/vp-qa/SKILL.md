@@ -300,6 +300,29 @@ the *running* app per role and judges the real UI. Composes with ENH-113 (adds a
   IDs → cleanup step), **non-prod guarded** (refuse if baseUrl/env looks like production).
 - Records the seeded identity per role for the live-driver.
 
+**3. live-driver** — **reuse** `agents/claude-code/browser-audit-agent.md` + `lib/audit/browser-runner.cjs`
+(navigate / login / screenshot ops — do NOT rebuild browser infra). For each seeded role:
+- Log in as that role → walk that role's `roleMatrix` rows → capture a screenshot per screen/state to
+  `.viepilot/qa/screenshots/{role}/{screen}.png`.
+- Record functional pass/fail per row (route reachable, form submits, nav works).
+- Honor a **screenshot budget cap** (default cap for large matrices; **log what was skipped** — no
+  silent truncation).
+
+**4. `qa-design-reviewer` agent** — the Design-QA reviewer (multimodal):
+- Name: "vp-qa design reviewer"; Model: claude-opus (reads the captured screenshots).
+- **Per-screen**: (a) is this role's intended feature visible/usable (vs the matrix)? (b) score
+  against the **vp-design ENH-102 aesthetic framework — 4 dimensions** (hierarchy, consistency,
+  spacing/rhythm, brand/typography); (c) obvious UX defects (overflow, contrast, misalignment,
+  empty/broken states).
+- **Cross-screen / cross-role**: design-system consistency across screens and between roles (spacing,
+  typography, component reuse, nav patterns) — catches drift a per-screen pass misses.
+- Emits **UI-adjustment proposals**, each carrying the **screenshot path as evidence** + a concrete
+  recommendation. Returns to the orchestrator (scoring + request creation — see behavior section).
+
+**Combined single-file mode (non-claude-code adapters):** append the `--live` procedure (seed →
+drive → screenshot → design-review) to the combined file — same steps, run sequentially — consistent
+with the existing combined-mode pattern.
+
 ### Phase 4: AskUserQuestion (claude-code only)
 
 After writing files, show what was generated:
