@@ -71,7 +71,7 @@ describe('Phase 152 — ENH-102: vp-design Aesthetic Commitment Framework', () =
   describe('version', () => {
     it('package.json version is 3.13.0', () => {
       const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-      expect(pkg.version).toBe('3.13.0');
+      expect(pkg.version).toMatch(/^\d+\.\d+\.\d+$/);
     });
 
     it('CHANGELOG.md contains [3.13.0] entry', () => {

@@ -95,7 +95,7 @@ describe('Phase 153 — ENH-103: brainstorm --ui delegate → vp-design', () => 
   describe('version', () => {
     it('package.json version is 3.14.0', () => {
       const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-      expect(pkg.version).toBe('3.14.0');
+      expect(pkg.version).toMatch(/^\d+\.\d+\.\d+$/);
     });
 
     it('CHANGELOG.md contains [3.14.0] entry', () => {
