@@ -1,25 +1,36 @@
 const fs = require('fs');
 const path = require('path');
 
+// DEBT-004 (phase 163): rewritten to assert CONSISTENCY (badges == live sources) instead of frozen
+// literals that asserted drift-as-truth. Version currency (pkg == CHANGELOG) is owned by
+// release-meta.test.js; the README version badge is shape-only here to avoid per-bump friction
+// (it is synced to the release at milestone-complete, not on every patch).
 const ROOT = path.resolve(__dirname, '../..');
 const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8');
 const skillsRef = fs.readFileSync(path.join(ROOT, 'docs/skills-reference.md'), 'utf8');
 const arch = fs.readFileSync(path.join(ROOT, 'docs/dev/architecture.md'), 'utf8');
 const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
 
-describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
-  describe('README.md badges', () => {
-    it('version badge is 3.8.0', () => {
-      expect(readme).toMatch(/version-3\.8\.0/);
+const vpSkillCount = fs.readdirSync(path.join(ROOT, 'skills')).filter(d => /^vp-/.test(d)).length;
+const workflowCount = fs.readdirSync(path.join(ROOT, 'workflows')).filter(f => /\.md$/.test(f)).length;
+
+describe('Phase 143 — DEBT-001: README + Docs consistency (DEBT-004 de-brittled)', () => {
+  describe('README.md badges — consistency, not literals', () => {
+    it('version badge is valid SemVer', () => {
+      expect(readme).toMatch(/version-\d+\.\d+\.\d+/);
     });
-    it('skills badge is 21', () => {
-      expect(readme).toMatch(/skills-21/);
+    it('skills badge matches skills/vp-* count', () => {
+      const m = readme.match(/skills-(\d+)/);
+      expect(m).not.toBeNull();
+      expect(Number(m[1])).toBe(vpSkillCount);
     });
-    it('workflows badge is 14', () => {
-      expect(readme).toMatch(/workflows-14/);
+    it('workflows badge matches workflows/*.md count', () => {
+      const m = readme.match(/workflows-(\d+)/);
+      expect(m).not.toBeNull();
+      expect(Number(m[1])).toBe(workflowCount);
     });
-    it('tests badge shows 2210', () => {
-      expect(readme).toMatch(/tests-2210/);
+    it('tests badge is present (shape-only — count changes constantly)', () => {
+      expect(readme).toMatch(/tests-\d+/);
     });
   });
 
@@ -33,8 +44,8 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   });
 
   describe('README.md metric tables', () => {
-    it('contains 142 phase cycles reference', () => {
-      expect(readme).toMatch(/142.*phase/i);
+    it('references a phase-cycle count (shape, not a frozen number)', () => {
+      expect(readme).toMatch(/\d+\s*(\+\s*)?phase/i);
     });
   });
 
@@ -48,9 +59,9 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
     it('has vp-persona section', () => {
       expect(skillsRef).toMatch(/^## \/vp-persona/m);
     });
-    it('has 22 skill sections total', () => {
+    it('section count matches skills/vp-* count', () => {
       const count = (skillsRef.match(/^## \/vp-/gm) || []).length;
-      expect(count).toBe(22);
+      expect(count).toBe(vpSkillCount);
     });
   });
 
@@ -67,8 +78,8 @@ describe('Phase 143 — DEBT-001: README + Docs Drift Sync', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.12.1', () => {
-      expect(pkg.version).toBe('3.12.2');
+    it('version is valid SemVer (currency owned by release-meta.test.js)', () => {
+      expect(pkg.version).toMatch(/^\d+\.\d+\.\d+$/);
     });
   });
 });
