@@ -161,6 +161,7 @@ Optional flags:
 - `/vp-qa --focus sec` — bias research toward security domains
 - `/vp-qa --focus perf` — bias research toward performance domains
 - `/vp-qa --focus coverage` — bias research toward product feature-completeness / spec-gap audit (ENH-113)
+- `/vp-qa --live` (a.k.a. `--e2e`) — **live role-based visual QA (ENH-114)**: seed users per role, drive the running app via agent-browser, screenshot each screen, run the Design-QA reviewer. Distinct mode (needs a running app + seeding). **Prereq**: `vercel-labs/agent-browser` + a runnable app (base URL / run command). If prereqs are missing it **degrades to `--focus coverage`** static analysis (reports the blocker; never silent-fails).
 - `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot)
 </context>
 
@@ -182,6 +183,11 @@ Before writing any agent file, understand the project:
    sections), `docs/brainstorm/session-*.md`, and architect `feature-map.html` / `notes.md ## features`
    (whichever exist). List sources found vs absent — drives the `qa-feature-coverage-scanner` and its
    greenfield fallback. Keep token-light: record paths, don't inline contents.
+9. **Role × Feature × Screen matrix (ENH-114, `--live` only)**: build rows `(role, feature, screen,
+   expected)` for every user role — from the spec sources above + `notes.md ## use_cases` (ENH-028
+   actors) + `## admin` (ENH-063 roles). This matrix is the authoritative live-test plan. Also detect
+   `baseUrl` / `runCommand` (from `package.json` `dev`/`start` scripts + common ports; AUQ-ask once if
+   undetectable) so the live-driver can reach the app.
 
 **Build research summary:**
 ```
@@ -194,6 +200,8 @@ Before writing any agent file, understand the project:
 - recommendedAgentCount: number (2 for small, 4-5 for large/complex)
 - knownIssues: string[] (from .viepilot/requests/, avoid duplicates)
 - specSources: string[] (declared-feature sources found — PROJECT-CONTEXT/ROADMAP/ARCHITECTURE/brainstorm/feature-map; empty ⇒ greenfield/thin-spec → coverage scanner runs fallback mode)
+- roleMatrix: array (ENH-114 --live) — rows { role, feature, screen, expected }
+- baseUrl / runCommand: string (ENH-114 --live) — how to reach the running app (detected or AUQ-asked)
 ```
 
 ### Phase 2: Determine Output Location
@@ -273,6 +281,24 @@ Based on research summary, generate agent content and write using Write tool.
   run sequentially.
 - Same vp-request output format (BUG-{N}.md for defects; FEAT-{N}/ENH-{N} for feature gaps — ENH-113)
 - Single AskUserQuestion for all issues + feature gaps found at end
+
+### Phase 3.5: Live Role-Based Visual QA generation (ENH-114 — `--live` mode only)
+
+Active **only** when `/vp-qa --live` (or `--e2e`) is used. Generates a runtime QA team that exercises
+the *running* app per role and judges the real UI. Composes with ENH-113 (adds a role axis).
+
+**1. Prerequisite gate + graceful degradation**
+- Require `vercel-labs/agent-browser` installed AND a runnable app (`baseUrl` / `runCommand` from
+  research). If either is missing → **do not fail silently**: report the specific blocker and
+  **degrade to `--focus coverage`** (ENH-113 static coverage), stating clearly it ran static-only.
+
+**2. role-seeder step** — seed one user per role so the driver can log in as each:
+- **Auto-detect, seed-script-first**: (1) existing seed/fixture script (`npm run seed`,
+  `prisma db seed`, Rails `db:seed`, factory libs) → (2) public signup / admin API → (3) direct DB
+  insert (last resort).
+- **Idempotent** (upsert), **namespaced** (`qa+{role}@example.test`), **reversible** (record seeded
+  IDs → cleanup step), **non-prod guarded** (refuse if baseUrl/env looks like production).
+- Records the seeded identity per role for the live-driver.
 
 ### Phase 4: AskUserQuestion (claude-code only)
 
