@@ -15,6 +15,17 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.23.0] - 2026-07-02
+
+### Added
+- **ENH-114** vp-qa `--live` (a.k.a. `--e2e`) — Live Role-Based Visual QA mode. Builds a Role × Feature × Screen matrix (from spec + ENH-028 use-cases + ENH-063 admin roles), seeds one user per role (seed-script-first: seed/fixture → API → DB; idempotent, namespaced, reversible, non-prod), drives the running app via agent-browser (reusing browser-audit-agent / browser-runner.cjs) capturing per-role screenshots, and runs a new qa-design-reviewer agent
+- **ENH-114** qa-design-reviewer — multimodal Design-QA that scores screenshots per-screen (feature-visible + vp-design ENH-102 4 dimensions + UX defects) and cross-screen/role consistency, emitting UI-adjustment proposals with screenshot evidence
+- **ENH-114** qa-orchestrator live-QA aggregation — functional failures → BUG-{N}, UI proposals → ENH-{N}, missing role-screen → FEAT-{N}; writes .viepilot/qa/live-qa-report.md; AUQ ≤12-char headers → /vp-evolve; prereq gating + graceful degrade to ENH-113 static coverage
+- **Phase 162** contract tests in tests/unit/phase162-enh114-live-role-visual-qa.test.js (resilient asserts)
+
+### Changed
+- vp-qa SKILL.md version 1.1.0 → 1.2.0
+
 ## [3.22.1] - 2026-07-02
 
 ### Fixed

@@ -1,7 +1,7 @@
 ---
 name: vp-qa
 description: "LLM-driven QA agent team generator — research codebase, generate context-aware QA scanning agents"
-version: 1.1.0
+version: 1.2.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-QA  v1.1.0 (fw 2.19.0)
+ VIEPILOT ► VP-QA  v1.2.0 (fw 2.19.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
