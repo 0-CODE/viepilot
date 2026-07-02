@@ -4352,7 +4352,7 @@ the running app + screenshots → `qa-design-reviewer` evaluates real UI vs spec
 UI-adjustment proposals; findings → BUG (functional) / ENH-FEAT (UI) via qa-orchestrator AUQ → /vp-evolve.
 Reuses browser-audit-agent + browser-runner.cjs; composes with ENH-113.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: ✅ done (v3.23.0) — 10 contract tests; full suite 2458/2458 green; tag `vp-p162-complete`. vp-qa SKILL 1.1.0→1.2.0
 **Version Target**: 3.23.0 (MINOR)
 **Dependencies**: ENH-100 + ENH-113; reuse browser-audit-agent/browser-runner.cjs/qa-router.cjs/vp-design(ENH-102); prereq `vercel-labs/agent-browser`
 **Source**: `.viepilot/requests/ENH-114.md` + brainstorm `docs/brainstorm/session-2026-07-01.md` (D1–D5 locked)
@@ -4366,12 +4366,12 @@ Reuses browser-audit-agent + browser-runner.cjs; composes with ENH-113.
 | 162.4 | tests (≥4, resilient) + vp-qa SKILL 1.1.0→1.2.0 + CHANGELOG [3.23.0] + version 3.23.0 | `npm test -- --testPathPatterns=phase162` → ≥4 passed; version=3.23.0; no NEW full-suite failures | S | after 162.1-3 |
 
 **Verification**:
-- [ ] `grep -c "\-\-live" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `grep -c "qa-design-reviewer" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `grep -cE "browser-audit-agent|browser-runner" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `grep -c "live-qa-report" skills/vp-qa/SKILL.md` → ≥1
-- [ ] `npm test -- --testPathPatterns=phase162 --no-coverage` → ≥4 passed
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.23.0`
+- [x] `grep -c "\-\-live" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -c "qa-design-reviewer" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -cE "browser-audit-agent|browser-runner" skills/vp-qa/SKILL.md` → ≥1
+- [x] `grep -c "live-qa-report" skills/vp-qa/SKILL.md` → ≥1
+- [x] `npm test -- --testPathPatterns=phase162 --no-coverage` → 10 passed
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.23.0`
 
 ## Phase 163 — DEBT-004: Brittle drift-locked test cleanup (v3.22.1) ✅ done
 

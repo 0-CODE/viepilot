@@ -1,33 +1,32 @@
 {
   "milestone": "post-v3.2",
   "milestone_name": "Post-v3.2 Feature Phases",
-  "phase": 163,
-  "phase_name": "DEBT-004-brittle-test-cleanup",
+  "phase": 162,
+  "phase_name": "ENH-114-live-role-visual-qa",
   "task": null,
   "task_name": null,
   "status": "phase_complete",
   "last_activity": "2026-07-02T00:00:00Z",
   "version": {
-    "current": "3.22.1",
-    "next": "3.23.0 (phase 162 — ENH-114)"
+    "current": "3.23.0",
+    "next": null
   },
   "progress": {
     "phases_total": 163,
-    "phases_completed": 162,
+    "phases_completed": 163,
     "tasks_total": 4,
     "tasks_completed": 4,
     "percentage": 100
   },
   "context": {
     "notes": [
-      "Phase 163 complete: DEBT-004 brittle drift-locked test cleanup → v3.22.1. FULL SUITE NOW GREEN: 2448/2448 passing, 0 failures (was 23 failing across 13 suites).",
-      "Group A: 9 per-phase version literals → SemVer shape asserts + new tests/unit/release-meta.test.js (package.json == latest CHANGELOG heading, single version-currency check); phase148 banner → shape.",
-      "Group B: phase143 README badges → consistency asserts (badges == package.json / computed skill+workflow counts).",
-      "Group C: phase112 → ENH-103 Design System Delegate Hook (ENH-076 inline removed); phase117 → ≤12-char Brownfield header (BUG-033) + header-length guard; vp-enh031 Vietnamese prose swept in brainstorm.md.",
-      "Group D: .viepilot/SYSTEM-RULES.md 'Contract Test Conventions' rule (no hard-coded version/badge/count literals; run full npm test before PASS). DEBT-004 resolved.",
-      "IMPORTANT next: Phase 162 (ENH-114 vp-qa --live) is PLANNED but NOT yet executed — it was deferred so DEBT-004 could run first. Run /vp-auto --from 162 next. Version 3.22.1 → 3.23.0 (MINOR).",
-      "Note: phase 162 numerically < 163 but executes AFTER 163 (user-chosen order). Do not treat 163 completion as 'all phases done'.",
-      "Phase 161 (ENH-113 vp-qa static coverage) done at v3.22.0."
+      "Phase 162 complete: ENH-114 vp-qa --live Live Role-Based Visual QA → v3.23.0 (10 contract tests). Full suite 2458/2458 green.",
+      "vp-qa SKILL.md (v1.2.0): new --live/--e2e mode — Role×Feature×Screen matrix (spec + ENH-028 + ENH-063); role-seeder (seed-script-first, idempotent/namespaced/reversible/non-prod); Phase 3.5 live-driver reusing browser-audit-agent/browser-runner.cjs (per-role login → walk → screenshots .viepilot/qa/screenshots/{role}/); qa-design-reviewer (per-screen ENH-102 4-dim + cross-screen/role, screenshot evidence); orchestrator functional→BUG / UI→ENH / missing role-screen→FEAT + live-qa-report.md; prereq gate + graceful degrade to ENH-113 static.",
+      "Design locked in docs/brainstorm/session-2026-07-01.md (D1–D5). ENH-114 resolved.",
+      "Execution order this session: 161 (ENH-113 static coverage, v3.22.0) → 163 (DEBT-004 test cleanup, v3.22.1, full suite green) → 162 (ENH-114 live QA, v3.23.0). Phase 162 numerically < 163 but ran last per user choice.",
+      "vp-qa now spans BOTH static feature-coverage (ENH-113) and live role-based visual QA (ENH-114).",
+      "Full suite: 132 suites / 2458 tests, 0 failures. All new tests use resilient asserts per SYSTEM-RULES Contract Test Conventions (DEBT-004).",
+      "Backlog empty. Suggested next: /vp-docs to regenerate documentation for the new vp-qa modes."
     ]
   },
   "checkpoints": [],

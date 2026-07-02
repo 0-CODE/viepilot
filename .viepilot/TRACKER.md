@@ -3,8 +3,8 @@
 ## Current State
 - **Milestone**: **v3.2** — Embedded Domain Hardening (Phases 156–160) — ✅ **COMPLETE** (2026-06-29 → v3.21.0)
 - **Last Completed Phase**: **161** ✅ (ENH-113 vp-qa Feature Coverage / Spec-Gap Auditor → v3.22.0; 10 tests) — on `main`, tag `vp-p161-complete`. (Milestone v3.2 closed at 160.)
-- **Last Completed Phase**: **163** ✅ (DEBT-004 brittle-test cleanup → v3.22.1; full suite 2448/2448, 0 failures) — on `main`, tag `vp-p163-complete`
-- **Next Phase**: **162** (planned — ENH-114 vp-qa `--live` → **v3.23.0** MINOR from 3.22.1; 4 tasks). Green baseline restored — 162 PASS now unambiguous.
+- **Last Completed Phase**: **162** ✅ (ENH-114 vp-qa `--live` Live Role-Based Visual QA → v3.23.0; 10 tests; full suite 2458/2458 green) — on `main`, tag `vp-p162-complete`. (Executed after 163 per user order.)
+- **Next Phase**: — (backlog empty; vp-qa now = static coverage ENH-113 + live visual QA ENH-114. Suggest `/vp-docs`.)
 - **Planned Phases**: ~~156 (v3.17.0)~~ ✅ · ~~157 (v3.18.0)~~ ✅ · ~~158 (v3.19.0)~~ ✅ · ~~159 (v3.20.0)~~ ✅ · ~~160 (v3.21.0)~~ ✅
 - **Source**: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices)
 - **Last Released Phase**: **155** ✅ (BUG-033 + ENH-105 → v3.16.0)
@@ -76,6 +76,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-07-02 | Phase 162 complete: ENH-114 vp-qa `--live` Live Role-Based Visual QA → v3.23.0 (10 tests, full suite 2458/2458 green). role-matrix builder + role-seeder (seed-script-first) + live-driver (reuse browser-audit-agent/browser-runner + screenshots) + qa-design-reviewer (per-screen ENH-102 + cross-screen) + orchestrator functional→BUG/UI→ENH-FEAT + live-qa-report.md + prereq gate/graceful degrade to ENH-113. vp-qa SKILL 1.1.0→1.2.0. ENH-114 resolved. Executed AFTER 163 (user order) → 3.22.1→3.23.0 | Deliver user's live full-system QA prompt as a first-class vp-qa mode | 162 |
 | 2026-07-02 | Phase 163 complete: DEBT-004 brittle-test cleanup → v3.22.1. **Full suite 23 failing → 0 (2448/2448)**. Group A 9 version literals→shape + new release-meta.test.js; B phase143 README→consistency; C phase112→ENH-103 / phase117 ≤12-char header+guard / vp-enh031 Vietnamese swept; D SYSTEM-RULES Contract Test Conventions rule. DEBT-004 resolved. Green baseline restored before ENH-114 (phase 162) | Prevent recurrence + unambiguous PASS for 162 | 163 |
 | 2026-07-01 | Phase 163 planned (/vp-evolve Refactor): DEBT-004 brittle-test cleanup → v3.22.1 (PATCH, test/docs-only), 4 tasks by root-cause group (A version literals ×9 suites+phase148 banner → shape+floor asserts; B phase143 README badges → consistency; C obsolete content phase112/117/vp-enh031 → retire/repoint; D SYSTEM-RULES prevention rule + bump + verify 0 failures). **Execution order: 163 before 162** (user choice) → SemVer 3.22.0→3.22.1→3.23.0; phase 162 target stays 3.23.0 (bumps from 3.22.1). SPEC at .viepilot/phases/163-debt004-brittle-test-cleanup/ | Green baseline before ENH-114 so 162 PASS is unambiguous; generalize resilient-assert lesson + prevent recurrence | 163 |
 | 2026-07-01 | Phase 162 planned (/vp-evolve Add Feature): ENH-114 vp-qa Live Role-Based Visual QA `--live` → v3.23.0, 4 tasks (effort L). Design D1–D5 locked (brainstorm 2026-07-01): seed-script-first seeding; boundary correctness-vs-regression vs vp-audit --visual; distinct --live mode + graceful degrade to ENH-113; qa-design-reviewer per-screen + cross-screen; matrix from spec+ENH-028+ENH-063. Reuse browser-audit-agent/browser-runner. SPEC at .viepilot/phases/162-enh114-live-role-visual-qa/ | Route request→brainstorm→evolve per ENH-021; ready for /vp-auto | 162 |
