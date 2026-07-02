@@ -361,6 +361,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 </quality_gates>
 
+<contract_test_conventions>
+
+## Contract Test Conventions (DEBT-004)
+
+Contract tests (`tests/unit/phase*.test.js`) MUST NOT hard-code point-in-time values that later
+phases change — this is the drift-lock anti-pattern that produced 23 stale failures (DEBT-004).
+
+**Rules:**
+1. **No hard-coded version literals.** Never `expect(pkg.version).toBe('3.x.y')`. Assert SemVer
+   **shape** (`/^\d+\.\d+\.\d+$/`) or shape+floor. The single authoritative "version is current"
+   check (package.json == latest CHANGELOG heading) lives in `tests/unit/release-meta.test.js`.
+2. **No hard-coded README badge / page / skill / workflow counts.** Assert **consistency** — compute
+   the expected value from source (`skills/`, `workflows/`, package.json) and compare, or assert shape.
+3. **No asserting removed/renamed content as truth.** When a feature is superseded (e.g. ENH-103
+   replaced ENH-076's inline section) or a string is renamed (e.g. BUG-033 shortened an AUQ header),
+   repoint the test to the successor with a comment citing the superseding change.
+4. **Always run the FULL `npm test`** (not just `--testPathPatterns=phaseN`) before marking a phase
+   PASS — cross-phase regressions only surface in the full suite.
+
+See memory `feedback-resilient-page-count-asserts` for the origin of this rule.
+
+</contract_test_conventions>
+
 <do_not>
 
 ## ❌ DO NOT

@@ -15,6 +15,14 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
 
+## [3.22.1] - 2026-07-02
+
+### Fixed
+- DEBT-004: de-brittled 13 test suites that hard-coded point-in-time values (23 stale failures → 0). Group A: 9 per-phase version literals → SemVer shape asserts + new tests/unit/release-meta.test.js (package.json == latest CHANGELOG heading); phase148 banner literal → SemVer shape. Group B: phase143 README badge literals → consistency asserts (badges == package.json / computed skill+workflow counts). Group C: phase112 repointed to ENH-103 Design System Delegate Hook (ENH-076 inline section removed), phase117 updated to the ≤12-char Brownfield header (BUG-033) + header-length guard, vp-enh031 Vietnamese-prose swept ('Defer (bổ sung sau)' → 'Defer (add later)')
+
+### Added
+- SYSTEM-RULES.md 'Contract Test Conventions' — no hard-coded version/badge/count literals; assert shape/consistency; single release-meta version check; run full npm test before PASS (DEBT-004 prevention)
+
 ## [3.22.0] - 2026-06-30
 
 ### Added
