@@ -4400,7 +4400,7 @@ SYSTEM-RULES prevention rule. **Runs before Phase 162 execution** to give a clea
 
 ---
 
-## Phase 164 — ENH-115: Automated npm publish/release preflight gate (v3.24.0)
+## Phase 164 — ENH-115: Automated npm publish/release preflight gate (v3.24.0) ✅ done
 
 **Goal**: Turn the passive, print-only `release:checklist` into a **fail-closed release preflight
 gate** and wire it into `verify:release` + CI, so a release cannot ship on a dirty tree, wrong
@@ -4410,7 +4410,7 @@ banners/README badges). Adds a single `npm run release` orchestrator (preflight 
 tracker reminder) with `--dry-run`. Delegates version bumps to `changelog-agent` (ENH-053) — the
 gate **verifies**, it does not re-bump. Directly closes `feedback_vp_evolve_version_bump_gap`.
 **Estimated Tasks**: 4
-**Status**: 🔲 planned
+**Status**: ✅ done (v3.24.0) — full suite 2467/2467; full preflight exit 0; tag `vp-p164-complete`
 **Version Target**: 3.24.0 (MINOR — additive release tooling, no behavior change to shipped skills)
 **Dependencies**: builds on existing `release-npm.yml` + `verify:release` + `smoke:published` (reuse, do NOT rebuild CI publish); ENH-053 (single bump authority — no re-bump); anchors `feedback_vp_evolve_version_bump_gap`, `feedback_resilient_page_count_asserts` (resilient tests).
 **Source**: `.viepilot/requests/ENH-115.md`
@@ -4424,10 +4424,10 @@ gate **verifies**, it does not re-bump. Directly closes `feedback_vp_evolve_vers
 | 164.4 | Contract tests (≥4, **resilient** — no hard-coded version/count literals) `tests/unit/phase164-enh115-release-preflight.test.js` + CHANGELOG `[3.24.0]` + package.json 3.23.0→3.24.0 (**via changelog-agent**). | `npm test -- --testPathPatterns=phase164 --no-coverage` → ≥4 passed; version=3.24.0; no NEW full-suite failures | S | after 164.1-3 |
 
 **Verification**:
-- [ ] `node scripts/release-preflight.cjs --dry-run` → exit 0, prints each gate result
-- [ ] `grep -c "release:preflight" package.json` → ≥2 (script def + wired into verify:release)
-- [ ] `grep -cE "release-preflight|release:preflight" .github/workflows/release-npm.yml` → ≥1
-- [ ] `node -e "require('./scripts/lib/version-refs.cjs')"` → loads without throw
-- [ ] `npm test -- --testPathPatterns=phase164 --no-coverage` → ≥4 passed
-- [ ] Full `npm test` → no NEW failures
-- [ ] `node -e "console.log(require('./package.json').version)"` → `3.24.0`
+- [x] `node scripts/release-preflight.cjs --dry-run` → exit 0, prints each gate result
+- [x] `grep -c "release:preflight" package.json` → 2 (script def + wired into verify:release)
+- [x] `grep -cE "release-preflight|release:preflight" .github/workflows/release-npm.yml` → 1
+- [x] `node -e "require('./scripts/lib/version-refs.cjs')"` → loads without throw
+- [x] `npm test -- --testPathPatterns=phase164 --no-coverage` → 9 passed
+- [x] Full `npm test` → 2467/2467, no NEW failures
+- [x] `node -e "console.log(require('./package.json').version)"` → `3.24.0`
