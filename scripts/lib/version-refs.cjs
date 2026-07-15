@@ -73,7 +73,8 @@ function isPackageVersionLine(line) {
     /\bviepilot\b[^\n]*\bversion\b/i.test(line) ||
     /shields\.io[^\n]*viepilot/i.test(line) ||
     /badge\/version/i.test(line) ||
-    /npm\/v\/viepilot/i.test(line)
+    /npm\/v\/viepilot/i.test(line) ||
+    /\*\*version\*\*\s*:/i.test(line) // README "**Version**: `x.y.z`" marker line
   );
 }
 

@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned — Phase 164 · ENH-115 Automated npm publish/release preflight gate (→ 3.24.0)
-Source: `.viepilot/requests/ENH-115.md`. Planned via `/vp-evolve`, shipped through `/vp-auto`:
-- **ENH-115** Fail-closed release preflight gate (`scripts/release-preflight.cjs`) — clean tree / on `main` / synced-with-remote, version-consistency (package.json == top CHANGELOG heading), already-published check, npm-auth; `--dry-run` + `--local`
-- **ENH-115** Stale version-ref sweep (`scripts/lib/version-refs.cjs`) — flags hardcoded version refs ≠ package.json in CI/Dockerfile/README (closes vp_evolve bump-gap)
-- **ENH-115** `npm run release` orchestrator (preflight → tag+push → CI publish) + wiring into `verify:release`/`prepublishOnly`/`release-npm.yml`; reuses existing CI publish, delegates bump to changelog-agent (no re-bump)
-
 ### Planned — Milestone v3.2 Embedded Domain Hardening (Phases 157–160)
 Source: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices).
 Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase through `/vp-auto`:
@@ -20,6 +14,19 @@ Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase throug
 - **ENH-110** Embedded Testing & Verification (Phase 158 → 3.19.0)
 - **ENH-111** Production & Manufacturing (Phase 159 → 3.20.0)
 - **ENH-112** 3-Phase Rollout + Success Metrics (Phase 160 → 3.21.0)
+
+## [3.24.0] - 2026-07-15
+
+### Added
+- **ENH-115** Fail-closed release preflight gate (`scripts/release-preflight.cjs`) — gates: git clean-tree / on-`main` / synced-with-remote (auto-skip in CI or `--local`), npm-auth (skip in CI / when `NODE_AUTH_TOKEN` set), version-consistency (`package.json` == top CHANGELOG heading), stale-version-refs, and already-published. Two tiers: `--content-only` (version-consistency, wired into `verify:release`) and full (release path). `--dry-run` prints all gates and exits 0.
+- **ENH-115** Stale version-ref sweep (`scripts/lib/version-refs.cjs`) — pure module flagging hardcoded package-version references that disagree with `package.json` across CI workflows, Dockerfiles, and README badges. Closes the vp-evolve version-bump gap (bump step previously did not grep these files).
+- **ENH-115** `npm run release` orchestrator (`scripts/release.cjs`) — runs full preflight, then tags `vX.Y.Z` and pushes (triggering the existing Release-to-npm CI publish); `--dry-run` previews the plan without mutating. Version bumps stay with changelog-agent — the gate verifies, never re-bumps.
+- **Phase 164** contract tests in `tests/unit/phase164-enh115-release-preflight.test.js` (resilient asserts — no hard-coded version/count literals).
+
+### Changed
+- `package.json` scripts: added `release:preflight` + `release`; `verify:release` now runs `release:preflight --content-only` first.
+- `.github/workflows/release-npm.yml`: added a "Run release preflight" step before publish.
+- `scripts/release-checklist.cjs`: upgraded from print-only echo to real preflight report mode.
 
 ## [3.23.0] - 2026-07-02
 
