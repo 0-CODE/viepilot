@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned — Phase 164 · ENH-115 Automated npm publish/release preflight gate (→ 3.24.0)
+Source: `.viepilot/requests/ENH-115.md`. Planned via `/vp-evolve`, shipped through `/vp-auto`:
+- **ENH-115** Fail-closed release preflight gate (`scripts/release-preflight.cjs`) — clean tree / on `main` / synced-with-remote, version-consistency (package.json == top CHANGELOG heading), already-published check, npm-auth; `--dry-run` + `--local`
+- **ENH-115** Stale version-ref sweep (`scripts/lib/version-refs.cjs`) — flags hardcoded version refs ≠ package.json in CI/Dockerfile/README (closes vp_evolve bump-gap)
+- **ENH-115** `npm run release` orchestrator (preflight → tag+push → CI publish) + wiring into `verify:release`/`prepublishOnly`/`release-npm.yml`; reuses existing CI publish, delegates bump to changelog-agent (no re-bump)
+
 ### Planned — Milestone v3.2 Embedded Domain Hardening (Phases 157–160)
 Source: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices).
 Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase through `/vp-auto`:

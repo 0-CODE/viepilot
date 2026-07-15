@@ -4397,3 +4397,37 @@ SYSTEM-RULES prevention rule. **Runs before Phase 162 execution** to give a clea
 - [x] `grep -rl "expect(pkg.version).toBe('" tests/unit/` → none
 - [x] `grep -c "hard-code" .viepilot/SYSTEM-RULES.md` → 3
 - [x] `node -e "console.log(require('./package.json').version)"` → `3.22.1`
+
+---
+
+## Phase 164 — ENH-115: Automated npm publish/release preflight gate (v3.24.0)
+
+**Goal**: Turn the passive, print-only `release:checklist` into a **fail-closed release preflight
+gate** and wire it into `verify:release` + CI, so a release cannot ship on a dirty tree, wrong
+branch, failing tests, an **inconsistent version** (`package.json` ≠ CHANGELOG top ≠ tag), an
+**already-published** version, or with **stale hardcoded version refs** (CI/Dockerfile/SKILL
+banners/README badges). Adds a single `npm run release` orchestrator (preflight → tag+push →
+tracker reminder) with `--dry-run`. Delegates version bumps to `changelog-agent` (ENH-053) — the
+gate **verifies**, it does not re-bump. Directly closes `feedback_vp_evolve_version_bump_gap`.
+**Estimated Tasks**: 4
+**Status**: 🔲 planned
+**Version Target**: 3.24.0 (MINOR — additive release tooling, no behavior change to shipped skills)
+**Dependencies**: builds on existing `release-npm.yml` + `verify:release` + `smoke:published` (reuse, do NOT rebuild CI publish); ENH-053 (single bump authority — no re-bump); anchors `feedback_vp_evolve_version_bump_gap`, `feedback_resilient_page_count_asserts` (resilient tests).
+**Source**: `.viepilot/requests/ENH-115.md`
+**Directory**: `.viepilot/phases/164-enh115-npm-publish-preflight/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 164.1 | `scripts/release-preflight.cjs` (new) — fail-closed gate: git clean tree + on `main` + synced with remote (skip via `--local`); **version consistency** (`package.json` version == top CHANGELOG `## [x.y.z]` heading); **already-published** check (`npm view viepilot@<v>` → block if exists); **auth** check (`npm whoami`, skip when `NODE_AUTH_TOKEN` set / CI). `--dry-run` prints the plan and exits 0. Exit ≠0 on any gate fail. | `node scripts/release-preflight.cjs --dry-run` exits 0 & prints each gate; forced version-mismatch fixture → exit ≠0 | M | parallel 164.2 |
+| 164.2 | `scripts/lib/version-refs.cjs` (new) — sweep for **stale hardcoded version refs** ≠ `package.json` across `.github/workflows/*`, `Dockerfile*`, `skills/**/SKILL.md` banners, README badges; return offenders. Integrated as a preflight gate (closes `feedback_vp_evolve_version_bump_gap`). | `node -e "require('./scripts/lib/version-refs.cjs')"` loads; module returns [] on a clean tree; seeded stale ref → non-empty | M | parallel 164.1 |
+| 164.3 | Wiring + orchestrator: `scripts/release.cjs` (preflight → `git tag vX && git push --tags` → TRACKER post-publish reminder; `--dry-run` stops before tag). npm scripts `release:preflight` + `release`; insert `release:preflight` into `verify:release` chain (so `prepublishOnly` + CI both enforce); add a **Verify release readiness** preflight step to `.github/workflows/release-npm.yml` before publish; upgrade `release:checklist` to invoke preflight in report mode. Document “bump via changelog-agent, gate does not re-bump”. | `grep -c "release:preflight" package.json` ≥2; `grep -c "release-preflight" .github/workflows/release-npm.yml` ≥1 | M | after 164.1-2 |
+| 164.4 | Contract tests (≥4, **resilient** — no hard-coded version/count literals) `tests/unit/phase164-enh115-release-preflight.test.js` + CHANGELOG `[3.24.0]` + package.json 3.23.0→3.24.0 (**via changelog-agent**). | `npm test -- --testPathPatterns=phase164 --no-coverage` → ≥4 passed; version=3.24.0; no NEW full-suite failures | S | after 164.1-3 |
+
+**Verification**:
+- [ ] `node scripts/release-preflight.cjs --dry-run` → exit 0, prints each gate result
+- [ ] `grep -c "release:preflight" package.json` → ≥2 (script def + wired into verify:release)
+- [ ] `grep -cE "release-preflight|release:preflight" .github/workflows/release-npm.yml` → ≥1
+- [ ] `node -e "require('./scripts/lib/version-refs.cjs')"` → loads without throw
+- [ ] `npm test -- --testPathPatterns=phase164 --no-coverage` → ≥4 passed
+- [ ] Full `npm test` → no NEW failures
+- [ ] `node -e "console.log(require('./package.json').version)"` → `3.24.0`
