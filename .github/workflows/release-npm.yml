@@ -34,6 +34,11 @@ jobs:
       - name: Verify release readiness
         run: npm run verify:release
 
+      # ENH-115: full fail-closed release preflight before publish. In CI the git/auth gates
+      # auto-skip (CI env / token), leaving version-consistency + stale-version-refs + not-published.
+      - name: Run release preflight
+        run: npm run release:preflight
+
       - name: Publish package
         run: npm publish --access public
         env:
