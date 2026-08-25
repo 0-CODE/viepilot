@@ -33,7 +33,7 @@ Display notice banner before any other output:
 └──────────────────────────────────────────────────────────────────┘
 ```
 Replace `{latest_version}` with stdout from the command, `{current}` with the installed
-version, `{adapter_id}` with the active adapter (claude-code / cursor / antigravity / codex / copilot).
+version, `{adapter_id}` with the active adapter (claude-code / cursor / antigravity / codex / copilot / zed).
 
 **If exit code = 0 or command unavailable**: silent, continue.
 
@@ -123,6 +123,20 @@ Interactive: `askQuestions` (main agent only — NOT available in subagents; VS 
 Skill path: `.github/agents/<name>.agent.md`
 </adapter>
 
+<adapter id="zed">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+Discovery: slash command (`/vp-*`) or `@skill` in Zed Agent Panel.
+
+## C. Tool Usage
+Use Zed tools: `terminal` (shell), `read_file` (read), `write_file` (write), `edit_file` (edit),
+`grep` (search), `find_path` (glob), `list_directory`, `fetch`, `search_web` (Zed Pro)
+Interactive: text list fallback (no AskUserQuestion)
+Subagent: `spawn_agent` (callable, single-level — vp-auto fan-out remains claude-code-only)
+Skill path: `~/.agents/skills/<skill>/SKILL.md` (global) or `.agents/skills/` (project; shared with Antigravity)
+ACP threads (Claude/Codex/Copilot inside Zed) use those agents' native skill dirs, not this path.
+</adapter>
+
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -162,7 +176,7 @@ Optional flags:
 - `/vp-qa --focus perf` — bias research toward performance domains
 - `/vp-qa --focus coverage` — bias research toward product feature-completeness / spec-gap audit (ENH-113)
 - `/vp-qa --live` (a.k.a. `--e2e`) — **live role-based visual QA (ENH-114)**: seed users per role, drive the running app via agent-browser, screenshot each screen, run the Design-QA reviewer. Distinct mode (needs a running app + seeding). **Prereq**: `vercel-labs/agent-browser` + a runnable app (base URL / run command). If prereqs are missing it **degrades to `--focus coverage`** static analysis (reports the blocker; never silent-fails).
-- `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot)
+- `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot / zed)
 </context>
 
 <process>
@@ -213,6 +227,7 @@ Use `lib/qa-router.cjs` to resolve adapter-specific output paths:
 - codex        → AGENTS.md (single file, append mode)
 - antigravity  → .agents/skills/
 - copilot      → .github/agents/
+- zed          → AGENTS.md (append mode, shared with Codex)
 ```
 
 Call or reference lib/qa-router.cjs to map the current adapter to output directory.

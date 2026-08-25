@@ -1268,6 +1268,7 @@ ${colors.cyan}Examples:${colors.reset}
           { path: '.cursor/rules/viepilot-context.mdc', content: generateCursorMdc(projectRoot) },
         ],
         'copilot': [{ path: '.github/copilot-instructions.md', content: generateCopilotInstructions(projectRoot) }],
+        'zed':     [{ path: 'AGENTS.md', content: generateAgentsMd(projectRoot) }],
       };
       return map[adapterId] || map['claude-code'];
     })();

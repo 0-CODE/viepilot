@@ -1,3 +1,9 @@
+---
+name: vp-persona
+description: "Manage cross-project user personas for ViePilot"
+version: 1.0.0
+---
+
 <greeting>
 ## Invocation Banner
 
@@ -69,6 +75,20 @@ Use Copilot tools: `runCommands` (shell), `read`/`readfile` (read), `edit`/`edit
 Interactive: `askQuestions` (main agent only — NOT available in subagents; VS Code issue #293745)
 Skill path: `.github/agents/<name>.agent.md`
 </adapter>
+
+<adapter id="zed">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+Discovery: slash command (`/vp-*`) or `@skill` in Zed Agent Panel.
+
+## C. Tool Usage
+Use Zed tools: `terminal` (shell), `read_file` (read), `write_file` (write), `edit_file` (edit),
+`grep` (search), `find_path` (glob), `list_directory`, `fetch`, `search_web` (Zed Pro)
+Interactive: text list fallback (no AskUserQuestion)
+Subagent: `spawn_agent` (callable, single-level — vp-auto fan-out remains claude-code-only)
+Skill path: `~/.agents/skills/<skill>/SKILL.md` (global) or `.agents/skills/` (project; shared with Antigravity)
+ACP threads (Claude/Codex/Copilot inside Zed) use those agents' native skill dirs, not this path.
+</adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -101,7 +121,7 @@ Display notice banner before any other output:
 └──────────────────────────────────────────────────────────────────┘
 ```
 Replace `{latest_version}` with stdout from the command, `{current}` with the installed version,
-`{adapter_id}` with the active adapter (claude-code / cursor / antigravity / codex / copilot).
+`{adapter_id}` with the active adapter (claude-code / cursor / antigravity / codex / copilot / zed).
 
 **If exit code = 0 or command unavailable**: silent, continue.
 

@@ -148,6 +148,7 @@ Parse into session variables:
 | antigravity | `shell` |
 | codex | `container.exec` |
 | copilot | `runCommands` |
+| zed | `terminal` |
 
 **Interactive fallback chain** (based on `ADAPTER_INTERACTIVE`):
 1. `"AUQ"` → call `AskUserQuestion` (preload via ToolSearch first)

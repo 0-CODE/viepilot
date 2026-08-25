@@ -663,7 +663,7 @@ templates. Number of agents and their domains are determined by research output.
 - `/vp-qa --run` — generate + immediately invoke qa-orchestrator
 - `/vp-qa --focus sec` — bias research toward security domains
 - `/vp-qa --focus perf` — bias research toward performance domains
-- `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot)
+- `/vp-qa --target <id>` — override adapter detection (claude-code / cursor-agent / antigravity / codex / copilot / zed)
 
 ### Output by Adapter
 | Adapter | Output Location | Format |
@@ -673,6 +673,7 @@ templates. Number of agents and their domains are determined by research output.
 | codex | `AGENTS.md` (appended) | `## QA Agent Instructions` section |
 | antigravity | `.agents/skills/qa-orchestrator/SKILL.md` | Multi-file skill |
 | copilot | `.github/agents/qa-orchestrator.agent.md` | Single agent file |
+| zed | `AGENTS.md` (appended) | `## QA Agent Instructions` section (shared with Codex) |
 
 ### Flow
 1. **Research phase**: reads codebase, detects stack, samples files, reads `agents/qa-templates/rules/{stack}.md`

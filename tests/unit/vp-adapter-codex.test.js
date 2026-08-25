@@ -78,7 +78,7 @@ describe('FEAT-015: Codex registry', () => {
     expect(ids).toContain('cursor');
     expect(ids).toContain('antigravity');
     expect(ids).toContain('codex');
-    expect(list.length).toBe(5);
+    expect(list.length).toBe(6);
   });
 });
 

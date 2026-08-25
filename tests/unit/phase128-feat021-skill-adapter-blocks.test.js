@@ -8,7 +8,7 @@ const skillDirs = fs.readdirSync(SKILLS_DIR).filter(d =>
   fs.existsSync(path.join(SKILLS_DIR, d, 'SKILL.md'))
 );
 
-describe('Phase 128 — FEAT-021: SKILL.md 5-block adapter standard', () => {
+describe('Phase 128 — FEAT-021: SKILL.md 6-block adapter standard', () => {
 
   test('all 22 SKILL.md files exist', () => {
     expect(skillDirs).toHaveLength(22);
@@ -58,6 +58,14 @@ describe('Phase 128 — FEAT-021: SKILL.md 5-block adapter standard', () => {
     const missing = skillDirs.filter(d => {
       const src = fs.readFileSync(path.join(SKILLS_DIR, d, 'SKILL.md'), 'utf8');
       return !src.includes('<adapter id="copilot">');
+    });
+    expect(missing).toHaveLength(0);
+  });
+
+  test('all SKILL.md contain <adapter id="zed"> block', () => {
+    const missing = skillDirs.filter(d => {
+      const src = fs.readFileSync(path.join(SKILLS_DIR, d, 'SKILL.md'), 'utf8');
+      return !src.includes('<adapter id="zed">');
     });
     expect(missing).toHaveLength(0);
   });

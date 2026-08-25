@@ -22,6 +22,7 @@ Shell tool by adapter:
 | antigravity | `shell` | Via MCP plugins |
 | codex | `container.exec` | Sandboxed |
 | copilot | `runCommands` | Limited |
+| zed | `terminal` | Full file I/O |
 
 Silent on error — fall back to `Bash` (claude-code default).
 </adapter_context>

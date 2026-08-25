@@ -97,6 +97,20 @@ Use Copilot tools: `runCommands` (shell), `read`/`readfile` (read), `edit`/`edit
 Interactive: `askQuestions` (main agent only — NOT available in subagents; VS Code issue #293745)
 Skill path: `.github/agents/<name>.agent.md`
 </adapter>
+
+<adapter id="zed">
+## A. Skill Invocation
+Same trigger keywords as claude-code adapter.
+Discovery: slash command (`/vp-*`) or `@skill` in Zed Agent Panel.
+
+## C. Tool Usage
+Use Zed tools: `terminal` (shell), `read_file` (read), `write_file` (write), `edit_file` (edit),
+`grep` (search), `find_path` (glob), `list_directory`, `fetch`, `search_web` (Zed Pro)
+Interactive: text list fallback (no AskUserQuestion)
+Subagent: `spawn_agent` (callable, single-level — vp-auto fan-out remains claude-code-only)
+Skill path: `~/.agents/skills/<skill>/SKILL.md` (global) or `.agents/skills/` (project; shared with Antigravity)
+ACP threads (Claude/Codex/Copilot inside Zed) use those agents' native skill dirs, not this path.
+</adapter>
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
@@ -541,6 +555,7 @@ options:
 | Codex CLI | ❌ Text fallback | N/A |
 | Antigravity | ❌ Text fallback | N/A |
 | GitHub Copilot | ✅ Text fallback | Via `.agent.md` |
+| Zed | ✅ `/vp-*` in Agent Panel | Native `SKILL.md` at `~/.agents/skills/` |
 
 **Prompts in this skill:**
 - Setup wizard: channel type, display name, field config, preview+confirm (Step 0)
