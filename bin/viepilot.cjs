@@ -43,6 +43,7 @@ const TARGETS = [
   { id: 'antigravity',  label: adapterMap['antigravity'].name },
   { id: 'codex',        label: adapterMap['codex'].name },
   { id: 'copilot',      label: adapterMap['copilot'].name },
+  { id: 'zed',          label: adapterMap['zed'].name },
 ];
 
 function printHelp() {
@@ -61,14 +62,14 @@ Usage:
   viepilot --list-targets
 
 Install options:
-  --target <id|id,id|all>   Target profile(s): claude-code, cursor-agent, cursor-ide, antigravity, codex, copilot
+  --target <id|id,id|all>   Target profile(s): claude-code, cursor-agent, cursor-ide, antigravity, codex, copilot, zed
   --yes                      Non-interactive mode (skip confirmations)
   --dry-run                  Print actions only (Node installer; no bash)
   --list-targets             Print supported targets and exit
   --help                     Show help
 
 Uninstall options:
-  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; antigravity: ~/.gemini/antigravity/skills/vp-*; codex: ~/.codex/skills/vp-*; copilot: ~/.config/gh-copilot/skills/vp-*)
+  --target <id|id,id|all>   Remove assets (claude-code: ~/.claude/skills/vp-*; cursor-*: ~/.cursor/skills/vp-*; antigravity: ~/.gemini/antigravity/skills/vp-*; codex: ~/.codex/skills/vp-*; copilot: ~/.config/gh-copilot/skills/vp-*; zed: ~/.agents/skills/vp-*)
   --yes                     Non-interactive mode (skip confirmations)
   --dry-run                 Print actions only, do not remove files
 `);
@@ -449,6 +450,21 @@ function computeUninstallPaths(targets) {
         }
       }
     }
+  }
+
+  if (targets.some((t) => t === 'zed')) {
+    const zedSkills = path.join(home, '.agents', 'skills');
+    const zedRoot = path.join(home, '.agents', 'viepilot');
+    if (fs.existsSync(zedSkills)) {
+      for (const entry of fs.readdirSync(zedSkills)) {
+        if (entry.startsWith('vp-')) {
+          paths.push(path.join(zedSkills, entry));
+        }
+      }
+    } else {
+      paths.push(path.join(zedSkills, 'vp-*'));
+    }
+    paths.push(zedRoot);
   }
 
   paths.push(vpRoot);

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Zed adapter** (`zed`) — install `vp-*` skills to `~/.agents/skills/` for the native Zed Agent (`/vp-status` in Agent Panel). ACP threads still use their own adapters (`claude-code` / `codex` / `copilot` / `cursor-agent`).
+- `lib/adapters/zed.cjs` + `ADAPTER_CONTEXTS['zed']` (tools: `terminal`, `read_file`, `edit_file`, `spawn_agent`; interactive: text; orchestration sequential).
+- `<adapter id="zed">` block on all 22 SKILL.md files.
+- YAML frontmatter (`name` / `description` / `version`) on `vp-design`, `vp-persona`, `vp-skills` — Zed Agent Skills reject files that do not start with `---`.
+
 ### Planned — Milestone v3.2 Embedded Domain Hardening (Phases 157–160)
 Source: `docs/brainstorm/session-2026-06-19.md` (research: embedder.com + embedded intake best practices).
 Not yet implemented — planned via `/vp-evolve`, to be shipped per-phase through `/vp-auto`:

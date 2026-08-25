@@ -6,11 +6,11 @@ Convert brainstorm sessions into structured artifacts for autonomous AI executio
 
 Detected at session start via `vp-tools detect-adapter` → ADAPTER_CONTEXT. Use ADAPTER_CONTEXT.interactive to select prompt mode.
 
-| Feature | claude-code | cursor-agent | antigravity | codex | copilot |
-|---------|------------|--------------|-------------|-------|---------|
-| Interactive (ADAPTER_CONTEXT.interactive) | `AUQ` | `text` | `none` | `none` | `text` |
-| Prompt tool | `AskUserQuestion` | text fallback | text fallback | text fallback | text fallback |
-| Shell tool (Sub-scan A) | `Bash` | `run_terminal_cmd` | `shell` | `container.exec` | `runCommands` |
+| Feature | claude-code | cursor-agent | antigravity | codex | copilot | zed |
+|---------|------------|--------------|-------------|-------|---------|-----|
+| Interactive (ADAPTER_CONTEXT.interactive) | `AUQ` | `text` | `none` | `none` | `text` | `text` |
+| Prompt tool | `AskUserQuestion` | text fallback | text fallback | text fallback | text fallback | text fallback |
+| Shell tool (Sub-scan A) | `Bash` | `run_terminal_cmd` | `shell` | `container.exec` | `runCommands` | `terminal` |
 
 **Interactive fallback chain** (read from ADAPTER_CONTEXT.interactive):
 1. `"AUQ"` → call `AskUserQuestion` (preload via ToolSearch first)

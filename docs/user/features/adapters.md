@@ -11,6 +11,7 @@ ViePilot supports multiple AI coding platforms via its adapter system (FEAT-013)
 | `antigravity` | Google Antigravity | `~/.gemini/antigravity/skills/` | `~/.gemini/antigravity/viepilot/` | — | `/vp-status` |
 | `codex` | OpenAI Codex CLI | `~/.codex/skills/` | `~/.codex/viepilot/` | — | `$vp-status` |
 | `copilot` | GitHub Copilot | `~/.config/gh-copilot/skills/` | `~/.config/gh-copilot/viepilot/` | — | `/vp-status` |
+| `zed` | Zed | `~/.agents/skills/` | `~/.agents/viepilot/` | — | `/vp-status` |
 
 > **Note — Codex invocation syntax:** OpenAI Codex CLI uses `$skill-name` to invoke skills (e.g. `$vp-status`, `$vp-brainstorm`). The `/command` prefix is reserved for Codex built-in controls (`/plan`, `/clear`, `/diff`, etc.). SKILL.md file format is fully compatible — no changes needed to skill content.
 
@@ -32,6 +33,9 @@ viepilot install --target codex
 # GitHub Copilot
 viepilot install --target copilot
 
+# Zed
+viepilot install --target zed
+
 # Multiple targets at once
 viepilot install --target claude-code,antigravity
 ```
@@ -50,6 +54,7 @@ At install time, `{envToolDir}` is replaced with each adapter's `executionContex
 - `antigravity` → `.gemini/antigravity/viepilot`
 - `codex` → `.codex/viepilot`
 - `copilot` → `.config/gh-copilot/viepilot`
+- `zed` → `.agents/viepilot`
 
 ## GitHub Copilot
 
@@ -96,6 +101,51 @@ The installer detects Copilot by checking (in order):
 | `AskUserQuestion` interactive prompts | ❌ Not available — skills use text-based menus |
 | Hooks (PreToolUse, Stop, etc.) | ❌ Copilot uses `.agent.md` convention, not programmatic hooks |
 | MCP server integration | 🔜 Planned for Phase 2 |
+
+## Zed
+
+Zed adapter installs `vp-*` skills for the **native Zed Agent**. Skills are Agent Skills (`SKILL.md`) loaded from `~/.agents/skills/`. Invoke with `/vp-status` in the Agent Panel.
+
+ACP threads (Claude Agent, Codex, Copilot, Cursor inside Zed) do **not** use Zed Skills — install the matching adapter (`claude-code`, `codex`, `copilot`, `cursor-agent`) for those threads.
+
+### Surface support
+
+| Surface | Status | Notes |
+|---------|--------|-------|
+| Native Zed Agent | ✅ Supported | `/vp-status` or `@skill` in Agent Panel |
+| Claude Agent (ACP) | ✅ Via `claude-code` | Uses `~/.claude/skills/`, not Zed Skills |
+| Codex / Copilot / Cursor ACP | ✅ Via matching adapter | Each agent owns its native skill dir |
+| Project-local `.agents/skills/` | ⚠️ Shared | Same path as Antigravity project skills |
+
+### Installation
+
+```bash
+npx viepilot install --target zed
+```
+
+Files are installed to:
+- Skills: `~/.agents/skills/`
+- Workflows + lib: `~/.agents/viepilot/`
+
+After install, open the Zed Agent Panel and type `/vp-status`. Grant worktree trust if using project-local skills.
+
+### Availability detection
+
+The installer detects Zed by checking (in order):
+
+1. `~/.config/zed/` exists (Linux/macOS)
+2. `~/.zed/` exists
+3. `~/.agents/skills/` exists
+4. `%APPDATA%\Zed` exists (Windows)
+
+### Known limitations
+
+| Feature | Status |
+|---------|--------|
+| `AskUserQuestion` interactive prompts | ❌ Not available — skills use text-based menus |
+| Lifecycle hooks (PreToolUse, Stop) | ❌ Zed uses `agent.tool_permissions`, not hook events |
+| `vp-auto` fan-out (`Agent` tool) | ❌ Sequential — `spawn_agent` exists but orchestrator is claude-code-only |
+| `search_web` | ⚠️ Zed Pro + Zed provider only |
 
 ## Adding a new adapter
 

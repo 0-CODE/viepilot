@@ -57,16 +57,27 @@ describe('Skill files: structure conformance', () => {
     expect(skills.length).toBeGreaterThan(0);
   });
 
+  test.each(skills)('$name: starts with YAML frontmatter (Zed / Agent Skills)', ({ name, path: skillPath }) => {
+    const content = readFile(skillPath);
+    expect(content.startsWith('---\n')).toBe(true);
+    const end = content.indexOf('\n---\n', 4);
+    expect(end).toBeGreaterThan(0);
+    const fm = content.slice(4, end);
+    expect(fm).toMatch(/^name:\s+\S+/m);
+    expect(fm).toMatch(/^description:\s+/m);
+  });
+
   test.each(skills)('$name: has required XML-like sections', ({ name, path: skillPath }) => {
     const content = readFile(skillPath);
 
-    // Phase 128 (FEAT-021): cursor_skill_adapter replaced by 5-block <adapter> standard
-    // Each skill must have all 5 adapter blocks
+    // Phase 128 (FEAT-021): cursor_skill_adapter replaced by <adapter> standard
+    // Each skill must have all 6 adapter blocks
     expect(content).toContain('<adapter id="claude-code">');
     expect(content).toContain('<adapter id="cursor-agent">');
     expect(content).toContain('<adapter id="antigravity">');
     expect(content).toContain('<adapter id="codex">');
     expect(content).toContain('<adapter id="copilot">');
+    expect(content).toContain('<adapter id="zed">');
     // No more cursor_skill_adapter (the bug that caused silent failures on Claude Code)
     expect(content).not.toContain('<cursor_skill_adapter>');
 

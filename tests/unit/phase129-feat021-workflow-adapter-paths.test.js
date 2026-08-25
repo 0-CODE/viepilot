@@ -38,13 +38,14 @@ describe('Phase 129 — FEAT-021: Workflow adapter-aware execution paths', () =>
     expect(w).toMatch(/detect-adapter --json/);
   });
 
-  test('brainstorm.md: adapter compatibility table has all 5 adapters', () => {
+  test('brainstorm.md: adapter compatibility table has all 6 adapters', () => {
     const w = read('brainstorm.md');
     expect(w).toMatch(/claude-code/);
     expect(w).toMatch(/cursor-agent/);
     expect(w).toMatch(/antigravity/);
     expect(w).toMatch(/codex/);
     expect(w).toMatch(/copilot/);
+    expect(w).toMatch(/zed/);
   });
 
   test('brainstorm.md: interactive fallback chain defined (AUQ → text → none)', () => {
@@ -55,11 +56,12 @@ describe('Phase 129 — FEAT-021: Workflow adapter-aware execution paths', () =>
 
   // ── crystallize.md ────────────────────────────────────────────────────────
 
-  test('crystallize.md: adapter compatibility table has all 5 adapters', () => {
+  test('crystallize.md: adapter compatibility table has all 6 adapters', () => {
     const w = read('crystallize.md');
     expect(w).toMatch(/claude-code/);
     expect(w).toMatch(/cursor-agent/);
     expect(w).toMatch(/antigravity/);
+    expect(w).toMatch(/\bzed\b/);
   });
 
   test('crystallize.md: Sub-scan A shell tool referenced via ADAPTER_CONTEXT', () => {

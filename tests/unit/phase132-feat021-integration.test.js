@@ -10,14 +10,15 @@ describe('Phase 132 — FEAT-021: Adapter detection + ADAPTER_CONTEXT integratio
 
   // ── lib/adapter-context.cjs completeness ─────────────────────────────────
 
-  test('all 5 adapters are defined in ADAPTER_CONTEXTS', () => {
+  test('all 6 adapters are defined in ADAPTER_CONTEXTS', () => {
     const ids = adapterContext.listAdapterIds();
     expect(ids).toContain('claude-code');
     expect(ids).toContain('cursor-agent');
     expect(ids).toContain('antigravity');
     expect(ids).toContain('codex');
     expect(ids).toContain('copilot');
-    expect(ids).toHaveLength(5);
+    expect(ids).toContain('zed');
+    expect(ids).toHaveLength(6);
   });
 
   test('each adapter context has required fields: tools, interactive, orchestration, hooks, mcp', () => {
@@ -57,7 +58,7 @@ describe('Phase 132 — FEAT-021: Adapter detection + ADAPTER_CONTEXT integratio
   });
 
   test('non-claude-code adapters have orchestration.parallel false or missing', () => {
-    const ids = ['cursor-agent', 'antigravity', 'codex', 'copilot'];
+    const ids = ['cursor-agent', 'antigravity', 'codex', 'copilot', 'zed'];
     for (const id of ids) {
       const ctx = adapterContext.getAdapterContext(id);
       expect(ctx.orchestration.parallel).toBeFalsy();

@@ -209,11 +209,14 @@ Chọn target profile trong wizard (phím mũi tên + space + enter):
 - Cursor IDE
 - Antigravity
 - Codex
+- GitHub Copilot
+- Zed
 
 Non-interactive:
 ```bash
 npx viepilot install --target cursor-agent --yes
 npx viepilot install --target codex --yes
+npx viepilot install --target zed --yes
 ```
 
 Gỡ cài đặt:
@@ -401,7 +404,9 @@ viepilot/
 │       ├── claude-code.cjs        # Claude Code adapter (~/.claude/)
 │       ├── cursor.cjs             # Cursor adapter (~/.cursor/)
 │       ├── antigravity.cjs        # Antigravity adapter (~/.antigravity/)
-│       └── codex.cjs              # Codex CLI adapter (~/.codex/)
+│       ├── codex.cjs              # Codex CLI adapter (~/.codex/)
+│       ├── copilot.cjs            # GitHub Copilot adapter (~/.config/gh-copilot/)
+│       └── zed.cjs                # Zed adapter (~/.agents/skills/)
 │
 ├── bin/                           # CLI tools
 │   └── vp-tools.cjs               # 17 subcommands; uses ../lib/cli-shared.cjs, viepilot-info/update.cjs

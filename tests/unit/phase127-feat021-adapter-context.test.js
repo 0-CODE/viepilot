@@ -7,14 +7,15 @@ describe('Phase 127 — FEAT-021: ADAPTER_CONTEXT schema', () => {
 
   // ── lib/adapter-context.cjs exports ──────────────────────────────────────
 
-  test('listAdapterIds returns 5 canonical adapters', () => {
+  test('listAdapterIds returns 6 canonical adapters', () => {
     const ids = listAdapterIds();
-    expect(ids).toHaveLength(5);
+    expect(ids).toHaveLength(6);
     expect(ids).toContain('claude-code');
     expect(ids).toContain('cursor-agent');
     expect(ids).toContain('antigravity');
     expect(ids).toContain('codex');
     expect(ids).toContain('copilot');
+    expect(ids).toContain('zed');
   });
 
   test('getAdapterContext throws on unknown adapter', () => {

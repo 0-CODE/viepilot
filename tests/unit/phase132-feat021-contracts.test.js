@@ -7,21 +7,21 @@ const ROOT = path.join(__dirname, '../..');
 const SKILLS_DIR = path.join(ROOT, 'skills');
 const WORKFLOWS_DIR = path.join(ROOT, 'workflows');
 
-describe('Phase 132 — FEAT-021: 5-block adapter standard + workflow adapter contracts', () => {
+describe('Phase 132 — FEAT-021: 6-block adapter standard + workflow adapter contracts', () => {
 
-  // ── 5-block adapter standard across all SKILL.md files ───────────────────
+  // ── 6-block adapter standard across all SKILL.md files ───────────────────
 
   let skillFiles;
   beforeAll(() => {
     skillFiles = globSync('*/SKILL.md', { cwd: SKILLS_DIR, absolute: true });
   });
 
-  test('all SKILL.md files have 5 adapter blocks', () => {
+  test('all SKILL.md files have 6 adapter blocks', () => {
     for (const f of skillFiles) {
       const src = fs.readFileSync(f, 'utf8');
       const blocks = (src.match(/<adapter id="/g) || []).length;
       expect({ file: path.relative(ROOT, f), blocks }).toMatchObject({
-        blocks: 5
+        blocks: 6
       });
     }
   });
@@ -76,13 +76,14 @@ describe('Phase 132 — FEAT-021: 5-block adapter standard + workflow adapter co
     expect(src).toMatch(/ADAPTER_CONTEXT/);
   });
 
-  test('crystallize.md has 5-adapter compatibility table', () => {
+  test('crystallize.md has 6-adapter compatibility table', () => {
     const src = fs.readFileSync(path.join(WORKFLOWS_DIR, 'crystallize.md'), 'utf8');
     expect(src).toMatch(/claude-code/);
     expect(src).toMatch(/cursor-agent/);
     expect(src).toMatch(/antigravity/);
     expect(src).toMatch(/codex/);
     expect(src).toMatch(/copilot/);
+    expect(src).toMatch(/zed/);
   });
 
   // ── Claude Code adapter has agent definitions metadata ────────────────────

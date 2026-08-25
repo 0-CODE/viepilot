@@ -35,7 +35,7 @@ describe('guided installer parser', () => {
 
   test('normalizes all targets', () => {
     const targets = normalizeTargets('all');
-    expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide', 'antigravity', 'codex', 'copilot']);
+    expect(targets).toEqual(['claude-code', 'cursor-agent', 'cursor-ide', 'antigravity', 'codex', 'copilot', 'zed']);
   });
 
   test('throws on unsupported target', () => {
@@ -68,6 +68,7 @@ describe('guided installer CLI', () => {
     expect(result.stdout).toContain('claude-code');
     expect(result.stdout).toContain('cursor-agent');
     expect(result.stdout).toContain('cursor-ide');
+    expect(result.stdout).toContain('zed');
   });
 
   test('supports dry-run with non-interactive target', () => {
@@ -99,6 +100,17 @@ describe('guided installer CLI', () => {
     });
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('Uninstall summary:');
+  });
+
+  test('dry-run with zed target plans ~/.agents/skills', () => {
+    const result = spawnSync('node', [CLI, 'install', '--target', 'zed', '--yes', '--dry-run'], {
+      encoding: 'utf8',
+      env: { ...process.env, FORCE_COLOR: '0', NO_COLOR: '1' },
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Selected targets: zed');
+    expect(result.stdout).toContain('.agents/skills');
+    expect(result.stdout).toContain('[dry-run]');
   });
 
   test('dry-run with antigravity target shows Antigravity in Next actions (ENH-037)', () => {

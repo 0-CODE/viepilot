@@ -99,8 +99,8 @@ describe('FEAT-013: Adapter registry', () => {
     expect(ids).toContain('cursor');
     // cursor-agent and cursor-ide are aliases — should NOT appear as separate entries
     expect(ids.filter((id) => id === 'cursor').length).toBe(1);
-    // 5 unique adapters: claude-code, cursor, antigravity (FEAT-014), codex (FEAT-015), copilot (FEAT-019)
-    expect(list.length).toBe(5);
+    // 6 unique adapters: claude-code, cursor, antigravity, codex, copilot, zed
+    expect(list.length).toBe(6);
   });
 });
 
