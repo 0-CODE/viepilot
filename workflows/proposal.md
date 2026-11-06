@@ -271,6 +271,7 @@ Generate a structured JSON manifest from the loaded context.
     "layoutStyle": "modern-tech",
     "fontPair": "Calibri / Calibri Light"
   },
+  "animation": { "transition": "fade|push|wipe" },
   "slides": [
     {
       "index": 1,
@@ -278,7 +279,8 @@ Generate a structured JSON manifest from the loaded context.
       "heading": "Title",
       "body": "Subtitle / prepared by / date",
       "speakerNotes": "Full spoken words, spoken style.\nShort sentences.\nBreak at breath points.",
-      "durationSec": 20
+      "durationSec": 20,
+      "builds": [0]
     },
     {
       "index": 2,
@@ -286,13 +288,16 @@ Generate a structured JSON manifest from the loaded context.
       "heading": "Section Title",
       "bullets": ["Point 1", "Point 2", "Point 3"],
       "speakerNotes": "Full spoken words for this slide.\n96% of users finished in one session.",
-      "durationSec": 45
+      "durationSec": 45,
+      "builds": "auto"
     }
   ]
 }
 ```
 
 `speakerNotes` = the **full spoken words** in spoken style — short sentences, a line break at each breath point, numbers kept as digits (`96%`), never spelled out. `durationSec` = estimated speaking time for the slide. (Full rules and estimation are finalised in Step 4b.)
+
+`animation.transition` (one style per deck: `fade`, `push` or `wipe`) and per-slide `builds` are REQUIRED (see Step 6b). `builds` is `"auto"` (every body text shape except the heading) or an array of 0-based content-shape indices; cover and closing use their own simple build (title, then subtitle / CTA). The number of `[click]` cues in a slide's `speakerNotes` MUST equal that slide's build count, so generate `builds` and `speakerNotes` together.
 
 ## AI Prompt Contract
 
@@ -673,9 +678,26 @@ Progress: `[pptx] Generating {N} slides...`
 </step>
 
 <step name="animation_hook">
-## Step 6b: Animation (MANDATORY) — filled by Phase 166
+## Step 6b: Animation (MANDATORY)
 
-> **PLACEHOLDER — filled by Phase 166.** Reserved for the mandatory slide-animation pass over the generated `.pptx`. No behaviour yet; continue to Step 7.
+Runs right after the `.pptx` is written in Step 6. This step cannot be skipped or disabled.
+
+1. Build the plan from the manifest:
+   ```js
+   const { applyAnimations, validatePptxAnimations } = require('./lib/pptx-animate.cjs');
+   const plan = {
+     transition: manifest.animation.transition,   // 'fade' | 'push' | 'wipe'
+     build: 'fade',                               // or 'appear'
+     slides: manifest.slides.map(s => ({ index: s.index, builds: s.builds })), // 'auto' | number[]; optional per-slide transition
+   };
+   await applyAnimations(pptxPath, plan);
+   ```
+   `'auto'` builds every body text shape except the heading (title placeholder or top-most text shape).
+2. Validate: `const res = validatePptxAnimations(pptxPath)` returns `{ ok, slides: [{ index, hasTransition, buildCount }] }`.
+3. **`[click]` rule:** for every slide, the number of `[click]` cues in `speakerNotes` (localized cue words are defined in `SPOKEN_NOTES_RULES` in `lib/proposal-script.cjs`; count with `countClickCues(notes)`) MUST equal that slide's `buildCount`.
+4. **Fail-loud rule (no silent skip):** if any slide has no transition (`hasTransition === false`), or a content slide (not cover/closing) has `buildCount === 0`, or the `[click]` count differs from `buildCount`, STOP generation with an error listing the offending slide indices, e.g. `Animation validation failed: slides 3, 5 have no transition / 0 builds`. Never continue to Step 7 and never silently skip animation (same enforcement as ENH-044).
+
+Progress: `[anim] {N} slides, {M} builds`
 
 ---
 
@@ -915,6 +937,7 @@ Prerequisites (shown if auth fails):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Type:    {label}  ({N} slides)
  Context: {session file or "direct brief"}
+ Animation: ✓ {N} slides, {M} builds
 
  Files:
    docs/proposals/{slug}-{date}.md    ({size})
