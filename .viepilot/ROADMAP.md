@@ -4121,7 +4121,7 @@ in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with
 cues. pptxgenjs 3.12 has no animation API → `lib/pptx-animate.cjs` injects `<p:transition>` /
 `<p:timing>` via jszip post-processing. Missing animation stops generation (no silent skip).
 **Estimated Tasks**: 3
-**Status**: planned
+**Status**: in_progress
 **Version Target**: 3.15.0
 **Dependencies**: Phase 165 ✅, Phase 168 (executed first)
 **Directory**: `.viepilot/phases/166-enh117b-proposal-mandatory-animation/`
