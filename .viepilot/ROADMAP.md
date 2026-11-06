@@ -4144,7 +4144,7 @@ runs. Independent parallel subagents score a strict rubric (H1–H2, C1–C8 + b
 evidence; orchestrator decides Keep/Improve/Reject with reasons, rewrites only Improve slides, ≤2
 rounds, then AskUserQuestion with the scoreboard; final "does this sound like you" check.
 **Estimated Tasks**: 4
-**Status**: in_progress
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.16.0
 **Dependencies**: Phase 165 ✅, Phase 166, Phase 168
 **Directory**: `.viepilot/phases/167-enh117c-proposal-persona-review-council/`
@@ -4157,9 +4157,9 @@ rounds, then AskUserQuestion with the scoreboard; final "does this sound like yo
 | 167.4 | tests + CHANGELOG [3.16.0] + ENH-117 done | ≥10 resilient tests; full suite green | S | after 167.1-3 |
 
 **Verification**:
-- [ ] `npx jest tests/unit/phase167-enh117c-persona-review.test.js --no-coverage` → pass
-- [ ] `npm test` → full suite green
-- [ ] version = 3.16.0
+- [x] `npx jest tests/unit/phase167-enh117c-persona-review.test.js --no-coverage` → pass
+- [x] `npm test` → full suite green
+- [x] version = 3.16.0
 
 ## Phase 168 — ENH-118: Native todo mirror, mandatory (v3.14.0)
 
