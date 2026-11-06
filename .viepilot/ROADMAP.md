@@ -4091,3 +4091,72 @@ making newly-added skills (e.g. `vp-qa`) visible in the output instead of silent
 - [ ] `npx jest tests/unit/phase151-bug032-install-version-warning.test.js --no-coverage` → all pass
 - [ ] `node -e "console.log(require('./package.json').version)"` → `3.12.2`
 - [ ] `grep "\[3.12.2\]" CHANGELOG.md` → ≥1 hit
+
+## Phase 165 — ENH-117a: vp-proposal Human Voice + spoken script (v3.13.0)
+
+**Goal**: Replace the prompt rules that make proposal output robotic; add Voice Profile (1–4, chosen
+every run) and Story Brief (real material, no fabrication); every slide ships with full spoken notes
+in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with timing and Q&A.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.13.0
+**Dependencies**: Phase 151 ✅ (branch `from-3.12.2`)
+**Directory**: `.viepilot/phases/165-enh117a-proposal-human-voice-script/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 165.1 | prompt-contract template + VOICE_LEVELS, AI_CLICHE_BLACKLIST, detectCliches | 4 voice levels; ≥12 clichés vi/en; detection works | M | — |
+| 165.2 | workflows/proposal.md restructure + Voice Profile + Story Brief + narrative arc | steps in order; "We believe" ban + action-verb rule removed | L | after 165.1 |
+| 165.3 | lib/proposal-script.cjs + addNotes every slide + -script.md/.docx 5/15/30 | spelled-number + missing notes flagged; durations bounded | M | after 165.1 |
+| 165.4 | SKILL flags --voice/--duration + tests + CHANGELOG [3.13.0] | ≥8 resilient tests; full suite green | S | after 165.2-3 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase165-enh117a-human-voice.test.js --no-coverage` → pass
+- [ ] `npm test` → full suite green
+- [ ] version = 3.13.0
+
+## Phase 166 — ENH-117b: Mandatory slide animation (v3.14.0)
+
+**Goal**: Every slide has a transition and content slides have click builds aligned with `[click]`
+cues. pptxgenjs 3.12 has no animation API → `lib/pptx-animate.cjs` injects `<p:transition>` /
+`<p:timing>` via jszip post-processing. Missing animation stops generation (no silent skip).
+**Estimated Tasks**: 3
+**Status**: planned
+**Version Target**: 3.14.0
+**Dependencies**: Phase 165
+**Directory**: `.viepilot/phases/166-enh117b-proposal-mandatory-animation/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 166.1 | lib/pptx-animate.cjs + explicit jszip dependency | transition on every slide; builds; idempotent | L | — |
+| 166.2 | manifest animation schema + mandatory Animation step | fail-loud rule; [click] count == builds | M | after 166.1 |
+| 166.3 | real-pptx tests + CHANGELOG [3.14.0] | ≥6 tests on real XML; full suite green | M | after 166.1-2 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase166-enh117b-pptx-animation.test.js --no-coverage` → pass
+- [ ] `npm test` → full suite green
+- [ ] version = 3.14.0
+
+## Phase 167 — ENH-117c: Persona Review Council (v3.15.0)
+
+**Goal**: 20 fixed audience personas; 6–8 per run by context, #20 "Biên tập viên Tính người" always
+runs. Independent parallel subagents score a strict rubric (H1–H2, C1–C8 + blockers) with slide
+evidence; orchestrator decides Keep/Improve/Reject with reasons, rewrites only Improve slides, ≤2
+rounds, then AskUserQuestion with the scoreboard; final "does this sound like you" check.
+**Estimated Tasks**: 4
+**Status**: planned
+**Version Target**: 3.15.0
+**Dependencies**: Phase 165, Phase 166
+**Directory**: `.viepilot/phases/167-enh117c-proposal-persona-review-council/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 167.1 | review-personas.md (20 cards + mapping + rubric) + selectPersonas + evaluateGate | 20 unique; #20 locked; H1 min rule; blockers fail | L | — |
+| 167.2 | persona-review-prompt.md + parseReview + synthesizeFeedback + buildReviewReport | evidence required; #20 veto; reject reasons | M | after 167.1 |
+| 167.3 | workflow review loop + AUQ touchpoints + --review off/quick/full | ≤2 rounds; rewrite-only-Improve; AUQ specified | L | after 167.2 |
+| 167.4 | tests + CHANGELOG [3.15.0] + ENH-117 done | ≥10 resilient tests; full suite green | S | after 167.1-3 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase167-enh117c-persona-review.test.js --no-coverage` → pass
+- [ ] `npm test` → full suite green
+- [ ] version = 3.15.0

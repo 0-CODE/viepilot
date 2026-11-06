@@ -1,6 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Next Phase**: **165** (ENH-117a) → 166 → 167 · planned 2026-11-07
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -63,6 +64,8 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-11-07 | Phases 165–167 planned for ENH-117 on branch `from-3.12.2`: 165 Human Voice + spoken script (4 tasks → 3.13.0), 166 mandatory animation via jszip post-process (3 tasks → 3.14.0), 167 Persona Review Council (4 tasks → 3.15.0). Numbering 165+ avoids main's phases 152–164 still on disk. Notes = full spoken words in spoken style, digits kept (96%) | `/vp-evolve` | 165–167 |
+| 2026-11-07 | ENH-117 logged: vp-proposal đầu ra khô do prompt contract (cấm "We believe", bullet công thức, TONE nhị phân, brief thiếu chất liệu người, không review). AUQ: voice do user chọn mỗi lần; 20 persona cố định chọn 6–8 + persona Tính người luôn chạy; ≤2 vòng rồi hỏi user; kịch bản 3 dạng; animation bắt buộc (pptxgenjs 3.12 không hỗ trợ → jszip post-process); notes dạng cue không văn xuôi | `/vp-request` | Backlog |
 | 2026-05-30 | Phase 151 planned: BUG-032 install version-mismatch warning + skill log clarity (3 tasks → v3.12.2) | `/vp-evolve` | 151 |
 | 2026-05-30 | BUG-032 logged: `npx viepilot install` misses new skills from newer npm — `vp-qa` absent (installed 2.50.1, npm 3.12.1); root cause: npx resolves cached binary; fix: version mismatch warning + `new:` log prefix | `/vp-request` | Backlog |
 | 2026-05-25 | DEBT-002 logged: TRACKER.md unbounded growth (31 459 tokens observed in real project) — rewrite-not-append fix + tracker compact command + auto-compact guard | Real project hit 25 000 token read limit; file unreadable | Backlog |
@@ -277,6 +280,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-117 | 🔧 | vp-proposal Human Voice — giọng người làm sản phẩm (voice 1–4), notes lời nói đầy đủ (giữ số) + file script 5/15/30', animation bắt buộc, hội đồng 20 persona review (6–8/lần, ≤2 vòng) | high | triaged (→ Phases 165–167, v3.13.0–3.15.0) |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
 | DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
 | ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
