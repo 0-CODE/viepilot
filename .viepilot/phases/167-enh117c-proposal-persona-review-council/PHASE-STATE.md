@@ -10,8 +10,8 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 167.1 | done ✅ | 20 bilingual persona cards + mapping/keywords + RUBRIC/BLOCKERS + selectPersonas/evaluateGate — 6aa7c93, 8b03328 |
-| 167.2 | in_progress | subagent prompt + synthesis + review report |
-| 167.3 | pending | workflow review loop + AUQ + flags |
+| 167.2 | done ✅ | persona-review-prompt.md + parseReview/synthesizeFeedback (weights, P20 veto, reasons)/buildReviewReport — decdd8a |
+| 167.3 | in_progress | workflow review loop + AUQ + flags |
 | 167.4 | pending | tests + CHANGELOG 3.16.0 + ENH-117 done |
 
 ## Dependencies
@@ -25,6 +25,6 @@ in_progress
 
 ## Todo
 - [x] [vp] 167.1 — 20 persona library + selection + rubric gate
-- [~] [vp] 167.2 — Persona subagent prompt + feedback synthesis + review report
-- [ ] [vp] 167.3 — Review loop in workflow + AUQ touchpoints + flags
+- [x] [vp] 167.2 — Persona subagent prompt + feedback synthesis + review report
+- [~] [vp] 167.3 — Review loop in workflow + AUQ touchpoints + flags
 - [ ] [vp] 167.4 — Tests + CHANGELOG 3.16.0 + close ENH-117
