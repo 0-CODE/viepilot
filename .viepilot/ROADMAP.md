@@ -4115,29 +4115,29 @@ in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with
 - [x] `npm test` → full suite green
 - [x] version = 3.13.0
 
-## Phase 166 — ENH-117b: Mandatory slide animation (v3.14.0)
+## Phase 166 — ENH-117b: Mandatory slide animation (v3.15.0)
 
 **Goal**: Every slide has a transition and content slides have click builds aligned with `[click]`
 cues. pptxgenjs 3.12 has no animation API → `lib/pptx-animate.cjs` injects `<p:transition>` /
 `<p:timing>` via jszip post-processing. Missing animation stops generation (no silent skip).
 **Estimated Tasks**: 3
 **Status**: planned
-**Version Target**: 3.14.0
-**Dependencies**: Phase 165
+**Version Target**: 3.15.0
+**Dependencies**: Phase 165 ✅, Phase 168 (executed first)
 **Directory**: `.viepilot/phases/166-enh117b-proposal-mandatory-animation/`
 
 | Task | Description | Acceptance Criteria | Complexity | Parallel |
 |------|-------------|---------------------|------------|---------|
 | 166.1 | lib/pptx-animate.cjs + explicit jszip dependency | transition on every slide; builds; idempotent | L | — |
 | 166.2 | manifest animation schema + mandatory Animation step | fail-loud rule; [click] count == builds | M | after 166.1 |
-| 166.3 | real-pptx tests + CHANGELOG [3.14.0] | ≥6 tests on real XML; full suite green | M | after 166.1-2 |
+| 166.3 | real-pptx tests + CHANGELOG [3.15.0] | ≥6 tests on real XML; full suite green | M | after 166.1-2 |
 
 **Verification**:
 - [ ] `npx jest tests/unit/phase166-enh117b-pptx-animation.test.js --no-coverage` → pass
 - [ ] `npm test` → full suite green
-- [ ] version = 3.14.0
+- [ ] version = 3.15.0
 
-## Phase 167 — ENH-117c: Persona Review Council (v3.15.0)
+## Phase 167 — ENH-117c: Persona Review Council (v3.16.0)
 
 **Goal**: 20 fixed audience personas; 6–8 per run by context, #20 "Biên tập viên Tính người" always
 runs. Independent parallel subagents score a strict rubric (H1–H2, C1–C8 + blockers) with slide
@@ -4145,8 +4145,8 @@ evidence; orchestrator decides Keep/Improve/Reject with reasons, rewrites only I
 rounds, then AskUserQuestion with the scoreboard; final "does this sound like you" check.
 **Estimated Tasks**: 4
 **Status**: planned
-**Version Target**: 3.15.0
-**Dependencies**: Phase 165, Phase 166
+**Version Target**: 3.16.0
+**Dependencies**: Phase 165 ✅, Phase 166, Phase 168
 **Directory**: `.viepilot/phases/167-enh117c-proposal-persona-review-council/`
 
 | Task | Description | Acceptance Criteria | Complexity | Parallel |
@@ -4154,9 +4154,37 @@ rounds, then AskUserQuestion with the scoreboard; final "does this sound like yo
 | 167.1 | review-personas.md (20 cards + mapping + rubric) + selectPersonas + evaluateGate | 20 unique; #20 locked; H1 min rule; blockers fail | L | — |
 | 167.2 | persona-review-prompt.md + parseReview + synthesizeFeedback + buildReviewReport | evidence required; #20 veto; reject reasons | M | after 167.1 |
 | 167.3 | workflow review loop + AUQ touchpoints + --review off/quick/full | ≤2 rounds; rewrite-only-Improve; AUQ specified | L | after 167.2 |
-| 167.4 | tests + CHANGELOG [3.15.0] + ENH-117 done | ≥10 resilient tests; full suite green | S | after 167.1-3 |
+| 167.4 | tests + CHANGELOG [3.16.0] + ENH-117 done | ≥10 resilient tests; full suite green | S | after 167.1-3 |
 
 **Verification**:
 - [ ] `npx jest tests/unit/phase167-enh117c-persona-review.test.js --no-coverage` → pass
 - [ ] `npm test` → full suite green
-- [ ] version = 3.15.0
+- [ ] version = 3.16.0
+
+## Phase 168 — ENH-118: Native todo mirror, mandatory (v3.14.0)
+
+**Goal**: `/vp-evolve` and `/vp-auto` must build and maintain the task list in the host's native todo
+tool (Claude Code TaskCreate/TaskUpdate/TaskList, legacy TodoWrite, Antigravity write_todos; others
+once verified), with a `## Todo` checklist in PHASE-STATE as fallback. Gates: no todo list → no task
+dispatch; `vp-tools todo check` drift → no task/phase completion. PHASE-STATE stays source of truth;
+rebuild after resume/compaction.
+**Estimated Tasks**: 5
+**Status**: planned
+**Version Target**: 3.14.0
+**Execution order**: **168 → 166 → 167** (168 runs first so 166/167 use the new gate)
+**Dependencies**: Phase 165 ✅
+**Directory**: `.viepilot/phases/168-enh118-native-todo-mirror/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 168.1 | adapter `todo` capability ×5 + verify Cursor/Codex/Copilot names | verified ⇒ source URL; claude prefers TaskCreate | M | — |
+| 168.2 | lib/todo-mirror.cjs + `vp-tools todo list/payload/sync/check` | 1:1 items; 3 payload formats; check exit codes | L | after 168.1 |
+| 168.3 | mandatory gates in evolve/autonomous/resume-work + tracker-agent sync | no dispatch without todo; check at task/phase close | L | after 168.2 |
+| 168.4 | `vp-tools todo enable` consent-gated settings env | dry-run safe; idempotent; installer hint only | S | after 168.2 |
+| 168.5 | tests + CHANGELOG [3.14.0] | ≥12 resilient tests; full suite green | M | after 168.1-4 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase168-enh118-native-todo-mirror.test.js --no-coverage` → pass
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 168 --phase-complete` → exit 0
+- [ ] version = 3.14.0

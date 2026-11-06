@@ -32,7 +32,7 @@ Blockers (any persona → fail): false claim, fabricated anecdote without Story 
 over-reaching legal/security promise, slide without script, slide without animation.
 
 ## Target Version
-3.15.0 (MINOR)
+3.16.0 (MINOR)
 
 ## Tasks
 | Task | Description | Complexity |
@@ -40,7 +40,7 @@ over-reaching legal/security promise, slide without script, slide without animat
 | 167.1 | `templates/proposal/review-personas.md` (20 cards + audience mapping + rubric) + `lib/proposal-review.cjs` `loadPersonas`, `selectPersonas`, `RUBRIC`, `evaluateGate` | L |
 | 167.2 | `templates/proposal/persona-review-prompt.md` (subagent contract, JSON output) + `synthesizeFeedback` (Keep/Improve/Reject, weights, #20 veto) + `buildReviewReport` | M |
 | 167.3 | Workflow Review step: parallel subagents, ≤ 2 rounds, rewrite Improve slides only, AUQ scoreboard + final "does this sound like you" AUQ; `--review off|quick|full`; SKILL.md | L |
-| 167.4 | Resilient tests + CHANGELOG `[3.15.0]` + ENH-117 resolution | S |
+| 167.4 | Resilient tests + CHANGELOG `[3.16.0]` + ENH-117 resolution | S |
 
 ## Dependencies
 - Phase 165 (voice, clichés, script validator), Phase 166 (animation validator for blockers).

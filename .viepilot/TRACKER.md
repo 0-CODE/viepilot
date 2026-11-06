@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **165** ✅ (ENH-117a → v3.13.0) · **Next Phase**: **166** (ENH-117b mandatory animation) → 167
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **165** ✅ (ENH-117a → v3.13.0) · **Next Phase**: **168** (ENH-118 native todo mirror → 3.14.0) → 166 (→ 3.15.0) → 167 (→ 3.16.0)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -64,6 +64,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-11-07 | Phase 168 planned for ENH-118 (5 tasks → 3.14.0), executed before 166/167 so they run under the todo gate; 166 → 3.15.0, 167 → 3.16.0. Reuse `hooks install` settings writer for consent-gated `vp-tools todo enable` | `/vp-evolve` | 168 |
 | 2026-11-07 | Phase 165 complete: ENH-117a vp-proposal Human Voice + spoken script → v3.13.0 (2364/2364). Pinned version-literal tests (phases 143–151) converted to >= via tests/helpers/semver-gte.js | Close phase 165 | 165 |
 | 2026-11-07 | ENH-118 logged: native todo không bị ép nên bị bỏ qua; research: Claude Code TaskCreate/TaskUpdate/TaskList (opt-in trên model mới, không sống qua compaction), TodoWrite legacy, Antigravity write_todos; Cursor/Codex/Copilot chưa xác minh → fallback bắt buộc | `/vp-request` | Backlog |
 | 2026-11-07 | Phases 165–167 planned for ENH-117 on branch `from-3.12.2`: 165 Human Voice + spoken script (4 tasks → 3.13.0), 166 mandatory animation via jszip post-process (3 tasks → 3.14.0), 167 Persona Review Council (4 tasks → 3.15.0). Numbering 165+ avoids main's phases 152–164 still on disk. Notes = full spoken words in spoken style, digits kept (96%) | `/vp-evolve` | 165–167 |
@@ -282,8 +283,8 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-118 | 🔧 | Native todo mirror — bắt buộc vp-evolve/vp-auto tạo danh sách việc bằng công cụ todo gốc của host (TaskCreate/TodoWrite/write_todos…), fallback checklist PHASE-STATE + `vp-tools todo check` gate | high | new |
-| ENH-117 | 🔧 | vp-proposal Human Voice — giọng người làm sản phẩm (voice 1–4), notes lời nói đầy đủ (giữ số) + file script 5/15/30', animation bắt buộc, hội đồng 20 persona review (6–8/lần, ≤2 vòng) | high | triaged (→ Phases 165–167, v3.13.0–3.15.0) |
+| ENH-118 | 🔧 | Native todo mirror — bắt buộc vp-evolve/vp-auto tạo danh sách việc bằng công cụ todo gốc của host (TaskCreate/TodoWrite/write_todos…), fallback checklist PHASE-STATE + `vp-tools todo check` gate | high | triaged (→ Phase 168, v3.14.0) |
+| ENH-117 | 🔧 | vp-proposal Human Voice — giọng người làm sản phẩm (voice 1–4), notes lời nói đầy đủ (giữ số) + file script 5/15/30', animation bắt buộc, hội đồng 20 persona review (6–8/lần, ≤2 vòng) | high | in_progress (165 ✅ 3.13.0; 166 → 3.15.0, 167 → 3.16.0 after 168) |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
 | DEBT-001 | 🧹 | README + Docs Drift — sync badges, counts, skills-reference to v3.7.2 | medium | new |
 | ENH-089 | 🔧 | vp-intake: excel-intake-agent + sheets-intake-agent — isolated Graph API + OAuth R/W | medium | new |
