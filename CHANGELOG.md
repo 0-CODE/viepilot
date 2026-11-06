@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.13.0] - 2026-11-07
+### Added
+- vp-proposal Voice Profile (ENH-117a): 4 voice levels (Humble, Balanced, Proud, Founder story) asked every run via AskUserQuestion; `--voice <1-4>` skips. Every claim of pride must carry evidence.
+- vp-proposal Story Brief: 6 skippable questions for real material (why, hardest moment, proudest moment, customer story, key number, repeat line); empty answers are never invented.
+- templates/proposal/prompt-contract.md + lib/proposal-generator.cjs: VOICE_LEVELS, buildVoiceInstruction, AI_CLICHE_BLACKLIST (vi+en), detectCliches (ellipsis wildcards, NFC, case-insensitive), loadPromptContract.
+- lib/proposal-script.cjs: spoken-style speaker notes validator (bilingual spelled-number check, digits kept e.g. 96%), planDuration for 5/15/30 min, buildScriptMarkdown with timing, transitions and Expected Q&A.
+- Script deliverables: -script.md, -script-5min.md, -script-30min.md, -script.docx; addNotes on every slide.
+
+### Changed
+- workflows/proposal.md 0.2.0: steps reordered; narrative arc beats per proposal type; prompt contract replaces the old 'We believe' ban, '8–15 words / action verb' bullet formula and binary TONE.
+- skills/vp-proposal 0.2.0: documents --voice and --duration.
+
+### Tests
+- tests/unit/phase165-enh117a-human-voice.test.js; legacy proposal assertions updated to the new contract.
+
+---
+
 ## [3.12.2] - 2026-05-30
 ### Fixed
 - BUG-032: `npx viepilot install` silently missed new skills (e.g. `vp-qa`) when the globally-installed package was behind npm latest (2.50.1 vs 3.12.1). `installCommand` now prints a non-blocking version-mismatch warning with the upgrade command when installed < npm latest.
