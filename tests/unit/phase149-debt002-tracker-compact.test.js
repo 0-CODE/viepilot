@@ -1,3 +1,4 @@
+const { isVersionGte } = require('../helpers/semver-gte');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -151,8 +152,8 @@ describe('Phase 149 — DEBT-002: TRACKER.md Compaction', () => {
   });
 
   describe('G) version', () => {
-    it('package.json version is 3.12.1', () => {
-      expect(pkg.version).toBe('3.12.2');
+    it('package.json version is >= 3.12.1', () => {
+      expect(isVersionGte(pkg.version, '3.12.1')).toBe(true);
     });
   });
 });

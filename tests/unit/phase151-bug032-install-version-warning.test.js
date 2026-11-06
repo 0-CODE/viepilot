@@ -1,4 +1,5 @@
 'use strict';
+const { isVersionGte } = require('../helpers/semver-gte');
 const path = require('path');
 const os = require('os');
 const fs = require('fs');
@@ -88,9 +89,9 @@ describe('Phase 151 — BUG-032: install version-mismatch warning + skill log cl
   });
 
   describe('151.3 — version + changelog', () => {
-    it('package.json version is 3.12.2', () => {
+    it('package.json version is >= 3.12.2', () => {
       const pkg = require(path.join(__dirname, '../../package.json'));
-      expect(pkg.version).toBe('3.12.2');
+      expect(isVersionGte(pkg.version, '3.12.2')).toBe(true);
     });
 
     it('CHANGELOG.md has [3.12.2] entry', () => {

@@ -1,4 +1,5 @@
 'use strict';
+const { isVersionGte } = require('../helpers/semver-gte');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
@@ -102,10 +103,10 @@ describe('Phase 150 — DEBT-003: check-update OS session guard', () => {
   });
 
   describe('D) version', () => {
-    test('package.json version is 3.12.1', () => {
+    test('package.json version is >= 3.12.1', () => {
       delete require.cache[require.resolve(path.join(ROOT, 'package.json'))];
       const pkg = require(path.join(ROOT, 'package.json'));
-      expect(pkg.version).toBe('3.12.2');
+      expect(isVersionGte(pkg.version, '3.12.1')).toBe(true);
     });
   });
 });

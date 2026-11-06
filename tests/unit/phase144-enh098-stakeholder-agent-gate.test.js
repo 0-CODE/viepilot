@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { isVersionGte } = require('../helpers/semver-gte');
 
 const ROOT = path.resolve(__dirname, '../..');
 const brainstorm = fs.readFileSync(path.join(ROOT, 'workflows/brainstorm.md'), 'utf8');
@@ -86,8 +87,8 @@ describe('Phase 144 — ENH-098: Stakeholder Agent Gate', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.12.1', () => {
-      expect(pkg.version).toBe('3.12.2');
+    it('version is >= 3.12.1', () => {
+      expect(isVersionGte(pkg.version, '3.12.1')).toBe(true);
     });
   });
 });

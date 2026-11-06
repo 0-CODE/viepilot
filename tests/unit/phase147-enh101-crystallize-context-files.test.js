@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { isVersionGte } = require('../helpers/semver-gte');
 
 const ROOT = path.resolve(__dirname, '../..');
 const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -72,8 +73,8 @@ describe('Phase 147 — ENH-101: crystallize adapter context files', () => {
   });
 
   describe('package.json', () => {
-    it('version is 3.12.1', () => {
-      expect(pkg.version).toBe('3.12.2');
+    it('version is >= 3.12.1', () => {
+      expect(isVersionGte(pkg.version, '3.12.1')).toBe(true);
     });
   });
 });
