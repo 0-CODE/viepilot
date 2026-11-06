@@ -1,7 +1,7 @@
 ---
 name: vp-proposal
 description: "Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs"
-version: 0.1.0
+version: 0.2.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-PROPOSAL  v0.1.0 (fw 2.19.0)
+ VIEPILOT ► VP-PROPOSAL  v0.2.0 (fw 3.13.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -134,6 +134,15 @@ Generate a professional proposal package from a brainstorm session or direct bri
 - `{slug}-{date}.pptx` — presentation file (ViePilot branded, dark navy/charcoal)
 - `{slug}-{date}.docx` — detailed project document
 - `{slug}-{date}-slides.txt` — Google Slides URL (only with `--slides` flag)
+- `{slug}-{date}-script.md` — full spoken script (chosen duration, with expected Q&A)
+- `{slug}-{date}-script-5min.md` / `{slug}-{date}-script-30min.md` — alternate-length scripts
+- `{slug}-{date}-script.docx` — script as a Word document
+
+**Human voice (ENH-117a):**
+- **Voice Profile** — asked every run (4 levels: Humble, Balanced, Proud, Founder story; `--voice` skips the prompt). Every claim of pride needs evidence.
+- **Story Brief** — skippable questions collecting real material (origin, customer story, number, repeat line) so the deck does not sound templated.
+- **Spoken notes** — every slide carries full spoken words (short sentences, digits for numbers), validated for cliches, spelled-out numbers and essay-length lines.
+- **Script** — per-slide timing planned for 5 / 15 / 30 minutes (`--duration`).
 
 **Proposal types:**
 | Type | Slides | Use case |
@@ -170,6 +179,10 @@ Optional flags:
                            Keep structural labels / section names in English.
 - `--slides` : After .pptx is generated, upload to Google Slides via service account auth
                Requires: `@googleapis/slides` installed + `GOOGLE_APPLICATION_CREDENTIALS` env var
+- `--voice <1-4>` : Voice Profile level — 1 Humble, 2 Balanced, 3 Proud, 4 Founder story.
+                    If omitted: Voice Profile prompt (AskUserQuestion) is shown every run.
+- `--duration <5|15|30>` : Target talk length in minutes for the primary script (`-script.md`).
+                           The 5 and 30 minute variants are also written.
 - `--dry-run` : Show slide manifest (JSON) without writing any files
 </context>
 
@@ -184,6 +197,13 @@ Execute workflow from `workflows/proposal.md`
   - One-line description
   - Target audience (client / partner / investor)
   - 3–5 key points to cover
+
+### Prompts using AskUserQuestion
+- Proposal type selection
+- Language selection
+- Voice Profile (4 levels; skipped with `--voice`)
+- Story Brief (all questions skippable)
+- Quality Brief
 
 ### Step 2: Proposal Type Selection
 - If `--type` provided: validate; show type + slide count to confirm

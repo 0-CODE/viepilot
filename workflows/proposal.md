@@ -292,7 +292,7 @@ Generate a structured JSON manifest from the loaded context.
 }
 ```
 
-`speakerNotes` = the **full spoken words** in spoken style — short sentences, a line break at each breath point, numbers kept as digits (`96%`), never spelled out. `durationSec` = estimated speaking time for the slide. (Full rules and estimation are finalised in Step 4b.) This replaces the earlier "3–5 sentences" talking-point format.
+`speakerNotes` = the **full spoken words** in spoken style — short sentences, a line break at each breath point, numbers kept as digits (`96%`), never spelled out. `durationSec` = estimated speaking time for the slide. (Full rules and estimation are finalised in Step 4b.)
 
 ## AI Prompt Contract
 
@@ -327,14 +327,12 @@ STORY MATERIAL (use only what is provided):
 
 CONTENT RULES — apply to every slide:
 - Cover subtitle: one sentence that states the value, in the maker's voice (NOT just a date)
-- Bullets are outcome-oriented but never formulaic: vary length and structure; a slide may be one strong sentence
+- Bullets state the outcome but are never formulaic: vary length and structure; a slide may be one strong sentence
 - Closing slide: concrete CTA matching meta.cta — NOT "Thank you" alone
 - Data/metrics slide: include at least one quantified metric (estimate is fine, label as such)
 - Every claim of pride carries evidence (number, customer, demo)
 - Follow the narrative arc beats listed per slide below
 ```
-
-Rhythm replaces the legacy "8–15 words per bullet" formula: mix short and long lines instead.
 
 **Post-generation check:** run `detectCliches(text)` over all generated slide text and speaker notes; rewrite any hit before continuing. The cliche list lives in `AI_CLICHE_BLACKLIST` / the contract — it is not duplicated here.
 
@@ -495,7 +493,7 @@ GENERATE a JSON object with this exact schema:
 }
 
 CONTENT RULES:
-- Each paragraph: 3–6 sentences, outcome-oriented, uses data from brainstorm session
+- Each paragraph: 3–6 sentences, states the outcome, uses data from brainstorm session
 - riskRegister: 3–5 rows covering the most likely project risks
 - glossary: 5–10 key terms the decision-maker may not know
 - diagrams: generate one diagram per type in getDiagramTypes(typeId)

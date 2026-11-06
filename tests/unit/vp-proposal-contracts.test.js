@@ -49,8 +49,10 @@ describe('vp-proposal — skill + workflow files', () => {
     expect(read('workflows/proposal.md')).toMatch(/quality_brief|Quality Brief|Step 2C/);
   });
 
-  test('workflow.md specifies outcome-oriented bullet rules', () => {
-    expect(read('workflows/proposal.md')).toContain('outcome-oriented');
+  test('workflow.md specifies human-voice prompt contract rules', () => {
+    const w = read('workflows/proposal.md');
+    expect(w).toContain('Voice Profile');
+    expect(w).toContain('loadPromptContract');
   });
 
   test('workflow.md contains Step 1 context detection', () => {

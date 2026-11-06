@@ -18,7 +18,7 @@ const SKILLS = [
   { name: 'vp-evolve',        upper: 'VP-EVOLVE',         version: '0.3.0' },
   { name: 'vp-info',          upper: 'VP-INFO',           version: '0.1.1' },
   { name: 'vp-pause',         upper: 'VP-PAUSE',          version: '0.1.1' },
-  { name: 'vp-proposal',      upper: 'VP-PROPOSAL',       version: '0.1.0' },
+  { name: 'vp-proposal',      upper: 'VP-PROPOSAL',       version: '0.2.0' },
   { name: 'vp-request',       upper: 'VP-REQUEST',        version: '0.2.0' },
   { name: 'vp-resume',        upper: 'VP-RESUME',         version: '0.1.1' },
   { name: 'vp-rollback',      upper: 'VP-ROLLBACK',       version: '0.1.1' },

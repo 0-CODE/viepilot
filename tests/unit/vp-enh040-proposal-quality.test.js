@@ -33,16 +33,14 @@ describe('vp-proposal quality uplift — workflow contracts', () => {
     expect(workflow).toMatch(/"cta"/);
   });
 
-  test('workflow.md AI prompt contract specifies outcome-oriented bullets', () => {
-    expect(workflow).toContain('outcome-oriented');
+  test('workflow.md AI prompt contract references Voice Profile and prompt contract', () => {
+    expect(workflow).toContain('Voice Profile');
+    expect(workflow).toContain('loadPromptContract');
+    expect(workflow).toContain('detectCliches');
   });
 
-  test('workflow.md AI prompt contract specifies 8–15 word bullet target', () => {
-    expect(workflow).toMatch(/8.{1,3}15 words/);
-  });
-
-  test('workflow.md AI prompt contract specifies 3–5 sentence speaker notes', () => {
-    expect(workflow).toMatch(/3.{1,3}5 sentences/);
+  test('workflow.md speaker notes are full spoken words', () => {
+    expect(workflow).toContain('full spoken words');
   });
 
   test('workflow.md Step 7 (generate_docx) mentions Timeline table', () => {
