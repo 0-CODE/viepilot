@@ -693,7 +693,7 @@ Runs right after the `.pptx` is written in Step 6. This step cannot be skipped o
    await applyAnimations(pptxPath, plan);
    ```
    `'auto'` builds every body text shape except the heading (title placeholder or top-most text shape).
-2. Validate: `const res = validatePptxAnimations(pptxPath)` returns `{ ok, slides: [{ index, hasTransition, buildCount }] }`.
+2. Validate: `const res = await validatePptxAnimations(pptxPath)` returns `{ ok, slides: [{ index, hasTransition, buildCount }] }`.
 3. **`[click]` rule:** for every slide, the number of `[click]` cues in `speakerNotes` (localized cue words are defined in `SPOKEN_NOTES_RULES` in `lib/proposal-script.cjs`; count with `countClickCues(notes)`) MUST equal that slide's `buildCount`.
 4. **Fail-loud rule (no silent skip):** if any slide has no transition (`hasTransition === false`), or a content slide (not cover/closing) has `buildCount === 0`, or the `[click]` count differs from `buildCount`, STOP generation with an error listing the offending slide indices, e.g. `Animation validation failed: slides 3, 5 have no transition / 0 builds`. Never continue to Step 7 and never silently skip animation (same enforcement as ENH-044).
 
