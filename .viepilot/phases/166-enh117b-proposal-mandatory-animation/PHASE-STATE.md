@@ -10,8 +10,8 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 166.1 | done ✅ | lib/pptx-animate.cjs (transitions + click builds via jszip, idempotent, auto skips heading) — 50db701, 16b52f3 |
-| 166.2 | in_progress | manifest animation schema + mandatory workflow step |
-| 166.3 | pending | real-pptx tests + CHANGELOG 3.15.0 |
+| 166.2 | done ✅ | Step 6b Animation (MANDATORY) fail-loud + manifest animation/builds + countClickCues — a764ab1 |
+| 166.3 | in_progress | real-pptx tests + CHANGELOG 3.15.0 |
 
 ## Dependencies
 - Phase 165 ✅
@@ -25,5 +25,5 @@ in_progress
 
 ## Todo
 - [x] [vp] 166.1 — lib/pptx-animate.cjs — inject transitions and builds
-- [~] [vp] 166.2 — Manifest animation schema + mandatory Animation step
-- [ ] [vp] 166.3 — Real-pptx animation tests + CHANGELOG 3.15.0
+- [x] [vp] 166.2 — Manifest animation schema + mandatory Animation step
+- [~] [vp] 166.3 — Real-pptx animation tests + CHANGELOG 3.15.0
