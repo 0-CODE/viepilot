@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.16.0] - 2026-11-07
+### Added
+- Persona Review Council for vp-proposal (ENH-117c): library of 20 bilingual audience personas (templates/proposal/review-personas.md) — CEO, CFO, CTO, skeptical engineer, investor, procurement, non-technical user, loyal customer, devil's advocate, journalist, legal, security, designer, marketing, sales, student, conference back row, livestream viewer, non-native partner, and the always-on Humanity editor.
+- Context-based selection: 6–8 personas per run by proposal type plus audience/decision-maker keywords; `--review off|quick|full` (off still runs the Humanity editor).
+- Strict rubric H1–H2 (humanity, maker's voice) and C1–C8 with thresholds; H1 also requires no persona below 3; blockers for false claims, fabricated anecdotes, over-reaching legal/security promises, slides without script or animation.
+- templates/proposal/persona-review-prompt.md: in-character, independent subagent review; every score needs a slide and verbatim quote.
+- lib/proposal-review.cjs: loadPersonas, selectPersonas, RUBRIC, BLOCKERS, evaluateGate, parseReview, synthesizeFeedback (Keep/Improve/Reject with sources, weight and reason; primary audience ×2; Humanity editor veto), buildReviewReport.
+
+### Changed
+- workflows/proposal.md Step 8b: parallel persona subagents, rewrite only Improve slides, max 2 rounds, then AskUserQuestion with the scoreboard; final 'does this sound like you' check; review report docs/proposals/{slug}-{date}-review.md.
+- skills/vp-proposal 0.3.0: documents --review, the council and the review report.
+
+### Tests
+- tests/unit/phase167-enh117c-persona-review.test.js (21 tests).
+
+---
+
 ## [3.15.0] - 2026-11-07
 ### Added
 - Mandatory slide animation for vp-proposal (ENH-117b): lib/pptx-animate.cjs injects <p:transition> and click-by-click entrance builds into pptxgenjs decks via jszip post-processing (pptxgenjs 3.12 has no animation API). Restrained presets only: fade/push/wipe transitions, fade/appear builds; idempotent.
