@@ -40,7 +40,8 @@ Steps:
 1. Read the target file (TRACKER.md or PHASE-STATE.md based on operation)
 2. Locate the exact row/field to change — **targeted edit only**, never rewrite the whole file
 3. Apply the change
-4. Confirm: list fields changed and new values
+4. Todo mirror (ENH-118 — MANDATORY): after every `task-start`, `task-complete` and `phase-complete` edit (`update-task-status` / `update-phase-status`), you MUST run `node bin/vp-tools.cjs todo sync --phase N` and include the resulting `## Todo` changes in the same commit. Then run `node bin/vp-tools.cjs todo check --phase N` (add `--phase-complete` on phase-complete) and report its result.
+5. Confirm: list fields changed and new values
 
 ## Operation Details
 
@@ -81,4 +82,5 @@ TRACKER_RESULT: PASS
 Operation: {operation}
 Changed:
   ✅ {file} — {field} = "{new_value}"
+Todo: sync {ok|n/a} · check {PASS|FAIL}
 ```

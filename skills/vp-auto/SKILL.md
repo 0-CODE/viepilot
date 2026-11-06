@@ -361,7 +361,12 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 **Prompts using AskUserQuestion in this skill:**
 - Control point decisions (retry / skip / rollback / stop — Step 7)
 
+## Native todo mirror (ENH-118)
+
+You MUST follow the "Todo Mirror (ENH-118 — MANDATORY)" block in `workflows/autonomous.md`; it is a hard gate, not optional.
+
 <success_criteria>
+- [ ] Native todo mirror created before dispatch; `todo check` passes at task and phase gates (ENH-118)
 - [ ] Phases executed in dependency order
 - [ ] Tasks tracked with git tags
 - [ ] Quality gates enforced

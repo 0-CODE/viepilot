@@ -325,7 +325,12 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 - Brainstorm routing decision (Step 3A — Yes / No)
 - Workflow continuation (Step 5 — Execute /vp-auto / Create request / Done)
 
+## Native todo mirror (ENH-118)
+
+You MUST follow the "Todo Mirror (ENH-118 — MANDATORY)" block in `workflows/evolve.md`; it is a hard gate, not optional.
+
 <success_criteria>
+- [ ] Native todo mirror created per new phase and banner shows `Todo:` line (ENH-118)
 - [ ] User intent correctly identified
 - [ ] Architecture compatibility checked
 - [ ] ROADMAP.md updated with new phases

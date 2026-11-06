@@ -231,6 +231,22 @@ cat .viepilot/phases/{phase}/PHASE-STATE.md
 
 Check if phase already has completed tasks → resume from next task.
 
+### Todo Mirror (ENH-118 — MANDATORY)
+
+You MUST mirror the phase tasks into the host's native todo list AND the `## Todo` checklist. This step is a hard gate, not a suggestion. You MUST NOT skip it, defer it, or substitute a prose summary.
+
+1. Resolve `getTodoCapability(ADAPTER_ID)` (lib/adapter-context.cjs).
+2. Claude Code: run `ToolSearch select:TaskCreate,TaskUpdate,TaskList`; if unavailable, select the legacy single-list tool named in the capability `todo.tools` fallback; else use the fallback and print `enable_hint` once. Other adapters: use `todo.tools` ONLY when `verified: true`; otherwise use the fallback.
+3. Native: create the items from `node bin/vp-tools.cjs todo payload --phase N --adapter <id>` and record the returned task ids in-session. Fallback: `node bin/vp-tools.cjs todo sync --phase N`.
+4. You MUST always also run `node bin/vp-tools.cjs todo sync --phase N` (the checklist is the durable mirror used by gates).
+5. Verify with `node bin/vp-tools.cjs todo check --phase N` (exit 0 required).
+
+**Phase-start gate (ENH-118):** You MUST NOT dispatch any `vp-task-executor` (or begin any task in sequential mode) before the todo list exists. Orchestrator check: `node bin/vp-tools.cjs todo check --phase N` MUST exit 0. Non-zero → run the block above, re-check; still failing → control point.
+
+**Per-transition update (ENH-118):** On every task state transition (task start, task done) you MUST update the native list (`TaskUpdate`, or a full replace for `write_todos` / `update_plan`) AND run `node bin/vp-tools.cjs todo sync --phase N`. In sequential mode exactly one item is `in_progress` at a time.
+
+**Resume / compaction (ENH-118):** Native tasks do not persist across sessions or compaction. On resume or after context compaction you MUST rebuild the native list from `PHASE-STATE.md` (re-run the block above).
+
 ### 3b. Orchestration Mode Selection (Phase 133 — FEAT-021)
 
 > ⛔ **ORCHESTRATOR STOP — Implementation Delegation Rule (ENH-096)**
@@ -266,7 +282,7 @@ ELSE:
 
 **Agent Teams mode** (when `ADAPTER_CONTEXT.orchestration.teams == true` AND pending task count ≥ 8):
 - Set `TEAMS_MODE = true`
-- Activate shared TaskCreate/TaskList task list for teammate coordination
+- Use the shared TaskCreate/TaskList task list for teammate coordination (in addition to the mandatory Todo Mirror, which applies in every mode)
 - Each Agent worker reads from the shared list rather than receiving an explicit task prompt
 
 #### 3b-orch: Orchestrator Fan-out (Claude Code only)
@@ -348,7 +364,7 @@ Agent(
 On `QUALITY_GATE: FAIL` or `PARTIAL` → route to control point (retry cluster / skip / stop).
 On `QUALITY_GATE: PASS` → update PHASE-STATE.md (all cluster tasks → done), update TRACKER.md, continue.
 
-**Teams mode** (when `TEAMS_MODE == true`):
+**Teams mode** (when `TEAMS_MODE == true`; the shared list is an addition to the mandatory Todo Mirror, ENH-118):
 - Write all pending task IDs to shared task list via `TaskCreate` at phase start
 - Each `Agent(vp-task-executor)` reads next available task from shared list
 - Prevents duplicate execution when dispatching ≥ 8 tasks concurrently
@@ -628,6 +644,7 @@ Create git tag: `{TAG_PREFIX}-vp-p{phase}-t{task}` (enriched format: `${PROJECT_
 git tag "${TAG_PREFIX}-vp-p${PHASE}-t${TASK}"
 ```
 Ensure `PHASE-STATE.md` already shows current task `in_progress` (set during the gate if not already).
+Then mark the task `in_progress` in the native todo list and run `node bin/vp-tools.cjs todo sync --phase N` (ENH-118).
 
 #### Bulk-Edit Task Detection — doc-sync-agent (ENH-057)
 
@@ -790,6 +807,9 @@ If the block is present:
 ## 4. Update State
 
 After each PASS task and PASS sub-task (state-first, then continue):
+
+**Task PASS gate (ENH-118):** Before continuing you MUST mark the task completed in the native list, run `node bin/vp-tools.cjs todo sync --phase N`, and run `node bin/vp-tools.cjs todo check --phase N`. Non-zero exit → route to control point; you MUST NOT proceed to the next task.
+
 ```yaml
 update:
   - PHASE-STATE.md: task status, timestamp
@@ -857,6 +877,7 @@ Before phase-level verification, run a UI stub check:
 
 1. Run phase-level verification
 2. Check phase quality gate
+2a. **Todo gate (ENH-118):** You MUST run `node bin/vp-tools.cjs todo check --phase N --phase-complete`. Non-zero exit → control point; the phase MUST NOT be marked complete.
 3. Write SUMMARY.md using `templates/phase/SUMMARY.md` as base.
 
 **PushNotification (ENH-099, optional):**

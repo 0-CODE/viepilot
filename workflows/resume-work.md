@@ -95,6 +95,9 @@ cat .viepilot/phases/{phase}/tasks/{task}-*.md
 ### Context Required
 Read `context_required` section from task file.
 Load referenced files.
+
+### Rebuild Native Todo List (ENH-118 — MANDATORY)
+Native todo items do not persist across sessions. You MUST rebuild the native list from `PHASE-STATE.md` before continuing work: resolve `getTodoCapability(ADAPTER_ID)`, create items from `node bin/vp-tools.cjs todo payload --phase N --adapter <id>` (Claude Code: `ToolSearch select:TaskCreate,TaskUpdate,TaskList`, else `select:TodoWrite`; other adapters only when `verified: true`), then run `node bin/vp-tools.cjs todo sync --phase N` and `node bin/vp-tools.cjs todo check --phase N`. You MUST NOT resume task execution without this.
 </step>
 
 <step name="display_summary">
