@@ -4169,7 +4169,7 @@ once verified), with a `## Todo` checklist in PHASE-STATE as fallback. Gates: no
 dispatch; `vp-tools todo check` drift → no task/phase completion. PHASE-STATE stays source of truth;
 rebuild after resume/compaction.
 **Estimated Tasks**: 5
-**Status**: in_progress
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.14.0
 **Execution order**: **168 → 166 → 167** (168 runs first so 166/167 use the new gate)
 **Dependencies**: Phase 165 ✅
@@ -4184,7 +4184,7 @@ rebuild after resume/compaction.
 | 168.5 | tests + CHANGELOG [3.14.0] | ≥12 resilient tests; full suite green | M | after 168.1-4 |
 
 **Verification**:
-- [ ] `npx jest tests/unit/phase168-enh118-native-todo-mirror.test.js --no-coverage` → pass
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 168 --phase-complete` → exit 0
-- [ ] version = 3.14.0
+- [x] `npx jest tests/unit/phase168-enh118-native-todo-mirror.test.js --no-coverage` → pass
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 168 --phase-complete` → exit 0
+- [x] version = 3.14.0
