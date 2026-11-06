@@ -415,6 +415,9 @@ async function installCommand(rawArgs) {
       seenAdapters.add(a.id);
       if (a.deprecationNotice) console.log(`\n${a.deprecationNotice}`);
       console.log(`- ${a.name}: ${a.postInstallHint || 'run /vp-status'}`);
+      if (a.id === 'claude-code') {
+        console.log(`- ${a.name}: vp-tools todo enable --adapter claude-code (opt-in to todo tools)`);
+      }
     }
   }
   console.log('- If needed, run /vp-brainstorm then /vp-crystallize');

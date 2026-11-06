@@ -228,16 +228,130 @@ const commands = {
   /**
    * Native todo mirror (ENH-118)
    */
-  'todo': (args) => {
+  'todo': async (args) => {
     const todoMirror = require(path.join(__dirname, '../lib/todo-mirror.cjs'));
     const { getTodoCapability } = require(path.join(__dirname, '../lib/adapter-context.cjs'));
     const sub = args[0];
     const flag = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
+
+    // Handle 'enable' subcommand
+    if (sub === 'enable') {
+      const adapterId = flag('--adapter') || 'claude-code';
+      const dryRun = args.includes('--dry-run');
+      const yes = args.includes('--yes');
+      const useProject = args.includes('--project');
+
+      // Determine config file path
+      let configPath;
+      if (adapterId === 'claude-code') {
+        const home = os.homedir();
+        configPath = useProject ? path.join(process.cwd(), '.claude', 'settings.json') : path.join(home, '.claude', 'settings.json');
+      } else {
+        // Non-claude adapters: print hint and exit
+        const capability = getTodoCapability(adapterId);
+        if (capability.enable_hint) {
+          console.log(formatInfo(capability.enable_hint));
+        } else {
+          console.log('no opt-in needed');
+        }
+        process.exit(0);
+      }
+
+      // Read existing settings.json
+      let settings = {};
+      if (fs.existsSync(configPath)) {
+        try {
+          settings = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        } catch (e) {
+          settings = {};
+        }
+      }
+
+      // Ensure env object exists
+      if (!settings.env) settings.env = {};
+
+      // Check if already enabled
+      const alreadyEnabled = settings.env.CLAUDE_CODE_ENABLE_TODO_TOOLS === '1';
+      if (alreadyEnabled && dryRun) {
+        console.log(formatInfo('already enabled'));
+        process.exit(0);
+      }
+      if (alreadyEnabled && !dryRun) {
+        console.log(formatSuccess('already enabled'));
+        process.exit(0);
+      }
+
+      // Prepare new settings
+      const newSettings = JSON.parse(JSON.stringify(settings)); // deep copy
+      newSettings.env.CLAUDE_CODE_ENABLE_TODO_TOOLS = '1';
+
+      // Generate diff
+      const oldJson = JSON.stringify(settings, null, 2);
+      const newJson = JSON.stringify(newSettings, null, 2);
+      const settingsChanged = oldJson !== newJson;
+
+      if (dryRun) {
+        if (settingsChanged) {
+          console.log(formatInfo('Would apply the following changes:'));
+          console.log(`\n${colors.gray}--- ${configPath}${colors.reset}`);
+          console.log(`${colors.gray}+++ ${configPath} (updated)${colors.reset}`);
+          const oldLines = oldJson.split('\n');
+          const newLines = newJson.split('\n');
+          const maxLines = Math.max(oldLines.length, newLines.length);
+          for (let i = 0; i < maxLines; i++) {
+            const oldLine = oldLines[i] || '';
+            const newLine = newLines[i] || '';
+            if (oldLine !== newLine) {
+              if (oldLine) console.log(`${colors.red}-${colors.reset} ${oldLine}`);
+              if (newLine) console.log(`${colors.green}+${colors.reset} ${newLine}`);
+            } else {
+              console.log(`  ${oldLine}`);
+            }
+          }
+          console.log();
+        } else {
+          console.log(formatInfo('no changes needed'));
+        }
+        process.exit(0);
+      }
+
+      // Non-TTY without --yes: print command and exit
+      if (!isInteractive && !yes) {
+        console.log(formatInfo('Non-interactive mode. Run with --yes to enable:'));
+        console.log(`\n${colors.gray}$${colors.reset} vp-tools todo enable --adapter ${adapterId} --yes\n`);
+        process.exit(0);
+      }
+
+      // Interactive mode: ask for confirmation
+      if (isInteractive && !yes) {
+        const confirmed = await confirm('Enable Claude Code todo tools?', false);
+        if (!confirmed) {
+          console.log(formatWarning('Aborted.'));
+          process.exit(0);
+        }
+      }
+
+      // Write settings
+      try {
+        fs.mkdirSync(path.dirname(configPath), { recursive: true });
+        fs.writeFileSync(configPath, JSON.stringify(newSettings, null, 2) + '\n', 'utf8');
+      } catch (e) {
+        console.error(formatError(`Failed to write ${configPath}: ${e.message}`));
+        process.exit(1);
+      }
+
+      console.log(formatSuccess('Claude Code todo tools enabled.'));
+      console.log(`  Config: ${configPath}`);
+      console.log(`  Set: env.CLAUDE_CODE_ENABLE_TODO_TOOLS = "1"`);
+      process.exit(0);
+    }
+
+    // Other subcommands require project root and phase
     const phase = flag('--phase');
     const projectCheck = validators.requireProjectRoot();
     validateArgs([
       projectCheck,
-      ['list', 'payload', 'sync', 'check'].includes(sub) ? { valid: true } : { valid: false, error: 'Unknown or missing todo subcommand', hint: 'Usage: vp-tools todo <list|payload|sync|check> --phase N' },
+      ['list', 'payload', 'sync', 'check'].includes(sub) ? { valid: true } : { valid: false, error: 'Unknown or missing todo subcommand', hint: 'Usage: vp-tools todo <enable|list|payload|sync|check> ...' },
       phase && /^\d+$/.test(phase) ? { valid: true } : { valid: false, error: '--phase <N> is required', hint: 'Usage: vp-tools todo <list|payload|sync|check> --phase N' },
     ]);
     const root = projectCheck.value;
