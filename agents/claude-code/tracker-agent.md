@@ -46,13 +46,19 @@ Steps:
 Todo-mirror resolver (ENH-118) — define once before running any `todo` command:
 
 ```bash
-# Resolve vp-tools: repo copy when developing ViePilot itself, else the installed copy
+# Resolve vp-tools (ENH-118): repo copy when developing ViePilot, else first installed copy found
+VP_TOOLS=""
 if [ -f bin/vp-tools.cjs ] && grep -q '"name": "viepilot"' package.json 2>/dev/null; then
   VP_TOOLS="bin/vp-tools.cjs"
 else
-  VP_TOOLS="$HOME/.claude/viepilot/bin/vp-tools.cjs"
+  for d in "$HOME/.claude/viepilot" "$HOME/.cursor/viepilot" "$HOME/.codex/viepilot" \
+           "$HOME/.config/gh-copilot/viepilot" "$HOME/.gemini/antigravity/viepilot"; do
+    [ -f "$d/bin/vp-tools.cjs" ] && VP_TOOLS="$d/bin/vp-tools.cjs" && break
+  done
 fi
+[ -n "$VP_TOOLS" ] || { echo "⛔ vp-tools not found — reinstall ViePilot (npx viepilot install)"; exit 1; }
 ```
+When the current adapter is known (ADAPTER_CONTEXT), the orchestrator SHOULD put that adapter's install dir first in the loop.
 Use `node "$VP_TOOLS" todo ...` for every ENH-118 command below (and in every later ENH-118 gate).
 
 ## Operation Details
