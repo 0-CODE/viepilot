@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.14.0] - 2026-11-07
+### Added
+- Native todo mirror (ENH-118): /vp-evolve and /vp-auto MUST mirror phase tasks into the host's native todo tool — Claude Code TaskCreate/TaskUpdate/TaskList (legacy TodoWrite), Antigravity write_todos, Codex update_plan; Cursor/Copilot use the fallback until their tool names are verified.
+- lib/todo-mirror.cjs + `vp-tools todo list|payload|sync|check --phase N` — payloads per host, `## Todo` fallback checklist in PHASE-STATE.md, drift detection with exit codes.
+- `vp-tools todo enable --adapter claude-code` — consent-gated write of CLAUDE_CODE_ENABLE_TODO_TOOLS=1 to settings env (--dry-run, --yes, idempotent); prints enable hints for Codex and Copilot.
+- ADAPTER_CONTEXT `todo` capability for all 5 adapters with verified flags and sources; getTodoCapability().
+
+### Changed
+- Mandatory gates: no task dispatch before the todo list exists; `todo check` at task PASS and `--phase-complete` at phase end; rebuild after resume/compaction; tracker-agent runs `todo sync` on every state change.
+- Adapter-agnostic VP_TOOLS resolver in ENH-118 gates (repo copy when developing ViePilot, else first installed copy across all adapters).
+
+### Tests
+- tests/unit/phase168-enh118-native-todo-mirror.test.js (28 tests).
+
+---
+
 ## [3.13.0] - 2026-11-07
 ### Added
 - vp-proposal Voice Profile (ENH-117a): 4 voice levels (Humble, Balanced, Proud, Founder story) asked every run via AskUserQuestion; `--voice <1-4>` skips. Every claim of pride must carry evidence.
