@@ -4098,7 +4098,7 @@ making newly-added skills (e.g. `vp-qa`) visible in the output instead of silent
 every run) and Story Brief (real material, no fabrication); every slide ships with full spoken notes
 in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with timing and Q&A.
 **Estimated Tasks**: 4
-**Status**: in_progress
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.13.0
 **Dependencies**: Phase 151 ✅ (branch `from-3.12.2`)
 **Directory**: `.viepilot/phases/165-enh117a-proposal-human-voice-script/`
@@ -4111,9 +4111,9 @@ in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with
 | 165.4 | SKILL flags --voice/--duration + tests + CHANGELOG [3.13.0] | ≥8 resilient tests; full suite green | S | after 165.2-3 |
 
 **Verification**:
-- [ ] `npx jest tests/unit/phase165-enh117a-human-voice.test.js --no-coverage` → pass
-- [ ] `npm test` → full suite green
-- [ ] version = 3.13.0
+- [x] `npx jest tests/unit/phase165-enh117a-human-voice.test.js --no-coverage` → pass
+- [x] `npm test` → full suite green
+- [x] version = 3.13.0
 
 ## Phase 166 — ENH-117b: Mandatory slide animation (v3.14.0)
 
