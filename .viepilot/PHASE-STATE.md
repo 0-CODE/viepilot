@@ -1,22 +1,24 @@
-# PHASE-STATE — Phase 151
+# PHASE-STATE — Phase 168
 
 ## Phase
-151 — BUG-032: install version-mismatch warning + skill log clarity (v3.12.2)
+168 — ENH-118: Native todo mirror, mandatory (v3.14.0)
 
 ## Status
-done ✅
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 151.1 | done ✅ | lib/viepilot-install.cjs — new: log prefix (2 lines) |
-| 151.2 | done ✅ | bin/viepilot.cjs — version-mismatch warning block |
-| 151.3 | done ✅ | 9 tests pass; version = 3.12.2; CHANGELOG updated |
+| 168.1 | in_progress | adapter `todo` capability ×5 + verify Cursor/Codex/Copilot names |
+| 168.2 | pending | lib/todo-mirror.cjs + vp-tools todo list/payload/sync/check |
+| 168.3 | pending | mandatory gates in evolve/autonomous/resume-work + tracker-agent sync |
+| 168.4 | pending | vp-tools todo enable consent-gated settings env |
+| 168.5 | pending | tests + CHANGELOG [3.14.0] |
 
-## Completed
-2026-05-30
+## Current
+None yet
 
 ## Git
-- Commit: 9119d77
-- Tag: vp-p151-complete
-- Pushed: yes
+- Commit: pending
+- Tag: pending
+- Pushed: no

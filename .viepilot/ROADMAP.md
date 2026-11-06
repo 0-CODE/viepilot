@@ -4169,7 +4169,7 @@ once verified), with a `## Todo` checklist in PHASE-STATE as fallback. Gates: no
 dispatch; `vp-tools todo check` drift → no task/phase completion. PHASE-STATE stays source of truth;
 rebuild after resume/compaction.
 **Estimated Tasks**: 5
-**Status**: planned
+**Status**: in_progress
 **Version Target**: 3.14.0
 **Execution order**: **168 → 166 → 167** (168 runs first so 166/167 use the new gate)
 **Dependencies**: Phase 165 ✅
