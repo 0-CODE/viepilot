@@ -1,7 +1,7 @@
 ---
 name: vp-proposal
 description: "Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs"
-version: 0.2.0
+version: 0.3.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-PROPOSAL  v0.2.0 (fw 3.13.0)
+ VIEPILOT ► VP-PROPOSAL  v0.3.0 (fw 3.16.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -137,12 +137,18 @@ Generate a professional proposal package from a brainstorm session or direct bri
 - `{slug}-{date}-script.md` — full spoken script (chosen duration, with expected Q&A)
 - `{slug}-{date}-script-5min.md` / `{slug}-{date}-script-30min.md` — alternate-length scripts
 - `{slug}-{date}-script.docx` — script as a Word document
+- `{slug}-{date}-review.md` — persona review report (scoreboard, rounds, decisions)
 
 **Human voice (ENH-117a):**
 - **Voice Profile** — asked every run (4 levels: Humble, Balanced, Proud, Founder story; `--voice` skips the prompt). Every claim of pride needs evidence.
 - **Story Brief** — skippable questions collecting real material (origin, customer story, number, repeat line) so the deck does not sound templated.
 - **Spoken notes** — every slide carries full spoken words (short sentences, digits for numbers), validated for cliches, spelled-out numbers and essay-length lines.
 - **Script** — per-slide timing planned for 5 / 15 / 30 minutes (`--duration`).
+
+**Persona Review Council (ENH-117c):**
+- 20 reviewer personas score the package against a rubric; each reviews independently (parallel subagents in Claude Code, sequential in-thread on text-only adapters).
+- Persona 20 (Humanity editor) is locked and always runs. If the gate fails, only the Improve slides are rewritten (max 2 rounds), then a review report is written.
+- `--review off|quick|full` selects the council size.
 
 **Proposal types:**
 | Type | Slides | Use case |
@@ -183,6 +189,8 @@ Optional flags:
                     If omitted: Voice Profile prompt (AskUserQuestion) is shown every run.
 - `--duration <5|15|30>` : Target talk length in minutes for the primary script (`-script.md`).
                            The 5 and 30 minute variants are also written.
+- `--review <off|quick|full>` : Persona Review Council size (default `quick`). `off` skips the
+                                 council but still runs persona 20 (Humanity editor) only.
 - `--dry-run` : Show slide manifest (JSON) without writing any files
 </context>
 
@@ -204,6 +212,9 @@ Execute workflow from `workflows/proposal.md`
 - Voice Profile (4 levels; skipped with `--voice`)
 - Story Brief (all questions skippable)
 - Quality Brief
+- Persona Review Council: persona confirmation (accept / add / remove; optional)
+- Persona Review Council: after round 2 still failing (Accept current version / Run one more round / I'll give feedback directly / Provide more real material)
+- Persona Review Council: final humanity check on the lowest-H1 slide (Sounds like me / Needs more pride / Needs more humility / I'll edit directly)
 
 ### Step 2: Proposal Type Selection
 - If `--type` provided: validate; show type + slide count to confirm
@@ -268,6 +279,7 @@ Execute workflow from `workflows/proposal.md`
    docs/proposals/{slug}-{date}.md
    docs/proposals/{slug}-{date}.pptx
    docs/proposals/{slug}-{date}.docx
+   docs/proposals/{slug}-{date}-review.md
    [docs/proposals/{slug}-{date}-slides.txt]  ← if --slides
 
  Next:

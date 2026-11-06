@@ -896,9 +896,65 @@ Write to `docs/proposals/{slug}-{date}.md`
 </step>
 
 <step name="persona_review_council">
-## Step 8b: Persona Review Council — filled by Phase 167
+## Step 8b: Persona Review Council
 
-> **PLACEHOLDER — filled by Phase 167.** Reserved for the persona review council pass over the generated package. No behaviour yet; continue to Step 9.
+Always-on final quality step. A council of 20 reviewer personas (library: `templates/proposal/review-personas.md`, logic: `lib/proposal-review.cjs`) scores the generated package against the rubric. Persona 20 ("Humanity editor") is locked and always runs.
+
+### Flag: `--review off|quick|full`
+- `quick` (default): the persona set from `selectPersonas({type, audience, decisionMaker, mode:'quick'})`.
+- `full`: the full council (`mode:'full'`).
+- `off`: skip the council but STILL run persona 20 only (`mode:'off'`). The humanity check is never skipped.
+
+### 1. Select personas
+```js
+const pr = require('../lib/proposal-review.cjs');
+const ids = pr.selectPersonas({ type, audience, decisionMaker, mode, add, remove });
+```
+Optional AskUserQuestion (skipped with `--review off`): show the selected personas and offer accept / add / remove. Persona 20 is locked and cannot be removed. Claude Code preloads AskUserQuestion via ToolSearch `select:AskUserQuestion` (ENH-059); other adapters use a numbered text fallback.
+
+### 2. Run reviews (independent, parallel)
+Fill `templates/proposal/persona-review-prompt.md` per persona (`{persona_card}`, `{rubric}`, `{voice_level}`, `{manifest_json}`, `{script_md}`, `{lang}`).
+- **Claude Code:** spawn one `Agent` (general-purpose) per persona, all in parallel in one message. Each agent receives ONLY its own persona card + rubric + manifest + script. NEVER pass any other persona's output (independence).
+- **Text-only adapters (no subagents):** run the personas sequentially in-thread, and tell the user that reviews ran sequentially in a single thread, so independence is weaker. Reset context per persona: do not reference earlier reviews.
+
+### 3. Parse and gate
+```js
+const reviews = raw.map(r => pr.parseReview(r).review);   // pass .review onward; log dropped items
+const gate = pr.evaluateGate(reviews);                    // {pass, perCriterion, blockers, failing}
+```
+Gate pass: write the report (step 7) and continue.
+
+### 4. Fail: synthesize and rewrite (max 2 rounds)
+```js
+const fb = pr.synthesizeFeedback(reviews, { primaryPersonaIds });  // {keep, improve, reject}
+```
+- Rewrite ONLY the slides / notes / script lines listed under Improve. Keep slides stay verbatim. Reject items are not applied.
+- **Conflict rule:** when the same slide + criterion appears in both Keep and Improve, and the Improve comes from persona 20 on H1/H2, the humanity veto wins: rewrite that slide and record the Keep as "overridden by humanity veto" in the report.
+- After a rewrite, re-run Step 6 (notes), Step 6b (animation) and Step 4b (script) for the changed slides only, then re-review (back to step 2).
+- Maximum **2 rounds** of rewrite + re-review.
+
+### 5. Still failing after round 2
+AskUserQuestion with the scoreboard (`perCriterion`) and the top issues. Options:
+- Accept current version
+- Run one more round
+- I'll give feedback directly
+- Provide more real material (go back to Step 3d Story Brief, then regenerate)
+
+### 6. Final humanity check (always)
+AskUserQuestion on the slide with the lowest H1 score: "Read slide {X} aloud. Does it sound like you?" Options:
+- Sounds like me
+- Needs more pride
+- Needs more humility
+- I'll edit directly
+
+A "more pride / more humility" answer rewrites that slide's notes and script lines with the adjusted voice level (evidence rules from Step 3c still apply).
+
+### 7. Write review report
+```js
+const md = pr.buildReviewReport({ rounds, decisions, gate });
+// -> docs/proposals/{slug}-{date}-review.md
+```
+List the file in the Step 10 banner.
 
 ---
 
@@ -947,6 +1003,7 @@ Prerequisites (shown if auth fails):
    docs/proposals/{slug}-{date}-script-5min.md
    docs/proposals/{slug}-{date}-script-30min.md
    docs/proposals/{slug}-{date}-script.docx
+   docs/proposals/{slug}-{date}-review.md        (persona review report)
    [docs/proposals/{slug}-{date}-slides.txt]
 
  Next:

@@ -100,7 +100,7 @@ describe('ENH-117a human voice + script', () => {
     expect(w).toContain('Story Brief');
     expect(w).toContain('addNotes');
     expect(w).toMatch(/Step 6b: Animation \(MANDATORY\)/);
-    expect(w).toMatch(/filled by Phase 167/);
+    expect(w).toMatch(/Step 8b: Persona Review Council/);
   });
 
   test('SKILL.md documents --voice and --duration', () => {
