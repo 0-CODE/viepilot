@@ -4,12 +4,12 @@
 167 — ENH-117c: Persona Review Council (v3.16.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 167.1 | pending | 20 persona cards + selection + rubric gate |
+| 167.1 | in_progress | 20 persona cards + selection + rubric gate |
 | 167.2 | pending | subagent prompt + synthesis + review report |
 | 167.3 | pending | workflow review loop + AUQ + flags |
 | 167.4 | pending | tests + CHANGELOG 3.16.0 + ENH-117 done |
@@ -22,3 +22,9 @@ planned
 
 ## Source
 .viepilot/requests/ENH-117.md
+
+## Todo
+- [~] [vp] 167.1 — 20 persona library + selection + rubric gate
+- [ ] [vp] 167.2 — Persona subagent prompt + feedback synthesis + review report
+- [ ] [vp] 167.3 — Review loop in workflow + AUQ touchpoints + flags
+- [ ] [vp] 167.4 — Tests + CHANGELOG 3.16.0 + close ENH-117

@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **168** ✅ (ENH-118 → v3.14.0) · **Next Phase**: **166** (ENH-117b mandatory animation → 3.15.0) → 167 (→ 3.16.0) · **Current Task**: 166.3 in_progress
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **166** ✅ (ENH-117b → v3.15.0) · **Next Phase**: **167** (ENH-117c persona review council → 3.16.0) · **Current Task**: 167.1 in_progress
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -64,6 +64,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
+| 2026-11-07 | Phase 166 complete: ENH-117b mandatory slide animation → v3.15.0 (2402 + 1 skip); first phase under ENH-118 todo gate | Close phase 166 | 166 |
 | 2026-11-07 | Phase 168 complete: ENH-118 native todo mirror → v3.14.0 (2392/2392). Tech debt: 9 pre-existing `node bin/vp-tools.cjs` calls in autonomous.md fail outside the ViePilot repo | Close phase 168 | 168 |
 | 2026-11-07 | Phase 168 planned for ENH-118 (5 tasks → 3.14.0), executed before 166/167 so they run under the todo gate; 166 → 3.15.0, 167 → 3.16.0. Reuse `hooks install` settings writer for consent-gated `vp-tools todo enable` | `/vp-evolve` | 168 |
 | 2026-11-07 | Phase 165 complete: ENH-117a vp-proposal Human Voice + spoken script → v3.13.0 (2364/2364). Pinned version-literal tests (phases 143–151) converted to >= via tests/helpers/semver-gte.js | Close phase 165 | 165 |

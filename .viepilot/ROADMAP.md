@@ -4121,7 +4121,7 @@ in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with
 cues. pptxgenjs 3.12 has no animation API → `lib/pptx-animate.cjs` injects `<p:transition>` /
 `<p:timing>` via jszip post-processing. Missing animation stops generation (no silent skip).
 **Estimated Tasks**: 3
-**Status**: in_progress
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.15.0
 **Dependencies**: Phase 165 ✅, Phase 168 (executed first)
 **Directory**: `.viepilot/phases/166-enh117b-proposal-mandatory-animation/`
@@ -4144,7 +4144,7 @@ runs. Independent parallel subagents score a strict rubric (H1–H2, C1–C8 + b
 evidence; orchestrator decides Keep/Improve/Reject with reasons, rewrites only Improve slides, ≤2
 rounds, then AskUserQuestion with the scoreboard; final "does this sound like you" check.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: in_progress
 **Version Target**: 3.16.0
 **Dependencies**: Phase 165 ✅, Phase 166, Phase 168
 **Directory**: `.viepilot/phases/167-enh117c-proposal-persona-review-council/`
