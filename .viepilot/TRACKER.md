@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **166** ✅ (ENH-117b → v3.15.0) · **Next Phase**: **167** (ENH-117c persona review council → 3.16.0) · **Current Task**: 167.1 in_progress
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **166** ✅ (ENH-117b → v3.15.0) · **Next Phase**: **167** (ENH-117c persona review council → 3.16.0) · **Current Task**: 167.2 in_progress
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
