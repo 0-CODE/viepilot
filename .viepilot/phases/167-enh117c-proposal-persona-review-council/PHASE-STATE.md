@@ -11,8 +11,8 @@ in_progress
 |------|--------|-------|
 | 167.1 | done ✅ | 20 bilingual persona cards + mapping/keywords + RUBRIC/BLOCKERS + selectPersonas/evaluateGate — 6aa7c93, 8b03328 |
 | 167.2 | done ✅ | persona-review-prompt.md + parseReview/synthesizeFeedback (weights, P20 veto, reasons)/buildReviewReport — decdd8a |
-| 167.3 | in_progress | workflow review loop + AUQ + flags |
-| 167.4 | pending | tests + CHANGELOG 3.16.0 + ENH-117 done |
+| 167.3 | done ✅ | Step 8b Persona Review Council (parallel independent subagents, ≤2 rounds, rewrite-only-Improve, humanity veto conflict rule, AUQ touchpoints) + --review flag, SKILL 0.3.0 — 4feae11 |
+| 167.4 | in_progress | tests + CHANGELOG 3.16.0 + ENH-117 done |
 
 ## Dependencies
 - Phase 165 ✅, Phase 166, Phase 168
@@ -26,5 +26,5 @@ in_progress
 ## Todo
 - [x] [vp] 167.1 — 20 persona library + selection + rubric gate
 - [x] [vp] 167.2 — Persona subagent prompt + feedback synthesis + review report
-- [~] [vp] 167.3 — Review loop in workflow + AUQ touchpoints + flags
-- [ ] [vp] 167.4 — Tests + CHANGELOG 3.16.0 + close ENH-117
+- [x] [vp] 167.3 — Review loop in workflow + AUQ touchpoints + flags
+- [~] [vp] 167.4 — Tests + CHANGELOG 3.16.0 + close ENH-117
