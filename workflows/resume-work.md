@@ -97,7 +97,17 @@ Read `context_required` section from task file.
 Load referenced files.
 
 ### Rebuild Native Todo List (ENH-118 — MANDATORY)
-Native todo items do not persist across sessions. You MUST rebuild the native list from `PHASE-STATE.md` before continuing work: resolve `getTodoCapability(ADAPTER_ID)`, create items from `node bin/vp-tools.cjs todo payload --phase N --adapter <id>` (Claude Code: `ToolSearch select:TaskCreate,TaskUpdate,TaskList`, else `select:TodoWrite`; other adapters only when `verified: true`), then run `node bin/vp-tools.cjs todo sync --phase N` and `node bin/vp-tools.cjs todo check --phase N`. You MUST NOT resume task execution without this.
+```bash
+# Resolve vp-tools: repo copy when developing ViePilot itself, else the installed copy
+if [ -f bin/vp-tools.cjs ] && grep -q '"name": "viepilot"' package.json 2>/dev/null; then
+  VP_TOOLS="bin/vp-tools.cjs"
+else
+  VP_TOOLS="$HOME/.claude/viepilot/bin/vp-tools.cjs"
+fi
+```
+Use `node "$VP_TOOLS" todo ...` for every ENH-118 command below (and in every later ENH-118 gate).
+
+Native todo items do not persist across sessions. You MUST rebuild the native list from `PHASE-STATE.md` before continuing work: resolve `getTodoCapability(ADAPTER_ID)`, create items from `node "$VP_TOOLS" todo payload --phase N --adapter <id>` (Claude Code: `ToolSearch select:TaskCreate,TaskUpdate,TaskList`, else `select:TodoWrite`; other adapters only when `verified: true`), then run `node "$VP_TOOLS" todo sync --phase N` and `node "$VP_TOOLS" todo check --phase N`. You MUST NOT resume task execution without this.
 </step>
 
 <step name="display_summary">

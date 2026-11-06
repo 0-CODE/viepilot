@@ -40,8 +40,20 @@ Steps:
 1. Read the target file (TRACKER.md or PHASE-STATE.md based on operation)
 2. Locate the exact row/field to change — **targeted edit only**, never rewrite the whole file
 3. Apply the change
-4. Todo mirror (ENH-118 — MANDATORY): after every `task-start`, `task-complete` and `phase-complete` edit (`update-task-status` / `update-phase-status`), you MUST run `node bin/vp-tools.cjs todo sync --phase N` and include the resulting `## Todo` changes in the same commit. Then run `node bin/vp-tools.cjs todo check --phase N` (add `--phase-complete` on phase-complete) and report its result.
+4. Todo mirror (ENH-118 — MANDATORY): after every `task-start`, `task-complete` and `phase-complete` edit (`update-task-status` / `update-phase-status`), you MUST run `node "$VP_TOOLS" todo sync --phase N` and include the resulting `## Todo` changes in the same commit. Then run `node "$VP_TOOLS" todo check --phase N` (add `--phase-complete` on phase-complete) and report its result.
 5. Confirm: list fields changed and new values
+
+Todo-mirror resolver (ENH-118) — define once before running any `todo` command:
+
+```bash
+# Resolve vp-tools: repo copy when developing ViePilot itself, else the installed copy
+if [ -f bin/vp-tools.cjs ] && grep -q '"name": "viepilot"' package.json 2>/dev/null; then
+  VP_TOOLS="bin/vp-tools.cjs"
+else
+  VP_TOOLS="$HOME/.claude/viepilot/bin/vp-tools.cjs"
+fi
+```
+Use `node "$VP_TOOLS" todo ...` for every ENH-118 command below (and in every later ENH-118 gate).
 
 ## Operation Details
 

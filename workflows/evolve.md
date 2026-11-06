@@ -207,11 +207,21 @@ Create:
 
 You MUST mirror the phase tasks into the host's native todo list AND the `## Todo` checklist. This step is a hard gate, not a suggestion. You MUST NOT skip it, defer it, or substitute a prose summary.
 
+```bash
+# Resolve vp-tools: repo copy when developing ViePilot itself, else the installed copy
+if [ -f bin/vp-tools.cjs ] && grep -q '"name": "viepilot"' package.json 2>/dev/null; then
+  VP_TOOLS="bin/vp-tools.cjs"
+else
+  VP_TOOLS="$HOME/.claude/viepilot/bin/vp-tools.cjs"
+fi
+```
+Use `node "$VP_TOOLS" todo ...` for every ENH-118 command below (and in every later ENH-118 gate).
+
 1. Resolve `getTodoCapability(ADAPTER_ID)` (lib/adapter-context.cjs).
 2. Claude Code: run `ToolSearch select:TaskCreate,TaskUpdate,TaskList`; if unavailable, `select:TodoWrite`; else use the fallback and print `enable_hint` once. Other adapters: use `todo.tools` ONLY when `verified: true`; otherwise use the fallback.
-3. Native: create the items from `node "$HOME/.claude/viepilot/bin/vp-tools.cjs" todo payload --phase N --adapter <id>` and record the returned task ids in-session. Fallback: `node "$HOME/.claude/viepilot/bin/vp-tools.cjs" todo sync --phase N`.
-4. You MUST always also run `node "$HOME/.claude/viepilot/bin/vp-tools.cjs" todo sync --phase N` (the checklist is the durable mirror used by gates).
-5. Verify with `node "$HOME/.claude/viepilot/bin/vp-tools.cjs" todo check --phase N` (exit 0 required).
+3. Native: create the items from `node "$VP_TOOLS" todo payload --phase N --adapter <id>` and record the returned task ids in-session. Fallback: `node "$VP_TOOLS" todo sync --phase N`.
+4. You MUST always also run `node "$VP_TOOLS" todo sync --phase N` (the checklist is the durable mirror used by gates).
+5. Verify with `node "$VP_TOOLS" todo check --phase N` (exit 0 required).
 
 After the phase and task files are created, you MUST run this block for EACH new phase. If it was not run, evolve is NOT complete.
 </step>
