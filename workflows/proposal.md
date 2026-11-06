@@ -1,7 +1,7 @@
 # Workflow: vp-proposal — Proposal Package Generation
 
 **Skill:** `/vp-proposal`  
-**Version:** 0.1.0  
+**Version:** 0.2.0  
 **Output:** `docs/proposals/{slug}-{date}.pptx` + `.docx` + `.md` (+ optional `-slides.txt`)
 
 <purpose>
@@ -24,13 +24,17 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 ## Step 1: Initialize
 
 ```bash
-Read lib/proposal-generator.cjs  → PROPOSAL_TYPES, resolveTemplate, detectBrainstormSession, buildLangInstruction
+Read lib/proposal-generator.cjs  → PROPOSAL_TYPES, resolveTemplate, detectBrainstormSession, buildLangInstruction,
+                                    VOICE_LEVELS, buildVoiceInstruction, AI_CLICHE_BLACKLIST, detectCliches, loadPromptContract
 Read lib/viepilot-config.cjs      → getProposalLang, recordProposalLang
 Read package.json                 → verify pptxgenjs + docx dependencies present
 ```
 
 Read `~/.viepilot/config.json` → `proposal.recentLangs` via `getProposalLang()`.
 If `--lang` flag provided: validate ISO 639-1 code; set `lang = flag value`.
+If `--voice <1-4>` flag provided: validate against `VOICE_LEVELS`; set `voice.level = flag value` (skips the Voice Profile prompt).
+
+> **AUQ preload — Claude Code adapter (ENH-059):** Before the first interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred schema. Skip only if `ToolSearch` errors → use the numbered-text fallback for the session. Other adapters always use numbered text.
 
 Display startup banner:
 ```
@@ -130,8 +134,72 @@ Output: `lang` (ISO 639-1 string), `langContentOnly` (boolean from `--lang-conte
 
 </step>
 
+<step name="voice_profile">
+## Step 3c: Voice Profile
+
+Asked **every run** (ENH-117 user decision) — never silently reuse a previous choice.
+
+If `--voice <1-4>` provided: skip the prompt; resolve the level from `VOICE_LEVELS`.
+
+**Claude Code (terminal):** call `AskUserQuestion` (preloaded via `ToolSearch select:AskUserQuestion`, ENH-059) with one question and the options below, built from `VOICE_LEVELS`.
+
+**Other adapters / AUQ unavailable — numbered-text fallback:**
+```
+Voice for this proposal? (how proudly the maker speaks)
+
+  1. Humble          — "we" voice, pride shown through customer results
+  2. Balanced        — confident, evidence-led, default
+  3. Proud           — owns the achievement, every claim backed by proof
+  4. Founder story   — first-person maker narrative, story-driven
+
+  (Show each label in the proposal language: use `label_vi` / `label_en` from `VOICE_LEVELS`.)
+```
+
+Store in manifest:
+```json
+{ "voice": { "level": 2, "id": "balanced" } }
+```
+
+Output: `voice` object; later passed to `buildVoiceInstruction(voice.level, lang)`.
+
+---
+
+</step>
+
+<step name="story_brief">
+## Step 3d: Story Brief
+
+Collect real material so the proposal sounds like a person, not a template. Ask via `AskUserQuestion` (Claude Code) or numbered text. **Every question is skippable** (Enter / "skip").
+
+```
+Story Brief — answer what you can, skip the rest:
+
+1. Why did you build this? (the origin, in your own words)
+2. Hardest moment — what nearly stopped you?
+3. Proudest moment — what are you most proud of?
+4. One real customer / user story (who, what changed)
+5. The one number to remember (e.g. "96%", "3x faster")
+6. The one sentence you want the audience to repeat
+```
+
+Store in manifest:
+```json
+{
+  "story": {
+    "why": "", "hardest": "", "proudest": "",
+    "customerStory": "", "number": "", "repeatLine": ""
+  }
+}
+```
+
+**No-fabrication rule:** an empty answer stays empty. The AI MUST NOT invent anecdotes, customers, or numbers to fill the gap. Where a slide would need that material, write the "needs real material" marker defined in the prompt contract (Vietnamese form for `vi` runs, `[needs real material]` otherwise) and let the user supply the truth.
+
+---
+
+</step>
+
 <step name="quality_brief">
-## Step 2C: Quality Brief
+## Step 3e: Quality Brief
 
 Ask these 4 questions regardless of whether a session was loaded:
 
@@ -163,7 +231,7 @@ Store answers in manifest `meta` object:
 }
 ```
 
-These drive sharper content in Step 4 (manifest_generation): tone, word choice, CTA on closing slide.
+These drive sharper content in Step 4 (manifest_generation): tone, word choice, CTA on closing slide. `meta.decisionMaker` also feeds the TONE line together with the Voice Profile.
 
 ---
 
@@ -193,6 +261,11 @@ Generate a structured JSON manifest from the loaded context.
     "timeline": "present end of month",
     "decisionMaker": "non-technical CEO"
   },
+  "voice": { "level": 2, "id": "balanced" },
+  "story": {
+    "why": "", "hardest": "", "proudest": "",
+    "customerStory": "", "number": "", "repeatLine": ""
+  },
   "designConfig": {
     "colorPalette": "navy-electric",
     "layoutStyle": "modern-tech",
@@ -204,43 +277,66 @@ Generate a structured JSON manifest from the loaded context.
       "layout": "cover",
       "heading": "Title",
       "body": "Subtitle / prepared by / date",
-      "speakerNotes": "Opening remarks"
+      "speakerNotes": "Full spoken words, spoken style.\nShort sentences.\nBreak at breath points.",
+      "durationSec": 20
     },
     {
       "index": 2,
       "layout": "section",
       "heading": "Section Title",
       "bullets": ["Point 1", "Point 2", "Point 3"],
-      "speakerNotes": "Talking points for this slide"
+      "speakerNotes": "Full spoken words for this slide.\n96% of users finished in one session.",
+      "durationSec": 45
     }
   ]
 }
 ```
 
+`speakerNotes` = the **full spoken words** in spoken style — short sentences, a line break at each breath point, numbers kept as digits (`96%`), never spelled out. `durationSec` = estimated speaking time for the slide. (Full rules and estimation are finalised in Step 4b.) This replaces the earlier "3–5 sentences" talking-point format.
+
 ## AI Prompt Contract
 
-Inject this system context before asking AI to generate the manifest:
+Assemble the prompt from these parts, in order:
+
+```js
+const contract = loadPromptContract();                      // templates/proposal/prompt-contract.md
+const voiceInstruction = buildVoiceInstruction(voice.level, lang);
+const langInstruction = buildLangInstruction(lang, langContentOnly);
+// prompt = header + contract + voiceInstruction + langInstruction + story material
+```
 
 ```
-You are generating a professional proposal slide manifest.
+You are generating a proposal slide manifest that reads like a person wrote it.
 
 AUDIENCE: {meta.decisionMaker || "business decision-maker"}
 CTA: {meta.cta || "approve the proposal"}
 BUDGET CONTEXT: {meta.budget || "not specified"}
 TIMELINE: {meta.timeline || "not specified"}
-TONE: {if decisionMaker contains "technical" → "precise and data-driven"; else → "clear and persuasive"}
+TONE: derived from voice level + decision-maker, not binary —
+      {voiceInstruction} Adjust register for the audience: a technical decision-maker
+      gets precise, data-grounded phrasing; a non-technical one gets plain language and
+      outcomes first.
 {langInstruction}
 
+{contract}   // voice, rhythm, narrative arc, real material, numbers, banned cliches
+
+STORY MATERIAL (use only what is provided):
+  why: {story.why}  hardest: {story.hardest}  proudest: {story.proudest}
+  customer story: {story.customerStory}  number: {story.number}  repeat line: {story.repeatLine}
+  Empty field → do NOT invent; write the needs-real-material marker (per contract) where the slide needs it.
+
 CONTENT RULES — apply to every slide:
-- Cover subtitle: one compelling sentence that states the value proposition (NOT just a date)
-- Every bullet point: 8–15 words, outcome-oriented, starts with an action verb
-- Speaker notes: 3–5 sentences — (1) key talking point, (2) supporting evidence or example,
-  (3) anticipated objection + response, (4) transition to next slide
+- Cover subtitle: one sentence that states the value, in the maker's voice (NOT just a date)
+- Bullets are outcome-oriented but never formulaic: vary length and structure; a slide may be one strong sentence
 - Closing slide: concrete CTA matching meta.cta — NOT "Thank you" alone
 - Data/metrics slide: include at least one quantified metric (estimate is fine, label as such)
-- AVOID filler phrases: "In conclusion", "As you can see", "We believe", "It is important to note"
-- AVOID vague bullets: "Improved performance", "Better results", "Enhanced UX"
+- Every claim of pride carries evidence (number, customer, demo)
+- Follow the narrative arc beats listed per slide below
 ```
+
+Rhythm replaces the legacy "8–15 words per bullet" formula: mix short and long lines instead.
+
+**Post-generation check:** run `detectCliches(text)` over all generated slide text and speaker notes; rewrite any hit before continuing. The cliche list lives in `AI_CLICHE_BLACKLIST` / the contract — it is not duplicated here.
 
 **Slide layout types:**
 - `cover` — full-bleed title slide (index 1 always)
@@ -289,55 +385,57 @@ Include "designConfig": { "colorPalette": ..., "layoutStyle": ..., "fontPair": .
 
 **Slide structure by type:**
 
+Each skeleton slide is annotated with its narrative-arc beat (context → conflict → turning point → solution → proof → invitation). The skeleton is the minimum set (ENH-045); extra slides inherit the beat of the slide they split from.
+
 ### project-proposal (10 slides)
-1. Cover — project name, client name, date
-2. Agenda — what we'll cover
-3. Problem / Opportunity
-4. Proposed Solution
-5. Key Features & Deliverables
-6. Technical Approach (high level)
-7. Project Timeline
-8. Team & Expertise
-9. Investment / Budget Estimate
-10. Next Steps & CTA
+1. Cover — project name, client name, date  ← _context_
+2. Agenda — what we'll cover  ← _context_
+3. Problem / Opportunity  ← _conflict_
+4. Proposed Solution  ← _turning point_
+5. Key Features & Deliverables  ← _solution_
+6. Technical Approach (high level)  ← _solution_
+7. Project Timeline  ← _proof_
+8. Team & Expertise  ← _proof_
+9. Investment / Budget Estimate  ← _proof_
+10. Next Steps & CTA  ← _invitation_
 
 ### tech-architecture (12 slides)
-1. Cover
-2. Executive Summary
-3. Problem Statement
-4. Architecture Overview (diagram description)
-5. Component Breakdown
-6. Data Flow
-7. Tech Stack
-8. Security & Compliance
-9. Scalability & Performance
-10. Integration Points
-11. Implementation Roadmap
-12. Next Steps & CTA
+1. Cover  ← _context_
+2. Executive Summary  ← _context_
+3. Problem Statement  ← _conflict_
+4. Architecture Overview (diagram description)  ← _turning point_
+5. Component Breakdown  ← _solution_
+6. Data Flow  ← _solution_
+7. Tech Stack  ← _solution_
+8. Security & Compliance  ← _proof_
+9. Scalability & Performance  ← _proof_
+10. Integration Points  ← _proof_
+11. Implementation Roadmap  ← _proof_
+12. Next Steps & CTA  ← _invitation_
 
 ### product-pitch (12 slides)
-1. Cover
-2. The Problem
-3. Our Solution
-4. Market Opportunity
-5. Product Demo / Screenshots
-6. Business Model
-7. Traction & Validation
-8. Competitive Landscape
-9. Team
-10. Roadmap
-11. Ask / Investment
-12. Thank You & Contact
+1. Cover  ← _context_
+2. The Problem  ← _conflict_
+3. Our Solution  ← _turning point_
+4. Market Opportunity  ← _context_
+5. Product Demo / Screenshots  ← _solution_
+6. Business Model  ← _solution_
+7. Traction & Validation  ← _proof_
+8. Competitive Landscape  ← _proof_
+9. Team  ← _proof_
+10. Roadmap  ← _solution_
+11. Ask / Investment  ← _invitation_
+12. Thank You & Contact  ← _invitation_
 
 ### general (8 slides)
-1. Cover
-2. Overview
-3. Problem / Context
-4. Solution / Proposal
-5. Key Benefits
-6. Approach & Timeline
-7. About Us / Credentials
-8. Next Steps & CTA
+1. Cover  ← _context_
+2. Overview  ← _context_
+3. Problem / Context  ← _conflict_
+4. Solution / Proposal  ← _turning point_
+5. Key Benefits  ← _solution_
+6. Approach & Timeline  ← _solution_
+7. About Us / Credentials  ← _proof_
+8. Next Steps & CTA  ← _invitation_
 
 If `--dry-run`: print manifest as JSON and stop here.
 
@@ -346,7 +444,7 @@ If `--dry-run`: print manifest as JSON and stop here.
 </step>
 
 <step name="generate_docx_content">
-## Step 4b: AI Docx Content Generation (independent pass)
+## Step 4a: AI Docx Content Generation (independent pass)
 
 This is a **separate AI call** from the slide manifest generation.
 - Input: brainstorm session + quality brief meta + proposal type + slide manifest (for context only)
@@ -409,15 +507,31 @@ CONTENT RULES:
 
 Store result as `docxContent` variable for use in Steps 7 and 8.
 
+Apply the same voice rules here: run `buildVoiceInstruction(voice.level, lang)` and the `loadPromptContract()` text in this prompt, and check output with `detectCliches()`.
+
 ---
 
 </step>
 
 
+<step name="spoken_script">
+## Step 4b: Spoken Script & Speaker Notes
+
+> **PLACEHOLDER — filled by task 165.3 (Phase 165).** This step will generate the full spoken script per slide and fill `speakerNotes` / `durationSec`.
+
+Rules already fixed (user decision, ENH-117):
+- Speaker notes are the **full spoken words**, in spoken style
+- Short sentences; a line break at each breath point
+- Numbers stay as digits (`96%`, `3x`) — never spelled out in words
+
+---
+
+</step>
+
 <step name="detect_visual_artifacts">
 ## Step 4c: Detect Visual Artifacts (MANDATORY visual pass when artifacts exist)
 
-This step runs **after Step 4b** and **before template resolution**.
+This step runs **after Step 4b (Script)** and **before template resolution**.
 
 **ENH-044 enforcement rule:** When `detectVisualArtifacts()` returns non-empty results, `visualSlides[]` MUST be populated — silent skip is not allowed. If puppeteer is absent, use `addPlaceholderVisual()` and emit a WARNING.
 
@@ -531,10 +645,19 @@ Progress: `[pptx] Generating {N} slides...`
 
 </step>
 
+<step name="animation_hook">
+## Step 6b: Animation (MANDATORY) — filled by Phase 166
+
+> **PLACEHOLDER — filled by Phase 166.** Reserved for the mandatory slide-animation pass over the generated `.pptx`. No behaviour yet; continue to Step 7.
+
+---
+
+</step>
+
 <step name="generate_docx">
 ## Step 7: Generate .docx
 
-Using `docx` package, consuming **`docxContent`** (from Step 4b) for all narrative paragraphs:
+Using `docx` package, consuming **`docxContent`** (from Step 4a) for all narrative paragraphs:
 
 1. Build `Document` with structured sections
 2. **Cover page**: title (H1, large), subtitle, prepared-for, date
@@ -718,6 +841,15 @@ _(repeat for each diagram)_
 - Diagrams section is omitted if `docxContent.diagrams` is empty or unavailable
 
 Write to `docs/proposals/{slug}-{date}.md`
+
+---
+
+</step>
+
+<step name="persona_review_council">
+## Step 8b: Persona Review Council — filled by Phase 167
+
+> **PLACEHOLDER — filled by Phase 167.** Reserved for the persona review council pass over the generated package. No behaviour yet; continue to Step 9.
 
 ---
 
