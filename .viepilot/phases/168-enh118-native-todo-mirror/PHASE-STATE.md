@@ -12,8 +12,8 @@ planned
 | 168.1 | done ✅ | todo capability ×5 (claude/antigravity/codex verified; cursor/copilot not) + getTodoCapability — a908a4f, a979a75 |
 | 168.2 | done ✅ | lib/todo-mirror.cjs + vp-tools todo list/payload/sync/check; no parent-cycle deps — 091e3c2, bc0ec5c |
 | 168.3 | done ✅ | MUST gates in evolve/autonomous/resume-work + tracker-agent sync; adapter-agnostic VP_TOOLS resolver — 5369fba, fc4b7a2, 598dfa6 |
-| 168.4 | in_progress | vp-tools todo enable (consent) |
-| 168.5 | pending | tests + CHANGELOG 3.14.0 |
+| 168.4 | done ✅ | vp-tools todo enable (consent-gated, dry-run, idempotent, preserves keys); install hint only — 81bbb4e |
+| 168.5 | in_progress | tests + CHANGELOG 3.14.0 |
 
 ## Dependencies
 - Phase 165 ✅
@@ -31,5 +31,5 @@ planned
 - [x] [vp] 168.1 — Adapter todo capability (5 adapters, verified flags)
 - [x] [vp] 168.2 — lib/todo-mirror.cjs + `vp-tools todo`
 - [x] [vp] 168.3 — Mandatory gates in workflows, skills and tracker-agent
-- [~] [vp] 168.4 — `vp-tools todo enable` (consent-gated)
-- [ ] [vp] 168.5 — Tests + CHANGELOG 3.14.0
+- [x] [vp] 168.4 — `vp-tools todo enable` (consent-gated)
+- [~] [vp] 168.5 — Tests + CHANGELOG 3.14.0
