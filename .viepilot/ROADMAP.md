@@ -4098,7 +4098,7 @@ making newly-added skills (e.g. `vp-qa`) visible in the output instead of silent
 every run) and Story Brief (real material, no fabrication); every slide ships with full spoken notes
 in spoken style (digits kept: `96%`), plus script files for 5/15/30 minutes with timing and Q&A.
 **Estimated Tasks**: 4
-**Status**: planned
+**Status**: in_progress
 **Version Target**: 3.13.0
 **Dependencies**: Phase 151 ✅ (branch `from-3.12.2`)
 **Directory**: `.viepilot/phases/165-enh117a-proposal-human-voice-script/`

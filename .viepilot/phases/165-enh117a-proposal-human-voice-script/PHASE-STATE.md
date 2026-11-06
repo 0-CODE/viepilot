@@ -4,12 +4,12 @@
 165 — ENH-117a: vp-proposal Human Voice + spoken script (v3.13.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 165.1 | pending | prompt contract + voice/cliché helpers |
+| 165.1 | in_progress | prompt contract + voice/cliché helpers |
 | 165.2 | pending | workflow restructure + Voice Profile + Story Brief |
 | 165.3 | pending | spoken notes + script deliverables 5/15/30 |
 | 165.4 | pending | SKILL flags + tests + CHANGELOG 3.13.0 |
