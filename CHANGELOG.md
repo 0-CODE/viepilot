@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.15.0] - 2026-11-07
+### Added
+- Mandatory slide animation for vp-proposal (ENH-117b): lib/pptx-animate.cjs injects <p:transition> and click-by-click entrance builds into pptxgenjs decks via jszip post-processing (pptxgenjs 3.12 has no animation API). Restrained presets only: fade/push/wipe transitions, fade/appear builds; idempotent.
+- `builds: 'auto'` builds every body text shape except the slide heading (title placeholder or top-most text shape); `headingIndex` override; explicit build arrays.
+- validatePptxAnimations() and countClickCues(); jszip declared as a direct dependency.
+
+### Changed
+- workflows/proposal.md Step 6b Animation (MANDATORY): fail-loud — generation stops if any slide lacks a transition, a content slide has 0 builds, or the [click] cue count in speaker notes differs from the build count. Manifest gains `animation` and per-slide `builds`; confirm banner shows animation totals.
+
+### Tests
+- tests/unit/phase166-enh117b-pptx-animation.test.js (10 tests on real .pptx files + optional LibreOffice check, skipped when soffice is absent).
+
+---
+
 ## [3.14.0] - 2026-11-07
 ### Added
 - Native todo mirror (ENH-118): /vp-evolve and /vp-auto MUST mirror phase tasks into the host's native todo tool — Claude Code TaskCreate/TaskUpdate/TaskList (legacy TodoWrite), Antigravity write_todos, Codex update_plan; Cursor/Copilot use the fallback until their tool names are verified.
