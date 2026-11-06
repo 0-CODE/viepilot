@@ -226,6 +226,45 @@ const commands = {
   },
 
   /**
+   * Native todo mirror (ENH-118)
+   */
+  'todo': (args) => {
+    const todoMirror = require(path.join(__dirname, '../lib/todo-mirror.cjs'));
+    const { getTodoCapability } = require(path.join(__dirname, '../lib/adapter-context.cjs'));
+    const sub = args[0];
+    const flag = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
+    const phase = flag('--phase');
+    const projectCheck = validators.requireProjectRoot();
+    validateArgs([
+      projectCheck,
+      ['list', 'payload', 'sync', 'check'].includes(sub) ? { valid: true } : { valid: false, error: 'Unknown or missing todo subcommand', hint: 'Usage: vp-tools todo <list|payload|sync|check> --phase N' },
+      phase && /^\d+$/.test(phase) ? { valid: true } : { valid: false, error: '--phase <N> is required', hint: 'Usage: vp-tools todo <list|payload|sync|check> --phase N' },
+    ]);
+    const root = projectCheck.value;
+    if (sub === 'check') {
+      const r = todoMirror.checkPhase(root, phase, { phaseComplete: args.includes('--phase-complete') });
+      if (r.ok) { console.log('todo check: OK'); return; }
+      r.issues.forEach((i) => console.log(`${i.code}${i.task ? ' ' + i.task : ''}${i.expected ? ` (expected ${i.expected}, got ${i.actual})` : ''}`));
+      process.exit(1);
+    }
+    const data = todoMirror.readPhase(root, phase);
+    if (!data.dir) { console.error(formatError(`Phase ${phase} not found`)); process.exit(1); }
+    const items = todoMirror.buildTodoItems(data, { steps: !args.includes('--no-steps') });
+    if (sub === 'list') {
+      if (args.includes('--json')) { console.log(JSON.stringify(items, null, 2)); return; }
+      items.forEach((it) => console.log(`[${it.status}] ${it.subject}${it.blockedBy.length ? `  (blockedBy ${it.blockedBy.join(',')})` : ''}`));
+    } else if (sub === 'payload') {
+      const adapter = flag('--adapter') || 'claude-code';
+      const payload = todoMirror.toPayload(items, getTodoCapability(adapter), { legacy: args.includes('--legacy') });
+      if (payload.notice) console.error(payload.notice);
+      console.log(JSON.stringify(payload, null, 2));
+    } else {
+      todoMirror.writeChecklist(path.join(data.dir, 'PHASE-STATE.md'), items);
+      console.log(`todo sync: wrote ## Todo (${items.filter((i) => !i.key.includes('#')).length} tasks)`);
+    }
+  },
+
+  /**
    * Get phase information
    */
   'phase-info': (args) => {
@@ -1758,6 +1797,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}init${colors.reset}                     Get project initialization state
   ${colors.bold}current-timestamp${colors.reset}        Get current timestamp (iso|date|full) [--raw]
   ${colors.bold}phase-info${colors.reset} <N>           Get phase N information
+  ${colors.bold}todo${colors.reset} <list|payload|sync|check> --phase N  Native todo mirror (ENH-118)
   ${colors.bold}task-status${colors.reset} <P> <T> <S>  Update task T in phase P to status S
   ${colors.bold}commit${colors.reset} <msg> [--files]   Create git commit command
   ${colors.bold}progress${colors.reset}                 Calculate overall progress
