@@ -31,3 +31,9 @@ done ✅
 - **Tag**: vp-p165-complete
 - **Pushed**: yes
 - **Full suite**: 2364/2364 green
+
+## Todo
+- [x] [vp] 165.1 — Prompt contract + voice & cliché helpers
+- [x] [vp] 165.2 — Restructure proposal workflow — Voice Profile, Story Brief, new content rules
+- [x] [vp] 165.3 — Spoken speaker notes + script deliverables (5/15/30 min)
+- [x] [vp] 165.4 — Skill flags + contract tests + CHANGELOG 3.13.0
