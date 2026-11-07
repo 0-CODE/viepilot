@@ -14,7 +14,7 @@ in_progress
 | 176.3 | done ✅ | qa/tech-lead/adopt + classifier + findStaleFacts |
 | 176.4 | done ✅ | fixedSec/qaSec + header/Q&A fallback |
 | 176.5 | done ✅ | sense guards + keep + backstage + consistency/placeholders |
-| 176.6 | pending | G7 animation and packaging |
+| 176.6 | in_progress 🔄 | G7 animation/packaging |
 | 176.7 | pending | G8 AskUserQuestion for every question (all vp-* skills + Stop hook) |
 | 176.8 | pending | G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035 |
 
@@ -33,6 +33,6 @@ in_progress
 - [x] [vp] 176.3 — G3 + G4 purpose hints and source classifier
 - [x] [vp] 176.4 — G5 script timing with fixed segments; header and Q&A fallback
 - [x] [vp] 176.5 — G6 curation, backstage, cross-file consistency, placeholder gate
-- [ ] [vp] 176.6 — G7 animation and packaging
+- [~] [vp] 176.6 — G7 animation and packaging
 - [ ] [vp] 176.7 — G8 AskUserQuestion for every question (all vp-* skills + Stop hook)
 - [ ] [vp] 176.8 — G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035
