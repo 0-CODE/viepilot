@@ -113,3 +113,34 @@ describe('ENH-128 178.3 — deck material + workflow', () => {
     expect(fs.readFileSync(path.join(__dirname, '../../skills/vp-proposal/SKILL.md'), 'utf8')).toMatch(/--panel <relay\|teams\|off>/);
   });
 });
+
+describe('ENH-128 178.4 — report panel section', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const report = require('../../lib/proposal-sim-report.cjs');
+  const sim = require('../../lib/proposal-simulation.cjs');
+  const { aggregate } = require('../../lib/proposal-sim-aggregate.cjs');
+  test('report, summary.md and data.json carry the panel', () => {
+    const TL = sim.buildTimeline({ slides: [{ index: 1, heading: 'A', speakerNotes: 'Chào mọi người.' }] }, { lang: 'vi' });
+    const l = sim.parseListener({ personaId: 4, states: [{ seg: 0, attention: 70 }] }, TL).listener;
+    const agg = aggregate({ timeline: TL, listeners: [l], manifest: { slides: [{ index: 1 }] } });
+    const ctx = { roster: [4], sourceIds: ['S1'] };
+    const transcript = panel.buildTranscript([
+      { from: 4, to: 'presenter', round: 1, seq: 1, text: 'Khác gì plan mode?' },
+      { from: 'presenter', to: 4, round: 1, seq: 2, text: 'Chưa có trong tài liệu — mình ghi lại.', noAnswer: true },
+      { from: 4, to: 'all', round: 3, seq: 3, text: 'Vẫn thử.', final: { wouldAct: true, why: 'rủi ro thấp' } },
+    ], ctx);
+    const p = { members: [4], engine: 'relay', transcript, unanswered: panel.unansweredQuestions(transcript), beforeAfter: panel.beforeAfter(agg, transcript) };
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vp178-'));
+    const run = report.writeRun(path.join(dir, 'sim'), { agg, timeline: TL, listeners: [l], hall: { listeners: [4] }, meta: { lang: 'vi', names: { 4: 'Trưởng nhóm kỹ sư' } }, panel: p, assets: { hallScript: '', threeSource: '' } });
+    const html = fs.readFileSync(path.join(run.dir, 'report.html'), 'utf8');
+    expect(html).toMatch(/Panel hỏi đáp/);
+    expect(html).toMatch(/điều phối chuyển tin/);
+    expect(html).toMatch(/Tài liệu chưa có câu trả lời/);
+    expect(html).toMatch(/Trước \/ sau panel/);
+    expect(fs.readFileSync(path.join(run.dir, 'summary.md'), 'utf8')).toMatch(/## Panel hỏi đáp\n\n- 3 messages · 1 unanswered · 1 đổi ý/);
+    expect(JSON.parse(fs.readFileSync(path.join(run.dir, 'data.json'), 'utf8')).panel.members).toEqual([4]);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});
