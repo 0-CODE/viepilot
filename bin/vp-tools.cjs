@@ -1275,6 +1275,53 @@ ${colors.cyan}Examples:${colors.reset}
         process.exit(0);
       }
 
+      // ── Handle --proposal-context flag for ENH-124 proposal session hooks ────────
+      if (args.includes('--proposal-context')) {
+        const dryRun = args.includes('--dry-run');
+        const yes = args.includes('--yes');
+        const hooksInstaller = require(path.join(__dirname, '../lib/hooks-installer.cjs'));
+        const home = os.homedir();
+        const configPath = adapter.hooks.configFile(home);
+        const hookCommand = `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'proposal-context-hook.cjs')}`;
+        let settings = {};
+        if (fs.existsSync(configPath)) {
+          try { settings = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_e) { settings = {}; }
+        }
+        // UserPromptSubmit has no matcher (''); SessionStart matches startup, resume and compaction.
+        let plan = hooksInstaller.planHookInstall({ settings, event: 'UserPromptSubmit', matcher: '', command: hookCommand });
+        const changedA = plan.changed;
+        plan = hooksInstaller.planHookInstall({ settings: plan.settings, event: 'SessionStart', matcher: 'startup|resume|compact', command: hookCommand });
+        const changed = changedA || plan.changed;
+
+        if (!changed) {
+          console.log(formatSuccess('Proposal context hooks already installed.'));
+          console.log(`  Config: ${configPath}`);
+          process.exit(0);
+        }
+        if (dryRun) {
+          console.log(formatInfo('Would register in ' + configPath + ':'));
+          console.log('  UserPromptSubmit → proposal-context-hook.cjs');
+          console.log('  SessionStart (startup|resume|compact) → proposal-context-hook.cjs');
+          console.log(formatInfo('Dry run: nothing written'));
+          process.exit(0);
+        }
+        const isInteractive = process.stdin.isTTY && process.stdout.isTTY;
+        if (!isInteractive && !yes) {
+          console.log(formatInfo('Non-interactive mode. Run with --yes to install:'));
+          console.log(`\n${colors.gray}$${colors.reset} vp-tools hooks install --proposal-context --yes\n`);
+          process.exit(0);
+        }
+        if (isInteractive && !yes) {
+          const confirmed = await confirm('Install vp-proposal context hooks (UserPromptSubmit + SessionStart)?', false);
+          if (!confirmed) { console.log(formatWarning('Aborted.')); process.exit(0); }
+        }
+        hooksInstaller.applyHookInstall({ configPath, plan, dryRun: false });
+        console.log(formatSuccess('Proposal context hooks installed.'));
+        console.log(`  Config:  ${configPath}`);
+        console.log(`  Command: ${hookCommand}`);
+        process.exit(0);
+      }
+
       // ── Original staleness hook installation (no --policy flag) ─────────────────
       const home = os.homedir();
       const configPath = adapter.hooks.configFile(home);
