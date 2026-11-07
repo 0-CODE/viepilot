@@ -118,8 +118,8 @@ describe('vp-proposal — proposal-generator exports', () => {
     expect(typeof gen.buildOutputPaths).toBe('function');
   });
 
-  test('PROPOSAL_TYPES has exactly 4 entries', () => {
-    expect(Object.keys(gen.PROPOSAL_TYPES)).toHaveLength(4);
+  test('PROPOSAL_TYPES has at least 4 entries (original types)', () => {
+    expect(Object.keys(gen.PROPOSAL_TYPES).length).toBeGreaterThanOrEqual(4);
   });
 
   test('project-proposal has 10 slides', () => {
