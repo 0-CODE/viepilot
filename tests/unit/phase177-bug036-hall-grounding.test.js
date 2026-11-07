@@ -23,3 +23,50 @@ describe('BUG-036 177.1 — listener prompt requires seeing the slides', () => {
     expect(wf).toMatch(/quoteQuality: mechanical/);
   });
 });
+
+const sim = require('../../lib/proposal-simulation.cjs');
+const LONG = 'Mình sẽ mở terminal và chạy trực tiếp khoảng 4 phút, trên một repo nhỏ mình đã chuẩn bị sẵn.';
+const TL = sim.buildTimeline({ slides: [
+  { index: 1, heading: 'Cover', speakerNotes: 'Chào mọi người.' },
+  { index: 2, heading: 'Demo', speakerNotes: LONG },
+  { index: 3, heading: 'Ask', speakerNotes: 'Mình đề nghị một đội thử 2 tuần trên một việc thật trong sprint này.' },
+] }, { lang: 'vi' });
+
+describe('BUG-036 177.2 — selective quotes, mechanical flag, visual grounding', () => {
+  test('a whole-segment copy is not a citation; a few words are', () => {
+    const copy = sim.parseListener({ personaId: 1, states: [{ seg: 0, attention: 80 }, { seg: 1, attention: 40, line: LONG }] }, TL);
+    expect(copy.dropped).toBe(1);
+    const sel = sim.parseListener({ personaId: 1, states: [{ seg: 0, attention: 80 }, { seg: 1, attention: 40, line: 'chạy trực tiếp khoảng 4 phút' }] }, TL);
+    expect(sel.dropped).toBe(0);
+    expect(sel.listener.states[1].attention).toBe(40);
+  });
+
+  test('run-3 pattern (whole segment copied into every state) is flagged mechanical', () => {
+    const states = TL.segments.map((s, i) => ({ seg: i, attention: 70, line: s.text }));
+    const r = sim.parseListener({ personaId: 4, states }, TL);
+    expect(r.listener.quoteQuality).toBe('mechanical');
+    expect(r.log.join(' ')).toMatch(/mechanical quoting/);
+  });
+
+  test('short segments (≤ 6 words, e.g. [demo]) may be quoted whole', () => {
+    const r = sim.parseListener({ personaId: 1, states: [{ seg: 0, attention: 90 }], tuneOut: { seg: 0, reason: 'x', line: 'Chào mọi người.' } }, TL);
+    expect(r.listener.tuneOut).not.toBeNull();
+  });
+
+  test('slidesSeen / visualNotes kept within the deck; verified reads win over claims', () => {
+    const data = { personaId: 13, slidesSeen: [1, 2, 3, 9], visualNotes: [{ slide: 2, note: 'terminal screenshot' }, { slide: 9, note: 'x' }], states: [{ seg: 0, attention: 80 }] };
+    const claimed = sim.parseListener(data, TL, { slideCount: 3 }).listener;
+    expect(claimed).toMatchObject({ slidesSeen: [1, 2, 3], visual: 'seen', visualVerified: false });
+    expect(claimed.visualNotes).toEqual([{ slide: 2, note: 'terminal screenshot' }]);
+    const verified = sim.parseListener(data, TL, { slideCount: 3, verifiedSlides: [2] }).listener;
+    expect(verified).toMatchObject({ slidesSeen: [2], slidesClaimed: [1, 2, 3], visual: 'partial', visualVerified: true });
+    expect(sim.parseListener({ personaId: 1, states: [] }, TL, { slideCount: 3 }).listener.visual).toBe('none');
+  });
+
+  test('verifyVisual counts Read calls on the slide images in a transcript', () => {
+    const imgs = ['/p/qa/slide-1.jpg', '/p/qa/slide-2.jpg', '/p/qa/slide-3.jpg'];
+    const read = (fp) => ({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Read', input: { file_path: fp } }] } });
+    const entries = [read('/p/qa/slide-2.jpg'), read('/p/prompt.md'), read('/p/qa/slide-3.jpg'), { type: 'assistant', message: { content: [{ type: 'text', text: 'slide-1.jpg' }] } }];
+    expect(sim.verifyVisual(entries, imgs)).toEqual([2, 3]);
+  });
+});
