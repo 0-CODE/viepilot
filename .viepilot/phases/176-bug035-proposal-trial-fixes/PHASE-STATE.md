@@ -9,7 +9,7 @@ in_progress
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 176.1 | in_progress 🔄 | G1 hall/council audience |
+| 176.1 | done ✅ | isEligible + #32/#33 + role map + profile helpers |
 | 176.2 | pending | G2 session/store consistency |
 | 176.3 | pending | G3 + G4 purpose hints and source classifier |
 | 176.4 | pending | G5 script timing with fixed segments; header and Q&A fallback |
@@ -28,7 +28,7 @@ in_progress
 .viepilot/requests/BUG-035.md
 
 ## Todo
-- [~] [vp] 176.1 — G1 audience selection: hall, council, role map, manifest profile
+- [x] [vp] 176.1 — G1 audience selection: hall, council, role map, manifest profile
 - [ ] [vp] 176.2 — G2 session/store consistency
 - [ ] [vp] 176.3 — G3 + G4 purpose hints and source classifier
 - [ ] [vp] 176.4 — G5 script timing with fixed segments; header and Q&A fallback
