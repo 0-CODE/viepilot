@@ -4215,3 +4215,118 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 169 --phase-complete` → exit 0
 - [x] version = 3.17.0
+
+
+## Phase 170 — ENH-125: Tool-use policy for skills and agents (v3.18.0)
+
+**Goal**: Every ViePilot skill, workflow, agent and dispatch prompt states one adapter-mapped tool policy — Read to read, Grep/Glob to search, Edit to change, Write to create, Task to delegate, TodoWrite (TaskCreate family) to track — and never edits files through sed/python/heredoc. A lint test and an optional PreToolUse hook enforce it.
+**Estimated Tasks**: 5
+**Status**: ⏳ planned
+**Version Target**: 3.18.0
+**Dependencies**: Phase 169 ✅
+**Directory**: `.viepilot/phases/170-enh125-tool-use-policy/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 170.1 | Policy source + classifier | M |
+| 170.2 | Inject policy into skills, workflows, agents, dispatch prompts | L |
+| 170.3 | PreToolUse policy hook (consent-gated) | M |
+| 170.4 | Lint tests for policy presence and forbidden instructions | M |
+| 170.5 | CHANGELOG 3.18.0 + resolve ENH-125 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 170 --phase-complete` → exit 0
+- [ ] version = 3.18.0
+
+## Phase 171 — ENH-124 + ENH-126: Proposal session continuity, AUQ at every gate, versioning and upgrade (v3.19.0)
+
+**Goal**: vp-proposal keeps durable state per proposal, re-enters the workflow on follow-up messages and after compaction, asks via AskUserQuestion at every input and output gate, never overwrites earlier output, and can upgrade an older proposal by running only the gates added since it was made.
+**Estimated Tasks**: 6
+**Status**: ⏳ planned
+**Version Target**: 3.19.0
+**Dependencies**: Phase 170
+**Directory**: `.viepilot/phases/171-enh124-126-proposal-session-gates-versioning/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 171.1 | Proposal store: layout, versions, provenance, hashes | L |
+| 171.2 | Session state + vp-tools proposal commands | L |
+| 171.3 | Gate registry + upgrade plan | M |
+| 171.4 | Context hooks for active proposal sessions | M |
+| 171.5 | Workflow: AUQ at every gate, detect/upgrade, iterate, resume | L |
+| 171.6 | Tests + CHANGELOG 3.19.0 + resolve ENH-124/126 | M |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 171 --phase-complete` → exit 0
+- [ ] version = 3.19.0
+
+## Phase 172 — ENH-127: vp-proposal uses Claude Code document skills (pptx, docx, xlsx, pdf) (v3.20.0)
+
+**Goal**: On Claude Code, vp-proposal creates, validates, renders, reads and edits its files through the host document skills, adds a mandatory deck QA gate, builds budget workbooks with live formulas, and labels every check that could not run.
+**Estimated Tasks**: 5
+**Status**: ⏳ planned
+**Version Target**: 3.20.0
+**Dependencies**: Phase 171
+**Directory**: `.viepilot/phases/172-enh127-proposal-document-skills/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 172.1 | Environment detection: document skills + dependencies | M |
+| 172.2 | Workflow: pptx/docx skills in generation + Deck QA gate | L |
+| 172.3 | Budget workbooks (xlsx) + pdf use | M |
+| 172.4 | Import hand edits via the document skills | M |
+| 172.5 | Tests + CHANGELOG 3.20.0 + resolve ENH-127 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 172 --phase-complete` → exit 0
+- [ ] version = 3.20.0
+
+## Phase 173 — ENH-122 + ENH-123: Outline-first gate, content curation, Backstage Editor (v3.21.0)
+
+**Goal**: After the type is confirmed the AI builds and gets approval for an outline, inventories sources, decides what fits (FIT / TRANSFORM / DROP / SENSITIVE / BACKSTAGE), blocks process logs and dev notes from slides, and an always-on Backstage Editor moves non-material disadvantages to presenter-only notes while material risks are reframed, never hidden.
+**Estimated Tasks**: 6
+**Status**: ⏳ planned
+**Version Target**: 3.21.0
+**Dependencies**: Phase 172
+**Directory**: `.viepilot/phases/173-enh122-123-proposal-outline-curation-backstage/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 173.1 | Outline builder + gate | M |
+| 173.2 | Source inventory + Content Map | L |
+| 173.3 | detectProcessLeak + detectDevNotes | M |
+| 173.4 | Persona #31 Backstage Editor + council blocker + backstage.md | M |
+| 173.5 | Workflow: outline, inventory, content map, leak/dev-note gates, backstage plan | L |
+| 173.6 | Tests + CHANGELOG 3.21.0 + resolve ENH-122/123 | M |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 173 --phase-complete` → exit 0
+- [ ] version = 3.21.0
+
+## Phase 174 — ENH-121: Rehearsal Hall — timeline simulation, analytics, 3D replay (v3.22.0)
+
+**Goal**: After a proposal is complete the user can rehearse it in a simulated hall: personas listen along a real timeline (slides, script lines, click cues), and the run produces evaluations, improvements, tune-out moments, a retention curve, keyword and criteria effectiveness, four chart groups and a self-contained HTML report with a 3D hall replay.
+**Estimated Tasks**: 7
+**Status**: ⏳ planned
+**Version Target**: 3.22.0
+**Dependencies**: Phase 173
+**Directory**: `.viepilot/phases/174-enh121-proposal-rehearsal-hall/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 174.1 | Timeline builder + slide load metrics | M |
+| 174.2 | Listener contract + hall audience | M |
+| 174.3 | Aggregator: all metrics and chart data | L |
+| 174.4 | Report: HTML (inline SVG) + summary.md + data.json | L |
+| 174.5 | 3D hall replay + 2D fallback | L |
+| 174.6 | Workflow: end-of-flow gate + --simulate re-run | M |
+| 174.7 | Tests + CHANGELOG 3.22.0 + resolve ENH-121 | M |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 174 --phase-complete` → exit 0
+- [ ] version = 3.22.0
