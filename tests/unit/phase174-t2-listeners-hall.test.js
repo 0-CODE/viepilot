@@ -56,6 +56,26 @@ describe('Phase 174.2 — parseListener', () => {
   });
 });
 
+describe('parseListener — attention baseline and held drops', () => {
+  test('the first state sets the baseline: starting below 100 is not a drop', () => {
+    const r = sim.parseListener({ personaId: 4, states: [{ seg: 0, attention: 60 }, { seg: 1, attention: 55 }, { seg: 2, attention: 65 }] }, TL);
+    expect(r.dropped).toBe(0);
+    expect(r.listener.states.map((s) => s.attention)).toEqual([60, 55, 65]);
+  });
+
+  test('an uncited drop is held and counted once, not once per later segment', () => {
+    const r = sim.parseListener({ personaId: 4, states: [{ seg: 0, attention: 90 }, { seg: 1, attention: 50 }, { seg: 2, attention: 50 }] }, TL);
+    expect(r.dropped).toBe(1);
+    expect(r.listener.states.map((s) => s.attention)).toEqual([90, 90, 90]);
+  });
+
+  test('a held listener who recovers is released', () => {
+    const r = sim.parseListener({ personaId: 4, states: [{ seg: 0, attention: 90 }, { seg: 1, attention: 50 }, { seg: 2, attention: 85 }] }, TL);
+    expect(r.dropped).toBe(1);
+    expect(r.listener.states.map((s) => s.attention)).toEqual([90, 90, 85]);
+  });
+});
+
 describe('Phase 174.2 — hall audience', () => {
   test('default hall: 12–16 listeners, #20 present, #31 observes only', () => {
     for (const o of [{ type: 'product-pitch' }, { type: 'general' }, { type: 'tech-architecture' }, { type: 'research-proposal', variant: 'kickoff' }, { type: 'internal-presentation', variant: 'all-hands' }]) {
