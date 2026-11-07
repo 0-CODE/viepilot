@@ -14,7 +14,7 @@ in_progress
 | 173.3 | done ✅ | proposal-curation.cjs — 48 tests (vi/en), Unicode-aware matching |
 | 173.4 | done ✅ | #31 observer via selectCouncil, 2 blockers, buildBackstage + findBackstageLeaks; backcompat selections identical |
 | 173.5 | done ✅ | 4 new gated steps, manifest limited to Content Map, council via selectCouncil, prompt contract |
-| 173.6 | in_progress 🔄 | CHANGELOG 3.21.0 + resolve ENH-122/123 |
+| 173.6 | done ✅ | CHANGELOG 3.21.0 + version + ENH-122/123 done (3136 + 1 skip) |
 
 ## Dependencies
 - Phase 172
@@ -31,4 +31,4 @@ in_progress
 - [x] [vp] 173.3 — ENH-122 + ENH-123: detectProcessLeak + detectDevNotes
 - [x] [vp] 173.4 — ENH-122 + ENH-123: Persona #31 Backstage Editor + council blocker + backstage.md
 - [x] [vp] 173.5 — ENH-122 + ENH-123: Workflow: outline, inventory, content map, leak/dev-note gates, backstage plan
-- [~] [vp] 173.6 — ENH-122 + ENH-123: Tests + CHANGELOG 3.21.0 + resolve ENH-122/123
+- [x] [vp] 173.6 — ENH-122 + ENH-123: Tests + CHANGELOG 3.21.0 + resolve ENH-122/123
