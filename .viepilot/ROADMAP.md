@@ -4188,3 +4188,30 @@ rebuild after resume/compaction.
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 168 --phase-complete` → exit 0
 - [x] version = 3.14.0
+
+## Phase 169 — ENH-119 + ENH-120: Purpose consult, audience intake, internal & research types (v3.17.0)
+
+**Goal**: vp-proposal lets the user describe the purpose freely, consults (understanding, type/variant,
+outline, watch-outs), asks only the missing audience groups, recommends a type + variant for the user
+to confirm, and adds `internal-presentation` and `research-proposal` (5 variants each) with internal
+(21–25) and academic (26–30) personas and research-only criteria.
+**Estimated Tasks**: 6
+**Status**: ⏳ planned
+**Version Target**: 3.17.0
+**Dependencies**: Phase 165 ✅, Phase 167 ✅, hotfix 3.16.1 ✅
+**Directory**: `.viepilot/phases/169-enh119-120-proposal-audience-internal-research/`
+
+| Task | Description | Acceptance Criteria | Complexity | Parallel |
+|------|-------------|---------------------|------------|---------|
+| 169.1 | variant framework + internal-presentation ×5 + template fallback | variants valid; external types unchanged | M | — |
+| 169.2 | research-proposal ×5 (grant, kickoff, progress, defense, transfer) | skeletons ≥ 10; valid durations/voices | M | after 169.1 |
+| 169.3 | proposal-audience.cjs + hints/gaps + consult prompt | all 14 targets reachable; gaps only unknown | L | after 169.2 |
+| 169.4 | personas 21–30 + research R1–R3 + selection by variant/profile | 6–8 incl. 20; old selections unchanged | M | after 169.3 |
+| 169.5 | workflow consult → gap intake → recommend/confirm + SKILL 0.4.0 | step order; English only | L | after 169.3-4 |
+| 169.6 | tests + CHANGELOG [3.17.0] + resolve ENH-119/120 | ≥ 25 resilient tests; full suite green | M | after 169.1-5 |
+
+**Verification**:
+- [ ] `npx jest tests/unit/phase169-enh119-120-proposal-audience.test.js --no-coverage` → pass
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 169 --phase-complete` → exit 0
+- [ ] version = 3.17.0
