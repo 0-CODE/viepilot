@@ -364,6 +364,15 @@ async function installCommand(rawArgs) {
   let communicationLang = 'en';
   if (!options.yes) {
     communicationLang = await interactiveLanguageSelection();
+  } else {
+    // --yes keeps an existing language choice instead of resetting it to 'en'
+    try {
+      const { readConfig } = require(path.join(__dirname, '..', 'lib', 'viepilot-config.cjs'));
+      const existing = readConfig();
+      if (existing && existing.language && existing.language.communication) {
+        communicationLang = existing.language.communication;
+      }
+    } catch (_) { /* no readable config — keep default */ }
   }
 
   console.log(`\nSelected targets: ${selectedTargets.join(', ')}`);

@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.16.1] - 2026-11-07
+### Fixed
+- Installer now copies every `templates/` entry instead of only `project`, `phase` and `architect`. `templates/proposal` (prompt-contract, review-personas, persona-review-prompt) and `templates/stakeholder-agent.md` were missing from installs, so the persona review council and prompt contract failed outside the repo.
+- `viepilot install --yes` keeps an existing `language.communication` choice instead of resetting it to `en`.
+
+---
+
 ## [3.16.0] - 2026-11-07
 ### Added
 - Persona Review Council for vp-proposal (ENH-117c): library of 20 bilingual audience personas (templates/proposal/review-personas.md) — CEO, CFO, CTO, skeptical engineer, investor, procurement, non-technical user, loyal customer, devil's advocate, journalist, legal, security, designer, marketing, sales, student, conference back row, livestream viewer, non-native partner, and the always-on Humanity editor.
