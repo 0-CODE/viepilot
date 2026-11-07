@@ -4,7 +4,7 @@
 175 — BUG-034: Installer installs runtime dependencies in the installed copy (v3.22.1)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -17,6 +17,14 @@ in_progress
 
 ## Version Target
 3.22.1 (PATCH)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: 7c55d17
+- Tag: vp-p175-complete
+- Full suite: 3184 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/BUG-034.md
