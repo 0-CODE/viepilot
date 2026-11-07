@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.23.1] - 2026-11-07
+### Fixed
+Fixes from the first live Rehearsal Hall panel run (BUG-037):
+- **Panel selection:** `selectPanel` seats the strongest skeptic first, meaning the listener who would not act and raised the most objections. It then keeps other skeptics when there is room. Before this fix, the user had to add them by hand.
+- **Replies between panelists:** `replyTo` accepts message ids such as `q9-2` as well as persona ids, and the panel prompt now says so. This removes false "name the panelist you answer" flags.
+- **Before/after table:** it now uses each panelist's own `changed` flag, plus a `stance` and `conditions`. A "conditional yes" no longer shows as unchanged, and the report adds Stance and Conditions columns.
+- **Engine label:** the report computes it from the transcript (`detectEngine`). It shows "agent teams" only when panelists messaged each other directly, and "relay" when the lead passed every round along. The workflow explains how direct messages are recorded (`via: "direct"`).
+- **Presenter prompt:** reminds the 80-word cap for every answer.
+- **`vp-tools proposal diff`:** compares the two latest versions by default, in numeric order. Before, it could compare the current version with itself.
+- **Card text:** the workflow adds a rule for centring text inside cards: `valign` middle with equal top and bottom insets, checked in Deck QA.
+
 ## [3.23.0] - 2026-11-07
 ### Added
 - **Rehearsal Hall panel (ENH-128):** after independent listening, a 4–6 persona panel questions a presenter agent and debates in up to 3 capped rounds of messages.
