@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | ENH-125 logged: 22 SKILL.md chỉ liệt kê tool, không quy định; 14 agent đều có Bash, không có policy; executor 165–169 thường sửa file bằng python/sed. Đề xuất templates/tool-policy.md (bảng ánh xạ 5 adapter) chèn vào mọi SKILL/agent/prompt dispatch, lint test, hook PreToolUse warn|block (consent-gated, dùng chung luồng hooks với ENH-124). Ghi chú: phiên ghi request này bị harness (bypass mode) yêu cầu ưu tiên Bash | `/vp-request` | Backlog |
 | 2026-11-07 | Phase 169 complete: ENH-119 + ENH-120 → v3.17.0 (2708 + 1 skip). Orchestrator review caught 14 recommendation defects behind executor PASS reports; 3 executors hit the 30-turn limit and were completed inline | Close phase 169 | 169 |
 | 2026-11-07 | ENH-124 logged: audit cho thấy 14/21 bước vp-proposal không có AskUserQuestion; không có trạng thái phiên bền vững nên agent quên bối cảnh khi trao đổi tiếp/compaction. Đề xuất: session.json + vp-tools proposal status/resume + /vp-proposal --resume; bước Iterate định tuyến yêu cầu sửa qua đúng gate; hook UserPromptSubmit + SessionStart/PostCompact (consent-gated); mọi step có input/output gate AUQ hoặc "covered by gate"; gate lint test. Thứ tự đề xuất: 169 → ENH-124 → ENH-122+123 → ENH-121 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-123 logged: persona #31 Backstage Editor luôn chạy (như #20) soát slide + notes + script tìm việc chưa làm / cần quan tâm / còn lại / hedge; detectDevNotes song ngữ; hành động fix/reframe/backstage/remove; nguyên tắc "đưa ra hậu trường, không nói dối" — mục trọng yếu với người ra quyết định chỉ được fix hoặc reframe (rủi ro → giảm thiểu → đề nghị); xuất backstage.md. Gộp kế hoạch cùng ENH-122 | `/vp-request` | Backlog |
@@ -293,6 +294,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | new |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | new |
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | new |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | new |
