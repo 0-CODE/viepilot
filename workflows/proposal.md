@@ -2,8 +2,8 @@
 Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 **Skill:** `/vp-proposal`  
-**Version:** 0.2.0  
-**Output:** `docs/proposals/{slug}-{date}.pptx` + `.docx` + `.md` (+ optional `-slides.txt`)
+**Version:** 0.3.0  
+**Output:** `docs/proposals/{slug}/versions/{version}/{slug}.pptx` + `.docx` + `.md` (+ scripts, review, optional `-slides.txt`) — immutable versions (ENH-126)
 
 <purpose>
 Convert a brainstorm session (or direct brief) into a professional proposal package suitable
@@ -11,7 +11,7 @@ for client, partner, or investor presentations. Generates three synchronized fil
 - .pptx — presentation (ViePilot branded, dark navy/charcoal, for direct delivery)
 - .docx — detailed supporting document (full narrative, specs, appendix)
 - .md  — Markdown source of truth (version-controlled, diff-friendly)
-Supports 4 proposal types with configurable slide counts; optional Google Slides upload.
+Supports 6 proposal types (internal and research types with variants); optional Google Slides upload.
 </purpose>
 
 ## Implementation routing guard (ENH-021)
@@ -20,6 +20,55 @@ This workflow generates **proposal output artifacts** (`docs/proposals/`) — no
 shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework feature work.
 
 <process>
+
+## Session, gates and output location (ENH-124 / ENH-126 — MANDATORY)
+
+- **State lives on disk, not in memory.** `lib/proposal-session.cjs` keeps `docs/proposals/{slug}/session.json`.
+  After EVERY step: `recordStep(root, slug, step)`; every confirmed choice: `recordDecision(root, slug, key, value, source)`
+  with `source` = `auq` | `flag` | `auto` | `inferred`; every gate: `recordGate(root, slug, step, 'input'|'output', result)`.
+  Before asking, `setPendingGate(root, slug, '<step>:<kind>')`.
+- **Every gate asks the user via AskUserQuestion** (Claude Code; preload with ToolSearch `select:AskUserQuestion`).
+  Other adapters: numbered text with the same options. Each step below declares an **input gate** (before it consumes a
+  decision or data) and/or an **output gate** (after it produces something the user judges: accept / change /
+  regenerate / stop). Compute-only steps say `covered by gate: <step>`. The registry is `lib/proposal-gates.cjs`
+  (`GATES`); `lintWorkflowGates` keeps this file honest.
+- **`--yes`** auto-accepts the recommended option at every gate and records `auto-accepted`; it never auto-accepts a
+  material-risk item.
+- **Outputs never overwrite.** `lib/proposal-store.cjs`: every run writes into a new `versions/v{n}-{date}/` folder
+  (`newVersion`, `versionPaths`); `{version}` in the paths below is that folder. After the final output gate:
+  `writeProvenance(...)` (ViePilot version, gates passed, hashes) and `setCurrentVersion(...)`.
+- **Staying inside the skill.** While a session is active, any user message about this proposal re-enters the workflow
+  (`/vp-proposal --resume <slug>`; Claude Code: invoke the skill again with the Skill tool) and routes through
+  **Step 11: Iterate**. Optional hooks: `vp-tools hooks install --proposal-context` (consent-gated) remind the agent
+  on every prompt and after compaction.
+
+### Gate inventory
+| Step | Gates |
+|---|---|
+| detect_existing | input |
+| initialize | input |
+| context_detection | input |
+| purpose_consult | input, output |
+| audience_intake | input |
+| type_selection | input |
+| language_selection | input |
+| voice_profile | input |
+| story_brief | input |
+| quality_brief | input |
+| manifest_generation | output |
+| generate_docx_content | output |
+| spoken_script | output |
+| detect_visual_artifacts | input |
+| template_resolution | covered by gate: generate_pptx |
+| generate_pptx | output |
+| animation_hook | output |
+| generate_docx | output |
+| generate_md | output |
+| persona_review_council | input, output |
+| google_slides_upload | input, output |
+| confirm_output | output |
+| iterate | input, output |
+
 
 <step name="initialize">
 ## Step 1: Initialize
@@ -33,6 +82,13 @@ Read package.json                 → verify pptxgenjs + docx dependencies prese
 
 Read `~/.viepilot/config.json` → `proposal.recentLangs` via `getProposalLang()`.
 If `--lang` flag provided: validate ISO 639-1 code; set `lang = flag value`.
+**Resume (ENH-124):** `--resume [slug]` → `loadSession(root, slug)` (latest active session when slug is omitted;
+`vp-tools proposal resume` prints the same). Restore every recorded decision, skip gates already accepted, and continue
+at `currentStep` / `pendingGate`. Never re-ask a confirmed decision unless the user asks to change it.
+
+**Input gate (ENH-124):** when flags leave choices open, AskUserQuestion once to confirm the run mode
+(New run / Resume `<slug>` when an active session exists). `recordGate(root, slug, 'initialize', 'input', result)`.
+
 If `--voice <1-4>` flag provided: validate against `VOICE_LEVELS`; set `voice.level = flag value` (skips the Voice Profile prompt).
 
 > **Task list (ENH-125):** create the run's task list in the host todo tool before Step 2 — one item per workflow step that will run (Claude Code: `TodoWrite`, or `TaskCreate`/`TaskUpdate` when the session exposes them; Codex `update_plan`; Antigravity `write_todos`; otherwise a `## Todo` checklist in the summary). Keep exactly one item in progress and mark each step done as soon as its output gate is accepted.
@@ -45,6 +101,38 @@ Display startup banner:
  VIEPILOT ► PROPOSAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+---
+
+</step>
+
+<step name="detect_existing">
+## Step 1b: Detect Existing Proposal (ENH-126)
+
+Run `detectExisting(root, { slug, topic })` from `lib/proposal-store.cjs` (topic = `--from` session topic or the brief's
+project name; with neither, list everything). It returns versioned proposals and legacy flat files
+(`docs/proposals/{slug}-{date}.*`, from before versioning).
+
+If nothing matches: `createProposal(...)`, `startSession(root, slug)`, `newVersion(root, slug)` → continue to Step 2.
+
+If something matches, **input gate** — AskUserQuestion "An earlier proposal exists: {slug} ({version}, made with ViePilot
+{provenance.viepilotVersion}). What should we do?":
+1. **Upgrade** (Recommended after a ViePilot update) — `upgradePlan(provenance, installedVersion)` from
+   `lib/proposal-gates.cjs` lists `missing`, `changed`, `reuse` and `newInputs`. Restore confirmed decisions from the
+   previous `manifest.json` / `session.json`, run only the missing and changed steps (with their gates), ask only
+   `newInputs`, write everything into a new version and add `upgrade-report.md` (what changed and why, old vs new
+   council scores).
+2. **Revise** — new version based on the previous one; collect the changes, then route through Step 11: Iterate.
+3. **New proposal** — choose a new slug; the existing one is untouched.
+4. **Keep as is** — summarize the current version and stop.
+
+Legacy flat files: offer `vp-tools proposal migrate` first (dry-run plan shown, non-destructive), then continue as Upgrade.
+
+**Hand edits:** before Upgrade or Revise run `detectHandEdits(root, slug, version)`. If any artifact differs from its
+recorded hash, AskUserQuestion: Import the edited text and notes into the manifest (shown as a diff to confirm) /
+Keep the edited file as-is next to the new version / Regenerate (the edited file stays in its old version folder).
+
+`recordDecision(root, slug, 'existing', choice, 'auq')`; `recordGate(root, slug, 'detect_existing', 'input', result)`.
 
 ---
 
@@ -81,6 +169,9 @@ No brainstorm session found. Please provide a brief:
 4. 3–5 key points to cover?
 5. Any specific requirements or constraints?
 ```
+
+
+**Gate (input, ENH-124):** AskUserQuestion — confirm the source: show the detected brainstorm session (topic, date, key decisions) or say none was found. Options: Use this session (Recommended) / Pick another session / Write a brief instead (Step 2B). Skip the question only when `--from` or `--yes` supplies the answer, and say so. `recordGate(root, slug, 'context_detection', 'input', result)`; on accept `recordStep(root, slug, 'context_detection')`.
 
 ---
 
@@ -123,6 +214,11 @@ User confirms or corrects. If corrects, re-extract and re-show until confirmed.
 **Non-interactive:** `--purpose "<text>"` supplies the text directly; auto-confirm.
 
 Output: `purposeText`, `audienceHints` (from `extractAudienceHints`).
+
+
+**Gate (input, ENH-124):** AskUserQuestion — ask for the free-text purpose in one question (the user answers through Other / free text). Options: Describe it now (Recommended) / Skip — answer the audience questions instead. Skip the question only when `--purpose` or `--yes` supplies the answer, and say so. `recordGate(root, slug, 'purpose_consult', 'input', result)`; on accept `recordStep(root, slug, 'purpose_consult')`.
+
+**Gate (output, ENH-124):** AskUserQuestion — show the consult (What I understood, recommendation, outline and duration, watch-outs, still missing). Options: Correct (Recommended) / Correct with changes / Start over. `recordGate(root, slug, 'purpose_consult', 'output', result)`; on accept `recordStep(root, slug, 'purpose_consult')`.
 
 ---
 
@@ -269,6 +365,9 @@ Language for this proposal?
 
 Output: `lang` (ISO 639-1 string), `langContentOnly` (boolean from `--lang-content-only` flag)
 
+
+**Gate (input, ENH-124):** AskUserQuestion — choose the output language (recent languages first). Options: <most recent> (Recommended) / English / Vietnamese / Other. Skip the question only when `--lang` or `--yes` supplies the answer, and say so. `recordGate(root, slug, 'language_selection', 'input', result)`; on accept `recordStep(root, slug, 'language_selection')`.
+
 ---
 
 </step>
@@ -373,6 +472,9 @@ Store answers in manifest `meta` object:
 ```
 
 These drive sharper content in Step 4 (manifest_generation): tone, word choice, CTA on closing slide. `meta.decisionMaker` also feeds the TONE line together with the Voice Profile.
+
+
+**Gate (input, ENH-124):** AskUserQuestion — confirm the quality brief (decision maker, tone, must-have points, constraints) as one summary. Options: Looks right (Recommended) / Edit an answer / Answer again. `recordGate(root, slug, 'quality_brief', 'input', result)`; on accept `recordStep(root, slug, 'quality_brief')`.
 
 ---
 
@@ -748,6 +850,9 @@ _References section in .docx: technical documentation, benchmarks_
 
 If `--dry-run`: print manifest as JSON and stop here.
 
+
+**Gate (output, ENH-124):** AskUserQuestion — preview the slide list: number, title, arc beat, one-line key point per slide, total count. Options: Accept (Recommended) / Change slides (add / remove / reorder / rename) / Regenerate / Stop. `recordGate(root, slug, 'manifest_generation', 'output', result)`; on accept `recordStep(root, slug, 'manifest_generation')`.
+
 ---
 
 </step>
@@ -818,6 +923,9 @@ Store result as `docxContent` variable for use in Steps 7 and 8.
 
 Apply the same voice rules here: run `buildVoiceInstruction(voice.level, lang)` and the `loadPromptContract()` text in this prompt, and check output with `detectCliches()`.
 
+
+**Gate (output, ENH-124):** AskUserQuestion — preview the document outline: section headings, diagram list, appendix items. Options: Accept (Recommended) / Change sections / Regenerate / Stop. `recordGate(root, slug, 'generate_docx_content', 'output', result)`; on accept `recordStep(root, slug, 'generate_docx_content')`.
+
 ---
 
 </step>
@@ -853,14 +961,17 @@ Inject `SPOKEN_NOTES_RULES` (together with `buildVoiceInstruction()` and the `lo
 **Script files** (written after the manifest is final; default duration = `--duration` flag value from `DURATIONS` [5, 15, 30], else 15):
 | File | Content |
 |------|---------|
-| `docs/proposals/{slug}-{date}-script.md` | script for the chosen duration (default 15 min) |
-| `docs/proposals/{slug}-{date}-script-5min.md` | 5-minute version |
-| `docs/proposals/{slug}-{date}-script-30min.md` | 30-minute version |
-| `docs/proposals/{slug}-{date}-script.docx` | same content as the default script, generated by the AI at runtime with the `docx` package (same pattern as Step 7) |
+| `docs/proposals/{slug}/versions/{version}/{slug}-script.md` | script for the chosen duration (default 15 min) |
+| `docs/proposals/{slug}/versions/{version}/{slug}-script-5min.md` | 5-minute version |
+| `docs/proposals/{slug}/versions/{version}/{slug}-script-30min.md` | 30-minute version |
+| `docs/proposals/{slug}/versions/{version}/{slug}-script.docx` | same content as the default script, generated by the AI at runtime with the `docx` package (same pattern as Step 7) |
 
 Each markdown file comes from `buildScriptMarkdown(manifest, { minutes })`: header (title, duration, audience, voice), one `### Slide N - heading (mm:ss)` section per included slide with spoken text and a transition line, then the Expected Q&A section. `planDuration(slides, minutes)` drops `optional` slides only for the 5 min version (kept for 15 and 30), scales each slide's seconds proportionally so the total lands within 10% of the target (up or down), caps any single slide at about 25% of the total, and always keeps the cover and closing slides.
 
 Progress: `[script] Writing 3 script files + docx...`
+
+
+**Gate (output, ENH-124):** AskUserQuestion — show per-slide timing for the chosen duration, total time, and two sample speaker notes. Options: Accept (Recommended) / More conversational / Shorter / Regenerate. `recordGate(root, slug, 'spoken_script', 'output', result)`; on accept `recordStep(root, slug, 'spoken_script')`.
 
 ---
 
@@ -941,6 +1052,9 @@ This step runs **after Step 4b (Script)** and **before template resolution**.
 
 Progress: `[visuals] Found {N} artifact(s) → {M} slides will have screenshots`
 
+
+**Gate (input, ENH-124):** AskUserQuestion — list the visual artifacts found (UI prototype pages, diagrams) and how they will be used. Options: Include all (Recommended) / Choose which / Include none. `recordGate(root, slug, 'detect_visual_artifacts', 'input', result)`; on accept `recordStep(root, slug, 'detect_visual_artifacts')`.
+
 ---
 
 </step>
@@ -962,6 +1076,9 @@ Ensure output directory:
 mkdir -p docs/proposals/
 ```
 
+
+Compute-only step — covered by gate: `generate_pptx` (the template used is shown there). `recordStep(root, slug, 'template_resolution')`.
+
 ---
 
 </step>
@@ -977,9 +1094,12 @@ Using `pptxgenjs`:
    - Inject `heading`, `bullets` / `body`
    - Call `slide.addNotes(slide.speakerNotes)` for **every** slide (no slide may ship without notes)
 4. Before writing, run `validateSpeakerNotes(manifest.slides, lang)`; on issues regenerate the affected notes once, then report remaining issues
-5. Write to `docs/proposals/{slug}-{date}.pptx`
+5. Write to `docs/proposals/{slug}/versions/{version}/{slug}.pptx`
 
 Progress: `[pptx] Generating {N} slides...`
+
+
+**Gate (output, ENH-124):** AskUserQuestion — report the written .pptx (path, template used — this also covers template_resolution —, slide count). Options: Accept (Recommended) / Use another template / Regenerate / Stop. `recordGate(root, slug, 'generate_pptx', 'output', result)`; on accept `recordStep(root, slug, 'generate_pptx')`.
 
 ---
 
@@ -1006,6 +1126,9 @@ Runs right after the `.pptx` is written in Step 6. This step cannot be skipped o
 4. **Fail-loud rule (no silent skip):** if any slide has no transition (`hasTransition === false`), or a content slide (not cover/closing) has `buildCount === 0`, or the `[click]` count differs from `buildCount`, STOP generation with an error listing the offending slide indices, e.g. `Animation validation failed: slides 3, 5 have no transition / 0 builds`. Never continue to Step 7 and never silently skip animation (same enforcement as ENH-044).
 
 Progress: `[anim] {N} slides, {M} builds`
+
+
+**Gate (output, ENH-124):** AskUserQuestion — show builds per slide and the click-cue check ([click] count = build count). Options: Accept (Recommended) / Fewer builds / Regenerate animations. `recordGate(root, slug, 'animation_hook', 'output', result)`; on accept `recordStep(root, slug, 'animation_hook')`.
 
 ---
 
@@ -1149,9 +1272,12 @@ Using `docx` package, consuming **`docxContent`** (from Step 4a) for all narrati
 
    Rule: `warnMissingTool()` is called **once per missing tool per generation run** — not per-diagram or per-artifact.
 
-10. Write to `docs/proposals/{slug}-{date}.docx`
+10. Write to `docs/proposals/{slug}/versions/{version}/{slug}.docx`
 
 Progress: `[docx] Building detailed document...`
+
+
+**Gate (output, ENH-124):** AskUserQuestion — report the written .docx (path, sections, diagrams embedded or placeholders). Options: Accept (Recommended) / Regenerate / Stop. `recordGate(root, slug, 'generate_docx', 'output', result)`; on accept `recordStep(root, slug, 'generate_docx')`.
 
 ---
 
@@ -1197,7 +1323,10 @@ _(repeat for each diagram)_
 - Mermaid fences use the diagram type as the language identifier (e.g. ` ```flowchart `, ` ```sequenceDiagram `)
 - Diagrams section is omitted if `docxContent.diagrams` is empty or unavailable
 
-Write to `docs/proposals/{slug}-{date}.md`
+Write to `docs/proposals/{slug}/versions/{version}/{slug}.md`
+
+
+**Gate (output, ENH-124):** AskUserQuestion — report the written .md summary (path, sections). Options: Accept (Recommended) / Regenerate. `recordGate(root, slug, 'generate_md', 'output', result)`; on accept `recordStep(root, slug, 'generate_md')`.
 
 ---
 
@@ -1262,7 +1391,7 @@ A "more pride / more humility" answer rewrites that slide's notes and script lin
 ### 7. Write review report
 ```js
 const md = pr.buildReviewReport({ rounds, decisions, gate });
-// -> docs/proposals/{slug}-{date}-review.md
+// -> docs/proposals/{slug}/versions/{version}/{slug}-review.md
 ```
 List the file in the Step 10 banner.
 
@@ -1290,6 +1419,11 @@ Prerequisites (shown if auth fails):
 - Create service account → download JSON key
 - `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json`
 
+
+**Gate (input, ENH-124):** AskUserQuestion — ask whether to upload now and to which account (only when `--slides` is set or credentials are present). Options: Upload (Recommended) / Skip upload. Skip the question only when `--slides` or `--yes` supplies the answer, and say so. `recordGate(root, slug, 'google_slides_upload', 'input', result)`; on accept `recordStep(root, slug, 'google_slides_upload')`.
+
+**Gate (output, ENH-124):** AskUserQuestion — show the Google Slides URL or the setup guidance when the upload could not run. Options: Accept (Recommended) / Retry / Skip. `recordGate(root, slug, 'google_slides_upload', 'output', result)`; on accept `recordStep(root, slug, 'google_slides_upload')`.
+
 ---
 
 </step>
@@ -1306,15 +1440,15 @@ Prerequisites (shown if auth fails):
  Animation: ✓ {N} slides, {M} builds
 
  Files:
-   docs/proposals/{slug}-{date}.md    ({size})
-   docs/proposals/{slug}-{date}.pptx  ({size})
-   docs/proposals/{slug}-{date}.docx  ({size})
-   docs/proposals/{slug}-{date}-script.md        (default duration)
-   docs/proposals/{slug}-{date}-script-5min.md
-   docs/proposals/{slug}-{date}-script-30min.md
-   docs/proposals/{slug}-{date}-script.docx
-   docs/proposals/{slug}-{date}-review.md        (persona review report)
-   [docs/proposals/{slug}-{date}-slides.txt]
+   docs/proposals/{slug}/versions/{version}/{slug}.md    ({size})
+   docs/proposals/{slug}/versions/{version}/{slug}.pptx  ({size})
+   docs/proposals/{slug}/versions/{version}/{slug}.docx  ({size})
+   docs/proposals/{slug}/versions/{version}/{slug}-script.md        (default duration)
+   docs/proposals/{slug}/versions/{version}/{slug}-script-5min.md
+   docs/proposals/{slug}/versions/{version}/{slug}-script-30min.md
+   docs/proposals/{slug}/versions/{version}/{slug}-script.docx
+   docs/proposals/{slug}/versions/{version}/{slug}-review.md        (persona review report)
+   [docs/proposals/{slug}/versions/{version}/{slug}-slides.txt]
 
  Next:
    Open .pptx in PowerPoint / Keynote / LibreOffice Impress
@@ -1341,6 +1475,30 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 | `GOOGLE_APPLICATION_CREDENTIALS` not set | Clear setup guide; continue without upload |
 | `docs/proposals/` write error | Show path and permission error; stop |
 | Unknown `--variant` | Show valid variants for type; ask user to select |
+
+
+**Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (when available) / Stop. On accept: `writeProvenance(...)`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`.
+
+---
+
+</step>
+
+<step name="iterate">
+## Step 11: Iterate (ENH-124)
+
+Every follow-up request about this proposal — "slide 3 is too long", "make it more humble", "add a pricing slide" —
+comes here instead of being handled ad hoc.
+
+1. **Input gate** — AskUserQuestion restating the request and its scope: Apply to these slides (Recommended) /
+   Apply to the whole deck / Cancel.
+2. Classify the change and list the invalidated steps (content → manifest_generation, spoken_script, animation_hook,
+   generate_*; voice → voice_profile + everything after; audience → audience_intake + type_selection + persona
+   council; template → generate_pptx).
+3. Create a new version (`newVersion`) and rerun only the invalidated steps, each with its own gates.
+4. **Output gate** — AskUserQuestion with a diff summary (`vp-tools proposal diff <slug>`): Accept (Recommended) /
+   Change more / Revert to the previous version. On accept: `writeProvenance`, `setCurrentVersion`.
+
+`recordGate(root, slug, 'iterate', 'input'|'output', result)` for both gates.
 
 ---
 

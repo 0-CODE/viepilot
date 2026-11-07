@@ -49,8 +49,8 @@ describe('Phase 169.5 — ENH-119/120 Workflow Updates', () => {
   describe('API function references', () => {
     it('should reference extractAudienceHints in purpose_consult', () => {
       const purposeSection = workflowContent.slice(
-        workflowContent.indexOf('purpose_consult'),
-        workflowContent.indexOf('audience_intake')
+        workflowContent.indexOf('<step name="purpose_consult">'),
+        workflowContent.indexOf('<step name="audience_intake">')
       );
       assert(purposeSection.includes('extractAudienceHints'),
         'extractAudienceHints not referenced in purpose_consult');
@@ -58,8 +58,8 @@ describe('Phase 169.5 — ENH-119/120 Workflow Updates', () => {
 
     it('should reference findIntakeGaps in audience_intake', () => {
       const audienceSection = workflowContent.slice(
-        workflowContent.indexOf('audience_intake'),
-        workflowContent.indexOf('type_selection')
+        workflowContent.indexOf('<step name="audience_intake">'),
+        workflowContent.indexOf('<step name="type_selection">')
       );
       assert(audienceSection.includes('findIntakeGaps'),
         'findIntakeGaps not referenced in audience_intake');
@@ -169,8 +169,8 @@ describe('Phase 169.5 — ENH-119/120 Workflow Updates', () => {
   describe('Step 8b persona review updates', () => {
     it('should pass variant and audienceProfile to selectPersonas', () => {
       const step8Section = workflowContent.slice(
-        workflowContent.indexOf('persona_review_council'),
-        workflowContent.lastIndexOf('</step>')
+        workflowContent.indexOf('<step name="persona_review_council">'),
+        workflowContent.indexOf('<step name="google_slides_upload">')
       );
       assert(step8Section.includes('variant'),
         'selectPersonas call should pass variant parameter');
@@ -247,9 +247,11 @@ describe('Phase 169.5 — ENH-119/120 Workflow Updates', () => {
         'SKILL.md should reference recommendProposalType');
     });
 
-    it('should update invocation banner version to 0.4.0', () => {
-      assert(skillContent.includes('v0.4.0'),
-        'Invocation banner should show v0.4.0');
+    it('should update invocation banner version to 0.4.0 or later', () => {
+      const m = skillContent.match(/VP-PROPOSAL\s+v(\d+)\.(\d+)\.(\d+)/);
+      assert(m, 'banner version not found');
+      const [maj, min] = [Number(m[1]), Number(m[2])];
+      assert(maj > 0 || min >= 4, `banner v${m[1]}.${m[2]}.${m[3]} must be >= 0.4.0`);
     });
   });
 

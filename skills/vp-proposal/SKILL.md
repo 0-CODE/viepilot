@@ -1,7 +1,7 @@
 ---
 name: vp-proposal
 description: "Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs"
-version: 0.4.0
+version: 0.5.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-PROPOSAL  v0.4.0 (fw 3.17.0)
+ VIEPILOT ► VP-PROPOSAL  v0.5.0 (fw 3.19.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -175,6 +175,12 @@ Generate a professional proposal package from a brainstorm session or direct bri
 - Persona 20 (Humanity editor) is locked and always runs. If the gate fails, only the Improve slides are rewritten (max 2 rounds), then a review report is written.
 - `--review off|quick|full` selects the council size.
 
+**Sessions, gates and versions (ENH-124 / ENH-126):**
+- Every gate — every input and every output — asks the user with AskUserQuestion (Claude Code; numbered text elsewhere). `--yes` auto-accepts recommended options and records them as auto-accepted; material-risk items are never auto-accepted.
+- State is kept in `docs/proposals/{slug}/session.json`; outputs go to immutable `docs/proposals/{slug}/versions/v{n}-{date}/` folders with `provenance.json` (ViePilot version, gates passed, file hashes). Nothing is ever overwritten.
+- An earlier proposal is detected at the start: Upgrade (run only the gates added since it was made), Revise, New proposal, or Keep. Hand-edited files are detected by hash and never lost. Legacy flat files: `vp-tools proposal migrate`.
+- **Re-entry rule:** while a proposal session is active, every user message about that proposal MUST re-enter this skill (`/vp-proposal --resume <slug>`; Claude Code: invoke the skill again with the Skill tool) and go through Step 11: Iterate — never edit the deck ad hoc. `vp-tools proposal status` shows active sessions; optional hooks `vp-tools hooks install --proposal-context` remind the agent on every prompt and after compaction.
+
 **Proposal types (6 types):**
 | Type | Slides | Use case | Variants |
 |------|--------|----------|----------|
@@ -231,6 +237,8 @@ Optional flags:
 - `--review <off|quick|full>` : Persona Review Council size (default `quick`). `off` skips the
                                  council but still runs persona 20 (Humanity editor) only.
 - `--dry-run` : Show slide manifest (JSON) without writing any files
+- `--resume [slug]` : Continue an active session at its current step with all confirmed decisions restored.
+- `--yes` : Non-interactive — auto-accept the recommended option at each gate (recorded as auto-accepted).
 </context>
 
 <process>
