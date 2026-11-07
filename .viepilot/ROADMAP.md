@@ -4243,7 +4243,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: vp-proposal keeps durable state per proposal, re-enters the workflow on follow-up messages and after compaction, asks via AskUserQuestion at every input and output gate, never overwrites earlier output, and can upgrade an older proposal by running only the gates added since it was made.
 **Estimated Tasks**: 6
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.19.0
 **Dependencies**: Phase 170
 **Directory**: `.viepilot/phases/171-enh124-126-proposal-session-gates-versioning/`
@@ -4258,9 +4258,9 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 171.6 | Tests + CHANGELOG 3.19.0 + resolve ENH-124/126 | M |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 171 --phase-complete` → exit 0
-- [ ] version = 3.19.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 171 --phase-complete` → exit 0
+- [x] version = 3.19.0
 
 ## Phase 172 — ENH-127: vp-proposal uses Claude Code document skills (pptx, docx, xlsx, pdf) (v3.20.0)
 

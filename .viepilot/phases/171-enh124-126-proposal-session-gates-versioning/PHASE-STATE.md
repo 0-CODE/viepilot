@@ -4,7 +4,7 @@
 171 — ENH-124 + ENH-126: Proposal session continuity, AUQ at every gate, versioning and upgrade (v3.19.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -21,6 +21,14 @@ in_progress
 
 ## Version Target
 3.19.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: c94a0a6
+- Tag: vp-p171-complete
+- Full suite: 3009 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-124.md, .viepilot/requests/ENH-126.md
