@@ -194,3 +194,21 @@ npm install @googleapis/slides
 → Prints JSON slide manifest to console
 → No files written
 ```
+
+---
+
+## Practical notes (3.22.2)
+
+- **Installing ViePilot for a trial.** `npx viepilot install` installs the release published on npm. To try a branch
+  or local build, run `node bin/viepilot.cjs install` from that checkout. If a deck tells colleagues how to install,
+  say which of the two they need.
+- **Every question is an AskUserQuestion.** On Claude Code every gate, clarification and the closing "what next?"
+  uses AskUserQuestion. Optional check: `vp-tools hooks install --auq-check` (Stop hook, warns when a turn ends with a
+  question in prose; `--auq-check block` makes the agent re-ask).
+- **Live demo and Q&A.** Give the demo slide `fixedSec` and the deck `qaSec` so the timing and the Rehearsal Hall
+  account for them instead of flagging every slide as too short.
+- **Placeholders.** `[fill in …]` markers left in slides are listed at Confirm Output; accepting them is an explicit
+  choice.
+- **Versions.** A version folder is a draft until Confirm Output seals it; after that, changes go to a new version.
+  Rehearsal Hall runs are added under `simulation/` and hashed into the provenance.
+

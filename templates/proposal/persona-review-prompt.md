@@ -1,8 +1,8 @@
 # Persona Review Prompt (ENH-117c)
 
 One copy of this prompt is sent to each persona subagent. Subagents run independently and in
-parallel. Placeholders are filled by the orchestrator: `{persona_card}`, `{rubric}`,
-`{voice_level}`, `{manifest_json}`, `{script_md}`, `{lang}`.
+parallel. The orchestrator fills each placeholder below (persona_card, rubric, voice_level, manifest_json, script_md,
+lang — each written once, in braces, where its value goes).
 
 ---
 

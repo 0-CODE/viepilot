@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.22.2] - 2026-11-07
+### Fixed
+Defects found in the first real `/vp-proposal` run (BUG-035):
+- **Rehearsal Hall parser:** the first listener state now sets the attention baseline, and an attention drop with no quote is held and counted once. Before, 73 reactions were discarded and attention on the opening slides was inflated.
+- **Who sits in the room:** for an `internal-presentation`, the hall and the council no longer seat investor, procurement, existing-customer, journalist or CFO personas unless the audience includes those roles (`requires_role`, `isEligible`).
+  - New Product manager (#32) and QA (#33) personas.
+  - The `product`, `qa` and `tech-lead` roles map to fitting personas, and engineering no longer maps to Designer.
+  - The manifest carries `audienceProfile` (`checkManifestAudience`, `resolveAudienceProfile`).
+- **Session and store:** `session.currentVersion` now follows `setCurrentVersion`.
+  - Gates keep both input and output records (`byKind`; session schema v2 with migration).
+  - The outline is saved as `-outline.json`; the old name is still read.
+  - `missingArtifacts` checks completeness before Confirm Output.
+  - A version is a draft until it is sealed, and `assertWritable` refuses edits after that.
+  - `refreshProvenance` hashes Rehearsal Hall runs without changing the sealed hashes.
+- **Purpose hints:** new `qa` and `tech-lead` roles; "đồng nghiệp kỹ thuật" and "dev" are recognised; new goal `adopt` ("dùng thử", "thí điểm", "pilot"), which recommends team-intro.
+- **Source inventory:** scripts, tests and specs are skipped; CHANGELOG is matched by its exact name; `docs/user/**` counts as product-value; `findStaleFacts` flags version numbers that disagree with the current version.
+- **Timing:** a slide's `fixedSec` (live demo) and the deck's `qaSec` come off the target before the speaking time is spread, and the hall timeline includes them. The script's Audience header falls back to `audienceProfile`, and Expected Q&A falls back to the council's likely questions.
+- **Curation:** dev-note detection counts only the work-item sense and quotes the matching line; a `keep` action is added.
+  - The backstage file uses the deck language and no longer repeats a question under open items. It lists reframes only when they are really on the slides, and lists Content Map drops under Removed.
+  - `checkConsistency` and `findPlaceholders` run before Confirm Output.
+- **Animation and packaging:** slide-number, date and footer placeholders are no longer animated. `validatePptxAnimations(path, { manifest })` checks that builds match the `[click]` cues. Generated archives have no ZIP directory entries (`stripZipDirs`). The workflow sets `NODE_PATH` for `apply_theme.js`.
+- **AskUserQuestion everywhere:** every skill's policy block now states that every question, including the closing "what next?", goes through AskUserQuestion (`templates/auq-policy.md`). The proposal run ends with a closing AskUserQuestion. Optional Stop hook: `vp-tools hooks install --auq-check [warn|block]`.
+- **Small fixes:** the persona-review prompt no longer duplicates the persona card; the "AI simulation" label appears on every report section; the docs explain the npm and branch install paths.
+
 ## [3.22.1] - 2026-11-07
 ### Fixed
 - Installer installs runtime dependencies in the installed copy (BUG-034): `package-lock.json` is copied next to `package.json` and `npm ci --omit=dev` runs in every installed ViePilot dir (e.g. `~/.claude/viepilot`), so packages added after an old install (such as `three` for the Rehearsal Hall replay) are present. `--skip-deps` for offline installs; a failed dependency install is a warning with the manual command, never a failed install.
