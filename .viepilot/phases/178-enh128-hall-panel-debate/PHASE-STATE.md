@@ -13,7 +13,7 @@ in_progress
 | 178.2 | done ✅ | presenter + panel prompts |
 | 178.3 | done ✅ | Step 10c + engines + deckMaterial |
 | 178.4 | done ✅ | panel section in report/summary/data |
-| 178.5 | pending | Tests + docs + CHANGELOG 3.23.0 + resolve ENH-128 |
+| 178.5 | in_progress 🔄 | docs + release |
 
 ## Dependencies
 - Phase 177 ✅
@@ -29,4 +29,4 @@ in_progress
 - [x] [vp] 178.2 — Presenter + panelist prompts
 - [x] [vp] 178.3 — Engines: relay (default) and agent teams (opt-in) in the workflow
 - [x] [vp] 178.4 — Report: debate section, chat replay, before/after, gaps
-- [ ] [vp] 178.5 — Tests + docs + CHANGELOG 3.23.0 + resolve ENH-128
+- [~] [vp] 178.5 — Tests + docs + CHANGELOG 3.23.0 + resolve ENH-128
