@@ -109,6 +109,27 @@ Describe the new feature:
 6. Need deep brainstorm? (landing page / UX / growth ideas / research-heavy)
 ```
 
+### Plan Mode (ENH-129 — Claude Code, optional)
+
+Plan the phase in Claude Code Plan Mode: read-only exploration, then one native approval of the whole phase plan
+before any plan file is written.
+
+- **Trigger:** the `--plan-mode` flag, or — when the complexity answer is **L** or **XL**, or the request is vague —
+  offer it with AskUserQuestion: "Plan this phase in Plan Mode?" Options: Use Plan Mode (Recommended for L/XL) /
+  Plan directly.
+- **Flow:**
+  1. `ToolSearch` with `select:EnterPlanMode,ExitPlanMode`, then `EnterPlanMode`.
+  2. Read-only exploration (Read / Grep / Glob, Explore subagents) and the architecture check below.
+  3. Write the draft to the plan file: phase goal, decisions, tasks with Paths, implementation notes, acceptance
+     criteria and verification, version target.
+  4. `ExitPlanMode` — the user approves or asks for changes (revise in Plan Mode until approved).
+- **On approval:** write SPEC.md, the task files, PHASE-STATE.md and the ROADMAP entry **verbatim from the approved
+  plan** (doc-first: the plan must survive compaction), and append the approved plan to SPEC.md under
+  "Approved plan (Plan Mode, verbatim)".
+- **One gate only:** ExitPlanMode is the plan-approval gate — do not add an AskUserQuestion "is the plan ok?" on top.
+- **Fallback:** hosts without Plan Mode (Cursor Agent mode, Codex, Copilot, Antigravity) and subagents use the normal
+  flow below; optionally show the draft and ask with AskUserQuestion / a numbered list before writing.
+
 ### Check Architecture Compatibility
 ```bash
 cat .viepilot/ARCHITECTURE.md
@@ -285,6 +306,8 @@ Options:
 - If milestone has landing page focus: `/vp-brainstorm --new --landing --research`
 - Quick setup with minimal questions
 
+For a new milestone planned in one sitting, the Plan Mode option (ENH-129, see Add Feature) applies the same way.
+
 ### Generate New ROADMAP.md
 Either from brainstorm or quick setup.
 
@@ -324,6 +347,8 @@ For each improvement:
 - List any breaking changes
 - Document migration steps if needed
 - Update ARCHITECTURE.md if structure changes
+
+For a large refactor, the Plan Mode option (ENH-129, see Add Feature) applies the same way.
 
 ### Generate Refactor Phase
 Add to ROADMAP.md as phase {N+0.5} or insert between phases.

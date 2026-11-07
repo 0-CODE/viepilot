@@ -183,6 +183,9 @@ Optional flags:
 - `--feature` : Add feature mode
 - `--milestone` : New milestone mode
 - `--refactor` : Refactor mode
+- `--plan-mode` : Plan in Claude Code Plan Mode (ENH-129) — read-only exploration, one approval via ExitPlanMode,
+                  approved plan written verbatim into SPEC/tasks. Offered automatically for L/XL or vague requests.
+                  Claude Code only (Cursor has its own Plan Mode); other hosts use the normal flow.
 
 **Task path convention (BUG-009):**
 When generating task files, ALL paths in `## Paths` blocks MUST be
@@ -348,6 +351,7 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 **Prompts using AskUserQuestion in this skill:**
 - Evolve mode selection (Step 2 — Add Feature / New Milestone / Refactor)
 - Complexity selection (Step 3A — S/M/L/XL)
+- Plan Mode offer (Step 3A — L/XL or vague requests; ENH-129)
 - Brainstorm routing decision (Step 3A — Yes / No)
 - Workflow continuation (Step 5 — Execute /vp-auto / Create request / Done)
 
