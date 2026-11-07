@@ -1712,6 +1712,11 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
 top 3 improvements) and the report path. Options: Iterate on the top improvements (Recommended — Step 11) / Open the
 report / Run again with another hall / Done. `recordGate(root, slug, 'rehearsal_hall', 'output', result)`.
 
+**Closing (BUG-035 G8):** the run never ends with a question in prose. After `finishSession` (whether the hall ran or
+not), any summary — findings, ViePilot issues seen during the run, what to do next — ends with an AskUserQuestion:
+Iterate (Step 11) / Rehearse again / Log findings as a request (`/vp-request`) / Done. Same for every ad-hoc question
+during the run (templates/auq-policy.md).
+
 ---
 
 </step>

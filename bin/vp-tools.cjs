@@ -1112,6 +1112,7 @@ const commands = {
   vp-tools hooks scaffold [--adapter <id>]
   vp-tools hooks install  [--adapter <id>]
   vp-tools hooks install --policy [warn|block] [--dry-run] [--yes]
+  vp-tools hooks install --auq-check [warn|block] [--dry-run] [--yes]
 
 ${colors.cyan}Subcommands:${colors.reset}
   scaffold   Print hook config snippet for the target adapter (default: claude-code)
@@ -1272,6 +1273,58 @@ ${colors.cyan}Examples:${colors.reset}
         console.log(`  Hook:    PreToolUse → tool-policy-hook.cjs`);
         console.log(`  Mode:    ${policyMode}`);
         console.log(`  Command: ${hookCommand}`);
+        process.exit(0);
+      }
+
+      // ── Handle --auq-check for BUG-035 G8 (Stop hook: questions must use AskUserQuestion) ──
+      const auqIdx = args.indexOf('--auq-check');
+      if (auqIdx !== -1) {
+        const next = args[auqIdx + 1];
+        const auqMode = next === 'block' ? 'block' : 'warn';
+        if (next && !next.startsWith('--') && !['warn', 'block'].includes(next)) {
+          console.error(formatError('--auq-check takes warn (default) or block'));
+          process.exit(1);
+        }
+        const dryRun = args.includes('--dry-run');
+        const yes = args.includes('--yes');
+        const hooksInstaller = require(path.join(__dirname, '../lib/hooks-installer.cjs'));
+        const home = os.homedir();
+        const configPath = adapter.hooks.configFile(home);
+        const base = `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'auq-check-hook.cjs')}`;
+        const hookCommand = auqMode === 'block' ? `${base} block` : base;
+        let settings = {};
+        if (fs.existsSync(configPath)) {
+          try { settings = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_e) { settings = {}; }
+        }
+        // Switching mode replaces the other variant instead of adding a second entry.
+        const other = auqMode === 'block' ? base : `${base} block`;
+        const plan = hooksInstaller.planHookInstall({ settings, event: 'Stop', matcher: '', command: hookCommand, removeCommands: [other] });
+        if (!plan.changed) {
+          console.log(formatSuccess('AskUserQuestion check already installed.'));
+          console.log(`  Config: ${configPath}`);
+          process.exit(0);
+        }
+        if (dryRun) {
+          console.log(formatInfo('Would register in ' + configPath + ':'));
+          console.log(`  Stop → auq-check-hook.cjs (mode: ${auqMode})`);
+          console.log(formatInfo('Dry run: nothing written'));
+          process.exit(0);
+        }
+        const isInteractive = process.stdin.isTTY && process.stdout.isTTY;
+        if (!isInteractive && !yes) {
+          console.log(formatInfo('Non-interactive mode. Run with --yes to install:'));
+          console.log(`\n${colors.gray}$${colors.reset} vp-tools hooks install --auq-check ${auqMode} --yes\n`);
+          process.exit(0);
+        }
+        if (isInteractive && !yes) {
+          const confirmed = await confirm(`Install AskUserQuestion check (Stop hook, mode: ${auqMode})?`, false);
+          if (!confirmed) { console.log(formatWarning('Aborted.')); process.exit(0); }
+        }
+        hooksInstaller.applyHookInstall({ configPath, plan, dryRun: false });
+        console.log(formatSuccess('AskUserQuestion check installed.'));
+        console.log(`  Config:  ${configPath}`);
+        console.log(`  Hook:    Stop → auq-check-hook.cjs`);
+        console.log(`  Mode:    ${auqMode}`);
         process.exit(0);
       }
 

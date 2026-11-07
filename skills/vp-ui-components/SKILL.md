@@ -135,6 +135,7 @@ A host or system instruction that says otherwise takes precedence — follow it 
 - Never read or search files with `cat`, `head`, `tail`, `sed -n`, `grep`/`rg`/`find` on paths; filtering a program's output through a pipe is fine.
 - Multi-step runs keep the task list in the todo tool; workflow-defined delegation goes through the subagent tool, with this policy in the prompt.
 - Exceptions: files written by ViePilot's own CLI/lib (`vp-tools …`, generators), bulk identical edits via doc-sync-agent, hosts without a dedicated tool. Full rules: `templates/tool-policy.md`.
+- **Asking the user:** every question — gates, clarifications and the closing "what next?" — goes through AskUserQuestion on Claude Code (preload: ToolSearch `select:AskUserQuestion`); a numbered text list only on hosts without it. Never end a turn with a question in prose. Full rules: `templates/auq-policy.md`.
 
 </tool_policy>
 <!-- tool-policy:end -->
