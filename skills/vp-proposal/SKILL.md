@@ -194,6 +194,7 @@ Generate a professional proposal package from a brainstorm session or direct bri
 
 **Rehearsal Hall (ENH-121):**
 - At the end of a run (or later with `--simulate <proposal dir>`), 12–16 personas (or `--hall all`) "listen" to the deck along the real timeline — slide by slide, line by line, click by click — as independent subagents.
+- **Panel Q&A (ENH-128):** after listening, 4–6 personas question a presenter agent and argue with each other in up to 3 rounds of messages; unanswered questions become deck gaps.
 - The report (`simulation/run-{n}/report.html`, offline, plus `summary.md` and `data.json`) shows persona evaluations, what to improve first, when each persona stopped listening and why, retention curves (all and decision-maker weighted), keyword and criteria effectiveness, attention heatmap, cognitive load and confusion, emotion arc vs the intended arc, persuasion funnel, questions and objections, pacing, 24-hour recall and run-over-run changes — with a 3D hall replay (2D fallback). Labelled as an AI simulation.
 
 **Proposal types (6 types):**
@@ -255,6 +256,9 @@ Optional flags:
 - `--source <glob>` : Add a source file or folder for the Content Map (repeatable).
 - `--exclude <glob>` : Exclude a source from the inventory (repeatable).
 - `--simulate <proposal dir>` : Re-run the Rehearsal Hall on an existing proposal (with `--duration`, `--hall all`, `--add` / `--remove`).
+- `--panel <relay|teams|off>` : Panel Q&A after the hall (ENH-128) — 4–6 personas debate and cross-examine a presenter agent
+                                (answers only from the material, with citations). `relay` (default) works on every host;
+                                `teams` uses Claude Code agent teams (experimental, opt-in).
 - `--resume [slug]` : Continue an active session at its current step with all confirmed decisions restored.
 - `--yes` : Non-interactive — auto-accept the recommended option at each gate (recorded as auto-accepted).
 </context>

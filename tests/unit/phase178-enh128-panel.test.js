@@ -89,3 +89,27 @@ describe('ENH-128 178.2 — presenter and panel prompts', () => {
     expect(t).toMatch(/at most 80 words/);
   });
 });
+
+describe('ENH-128 178.3 — deck material + workflow', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const cur = require('../../lib/proposal-curation.cjs');
+  const manifest = { slides: [{ index: 1, heading: 'Cover', speakerNotes: 'Chào. [click] Bắt đầu.' }, { index: 2, heading: 'Cost', bullets: ['~15 phút'], speakerNotes: 'Số của mình.' }],
+    contentMap: [{ id: 'C1', text: 'fact', decision: 'FIT' }, { id: 'C2', text: 'old README numbers', decision: 'DROP', reason: 'stale' }] };
+  test('deckMaterial gives citable ids for slides, notes, backstage lines and mapped items', () => {
+    const d = panel.deckMaterial(manifest, '# Backstage\n\n## Q\n\n- Plan mode khác gì?\n');
+    expect(d.ids).toEqual(['S1', 'N1', 'S2', 'N2', 'B1', 'C1']);
+    expect(d.text).toMatch(/\[N1\] Chào\. Bắt đầu\./);
+  });
+  test('buildBackstage accepts the manifest contentMap array (DROP items listed)', () => {
+    expect(cur.buildBackstage([], { lang: 'en', contentMap: manifest.contentMap })).toMatch(/Content Map C2: old README numbers — stale/);
+  });
+  test('workflow Step 10c documents both engines, caps and gates; SKILL lists --panel', () => {
+    const wf = fs.readFileSync(path.join(__dirname, '../../workflows/proposal.md'), 'utf8');
+    expect(wf).toMatch(/Step 10c: Panel Q&A/);
+    expect(wf).toMatch(/CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1/);
+    expect(wf).toMatch(/relay \(default, every host\)/);
+    expect(wf).toMatch(/recordGate\(root, slug, 'panel', 'input'/);
+    expect(fs.readFileSync(path.join(__dirname, '../../skills/vp-proposal/SKILL.md'), 'utf8')).toMatch(/--panel <relay\|teams\|off>/);
+  });
+});

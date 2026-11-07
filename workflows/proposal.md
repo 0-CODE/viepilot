@@ -1717,6 +1717,42 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
 top 3 improvements) and the report path. Options: Iterate on the top improvements (Recommended — Step 11) / Open the
 report / Run again with another hall / Done. `recordGate(root, slug, 'rehearsal_hall', 'output', result)`.
 
+### Step 10c: Panel Q&A — personas debate and cross-examine the presenter (ENH-128)
+
+Runs after the hall's listening phase (`--panel relay` by default when the hall runs; `--panel teams` opt-in;
+`--panel off` to skip). Listening stays independent — the panel never changes the Phase A numbers.
+
+**Gate (input, ENH-124):** AskUserQuestion — panel members from `selectPanel(agg)` (`lib/proposal-panel.cjs`: most
+negative primary listener, lowest end attention, most unanswered objections, #20, a decision-maker; 4–6 seats), the
+engine and the caps (3 rounds, ≤ 2 messages per member per round, ≤ 80 words). Options: Run (Recommended) / Change
+members / Use agent teams / Skip. `recordGate(root, slug, 'panel', 'input', result)`.
+
+1. `deckMaterial(manifest, backstageText)` → the presenter's only source, with ids (`S<n>` slide, `N<n>` notes,
+   `B<n>` backstage line, `C<n>` Content Map item) and the list of valid ids.
+2. **Round 1:** each panelist (fill `templates/proposal/simulation/panel-prompt.md` with its card, its Phase A result,
+   the roster and the transcript so far) asks the presenter one question; the presenter
+   (`templates/proposal/simulation/presenter-prompt.md`) answers each with citations or `noAnswer`.
+3. **Round 2:** panelists answer each other (quote the words they answer); **Round 3:** final positions.
+4. `buildTranscript(messages, { roster, sourceIds })` validates every message (unknown sources, missing citations,
+   over-cap messages are flagged or dropped); `unansweredQuestions(transcript)` → deck gaps; `beforeAfter(agg,
+   transcript)` → who changed their mind.
+
+**Engines (same protocol, same caps):**
+- **relay (default, every host):** the orchestrator spawns the presenter and each panelist as subagents and moves the
+  messages itself — on Claude Code it continues each subagent with SendMessage every round (context kept); on
+  text-only hosts it runs the rounds sequentially in-thread and says so. The report labels the debate "relayed".
+- **teams (Claude Code, opt-in):** requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; ask consent with
+  AskUserQuestion (cost: one context window per member; experimental limits). The lead creates a team of the
+  presenter + panel, posts each round as a task, teammates message each other directly with SendMessage, and the
+  lead closes a round once every panelist has posted (a `TeammateIdle` hook may keep a member working until its round
+  message exists). The lead collects the messages into the same transcript. Never more than 6 panel members.
+
+`writeRun(..., { panel: { members, why, engine, transcript, unanswered, beforeAfter } })` adds the Panel Q&A section.
+
+**Gate (output, ENH-124):** AskUserQuestion — questions asked, answered with citations, not answerable from the
+material (→ add to the deck or backstage), minds changed. Options: Iterate on the gaps (Recommended — Step 11) /
+Open the report / Run another panel / Done. `recordGate(root, slug, 'panel', 'output', result)`.
+
 **Closing (BUG-035 G8):** the run never ends with a question in prose. After `finishSession` (whether the hall ran or
 not), any summary — findings, ViePilot issues seen during the run, what to do next — ends with an AskUserQuestion:
 Iterate (Step 11) / Rehearse again / Log findings as a request (`/vp-request`) / Done. Same for every ad-hoc question
