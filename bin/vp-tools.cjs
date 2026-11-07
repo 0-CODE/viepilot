@@ -1884,6 +1884,356 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Proposal session and version management (ENH-124, ENH-126)
+   */
+  proposal: async (args) => {
+    const proposalStore = require(path.join(__dirname, '../lib/proposal-store.cjs'));
+    const proposalSession = require(path.join(__dirname, '../lib/proposal-session.cjs'));
+    const { execSync } = require('child_process');
+
+    const sub = args[0];
+    // vp-proposal works in any project (no .viepilot/ required): use the nearest ancestor that has
+    // docs/proposals or .viepilot, else the current directory.
+    const proposalRoot = (() => {
+      let dir = process.cwd();
+      for (;;) {
+        if (fs.existsSync(path.join(dir, 'docs', 'proposals')) || fs.existsSync(path.join(dir, '.viepilot'))) return dir;
+        const up = path.dirname(dir);
+        if (up === dir) return process.cwd();
+        dir = up;
+      }
+    })();
+
+    if (sub === 'status' || sub === 'resume') {
+      const slugIdx = args.indexOf('--slug');
+      const slug = slugIdx !== -1 ? args[slugIdx + 1] : null;
+      const asJson = args.includes('--json');
+
+      const projectRoot = proposalRoot;
+
+      const sessions = proposalSession.activeSessions(projectRoot);
+      const filtered = slug ? sessions.filter(s => s.slug === slug) : sessions;
+
+      if (sub === 'status') {
+        const output = filtered.map(s => ({
+          slug: s.slug,
+          status: s.status,
+          currentStep: s.currentStep,
+          currentVersion: s.currentVersion,
+          pendingGate: s.pendingGate,
+          updatedAt: s.updatedAt,
+        }));
+
+        if (asJson) {
+          console.log(JSON.stringify(output, null, 2));
+        } else {
+          if (output.length === 0) {
+            console.log(formatWarning('No active sessions'));
+            return;
+          }
+          console.log(`${colors.bold}Active Sessions${colors.reset}\n`);
+          output.forEach(s => {
+            console.log(`  ${colors.cyan}${s.slug}${colors.reset}`);
+            console.log(`    Status: ${s.status}`);
+            console.log(`    Current Step: ${s.currentStep || 'none'}`);
+            console.log(`    Current Version: ${s.currentVersion || 'none'}`);
+            if (s.pendingGate) {
+              console.log(`    Pending Gate: ${s.pendingGate.kind || 'unknown'}`);
+            }
+            console.log(`    Updated: ${s.updatedAt}`);
+          });
+          console.log();
+        }
+        return;
+      }
+
+      // resume: print step and decisions for continuation
+      if (sub === 'resume') {
+        const output = filtered.map(s => ({
+          slug: s.slug,
+          currentStep: s.currentStep,
+          decisions: s.decisions,
+        }));
+
+        if (output.length === 0) {
+          console.error(formatError('Nothing to resume'));
+          process.exitCode = 1;
+          return;
+        }
+
+        if (asJson) {
+          console.log(JSON.stringify(output, null, 2));
+        } else {
+          output.forEach(s => {
+            console.log(`${colors.cyan}${s.slug}${colors.reset}`);
+            console.log(`  Continue from step: ${s.currentStep || 'start'}`);
+            if (Object.keys(s.decisions).length > 0) {
+              console.log(`  Decisions:`);
+              Object.entries(s.decisions).forEach(([k, v]) => {
+                console.log(`    ${k}: ${v.value} (${v.source})`);
+              });
+            }
+          });
+        }
+        return;
+      }
+    }
+
+    if (sub === 'migrate') {
+      const dryRun = args.includes('--dry-run');
+      const yes = args.includes('--yes');
+      const projectRoot = proposalRoot;
+      const proposalsDir = path.join(projectRoot, 'docs', 'proposals');
+
+      // Plan first — no side effects (dry-run must not create anything).
+      const { legacy } = proposalStore.detectExisting(projectRoot, {});
+      const plan = [];
+      for (const group of legacy) {
+        const { slug, date, files } = group;
+        const existing = proposalStore.readProposal(projectRoot, slug);
+        if (existing && Array.isArray(existing.migratedFrom) && existing.migratedFrom.includes(date)) continue; // already migrated
+        const versionsDir = path.join(proposalsDir, slug, 'versions');
+        const used = fs.existsSync(versionsDir)
+          ? fs.readdirSync(versionsDir).map((d) => (d.match(/^v(\d+)-/) || [])[1]).filter(Boolean).map(Number)
+          : [];
+        const version = `v${(used.length ? Math.max(...used) : 0) + 1}-${date}`;
+        // `{slug}-{date}{suffix}` → `{slug}{suffix}` so migrated files follow the versioned naming
+        const renames = files.map((f) => ({ from: f, to: slug + f.slice(`${slug}-${date}`.length) }));
+        plan.push({ slug, date, version, renames });
+      }
+
+      if (plan.length === 0) {
+        console.log(formatInfo('No legacy proposals to migrate'));
+        return;
+      }
+
+      console.log(formatInfo('Migration plan (originals are kept):'));
+      for (const p of plan) {
+        console.log(`\n  ${colors.cyan}${p.slug}${colors.reset} (${p.date}) → docs/proposals/${p.slug}/versions/${p.version}/`);
+        for (const r of p.renames) console.log(`    ${r.from} → ${r.to}`);
+      }
+      console.log();
+
+      if (dryRun) {
+        console.log(formatInfo('Dry run: no files were modified'));
+        return;
+      }
+      if (!yes && !(await confirm('Proceed with migration?', false))) {
+        console.log(formatWarning('Migration cancelled'));
+        return;
+      }
+
+      for (const p of plan) {
+        proposalStore.createProposal(projectRoot, { slug: p.slug, title: p.slug, type: 'legacy' });
+        const { version, dir } = proposalStore.newVersion(projectRoot, p.slug, { date: p.date });
+        for (const r of p.renames) {
+          fs.copyFileSync(path.join(proposalsDir, r.from), path.join(dir, r.to), fs.constants.COPYFILE_EXCL);
+        }
+        proposalStore.writeProvenance(projectRoot, p.slug, version, { viepilotVersion: 'legacy', gatesPassed: [] });
+        proposalStore.setCurrentVersion(projectRoot, p.slug, version);
+        const pj = path.join(proposalsDir, p.slug, 'proposal.json');
+        const meta = JSON.parse(fs.readFileSync(pj, 'utf8'));
+        meta.migratedFrom = [...new Set([...(meta.migratedFrom || []), p.date])];
+        fs.writeFileSync(pj, JSON.stringify(meta, null, 2) + '\n');
+      }
+
+      console.log(formatSuccess(`Migrated ${plan.length} legacy proposal(s); originals kept in docs/proposals/`));
+      return;
+    }
+
+    if (sub === 'diff') {
+      const slug = args[1];
+      const vA = args[2];
+      const vB = args[3];
+
+      if (!slug) {
+        console.error(formatError('Slug is required', 'Usage: vp-tools proposal diff <slug> [vA vB]'));
+        process.exitCode = 1;
+        return;
+      }
+
+      const projectRoot = proposalRoot;
+
+      // Get versions: if vA/vB not given, use previous vs current
+      const proposal = proposalStore.readProposal(projectRoot, slug);
+      if (!proposal) {
+        console.error(formatError(`Proposal "${slug}" not found`));
+        process.exitCode = 1;
+        return;
+      }
+
+      const versionsDir = path.join(projectRoot, 'docs', 'proposals', slug, 'versions');
+      if (!fs.existsSync(versionsDir)) {
+        console.log(formatWarning('No versions found'));
+        return;
+      }
+
+      const versions = fs.readdirSync(versionsDir).filter(v => v.startsWith('v')).sort();
+      if (versions.length === 0) {
+        console.log(formatWarning('No versions found'));
+        return;
+      }
+
+      let compareA = vA;
+      let compareB = vB;
+
+      if (!compareA && !compareB) {
+        compareB = proposal.currentVersion || versions[versions.length - 1];
+        compareA = versions.length > 1 ? versions[versions.length - 2] : null;
+      } else if (!compareB) {
+        compareB = proposal.currentVersion || versions[versions.length - 1];
+      }
+
+      if (!compareA) {
+        console.log(formatWarning('Only one version available'));
+        return;
+      }
+
+      // Load manifests
+      const paths1 = proposalStore.versionPaths(projectRoot, slug, compareA);
+      const paths2 = proposalStore.versionPaths(projectRoot, slug, compareB);
+
+      let manifest1 = null;
+      let manifest2 = null;
+
+      try {
+        if (fs.existsSync(paths1.manifest)) {
+          manifest1 = JSON.parse(fs.readFileSync(paths1.manifest, 'utf8'));
+        }
+        if (fs.existsSync(paths2.manifest)) {
+          manifest2 = JSON.parse(fs.readFileSync(paths2.manifest, 'utf8'));
+        }
+      } catch (e) {
+        console.error(formatError('Failed to read manifests'));
+        process.exitCode = 1;
+        return;
+      }
+
+      console.log(`${colors.bold}Diff: ${slug}${colors.reset}`);
+      console.log(`  ${compareA} → ${compareB}\n`);
+
+      if (!manifest1 || !manifest2) {
+        console.log(formatWarning('One or both manifests not found'));
+        return;
+      }
+
+      // Compare slides
+      const slides1 = manifest1.slides || [];
+      const slides2 = manifest2.slides || [];
+
+      const titles1 = new Set(slides1.map(s => s.title));
+      const titles2 = new Set(slides2.map(s => s.title));
+
+      const added = [...titles2].filter(t => !titles1.has(t));
+      const removed = [...titles1].filter(t => !titles2.has(t));
+      const common = [...titles1].filter(t => titles2.has(t));
+
+      console.log(`  Slides: ${slides1.length} → ${slides2.length}`);
+      if (added.length > 0) console.log(`    Added: ${added.length} (${added.join(', ')})`);
+      if (removed.length > 0) console.log(`    Removed: ${removed.length} (${removed.join(', ')})`);
+      console.log();
+
+      // Compare script lengths
+      const script1 = fs.existsSync(paths1.script) ? fs.readFileSync(paths1.script, 'utf8') : '';
+      const script2 = fs.existsSync(paths2.script) ? fs.readFileSync(paths2.script, 'utf8') : '';
+
+      const wordCount1 = script1.split(/\s+/).filter(w => w).length;
+      const wordCount2 = script2.split(/\s+/).filter(w => w).length;
+
+      console.log(`  Script length: ${wordCount1} → ${wordCount2} words`);
+      if (wordCount2 !== wordCount1) {
+        const delta = wordCount2 - wordCount1;
+        const sign = delta > 0 ? '+' : '';
+        console.log(`    (${sign}${delta} words)`);
+      }
+      console.log();
+
+      // Check for review scores
+      const review2 = fs.existsSync(paths2.review) ? fs.readFileSync(paths2.review, 'utf8') : '';
+      const scoreMatch = review2.match(/\|\s*Score\s*\|\s*([\d.]+)\s*\|/);
+      if (scoreMatch) {
+        console.log(`  Council Score (latest): ${scoreMatch[1]}`);
+      } else {
+        console.log(`  Council Score: n/a`);
+      }
+    }
+
+    if (sub === 'prune') {
+      const slug = args[1];
+      const keepIdx = args.indexOf('--keep');
+      const keep = keepIdx !== -1 ? parseInt(args[keepIdx + 1], 10) : null;
+      const yes = args.includes('--yes');
+
+      if (!slug || keep === null || isNaN(keep)) {
+        console.error(formatError('Usage: vp-tools proposal prune <slug> --keep N [--yes]'));
+        process.exitCode = 1;
+        return;
+      }
+
+      const projectRoot = proposalRoot;
+
+      const proposal = proposalStore.readProposal(projectRoot, slug);
+      if (!proposal) {
+        console.error(formatError(`Proposal "${slug}" not found`));
+        process.exitCode = 1;
+        return;
+      }
+
+      const versionsDir = path.join(projectRoot, 'docs', 'proposals', slug, 'versions');
+      if (!fs.existsSync(versionsDir)) {
+        console.log(formatInfo('No versions to prune'));
+        return;
+      }
+
+      const versions = fs.readdirSync(versionsDir)
+        .filter(v => v.startsWith('v'))
+        .sort()
+        .reverse();
+
+      if (versions.length <= keep) {
+        console.log(formatInfo(`Already at or below ${keep} version(s)`));
+        return;
+      }
+
+      const toDelete = versions.slice(keep).filter(v => v !== proposal.currentVersion);
+      if (toDelete.length === 0) {
+        console.log(formatInfo('Nothing to prune (current version protected)'));
+        return;
+      }
+
+      console.log(formatWarning(`Will delete ${toDelete.length} old version(s):`));
+      toDelete.forEach(v => {
+        console.log(`  ${v}`);
+      });
+      console.log();
+
+      if (!yes) {
+        const confirmed = await confirm('Delete these versions?', false);
+        if (!confirmed) {
+          console.log(formatWarning('Prune cancelled'));
+          return;
+        }
+      }
+
+      let deleted = 0;
+      for (const v of toDelete) {
+        const versionPath = path.join(versionsDir, v);
+        if (fs.existsSync(versionPath)) {
+          fs.rmSync(versionPath, { recursive: true });
+          deleted++;
+        }
+      }
+
+      console.log(formatSuccess(`Deleted ${deleted} version(s)`));
+    }
+
+    if (!sub || (sub !== 'status' && sub !== 'resume' && sub !== 'migrate' && sub !== 'diff' && sub !== 'prune')) {
+      console.error(formatError('Unknown proposal subcommand', 'Usage: vp-tools proposal <status|resume|migrate|diff|prune>'));
+      process.exitCode = 1;
+    }
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -2033,6 +2383,24 @@ ${colors.cyan}Examples:${colors.reset}
           'vp-tools update --global --dry-run',
         ],
       },
+      'proposal': {
+        usage: 'vp-tools proposal <status|resume|migrate|diff|prune> [options]',
+        description: 'Proposal session and version management (ENH-124, ENH-126)',
+        options: [
+          'status [--slug <s>] [--json]: Show active sessions',
+          'resume [--slug <s>] [--json]: Show step and decisions to resume',
+          'migrate [--dry-run] [--yes]: Copy legacy flat files to v1 versions',
+          'diff <slug> [vA vB]: Compare two versions (slides, script length, scores)',
+          'prune <slug> --keep N [--yes]: Delete oldest versions, keep N and current',
+        ],
+        examples: [
+          'vp-tools proposal status',
+          'vp-tools proposal resume --slug my-proposal',
+          'vp-tools proposal migrate --dry-run',
+          'vp-tools proposal diff my-proposal',
+          'vp-tools proposal prune my-proposal --keep 5',
+        ],
+      },
       'tracker': {
         usage: 'vp-tools tracker compact [--keep N] [--dry-run] [--path <file>]',
         description: 'Compact bloated TRACKER.md and archive history',
@@ -2100,6 +2468,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}detect-adapter${colors.reset} [--json]   Detect active adapter (claude-code/cursor/antigravity/codex/copilot)
   ${colors.bold}validate${colors.reset} --adapter <id>   Validate adapter capability requirements; exits 1 on critical gaps
   ${colors.bold}policy${colors.reset} render|sync        Policy management: render blocks (--adapter <id>) or sync all files [--check]
+  ${colors.bold}proposal${colors.reset} <op> [opts]      Proposal session and version management (ENH-124, ENH-126)
   ${colors.bold}tracker${colors.reset} compact [--keep N] Compact bloated TRACKER.md, archive history
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
