@@ -1,7 +1,7 @@
 ---
 name: vp-proposal
 description: "Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs"
-version: 0.5.0
+version: 0.6.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-PROPOSAL  v0.5.0 (fw 3.20.0)
+ VIEPILOT ► VP-PROPOSAL  v0.6.0 (fw 3.21.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>

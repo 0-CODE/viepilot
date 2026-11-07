@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.21.0] - 2026-11-07
+### Added
+- Outline first (ENH-122): after the type is confirmed, vp-proposal agrees on a key message and, per slide, its job, the evidence it needs and its time budget (`lib/proposal-outline.cjs`); no content is written until the outline is approved.
+- Source inventory and Content Map: repo sources are classified by path into seven kinds without opening any file (`lib/proposal-sources.cjs`); every fact is FIT, TRANSFORM, DROP, SENSITIVE or BACKSTAGE, with hard rules (process logs are never FIT, sensitive data is never shown); slides may only use mapped content and gaps are asked, never invented.
+- Curation check before rendering (`lib/proposal-curation.cjs`): `detectProcessLeak` catches versions, ticket ids, commit hashes, changelog verbs, dated "what we did" lists and process narration (variant-aware); `detectDevNotes` catches not-done work, "remaining" lists and hedges (Vietnamese with or without diacritics, English).
+- Backstage Editor, persona #31 (ENH-123): observer in every council; decides fix / reframe / backstage / remove; `enforceMaterialRule` keeps material risks visible to decision audiences (risk → mitigation → ask); presenter-only `backstage.md` with a leak check.
+- Blockers `process-log-instead-of-proposal` and `material-risk-hidden`; prompt contract section "Proposal, not process"; `--source` / `--exclude`.
+
+### Changed
+- vp-proposal SKILL 0.6.0; council selection via `selectCouncil` (reviewers unchanged, #31 as observer); four new gated steps registered for upgrades.
+
+---
+
 ## [3.20.0] - 2026-11-07
 ### Added
 - vp-proposal uses Claude Code's document skills (ENH-127, explicit opt-in scoped to vp-proposal): `anthropic-skills:pptx` for creation guidance, file validation after the animation post-process and the new Deck QA gate; `anthropic-skills:docx` for the document and its verification; `anthropic-skills:xlsx` for budget workbooks; `anthropic-skills:pdf` for research references.
