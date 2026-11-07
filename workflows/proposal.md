@@ -35,6 +35,8 @@ Read `~/.viepilot/config.json` → `proposal.recentLangs` via `getProposalLang()
 If `--lang` flag provided: validate ISO 639-1 code; set `lang = flag value`.
 If `--voice <1-4>` flag provided: validate against `VOICE_LEVELS`; set `voice.level = flag value` (skips the Voice Profile prompt).
 
+> **Task list (ENH-125):** create the run's task list in the host todo tool before Step 2 — one item per workflow step that will run (Claude Code: `TodoWrite`, or `TaskCreate`/`TaskUpdate` when the session exposes them; Codex `update_plan`; Antigravity `write_todos`; otherwise a `## Todo` checklist in the summary). Keep exactly one item in progress and mark each step done as soon as its output gate is accepted.
+
 > **AUQ preload — Claude Code adapter (ENH-059):** Before the first interactive prompt, call `ToolSearch` with `query: "select:AskUserQuestion"` to load the deferred schema. Skip only if `ToolSearch` errors → use the numbered-text fallback for the session. Other adapters always use numbered text.
 
 Display startup banner:
