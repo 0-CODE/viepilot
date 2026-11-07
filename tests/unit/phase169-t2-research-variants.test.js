@@ -65,6 +65,15 @@ describe('Phase 169.2 — RESEARCH_VARIANTS framework', () => {
     }
   });
 
+  test('variant internals (skeleton entries, diagrams) are deep-frozen in both families', () => {
+    for (const family of [gen.INTERNAL_VARIANTS, gen.RESEARCH_VARIANTS]) {
+      for (const variant of Object.values(family)) {
+        expect(Object.isFrozen(variant.diagrams)).toBe(true);
+        for (const slide of variant.skeleton) expect(Object.isFrozen(slide)).toBe(true);
+      }
+    }
+  });
+
   test('all INTERNAL_VARIANTS are still frozen', () => {
     for (const variant of Object.values(gen.INTERNAL_VARIANTS)) {
       expect(Object.isFrozen(variant)).toBe(true);
