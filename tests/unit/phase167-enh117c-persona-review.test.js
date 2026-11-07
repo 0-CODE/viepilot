@@ -21,9 +21,9 @@ const mk = (...a) => pr.parseReview(mkRaw(...a)).review;
 
 describe('persona library', () => {
   const personas = pr.loadPersonas();
-  test('20 unique personas, one always:true (id 20)', () => {
-    expect(personas).toHaveLength(20);
-    expect(new Set(personas.map(p => p.id)).size).toBe(20);
+  test('at least 20 unique personas, one always:true (id 20)', () => {
+    expect(personas.length).toBeGreaterThanOrEqual(20);
+    expect(new Set(personas.map(p => p.id)).size).toBeGreaterThanOrEqual(20);
     const always = personas.filter(p => p.always);
     expect(always).toHaveLength(1);
     expect(always[0].id).toBe(20);

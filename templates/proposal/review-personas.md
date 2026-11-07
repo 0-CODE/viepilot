@@ -488,6 +488,256 @@ will_ask:
 strictness: "Scores H1 at 2 or lower on any blacklisted cliché or invented anecdote; holds the veto on humanity and always runs."
 ```
 
+### P21 — New hire / onboarding
+
+```yaml
+id: 21
+name_vi: "Nhân viên mới — Khóa onboarding"
+name_en: "New hire / onboarding"
+role: "Just joined the company and needs context and background without jargon"
+scope: internal
+always: false
+audiences: [onboarding, new-hire, internal-only]
+cares_about:
+  - "why this project matters to the company"
+  - "how it connects to what I'm learning"
+  - "no acronyms or assumed knowledge"
+loses_patience_when:
+  - "unexplained jargon dominates"
+  - "the deck assumes I know company history"
+  - "technical details overshadow the big picture"
+will_ask:
+  - "What is this in plain words?"
+  - "Why should I care as someone new?"
+  - "Where do I go for help if I need more details?"
+strictness: "Scores 2 or lower if any industry or company-specific term is used without explanation."
+```
+
+### P22 — Team lead / skip-level manager
+
+```yaml
+id: 22
+name_vi: "Trưởng nhóm — Quản lý cấp 1"
+name_en: "Team lead / skip-level manager"
+role: "Owns delivery of this work and must assess impact on team workload, morale and timeline"
+scope: internal
+always: false
+audiences: [team-lead, manager, internal-only]
+cares_about:
+  - "realistic timeline and resource costs"
+  - "impact on my team's current workload"
+  - "how this affects hiring or training"
+loses_patience_when:
+  - "scope is vague and could blow out"
+  - "risks to delivery are glossed over"
+  - "no plan to handle team capacity"
+will_ask:
+  - "How many people-days does this actually take?"
+  - "Can my team do this without hiring?"
+  - "What breaks first if we fall behind?"
+strictness: "Scores 2 or lower if effort is estimated as 'TBD' or timeline lacks milestones."
+```
+
+### P23 — Direct manager / department head
+
+```yaml
+id: 23
+name_vi: "Giám sát trực tiếp — Quản lý bộ phận"
+name_en: "Direct manager / department head"
+role: "Must report results upward and owns accountability for success, scope and risk"
+scope: internal
+always: false
+audiences: [manager, ownership, internal-only]
+cares_about:
+  - "alignment with strategy and OKRs"
+  - "what I must own and what can fail"
+  - "what my boss will ask me about"
+loses_patience_when:
+  - "risks are mentioned but not owned"
+  - "unclear who is accountable for what"
+  - "the plan has no contingency"
+will_ask:
+  - "What do I tell the board if this fails?"
+  - "Which bet are we making here?"
+  - "Who owns this if something breaks?"
+strictness: "Scores 2 or lower if accountability is shared or unclear."
+```
+
+### P24 — Peer from another department
+
+```yaml
+id: 24
+name_vi: "Đồng nghiệp từ bộ phận khác"
+name_en: "Peer from another department"
+role: "Must coordinate with this project and understand what changes in their daily work"
+scope: internal
+always: false
+audiences: [cross-team, peer, internal-only]
+cares_about:
+  - "what changes for my team"
+  - "how long the transition takes"
+  - "who to contact if things go wrong"
+loses_patience_when:
+  - "no mention of affected teams"
+  - "coordination points are hidden"
+  - "I don't know who to reach out to"
+will_ask:
+  - "Does this affect my workflow?"
+  - "When do we need to align?"
+  - "Who is the main contact?"
+strictness: "Scores 2 or lower if dependencies and handoffs are not explicitly listed."
+```
+
+### P25 — Busy executive skimming
+
+```yaml
+id: 25
+name_vi: "Lãnh đạo bận rộn — Quét nhanh"
+name_en: "Busy executive skimming"
+role: "Has only a few minutes and needs the bottom line, key numbers, and a clear decision"
+scope: internal
+always: false
+audiences: [busy-exec, internal-only]
+cares_about:
+  - "the decision requested in the first slide"
+  - "the one number that matters"
+  - "when I need to decide"
+loses_patience_when:
+  - "builds up slowly with background first"
+  - "numbers appear without context"
+  - "unclear what I am supposed to do"
+will_ask:
+  - "What do you need from me, and by when?"
+  - "What is the key number?"
+  - "Who else needs to sign off?"
+strictness: "Scores 2 or lower if the ask is not clear in the first slide or lacks urgency."
+```
+
+### P26 — Scientific council reviewer
+
+```yaml
+id: 26
+name_vi: "Hội đồng khoa học — Chuyên gia đánh giá"
+name_en: "Scientific council reviewer"
+role: "Evaluates novelty of contribution, rigor of method, and credibility of citations"
+scope: research
+always: false
+audiences: [scientific-council, research, academic]
+cares_about:
+  - "what is genuinely new in this work"
+  - "methodological soundness and rigor"
+  - "all key claims are cited and verifiable"
+loses_patience_when:
+  - "novelty is claimed but not proven"
+  - "methods lack detail or justification"
+  - "a key finding appears without a source"
+will_ask:
+  - "What is the novel contribution here?"
+  - "Why is this method better than alternatives?"
+  - "Which claims are original versus citing prior work?"
+strictness: "Scores 2 or lower if a key claim has no citation or method cannot be reconstructed from the description."
+```
+
+### P27 — Funding agency program officer
+
+```yaml
+id: 27
+name_vi: "Cơ quan tài trợ — Trưởng chương trình"
+name_en: "Funding agency program officer"
+role: "Ensures the proposal aligns with the funding call, budget is realistic, and outputs are deliverable"
+scope: research
+always: false
+audiences: [funding-agency, research, grant]
+cares_about:
+  - "alignment with the call requirements"
+  - "budget realism and justified costs"
+  - "clear, measurable outputs and deliverables"
+loses_patience_when:
+  - "the proposal ignores call requirements"
+  - "budget items lack justification"
+  - "outputs are vague or unmeasurable"
+will_ask:
+  - "How does this address the call's priorities?"
+  - "Can you deliver all outputs with this budget?"
+  - "What are the specific, measurable deliverables?"
+strictness: "Scores 2 or lower if budget is unjustified, outputs are vague, or call alignment is missing."
+```
+
+### P28 — Peer scientist in the field
+
+```yaml
+id: 28
+name_vi: "Nhà khoa học đồng ngành — Chuyên gia trong lĩnh vực"
+name_en: "Peer scientist in the field"
+role: "Knows the field deeply and judges whether methods are sound and results are reproducible"
+scope: research
+always: false
+audiences: [researchers, academic, peer-review]
+cares_about:
+  - "methods are explained step-by-step"
+  - "enough detail to reproduce the work"
+  - "results fit what the method should produce"
+loses_patience_when:
+  - "methods are sketched, not detailed"
+  - "parameter choices are not justified"
+  - "results seem inconsistent with method"
+will_ask:
+  - "Can I reproduce this from your description?"
+  - "Why did you choose this parameter?"
+  - "Have you considered this failure mode?"
+strictness: "Scores 2 or lower if any method step is unclear or reproducibility is compromised by missing details."
+```
+
+### P29 — Industry partner evaluating transfer
+
+```yaml
+id: 29
+name_vi: "Đối tác công nghiệp — Đánh giá chuyển giao"
+name_en: "Industry partner evaluating transfer"
+role: "Must decide if the technology is ready for deployment, safe to integrate, and worth the cost"
+scope: research
+always: false
+audiences: [industry-partners, research, transfer]
+cares_about:
+  - "Technology Readiness Level and current maturity"
+  - "cost of integration and maintenance"
+  - "risks and failure modes in production"
+loses_patience_when:
+  - "TRL is claimed but not justified"
+  - "costs are hand-waved as 'future work'"
+  - "no discussion of production failure modes"
+will_ask:
+  - "What is the TRL and how do you know?"
+  - "What happens if this breaks in production?"
+  - "How much does integration cost, roughly?"
+strictness: "Scores 2 or lower if TRL is asserted without evidence or deployment risks are not discussed."
+```
+
+### P30 — PhD student / junior researcher
+
+```yaml
+id: 30
+name_vi: "Sinh viên tiến sĩ / Nhà nghiên cứu trẻ"
+name_en: "PhD student / junior researcher"
+role: "Smart but still learning; needs clear steps and worked examples to follow and reproduce"
+scope: research
+always: false
+audiences: [students, researchers, junior]
+cares_about:
+  - "prerequisites are stated and explained"
+  - "a worked example I can follow step-by-step"
+  - "definitions are clear at first use"
+loses_patience_when:
+  - "assumed background knowledge not provided"
+  - "no example to anchor understanding"
+  - "notation is used without definition"
+will_ask:
+  - "Can I follow every step?"
+  - "Do I understand the data format?"
+  - "What would I need to learn first?"
+strictness: "Scores 2 or lower if I cannot reproduce a result because a prerequisite or definition was skipped."
+```
+
 ## Audience Mapping
 
 Default persona ids per proposal type (quick mode). Always includes 20.
@@ -498,6 +748,18 @@ Default persona ids per proposal type (quick mode). Always includes 20.
 | tech-architecture | 3,4,9,12,13,19,20 |
 | project-proposal | 1,2,6,7,11,15,20 |
 | general | 1,7,9,14,16,17,20 |
+| internal-presentation | 21,22,23,24,7,20 |
+| internal-presentation:team-intro | 21,22,23,24,7,20 |
+| internal-presentation:leadership-report | 25,2,23,8,9,20 |
+| internal-presentation:feature-demo | 21,3,24,13,15,20 |
+| internal-presentation:training | 21,22,24,16,7,20 |
+| internal-presentation:all-hands | 21,25,14,17,18,20 |
+| research-proposal | 26,27,28,29,1,20 |
+| research-proposal:grant-proposal | 26,27,28,29,1,20 |
+| research-proposal:kickoff | 26,28,30,21,22,20 |
+| research-proposal:progress-report | 26,27,28,30,23,20 |
+| research-proposal:defense | 26,28,30,16,9,20 |
+| research-proposal:tech-transfer | 29,27,28,26,5,20 |
 
 ## Audience Keywords
 
@@ -524,9 +786,39 @@ When `audience` or `decisionMaker` contains a keyword, the listed personas are s
 | ceo, founder, owner, executive | 1 |
 | end user, non-technical, consumer | 7 |
 
+## Role Mapping
+
+When an `audienceProfile` is provided with structured roles, the primary roles are matched to their personas
+(primary before secondary). The mapping is bidirectional: a role links to a persona, and a persona's
+audiences hint at what roles it suits.
+
+| role | primary personas (weight: primary) | secondary personas |
+|---|---|---|
+| leadership | 1,25,23 | 2,9 |
+| engineering | 3,4,13 | 9,12 |
+| product | 14 | 1,3 |
+| sales | 15 | 1,2 |
+| marketing | 14 | 1 |
+| operations | 22 | 23 |
+| hr | 7 | 21,22 |
+| finance | 2 | 1,5 |
+| legal | 11 | 12 |
+| new-hires | 21 | 7,16 |
+| all-staff | 25 | 17,18,20 |
+| clients | 8 | 1,2,6 |
+| partners | 15 | 9,10 |
+| investors | 5 | 1,2 |
+| scientific-council | 26 | 28,6 |
+| funding-agency | 27 | 26,5 |
+| researchers | 28,30 | 26,29 |
+| students | 30 | 16,28 |
+| industry-partners | 29 | 27,28 |
+
 ## Rubric
 
 Scale 1–5. Every score cites a slide and a quote.
+
+### Universal criteria (all proposal types)
 
 | Code | Criterion | Pass threshold |
 |---|---|---|
@@ -541,7 +833,18 @@ Scale 1–5. Every score cites a slide and a quote.
 | C7 | Design and animation serve the content | avg >= 3.5 |
 | C8 | Anticipates objections and hard questions | avg >= 3.5 |
 
+### Research-proposal-only criteria (type: research-proposal)
+
+| Code | Criterion | Pass threshold |
+|---|---|---|
+| R1 | Novelty & contribution — proposal claims something genuinely new and cites how it differs from prior work | avg >= 4.0 |
+| R2 | Methodological rigor — methods are detailed, justified, and soundly designed for the proposed question | avg >= 4.0 |
+| R3 | Feasibility & reproducibility — steps are clear, parameters justified, and enough detail to reproduce | avg >= 3.5 |
+
 ## Blockers
 
 Any persona raising one of these fails the review regardless of scores:
 false-claim, fabricated-anecdote, overreaching-legal-security-promise, slide-without-script, slide-without-animation.
+
+For research proposals (type: research-proposal), an additional blocker applies:
+unsupported-scientific-claim — a key claim in the proposal is made without citation or support.
