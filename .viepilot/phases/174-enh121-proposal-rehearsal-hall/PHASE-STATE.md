@@ -4,12 +4,12 @@
 174 — ENH-121: Rehearsal Hall — timeline simulation, analytics, 3D replay (v3.22.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 174.1 | pending | Timeline builder + slide load metrics |
+| 174.1 | in_progress 🔄 | timeline builder + slide load metrics |
 | 174.2 | pending | Listener contract + hall audience |
 | 174.3 | pending | Aggregator: all metrics and chart data |
 | 174.4 | pending | Report: HTML (inline SVG) + summary.md + data.json |
@@ -27,7 +27,7 @@ planned
 .viepilot/requests/ENH-121.md
 
 ## Todo
-- [ ] [vp] 174.1 — Timeline builder + slide load metrics
+- [~] [vp] 174.1 — Timeline builder + slide load metrics
 - [ ] [vp] 174.2 — Listener contract + hall audience
 - [ ] [vp] 174.3 — Aggregator: all metrics and chart data
 - [ ] [vp] 174.4 — Report: HTML (inline SVG) + summary.md + data.json
