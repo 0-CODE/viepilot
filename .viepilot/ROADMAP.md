@@ -4404,7 +4404,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: After independent listening, a 4–6 persona panel questions a presenter agent (answers only from the material, with citations) and debates in up to 3 capped rounds over real messages — relay engine by default, Claude Code agent teams opt-in — and the report shows the transcript, a chat replay, before/after per panelist and the unanswered questions as deck gaps.
 **Estimated Tasks**: 5
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.23.0
 **Dependencies**: Phase 177 ✅
 **Directory**: `.viepilot/phases/178-enh128-hall-panel-debate/`
@@ -4418,6 +4418,6 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 178.5 | Tests + docs + CHANGELOG 3.23.0 + resolve ENH-128 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 178 --phase-complete` → exit 0
-- [ ] version = 3.23.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 178 --phase-complete` → exit 0
+- [x] version = 3.23.0

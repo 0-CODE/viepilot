@@ -4,7 +4,7 @@
 178 — ENH-128: Rehearsal Hall panel — personas debate and cross-examine a presenter agent (v3.23.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -20,6 +20,14 @@ in_progress
 
 ## Version Target
 3.23.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: a78dbad
+- Tag: vp-p178-complete
+- Full suite: 3270 passed
 
 ## Sources
 .viepilot/requests/ENH-128.md

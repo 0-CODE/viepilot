@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **177** ✅ (v3.22.3) · **Next Phase**: **178** ⏳ planned (ENH-128 → v3.23.0, 5 tasks; finish deck v2 first)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **178** ✅ (v3.23.0) · **Next Phase**: — (phases 165–178 complete; backlog empty on this branch)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 178 complete: ENH-128 → v3.23.0 (3270 tests). Panel Q&A after independent listening: selectPanel, protocol + caps + citations, presenter/panel prompts, relay + agent-teams engines, report section | Close phase 178 | 178 |
 | 2026-11-07 | Phase 178 planned for ENH-128 (5 tasks → 3.23.0): panel selection + message protocol, presenter/panel prompts, relay + agent-teams engines, debate report section | `/vp-evolve` | 178 |
 | 2026-11-07 | Phase 177 complete: BUG-036 → v3.22.3 (3259 tests). Listeners must open every slide (verifyVisual), selective quotes + mechanical flag, grounding + model-estimate labels, slide images in hall replay, deltas from data.json, session backfill | Close phase 177 | 177 |
 | 2026-11-07 | Phase 177 planned for BUG-036 (5 tasks → 3.22.3): listeners must view slides (slidesSeen/visualNotes + transcript verify), selective quotes + mechanical flag, coverage/estimate labels, slide images in hall replay, deltas from data.json, session currentVersion backfill | `/vp-evolve` | 177 |
