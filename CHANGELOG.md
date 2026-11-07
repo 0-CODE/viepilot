@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.18.0] - 2026-11-07
+### Added
+- Tool-use policy for every ViePilot skill, workflow and agent (ENH-125): Read to read, Grep/Glob to search, Edit to change, Write to create, Task to delegate, TodoWrite (or TaskCreate/TaskUpdate/TaskList) to track work; Bash only for running programs. One source (`templates/tool-policy.md`, `lib/tool-policy.cjs`) with a per-adapter mapping for Claude Code, Cursor, Codex, Copilot and Antigravity.
+- `vp-tools policy render --adapter <id>` and `vp-tools policy sync [--check]` keep a compact `<tool_policy>` block in all 22 SKILL.md files and all agents, and a reference line in every workflow.
+- `classifyBashCommand` detects shell file edits, reads and searches (sed -i, perl -pi, redirects, tee, heredocs, Python/Node writers, cat/head/tail/sed -n, grep/rg/find on paths) while allowing program runs and pipe filters.
+- Optional Claude Code PreToolUse hook `lib/hooks/tool-policy-hook.cjs` (`warn` default, `block`, `off`): `vp-tools hooks install --policy warn|block [--dry-run] [--yes]`, consent-gated and idempotent; config key `tools.policy`.
+- `lib/hooks-installer.cjs`: shared, idempotent settings writer for hooks (reused by upcoming proposal-context hooks).
+
+### Changed
+- `workflows/autonomous.md` appends `{DISPATCH_RULES}` (tool policy + safety rules) to every subagent prompt.
+- `workflows/proposal.md` keeps the run's task list in the host todo tool.
+
+### Fixed
+- Phase 150 fast-path timing test no longer flakes under full-suite load.
+
+---
+
 ## [3.17.0] - 2026-11-07
 ### Added
 - vp-proposal purpose consult (ENH-120): the user describes the purpose in their own words first; the AI states what it understood, recommends a type and variant with alternatives, suggests an outline and duration, lists watch-outs, then asks only the audience questions still missing (`--purpose`). Contract in `templates/proposal/purpose-consult-prompt.md`.
