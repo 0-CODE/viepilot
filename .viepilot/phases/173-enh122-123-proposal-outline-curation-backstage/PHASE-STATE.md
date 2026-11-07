@@ -13,7 +13,7 @@ in_progress
 | 173.2 | done ✅ | proposal-sources.cjs: inventory (path-only), Content Map rules, manifest validation |
 | 173.3 | done ✅ | proposal-curation.cjs — 48 tests (vi/en), Unicode-aware matching |
 | 173.4 | done ✅ | #31 observer via selectCouncil, 2 blockers, buildBackstage + findBackstageLeaks; backcompat selections identical |
-| 173.5 | in_progress 🔄 | workflow: outline, inventory, content map, leak/dev-note gates, backstage plan |
+| 173.5 | done ✅ | 4 new gated steps, manifest limited to Content Map, council via selectCouncil, prompt contract |
 | 173.6 | pending | Tests + CHANGELOG 3.21.0 + resolve ENH-122/123 |
 
 ## Dependencies
@@ -30,5 +30,5 @@ in_progress
 - [x] [vp] 173.2 — ENH-122 + ENH-123: Source inventory + Content Map
 - [x] [vp] 173.3 — ENH-122 + ENH-123: detectProcessLeak + detectDevNotes
 - [x] [vp] 173.4 — ENH-122 + ENH-123: Persona #31 Backstage Editor + council blocker + backstage.md
-- [~] [vp] 173.5 — ENH-122 + ENH-123: Workflow: outline, inventory, content map, leak/dev-note gates, backstage plan
+- [x] [vp] 173.5 — ENH-122 + ENH-123: Workflow: outline, inventory, content map, leak/dev-note gates, backstage plan
 - [ ] [vp] 173.6 — ENH-122 + ENH-123: Tests + CHANGELOG 3.21.0 + resolve ENH-122/123
