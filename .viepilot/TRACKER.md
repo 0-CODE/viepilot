@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | ENH-119 logged: thêm type internal-presentation (team-intro, leadership-report, feature-demo, training, all-hands); audience intake (vai trò, người quyết định, mức hiểu biết/quy mô, hình thức/mục tiêu) trước Step 3 → recommendProposalType + user xác nhận; audienceProfile nuôi voice/duration/persona; thêm persona nội bộ 21+. Cũng: hotfix 3.16.1 installer copy toàn bộ templates/ + giữ ngôn ngữ khi --yes | `/vp-request` | Backlog |
 | 2026-11-07 | Phase 167 complete: ENH-117c Persona Review Council → v3.16.0 (2423 + 1 skip). ENH-117 closed (165–167). Branch from-3.12.2 now 3.16.0 | Close phase 167 + ENH-117 | 167 |
 | Date | Decision | Rationale | Phase |
 |------|----------|-----------|-------|
@@ -286,6 +287,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-119 | 🔧 | vp-proposal `internal-presentation` (5 biến thể) + hỏi thành phần người nghe trước → gợi ý loại để user xác nhận; persona nội bộ 21+ | medium | new |
 | ENH-118 | 🔧 | Native todo mirror — bắt buộc vp-evolve/vp-auto tạo danh sách việc bằng công cụ todo gốc của host (TaskCreate/TodoWrite/write_todos…), fallback checklist PHASE-STATE + `vp-tools todo check` gate | high | ✅ done (**3.14.0**, Phase 168) |
 | ENH-117 | 🔧 | vp-proposal Human Voice — giọng người làm sản phẩm (voice 1–4), notes lời nói đầy đủ (giữ số) + file script 5/15/30', animation bắt buộc, hội đồng 20 persona review (6–8/lần, ≤2 vòng) | high | ✅ done (**3.13.0–3.16.0**, Phases 165–167) |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |
