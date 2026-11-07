@@ -4,12 +4,12 @@
 173 — ENH-122 + ENH-123: Outline-first gate, content curation, Backstage Editor (v3.21.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 173.1 | pending | Outline builder + gate |
+| 173.1 | in_progress 🔄 | outline builder + gate |
 | 173.2 | pending | Source inventory + Content Map |
 | 173.3 | pending | detectProcessLeak + detectDevNotes |
 | 173.4 | pending | Persona #31 Backstage Editor + council blocker + backstage.md |
@@ -26,7 +26,7 @@ planned
 .viepilot/requests/ENH-122.md, .viepilot/requests/ENH-123.md
 
 ## Todo
-- [ ] [vp] 173.1 — ENH-122 + ENH-123: Outline builder + gate
+- [~] [vp] 173.1 — ENH-122 + ENH-123: Outline builder + gate
 - [ ] [vp] 173.2 — ENH-122 + ENH-123: Source inventory + Content Map
 - [ ] [vp] 173.3 — ENH-122 + ENH-123: detectProcessLeak + detectDevNotes
 - [ ] [vp] 173.4 — ENH-122 + ENH-123: Persona #31 Backstage Editor + council blocker + backstage.md
