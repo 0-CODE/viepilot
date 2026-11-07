@@ -524,6 +524,12 @@ If task file is missing required sections:
 
 Canonical order for every task: **Validate contract → Doc-first gate → Stack preflight → Start checkpoint → Execute → Verify → State updates.**
 
+**Plan Mode for a high-risk task (ENH-129, Claude Code, optional):** for a single task the user marks as high-risk
+(`--plan-mode` on the run, or a task file with `plan_mode: true`), run the doc-first step inside Plan Mode —
+`EnterPlanMode`, read-only exploration, the file-level plan in the plan file, `ExitPlanMode` for approval — then copy
+the approved plan into the task file before the start checkpoint. Never the default for every task: it would stop
+autonomous runs at each task.
+
 1. **Written plan in the task file** — The active `.viepilot/phases/{phase}/tasks/{task}.md` MUST already contain real, task-specific content (not template placeholders) in:
    - `## Paths` (or equivalent), listing concrete files/dirs, and
    - `## File-Level Plan` **or** `## Implementation Notes` with an explicit bullet list of paths + what will change and why.
