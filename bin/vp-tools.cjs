@@ -1102,28 +1102,32 @@ const commands = {
   },
 
   /**
-   * Hooks scaffold + install — FEAT-013/FEAT-012 adapter hook management
-   * Usage: vp-tools hooks <scaffold|install> [--adapter <id>]
+   * Hooks scaffold + install — FEAT-013/FEAT-012 adapter hook management; ENH-125 policy hook
+   * Usage: vp-tools hooks <scaffold|install> [--adapter <id>] [--policy <mode>] [--dry-run] [--yes]
    */
-  hooks: (args) => {
+  hooks: async (args) => {
     const sub = args[0];
     if (!sub || sub === 'help') {
       console.log(`${colors.cyan}Usage:${colors.reset}
   vp-tools hooks scaffold [--adapter <id>]
   vp-tools hooks install  [--adapter <id>]
+  vp-tools hooks install --policy [warn|block] [--dry-run] [--yes]
 
 ${colors.cyan}Subcommands:${colors.reset}
   scaffold   Print hook config snippet for the target adapter (default: claude-code)
   install    Install ViePilot staleness hook into adapter config file (idempotent)
 
 ${colors.cyan}Options:${colors.reset}
-  --adapter <id>   Adapter ID: claude-code (default), cursor-agent, cursor-ide
+  --adapter <id>       Adapter ID: claude-code (default), cursor-agent, cursor-ide
+  --policy <mode>      Install tool-use policy hook: warn (default) or block
+  --dry-run            Show changes without writing (test mode)
+  --yes                Skip confirmation prompt
 
 ${colors.cyan}Examples:${colors.reset}
   ${colors.gray}$${colors.reset} vp-tools hooks scaffold
-  ${colors.gray}$${colors.reset} vp-tools hooks scaffold --adapter cursor-agent
   ${colors.gray}$${colors.reset} vp-tools hooks install
-  ${colors.gray}$${colors.reset} vp-tools hooks install --adapter claude-code`);
+  ${colors.gray}$${colors.reset} vp-tools hooks install --policy warn
+  ${colors.gray}$${colors.reset} vp-tools hooks install --policy block --dry-run`);
       return;
     }
 
@@ -1175,6 +1179,103 @@ ${colors.cyan}Examples:${colors.reset}
         console.log(`For Cursor, add hooks via .cursorrules or project MDC files.`);
         process.exit(0);
       }
+
+      // ── Handle --policy flag for ENH-125 tool-use policy hook ──────────────────
+      const policyArgIdx = args.indexOf('--policy');
+      if (policyArgIdx !== -1) {
+        const policyMode = args[policyArgIdx + 1];
+        if (!policyMode || !['warn', 'block'].includes(policyMode)) {
+          console.error(formatError('--policy requires a value: warn or block'));
+          process.exit(1);
+        }
+
+        const dryRun = args.includes('--dry-run');
+        const yes = args.includes('--yes');
+        const hooksInstaller = require(path.join(__dirname, '../lib/hooks-installer.cjs'));
+        const home = os.homedir();
+        const configPath = adapter.hooks.configFile(home);
+        const hookCommand = `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'tool-policy-hook.cjs')}`;
+
+        // Read existing settings.json
+        let settings = {};
+        if (fs.existsSync(configPath)) {
+          try { settings = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (_e) { settings = {}; }
+        }
+
+        // Plan hook installation
+        const plan = hooksInstaller.planHookInstall({
+          settings,
+          event: 'PreToolUse',
+          matcher: { tool_name: 'Bash' },
+          command: hookCommand,
+          removeCommands: [],
+        });
+
+        // Generate diff for display
+        const oldJson = JSON.stringify(settings, null, 2);
+        const newJson = JSON.stringify(plan.settings, null, 2);
+        const settingsChanged = oldJson !== newJson;
+
+        if (dryRun) {
+          if (settingsChanged) {
+            console.log(formatInfo('Would apply the following changes:'));
+            console.log(`\n${colors.gray}--- ${configPath}${colors.reset}`);
+            console.log(`${colors.gray}+++ ${configPath} (updated)${colors.reset}`);
+            const oldLines = oldJson.split('\n');
+            const newLines = newJson.split('\n');
+            const maxLines = Math.max(oldLines.length, newLines.length);
+            for (let i = 0; i < maxLines; i++) {
+              const oldLine = oldLines[i] || '';
+              const newLine = newLines[i] || '';
+              if (oldLine !== newLine) {
+                if (oldLine) console.log(`${colors.red}-${colors.reset} ${oldLine}`);
+                if (newLine) console.log(`${colors.green}+${colors.reset} ${newLine}`);
+              } else {
+                console.log(`  ${oldLine}`);
+              }
+            }
+            console.log();
+          } else {
+            console.log(formatInfo('no changes needed'));
+          }
+          process.exit(0);
+        }
+
+        // Non-TTY without --yes: print command and exit
+        if (!isInteractive && !yes) {
+          console.log(formatInfo('Non-interactive mode. Run with --yes to install:'));
+          console.log(`\n${colors.gray}$${colors.reset} vp-tools hooks install --policy ${policyMode} --yes\n`);
+          process.exit(0);
+        }
+
+        // Interactive mode: ask for confirmation
+        if (isInteractive && !yes) {
+          const confirmed = await confirm(`Install tool-policy hook (mode: ${policyMode})?`, false);
+          if (!confirmed) {
+            console.log(formatWarning('Aborted.'));
+            process.exit(0);
+          }
+        }
+
+        // Apply hook installation
+        hooksInstaller.applyHookInstall({
+          configPath,
+          plan,
+          dryRun: false,
+        });
+
+        // Update config with tools.policy
+        viepilotConfig.writeConfig({ tools: { policy: policyMode } });
+
+        console.log(formatSuccess('Tool-policy hook installed.'));
+        console.log(`  Config:  ${configPath}`);
+        console.log(`  Hook:    PreToolUse → tool-policy-hook.cjs`);
+        console.log(`  Mode:    ${policyMode}`);
+        console.log(`  Command: ${hookCommand}`);
+        process.exit(0);
+      }
+
+      // ── Original staleness hook installation (no --policy flag) ─────────────────
       const home = os.homedir();
       const configPath = adapter.hooks.configFile(home);
       const hookCommand = `node ${path.join(adapter.viepilotDir(home), 'lib', 'hooks', 'brainstorm-staleness.cjs')}`;
