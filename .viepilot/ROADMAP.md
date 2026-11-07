@@ -4427,7 +4427,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: The panel engine label is derived from how messages actually flowed, replyTo accepts message or panelist ids, the strongest skeptics always get a seat, before/after uses each panelist's own stance, the presenter respects the word cap, card text is vertically centred, and proposal diff compares the latest two versions.
 **Estimated Tasks**: 3
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.23.1
 **Dependencies**: Phase 178 ✅
 **Directory**: `.viepilot/phases/179-bug037-panel-live-fixes/`
@@ -4439,6 +4439,6 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 179.3 | Tests + CHANGELOG 3.23.1 + resolve BUG-037 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 179 --phase-complete` → exit 0
-- [ ] version = 3.23.1
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 179 --phase-complete` → exit 0
+- [x] version = 3.23.1

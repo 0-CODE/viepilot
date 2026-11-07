@@ -4,7 +4,7 @@
 179 — BUG-037: first live panel run fixes (v3.23.1)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -18,6 +18,14 @@ in_progress
 
 ## Version Target
 3.23.1 (PATCH)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: a1479f2
+- Tag: vp-p179-complete
+- Full suite: 3278 passed
 
 ## Sources
 .viepilot/requests/BUG-037.md

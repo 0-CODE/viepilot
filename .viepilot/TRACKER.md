@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **178** ✅ (v3.23.0) · **Next Phase**: **179** ⏳ planned (BUG-037 → v3.23.1, 3 tasks)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **179** ✅ (v3.23.1) · **Next Phase**: — (ENH-129 in backlog)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 179 complete: BUG-037 → v3.23.1 (3278 tests). Skeptic-first panel, replyTo ids, stance before/after, computed engine label, diff latest two, card centring rule | Close phase 179 | 179 |
 | 2026-11-07 | Phase 179 planned for BUG-037 (3 tasks → 3.23.1): computed engine, replyTo ids, skeptic-first panel, stance before/after, presenter cap, diff latest-two, card centring | `/vp-evolve` | 179 |
 | 2026-11-07 | Phase 178 complete: ENH-128 → v3.23.0 (3270 tests). Panel Q&A after independent listening: selectPanel, protocol + caps + citations, presenter/panel prompts, relay + agent-teams engines, report section | Close phase 178 | 178 |
 | 2026-11-07 | Phase 178 planned for ENH-128 (5 tasks → 3.23.0): panel selection + message protocol, presenter/panel prompts, relay + agent-teams engines, debate report section | `/vp-evolve` | 178 |
