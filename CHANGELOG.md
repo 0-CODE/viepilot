@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.23.0] - 2026-11-07
+### Added
+- **Rehearsal Hall panel (ENH-128):** after independent listening, a 4–6 persona panel questions a presenter agent and debates in up to 3 capped rounds of messages.
+  - **Library:** `lib/proposal-panel.cjs` provides panel selection (`selectPanel`), the presenter's citable material (`deckMaterial`), the message protocol with caps and citation checks (`validateMessage`, `buildTranscript`), `unansweredQuestions` and `beforeAfter`.
+  - **Prompts:** `presenter-prompt.md` answers only from the material, with citations, and never invents. `panel-prompt.md` covers the 3 rounds: question the presenter, answer each other, final position.
+  - **Workflow:** Step 10c with AskUserQuestion gates. `--panel relay` is the default and works on every host. `--panel teams` uses Claude Code agent teams (experimental, opt-in).
+  - **Report:** a "Panel Q&A" section (chat transcript, unanswered questions, before/after), also in summary.md and data.json.
+### Fixed
+- `buildBackstage` now lists Content Map DROP items when it is given the manifest's `contentMap` array.
+
 ## [3.22.3] - 2026-11-07
 ### Fixed
 Rehearsal Hall grounding (BUG-036). Run-3 had shown that most listeners never opened the slides and that the quote check could be passed by copying whole segments.

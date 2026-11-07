@@ -212,3 +212,26 @@ npm install @googleapis/slides
 - **Versions.** A version folder is a draft until Confirm Output seals it; after that, changes go to a new version.
   Rehearsal Hall runs are added under `simulation/` and hashed into the provenance.
 
+## Rehearsal Hall panel (3.23.0)
+
+After the hall's independent listening, a **panel** of 4–6 personas questions a **presenter agent** and argues with each
+other in up to 3 rounds of messages:
+
+1. Round 1 — each panelist asks the presenter its sharpest question. The presenter answers **only** from the deck,
+   notes, backstage and Content Map and cites the ids it used (`S4`, `N6`, `B2`, `C11`); if the material has no answer it
+   says so and the question is recorded as a gap.
+2. Round 2 — panelists answer each other (agree, push back, add evidence), quoting what they answer.
+3. Round 3 — final positions: did the Q&A change their mind?
+
+The panel is picked from the listening results (most negative primary listener, lowest end attention, most
+unanswered objections, the Humanity editor and a decision-maker). Listening itself stays independent, so the hall
+numbers are not influenced by the debate.
+
+`--panel relay` (default) works on every host: the orchestrator moves the messages between the agents.
+`--panel teams` uses Claude Code agent teams (experimental — set `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`): the
+panelists and the presenter message each other directly. It costs about one context window per member, so the panel
+is capped at 6. `--panel off` skips it.
+
+The report adds a **Panel Q&A** section: the chat transcript (who → whom, round, citations, flags), the questions the
+material could not answer, and a before/after table per panelist.
+
