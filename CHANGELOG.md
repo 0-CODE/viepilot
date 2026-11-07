@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.20.0] - 2026-11-07
+### Added
+- vp-proposal uses Claude Code's document skills (ENH-127, explicit opt-in scoped to vp-proposal): `anthropic-skills:pptx` for creation guidance, file validation after the animation post-process and the new Deck QA gate; `anthropic-skills:docx` for the document and its verification; `anthropic-skills:xlsx` for budget workbooks; `anthropic-skills:pdf` for research references.
+- Step 6c Deck QA (mandatory when the pptx skill is available): content QA (`slide_text.py` + placeholder scan), file QA (`validate.py`), visual QA (render every slide to an image and review it with fresh eyes); output gate with the findings.
+- `lib/proposal-env.cjs`: detects the document skills (session list or local copies) and their dependencies (python-pptx, openpyxl, defusedxml, lxml, LibreOffice, Poppler) with install hints; every check that cannot run reports "skipped — <reason>" instead of passing.
+- `lib/proposal-budget.cjs`: budget workbook specs with live formulas for project proposals, research grant and progress reports, and leadership asks; openpyxl and read-back scripts for the xlsx skill; `evaluateSpec` fallback clearly labelled when the workbook cannot be recalculated.
+- `lib/proposal-import.cjs`: imports text and speaker notes edited in PowerPoint back into the manifest (parse `slide_text.py` output, per-slide diff, apply only accepted slides).
+
+---
+
 ## [3.19.0] - 2026-11-07
 ### Added
 - vp-proposal asks the user at every gate (ENH-124): each workflow step has an input and/or output AskUserQuestion gate (or names the gate that covers it); gate registry `lib/proposal-gates.cjs` with `lintWorkflowGates` so the workflow cannot drift back.
