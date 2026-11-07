@@ -10,7 +10,7 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 179.1 | done ✅ | skeptic-first + replyTo + stance + engine |
-| 179.2 | pending | Report shows stance/conditions; proposal diff latest-two; card text centring guidance |
+| 179.2 | in_progress 🔄 | report/diff/centring |
 | 179.3 | pending | Tests + CHANGELOG 3.23.1 + resolve BUG-037 |
 
 ## Dependencies
@@ -24,5 +24,5 @@ in_progress
 
 ## Todo
 - [x] [vp] 179.1 — Panel lib: computed engine, replyTo resolution, skeptic-first selection, stance before/after
-- [ ] [vp] 179.2 — Report shows stance/conditions; proposal diff latest-two; card text centring guidance
+- [~] [vp] 179.2 — Report shows stance/conditions; proposal diff latest-two; card text centring guidance
 - [ ] [vp] 179.3 — Tests + CHANGELOG 3.23.1 + resolve BUG-037
