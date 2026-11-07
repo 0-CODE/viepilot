@@ -4375,3 +4375,26 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 176 --phase-complete` → exit 0
 - [x] version = 3.22.2
+
+
+## Phase 177 — BUG-036: Rehearsal Hall listeners see the slides; quote guard and labels made honest (v3.22.3)
+
+**Goal**: Listeners must view every slide image and report what they saw; quotes must be selective (a full-segment copy is not evidence); per-segment metrics are labelled as model estimates with visual coverage and quote quality in the report; the hall screen shows the slide images; run-over-run deltas work from a data.json; old sessions get currentVersion backfilled.
+**Estimated Tasks**: 5
+**Status**: ⏳ planned
+**Version Target**: 3.22.3
+**Dependencies**: Phase 176 ✅
+**Directory**: `.viepilot/phases/177-bug036-hall-visual-grounding/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 177.1 | Listener prompt: must view slides, selective quotes, slidesSeen + visualNotes | S |
+| 177.2 | parseListener: selective quotes, mechanical-quote flag, visual fields; verifyVisual | M |
+| 177.3 | Aggregate + report: coverage, quote quality, model-estimate labels, deltas from data.json | M |
+| 177.4 | Hall replay shows slide images | M |
+| 177.5 | Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 177 --phase-complete` → exit 0
+- [ ] version = 3.22.3
