@@ -19,13 +19,13 @@ const AGG = {
 };
 
 describe('ENH-128 178.1 — panel selection', () => {
-  test('picks negative primary, lowest attention, most unanswered objections, #20 and a decision-maker', () => {
+  test('picks the strongest skeptic, lowest attention, the doubtful primary, #20 and a decision-maker (BUG-037 order)', () => {
     const { panel: ids, why } = panel.selectPanel(AGG);
-    expect(ids.slice(0, 3)).toEqual([4, 7, 9]);
+    expect(ids.slice(0, 3)).toEqual([9, 7, 4]);
     expect(ids).toContain(20);
     expect(ids).toContain(23);
     expect(ids.length).toBe(5);
-    expect(why[9]).toMatch(/2 unanswered/);
+    expect(why[9]).toMatch(/strongest skeptic \(2 objection/);
   });
   test('size is clamped to 4–6', () => {
     expect(panel.selectPanel(AGG, { size: 2 }).panel.length).toBe(4);
@@ -65,7 +65,7 @@ describe('ENH-128 178.1 — message protocol', () => {
     const t = panel.buildTranscript(msgs, ctx);
     expect(t.dropped).toHaveLength(1);
     expect(panel.unansweredQuestions(t).map((u) => [u.from, u.reason])).toEqual([[9, 'no answer in the material'], [7, 'not answered']]);
-    expect(panel.beforeAfter(AGG, t)).toEqual([{ personaId: 4, before: { wouldAct: false }, after: { wouldAct: true }, changed: true, why: 'có số ước lượng' }]);
+    expect(panel.beforeAfter(AGG, t)).toEqual([{ personaId: 4, before: { wouldAct: false }, after: { wouldAct: true, stance: '', conditions: [] }, changed: true, why: 'có số ước lượng' }]);
   });
 });
 

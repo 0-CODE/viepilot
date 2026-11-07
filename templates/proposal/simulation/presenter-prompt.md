@@ -17,6 +17,7 @@ Ids: `S<n>` = slide n (heading + bullets), `N<n>` = speaker notes of slide n, `B
   "that's not in the material yet — noted") and set `noAnswer: true`. Never invent numbers, names, dates or results.
 - Do not argue with the panel or change the proposal; you may clarify what the deck means.
 - One answer per question, addressed to the person who asked.
+- Each answer at most 80 words — count before you write; longer answers are flagged.
 
 ## The questions this round
 {questions_json}

@@ -1745,7 +1745,10 @@ members / Use agent teams / Skip. `recordGate(root, slug, 'panel', 'input', resu
   AskUserQuestion (cost: one context window per member; experimental limits). The lead creates a team of the
   presenter + panel, posts each round as a task, teammates message each other directly with SendMessage, and the
   lead closes a round once every panelist has posted (a `TeammateIdle` hook may keep a member working until its round
-  message exists). The lead collects the messages into the same transcript. Never more than 6 panel members.
+  message exists). In round 2 the panelists `SendMessage` each other directly; the lead marks those messages
+  `via: "direct"` when it collects them. The lead collects the messages into the same transcript. Never more than 6
+  panel members. The report's engine label comes from `detectEngine(transcript)` — a run where the lead relayed every
+  round is reported as relay even if the members were teammates.
 
 `writeRun(..., { panel: { members, why, engine, transcript, unanswered, beforeAfter } })` adds the Panel Q&A section.
 
