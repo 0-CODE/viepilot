@@ -526,3 +526,31 @@ describe('proposal-store', () => {
     });
   });
 });
+
+describe('phase171-t1 review fixes', () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const store = require('../../lib/proposal-store.cjs');
+  const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf8'));
+  let root;
+  beforeEach(() => { root = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-store-review-')); });
+  afterEach(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  test('provenance records ViePilot\'s own version, not the user project\'s', () => {
+    fs.writeFileSync(path.join(root, 'package.json'), JSON.stringify({ name: 'user-app', version: '9.9.9' }));
+    store.createProposal(root, { slug: 'crm', title: 'CRM', type: 'project-proposal' });
+    const v = store.newVersion(root, 'crm');
+    store.writeProvenance(root, 'crm', v.version, {});
+    expect(store.readProvenance(root, 'crm', v.version).viepilotVersion).toBe(pkg.version);
+  });
+
+  test('topic matching is word-based and diacritic-insensitive', () => {
+    store.createProposal(root, { slug: 'ke-hoach-crm', title: 'Kế hoạch CRM', type: 'project-proposal' });
+    fs.writeFileSync(path.join(root, 'docs/proposals/old-pitch-2026-10-01.pptx'), 'x');
+    expect(store.detectExisting(root, { topic: 'Old pitch for investors' }).legacy.map((l) => l.slug)).toEqual(['old-pitch']);
+    expect(store.detectExisting(root, { topic: 'Kế hoạch triển khai CRM' }).proposals.map((p) => p.slug)).toEqual(['ke-hoach-crm']);
+    expect(store.detectExisting(root, { topic: 'Hội thảo khoa học' }).proposals).toEqual([]);
+    const all = store.detectExisting(root, {});
+    expect(all.proposals.length).toBe(1);
+    expect(all.legacy.length).toBe(1);
+  });
+});
