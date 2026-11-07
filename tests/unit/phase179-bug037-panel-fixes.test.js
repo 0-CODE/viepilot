@@ -57,3 +57,35 @@ describe('BUG-037 179.1 — before/after uses the panelist stance', () => {
     expect(fs.readFileSync(path.join(__dirname, '../../workflows/proposal.md'), 'utf8')).toMatch(/detectEngine\(transcript\)/);
   });
 });
+
+describe('BUG-037 179.2 — report stance columns, engine from transcript, diff latest two', () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const { execFileSync } = require('child_process');
+  const report = require('../../lib/proposal-sim-report.cjs');
+  const sim = require('../../lib/proposal-simulation.cjs');
+  const { aggregate } = require('../../lib/proposal-sim-aggregate.cjs');
+  test('report labels a relayed run as relay even when "teams" was requested; stance + conditions shown', () => {
+    const TL = sim.buildTimeline({ slides: [{ index: 1, heading: 'A', speakerNotes: 'Chào mọi người.' }] }, { lang: 'en' });
+    const l = sim.parseListener({ personaId: 23, states: [{ seg: 0, attention: 70 }] }, TL).listener;
+    const agg = aggregate({ timeline: TL, listeners: [l], manifest: { slides: [{ index: 1 }] } });
+    const t = panel.buildTranscript([{ from: 23, to: 'all', round: 3, seq: 1, text: 'Yes if.', final: { wouldAct: true, changed: true, stance: 'conditional yes', conditions: ['branch protection'], why: 'x' } }], { roster: [23] });
+    const html = report.renderReport(agg, { lang: 'en', panel: { members: [23], engine: 'teams', transcript: t, unanswered: [], beforeAfter: panel.beforeAfter(agg, t) } });
+    expect(html).toMatch(/relayed by the orchestrator/);
+    expect(html).not.toMatch(/agent teams \(direct messages\)/);
+    expect(html).toMatch(/conditional yes/);
+    expect(html).toMatch(/branch protection/);
+  });
+  test('proposal diff compares the two latest versions by default (numeric order)', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vp179-'));
+    const store = require('../../lib/proposal-store.cjs');
+    store.createProposal(root, { slug: 'd', title: 'D', type: 'general' });
+    for (const v of ['v1-2026-11-07', 'v2-2026-11-07', 'v10-2026-11-07']) fs.mkdirSync(path.join(root, 'docs/proposals/d/versions', v), { recursive: true });
+    store.setCurrentVersion(root, 'd', 'v1-2026-11-07');
+    const out = execFileSync('node', [path.join(__dirname, '../../bin/vp-tools.cjs'), 'proposal', 'diff', 'd'], { cwd: root }).toString();
+    expect(out).toMatch(/v2-2026-11-07 → v10-2026-11-07/);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  test('workflow has the card text centring rule', () => {
+    expect(fs.readFileSync(path.join(__dirname, '../../workflows/proposal.md'), 'utf8')).toMatch(/Text in cards \(BUG-037\)/);
+  });
+});

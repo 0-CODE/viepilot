@@ -1275,6 +1275,10 @@ Progress: `[anim] {N} slides, {M} builds`
 
 
 
+**Text in cards (BUG-037):** for text placed in shapes (cards), set `valign: "middle"` and an explicit equal top/bottom
+inset (`margin: [t, r, b, l]` in points, with t = b) so the text is centred; check the centring in the Deck QA render
+and report a card whose text sits visibly off-centre.
+
 **Packaging (BUG-035 G7):** `applyAnimations` writes the archive without directory entries; for any other generated
 .pptx/.docx (pptxgenjs before animation, the docx package, the script .docx) run `stripZipDirs(path)` from
 `lib/pptx-animate.cjs`. The pptx skill's `apply_theme.js` resolves `pptxgenjs`/`jszip` from ViePilot's install, so run

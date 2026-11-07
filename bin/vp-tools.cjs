@@ -2168,7 +2168,10 @@ ${colors.cyan}Examples:${colors.reset}
         return;
       }
 
-      const versions = fs.readdirSync(versionsDir).filter(v => v.startsWith('v')).sort();
+      // Order by date then version number (v10 after v9 — plain string sort put it first).
+      const vKey = (v) => { const m = /^v(\d+)-(.*)$/.exec(v) || []; return [m[2] || '', Number(m[1]) || 0]; };
+      const versions = fs.readdirSync(versionsDir).filter(v => v.startsWith('v'))
+        .sort((a, b) => { const [da, na] = vKey(a); const [db, nb] = vKey(b); return da.localeCompare(db) || na - nb; });
       if (versions.length === 0) {
         console.log(formatWarning('No versions found'));
         return;
@@ -2178,7 +2181,8 @@ ${colors.cyan}Examples:${colors.reset}
       let compareB = vB;
 
       if (!compareA && !compareB) {
-        compareB = proposal.currentVersion || versions[versions.length - 1];
+        // Default: the two latest versions (BUG-037 — current vs current before setCurrentVersion ran).
+        compareB = versions[versions.length - 1];
         compareA = versions.length > 1 ? versions[versions.length - 2] : null;
       } else if (!compareB) {
         compareB = proposal.currentVersion || versions[versions.length - 1];
