@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **175** ✅ (v3.22.1) · **Next Phase**: **176** ⏳ planned (BUG-035 → v3.22.2, 8 tasks)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **176** ✅ (v3.22.2) · **Next Phase**: — (phases 165–176 complete; backlog empty on this branch)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 176 complete: BUG-035 → v3.22.2 (3245 tests). Internal rooms seat only eligible personas, session/store seal + byKind gates, hints/sources, fixed demo/Q&A timing, curation + consistency/placeholders, animation packaging, AUQ rule in every skill + opt-in Stop hook | Close phase 176 | 176 |
 | 2026-11-07 | Phase 176 planned for BUG-035 (8 tasks → 3.22.2): G1 hall/council audience, G2 session/store/gates/seal, G3+G4 hints + sources, G5 fixed demo/Q&A timing, G6 curation/backstage/consistency/placeholders, G7 animation/packaging, G8 AUQ policy block + closing AUQ + opt-in Stop hook, G9 misc + release (ships G0 d6132ad) | `/vp-evolve` | 176 |
 | 2026-11-07 | Phase 175 complete: BUG-034 → v3.22.1 (3184 + 1 skip). Installer copies package-lock.json and runs npm ci --omit=dev in installed copies; --skip-deps; tests guarded by VIEPILOT_SKIP_DEPS | Close phase 175 | 175 |
 | 2026-11-07 | Phase 175 planned for BUG-034 (2 tasks → 3.22.1): copy package-lock.json, deps_install step (npm ci --omit=dev), --skip-deps, injectable runner, failure = warning with manual command | `/vp-evolve` | 175 |

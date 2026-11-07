@@ -4,7 +4,7 @@
 176 — BUG-035: vp-proposal trial fixes + AskUserQuestion for every question (v3.22.2)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -23,6 +23,13 @@ in_progress
 
 ## Version Target
 3.22.2 (PATCH)
+
+## Completed
+2026-11-07
+
+## Git
+- Tag: vp-p176-complete
+- Full suite: 3245 passed
 
 ## Sources
 .viepilot/requests/BUG-035.md

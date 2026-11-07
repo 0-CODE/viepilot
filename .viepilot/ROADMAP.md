@@ -4355,7 +4355,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: Fix the defects found in the first real /vp-proposal run (audience selection, session/store consistency, hints, source classifier, timing, curation/backstage, animation/packaging, misc) and make every question to the user go through AskUserQuestion on Claude Code — including the end-of-run next step. Ship the already-committed G0 parser fix (d6132ad) in the same release.
 **Estimated Tasks**: 8
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.22.2
 **Dependencies**: Phase 175 ✅
 **Directory**: `.viepilot/phases/176-bug035-proposal-trial-fixes/`
@@ -4372,6 +4372,6 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 176.8 | G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 176 --phase-complete` → exit 0
-- [ ] version = 3.22.2
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 176 --phase-complete` → exit 0
+- [x] version = 3.22.2
