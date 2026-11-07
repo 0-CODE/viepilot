@@ -10,7 +10,7 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 170.1 | done ✅ | tool-policy.md + tool-policy.cjs (renderPolicyBlock, classifyBashCommand) — 3d17074 + review fix |
-| 170.2 | pending | Inject policy into skills, workflows, agents, dispatch prompts |
+| 170.2 | in_progress 🔄 | inject policy into skills/workflows/agents/dispatch + policy sync |
 | 170.3 | pending | PreToolUse policy hook (consent-gated) |
 | 170.4 | pending | Lint tests for policy presence and forbidden instructions |
 | 170.5 | pending | CHANGELOG 3.18.0 + resolve ENH-125 |
@@ -26,7 +26,7 @@ in_progress
 
 ## Todo
 - [x] [vp] 170.1 — Policy source + classifier
-- [ ] [vp] 170.2 — Inject policy into skills, workflows, agents, dispatch prompts
+- [~] [vp] 170.2 — Inject policy into skills, workflows, agents, dispatch prompts
 - [ ] [vp] 170.3 — PreToolUse policy hook (consent-gated)
 - [ ] [vp] 170.4 — Lint tests for policy presence and forbidden instructions
 - [ ] [vp] 170.5 — CHANGELOG 3.18.0 + resolve ENH-125
