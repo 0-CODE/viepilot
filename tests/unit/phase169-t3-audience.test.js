@@ -443,6 +443,7 @@ test('phase169-t3: findIntakeGaps returns empty array for complete profile', () 
     roles: ['leadership'],
     decisionMaker: { role: 'leadership', cares: ['cost'] },
     knowledge: 'expert',
+    size: 'medium',
     format: 'in-person',
     goal: 'approve',
   });
@@ -475,7 +476,7 @@ test('phase169-t3: findIntakeGaps identifies missing decisionMaker', () => {
   expect(gaps).toContain('decisionMaker');
 });
 
-test('phase169-t3: findIntakeGaps identifies missing knowledge', () => {
+test('phase169-t3: findIntakeGaps identifies missing knowledge or size', () => {
   const profile = audience.normalizeAudienceProfile({
     roles: ['engineering'],
     decisionMaker: { role: 'leadership', cares: [] },
@@ -484,7 +485,7 @@ test('phase169-t3: findIntakeGaps identifies missing knowledge', () => {
   });
 
   const gaps = audience.findIntakeGaps(profile);
-  expect(gaps).toContain('knowledge');
+  expect(gaps).toContain('knowledgeSize');
 });
 
 test('phase169-t3: findIntakeGaps identifies missing format or goal', () => {
@@ -496,6 +497,182 @@ test('phase169-t3: findIntakeGaps identifies missing format or goal', () => {
 
   const gaps = audience.findIntakeGaps(profile);
   expect(gaps).toContain('formatGoal');
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Defect probe cases — orchestrator review
+// ──────────────────────────────────────────────────────────────────────────────
+
+test('phase169-t3: PROBE 1 — Vietnamese research kickoff with "thuyết minh" + "khởi động"', () => {
+  // "Buổi thuyết minh kickoff đề tài cấp bộ trước hội đồng khoa học, có chủ nhiệm đề tài và các thành viên"
+  // Should detect: roles [scientific-council, researchers], goal=kickoff (NOT demo)
+  // Should recommend: research-proposal/kickoff
+  const text = 'Buổi thuyết minh kickoff đề tài cấp bộ trước hội đồng khoa học, có chủ nhiệm đề tài và các thành viên';
+  const hints = audience.extractAudienceHints(text, { lang: 'vi' });
+
+  // Should extract research roles (scientific-council from hội đồng khoa học, researchers from đề tài/chủ nhiệm)
+  expect(hints.raw.roles).toBeDefined();
+  expect(Array.isArray(hints.raw.roles)).toBe(true);
+  expect(hints.raw.roles.includes('scientific-council') || hints.raw.roles.includes('researchers')).toBe(true);
+
+  // Should extract kickoff goal (not demo from thuyết minh)
+  expect(hints.raw.goal).toBe('kickoff');
+
+  // Reconstruct and recommend
+  const profile = audience.normalizeAudienceProfile(hints.raw);
+  const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+
+  // MUST be research-proposal/kickoff, not internal-presentation/feature-demo
+  expect(rec.typeId).toBe('research-proposal');
+  expect(rec.variant).toBe('kickoff');
+});
+
+test('phase169-t3: PROBE 2 — Unaccented Vietnamese (no diacritics)', () => {
+  // "Bao cao nghiem thu de tai truoc hoi dong khoa hoc"
+  // Should still match: báo cáo → report-progress, hội đồng khoa học → scientific-council
+  // Should recommend: research-proposal/progress-report
+  const text = 'Bao cao nghiem thu de tai truoc hoi dong khoa hoc';
+  const hints = audience.extractAudienceHints(text, { lang: 'vi' });
+
+  // Should extract roles despite no diacritics
+  expect(hints.raw.roles).toBeDefined();
+  expect(hints.raw.roles.length).toBeGreaterThan(0);
+
+  // Should extract goal (report-progress from báo cáo/nghiệm thu)
+  expect(hints.raw.goal).toBe('report-progress');
+
+  // Reconstruct and recommend
+  const profile = audience.normalizeAudienceProfile(hints.raw);
+  const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+
+  // Should be research-proposal/progress-report
+  expect(rec.typeId).toBe('research-proposal');
+  expect(rec.variant).toBe('progress-report');
+});
+
+test('phase169-t3: PROBE 3 — "Bảo vệ luận văn thạc sĩ" detects defense', () => {
+  // Should detect: goal=defend from "bảo vệ", students from "luận văn"
+  // Should recommend: research-proposal/defense
+  const text = 'Bảo vệ luận văn thạc sĩ';
+  const hints = audience.extractAudienceHints(text, { lang: 'vi' });
+
+  // Should extract goal defend
+  expect(hints.raw.goal).toBe('defend');
+
+  // Should extract roles (students from luận văn or thạc sĩ context)
+  if (hints.raw.roles) {
+    expect(hints.raw.roles.length).toBeGreaterThan(0);
+  }
+
+  // Reconstruct and recommend
+  const profile = audience.normalizeAudienceProfile(hints.raw);
+  const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+
+  // Should be research-proposal/defense (even if no roles, goal=defend triggers research)
+  expect(rec.typeId).toBe('research-proposal');
+  expect(rec.variant).toBe('defense');
+});
+
+test('phase169-t3: PROBE 4 — Department keywords: "phòng kinh doanh" + demo + "trực tiếp"', () => {
+  // "Giới thiệu công cụ mới cho phòng kinh doanh, demo trực tiếp"
+  // Should detect: roles [sales] from "phòng kinh doanh", goal [demo], format [in-person]
+  // Should recommend: internal-presentation/feature-demo
+  const text = 'Giới thiệu công cụ mới cho phòng kinh doanh, demo trực tiếp';
+  const hints = audience.extractAudienceHints(text, { lang: 'vi' });
+
+  // Should extract sales role from phòng kinh doanh
+  expect(hints.raw.roles).toBeDefined();
+  expect(hints.raw.roles).toContain('sales');
+
+  // Should extract demo goal
+  expect(hints.raw.goal).toBe('demo');
+
+  // Should extract in-person format
+  expect(hints.raw.format).toBe('in-person');
+
+  // Reconstruct and recommend
+  const profile = audience.normalizeAudienceProfile(hints.raw);
+  const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+
+  // Should be internal-presentation/feature-demo
+  expect(rec.typeId).toBe('internal-presentation');
+  expect(rec.variant).toBe('feature-demo');
+});
+
+test('phase169-t3: PROBE 5 — Nothing matched returns "general" not team-intro', () => {
+  // Text with no keywords: 'xyz abc 123'
+  const text = 'xyz abc 123';
+  const hints = audience.extractAudienceHints(text, { lang: 'en' });
+
+  // No roles, no goal extracted
+  expect(hints.raw.roles || []).toHaveLength(0);
+  expect(hints.raw.goal).toBeUndefined();
+
+  // Reconstruct and recommend
+  const profile = audience.normalizeAudienceProfile(hints.raw);
+  const rec = audience.recommendProposalType(profile, { lang: 'en' });
+
+  // Should be "general", not defaulting to internal team-intro
+  expect(rec.typeId).toBe('general');
+});
+
+test('phase169-t3: findIntakeGaps uses exact keys [roles, decisionMaker, knowledgeSize, formatGoal]', () => {
+  const profile = audience.normalizeAudienceProfile({
+    roles: ['engineering'],
+    decisionMaker: { role: 'leadership', cares: [] },
+    knowledge: 'expert',
+  });
+
+  const gaps = audience.findIntakeGaps(profile);
+
+  // Keys must be exactly: roles, decisionMaker, knowledgeSize, formatGoal (not 'knowledge')
+  expect(gaps).toContain('formatGoal');
+  expect(gaps).not.toContain('knowledge');
+
+  // Check valid gap keys
+  const validGaps = ['roles', 'decisionMaker', 'knowledgeSize', 'formatGoal'];
+  for (const gap of gaps) {
+    expect(validGaps).toContain(gap);
+  }
+});
+
+test('phase169-t3: reason cites signals, not just variant label', () => {
+  const profile = audience.normalizeAudienceProfile({
+    roles: ['scientific-council'],
+    goal: 'kickoff',
+  });
+  const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+
+  // Reason should cite signals (hội đồng, mục tiêu khởi động, etc.)
+  // Not just "Kickoff" or variant label
+  expect(rec.reason).toBeDefined();
+  expect(rec.reason.length).toBeGreaterThan(10);
+  // Should contain some meaningful text, not just the variant name
+  expect(rec.reason.toLowerCase()).not.toMatch(/^kickoff$/);
+});
+
+test('phase169-t3: alternatives always have 1–2 entries distinct from pick', () => {
+  const profilesWithAlternatives = [
+    { roles: ['researchers'], goal: 'report-progress' },
+    { roles: ['students'], goal: 'defend' },
+    { roles: ['funding-agency'], goal: 'fund' },
+  ];
+
+  for (const raw of profilesWithAlternatives) {
+    const profile = audience.normalizeAudienceProfile(raw);
+    const rec = audience.recommendProposalType(profile);
+
+    // Must have at least 1 alternative
+    expect(rec.alternatives.length).toBeGreaterThanOrEqual(1);
+    // Max 2 alternatives
+    expect(rec.alternatives.length).toBeLessThanOrEqual(2);
+
+    // All alternatives must be distinct from the pick
+    for (const alt of rec.alternatives) {
+      const isDistinct = alt.typeId !== rec.typeId || alt.variant !== rec.variant;
+      expect(isDistinct).toBe(true);
+    }
+  }
 });
 
 // ──────────────────────────────────────────────────────────────────────────────
