@@ -4349,3 +4349,29 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 175 --phase-complete` → exit 0
 - [x] version = 3.22.1
+
+
+## Phase 176 — BUG-035: vp-proposal trial fixes + AskUserQuestion for every question (v3.22.2)
+
+**Goal**: Fix the defects found in the first real /vp-proposal run (audience selection, session/store consistency, hints, source classifier, timing, curation/backstage, animation/packaging, misc) and make every question to the user go through AskUserQuestion on Claude Code — including the end-of-run next step. Ship the already-committed G0 parser fix (d6132ad) in the same release.
+**Estimated Tasks**: 8
+**Status**: ⏳ planned
+**Version Target**: 3.22.2
+**Dependencies**: Phase 175 ✅
+**Directory**: `.viepilot/phases/176-bug035-proposal-trial-fixes/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 176.1 | G1 audience selection: hall, council, role map, manifest profile | M |
+| 176.2 | G2 session/store consistency | L |
+| 176.3 | G3 + G4 purpose hints and source classifier | M |
+| 176.4 | G5 script timing with fixed segments; header and Q&A fallback | M |
+| 176.5 | G6 curation, backstage, cross-file consistency, placeholder gate | M |
+| 176.6 | G7 animation and packaging | M |
+| 176.7 | G8 AskUserQuestion for every question (all vp-* skills + Stop hook) | M |
+| 176.8 | G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 176 --phase-complete` → exit 0
+- [ ] version = 3.22.2
