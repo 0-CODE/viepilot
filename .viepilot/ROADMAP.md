@@ -4266,7 +4266,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: On Claude Code, vp-proposal creates, validates, renders, reads and edits its files through the host document skills, adds a mandatory deck QA gate, builds budget workbooks with live formulas, and labels every check that could not run.
 **Estimated Tasks**: 5
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.20.0
 **Dependencies**: Phase 171
 **Directory**: `.viepilot/phases/172-enh127-proposal-document-skills/`
@@ -4280,9 +4280,9 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 172.5 | Tests + CHANGELOG 3.20.0 + resolve ENH-127 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 172 --phase-complete` → exit 0
-- [ ] version = 3.20.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 172 --phase-complete` → exit 0
+- [x] version = 3.20.0
 
 ## Phase 173 — ENH-122 + ENH-123: Outline-first gate, content curation, Backstage Editor (v3.21.0)
 

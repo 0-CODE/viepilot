@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **171** ✅ (v3.19.0) · **Next Phase**: **171** ⏳
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **172** ✅ (v3.20.0) · **Next Phase**: **171** ⏳
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 172 complete: ENH-127 document skills → v3.20.0 (3033 + 1 skip). Deck QA gate, env detection with skip reasons, budget workbooks, edit import. Visual QA/recalc unverified locally (no LibreOffice/Poppler) | Close phase 172 | 172 |
 | 2026-11-07 | Phase 171 complete: ENH-124 + ENH-126 → v3.19.0 (3009 + 1 skip). All 23 proposal steps gated (lint 0); versioned outputs + provenance; detect/upgrade/iterate/resume; review caught provenance version 'unknown', dry-run side effects, schema write-back bug | Close phase 171 | 171 |
 | 2026-11-07 | Phase 170 complete: ENH-125 tool policy → v3.18.0 (2931 + 1 skip). Review caught classifier gaps, non-idempotent sync + 171-line skill blocks, wrong PreToolUse matcher format | Close phase 170 | 170 |
 | 2026-11-07 | Phases 170–174 planned (29 tasks): 170 ENH-125 tool policy → 3.18.0 · 171 ENH-124+126 session/AUQ gates/versioning → 3.19.0 · 172 ENH-127 document skills → 3.20.0 · 173 ENH-122+123 outline/curation/Backstage Editor → 3.21.0 · 174 ENH-121 Rehearsal Hall → 3.22.0. Decisions: policy generated from one source; hook default warn; immutable versions + gate registry; namespace-guard exception scoped to vp-proposal; three.js inlined for offline report | `/vp-evolve` | 170–174 |
@@ -299,7 +300,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-127 | 🔧 | vp-proposal bắt buộc dùng skill tài liệu của Claude Code (pptx/docx/xlsx/pdf): tạo theo hướng dẫn skill, validate.py sau animation, gate QA nội dung/file/hình ảnh từng slide, workbook ngân sách xlsx, đọc bản chỉnh tay; thiếu skill → AUQ, ghi "skipped" | high | triaged (→ Phase 172) |
+| ENH-127 | 🔧 | vp-proposal bắt buộc dùng skill tài liệu của Claude Code (pptx/docx/xlsx/pdf): tạo theo hướng dẫn skill, validate.py sau animation, gate QA nội dung/file/hình ảnh từng slide, workbook ngân sách xlsx, đọc bản chỉnh tay; thiếu skill → AUQ, ghi "skipped" | high | ✅ done (**3.20.0**, Phase 172) |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |

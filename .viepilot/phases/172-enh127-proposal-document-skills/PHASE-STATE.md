@@ -4,7 +4,7 @@
 172 — ENH-127: vp-proposal uses Claude Code document skills (pptx, docx, xlsx, pdf) (v3.20.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -20,6 +20,14 @@ in_progress
 
 ## Version Target
 3.20.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: d8d1aa2
+- Tag: vp-p172-complete
+- Full suite: 3033 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-127.md
