@@ -4442,3 +4442,24 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 179 --phase-complete` → exit 0
 - [x] version = 3.23.1
+
+
+## Phase 180 — ENH-129: optional Plan Mode for /vp-evolve (v3.24.0)
+
+**Goal**: `/vp-evolve` can plan in Claude Code Plan Mode (read-only exploration, one native approval via ExitPlanMode) before any plan file is written; offered for L/XL or vague requests; approved plan written verbatim; current flow kept as fallback.
+**Estimated Tasks**: 3
+**Status**: ⏳ planned
+**Version Target**: 3.24.0
+**Dependencies**: Phase 179 ✅
+**Directory**: `.viepilot/phases/180-enh129-evolve-plan-mode/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 180.1 | evolve workflow Plan Mode block + SKILL docs | M |
+| 180.2 | vp-auto optional per-task note + tests | S |
+| 180.3 | CHANGELOG 3.24.0 + resolve ENH-129 + reinstall | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 180 --phase-complete` → exit 0
+- [ ] version = 3.24.0
