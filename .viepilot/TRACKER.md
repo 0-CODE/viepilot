@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **167** ✅ (ENH-117c → v3.16.0) · **Next Phase**: **169** ⏳ (ENH-119 + ENH-120 → v3.17.0)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **169** ✅ (ENH-119 + ENH-120 → v3.17.0) · **Next Phase**: — (backlog: ENH-124 → ENH-122+123 → ENH-121)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 169 complete: ENH-119 + ENH-120 → v3.17.0 (2708 + 1 skip). Orchestrator review caught 14 recommendation defects behind executor PASS reports; 3 executors hit the 30-turn limit and were completed inline | Close phase 169 | 169 |
 | 2026-11-07 | ENH-124 logged: audit cho thấy 14/21 bước vp-proposal không có AskUserQuestion; không có trạng thái phiên bền vững nên agent quên bối cảnh khi trao đổi tiếp/compaction. Đề xuất: session.json + vp-tools proposal status/resume + /vp-proposal --resume; bước Iterate định tuyến yêu cầu sửa qua đúng gate; hook UserPromptSubmit + SessionStart/PostCompact (consent-gated); mọi step có input/output gate AUQ hoặc "covered by gate"; gate lint test. Thứ tự đề xuất: 169 → ENH-124 → ENH-122+123 → ENH-121 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-123 logged: persona #31 Backstage Editor luôn chạy (như #20) soát slide + notes + script tìm việc chưa làm / cần quan tâm / còn lại / hedge; detectDevNotes song ngữ; hành động fix/reframe/backstage/remove; nguyên tắc "đưa ra hậu trường, không nói dối" — mục trọng yếu với người ra quyết định chỉ được fix hoặc reframe (rủi ro → giảm thiểu → đề nghị); xuất backstage.md. Gộp kế hoạch cùng ENH-122 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-122 logged: 3 gate trước khi viết slide — (1) khung sườn: key message + job/evidence/thời lượng từng slide, user duyệt; (2) kiểm kê nguồn 7 loại (process-log như CHANGELOG/TRACKER/phase/git log không bao giờ copy, chỉ TRANSFORM thành kết quả; sensitive loại bỏ); (3) Content Map FIT/TRANSFORM/DROP/SENSITIVE. detectProcessLeak (version, phase/request id, commit, động từ changelog) fail-loud + blocker hội đồng. Thứ tự đề xuất: 169 → ENH-122 → ENH-121 | `/vp-request` | Backlog |
@@ -296,8 +297,8 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | new |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | new |
 | ENH-121 | 🔧 | vp-proposal Rehearsal Hall — giả lập trình bày toàn bộ deck + kịch bản theo timeline với persona; đánh giá, cải thiện, điểm ngưng tiếp nhận, biểu đồ giữ chân, hiệu quả keyword/tiêu chí + 4 nhóm biểu đồ; HTML/MD/JSON + hội trường 3D replay | medium | new |
-| ENH-120 | 🔧 | vp-proposal: mô tả mục đích tự do → AI tư vấn rồi chỉ hỏi phần thiếu; thêm type research-proposal (grant, kickoff, progress, defense, tech-transfer) + persona học thuật 26–30 + tiêu chí R1–R3 | medium | triaged (→ Phase 169) |
-| ENH-119 | 🔧 | vp-proposal `internal-presentation` (5 biến thể) + hỏi thành phần người nghe trước → gợi ý loại để user xác nhận; persona nội bộ 21+ | medium | triaged (→ Phase 169) |
+| ENH-120 | 🔧 | vp-proposal: mô tả mục đích tự do → AI tư vấn rồi chỉ hỏi phần thiếu; thêm type research-proposal (grant, kickoff, progress, defense, tech-transfer) + persona học thuật 26–30 + tiêu chí R1–R3 | medium | ✅ done (**3.17.0**, Phase 169) |
+| ENH-119 | 🔧 | vp-proposal `internal-presentation` (5 biến thể) + hỏi thành phần người nghe trước → gợi ý loại để user xác nhận; persona nội bộ 21+ | medium | ✅ done (**3.17.0**, Phase 169) |
 | ENH-118 | 🔧 | Native todo mirror — bắt buộc vp-evolve/vp-auto tạo danh sách việc bằng công cụ todo gốc của host (TaskCreate/TodoWrite/write_todos…), fallback checklist PHASE-STATE + `vp-tools todo check` gate | high | ✅ done (**3.14.0**, Phase 168) |
 | ENH-117 | 🔧 | vp-proposal Human Voice — giọng người làm sản phẩm (voice 1–4), notes lời nói đầy đủ (giữ số) + file script 5/15/30', animation bắt buộc, hội đồng 20 persona review (6–8/lần, ≤2 vòng) | high | ✅ done (**3.13.0–3.16.0**, Phases 165–167) |
 | BUG-032 | 🐛 | `npx viepilot install` misses new skills when package is outdated (vp-qa missing, 2.50.1→3.12.1) | high | triaged (→ Phase 151) |

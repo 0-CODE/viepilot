@@ -4196,7 +4196,7 @@ outline, watch-outs), asks only the missing audience groups, recommends a type +
 to confirm, and adds `internal-presentation` and `research-proposal` (5 variants each) with internal
 (21–25) and academic (26–30) personas and research-only criteria.
 **Estimated Tasks**: 6
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.17.0
 **Dependencies**: Phase 165 ✅, Phase 167 ✅, hotfix 3.16.1 ✅
 **Directory**: `.viepilot/phases/169-enh119-120-proposal-audience-internal-research/`
@@ -4211,7 +4211,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 169.6 | tests + CHANGELOG [3.17.0] + resolve ENH-119/120 | ≥ 25 resilient tests; full suite green | M | after 169.1-5 |
 
 **Verification**:
-- [ ] `npx jest tests/unit/phase169-enh119-120-proposal-audience.test.js --no-coverage` → pass
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 169 --phase-complete` → exit 0
-- [ ] version = 3.17.0
+- [x] `npx jest tests/unit/phase169-enh119-120-proposal-audience.test.js --no-coverage` → pass
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 169 --phase-complete` → exit 0
+- [x] version = 3.17.0

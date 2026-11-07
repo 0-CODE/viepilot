@@ -4,7 +4,7 @@
 169 — ENH-119 + ENH-120: Purpose consult, audience intake, internal & research types (v3.17.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -21,6 +21,14 @@ in_progress
 
 ## Version Target
 3.17.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: 084902d chore(release) 3.17.0
+- Tag: vp-p169-complete
+- Full suite: 2708 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-119.md, .viepilot/requests/ENH-120.md
