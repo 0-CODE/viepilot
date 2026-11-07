@@ -15,7 +15,7 @@ in_progress
 | 176.4 | done ✅ | fixedSec/qaSec + header/Q&A fallback |
 | 176.5 | done ✅ | sense guards + keep + backstage + consistency/placeholders |
 | 176.6 | done ✅ | placeholder skip + click check + stripZipDirs + NODE_PATH |
-| 176.7 | in_progress 🔄 | G8 AUQ policy + Stop hook |
+| 176.7 | done ✅ | AUQ rule in all skills + closing AUQ + Stop hook |
 | 176.8 | pending | G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035 |
 
 ## Dependencies
@@ -34,5 +34,5 @@ in_progress
 - [x] [vp] 176.4 — G5 script timing with fixed segments; header and Q&A fallback
 - [x] [vp] 176.5 — G6 curation, backstage, cross-file consistency, placeholder gate
 - [x] [vp] 176.6 — G7 animation and packaging
-- [~] [vp] 176.7 — G8 AskUserQuestion for every question (all vp-* skills + Stop hook)
+- [x] [vp] 176.7 — G8 AskUserQuestion for every question (all vp-* skills + Stop hook)
 - [ ] [vp] 176.8 — G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035
