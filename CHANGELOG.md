@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.22.3] - 2026-11-07
+### Fixed
+Rehearsal Hall grounding (BUG-036). Run-3 had shown that most listeners never opened the slides and that the quote check could be passed by copying whole segments.
+- **Listeners must see the slides:** the listener prompt requires opening every slide image before listening and reporting `slidesSeen` with one `visualNotes` entry per slide. `verifyVisual(transcript, imagePaths)` checks which images the subagent really read; claimed but unopened slides are not counted.
+- **Selective quotes:** a reaction only counts as cited when its quote is at most 60% of the segment (short segments excepted). Copying the whole segment no longer passes. Listeners who copy segments mechanically are flagged `quoteQuality: mechanical`, and their uncited negative reactions are dropped.
+- **Honest report:** the summary shows visual coverage, transcript-verified coverage and the count of mechanical quoters, with a warning when grounding is weak. Attention, retention and emotion charts are labelled as model estimates.
+- **Real slides in the replay:** the hall screen (3D texture and 2D view) shows the Deck QA slide images, embedded in the report (`writeRun({ slideImages })`).
+- **Run-over-run deltas:** `aggregate({ previous })` now accepts the previous run's `data.json`.
+- **Old sessions:** sessions created before 3.22.2 get `currentVersion` backfilled from `proposal.json`.
+
 ## [3.22.2] - 2026-11-07
 ### Fixed
 Defects found in the first real `/vp-proposal` run (BUG-035):

@@ -129,3 +129,20 @@ describe('BUG-036 177.4 — hall replay shows slide images', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 });
+
+describe('BUG-036 177.5 — old sessions get currentVersion backfilled', () => {
+  test('null currentVersion is filled from proposal.json and written back', () => {
+    const os = require('os');
+    const store = require('../../lib/proposal-store.cjs');
+    const session = require('../../lib/proposal-session.cjs');
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'vp177-ses-'));
+    store.createProposal(root, { slug: 'old', title: 'Old', type: 'general' });
+    session.startSession(root, 'old');
+    const { version } = store.newVersion(root, 'old', { date: '2026-11-07' });
+    const pj = path.join(root, 'docs/proposals/old/proposal.json');
+    fs.writeFileSync(pj, JSON.stringify({ ...JSON.parse(fs.readFileSync(pj, 'utf8')), currentVersion: version }));
+    expect(session.loadSession(root, 'old').currentVersion).toBe(version);
+    expect(JSON.parse(fs.readFileSync(path.join(root, 'docs/proposals/old/session.json'), 'utf8')).currentVersion).toBe(version);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+});
