@@ -64,6 +64,7 @@ Install options:
   --target <id|id,id|all>   Target profile(s): claude-code, cursor-agent, cursor-ide, antigravity, codex, copilot
   --yes                      Non-interactive mode (skip confirmations)
   --dry-run                  Print actions only (Node installer; no bash)
+  --skip-deps                Do not install runtime dependencies in the installed copy (offline)
   --list-targets             Print supported targets and exit
   --help                     Show help
 
@@ -92,6 +93,7 @@ function parseInstallArgs(args) {
     const arg = args[i];
     if (arg === '--yes') options.yes = true;
     else if (arg === '--dry-run') options.dryRun = true;
+    else if (arg === '--skip-deps') options.skipDeps = true;
     else if (arg === '--list-targets') options.listTargets = true;
     else if (arg === '--target') {
       const value = args[i + 1];
@@ -293,7 +295,7 @@ async function interactiveTargetSelection() {
  * @param {boolean} dryRun
  * @returns {{ ok: boolean, code: number }}
  */
-function runInstallViaNode(selectedTargets, dryRun, communicationLang = 'en') {
+function runInstallViaNode(selectedTargets, dryRun, communicationLang = 'en', skipDeps = false) {
   const fallbackRoot = path.join(__dirname, '..');
   const pkgRoot = resolveViepilotPackageRoot(fallbackRoot) || fallbackRoot;
   const profile = selectedTargets[0] || 'claude-code';
@@ -302,6 +304,7 @@ function runInstallViaNode(selectedTargets, dryRun, communicationLang = 'en') {
     VIEPILOT_AUTO_YES: '1',
     VIEPILOT_INSTALL_PROFILE: profile,
     VIEPILOT_COMM_LANG: communicationLang,
+    ...(skipDeps ? { VIEPILOT_SKIP_DEPS: '1' } : {}),
   };
   const wantPathShim = env.VIEPILOT_ADD_PATH === '1';
 
@@ -401,7 +404,7 @@ async function installCommand(rawArgs) {
     // non-blocking — network or fs errors must not abort install
   }
 
-  const run = runInstallViaNode(selectedTargets, options.dryRun, communicationLang);
+  const run = runInstallViaNode(selectedTargets, options.dryRun, communicationLang, !!options.skipDeps);
   const results = selectedTargets.map((target) => ({
     ok: run.ok,
     target,
