@@ -62,6 +62,7 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 | template_resolution | covered by gate: generate_pptx |
 | generate_pptx | output |
 | animation_hook | output |
+| deck_qa | output |
 | generate_docx | output |
 | generate_md | output |
 | persona_review_council | input, output |
@@ -82,6 +83,14 @@ Read package.json                 → verify pptxgenjs + docx dependencies prese
 
 Read `~/.viepilot/config.json` → `proposal.recentLangs` via `getProposalLang()`.
 If `--lang` flag provided: validate ISO 639-1 code; set `lang = flag value`.
+**Document skills (ENH-127 — MANDATORY on Claude Code):** run `assessEnvironment({ sessionSkills })` from
+`lib/proposal-env.cjs` (`sessionSkills` = the skill names this session lists). Record the result with
+`recordDecision(root, slug, 'environment', result, 'auto')`. When a document skill or a dependency is missing,
+AskUserQuestion: Install / enable it and retry (Recommended — show the hints) / Continue with ViePilot's built-in
+generators (explicit consent; every check that cannot run is reported as `checks.<name>.reason`, e.g.
+"skipped — missing soffice", in the summary and the review report — never as passed). Other adapters use the built-in
+generators and the same labelling.
+
 **Resume (ENH-124):** `--resume [slug]` → `loadSession(root, slug)` (latest active session when slug is omitted;
 `vp-tools proposal resume` prints the same). Restore every recorded decision, skip gates already accepted, and continue
 at `currentStep` / `pendingGate`. Never re-ask a confirmed decision unless the user asks to change it.
@@ -1086,6 +1095,10 @@ Compute-only step — covered by gate: `generate_pptx` (the template used is sho
 <step name="generate_pptx">
 ## Step 6: Generate .pptx
 
+**Claude Code:** load the pptx document skill first (Skill tool → `anthropic-skills:pptx`) and follow its
+"Creating with pptxgenjs" gotchas and structured-deck guidance while executing the steps below; ViePilot's manifest,
+spoken notes and template rules stay the source of truth. Other adapters: the steps below as written.
+
 Using `pptxgenjs`:
 1. Create new `pptxgen` instance
 2. Define Slide Master from template (dark navy `#1a1f36` background, accent `#4f6ef7`)
@@ -1128,7 +1141,37 @@ Runs right after the `.pptx` is written in Step 6. This step cannot be skipped o
 Progress: `[anim] {N} slides, {M} builds`
 
 
+
+**File validation (ENH-127):** after `validatePptxAnimations` passes, run the pptx skill's validator on the animated
+deck: `python <pptx-skill-dir>/scripts/office/validate.py <deck>.pptx` (add `--original <template>.pptx` when the deck
+came from a template). Any failure is fatal (fail-loud) — fix the generator or the timing XML and rebuild. When the
+check cannot run, report `checks.pptxFileQA.reason`.
+
 **Gate (output, ENH-124):** AskUserQuestion — show builds per slide and the click-cue check ([click] count = build count). Options: Accept (Recommended) / Fewer builds / Regenerate animations. `recordGate(root, slug, 'animation_hook', 'output', result)`; on accept `recordStep(root, slug, 'animation_hook')`.
+
+---
+
+</step>
+
+<step name="deck_qa">
+## Step 6c: Deck QA (ENH-127 — MANDATORY when the pptx skill is available)
+
+Run the pptx skill's three QA passes on the final deck (paths relative to the skill directory found by
+`detectDocumentSkills`):
+1. **Content QA** — `python scripts/slide_text.py <deck>.pptx`: every manifest slide present, in order, with its
+   speaker notes; then grep the output for leftover placeholders (`xxx`, `lorem`, `ipsum`, `TODO`, `[insert`).
+2. **File QA** — `python scripts/office/validate.py <deck>.pptx` (`--original` for template-based decks).
+3. **Visual QA** — `python scripts/office/soffice.py --headless --convert-to pdf <deck>.pptx`, then
+   `pdftoppm -jpeg -r 150 <deck>.pdf slide`; inspect EVERY slide image with fresh eyes (Claude Code: one subagent via the
+   Agent tool, given only the images and the skill's defect checklist — overflow first, overlap, margins, contrast,
+   alignment, numbers split from units, leftover placeholders). Keep the images in the version folder (`qa/`) — the
+   Rehearsal Hall reuses them.
+Fix every defect in the generator, rebuild, rerun Step 6b on the rebuilt deck, and re-render only the changed slides.
+Checks that cannot run are listed with `checks.<name>.reason` ("skipped — …").
+
+**Gate (output, ENH-124):** AskUserQuestion — show the QA results (defects found / fixed / remaining, skipped checks
+with reasons, a few slide images). Options: Accept (Recommended) / Fix the remaining issues / Regenerate / Stop.
+`recordGate(root, slug, 'deck_qa', 'output', result)`; on accept `recordStep(root, slug, 'deck_qa')`.
 
 ---
 
@@ -1136,6 +1179,11 @@ Progress: `[anim] {N} slides, {M} builds`
 
 <step name="generate_docx">
 ## Step 7: Generate .docx
+
+**Claude Code:** load the docx document skill (Skill tool → `anthropic-skills:docx`) and follow its docx-js gotchas;
+after writing, run the skill's verification step and report `checks.docxVerify.reason` when it cannot run. Optional: when
+the persona council (Step 8b) produces Improve items, add them to the .docx as Word comments with the skill's comment
+script so the author sees them in context.
 
 Using `docx` package, consuming **`docxContent`** (from Step 4a) for all narrative paragraphs:
 

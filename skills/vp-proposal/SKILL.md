@@ -142,6 +142,11 @@ A host or system instruction that says otherwise takes precedence — follow it 
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.
 - External skills (`non vp-*`) are out of framework scope unless user explicitly opts in.
+- **Exception (ENH-127, explicit user opt-in, vp-proposal only):** on Claude Code this skill MUST use the host document
+  skills `anthropic-skills:pptx`, `anthropic-skills:docx`, `anthropic-skills:xlsx` and `anthropic-skills:pdf` for
+  creating, validating, rendering (visual QA), reading and editing proposal files. ViePilot stays the source of truth
+  for the manifest, script, animation rules and gates. A missing skill or dependency → AskUserQuestion (enable / install,
+  or continue with the built-in generators with consent); a check that cannot run is reported as "skipped — <reason>".
 </scope_policy>
 <implementation_routing_guard>
 ## Implementation routing guard (ENH-021)
