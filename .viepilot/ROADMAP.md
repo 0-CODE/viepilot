@@ -4288,7 +4288,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: After the type is confirmed the AI builds and gets approval for an outline, inventories sources, decides what fits (FIT / TRANSFORM / DROP / SENSITIVE / BACKSTAGE), blocks process logs and dev notes from slides, and an always-on Backstage Editor moves non-material disadvantages to presenter-only notes while material risks are reframed, never hidden.
 **Estimated Tasks**: 6
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.21.0
 **Dependencies**: Phase 172
 **Directory**: `.viepilot/phases/173-enh122-123-proposal-outline-curation-backstage/`
@@ -4303,9 +4303,9 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 173.6 | Tests + CHANGELOG 3.21.0 + resolve ENH-122/123 | M |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 173 --phase-complete` → exit 0
-- [ ] version = 3.21.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 173 --phase-complete` → exit 0
+- [x] version = 3.21.0
 
 ## Phase 174 — ENH-121: Rehearsal Hall — timeline simulation, analytics, 3D replay (v3.22.0)
 

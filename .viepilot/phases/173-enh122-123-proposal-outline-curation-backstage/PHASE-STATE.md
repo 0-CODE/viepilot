@@ -4,7 +4,7 @@
 173 — ENH-122 + ENH-123: Outline-first gate, content curation, Backstage Editor (v3.21.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -21,6 +21,14 @@ in_progress
 
 ## Version Target
 3.21.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: 8882998
+- Tag: vp-p173-complete
+- Full suite: 3136 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-122.md, .viepilot/requests/ENH-123.md
