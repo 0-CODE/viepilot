@@ -563,21 +563,25 @@ const langInstruction = buildLangInstruction(lang, langContentOnly);
 
 Generate a structured JSON manifest from the loaded context.
 
+**Audience profile in the manifest (BUG-035 G1):** `audienceProfile` is REQUIRED — copy the profile confirmed at
+Step 2c verbatim. Check with `checkManifestAudience(manifest)` from `lib/proposal-audience.cjs` before rendering; the
+council and the Rehearsal Hall read it through `resolveAudienceProfile({ manifest, session })`.
+
 **Manifest schema:**
 ```json
 {
   "title": "Project Name",
   "subtitle": "One compelling sentence — not just a date",
-  "type": "project-proposal",,
+  "type": "project-proposal",
   "variant": "team-intro",
   "audienceProfile": {
-    "roles": ["leadership", "engineering"],
-    "decisionMaker": "Technical Director",
+    "roles": [{ "id": "engineering", "weight": "primary" }, { "id": "leadership", "weight": "secondary" }],
+    "decisionMaker": { "role": "engineering", "cares": ["risk", "technical"] },
     "knowledge": "expert",
     "size": "medium",
     "format": "in-person",
     "goal": "approve"
-  }
+  },
   "audience": "client|partner|investor|internal",
   "meta": {
     "cta": "sign the contract",
@@ -1652,8 +1656,11 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
 
 1. `buildTimeline(manifest, { durationMin, lang })` from `lib/proposal-simulation.cjs` (speaking rate vi 150 / en 140 wpm,
    `[click]` cues, pauses) and `slideLoad` per slide.
-2. `selectHall({ type, variant, audienceProfile, hall, add, remove })` → 12–16 listeners by default (`--hall all` = every
-   reviewer persona), #20 always present, primary-audience personas weighted ×2; #31 observes.
+2. `selectHall({ type, variant, audienceProfile: resolveAudienceProfile({ manifest, session }), hall, add, remove })` → 12–16 listeners by default (`--hall all` = every
+   reviewer persona), #20 always present, primary-audience personas weighted ×2; #31 observes. For an
+   internal-presentation only personas who can be in the room are seated (`isEligible`: investor, procurement,
+   existing customer, journalist and CFO need a matching audience role); `short: true` means fewer than 12 fit —
+   say so in the input gate instead of padding with outsiders.
 3. **Listeners (Claude Code):** one subagent per listener via the Agent tool, all in parallel, each given only
    `templates/proposal/simulation/listener-prompt.md` filled with its own persona card, the audience context, the
    timeline JSON and the Deck QA slide images when they exist. Text-only adapters run listeners sequentially and say so.

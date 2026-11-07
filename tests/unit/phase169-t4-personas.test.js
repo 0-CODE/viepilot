@@ -75,9 +75,12 @@ describe('phase169-t4: personas 21-30, research criteria, role mapping', () => {
 
     test('full mode for internal-presentation includes 1-25', () => {
       const ids = pr.selectPersonas({ type: 'internal-presentation', mode: 'full' });
-      expect(ids).toEqual(expect.arrayContaining([1, 2, 20, 21, 22, 23, 24, 25]));
-      // Should not include research personas in this mode
-      expect(ids.some(id => id >= 26)).toBe(false);
+      expect(ids).toEqual(expect.arrayContaining([1, 20, 21, 22, 23, 24, 25]));
+      // Should not include research personas in this mode (26-30)
+      expect(ids.some(id => id >= 26 && id <= 30)).toBe(false);
+      // BUG-035 G1: CFO only when the room has finance/leadership
+      expect(ids).not.toContain(2);
+      expect(pr.selectPersonas({ type: 'internal-presentation', mode: 'full', audienceProfile: { roles: [{ id: 'leadership', weight: 'primary' }] } })).toContain(2);
     });
   });
 

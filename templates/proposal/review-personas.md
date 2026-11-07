@@ -39,6 +39,7 @@ id: 2
 name_vi: "CFO / Người giữ ngân sách"
 name_en: "CFO / budget holder"
 role: "Owns the money and is paid to find hidden costs"
+requires_role: [finance, leadership]
 always: false
 audiences: [finance, cfo, budget, roi]
 cares_about:
@@ -111,6 +112,7 @@ id: 5
 name_vi: "Nhà đầu tư (angel/VC)"
 name_en: "Investor (angel/VC)"
 role: "Looks for market size, team edge and traction in one pass"
+requires_role: [investors]
 always: false
 audiences: [investor, vc, angel, funding]
 cares_about:
@@ -135,6 +137,7 @@ id: 6
 name_vi: "Phòng mua sắm / Procurement"
 name_en: "Procurement officer"
 role: "Compares vendors on terms, SLA and commitments that can be put in a contract"
+requires_role: [procurement, partners, clients]
 always: false
 audiences: [procurement, vendor, contract, tender]
 cares_about:
@@ -183,6 +186,7 @@ id: 8
 name_vi: "Khách hàng hiện tại trung thành"
 name_en: "Loyal existing customer"
 role: "Already uses the product and wants to feel valued and see what is new for them"
+requires_role: [clients]
 always: false
 audiences: [customer, existing, loyal, retention]
 cares_about:
@@ -231,6 +235,7 @@ id: 10
 name_vi: "Nhà báo / Truyền thông công nghệ"
 name_en: "Tech journalist"
 role: "Needs a story worth retelling and a headline that is true"
+requires_role: [press, media]
 always: false
 audiences: [media, journalist, press, launch]
 cares_about:
@@ -764,6 +769,56 @@ will_ask:
 strictness: "Flags every dev note with its slide and quote; a material risk moved backstage for a decision audience is a blocker."
 ```
 
+### P32 — Product manager
+
+```yaml
+id: 32
+name_vi: "Product manager"
+name_en: "Product manager"
+role: "Owns the roadmap and has to decide whether this changes how the team plans and ships"
+scope: internal
+always: false
+audiences: [product, roadmap, internal-only]
+cares_about:
+  - "what changes in planning and delivery for my team"
+  - "whether it slows down or speeds up shipping"
+  - "who decides what goes into a sprint"
+loses_patience_when:
+  - "the talk is only about tools, not about outcomes for users"
+  - "the cost in planning time is hidden"
+  - "it is unclear how this fits the current roadmap"
+will_ask:
+  - "Does this change how we write and size tickets?"
+  - "What do I need to do differently in planning?"
+  - "How will we know after the trial if it helped?"
+strictness: "Scores 2 or lower if the impact on planning and delivery is not stated."
+```
+
+### P33 — QA / test engineer
+
+```yaml
+id: 33
+name_vi: "Kỹ sư QA / kiểm thử"
+name_en: "QA / test engineer"
+role: "Owns quality gates and wants to know what is checked, by whom, and what still slips through"
+scope: internal
+always: false
+audiences: [qa, testing, quality, internal-only]
+cares_about:
+  - "which checks run automatically and which are manual"
+  - "what happens when a test fails mid-task"
+  - "how regressions are caught and traced back"
+loses_patience_when:
+  - "'tested' is claimed with no detail of what was tested"
+  - "failure handling is skipped in the demo"
+  - "QA is treated as an afterthought"
+will_ask:
+  - "What exactly is verified before a task is marked done?"
+  - "Can I see the record of what was checked?"
+  - "Where does my team fit in this flow?"
+strictness: "Scores 2 or lower if the verification step cannot be described from the talk."
+```
+
 ## Audience Mapping
 
 Default persona ids per proposal type (quick mode). Always includes 20.
@@ -821,8 +876,8 @@ audiences hint at what roles it suits.
 | role | primary personas (weight: primary) | secondary personas |
 |---|---|---|
 | leadership | 1,25,23 | 2,9 |
-| engineering | 3,4,13 | 9,12 |
-| product | 14 | 1,3 |
+| engineering | 3,4 | 22,12 |
+| product | 32 | 14,1 |
 | sales | 15 | 1,2 |
 | marketing | 14 | 1 |
 | operations | 22 | 23 |
@@ -839,6 +894,8 @@ audiences hint at what roles it suits.
 | researchers | 28,30 | 26,29 |
 | students | 30 | 16,28 |
 | industry-partners | 29 | 27,28 |
+| qa | 33 | 4 |
+| tech-lead | 4,22 | 3 |
 
 ## Rubric
 
