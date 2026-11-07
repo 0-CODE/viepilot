@@ -1699,7 +1699,12 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
 3. **Listeners (Claude Code):** one subagent per listener via the Agent tool, all in parallel, each given only
    `templates/proposal/simulation/listener-prompt.md` filled with its own persona card, the audience context, the
    timeline JSON and the Deck QA slide images when they exist. Text-only adapters run listeners sequentially and say so.
-4. `parseListener(json, timeline)` for each answer — negative reactions without a quote from their segment are dropped.
+4. `parseListener(json, timeline, { slideCount, verifiedSlides })` for each answer — negative reactions without a
+   selective quote from their segment are dropped (a whole-segment copy is not a quote; a listener who copies
+   segments mechanically is flagged `quoteQuality: mechanical`). **Visual grounding (BUG-036):** every listener must
+   open every slide image before listening and return `slidesSeen` + `visualNotes`; on Claude Code read the subagent
+   transcript and pass `verifyVisual(entries, imagePaths)` as `verifiedSlides`, so a claimed-but-unopened slide is not
+   counted. The report shows visual coverage and quote quality next to the numbers.
 5. `aggregate({ timeline, listeners, manifest, primary, keyMessages, keywords, previous })` from
    `lib/proposal-sim-aggregate.cjs`; `previous` = the latest earlier run's `data.json` for run-over-run deltas.
 6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta })` from `lib/proposal-sim-report.cjs`,
