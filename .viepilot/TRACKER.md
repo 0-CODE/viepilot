@@ -302,7 +302,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | ENH-127 | 🔧 | vp-proposal bắt buộc dùng skill tài liệu của Claude Code (pptx/docx/xlsx/pdf): tạo theo hướng dẫn skill, validate.py sau animation, gate QA nội dung/file/hình ảnh từng slide, workbook ngân sách xlsx, đọc bản chỉnh tay; thiếu skill → AUQ, ghi "skipped" | high | ✅ done (**3.20.0**, Phase 172) |
-| BUG-033 | 🐛 | Installer không cài/cập nhật node_modules cho bản cài (three thiếu → hội trường 2D; dependency mới về sau cũng thiếu) | high | new |
+| BUG-034 | 🐛 | Installer không cài/cập nhật node_modules cho bản cài (three thiếu → hội trường 2D; dependency mới về sau cũng thiếu) | high | new |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |
