@@ -11,7 +11,7 @@ in_progress
 |------|--------|-------|
 | 180.1 | done ✅ | evolve block + SKILL |
 | 180.2 | done ✅ | vp-auto note + tests |
-| 180.3 | pending | CHANGELOG 3.24.0 + resolve ENH-129 + reinstall |
+| 180.3 | in_progress 🔄 | release |
 
 ## Dependencies
 - Phase 179 ✅
@@ -25,4 +25,4 @@ in_progress
 ## Todo
 - [x] [vp] 180.1 — evolve workflow Plan Mode block + SKILL docs
 - [x] [vp] 180.2 — vp-auto optional per-task note + tests
-- [ ] [vp] 180.3 — CHANGELOG 3.24.0 + resolve ENH-129 + reinstall
+- [~] [vp] 180.3 — CHANGELOG 3.24.0 + resolve ENH-129 + reinstall
