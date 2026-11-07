@@ -103,3 +103,42 @@ When agent-browser is not available:
 1. Attempt WebFetch on the URL
 2. If response body is mostly empty or < 500 chars → warn: "Page appears JS-rendered. Install agent-browser for full content: `npx skills add vercel-labs/agent-browser`"
 3. Return whatever static content WebFetch retrieved with the warning attached
+
+<!-- tool-policy:start -->
+
+## Tool Policy (ENH-125)
+
+<tool_policy>
+
+## Tool Policy for Claude Code
+
+### Required Tools
+
+| Operation | Tool |
+|---|---|
+| Read files | Read |
+| Search files | Grep |
+| Edit files | Edit |
+| Create files | Write |
+| Run programs (git, npm, vp-tools) | Bash |
+| Track task list | TodoWrite or TaskCreate/TaskUpdate/TaskList |
+| Delegate sub-tasks | Task (Agent tool) |
+
+### Forbidden Patterns
+
+**Do NOT** edit, read, or search files via:
+- File edits: `sed -i`, `perl -pi`, `awk > file`, `> file`, `>> file`, `tee`, `cat <<EOF > file`, Python/Node `writeFileSync`
+- File reads: `cat file`, `head file`, `tail file`, `sed -n`
+- Searches: `grep file`, `find path`, `rg file`
+
+### Allowed Patterns
+
+**Do** use shell for:
+- `git …`, `npm test`, `npx jest …`, `node bin/vp-tools.cjs …`, `ls`, `mkdir -p`
+- Pipes: `… | grep`, `… 2>&1`, `… > /dev/null`
+
+See `templates/tool-policy.md` for full rules and exceptions.
+
+</tool_policy>
+
+<!-- tool-policy:end -->

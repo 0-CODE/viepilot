@@ -5,6 +5,7 @@ Auto-detects if running inside the viepilot framework repo to enable framework-s
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 - Default behavior: only use and suggest skills under `vp-*`.
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.

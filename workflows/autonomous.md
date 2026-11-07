@@ -4,6 +4,7 @@ Pauses at control points for user decisions.
 </purpose>
 
 ## ViePilot Skill Scope Policy (BUG-004)
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 - Default behavior: only use and suggest skills under `vp-*`.
 - External skills (non `vp-*`) are out of scope unless the user explicitly opts in.
@@ -30,7 +31,7 @@ Each agent is invoked via the pattern below rather than implemented inline.
 Agent({
   subagent_type: "general-purpose",
   description: "{agent-name}: {operation}",
-  prompt: "Load agents/{agent-name}.md for full spec. Execute: {operation} with inputs: {inputs}"
+  prompt: "Load agents/{agent-name}.md for full spec. Execute: {operation} with inputs: {inputs}. {DISPATCH_RULES}"
 })
 ```
 **Non-Claude Code adapters**: execute the equivalent operation inline in the same session.
@@ -330,7 +331,8 @@ FOR each cluster in clusters:
                  Task file: .viepilot/phases/{dir}/tasks/{task_id}.md
                  PHASE-STATE: .viepilot/phases/{dir}/PHASE-STATE.md
                  Repo root: {cwd}
-                 Return: TASK_RESULT: PASS|FAIL|PARTIAL + summary"
+                 Return: TASK_RESULT: PASS|FAIL|PARTIAL + summary
+                 {DISPATCH_RULES}"
       )
     Collect all TASK_RESULT outputs before advancing.
   ELSE:
@@ -354,8 +356,23 @@ commands, commit with message format: {projectPrefix}-vp-p{N}-t{task_id}: <summa
 then report:
 TASK_RESULT: PASS|FAIL|PARTIAL
 Committed: <sha> — <message>
-Criteria: ✅/❌ per item`
+Criteria: ✅/❌ per item
+
+{DISPATCH_RULES}`
 })
+```
+
+**`{DISPATCH_RULES}` — append verbatim to EVERY subagent prompt in this workflow** (executor,
+planner, quality gate, tracker, changelog, git, doc-sync, test-generator):
+```
+Tool policy (ENH-125): Read to read files, Grep/Glob to search, Edit to change files, Write to
+create files; Bash only to run programs (tests, node, vp-tools, git). Never edit or read files
+through sed, awk, perl, Python/Node scripts, heredocs or redirects. If a host/system instruction
+forces another way, follow it and say so in the report.
+Safety: never amend or force-push; never create .viepilot/PHASE-STATE.md at the repo root; never
+touch ~/.claude or the user's settings; run the full test suite and commit only when its exit
+code is 0 (do not judge success from piped output).
+Report honestly: list anything not done or not verified.
 ```
 
 Replace `{task_id}`, `{N}`, `{task_path}`, `{phase_dir}`, `{cwd}`, `{projectPrefix}` with actual values.

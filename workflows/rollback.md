@@ -6,6 +6,7 @@ Safe rollback to any ViePilot checkpoint with backup and state preservation.
 
 <step name="list_checkpoints">
 ## 1. List Available Checkpoints
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 Determine page size and offset:
 ```

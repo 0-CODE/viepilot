@@ -3,6 +3,7 @@ Create and manage project requests: bugs, features, enhancements, tech debt, and
 </purpose>
 
 ## Adapter Compatibility
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 | Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
 |---------|----------------------|-----------------------|-----------|----------------------|

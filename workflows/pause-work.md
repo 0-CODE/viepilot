@@ -7,6 +7,7 @@ Creates HANDOFF.json and .continue-here.md for recovery.
 
 <step name="detect">
 ## 1. Detect Current Position
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 ```bash
 # Read current state

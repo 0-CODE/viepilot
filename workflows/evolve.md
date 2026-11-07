@@ -3,6 +3,7 @@ Upgrade or expand the project: add features, start a new milestone, or refactor.
 </purpose>
 
 ## Adapter Compatibility
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 | Feature | Claude Code (terminal) | Cursor (Agent/Skills) | Codex CLI | Antigravity (native) |
 |---------|----------------------|-----------------------|-----------|----------------------|

@@ -6,6 +6,7 @@ Restore complete project context and resume work seamlessly from a previous sess
 
 <step name="check_project">
 ## 1. Check Project Exists
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 ```bash
 if [ ! -f ".viepilot/TRACKER.md" ]; then

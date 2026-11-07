@@ -1,4 +1,5 @@
 # Workflow: vp-proposal — Proposal Package Generation
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 **Skill:** `/vp-proposal`  
 **Version:** 0.2.0  

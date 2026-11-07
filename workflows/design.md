@@ -6,6 +6,7 @@ and importing brand templates from the awesome-design-md catalog.
 
 <adapter_context>
 ## ADAPTER_CONTEXT (FEAT-021)
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 At skill start, read ADAPTER_CONTEXT to determine shell tool for --sync file operations:
 

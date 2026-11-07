@@ -49,8 +49,10 @@ describe('ENH-125 Tool Policy — TOOL_MAP', () => {
     expect(cc.search).toMatch(/(Grep|Glob)/);
     expect(cc.edit).toBe('Edit');
     expect(cc.write).toBe('Write');
-    expect(cc.task).toBe('Agent');
-    expect(['TodoWrite', 'TaskCreate', 'TaskUpdate', 'TaskList']).toContain(cc.todo_write);
+    expect(cc.task).toMatch(/Task/);
+    expect(cc.task).toMatch(/Agent/);
+    expect(cc.todo_write).toMatch(/TodoWrite/);
+    expect(cc.todo_write).toMatch(/TaskCreate/);
   });
 
   test('cursor-agent has read_file, grep_search, edit_file', () => {
@@ -63,7 +65,7 @@ describe('ENH-125 Tool Policy — TOOL_MAP', () => {
 
   test('cursor-agent has no callable subagent (task tool is N/A)', () => {
     const cursor = TOOL_MAP['cursor-agent'];
-    expect(cursor.task).toBe('(N/A)');
+    expect(cursor.task).toMatch(/none callable/);
   });
 
   test('codex has apply_patch, container.exec', () => {
@@ -80,14 +82,14 @@ describe('ENH-125 Tool Policy — TOOL_MAP', () => {
   test('copilot has editFiles, none callable subagent', () => {
     const copilot = TOOL_MAP['copilot'];
     expect(['edit', 'editFiles']).toContain(copilot.edit);
-    expect(copilot.task).toBe('(N/A)');
+    expect(copilot.task).toMatch(/none callable/);
   });
 
   test('antigravity has file_write, no callable subagent', () => {
     const ag = TOOL_MAP['antigravity'];
     expect(ag.write).toBe('file_write');
     expect(ag.edit).toBe('file_write');
-    expect(ag.task).toBe('(N/A)');
+    expect(ag.task).toMatch(/none callable/);
   });
 });
 

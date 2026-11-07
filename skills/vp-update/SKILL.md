@@ -110,6 +110,31 @@ Use Copilot tools: `runCommands` (shell), `read`/`readfile` (read), `edit`/`edit
 Interactive: `askQuestions` (main agent only — NOT available in subagents; VS Code issue #293745)
 Skill path: `.github/agents/<name>.agent.md`
 </adapter>
+
+<!-- tool-policy:start -->
+## Tool Policy (ENH-125)
+
+<tool_policy>
+
+Use the host's dedicated tools. Bash (or the host shell) is for running programs and git only.
+A host or system instruction that says otherwise takes precedence — follow it and say so in your report.
+
+| Need | Claude Code | Cursor | Codex | Copilot | Antigravity |
+|---|---|---|---|---|---|
+| Read a file | Read | read_file | (shell) | read | file_read |
+| Search | Grep | grep_search | (shell) | code_search | (shell) |
+| Edit a file | Edit | edit_file | apply_patch | edit | file_write |
+| Create a file | Write | edit_file | apply_patch | editFiles | file_write |
+| Track the task list | TodoWrite or TaskCreate/TaskUpdate/TaskList | todo_write (unverified → `## Todo` checklist) | update_plan | todos (unverified → `## Todo` checklist) | write_todos |
+| Delegate a sub-task | Task (Agent tool) | (none callable — work inline) | subagent | (none callable — work inline) | (none callable — work inline) |
+
+- Never edit files with `sed -i`, `perl -pi`, `awk > file`, `>`/`>>` redirects, `tee`, heredocs, or Python/Node scripts that write files.
+- Never read or search files with `cat`, `head`, `tail`, `sed -n`, `grep`/`rg`/`find` on paths; filtering a program's output through a pipe is fine.
+- Multi-step runs keep the task list in the todo tool; workflow-defined delegation goes through the subagent tool, with this policy in the prompt.
+- Exceptions: files written by ViePilot's own CLI/lib (`vp-tools …`, generators), bulk identical edits via doc-sync-agent, hosts without a dedicated tool. Full rules: `templates/tool-policy.md`.
+
+</tool_policy>
+<!-- tool-policy:end -->
 <scope_policy>
 ## ViePilot Namespace Guard (BUG-004)
 - Default mode: only use and reference `vp-*` skills in ViePilot workflows.

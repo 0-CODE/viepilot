@@ -4,6 +4,7 @@ Allows research inline within the same brainstorm session when needed.
 </purpose>
 
 ## Adapter Compatibility
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 Detected at session start via `vp-tools detect-adapter` → ADAPTER_CONTEXT. Use ADAPTER_CONTEXT.interactive to select prompt mode.
 

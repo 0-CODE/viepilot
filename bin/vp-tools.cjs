@@ -1719,6 +1719,70 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Policy render and sync (ENH-125)
+   */
+  policy: async (args) => {
+    const sub = args[0];
+    const { renderPolicyBlock, TOOL_MAP } = require('../lib/tool-policy.cjs');
+    const policySync = require('../lib/policy-sync.cjs');
+
+    if (sub === 'render') {
+      const adapterIdx = args.indexOf('--adapter');
+      const adapterId = adapterIdx !== -1 ? args[adapterIdx + 1] : null;
+
+      if (!adapterId) {
+        console.error(formatError('--adapter <id> is required'));
+        process.exitCode = 1;
+        return;
+      }
+
+      try {
+        const block = renderPolicyBlock(adapterId);
+        console.log(block);
+      } catch (e) {
+        console.error(formatError(e.message));
+        process.exitCode = 1;
+      }
+      return;
+    }
+
+    if (sub === 'sync' || sub === 'check') {
+      const checkOnly = sub === 'check' || args.includes('--check');
+      const projectCheck = validators.requireProjectRoot();
+      validateArgs([projectCheck]);
+      const projectRoot = projectCheck.value;
+
+      try {
+        const modified = policySync.syncAll(projectRoot, checkOnly);
+
+        if (checkOnly) {
+          if (modified.length > 0) {
+            console.log('Files that would be modified by sync:');
+            modified.forEach(f => console.log(`  ${f}`));
+            process.exitCode = 1;
+          } else {
+            console.log('Policy sync check: OK (no changes needed)');
+          }
+        } else {
+          if (modified.length > 0) {
+            console.log(formatSuccess(`Policy synced to ${modified.length} file(s):`));
+            modified.forEach(f => console.log(`  ${f}`));
+          } else {
+            console.log(formatSuccess('Policy already up to date'));
+          }
+        }
+      } catch (e) {
+        console.error(formatError(`Sync failed: ${e.message}`));
+        process.exitCode = 1;
+      }
+      return;
+    }
+
+    console.error(formatError('Unknown policy subcommand', 'Usage: vp-tools policy <render|sync|check>'));
+    process.exitCode = 1;
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -1934,6 +1998,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}persona${colors.reset} <op>              Manage user personas (get|infer|list|set|auto-switch|context)
   ${colors.bold}detect-adapter${colors.reset} [--json]   Detect active adapter (claude-code/cursor/antigravity/codex/copilot)
   ${colors.bold}validate${colors.reset} --adapter <id>   Validate adapter capability requirements; exits 1 on critical gaps
+  ${colors.bold}policy${colors.reset} render|sync        Policy management: render blocks (--adapter <id>) or sync all files [--check]
   ${colors.bold}tracker${colors.reset} compact [--keep N] Compact bloated TRACKER.md, archive history
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 

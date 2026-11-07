@@ -6,6 +6,7 @@ Curate, classify, and store reusable UI components for future brainstorm and imp
 
 <step name="prepare_store">
 ## 1. Prepare Component Stores
+Tool policy: follow `<tool_policy>` in the invoking skill (source: templates/tool-policy.md)
 
 Ensure both stores exist:
 
