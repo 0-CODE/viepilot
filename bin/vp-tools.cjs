@@ -1206,7 +1206,7 @@ ${colors.cyan}Examples:${colors.reset}
         const plan = hooksInstaller.planHookInstall({
           settings,
           event: 'PreToolUse',
-          matcher: { tool_name: 'Bash' },
+          matcher: 'Bash', // Claude Code matcher is a tool-name pattern string
           command: hookCommand,
           removeCommands: [],
         });

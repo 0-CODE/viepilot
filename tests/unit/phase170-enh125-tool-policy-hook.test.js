@@ -187,7 +187,7 @@ describe('Phase 170 — hook installer: planHookInstall', () => {
     const plan1 = planHookInstall({
       settings,
       event: 'PreToolUse',
-      matcher: { tool_name: 'Bash' },
+      matcher: 'Bash',
       command: cmd,
     });
     expect(plan1.changed).toBe(true);
@@ -195,7 +195,7 @@ describe('Phase 170 — hook installer: planHookInstall', () => {
     const plan2 = planHookInstall({
       settings: plan1.settings,
       event: 'PreToolUse',
-      matcher: { tool_name: 'Bash' },
+      matcher: 'Bash',
       command: cmd,
     });
     expect(plan2.changed).toBe(false);
@@ -209,7 +209,7 @@ describe('Phase 170 — hook installer: planHookInstall', () => {
       hooks: {
         PreToolUse: [
           {
-            matcher: { tool_name: 'Bash' },
+            matcher: 'Bash',
             hooks: [{ type: 'command', command: oldCmd }],
           },
         ],
@@ -219,7 +219,7 @@ describe('Phase 170 — hook installer: planHookInstall', () => {
     const plan = planHookInstall({
       settings,
       event: 'PreToolUse',
-      matcher: { tool_name: 'Bash' },
+      matcher: 'Bash',
       command: newCmd,
       removeCommands: [oldCmd],
     });
@@ -244,7 +244,7 @@ describe('Phase 170 — hook installer: planHookInstall', () => {
     const plan = planHookInstall({
       settings,
       event: 'PreToolUse',
-      matcher: { tool_name: 'Bash' },
+      matcher: 'Bash',
       command: 'node tool-policy.cjs',
     });
 
@@ -393,5 +393,23 @@ describe('Phase 170 — regression: existing hooks functionality', () => {
     expect(result.status).toBe(0);
     expect(result.stdout).toContain('scaffold');
     expect(result.stdout).toContain('install');
+  });
+});
+
+describe('phase170-t3 review: settings format matches Claude Code', () => {
+  test('PreToolUse entry uses a string matcher "Bash"', () => {
+    const fs = require('fs'); const os = require('os'); const path = require('path');
+    const { spawnSync } = require('child_process');
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-hookfmt-'));
+    try {
+      const r = spawnSync(process.execPath, [path.join(__dirname, '../../bin/vp-tools.cjs'), 'hooks', 'install', '--policy', 'warn', '--yes'],
+        { env: { ...process.env, HOME: home, USERPROFILE: home }, encoding: 'utf8' });
+      expect(r.status).toBe(0);
+      const settings = JSON.parse(fs.readFileSync(path.join(home, '.claude', 'settings.json'), 'utf8'));
+      const entry = settings.hooks.PreToolUse.find((e) => e.hooks.some((h) => h.command.includes('tool-policy-hook.cjs')));
+      expect(entry.matcher).toBe('Bash');
+    } finally {
+      fs.rmSync(home, { recursive: true, force: true });
+    }
   });
 });
