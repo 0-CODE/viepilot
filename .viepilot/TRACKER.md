@@ -294,7 +294,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
-| ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | new |
+| ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | new |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | new |
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | new |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | new |
