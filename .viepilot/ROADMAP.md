@@ -4311,7 +4311,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: After a proposal is complete the user can rehearse it in a simulated hall: personas listen along a real timeline (slides, script lines, click cues), and the run produces evaluations, improvements, tune-out moments, a retention curve, keyword and criteria effectiveness, four chart groups and a self-contained HTML report with a 3D hall replay.
 **Estimated Tasks**: 7
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.22.0
 **Dependencies**: Phase 173
 **Directory**: `.viepilot/phases/174-enh121-proposal-rehearsal-hall/`
@@ -4327,6 +4327,6 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 174.7 | Tests + CHANGELOG 3.22.0 + resolve ENH-121 | M |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 174 --phase-complete` → exit 0
-- [ ] version = 3.22.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 174 --phase-complete` → exit 0
+- [x] version = 3.22.0

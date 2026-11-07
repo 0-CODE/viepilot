@@ -4,7 +4,7 @@
 174 — ENH-121: Rehearsal Hall — timeline simulation, analytics, 3D replay (v3.22.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -22,6 +22,14 @@ in_progress
 
 ## Version Target
 3.22.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: cf9d229
+- Tag: vp-p174-complete
+- Full suite: 3177 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-121.md

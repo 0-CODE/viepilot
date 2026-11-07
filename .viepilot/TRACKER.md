@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **173** ✅ (v3.21.0) · **Next Phase**: **171** ⏳
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **174** ✅ (v3.22.0) · **Next Phase**: **171** ⏳
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 174 complete: ENH-121 Rehearsal Hall → v3.22.0 (3177 + 1 skip). Browser-verified 3D replay. BUG-034 logged (installer never installs deps → 2D fallback for installed copies). Incident: overwrote main's untracked BUG-033 file, renumbered + reconstructed | Close phase 174 | 174 |
 | 2026-11-07 | Phase 173 complete: ENH-122 + ENH-123 → v3.21.0 (3136 + 1 skip). Outline/inventory/Content Map gates before content, curation check before rendering, #31 observer; review caught \\W stripping 'Đ' and #31 leaking into research full mode | Close phase 173 | 173 |
 | 2026-11-07 | Phase 172 complete: ENH-127 document skills → v3.20.0 (3033 + 1 skip). Deck QA gate, env detection with skip reasons, budget workbooks, edit import. Visual QA/recalc unverified locally (no LibreOffice/Poppler) | Close phase 172 | 172 |
 | 2026-11-07 | Phase 171 complete: ENH-124 + ENH-126 → v3.19.0 (3009 + 1 skip). All 23 proposal steps gated (lint 0); versioned outputs + provenance; detect/upgrade/iterate/resume; review caught provenance version 'unknown', dry-run side effects, schema write-back bug | Close phase 171 | 171 |
@@ -308,7 +309,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | ✅ done (**3.21.0**, Phase 173) |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | ✅ done (**3.21.0**, Phase 173) |
-| ENH-121 | 🔧 | vp-proposal Rehearsal Hall — giả lập trình bày toàn bộ deck + kịch bản theo timeline với persona; đánh giá, cải thiện, điểm ngưng tiếp nhận, biểu đồ giữ chân, hiệu quả keyword/tiêu chí + 4 nhóm biểu đồ; HTML/MD/JSON + hội trường 3D replay | medium | triaged (→ Phase 174) |
+| ENH-121 | 🔧 | vp-proposal Rehearsal Hall — giả lập trình bày toàn bộ deck + kịch bản theo timeline với persona; đánh giá, cải thiện, điểm ngưng tiếp nhận, biểu đồ giữ chân, hiệu quả keyword/tiêu chí + 4 nhóm biểu đồ; HTML/MD/JSON + hội trường 3D replay | medium | ✅ done (**3.22.0**, Phase 174) |
 | ENH-120 | 🔧 | vp-proposal: mô tả mục đích tự do → AI tư vấn rồi chỉ hỏi phần thiếu; thêm type research-proposal (grant, kickoff, progress, defense, tech-transfer) + persona học thuật 26–30 + tiêu chí R1–R3 | medium | ✅ done (**3.17.0**, Phase 169) |
 | ENH-119 | 🔧 | vp-proposal `internal-presentation` (5 biến thể) + hỏi thành phần người nghe trước → gợi ý loại để user xác nhận; persona nội bộ 21+ | medium | ✅ done (**3.17.0**, Phase 169) |
 | ENH-118 | 🔧 | Native todo mirror — bắt buộc vp-evolve/vp-auto tạo danh sách việc bằng công cụ todo gốc của host (TaskCreate/TodoWrite/write_todos…), fallback checklist PHASE-STATE + `vp-tools todo check` gate | high | ✅ done (**3.14.0**, Phase 168) |
