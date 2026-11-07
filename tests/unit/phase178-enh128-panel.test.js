@@ -68,3 +68,24 @@ describe('ENH-128 178.1 — message protocol', () => {
     expect(panel.beforeAfter(AGG, t)).toEqual([{ personaId: 4, before: { wouldAct: false }, after: { wouldAct: true }, changed: true, why: 'có số ước lượng' }]);
   });
 });
+
+describe('ENH-128 178.2 — presenter and panel prompts', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const dir = path.join(__dirname, '../../templates/proposal/simulation');
+  test('presenter answers only from cited material; no invention; noAnswer', () => {
+    const t = fs.readFileSync(path.join(dir, 'presenter-prompt.md'), 'utf8');
+    for (const p of ['{deck_material}', '{questions_json}', '{voice}', '{lang}']) expect(t.split(p).length - 1).toBe(1);
+    expect(t).toMatch(/Answer only from the material/);
+    expect(t).toMatch(/Never invent numbers/);
+    expect(t).toMatch(/"noAnswer"/);
+  });
+  test('panel prompt defines the three rounds and quoting each other', () => {
+    const t = fs.readFileSync(path.join(dir, 'panel-prompt.md'), 'utf8');
+    for (const p of ['{persona_card}', '{listener_summary}', '{roster}', '{transcript_json}', '{round}', '{lang}']) expect(t).toContain(p);
+    expect(t).toMatch(/Round 1 — question the presenter/);
+    expect(t).toMatch(/Round 2 — talk to the other panelists/);
+    expect(t).toMatch(/Round 3 — final position/);
+    expect(t).toMatch(/at most 80 words/);
+  });
+});
