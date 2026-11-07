@@ -860,6 +860,22 @@ _References section in .docx: technical documentation, benchmarks_
 If `--dry-run`: print manifest as JSON and stop here.
 
 
+
+**Budget workbook (ENH-127):** when `budgetApplies(type, variant)` (`lib/proposal-budget.cjs`: project-proposal,
+research grant-proposal and progress-report, internal leadership-report), every budget, investment or "ask" figure
+comes from one workbook — never typed into slides by hand:
+1. **Input gate** — AskUserQuestion for the line items, rates and co-funding still unknown (pre-filled from the Story and
+   Quality Briefs; nothing is invented — unknown values stay 0 and are flagged on the slide as "to confirm").
+2. `budgetSpec(type, variant, inputs)` → `renderOpenpyxlScript(spec, '<version>/<slug>-budget.xlsx')`; the xlsx document
+   skill (`anthropic-skills:xlsx`) runs it and then its `recalc.py` (mandatory for formulas).
+3. `renderReadBackScript(spec, …)` prints the recalculated values; slides, notes and the .docx quote exactly these.
+   When recalculation cannot run (`checks.xlsxRecalc.reason`), use `evaluateSpec(spec)` and label the figures
+   "computed by ViePilot — workbook not recalculated".
+
+**Research references (ENH-127):** for `research-proposal`, ask for reference PDFs in the Story Brief; read them with the
+pdf document skill (`anthropic-skills:pdf`) for the state-of-the-art slide and the references section — every cited
+claim names its source. Optional: export the deck as a PDF handout with the same skill.
+
 **Gate (output, ENH-124):** AskUserQuestion — preview the slide list: number, title, arc beat, one-line key point per slide, total count. Options: Accept (Recommended) / Change slides (add / remove / reorder / rename) / Regenerate / Stop. `recordGate(root, slug, 'manifest_generation', 'output', result)`; on accept `recordStep(root, slug, 'manifest_generation')`.
 
 ---
