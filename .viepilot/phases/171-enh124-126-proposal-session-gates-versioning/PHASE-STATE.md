@@ -13,7 +13,7 @@ in_progress
 | 171.2 | done ✅ | session lib + proposal CLI; orchestrator fixed migrate side effects, root detection, schema write-back |
 | 171.3 | done ✅ | GATES (23 steps), upgradePlan, lintWorkflowGates; phase150 test made semantic |
 | 171.4 | done ✅ | proposal-context-hook + install --proposal-context (consent, dry-run, idempotent) |
-| 171.5 | pending | Workflow: AUQ at every gate, detect/upgrade, iterate, resume |
+| 171.5 | in_progress 🔄 | workflow: AUQ every gate, detect/upgrade, iterate, resume |
 | 171.6 | pending | Tests + CHANGELOG 3.19.0 + resolve ENH-124/126 |
 
 ## Dependencies
@@ -30,5 +30,5 @@ in_progress
 - [x] [vp] 171.2 — ENH-124 + ENH-126: Session state + vp-tools proposal commands
 - [x] [vp] 171.3 — ENH-124 + ENH-126: Gate registry + upgrade plan
 - [x] [vp] 171.4 — ENH-124 + ENH-126: Context hooks for active proposal sessions
-- [ ] [vp] 171.5 — ENH-124 + ENH-126: Workflow: AUQ at every gate, detect/upgrade, iterate, resume
+- [~] [vp] 171.5 — ENH-124 + ENH-126: Workflow: AUQ at every gate, detect/upgrade, iterate, resume
 - [ ] [vp] 171.6 — ENH-124 + ENH-126: Tests + CHANGELOG 3.19.0 + resolve ENH-124/126
