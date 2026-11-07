@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | ENH-124 logged: audit cho thấy 14/21 bước vp-proposal không có AskUserQuestion; không có trạng thái phiên bền vững nên agent quên bối cảnh khi trao đổi tiếp/compaction. Đề xuất: session.json + vp-tools proposal status/resume + /vp-proposal --resume; bước Iterate định tuyến yêu cầu sửa qua đúng gate; hook UserPromptSubmit + SessionStart/PostCompact (consent-gated); mọi step có input/output gate AUQ hoặc "covered by gate"; gate lint test. Thứ tự đề xuất: 169 → ENH-124 → ENH-122+123 → ENH-121 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-123 logged: persona #31 Backstage Editor luôn chạy (như #20) soát slide + notes + script tìm việc chưa làm / cần quan tâm / còn lại / hedge; detectDevNotes song ngữ; hành động fix/reframe/backstage/remove; nguyên tắc "đưa ra hậu trường, không nói dối" — mục trọng yếu với người ra quyết định chỉ được fix hoặc reframe (rủi ro → giảm thiểu → đề nghị); xuất backstage.md. Gộp kế hoạch cùng ENH-122 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-122 logged: 3 gate trước khi viết slide — (1) khung sườn: key message + job/evidence/thời lượng từng slide, user duyệt; (2) kiểm kê nguồn 7 loại (process-log như CHANGELOG/TRACKER/phase/git log không bao giờ copy, chỉ TRANSFORM thành kết quả; sensitive loại bỏ); (3) Content Map FIT/TRANSFORM/DROP/SENSITIVE. detectProcessLeak (version, phase/request id, commit, động từ changelog) fail-loud + blocker hội đồng. Thứ tự đề xuất: 169 → ENH-122 → ENH-121 | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-121 logged: Rehearsal Hall sau khi xong proposal. AUQ: giữ cả 4 nhóm biểu đồ (chú ý & nhận thức, cảm xúc & thuyết phục, câu hỏi & nhịp độ, ghi nhớ & so sánh); khán giả theo loại + chỉnh được (`--hall all` = 30); đầu ra HTML+MD+JSON; hỏi cuối quy trình + chạy lại `--simulate`; thêm hội trường 3D replay theo timeline (user). Mở: nhúng three.js qua npm hay vendored | `/vp-request` | Backlog |
@@ -291,6 +292,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 ### Pending Requests
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
+| ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | new |
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | new |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | new |
 | ENH-121 | 🔧 | vp-proposal Rehearsal Hall — giả lập trình bày toàn bộ deck + kịch bản theo timeline với persona; đánh giá, cải thiện, điểm ngưng tiếp nhận, biểu đồ giữ chân, hiệu quả keyword/tiêu chí + 4 nhóm biểu đồ; HTML/MD/JSON + hội trường 3D replay | medium | new |
