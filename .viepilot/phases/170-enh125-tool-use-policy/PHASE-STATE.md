@@ -4,12 +4,12 @@
 170 — ENH-125: Tool-use policy for skills and agents (v3.18.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 170.1 | pending | Policy source + classifier |
+| 170.1 | in_progress 🔄 | policy source + classifier |
 | 170.2 | pending | Inject policy into skills, workflows, agents, dispatch prompts |
 | 170.3 | pending | PreToolUse policy hook (consent-gated) |
 | 170.4 | pending | Lint tests for policy presence and forbidden instructions |
@@ -25,7 +25,7 @@ planned
 .viepilot/requests/ENH-125.md
 
 ## Todo
-- [ ] [vp] 170.1 — Policy source + classifier
+- [~] [vp] 170.1 — Policy source + classifier
 - [ ] [vp] 170.2 — Inject policy into skills, workflows, agents, dispatch prompts
 - [ ] [vp] 170.3 — PreToolUse policy hook (consent-gated)
 - [ ] [vp] 170.4 — Lint tests for policy presence and forbidden instructions
