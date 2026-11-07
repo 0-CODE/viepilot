@@ -11,7 +11,7 @@ in_progress
 |------|--------|-------|
 | 177.1 | done ✅ | prompt precondition + quote rule |
 | 177.2 | done ✅ | cites selective + mechanical + visual fields + verifyVisual |
-| 177.3 | in_progress 🔄 | aggregate+report |
+| 177.3 | done ✅ | grounding + labels + deltas |
 | 177.4 | pending | Hall replay shows slide images |
 | 177.5 | pending | Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036 |
 
@@ -27,6 +27,6 @@ in_progress
 ## Todo
 - [x] [vp] 177.1 — Listener prompt: must view slides, selective quotes, slidesSeen + visualNotes
 - [x] [vp] 177.2 — parseListener: selective quotes, mechanical-quote flag, visual fields; verifyVisual
-- [~] [vp] 177.3 — Aggregate + report: coverage, quote quality, model-estimate labels, deltas from data.json
+- [x] [vp] 177.3 — Aggregate + report: coverage, quote quality, model-estimate labels, deltas from data.json
 - [ ] [vp] 177.4 — Hall replay shows slide images
 - [ ] [vp] 177.5 — Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036
