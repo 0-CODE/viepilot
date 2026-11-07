@@ -70,3 +70,36 @@ describe('BUG-036 177.2 — selective quotes, mechanical flag, visual grounding'
     expect(sim.verifyVisual(entries, imgs)).toEqual([2, 3]);
   });
 });
+
+const { aggregate } = require('../../lib/proposal-sim-aggregate.cjs');
+const report = require('../../lib/proposal-sim-report.cjs');
+
+describe('BUG-036 177.3 — grounding in summary/report; deltas from data.json', () => {
+  const mk = (id, extra, dataExtra = {}) => sim.parseListener({ personaId: id, states: TL.segments.map((s, i) => ({ seg: i, attention: 80, ...extra(s, i) })), ...dataExtra }, TL, { slideCount: 3 }).listener;
+  const seen = mk(3, () => ({}), { slidesSeen: [1, 2, 3] });
+  const mech = mk(4, (s) => ({ line: s.text }));
+  const manifest = { slides: [{ index: 1, heading: 'Cover' }, { index: 2, heading: 'Demo' }, { index: 3, heading: 'Ask' }] };
+  const agg = aggregate({ timeline: TL, listeners: [seen, mech], manifest });
+
+  test('summary has visual coverage and mechanical-quote count', () => {
+    expect(agg.summary.visualCoverage).toEqual({ seen: 1, partial: 0, verified: 0, total: 2 });
+    expect(agg.summary.mechanicalQuotes).toBe(1);
+  });
+
+  test('report and summary.md label the numbers as model estimates and warn on weak grounding', () => {
+    const html = report.renderReport(agg, { lang: 'vi', title: 'T' });
+    expect(html).toMatch(/Độ bám thực tế: 1\/2 đã xem đủ slide · 0\/2 đã kiểm chứng qua transcript · 1\/2 chép nguyên đoạn/);
+    expect((html.match(/ước lượng của mô hình/g) || []).length).toBeGreaterThanOrEqual(4);
+    expect(html).toMatch(/nhận xét về hình ảnh chỉ đến từ người đã xem/);
+    const md = report.renderSummaryMd(agg, { lang: 'en', title: 'T' });
+    expect(md).toMatch(/Grounding: 1\/2 saw every slide/);
+    expect(md).toMatch(/model estimate/);
+  });
+
+  test('aggregate accepts the previous run data.json for deltas', () => {
+    const dataJson = { meta: {}, aggregate: { summary: { ...agg.summary, avgRetention: agg.summary.avgRetention - 10 } } };
+    const next = aggregate({ timeline: TL, listeners: [seen, mech], manifest, previous: dataJson });
+    expect(next.deltas).not.toBeNull();
+    expect(next.deltas.avgRetention).toBe(10);
+  });
+});
