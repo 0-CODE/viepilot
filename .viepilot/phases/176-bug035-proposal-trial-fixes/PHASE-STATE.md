@@ -16,7 +16,7 @@ in_progress
 | 176.5 | done ✅ | sense guards + keep + backstage + consistency/placeholders |
 | 176.6 | done ✅ | placeholder skip + click check + stripZipDirs + NODE_PATH |
 | 176.7 | done ✅ | AUQ rule in all skills + closing AUQ + Stop hook |
-| 176.8 | in_progress 🔄 | G9 + release 3.22.2 |
+| 176.8 | done ✅ | G9 + CHANGELOG 3.22.2 + BUG-035 done |
 
 ## Dependencies
 - Phase 175 ✅
@@ -35,4 +35,4 @@ in_progress
 - [x] [vp] 176.5 — G6 curation, backstage, cross-file consistency, placeholder gate
 - [x] [vp] 176.6 — G7 animation and packaging
 - [x] [vp] 176.7 — G8 AskUserQuestion for every question (all vp-* skills + Stop hook)
-- [~] [vp] 176.8 — G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035
+- [x] [vp] 176.8 — G9 misc + tests + CHANGELOG 3.22.2 + resolve BUG-035
