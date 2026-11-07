@@ -13,7 +13,7 @@ in_progress
 | 169.2 | done ✅ | research-proposal ×5 (incl. kickoff) + deep-freeze both families — fa99da6 + review fix |
 | 169.3 | done ✅ | proposal-audience.cjs + consult prompt — 2b99d73, fbbbcb1 + orchestrator review fix (14 free-text probes) |
 | 169.4 | done ✅ | personas 21–30 + R1–R3 + citation blocker + variant/role selection; backcompat snapshot identical (2660 + 1 skip) |
-| 169.5 | in_progress 🔄 | workflow consult → gap intake → recommend/confirm + SKILL 0.4.0 |
+| 169.5 | done ✅ | workflow consult/intake/recommend + variant docs + SKILL 0.4.0 — orchestrator completed partial executor work |
 | 169.6 | pending | Tests + CHANGELOG 3.17.0 + resolve ENH-119/120 |
 
 ## Dependencies
@@ -30,5 +30,5 @@ in_progress
 - [x] [vp] 169.2 — `research-proposal` type + 5 variants
 - [x] [vp] 169.3 — ENH-119/120: Audience profile, free-text purpose hints + type recommendation
 - [x] [vp] 169.4 — ENH-119/120: Internal + academic personas, research criteria, audience-aware selection
-- [~] [vp] 169.5 — ENH-119/120: Workflow purpose consult + audience intake + recommend/confirm + variant docs
+- [x] [vp] 169.5 — ENH-119/120: Workflow purpose consult + audience intake + recommend/confirm + variant docs
 - [ ] [vp] 169.6 — ENH-119/120: Tests + CHANGELOG 3.17.0 + close requests
