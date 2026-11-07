@@ -12,7 +12,7 @@ in_progress
 | 176.1 | done ✅ | isEligible + #32/#33 + role map + profile helpers |
 | 176.2 | done ✅ | byKind gates + seal + refreshProvenance + sync currentVersion |
 | 176.3 | done ✅ | qa/tech-lead/adopt + classifier + findStaleFacts |
-| 176.4 | pending | G5 script timing with fixed segments; header and Q&A fallback |
+| 176.4 | in_progress 🔄 | G5 timing |
 | 176.5 | pending | G6 curation, backstage, cross-file consistency, placeholder gate |
 | 176.6 | pending | G7 animation and packaging |
 | 176.7 | pending | G8 AskUserQuestion for every question (all vp-* skills + Stop hook) |
@@ -31,7 +31,7 @@ in_progress
 - [x] [vp] 176.1 — G1 audience selection: hall, council, role map, manifest profile
 - [x] [vp] 176.2 — G2 session/store consistency
 - [x] [vp] 176.3 — G3 + G4 purpose hints and source classifier
-- [ ] [vp] 176.4 — G5 script timing with fixed segments; header and Q&A fallback
+- [~] [vp] 176.4 — G5 script timing with fixed segments; header and Q&A fallback
 - [ ] [vp] 176.5 — G6 curation, backstage, cross-file consistency, placeholder gate
 - [ ] [vp] 176.6 — G7 animation and packaging
 - [ ] [vp] 176.7 — G8 AskUserQuestion for every question (all vp-* skills + Stop hook)
