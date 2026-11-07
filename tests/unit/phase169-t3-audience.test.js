@@ -219,16 +219,16 @@ const TEST_PROFILES = [
     expectedVariant: null,
   },
   {
-    name: 'general: unspecified external',
+    name: 'general: external audience with no specific goal',
     raw: {
-      roles: ['clients', 'partners'],
+      roles: ['partners'],
       goal: 'update',
       size: 'large',
       format: 'recorded',
       knowledge: 'mixed',
     },
     lang: 'en',
-    expectedTypeId: 'product-pitch',
+    expectedTypeId: 'general',
     expectedVariant: null,
   },
 ];
@@ -759,4 +759,53 @@ test('phase169-t3: verification command — Vietnamese "ban giám đốc" with "
   });
   const rec = audience.recommendProposalType(profile);
   expect(rec.variant).toBe('leadership-report');
+});
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Orchestrator review probes: free text → hints → profile → recommendation
+// ──────────────────────────────────────────────────────────────────────────────
+describe('phase169-t3: free-text recommendation probes (review)', () => {
+  const PROBES = [
+    ['Buổi thuyết minh kickoff đề tài cấp bộ trước hội đồng khoa học, có chủ nhiệm đề tài và các thành viên', 'research-proposal', 'kickoff'],
+    ['Bao cao nghiem thu de tai truoc hoi dong khoa hoc', 'research-proposal', 'progress-report'],
+    ['Bảo vệ luận văn thạc sĩ', 'research-proposal', 'defense'],
+    ['Giới thiệu công cụ mới cho phòng kinh doanh, demo trực tiếp', 'internal-presentation', 'feature-demo'],
+    ['xyz', 'general', null],
+    ['Báo cáo tiến độ dự án quý 3 lên ban giám đốc để xin duyệt thêm ngân sách', 'internal-presentation', 'leadership-report'],
+    ['Đào tạo nhân viên mới về quy trình bán hàng, online', 'internal-presentation', 'training'],
+    ['Họp toàn công ty cuối năm, khoảng 200 người', 'internal-presentation', 'all-hands'],
+    ['Hồ sơ xin tài trợ Nafosted cho đề tài nghiên cứu', 'research-proposal', 'grant-proposal'],
+    ['Giới thiệu kết quả nghiên cứu cho doanh nghiệp để chuyển giao công nghệ', 'research-proposal', 'tech-transfer'],
+    ['Trình bày kiến trúc hệ thống cho đội kỹ thuật của đối tác', 'tech-architecture', null],
+    ['Gửi khách hàng đề xuất dự án triển khai CRM, có báo giá', 'project-proposal', null],
+    ['Pitch to seed investors for funding', 'product-pitch', null],
+    ['Giới thiệu dự án mới cho các đồng nghiệp trong team', 'internal-presentation', 'team-intro'],
+  ];
+
+  test.each(PROBES)('%s → %s/%s', (text, typeId, variant) => {
+    const profile = audience.normalizeAudienceProfile(audience.extractAudienceHints(text, { lang: 'vi' }).raw);
+    const rec = audience.recommendProposalType(profile, { lang: 'vi' });
+    expect(rec.typeId).toBe(typeId);
+    expect(rec.variant).toBe(variant);
+    expect(rec.alternatives.length).toBeGreaterThanOrEqual(1);
+    expect(rec.alternatives.length).toBeLessThanOrEqual(2);
+    for (const alt of rec.alternatives) {
+      expect(`${alt.typeId}/${alt.variant}`).not.toBe(`${typeId}/${variant}`);
+    }
+  });
+
+  test('short accented words do not collide after diacritic stripping (quỹ vs quý/quy trình)', () => {
+    const hints = audience.extractAudienceHints('Báo cáo quý 3 về quy trình bán hàng', { lang: 'vi' });
+    expect((hints.raw.roles || [])).not.toContain('funding-agency');
+  });
+
+  test('whole-word matching: "three" does not match the hr role', () => {
+    const hints = audience.extractAudienceHints('Three engineers will hear it', { lang: 'en' });
+    expect((hints.raw.roles || [])).not.toContain('hr');
+  });
+
+  test('headcount in text sets size', () => {
+    expect(audience.extractAudienceHints('khoảng 200 người', { lang: 'vi' }).raw.size).toBe('large');
+    expect(audience.extractAudienceHints('about 8 people', { lang: 'en' }).raw.size).toBe('small');
+  });
 });
