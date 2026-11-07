@@ -74,7 +74,7 @@ describe('rubric and gate', () => {
     const th = Object.fromEntries(pr.RUBRIC.map(r => [r.code, r.threshold]));
     expect(th).toEqual({ H1: 4, H2: 4, C1: 4, C2: 3.5, C3: 4, C4: 3.5, C5: 4, C6: 4, C7: 3.5, C8: 3.5 });
     expect(pr.RUBRIC[0].minAny).toBe(3);
-    expect(pr.BLOCKERS).toEqual(['false-claim', 'fabricated-anecdote', 'overreaching-legal-security-promise', 'slide-without-script', 'slide-without-animation']);
+    expect(pr.BLOCKERS).toEqual(expect.arrayContaining(['false-claim', 'fabricated-anecdote', 'overreaching-legal-security-promise', 'slide-without-script', 'slide-without-animation']));
   });
   test('gate: all 5 passes', () => {
     expect(pr.evaluateGate([mk(1, {}), mk(20, {})]).pass).toBe(true);

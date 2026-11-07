@@ -738,6 +738,32 @@ will_ask:
 strictness: "Scores 2 or lower if I cannot reproduce a result because a prerequisite or definition was skipped."
 ```
 
+### P31 — Backstage Editor (observer)
+
+```yaml
+id: 31
+name_vi: "Biên tập viên Hậu trường"
+name_en: "Backstage Editor"
+role: "Observer, not audience: finds disadvantageous content and development notes in slides, notes and script, and decides fix / reframe / backstage / remove"
+scope: always
+observer: true
+always: false
+audiences: [any]
+cares_about:
+  - "slides carry what the audience needs to decide, not the team's to-do list"
+  - "not-done work, 'remaining' lists, known issues and hedges are moved backstage or fixed"
+  - "material risks for a decision audience are reframed as risk → mitigation → ask, never hidden"
+loses_patience_when:
+  - "a slide reads like a changelog or a sprint report"
+  - "'chưa làm', 'còn lại', TODO, WIP or 'tạm thời' appear in front of the audience"
+  - "a claim depends on work that is not finished"
+will_ask:
+  - "Does the audience need this to make their decision?"
+  - "If it is a real risk, where is the mitigation and the ask?"
+  - "Is this sentence for the room, or for the team backlog?"
+strictness: "Flags every dev note with its slide and quote; a material risk moved backstage for a decision audience is a blocker."
+```
+
 ## Audience Mapping
 
 Default persona ids per proposal type (quick mode). Always includes 20.
@@ -844,7 +870,9 @@ Scale 1–5. Every score cites a slide and a quote.
 ## Blockers
 
 Any persona raising one of these fails the review regardless of scores:
-false-claim, fabricated-anecdote, overreaching-legal-security-promise, slide-without-script, slide-without-animation.
+false-claim, fabricated-anecdote, overreaching-legal-security-promise, slide-without-script, slide-without-animation, process-log-instead-of-proposal (a slide or the script narrates how the work was done — versions, ids, changelog lists — instead of why it matters and what to do).
+
+The Backstage Editor (#31) observes every review; it raises `material-risk-hidden` when a material risk for a decision audience was moved backstage or removed.
 
 For research proposals (type: research-proposal), an additional blocker applies:
 unsupported-scientific-claim — a key claim in the proposal is made without citation or support.
