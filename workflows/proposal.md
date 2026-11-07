@@ -138,7 +138,9 @@ If something matches, **input gate** — AskUserQuestion "An earlier proposal ex
 Legacy flat files: offer `vp-tools proposal migrate` first (dry-run plan shown, non-destructive), then continue as Upgrade.
 
 **Hand edits:** before Upgrade or Revise run `detectHandEdits(root, slug, version)`. If any artifact differs from its
-recorded hash, AskUserQuestion: Import the edited text and notes into the manifest (shown as a diff to confirm) /
+recorded hash, AskUserQuestion: Import the edited text and notes into the manifest (pptx document skill
+`scripts/slide_text.py` → `parseSlideText` → `diffAgainstManifest` → `formatImportDiff` shown for confirmation per slide or
+all → `applyImport`, from `lib/proposal-import.cjs`; .docx text read with the docx skill, best effort) /
 Keep the edited file as-is next to the new version / Regenerate (the edited file stays in its old version folder).
 
 `recordDecision(root, slug, 'existing', choice, 'auq')`; `recordGate(root, slug, 'detect_existing', 'input', result)`.
