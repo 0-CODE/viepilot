@@ -13,7 +13,7 @@ in_progress
 | 177.2 | done ✅ | cites selective + mechanical + visual fields + verifyVisual |
 | 177.3 | done ✅ | grounding + labels + deltas |
 | 177.4 | done ✅ | slide images embedded + drawn |
-| 177.5 | pending | Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036 |
+| 177.5 | in_progress 🔄 | backfill + release |
 
 ## Dependencies
 - Phase 176 ✅
@@ -29,4 +29,4 @@ in_progress
 - [x] [vp] 177.2 — parseListener: selective quotes, mechanical-quote flag, visual fields; verifyVisual
 - [x] [vp] 177.3 — Aggregate + report: coverage, quote quality, model-estimate labels, deltas from data.json
 - [x] [vp] 177.4 — Hall replay shows slide images
-- [ ] [vp] 177.5 — Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036
+- [~] [vp] 177.5 — Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036
