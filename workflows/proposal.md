@@ -1070,6 +1070,14 @@ Inject `SPOKEN_NOTES_RULES` (together with `buildVoiceInstruction()` and the `lo
 
 Each markdown file comes from `buildScriptMarkdown(manifest, { minutes })`: header (title, duration, audience, voice), one `### Slide N - heading (mm:ss)` section per included slide with spoken text and a transition line, then the Expected Q&A section. `planDuration(slides, minutes)` drops `optional` slides only for the 5 min version (kept for 15 and 30), scales each slide's seconds proportionally so the total lands within 10% of the target (up or down), caps any single slide at about 25% of the total, and always keeps the cover and closing slides.
 
+**Fixed blocks (BUG-035 G5):** a live demo or video on a slide is `slides[].fixedSec` (with optional `fixedLabel`,
+e.g. "live demo"), and the Q&A is the deck-level `qaSec`. `planDuration(slides, minutes, { qaSec })` takes them
+off the target first and spreads only the spoken time, so a 15-min talk with a 4-min demo and 3-min Q&A does not flag
+every slide as underrun; the Rehearsal Hall timeline inserts them as non-spoken segments. Ask for both in the Quality
+Brief when the talk has a demo or Q&A. Pass the council's likely questions as
+`buildScriptMarkdown(manifest, { minutes, expectedQuestions })` so the Q&A section is never empty when `manifest.qa`
+is missing; the Audience header falls back to `audienceProfile`.
+
 Progress: `[script] Writing 3 script files + docx...`
 
 
