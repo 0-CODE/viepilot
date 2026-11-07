@@ -4,7 +4,7 @@
 177 — BUG-036: Rehearsal Hall listeners see the slides; quote guard and labels made honest (v3.22.3)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -20,6 +20,14 @@ in_progress
 
 ## Version Target
 3.22.3 (PATCH)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: ab44a28
+- Tag: vp-p177-complete
+- Full suite: 3259 passed
 
 ## Sources
 .viepilot/requests/BUG-036.md

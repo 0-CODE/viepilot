@@ -4381,7 +4381,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: Listeners must view every slide image and report what they saw; quotes must be selective (a full-segment copy is not evidence); per-segment metrics are labelled as model estimates with visual coverage and quote quality in the report; the hall screen shows the slide images; run-over-run deltas work from a data.json; old sessions get currentVersion backfilled.
 **Estimated Tasks**: 5
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.22.3
 **Dependencies**: Phase 176 ✅
 **Directory**: `.viepilot/phases/177-bug036-hall-visual-grounding/`
@@ -4395,6 +4395,6 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 177.5 | Session backfill + tests + CHANGELOG 3.22.3 + resolve BUG-036 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 177 --phase-complete` → exit 0
-- [ ] version = 3.22.3
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 177 --phase-complete` → exit 0
+- [x] version = 3.22.3
