@@ -14,7 +14,7 @@ in_progress
 | 174.3 | done ✅ | proposal-sim-aggregate.cjs — 5 requested outputs + 4 chart groups + deltas |
 | 174.4 | done ✅ | proposal-sim-report.cjs — HTML/MD/JSON, writeRun |
 | 174.5 | done ✅ | hall3d.js + three inlined + 2D fallback; browser-verified |
-| 174.6 | pending | Workflow: end-of-flow gate + --simulate re-run |
+| 174.6 | in_progress 🔄 | workflow: end-of-flow gate + --simulate |
 | 174.7 | pending | Tests + CHANGELOG 3.22.0 + resolve ENH-121 |
 
 ## Dependencies
@@ -32,5 +32,5 @@ in_progress
 - [x] [vp] 174.3 — Aggregator: all metrics and chart data
 - [x] [vp] 174.4 — Report: HTML (inline SVG) + summary.md + data.json
 - [x] [vp] 174.5 — 3D hall replay + 2D fallback
-- [ ] [vp] 174.6 — Workflow: end-of-flow gate + --simulate re-run
+- [~] [vp] 174.6 — Workflow: end-of-flow gate + --simulate re-run
 - [ ] [vp] 174.7 — Tests + CHANGELOG 3.22.0 + resolve ENH-121
