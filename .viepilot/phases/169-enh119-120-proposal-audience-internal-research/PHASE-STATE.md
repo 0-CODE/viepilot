@@ -10,7 +10,7 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 169.1 | done ✅ | variant framework + internal-presentation ×5, general.pptx fallback — cdc68b1 (2493 + 1 skip) |
-| 169.2 | in_progress 🔄 | research-proposal ×5 + deep-freeze variants |
+| 169.2 | done ✅ | research-proposal ×5 (incl. kickoff) + deep-freeze both families — fa99da6 + review fix |
 | 169.3 | pending | proposal-audience.cjs + extractAudienceHints/findIntakeGaps + purpose-consult-prompt.md |
 | 169.4 | pending | Personas 21–30 + research rubric R1–R3 + variant/role selection |
 | 169.5 | pending | Workflow consult → gap-only intake → recommend/confirm + SKILL 0.4.0 |
@@ -27,7 +27,7 @@ in_progress
 
 ## Todo
 - [x] [vp] 169.1 — `internal-presentation` type + variants (shared variant framework)
-- [~] [vp] 169.2 — `research-proposal` type + 5 variants
+- [x] [vp] 169.2 — `research-proposal` type + 5 variants
 - [ ] [vp] 169.3 — ENH-119/120: Audience profile, free-text purpose hints + type recommendation
 - [ ] [vp] 169.4 — ENH-119/120: Internal + academic personas, research criteria, audience-aware selection
 - [ ] [vp] 169.5 — ENH-119/120: Workflow purpose consult + audience intake + recommend/confirm + variant docs
