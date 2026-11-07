@@ -53,14 +53,14 @@ describe('Phase 150 — DEBT-003: check-update OS session guard', () => {
 
   describe('C) Guard file fast-path behavior', () => {
     test('seeded guard file causes fast exit with no stdout on silent no-update', () => {
-      fs.writeFileSync(guardFile, JSON.stringify({
+      const seeded = JSON.stringify({
         updateAvailable: false,
         latest: '99.0.0',
         installed: '3.12.1',
-        checkedAt: new Date().toISOString()
-      }));
+        checkedAt: '2000-01-01T00:00:00.000Z' // sentinel: the slow path would rewrite checkedAt
+      });
+      fs.writeFileSync(guardFile, seeded);
 
-      const start = Date.now();
       let stdout = '';
       let exitCode = 0;
       try {
@@ -71,11 +71,10 @@ describe('Phase 150 — DEBT-003: check-update OS session guard', () => {
         stdout = e.stdout || '';
         exitCode = e.status || 1;
       }
-      const ms = Date.now() - start;
 
-      // fast path: no network call. 2000ms leaves room for process start-up under full-suite load
-      // (startup alone is ~0.1–0.3s idle); the slow path performs an npm registry request.
-      expect(ms).toBeLessThan(2000);
+      // Fast path proven semantically instead of by wall-clock time (which flaked under full-suite
+      // load): the slow path performs an npm registry request and rewrites the guard file.
+      expect(fs.readFileSync(guardFile, 'utf8')).toBe(seeded);
       expect(stdout.trim()).toBe(''); // no stdout when no update
       expect(exitCode).toBe(0);
     });
