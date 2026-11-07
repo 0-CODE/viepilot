@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **177** ✅ (v3.22.3) · **Next Phase**: — (phases 165–177 complete; backlog empty on this branch)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **177** ✅ (v3.22.3) · **Next Phase**: **178** ⏳ planned (ENH-128 → v3.23.0, 5 tasks; finish deck v2 first)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 178 planned for ENH-128 (5 tasks → 3.23.0): panel selection + message protocol, presenter/panel prompts, relay + agent-teams engines, debate report section | `/vp-evolve` | 178 |
 | 2026-11-07 | Phase 177 complete: BUG-036 → v3.22.3 (3259 tests). Listeners must open every slide (verifyVisual), selective quotes + mechanical flag, grounding + model-estimate labels, slide images in hall replay, deltas from data.json, session backfill | Close phase 177 | 177 |
 | 2026-11-07 | Phase 177 planned for BUG-036 (5 tasks → 3.22.3): listeners must view slides (slidesSeen/visualNotes + transcript verify), selective quotes + mechanical flag, coverage/estimate labels, slide images in hall replay, deltas from data.json, session currentVersion backfill | `/vp-evolve` | 177 |
 | 2026-11-07 | Phase 176 complete: BUG-035 → v3.22.2 (3245 tests). Internal rooms seat only eligible personas, session/store seal + byKind gates, hints/sources, fixed demo/Q&A timing, curation + consistency/placeholders, animation packaging, AUQ rule in every skill + opt-in Stop hook | Close phase 176 | 176 |
@@ -312,7 +313,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | BUG-034 | 🐛 | Installer không cài/cập nhật node_modules cho bản cài (three thiếu → hội trường 2D; dependency mới về sau cũng thiếu) | high | ✅ done (**3.22.1**, Phase 175) |
 | BUG-035 | 🐛 | Lỗi từ lần chạy thử vp-proposal thật (hall/council chọn sai người, session/gate, hints, nguồn, timing, backstage, animation) + hỏi người dùng bằng text thay vì AskUserQuestion | high | ✅ done (**3.22.2**, Phase 176) |
 | BUG-036 | 🐛 | Hội trường giả lập: agent không xem ảnh slide (13/16), chống bịa bị lách (chép nguyên đoạn vào line), số liệu không ghi là ước lượng, màn 3D không hiện slide, deltas null, session cũ currentVersion null | high | ✅ done (**3.22.3**, Phase 177) |
-| ENH-128 | 🔧 | Hội trường: persona tranh luận với nhau + chất vấn diễn giả bằng message (nghe độc lập → panel Q&A 4–6 người + presenter agent; teams opt-in / relay mặc định) | medium | new |
+| ENH-128 | 🔧 | Hội trường: persona tranh luận với nhau + chất vấn diễn giả bằng message (nghe độc lập → panel Q&A 4–6 người + presenter agent; teams opt-in / relay mặc định) | medium | triaged → Phase 178 |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |
