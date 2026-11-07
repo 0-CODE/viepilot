@@ -1263,14 +1263,22 @@ Runs right after the `.pptx` is written in Step 6. This step cannot be skipped o
    };
    await applyAnimations(pptxPath, plan);
    ```
-   `'auto'` builds every body text shape except the heading (title placeholder or top-most text shape).
-2. Validate: `const res = await validatePptxAnimations(pptxPath)` returns `{ ok, slides: [{ index, hasTransition, buildCount }] }`.
+   `'auto'` builds every body text shape except the heading (title placeholder or top-most text shape) and the
+   slide-number, date, footer and header placeholders.
+2. Validate: `const res = await validatePptxAnimations(pptxPath, { manifest })` returns
+   `{ ok, slides: [{ index, hasTransition, buildCount, clickCues, mismatch }], dirEntries }` — with the manifest it
+   compares every slide's builds with its `[click]` cues itself (`mismatch: true` fails `ok`).
 3. **`[click]` rule:** for every slide, the number of `[click]` cues in `speakerNotes` (localized cue words are defined in `SPOKEN_NOTES_RULES` in `lib/proposal-script.cjs`; count with `countClickCues(notes)`) MUST equal that slide's `buildCount`.
 4. **Fail-loud rule (no silent skip):** if any slide has no transition (`hasTransition === false`), or a content slide (not cover/closing) has `buildCount === 0`, or the `[click]` count differs from `buildCount`, STOP generation with an error listing the offending slide indices, e.g. `Animation validation failed: slides 3, 5 have no transition / 0 builds`. Never continue to Step 7 and never silently skip animation (same enforcement as ENH-044).
 
 Progress: `[anim] {N} slides, {M} builds`
 
 
+
+**Packaging (BUG-035 G7):** `applyAnimations` writes the archive without directory entries; for any other generated
+.pptx/.docx (pptxgenjs before animation, the docx package, the script .docx) run `stripZipDirs(path)` from
+`lib/pptx-animate.cjs`. The pptx skill's `apply_theme.js` resolves `pptxgenjs`/`jszip` from ViePilot's install, so run
+it with `NODE_PATH="$HOME/.claude/viepilot/node_modules"` (the adapter's ViePilot dir on other hosts).
 
 **File validation (ENH-127):** after `validatePptxAnimations` passes, run the pptx skill's validator on the animated
 deck: `python <pptx-skill-dir>/scripts/office/validate.py <deck>.pptx` (add `--original <template>.pptx` when the deck
