@@ -12,7 +12,7 @@ in_progress
 | 172.1 | done ✅ | proposal-env.cjs: skills via session/disk, deps with hints, checks with skip reasons |
 | 172.2 | done ✅ | skills in Steps 6/6b/7, Step 6c Deck QA gate, env check at Initialize, SKILL exception |
 | 172.3 | done ✅ | proposal-budget.cjs (spec, openpyxl/read-back scripts, evaluateSpec) + workflow rules |
-| 172.4 | pending | Import hand edits via the document skills |
+| 172.4 | in_progress 🔄 | import hand edits via slide_text.py |
 | 172.5 | pending | Tests + CHANGELOG 3.20.0 + resolve ENH-127 |
 
 ## Dependencies
@@ -28,5 +28,5 @@ in_progress
 - [x] [vp] 172.1 — Environment detection: document skills + dependencies
 - [x] [vp] 172.2 — Workflow: pptx/docx skills in generation + Deck QA gate
 - [x] [vp] 172.3 — Budget workbooks (xlsx) + pdf use
-- [ ] [vp] 172.4 — Import hand edits via the document skills
+- [~] [vp] 172.4 — Import hand edits via the document skills
 - [ ] [vp] 172.5 — Tests + CHANGELOG 3.20.0 + resolve ENH-127
