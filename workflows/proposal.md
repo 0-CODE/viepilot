@@ -527,7 +527,10 @@ Save as `versionPaths(...).outline` (`{slug}-outline.json`; `readOutline` still 
 classifies candidate sources **by path only** (it never opens a file) into product-value, evidence, architecture,
 visual, roadmap-future, process-log and sensitive. Only `readableSources(...)` may be opened afterwards — sensitive
 files are never read. Process-log sources (CHANGELOG, TRACKER, phase/request files, git log) may only be TRANSFORMed
-into an outcome or a proof point, never copied.
+into an outcome or a proof point, never copied. Code and tests (`scripts/`, `tests/`, `*.test.*`) are skipped —
+they are implementation detail, not proof — unless the user adds them with `--source`; user docs (`docs/user/**`)
+count as product-value. When a fact carries a version number, `findStaleFacts(text, { version })` flags numbers that
+disagree with the current version (a stale README) — re-check them with the user or DROP them.
 
 **Gate (input, ENH-124):** AskUserQuestion — show counts per kind and the files that will be read. Options: Use these
 sources (Recommended) / Add a source / Exclude a source. `recordGate(root, slug, 'source_inventory', 'input', result)`.
