@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.24.0] - 2026-11-07
+### Added
+- **Plan Mode for `/vp-evolve` (ENH-129, Claude Code, optional):** `--plan-mode`, or an AskUserQuestion offer for L/XL or vague requests, plans the phase in Claude Code Plan Mode.
+  - **Flow:** `EnterPlanMode` → read-only exploration and architecture check → draft written to the plan file → `ExitPlanMode` for approval.
+  - **After approval:** the phase files are written verbatim from the approved plan, which is also kept in SPEC.md.
+  - **One gate:** ExitPlanMode is the only approval, with no extra AskUserQuestion confirm.
+  - **Fallback:** hosts without Plan Mode, and subagents, keep the normal flow.
+  - **`/vp-auto`:** Plan Mode is available for a single high-risk task (never per task by default).
+  - Phase 180 was itself planned in Plan Mode.
+
 ## [3.23.1] - 2026-11-07
 ### Fixed
 Fixes from the first live Rehearsal Hall panel run (BUG-037):
