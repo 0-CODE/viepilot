@@ -26,13 +26,13 @@ function cleanupProject(projectRoot) {
 
 describe('proposal-session (ENH-124, ENH-126)', () => {
   describe('Schema versioning and migration', () => {
-    it('should create session with SCHEMA_VERSION 1', () => {
+    it('should create session with the current SCHEMA_VERSION', () => {
       const projectRoot = createTempProject();
       try {
         proposalStore.createProposal(projectRoot, { slug: 'test-prop', title: 'Test', type: 'proposal' });
         const session = proposalSession.startSession(projectRoot, 'test-prop');
 
-        assert.strictEqual(session.schemaVersion, 1);
+        assert.strictEqual(session.schemaVersion, proposalSession.SCHEMA_VERSION);
         assert.strictEqual(session.slug, 'test-prop');
         assert.strictEqual(session.status, 'in_progress');
       } finally {
@@ -57,7 +57,7 @@ describe('proposal-session (ENH-124, ENH-126)', () => {
         // Load should migrate it
         const session = proposalSession.loadSession(projectRoot, 'test-prop');
 
-        assert.strictEqual(session.schemaVersion, 1);
+        assert.strictEqual(session.schemaVersion, proposalSession.SCHEMA_VERSION);
         assert.strictEqual(session.status, 'in_progress');
         assert.strictEqual(session.currentStep, 'design');
         assert.deepStrictEqual(session.completedSteps, []);
@@ -80,7 +80,7 @@ describe('proposal-session (ENH-124, ENH-126)', () => {
         proposalSession.loadSession(projectRoot, 'test-prop');
 
         const persisted = JSON.parse(fs.readFileSync(sessionPath, 'utf8'));
-        assert.strictEqual(persisted.schemaVersion, 1);
+        assert.strictEqual(persisted.schemaVersion, proposalSession.SCHEMA_VERSION);
       } finally {
         cleanupProject(projectRoot);
       }

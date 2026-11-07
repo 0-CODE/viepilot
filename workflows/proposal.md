@@ -35,8 +35,11 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 - **`--yes`** auto-accepts the recommended option at every gate and records `auto-accepted`; it never auto-accepts a
   material-risk item.
 - **Outputs never overwrite.** `lib/proposal-store.cjs`: every run writes into a new `versions/v{n}-{date}/` folder
-  (`newVersion`, `versionPaths`); `{version}` in the paths below is that folder. After the final output gate:
-  `writeProvenance(...)` (ViePilot version, gates passed, hashes) and `setCurrentVersion(...)`.
+  (`newVersion`, `versionPaths`); `{version}` in the paths below is that folder. Until Confirm Output the folder is a
+  **draft**: a regenerated file simply replaces the earlier draft (no new version needed). Confirm Output **seals** it
+  (`writeProvenance(..., { seal: true })`); after that `assertWritable` refuses writes and any change goes to a new
+  version — only `simulation/` runs may be added, followed by `refreshProvenance(...)`. `setCurrentVersion(...)`
+  updates `proposal.json` and `session.currentVersion` together.
 - **Staying inside the skill.** While a session is active, any user message about this proposal re-enters the workflow
   (`/vp-proposal --resume <slug>`; Claude Code: invoke the skill again with the Skill tool) and routes through
   **Step 11: Iterate**. Optional hooks: `vp-tools hooks install --proposal-context` (consent-gated) remind the agent
@@ -511,7 +514,7 @@ Brief and the consult.
 **Gate (output, ENH-124):** AskUserQuestion — show `formatOutline(outline)`. Options: Approve (Recommended) / Edit jobs
 or evidence / Reorder, add or remove slides / Start over. Apply edits as `overrides`, re-run `validateOutline` (must be
 `ok`). Slide generation is blocked until the outline is approved; `--yes` auto-approves and records `auto-accepted`.
-Save as `versionPaths(...).outline` (`outline.json`). `recordGate(root, slug, 'outline_gate', 'input'|'output', result)`.
+Save as `versionPaths(...).outline` (`{slug}-outline.json`; `readOutline` still reads the old `-outline.md`). `recordGate(root, slug, 'outline_gate', 'input'|'output', result)`.
 
 ---
 
@@ -1639,7 +1642,11 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 | Unknown `--variant` | Show valid variants for type; ask user to select |
 
 
-**Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (Step 10b) / Stop. On accept: `writeProvenance(...)`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`.
+**Completeness check (BUG-035 G2):** before this gate run `missingArtifacts(root, slug, version)` from
+`lib/proposal-store.cjs` (pptx, docx, md, the three scripts, `-script.docx`, review, backstage, outline, manifest).
+Generate anything missing first; list what is still missing in the gate question.
+
+**Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (Step 10b) / Stop. On accept: `writeProvenance(..., { seal: true, gatesPassed })`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`. Gate records keep every kind per step (`gates[step].byKind.input` / `.output`).
 
 ---
 
@@ -1667,8 +1674,9 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
 4. `parseListener(json, timeline)` for each answer — negative reactions without a quote from their segment are dropped.
 5. `aggregate({ timeline, listeners, manifest, primary, keyMessages, keywords, previous })` from
    `lib/proposal-sim-aggregate.cjs`; `previous` = the latest earlier run's `data.json` for run-over-run deltas.
-6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta })` from `lib/proposal-sim-report.cjs`
-   → `simulation/run-{n}/report.html` (self-contained, opens offline, 3D hall replay with a 2D fallback),
+6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta })` from `lib/proposal-sim-report.cjs`,
+   then `refreshProvenance(root, slug, version)` so the run's files are hashed with the sealed version. Output:
+   `simulation/run-{n}/report.html` (self-contained, opens offline, 3D hall replay with a 2D fallback),
    `summary.md`, `data.json` — every page labelled "AI simulation — not real audience data". When the installed
    ViePilot has no `three` package, the report shows the 2D hall only.
 
