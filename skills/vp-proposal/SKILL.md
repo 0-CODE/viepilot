@@ -186,6 +186,11 @@ Generate a professional proposal package from a brainstorm session or direct bri
 - An earlier proposal is detected at the start: Upgrade (run only the gates added since it was made), Revise, New proposal, or Keep. Hand-edited files are detected by hash and never lost. Legacy flat files: `vp-tools proposal migrate`.
 - **Re-entry rule:** while a proposal session is active, every user message about that proposal MUST re-enter this skill (`/vp-proposal --resume <slug>`; Claude Code: invoke the skill again with the Skill tool) and go through Step 11: Iterate — never edit the deck ad hoc. `vp-tools proposal status` shows active sessions; optional hooks `vp-tools hooks install --proposal-context` remind the agent on every prompt and after compaction.
 
+**Outline first, curated content (ENH-122 / ENH-123):**
+- After the type is confirmed the run agrees on an outline first — one key message, and per slide its job (what the audience will think / feel / do), the evidence it needs and its time budget — and nothing is written until the user approves it.
+- Repo sources are inventoried by path (sensitive files are never read) and every fact is decided in a Content Map: FIT, TRANSFORM (process wording rewritten as outcome), DROP, SENSITIVE or BACKSTAGE. Slides use only mapped content; gaps are asked, never invented.
+- A proposal is not a changelog: versions, ticket ids, commit hashes, changelog verbs and "first we… then we…" are caught before rendering. Not-done work, "remaining" lists and hedges go to the Backstage Editor (#31, observer in every council), who moves them to presenter-only `backstage.md` or reframes them; material risks for a decision audience are reframed as risk → mitigation → ask, never hidden.
+
 **Proposal types (6 types):**
 | Type | Slides | Use case | Variants |
 |------|--------|----------|----------|
@@ -242,6 +247,8 @@ Optional flags:
 - `--review <off|quick|full>` : Persona Review Council size (default `quick`). `off` skips the
                                  council but still runs persona 20 (Humanity editor) only.
 - `--dry-run` : Show slide manifest (JSON) without writing any files
+- `--source <glob>` : Add a source file or folder for the Content Map (repeatable).
+- `--exclude <glob>` : Exclude a source from the inventory (repeatable).
 - `--resume [slug]` : Continue an active session at its current step with all confirmed decisions restored.
 - `--yes` : Non-interactive — auto-accept the recommended option at each gate (recorded as auto-accepted).
 </context>

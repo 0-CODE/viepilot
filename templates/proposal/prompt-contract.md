@@ -19,3 +19,8 @@ Keep digits and symbols (`96%`, `3x`, `$50K`). Speaker notes are full spoken wor
 The following phrases and their equivalents are blacklisted. Check all AI-generated text against this list and remove them:
 - Vi: "Trong thời đại số", "Không chỉ… mà còn", "Hãy cùng khám phá", "giải pháp toàn diện", "nâng tầm", "đột phá", "tối ưu hoá trải nghiệm", "hệ sinh thái", "trong bối cảnh hiện nay", "đóng vai trò quan trọng", "mang lại giá trị", "không ngừng nỗ lực"
 - En: "In today's fast-paced world", "leverage", "seamless", "unlock the power", "cutting-edge", "game-changer", "revolutionize", "synergy", "best-in-class", "delve", "in conclusion", "it is important to note"
+
+## Proposal, not process
+A proposal answers: why this matters to you, what changes, why believe us, what we ask. It does not narrate how the
+work was done — no versions, phase or ticket ids, commit hashes, changelog lists or "first we… then we…".
+Slide content comes only from the approved Content Map; unfinished work and to-do items belong in backstage.md.

@@ -55,10 +55,14 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 | voice_profile | input |
 | story_brief | input |
 | quality_brief | input |
+| outline_gate | input, output |
+| source_inventory | input |
+| content_map | output |
 | manifest_generation | output |
 | generate_docx_content | output |
 | spoken_script | output |
 | detect_visual_artifacts | input |
+| curation_check | output |
 | template_resolution | covered by gate: generate_pptx |
 | generate_pptx | output |
 | animation_hook | output |
@@ -491,6 +495,62 @@ These drive sharper content in Step 4 (manifest_generation): tone, word choice, 
 
 </step>
 
+<step name="outline_gate">
+## Step 3g: Outline First (ENH-122 — MANDATORY)
+
+No slide content exists yet. Build the outline from the confirmed type / variant, duration and briefs:
+`buildOutline({ type, variant, keyMessage, durationMin })` from `lib/proposal-outline.cjs` → per slide: title, beat,
+**job** (what the audience will think / feel / do after it), **evidence needed** (number | demo | quote | diagram |
+comparison | none), time budget. Draft the key message (one sentence the audience must remember) from the Story
+Brief and the consult.
+
+**Gate (input, ENH-124):** AskUserQuestion — confirm or rewrite the key message. Options: Use this key message
+(Recommended) / Rewrite it / Show alternatives.
+
+**Gate (output, ENH-124):** AskUserQuestion — show `formatOutline(outline)`. Options: Approve (Recommended) / Edit jobs
+or evidence / Reorder, add or remove slides / Start over. Apply edits as `overrides`, re-run `validateOutline` (must be
+`ok`). Slide generation is blocked until the outline is approved; `--yes` auto-approves and records `auto-accepted`.
+Save as `versionPaths(...).outline` (`outline.json`). `recordGate(root, slug, 'outline_gate', 'input'|'output', result)`.
+
+---
+
+</step>
+
+<step name="source_inventory">
+## Step 3h: Source Inventory (ENH-122)
+
+`inventorySources(root, { include: --source globs, exclude: --exclude globs })` from `lib/proposal-sources.cjs`
+classifies candidate sources **by path only** (it never opens a file) into product-value, evidence, architecture,
+visual, roadmap-future, process-log and sensitive. Only `readableSources(...)` may be opened afterwards — sensitive
+files are never read. Process-log sources (CHANGELOG, TRACKER, phase/request files, git log) may only be TRANSFORMed
+into an outcome or a proof point, never copied.
+
+**Gate (input, ENH-124):** AskUserQuestion — show counts per kind and the files that will be read. Options: Use these
+sources (Recommended) / Add a source / Exclude a source. `recordGate(root, slug, 'source_inventory', 'input', result)`.
+
+---
+
+</step>
+
+<step name="content_map">
+## Step 3i: Content Map (ENH-122 / ENH-123)
+
+Read the readable sources and, for every candidate fact, decide against the approved outline and the audience with
+`addItem(map, …)`: **FIT** (serves a slide's job → assigned to that slide), **TRANSFORM** (true but phrased as process →
+rewritten as outcome or proof, e.g. "Phase 165 added 4 voice levels (v3.13.0)" → "You choose how boldly the deck
+speaks"), **DROP** (irrelevant, too detailed or history with no bearing on the decision — with a reason),
+**SENSITIVE** (never shown) or **BACKSTAGE** (presenter-only, with a reason). The rules are enforced by `addItem`
+(process-log is never FIT; sensitive is only SENSITIVE). A slide whose job has no evidence is a **gap**: ask the user
+for real material — never invent (same rule as the Story Brief).
+
+**Gate (output, ENH-124):** AskUserQuestion — show `summarizeContentMap(map)` (counts, dropped and backstage items with
+reasons, gaps). Options: Approve (Recommended) / Move items / Restore a dropped item / Answer the gaps.
+`recordGate(root, slug, 'content_map', 'output', result)`.
+
+---
+
+</step>
+
 <step name="manifest_generation">
 ## Step 4: AI Slide Manifest Generation
 
@@ -863,6 +923,10 @@ If `--dry-run`: print manifest as JSON and stop here.
 
 
 
+**Content Map only (ENH-122):** the manifest follows the approved outline slide for slide; every slide's content
+comes from Content Map items assigned to it and lists them in `refs`. `validateManifestAgainstMap(manifest, map)` must
+be `ok` before the output gate; reported gaps go back to the user.
+
 **Budget workbook (ENH-127):** when `budgetApplies(type, variant)` (`lib/proposal-budget.cjs`: project-proposal,
 research grant-proposal and progress-report, internal leadership-report), every budget, investment or "ask" figure
 comes from one workbook — never typed into slides by hand:
@@ -1081,6 +1145,31 @@ Progress: `[visuals] Found {N} artifact(s) → {M} slides will have screenshots`
 
 
 **Gate (input, ENH-124):** AskUserQuestion — list the visual artifacts found (UI prototype pages, diagrams) and how they will be used. Options: Include all (Recommended) / Choose which / Include none. `recordGate(root, slug, 'detect_visual_artifacts', 'input', result)`; on accept `recordStep(root, slug, 'detect_visual_artifacts')`.
+
+---
+
+</step>
+
+<step name="curation_check">
+## Step 4d: Curation Check — no changelog, no dev notes (ENH-122 / ENH-123)
+
+Runs on the manifest **and** the spoken script, before anything is rendered:
+1. `detectProcessLeak(manifest, { type, variant, audienceProfile, script })` — versions, phase/task/request ids, commit
+   hashes, file paths and function names (non-technical audiences), changelog verbs, dated "what we did" lists,
+   "first we… then we…" narration. Every finding is rewritten through TRANSFORM and re-checked; anything left is
+   fail-loud (rendering does not start).
+2. `detectDevNotes(manifest, script)` — not-done work, "remaining / watch-out" lists, hedges. Each finding goes to the
+   **Backstage Editor (#31)**, who decides `fix | reframe | backstage | remove` with a reason; `enforceMaterialRule`
+   forbids hiding a material risk (budget, delay, security, legal) from a decision audience — reframe it as
+   risk → mitigation → ask instead.
+3. `buildBackstage(decisions, { title })` → `versionPaths(...).backstage` (presenter-only: tough questions with
+   prepared answers, open items with owner and date, reframes, fixes, removals). `findBackstageLeaks` must be `ok`: no
+   backstage or removed text may remain on slides, in notes or in the script. Speaker notes may keep a short
+   `[Backstage]` pointer where a question is likely.
+
+**Gate (output, ENH-124):** AskUserQuestion — the curation result (leaks fixed, dev notes and the Backstage Editor's
+decisions, material items and how they were handled). Options: Accept all (Recommended) / Review material items one by
+one / Restore an item to the slides / Stop. `recordGate(root, slug, 'curation_check', 'output', result)`.
 
 ---
 
@@ -1411,7 +1500,9 @@ Always-on final quality step. A council of 20 reviewer personas (library: `templ
 ### 1. Select personas
 ```js
 const pr = require('../lib/proposal-review.cjs');
-const ids = pr.selectPersonas({ type, variant, audience, decisionMaker, audienceProfile, mode, add, remove });
+const { reviewers: ids, observers } = pr.selectCouncil({ type, variant, audience, decisionMaker, audienceProfile, mode, add, remove });
+// observers = [31] Backstage Editor: runs in every council (all modes), never counted among the reviewers; its
+// findings update backstage.md and it raises `material-risk-hidden` / `process-log-instead-of-proposal` blockers.
 ```
 Use the type-aware rubric and blockers: `pr.getRubric(type)` and `pr.getBlockers(type)`. For `research-proposal` they add R1 Novelty & contribution, R2 Methodological rigor, R3 Feasibility & reproducibility and the blocker "unsupported scientific claim / key claim without citation"; `pr.evaluateGate(reviews, { type })` applies them. Other types keep the original rubric.
 
