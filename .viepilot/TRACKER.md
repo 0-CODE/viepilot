@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **174** ✅ (v3.22.0) · **Next Phase**: — (phases 170–174 complete; backlog: BUG-034)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **174** ✅ (v3.22.0) · **Next Phase**: **175** ⏳ (BUG-034 → v3.22.1)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 175 planned for BUG-034 (2 tasks → 3.22.1): copy package-lock.json, deps_install step (npm ci --omit=dev), --skip-deps, injectable runner, failure = warning with manual command | `/vp-evolve` | 175 |
 | 2026-11-07 | Phase 174 complete: ENH-121 Rehearsal Hall → v3.22.0 (3177 + 1 skip). Browser-verified 3D replay. BUG-034 logged (installer never installs deps → 2D fallback for installed copies). Incident: overwrote main's untracked BUG-033 file, renumbered + reconstructed | Close phase 174 | 174 |
 | 2026-11-07 | Phase 173 complete: ENH-122 + ENH-123 → v3.21.0 (3136 + 1 skip). Outline/inventory/Content Map gates before content, curation check before rendering, #31 observer; review caught \\W stripping 'Đ' and #31 leaking into research full mode | Close phase 173 | 173 |
 | 2026-11-07 | Phase 172 complete: ENH-127 document skills → v3.20.0 (3033 + 1 skip). Deck QA gate, env detection with skip reasons, budget workbooks, edit import. Visual QA/recalc unverified locally (no LibreOffice/Poppler) | Close phase 172 | 172 |
@@ -303,7 +304,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | ID | Type | Title | Priority | Status |
 |----|------|-------|----------|--------|
 | ENH-127 | 🔧 | vp-proposal bắt buộc dùng skill tài liệu của Claude Code (pptx/docx/xlsx/pdf): tạo theo hướng dẫn skill, validate.py sau animation, gate QA nội dung/file/hình ảnh từng slide, workbook ngân sách xlsx, đọc bản chỉnh tay; thiếu skill → AUQ, ghi "skipped" | high | ✅ done (**3.20.0**, Phase 172) |
-| BUG-034 | 🐛 | Installer không cài/cập nhật node_modules cho bản cài (three thiếu → hội trường 2D; dependency mới về sau cũng thiếu) | high | new |
+| BUG-034 | 🐛 | Installer không cài/cập nhật node_modules cho bản cài (three thiếu → hội trường 2D; dependency mới về sau cũng thiếu) | high | triaged (→ Phase 175) |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |

@@ -4330,3 +4330,22 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 174 --phase-complete` → exit 0
 - [x] version = 3.22.0
+
+## Phase 175 — BUG-034: Installer installs runtime dependencies in the installed copy (v3.22.1)
+
+**Goal**: `viepilot install` copies `package-lock.json` and runs a production dependency install (`npm ci --omit=dev`) in every installed ViePilot dir; `--skip-deps` for offline; failures warn with the manual command.
+**Estimated Tasks**: 2
+**Status**: ⏳ planned
+**Version Target**: 3.22.1
+**Dependencies**: Phase 174 ✅
+**Directory**: `.viepilot/phases/175-bug034-installer-runtime-deps/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 175.1 | deps_install step, lock copy, --skip-deps, injectable runner | M |
+| 175.2 | tests + docs + CHANGELOG 3.22.1 + resolve BUG-034 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 175 --phase-complete` → exit 0
+- [ ] version = 3.22.1
