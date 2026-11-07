@@ -10,7 +10,7 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 171.1 | done ✅ | proposal-store — 9762d57 + review fix (version source, topic matching) |
-| 171.2 | pending | Session state + vp-tools proposal commands |
+| 171.2 | in_progress 🔄 | session.json + vp-tools proposal commands |
 | 171.3 | pending | Gate registry + upgrade plan |
 | 171.4 | pending | Context hooks for active proposal sessions |
 | 171.5 | pending | Workflow: AUQ at every gate, detect/upgrade, iterate, resume |
@@ -27,7 +27,7 @@ in_progress
 
 ## Todo
 - [x] [vp] 171.1 — ENH-124 + ENH-126: Proposal store: layout, versions, provenance, hashes
-- [ ] [vp] 171.2 — ENH-124 + ENH-126: Session state + vp-tools proposal commands
+- [~] [vp] 171.2 — ENH-124 + ENH-126: Session state + vp-tools proposal commands
 - [ ] [vp] 171.3 — ENH-124 + ENH-126: Gate registry + upgrade plan
 - [ ] [vp] 171.4 — ENH-124 + ENH-126: Context hooks for active proposal sessions
 - [ ] [vp] 171.5 — ENH-124 + ENH-126: Workflow: AUQ at every gate, detect/upgrade, iterate, resume
