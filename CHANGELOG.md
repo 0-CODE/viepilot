@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.22.1] - 2026-11-07
+### Fixed
+- Installer installs runtime dependencies in the installed copy (BUG-034): `package-lock.json` is copied next to `package.json` and `npm ci --omit=dev` runs in every installed ViePilot dir (e.g. `~/.claude/viepilot`), so packages added after an old install (such as `three` for the Rehearsal Hall replay) are present. `--skip-deps` for offline installs; a failed dependency install is a warning with the manual command, never a failed install.
+
+---
+
 ## [3.22.0] - 2026-11-07
 ### Added
 - Rehearsal Hall for vp-proposal (ENH-121): after a run, or later with `--simulate <proposal dir>`, 12–16 personas (or `--hall all`) listen to the deck along the real timeline as independent subagents.

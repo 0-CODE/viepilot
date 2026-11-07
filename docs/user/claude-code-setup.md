@@ -41,6 +41,8 @@ Sau khi cài: **khởi động lại / mở session Claude Code mới** nếu me
 
 **Cập nhật sau này:** chạy lại `npx viepilot install --target claude-code --yes` từ bản npm/git mới để refresh cả hai cây skills.
 
+**Dependency của bản cài:** installer copy `package-lock.json` và chạy `npm ci --omit=dev` trong `~/.claude/viepilot` (cần mạng). Máy offline: thêm `--skip-deps`, rồi chạy lại lệnh được in ra khi có mạng.
+
 ## Bước 2 — Tuỳ chọn: symlink / copy thủ công (bản cũ hoặc chỉ Cursor)
 
 Nếu bạn dùng ViePilot **&lt; 1.9.4** hoặc đã cài **`--target cursor-*`** mà **không** gồm `claude-code`, Claude Code **không** đọc `~/.cursor/skills` — khi đó đồng bộ thủ công vào **`~/.claude/skills/<tên-thư-mục>/SKILL.md`**.

@@ -58,6 +58,10 @@ npm run readme:sync
 # refresh README Total LOC metrics via cloc
 ```
 
+**Runtime dependencies:** after copying the files, the installer runs `npm ci --omit=dev` inside the installed
+copy (for example `~/.claude/viepilot`) so features such as the proposal generator and the Rehearsal Hall 3D replay
+have their packages. Offline? Add `--skip-deps` and run the printed command later.
+
 ### Version check & update
 
 Sau khi có `vp-tools` trên PATH (ví dụ `npm i -g viepilot` hoặc cài qua `npx viepilot install` copy bundle):

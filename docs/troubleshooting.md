@@ -30,6 +30,20 @@ Use `--yes` for no prompt and `--target` to avoid interactive selection.
 
 ---
 
+### Install finished with "warning: deps_install failed"
+
+**Cause**: the installer could not install runtime dependencies in the installed copy (no network, npm missing,
+proxy). The files are installed; only `node_modules` is incomplete, so features such as the 3D Rehearsal Hall fall
+back (2D hall) or fail to load a package.
+
+```bash
+cd ~/.claude/viepilot && npm ci --omit=dev --no-audit --no-fund
+```
+
+Use `npx viepilot install --skip-deps` to skip this step on purpose (offline installs) and run the command above later.
+
+---
+
 ### Interactive selector doesn't work (arrow/space keys)
 
 **Cause**: Terminal is non-TTY (CI, redirected stdin/out).  
