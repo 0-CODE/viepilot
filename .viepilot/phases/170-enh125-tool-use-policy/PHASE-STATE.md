@@ -4,7 +4,7 @@
 170 — ENH-125: Tool-use policy for skills and agents (v3.18.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -20,6 +20,14 @@ in_progress
 
 ## Version Target
 3.18.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: 7a3324c
+- Tag: vp-p170-complete
+- Full suite: 2931 passed + 1 skipped
 
 ## Sources
 .viepilot/requests/ENH-125.md

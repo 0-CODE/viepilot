@@ -4221,7 +4221,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 
 **Goal**: Every ViePilot skill, workflow, agent and dispatch prompt states one adapter-mapped tool policy — Read to read, Grep/Glob to search, Edit to change, Write to create, Task to delegate, TodoWrite (TaskCreate family) to track — and never edits files through sed/python/heredoc. A lint test and an optional PreToolUse hook enforce it.
 **Estimated Tasks**: 5
-**Status**: ⏳ planned
+**Status**: ✅ done (2026-11-07)
 **Version Target**: 3.18.0
 **Dependencies**: Phase 169 ✅
 **Directory**: `.viepilot/phases/170-enh125-tool-use-policy/`
@@ -4235,9 +4235,9 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 170.5 | CHANGELOG 3.18.0 + resolve ENH-125 | S |
 
 **Verification**:
-- [ ] `npm test` → full suite green
-- [ ] `node bin/vp-tools.cjs todo check --phase 170 --phase-complete` → exit 0
-- [ ] version = 3.18.0
+- [x] `npm test` → full suite green
+- [x] `node bin/vp-tools.cjs todo check --phase 170 --phase-complete` → exit 0
+- [x] version = 3.18.0
 
 ## Phase 171 — ENH-124 + ENH-126: Proposal session continuity, AUQ at every gate, versioning and upgrade (v3.19.0)
 

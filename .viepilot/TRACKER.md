@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **169** ✅ (ENH-119 + ENH-120 → v3.17.0) · **Next Phase**: **170** ⏳ (planned 170–174 → v3.18.0–3.22.0)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **170** ✅ (v3.18.0) · **Next Phase**: **171** ⏳
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 170 complete: ENH-125 tool policy → v3.18.0 (2931 + 1 skip). Review caught classifier gaps, non-idempotent sync + 171-line skill blocks, wrong PreToolUse matcher format | Close phase 170 | 170 |
 | 2026-11-07 | Phases 170–174 planned (29 tasks): 170 ENH-125 tool policy → 3.18.0 · 171 ENH-124+126 session/AUQ gates/versioning → 3.19.0 · 172 ENH-127 document skills → 3.20.0 · 173 ENH-122+123 outline/curation/Backstage Editor → 3.21.0 · 174 ENH-121 Rehearsal Hall → 3.22.0. Decisions: policy generated from one source; hook default warn; immutable versions + gate registry; namespace-guard exception scoped to vp-proposal; three.js inlined for offline report | `/vp-evolve` | 170–174 |
 | 2026-11-07 | ENH-127 logged: user opt-in rõ ràng (ngoại lệ namespace guard BUG-004, chỉ cho vp-proposal). Skill pptx dùng chung pptxgenjs, có validate.py (bắt lỗi PowerPoint đòi sửa, gồm <p:timing>), visual QA qua LibreOffice+pdftoppm, slide_text.py đọc notes; docx có tracked changes/comment; xlsx có recalc công thức. ViePilot vẫn là nguồn sự thật cho manifest/gate; skill là lớp thực thi + QA | `/vp-request` | Backlog |
 | 2026-11-07 | ENH-126 logged: hiện output phẳng {slug}-{date}.*; chạy lại cùng ngày ghi đè im lặng (mất cả bản user chỉnh tay); khác ngày thì tạo bộ song song không liên kết; không lưu phiên bản/gate/manifest nên không nâng cấp được. Đề xuất: thư mục/proposal + versions bất biến + provenance; AUQ đầu phiên Upgrade/Revise/New/Keep; gate registry theo phiên bản; hash phát hiện chỉnh tay; vp-tools proposal migrate/diff/prune. Lập kế hoạch cùng ENH-124 | `/vp-request` | Backlog |
@@ -299,7 +300,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 |----|------|-------|----------|--------|
 | ENH-127 | 🔧 | vp-proposal bắt buộc dùng skill tài liệu của Claude Code (pptx/docx/xlsx/pdf): tạo theo hướng dẫn skill, validate.py sau animation, gate QA nội dung/file/hình ảnh từng slide, workbook ngân sách xlsx, đọc bản chỉnh tay; thiếu skill → AUQ, ghi "skipped" | high | triaged (→ Phase 172) |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | triaged (→ Phase 171) |
-| ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | triaged (→ Phase 170) |
+| ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | triaged (→ Phase 171) |
 | ENH-123 | 🔧 | vp-proposal Backstage Editor (#31, luôn chạy): soát điều bất lợi + ghi chú phát triển (chưa làm, cần lưu ý, còn lại…) → fix / reframe / backstage / remove; backstage.md cho người trình bày; rủi ro trọng yếu không được giấu | high | triaged (→ Phase 173) |
 | ENH-122 | 🔧 | vp-proposal Outline-first gate → kiểm kê nguồn repo → Content Map (FIT/TRANSFORM/DROP/SENSITIVE) → mới viết slide; chặn proposal thành changelog (detectProcessLeak + blocker hội đồng) | high | triaged (→ Phase 173) |
