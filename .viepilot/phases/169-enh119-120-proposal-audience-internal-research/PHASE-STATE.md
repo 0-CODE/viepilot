@@ -9,7 +9,7 @@ in_progress
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 169.1 | in_progress 🔄 | variant framework + internal-presentation |
+| 169.1 | done ✅ | variant framework + internal-presentation ×5, general.pptx fallback — cdc68b1 (2493 + 1 skip) |
 | 169.2 | pending | research-proposal type + 5 variants (incl. kickoff) |
 | 169.3 | pending | proposal-audience.cjs + extractAudienceHints/findIntakeGaps + purpose-consult-prompt.md |
 | 169.4 | pending | Personas 21–30 + research rubric R1–R3 + variant/role selection |
@@ -26,7 +26,7 @@ in_progress
 .viepilot/requests/ENH-119.md, .viepilot/requests/ENH-120.md
 
 ## Todo
-- [~] [vp] 169.1 — `internal-presentation` type + variants (shared variant framework)
+- [x] [vp] 169.1 — `internal-presentation` type + variants (shared variant framework)
 - [ ] [vp] 169.2 — `research-proposal` type + 5 variants
 - [ ] [vp] 169.3 — ENH-119/120: Audience profile, free-text purpose hints + type recommendation
 - [ ] [vp] 169.4 — ENH-119/120: Internal + academic personas, research criteria, audience-aware selection
