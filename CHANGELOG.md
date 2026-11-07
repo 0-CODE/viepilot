@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.17.0] - 2026-11-07
+### Added
+- vp-proposal purpose consult (ENH-120): the user describes the purpose in their own words first; the AI states what it understood, recommends a type and variant with alternatives, suggests an outline and duration, lists watch-outs, then asks only the audience questions still missing (`--purpose`). Contract in `templates/proposal/purpose-consult-prompt.md`.
+- Audience intake (ENH-119): roles (primary/secondary), decision maker and what they care about, knowledge level and size, format and goal — asked only for the gaps (`--audience`).
+- `lib/proposal-audience.cjs`: `extractAudienceHints` (Vietnamese with or without diacritics, English, whole-word matching, headcount → size), `normalizeAudienceProfile`, `findIntakeGaps`, `recommendProposalType` (type + variant + reason + 1–2 alternatives), `suggestVoice`, `suggestDuration`.
+- `internal-presentation` type with 5 variants: team-intro, leadership-report, feature-demo, training, all-hands (`--variant`).
+- `research-proposal` type (Science & Technology Research) with 5 variants: grant-proposal, kickoff, progress-report, defense, tech-transfer; research decks request a references section in the .docx.
+- Shared variant framework in `lib/proposal-generator.cjs`: `TYPE_VARIANTS`, `validateVariant`, `getSkeleton`, variant-aware `getDiagramTypes`; stock template falls back to `general` when a type has no file of its own.
+- Personas 21–25 (internal audience) and 26–30 (academic); research-only rubric R1 Novelty & contribution, R2 Methodological rigor, R3 Feasibility & reproducibility, plus the blocker "unsupported scientific claim / key claim without citation" (`getRubric(type)`, `getBlockers(type)`).
+
+### Changed
+- `selectPersonas` accepts `variant` and `audienceProfile` (primary roles first); selections for the original four types are unchanged.
+- Type selection now recommends a type from the audience and asks the user to confirm; `--type` still overrides. vp-proposal SKILL 0.4.0.
+
+---
+
 ## [3.16.1] - 2026-11-07
 ### Fixed
 - Installer now copies every `templates/` entry instead of only `project`, `phase` and `architect`. `templates/proposal` (prompt-contract, review-personas, persona-review-prompt) and `templates/stakeholder-agent.md` were missing from installs, so the persona review council and prompt contract failed outside the repo.
