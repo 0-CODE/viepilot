@@ -1,7 +1,7 @@
 ---
 name: vp-proposal
 description: "Generate professional proposal packages (.pptx + .docx + .md) from brainstorm sessions or direct briefs"
-version: 0.3.0
+version: 0.4.0
 ---
 
 <greeting>
@@ -11,7 +11,7 @@ Output this banner as the **first** thing on every invocation — before questio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- VIEPILOT ► VP-PROPOSAL  v0.3.0 (fw 3.16.0)
+ VIEPILOT ► VP-PROPOSAL  v0.4.0 (fw 3.16.0)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 </greeting>
@@ -150,13 +150,15 @@ Generate a professional proposal package from a brainstorm session or direct bri
 - Persona 20 (Humanity editor) is locked and always runs. If the gate fails, only the Improve slides are rewritten (max 2 rounds), then a review report is written.
 - `--review off|quick|full` selects the council size.
 
-**Proposal types:**
-| Type | Slides | Use case |
-|------|--------|----------|
-| `project-proposal` | 10 | Scope, timeline, budget for clients |
-| `tech-architecture` | 12 | Technical design for partners |
-| `product-pitch` | 12 | Investor / partner pitch deck |
-| `general` | 8 | Generic, fallback |
+**Proposal types (6 types):**
+| Type | Slides | Use case | Variants |
+|------|--------|----------|----------|
+| `project-proposal` | 10 | Scope, timeline, budget for clients | — |
+| `tech-architecture` | 12 | Technical design for partners | — |
+| `product-pitch` | 12 | Investor / partner pitch deck | — |
+| `general` | 8 | Generic, fallback | — |
+| `internal-presentation` | 8 | Team updates, training, demos | team-intro, leadership-report, feature-demo, training, all-hands |
+| `research-proposal` | 10 | Grant proposals, research presentations | grant-proposal, kickoff, progress-report, defense, tech-transfer |
 
 **Template resolution (2-tier):**
 1. `.viepilot/proposal-templates/{type}.pptx` — project-level override
@@ -174,8 +176,18 @@ workflows/proposal.md
 
 <context>
 Optional flags:
-- `--type <id>` : Proposal type — `project-proposal` | `tech-architecture` | `product-pitch` | `general`
-                  If omitted: guided selection menu is shown
+- `--purpose "<text>"` : Proposal purpose, context, audience, desired outcome (Step 2b+).
+                        Non-interactive; skips Purpose Consult prompt. Text is auto-confirmed.
+- `--audience "<text>"` : Audience intake details in free text (Step 2c).
+                         Non-interactive; parsed via normalizeAudienceProfile.
+                         Skipped if no gaps detected; or use to fast-path questions.
+- `--type <id>` : Proposal type — `project-proposal` | `tech-architecture` | `product-pitch` | `general` | `internal-presentation` | `research-proposal`
+                  If omitted: guided selection menu is shown with all 6 types.
+                  If `internal-presentation` or `research-proposal`: optionally pair with `--variant`.
+- `--variant <id>` : Proposal variant (for types with variants).
+                    Internal variants: team-intro | leadership-report | feature-demo | training | all-hands
+                    Research variants: grant-proposal | kickoff | progress-report | defense | tech-transfer
+                    If omitted with a variant-type: variant selection prompt is shown.
 - `--from <file>` : Explicit brainstorm session file to use as context
                     Default: auto-detect latest `docs/brainstorm/session-*.md`
 - `--lang <code>` : Language for generated content — ISO 639-1 (e.g. vi, en, ja, fr, zh).
@@ -187,8 +199,10 @@ Optional flags:
                Requires: `@googleapis/slides` installed + `GOOGLE_APPLICATION_CREDENTIALS` env var
 - `--voice <1-4>` : Voice Profile level — 1 Humble, 2 Balanced, 3 Proud, 4 Founder story.
                     If omitted: Voice Profile prompt (AskUserQuestion) is shown every run.
+                    Pre-selected: suggestVoice(audienceProfile, recommendation) marked Recommended.
 - `--duration <5|15|30>` : Target talk length in minutes for the primary script (`-script.md`).
                            The 5 and 30 minute variants are also written.
+                           Default: suggestDuration(audienceProfile, recommendation).
 - `--review <off|quick|full>` : Persona Review Council size (default `quick`). `off` skips the
                                  council but still runs persona 20 (Humanity editor) only.
 - `--dry-run` : Show slide manifest (JSON) without writing any files
@@ -206,66 +220,123 @@ Execute workflow from `workflows/proposal.md`
   - Target audience (client / partner / investor)
   - 3–5 key points to cover
 
+### Step 2: Purpose Consult (Step 2b+)
+- Ask user: "What is this proposal about? (purpose, context, who is in the room, outcome wanted)"
+- Or `--purpose "<text>"` to supply non-interactively
+- Extract audience hints via `extractAudienceHints(text, {lang})`
+- Check for gaps via `findIntakeGaps(profile)`
+- Render consult template showing "What I understood"; user confirms or corrects
+
+Output: `purposeText`, `audienceHints` (roles, goals, formats, knowledge detected from text)
+
+### Step 2c: Audience Intake
+- Only shown if `findIntakeGaps` returns gaps
+- Ask up to 4 questions (depending on gaps):
+  1. Roles (multiSelect; mark primary in notes) — if 'roles' gap
+  2. Decision Maker (text; what they care about) — if 'decisionMaker' gap
+  3. Knowledge & Size (novice/mixed/expert, small/medium/large) — if 'knowledgeSize' gap
+  4. Format & Goal (in-person/online/recorded/hybrid, approval/demo/train/fund/etc.) — if 'formatGoal' gap
+- Or `--audience "<text>"` to skip questions; parse via `normalizeAudienceProfile`
+- Output: `audienceProfile` (roles, decisionMaker, knowledge, size, format, goal)
+
 ### Prompts using AskUserQuestion
-- Proposal type selection
+- Purpose Consult confirmation (Step 2b+)
+- Audience Intake questions (Step 2c) — only shown if gaps detected
+- Proposal type recommendation (Step 3a) — show recommendation + reason + alternatives
+- Variant selection (Step 3c) — if type has variants and none provided
 - Language selection
-- Voice Profile (4 levels; skipped with `--voice`)
+- Voice Profile (4 levels; skipped with `--voice`; pre-selected option from suggestVoice)
 - Story Brief (all questions skippable)
 - Quality Brief
 - Persona Review Council: persona confirmation (accept / add / remove; optional)
 - Persona Review Council: after round 2 still failing (Accept current version / Run one more round / I'll give feedback directly / Provide more real material)
 - Persona Review Council: final humanity check on the lowest-H1 slide (Sounds like me / Needs more pride / Needs more humility / I'll edit directly)
 
-### Step 2: Proposal Type Selection
-- If `--type` provided: validate; show type + slide count to confirm
-- Else: present menu:
-  ```
-  1. Project Proposal     (10 slides) — scope, timeline, budget
-  2. Tech Architecture    (12 slides) — system design for partners
-  3. Product Pitch Deck   (12 slides) — investor / partner pitch
-  4. General Proposal     ( 8 slides) — generic fallback
-  ```
+### Step 3: Proposal Type Selection & Recommendation
+- If `--type` provided: validate + optional `--variant`; skip recommendation
+- Else:
+  1. **Step 3a: Recommendation** — call `recommendProposalType(audienceProfile, {lang})`
+     Show recommendation + reason + alternatives via AUQ; user confirms or chooses alternative
+  2. **Step 3b: Full Menu** — if "show all types" selected
+     Present all 6 types: Project Proposal, Tech Architecture, Product Pitch, General, Internal Presentation, Research Proposal
+  3. **Step 3c: Variant Confirmation** — if type is `internal-presentation` or `research-proposal` and no `--variant`
+     Show variant menu (team-intro, leadership-report, feature-demo, training, all-hands for internal;
+     grant-proposal, kickoff, progress-report, defense, tech-transfer for research)
 
-### Step 3: AI Slide Manifest Generation
+Output: `typeId`, `variant` (if applicable), `slideCount`
+
+### Step 3d: Language Selection
+- If `--lang` provided: skip prompt; use flag value directly
+- Else: show menu with MRU suggestions and ISO 639-1 codes
+
+### Step 3e: Voice Profile
+- Asked every run; asked after audience and type are confirmed
+- Pre-select `suggestVoice(audienceProfile, recommendation)` as Recommended
+- User still chooses every run (ENH-117)
+
+### Step 3f: Story Brief
+- All questions skippable
+- Collect real material: origin, customer story, number, repeat line
+
+### Step 3g: Quality Brief
+- Four non-skippable questions: CTA, budget, timeline, decision-maker
+
+### Step 4: AI Slide Manifest Generation
 - Structure context into JSON manifest:
   ```json
   {
     "title": "...",
     "subtitle": "...",
+    "type": "...",
+    "variant": "...",
+    "audienceProfile": { "roles": [...], "decisionMaker": "...", "knowledge": "...", "size": "...", "format": "...", "goal": "..." },
     "slides": [
       { "index": 1, "layout": "cover", "heading": "...", "body": "...", "speakerNotes": "..." },
       { "index": 2, "layout": "section", "heading": "...", "bullets": ["..."], "speakerNotes": "..." }
     ]
   }
   ```
-- Slide count MUST match `PROPOSAL_TYPES[typeId].slides`
+- Slide count MUST match `PROPOSAL_TYPES[typeId].slides` (dynamic — may exceed base skeleton)
 - If `--dry-run`: print manifest and stop
 
-### Step 4: Template Resolution
+### Step 4a: Template Resolution
 - Call `resolveTemplate(typeId, 'pptx', projectRoot)` → pptx template path
 - Call `resolveTemplate('project-detail', 'docx', projectRoot)` → docx template path
 - Warn (not error) if stock fallback is used
 
-### Step 5: Generate .pptx
+### Step 4b: Generate .pptx
 - Load template via pptxgenjs
 - Apply slide manifest: inject titles, bullets, speaker notes per slide
 - Ensure `docs/proposals/` directory exists
 - Write `{slug}-{date}.pptx`
 
-### Step 6: Generate .docx
+### Step 4c: Generate .docx
 - Build detailed document from same manifest + extended content
 - Sections: Executive Summary, Problem & Solution, Features & Specifications,
             Technical Architecture (if relevant), Timeline, Team, Appendix
+- For research proposal variants: add References section (citations: true)
 - Write `{slug}-{date}.docx`
 
-### Step 7: Generate .md summary
+### Step 5: Generate .md summary
 - Write Markdown mirror of the manifest
 - Save `{slug}-{date}.md`
 
-### Step 8: Optional Google Slides upload (`--slides`)
+### Step 6: Spoken Script & Speaker Notes
+- Fill `speakerNotes` and `durationSec` for every slide
+- Default duration: `suggestDuration(audienceProfile, recommendation)`
+- Validate speaker notes (no cliches, no spelled-out numbers, short sentences)
+
+### Step 7: Optional Google Slides upload (`--slides`)
 - Call `lib/google-slides-exporter.cjs` → `uploadToSlides(pptxPath, title)`
 - Write URL to `{slug}-{date}-slides.txt`
 - On failure: surface error but do NOT fail the whole command (files already written)
+
+### Step 8: Persona Review Council
+- Select personas via `selectPersonas({type, variant, audience, decisionMaker, audienceProfile, mode})`
+- 20 reviewers score package against rubric (research types have R1–R3 research rubric)
+- Research proposal types note research blocker; getBlockers(type) returns blockers list
+- Persona 20 (Humanity editor) always runs
+- Max 2 rounds of rewrite + re-review if gate fails
 
 ### Step 9: Confirm output
 ```
@@ -273,6 +344,7 @@ Execute workflow from `workflows/proposal.md`
  VIEPILOT ► PROPOSAL GENERATED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Type:    {type label}  ({N} slides)
+ Variant: {variant label, or "—"}
  Context: {session file or "direct brief"}
 
  Files:

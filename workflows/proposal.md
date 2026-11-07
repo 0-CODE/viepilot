@@ -83,30 +83,166 @@ No brainstorm session found. Please provide a brief:
 
 </step>
 
+<step name="purpose_consult">
+## Step 2b+: Purpose Consult
+
+Ask user for free-text description of the proposal's purpose, context, audience, and desired outcome.
+
+```
+Let's understand the purpose of this proposal.
+
+Please tell me:
+1. What is this proposal about? (purpose, context, who is in the room, outcome wanted)
+```
+
+User provides text (or skip with Enter). If provided:
+
+```js
+const hints = extractAudienceHints(text, { lang });
+const gaps = findIntakeGaps(hints.matched);
+```
+
+Render the consult via `templates/proposal/purpose-consult-prompt.md` (placeholders: `{user_text}`, `{hints_json}`, `{gaps}`, `{recommendation_json}`, `{lang}`):
+
+```
+What I understood:
+- Your proposal is about: {extracted purpose from hints}
+- Key audience types detected: {roles from hints}
+- Decision maker perspective: {if mentioned}
+- Knowledge level: {if mentioned}
+- Format / delivery goal: {if mentioned}
+
+Is this right? (yes / no / clarify)
+```
+
+User confirms or corrects. If corrects, re-extract and re-show until confirmed.
+
+**Non-interactive:** `--purpose "<text>"` supplies the text directly; auto-confirm.
+
+Output: `purposeText`, `audienceHints` (from `extractAudienceHints`).
+
+---
+
+</step>
+
+<step name="audience_intake">
+## Step 2c: Audience Intake
+
+Build the starting profile from the consult hints: `const profile = normalizeAudienceProfile(audienceHints.raw)`.
+Only if `findIntakeGaps(profile)` returns gaps, ask them (never show this step when there are no gaps). Merge the answers into the same raw object and normalize again.
+
+Ask the gaps via a single `AskUserQuestion` call (Claude Code) or numbered text (other adapters), ≤4 questions:
+
+1. **Roles** (multiSelect, if gap includes 'roles') — mark the primary one in "Other/notes"
+2. **Decision Maker** (single choice or text, if 'decisionMaker' in gaps) — "who makes the final call? what do they care about?"
+3. **Knowledge level** (choice: novice / mixed / expert, if 'knowledgeSize' in gaps) — "what is the audience's technical depth and group size?"
+4. **Format & Goal** (choice or text, if 'formatGoal' in gaps) — "in-person, online, recorded, hybrid? approval, demo, training, fund, etc?"
+
+Text fallback (numbered list for non-Claude Code):
+```
+Answer only what applies:
+
+1. Roles: [list with checkboxes or comma-separated]
+2. Decision Maker: [who & what they care about]
+3. Knowledge: [novice / mixed / expert] and size: [small ≤10 / medium 11–50 / large >50]
+4. Format & Goal: [delivery mode & what audience should do]
+```
+
+Parse responses into `normalizeAudienceProfile(raw)` → `audienceProfile` object.
+
+**Non-interactive:** `--audience "<free text>"` skips the questions; parse it with `extractAudienceHints(text, { lang })`, merge into the raw hints, then `normalizeAudienceProfile(raw)`.
+
+Output: `audienceProfile` (with roles, decisionMaker, knowledge, format, goal fields).
+
+---
+
+</step>
+
+
+
 <step name="type_selection">
 ## Step 3: Proposal Type Selection
 
-If `--type <id>` provided: validate against `PROPOSAL_TYPES`; confirm with user.
+### Step 3a: Recommendation
 
-If not provided, present menu:
+If `--type` provided: validate + optional `--variant` (if type has variants); skip to Step 3c.
+
+If not provided, call:
+```js
+const recommendation = recommendProposalType(audienceProfile, { lang });
+```
+
+Show recommendation via `AskUserQuestion` (Claude Code) or numbered text:
+
+```
+Based on your audience and goals, I recommend:
+
+  {recommendation.typeId} — {label}
+  Why: {recommendation.reason}
+  Typical slide count: {slideCount}
+
+  Other options:
+  - {alternatives[0].typeId} — {alternatives[0].reason}
+  - {alternatives[1].typeId} — {alternatives[1].reason}
+
+  Or show all proposal types?
+```
+
+User chooses: Recommended → set `typeId`; Alternative → set `typeId`; Show all types → go to Step 3b.
+
+### Step 3b: Full Menu (if "show all types" selected)
+
+Present menu with all 6 types:
+
 ```
 Select proposal type:
 
-1. Project Proposal     (10 slides)
-   Scope, timeline, budget — for client delivery
-
-2. Technical Architecture  (12 slides)
-   System design, components, tech stack — for technical partners
-
-3. Product Pitch Deck   (12 slides)
-   Problem/solution, market, traction — for investors/partners
-
-4. General Proposal     ( 8 slides)
-   Flexible structure for any audience
+1. Project Proposal     (10 slides) — scope, timeline, budget for clients
+2. Technical Architecture (12 slides) — system design for technical partners
+3. Product Pitch Deck   (12 slides) — problem/solution, traction for investors
+4. General Proposal     (8 slides) — flexible structure for any audience
+5. Internal Presentation (variants available) — team intro, training, all-hands, etc.
+6. Science & Technology Research (variants available) — grant, defense, tech transfer, etc.
 ```
 
-Output: `typeId` (string), `slideCount` (number), `label` (string)
+User selects by number → set `typeId`.
 
+### Step 3c: Variant Confirmation (internal-presentation or research-proposal)
+
+If `typeId` is `internal-presentation` or `research-proposal` and no `--variant` provided:
+
+For `internal-presentation`, call getSkeleton for each variant:
+- team-intro
+- leadership-report
+- feature-demo
+- training
+- all-hands
+
+For `research-proposal`, call getSkeleton for each variant:
+- grant-proposal
+- kickoff
+- progress-report
+- defense
+- tech-transfer
+
+Show via `AskUserQuestion` (Claude Code) or numbered text:
+
+```
+Which variant fits your audience?
+
+1. {variant.label} — {variant.goal}
+   Slides: {variant.slides}
+   
+[for each variant, compute from getSkeleton call]
+```
+
+User selects → set `variant`.
+
+If `--type` supplied with `--variant`, validate both.
+
+Output: `typeId` (string), `variant` (string if applicable, else null), `slideCount` (number).
+
+---
 ---
 
 </step>
@@ -141,6 +277,8 @@ Asked **every run** (ENH-117 user decision) — never silently reuse a previous 
 
 If `--voice <1-4>` provided: skip the prompt; resolve the level from `VOICE_LEVELS`.
 
+Pre-select `suggestVoice(audienceProfile, recommendation)` as **Recommended** (user still chooses every run; ENH-117 decision).
+
 **Claude Code (terminal):** call `AskUserQuestion` (preloaded via `ToolSearch select:AskUserQuestion`, ENH-059) with one question and the options below, built from `VOICE_LEVELS`.
 
 **Other adapters / AUQ unavailable — numbered-text fallback:**
@@ -167,7 +305,7 @@ Output: `voice` object; later passed to `buildVoiceInstruction(voice.level, lang
 </step>
 
 <step name="story_brief">
-## Step 3d: Story Brief
+## Step 3e: Story Brief
 
 Collect real material so the proposal sounds like a person, not a template. Ask via `AskUserQuestion` (Claude Code) or numbered text. **Every question is skippable** (Enter / "skip").
 
@@ -199,7 +337,7 @@ Store in manifest:
 </step>
 
 <step name="quality_brief">
-## Step 3e: Quality Brief
+## Step 3f: Quality Brief
 
 Ask these 4 questions regardless of whether a session was loaded:
 
@@ -253,7 +391,16 @@ Generate a structured JSON manifest from the loaded context.
 {
   "title": "Project Name",
   "subtitle": "One compelling sentence — not just a date",
-  "type": "project-proposal",
+  "type": "project-proposal",,
+  "variant": "team-intro",
+  "audienceProfile": {
+    "roles": ["leadership", "engineering"],
+    "decisionMaker": "Technical Director",
+    "knowledge": "expert",
+    "size": "medium",
+    "format": "in-person",
+    "goal": "approve"
+  }
   "audience": "client|partner|investor|internal",
   "meta": {
     "cta": "sign the contract",
@@ -440,6 +587,162 @@ Each skeleton slide is annotated with its narrative-arc beat (context → confli
 7. About Us / Credentials  ← _proof_
 8. Next Steps & CTA  ← _invitation_
 
+### internal-presentation (variants)
+
+The Internal Presentation type supports 5 variants, each optimized for different internal communications:
+
+#### team-intro (8 slides)
+Introduce the team's work and engage for involvement.
+```
+1. Cover  ← _context_
+2. Why we are here  ← _context_
+3. The problem we saw  ← _conflict_
+4. What we built/plan  ← _solution_
+5. How it works  ← _proof_
+6. What it means for your team  ← _turning point_
+7. Timeline & who to ask  ← _invitation_
+8. Q&A / how to get involved  ← _invitation_
+```
+
+#### leadership-report (8 slides)
+Drive decisions with data and clear recommendations.
+```
+1. Cover  ← _context_
+2. Bottom line first  ← _solution_
+3. Where we are vs plan  ← _proof_
+4. Key numbers  ← _proof_
+5. Risks & blockers  ← _conflict_
+6. Options & recommendation  ← _solution_
+7. Ask / decision needed  ← _invitation_
+8. Appendix pointer  ← _invitation_
+```
+
+#### feature-demo (7 slides)
+Show the feature in action and drive adoption.
+```
+1. Cover  ← _context_
+2. The pain today  ← _conflict_
+3. Live demo flow  ← _proof_
+4. Before/after  ← _turning point_
+5. How to start using it  ← _solution_
+6. Known limits & roadmap  ← _invitation_
+7. Feedback channel  ← _invitation_
+```
+
+#### training (9 slides)
+Build competence through structured learning.
+```
+1. Cover  ← _context_
+2. What you will be able to do  ← _invitation_
+3. Concepts  ← _context_
+4. Step-by-step 1  ← _proof_
+5. Step-by-step 2  ← _proof_
+6. Common mistakes  ← _conflict_
+7. Practice / exercise  ← _proof_
+8. Cheatsheet  ← _solution_
+9. Where to get help  ← _invitation_
+```
+
+#### all-hands (8 slides)
+Unite the organization around shared mission and progress.
+```
+1. Cover  ← _context_
+2. Where we came from  ← _context_
+3. Wins worth celebrating  ← _turning point_
+4. What we learned  ← _proof_
+5. What is next  ← _solution_
+6. How each team fits  ← _solution_
+7. Thank you  ← _invitation_
+8. Q&A  ← _invitation_
+```
+
+### research-proposal (variants)
+
+The Research Proposal type supports 5 variants for academic and research contexts. All research variants include a references section in the generated `.docx` (mirror `INTERNAL_VARIANTS` via `citations: true` flag).
+
+#### grant-proposal (12 slides)
+Secure funding for research through clear question, methodology, and impact.
+```
+1. Cover  ← _context_
+2. Why this matters now  ← _conflict_
+3. State of the art & gap  ← _context_
+4. Research questions & hypotheses  ← _solution_
+5. Objectives  ← _solution_
+6. Methodology  ← _proof_
+7. Work plan & timeline  ← _proof_
+8. Expected outputs  ← _solution_
+9. Team & capacity  ← _solution_
+10. Budget  ← _proof_
+11. Risks & mitigation  ← _conflict_
+12. Impact & ask  ← _invitation_
+```
+_References section in .docx: citations, bibliography_
+
+#### kickoff (10 slides)
+Align team on project scope, roles, and immediate actions.
+```
+1. Cover  ← _context_
+2. Why we started  ← _context_
+3. Goals & scope  ← _solution_
+4. Work packages  ← _solution_
+5. Roles & responsibilities  ← _solution_
+6. Milestones & deliverables  ← _solution_
+7. Data & resources  ← _proof_
+8. Risks & assumptions  ← _conflict_
+9. Reporting cadence & tools  ← _proof_
+10. First 30 days  ← _invitation_
+```
+_References section in .docx: key documents, data sources_
+
+#### progress-report (10 slides)
+Demonstrate progress with evidence, address risks, and chart next steps.
+```
+1. Cover  ← _context_
+2. Bottom line vs objectives  ← _proof_
+3. Results per objective  ← _proof_
+4. Outputs & publications  ← _proof_
+5. Evidence & data highlights  ← _proof_
+6. Deviations & why  ← _conflict_
+7. Budget use  ← _proof_
+8. Issues & support needed  ← _conflict_
+9. Next period plan  ← _solution_
+10. Conclusion & request  ← _invitation_
+```
+_References section in .docx: publications, deliverables_
+
+#### defense (10 slides)
+Present research findings and defend contribution to field.
+```
+1. Cover  ← _context_
+2. Research question  ← _context_
+3. Why it matters  ← _conflict_
+4. Related work & gap  ← _context_
+5. Contribution  ← _turning point_
+6. Method  ← _proof_
+7. Results  ← _proof_
+8. Discussion & limitations  ← _solution_
+9. Future work  ← _solution_
+10. Thank you & questions  ← _invitation_
+```
+_References section in .docx: citations, related work_
+
+#### tech-transfer (10 slides)
+Demonstrate technology readiness and secure partnership interest.
+```
+1. Cover  ← _context_
+2. Industry problem  ← _conflict_
+3. Our technology  ← _solution_
+4. Readiness level  ← _proof_
+5. Evidence & benchmarks  ← _proof_
+6. IP & ownership  ← _solution_
+7. Integration path  ← _solution_
+8. Partnership models  ← _solution_
+9. Pilot plan & costs  ← _proof_
+10. Next step  ← _invitation_
+```
+_References section in .docx: technical documentation, benchmarks_
+
+
 If `--dry-run`: print manifest as JSON and stop here.
 
 ---
@@ -527,6 +830,8 @@ Load the rules from `lib/proposal-script.cjs`:
 const { SPOKEN_NOTES_RULES, validateSpeakerNotes, DURATIONS, planDuration, buildScriptMarkdown } = require('./lib/proposal-script.cjs');
 ```
 Inject `SPOKEN_NOTES_RULES` (together with `buildVoiceInstruction()` and the `loadPromptContract()` text) into the generation prompt.
+
+**Default duration (ENH-119):** when `--duration` is not given, the primary script uses `suggestDuration(audienceProfile, recommendation)` from `lib/proposal-audience.cjs` (variant default, shortened for leadership or large online audiences). The 5 / 15 / 30 versions are still produced.
 
 **Spoken-notes rules (user decision, ENH-117):**
 - Speaker notes are the **full spoken words**, in spoken style - not keywords, not an essay
@@ -901,15 +1206,17 @@ Write to `docs/proposals/{slug}-{date}.md`
 Always-on final quality step. A council of 20 reviewer personas (library: `templates/proposal/review-personas.md`, logic: `lib/proposal-review.cjs`) scores the generated package against the rubric. Persona 20 ("Humanity editor") is locked and always runs.
 
 ### Flag: `--review off|quick|full`
-- `quick` (default): the persona set from `selectPersonas({type, audience, decisionMaker, mode:'quick'})`.
+- `quick` (default): the persona set from `selectPersonas({type, variant, audience, decisionMaker, audienceProfile, mode:'quick'})`.
 - `full`: the full council (`mode:'full'`).
 - `off`: skip the council but STILL run persona 20 only (`mode:'off'`). The humanity check is never skipped.
 
 ### 1. Select personas
 ```js
 const pr = require('../lib/proposal-review.cjs');
-const ids = pr.selectPersonas({ type, audience, decisionMaker, mode, add, remove });
+const ids = pr.selectPersonas({ type, variant, audience, decisionMaker, audienceProfile, mode, add, remove });
 ```
+Use the type-aware rubric and blockers: `pr.getRubric(type)` and `pr.getBlockers(type)`. For `research-proposal` they add R1 Novelty & contribution, R2 Methodological rigor, R3 Feasibility & reproducibility and the blocker "unsupported scientific claim / key claim without citation"; `pr.evaluateGate(reviews, { type })` applies them. Other types keep the original rubric.
+
 Optional AskUserQuestion (skipped with `--review off`): show the selected personas and offer accept / add / remove. Persona 20 is locked and cannot be removed. Claude Code preloads AskUserQuestion via ToolSearch `select:AskUserQuestion` (ENH-059); other adapters use a numbered text fallback.
 
 ### 2. Run reviews (independent, parallel)
@@ -1030,6 +1337,7 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 | `@googleapis/slides` not installed | Clear install instructions; continue without upload |
 | `GOOGLE_APPLICATION_CREDENTIALS` not set | Clear setup guide; continue without upload |
 | `docs/proposals/` write error | Show path and permission error; stop |
+| Unknown `--variant` | Show valid variants for type; ask user to select |
 
 ---
 
@@ -1038,13 +1346,13 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 </process>
 
 <success_criteria>
-- [ ] Context loaded (brainstorm session or direct brief)
-- [ ] Type validated; slide count ≥ base skeleton for type (dynamic — no hard maximum)
+- [ ] Purpose consult step precedes audience intake, which precedes type selection
+- [ ] Audience intake asks only findIntakeGaps groups via one AskUserQuestion (≤4 questions)
+- [ ] Type recommendation via recommendProposalType; user confirms or shows all types menu
+- [ ] Internal and research variants documented with skeletons; all 10 variants listed
+- [ ] Step 8b passes variant and audienceProfile to selectPersonas
+- [ ] Manifest example includes variant and audienceProfile fields
 - [ ] Manifest generated with correct structure; `designConfig` field present
-- [ ] `.pptx` written to `docs/proposals/`
-- [ ] `.docx` written to `docs/proposals/`
-- [ ] `.md` written to `docs/proposals/`
-- [ ] Template resolution: project override takes precedence over stock
-- [ ] `--slides`: Google Slides URL in `-slides.txt` or clear non-fatal error shown
-- [ ] `--dry-run`: manifest printed to console; no files written
-</success_criteria>
+- [ ] Error table includes unknown --variant row
+- [ ] SKILL.md 0.4.0 documents --type internal-presentation|research-proposal, --variant, --purpose, --audience
+- [ ] No Vietnamese text in workflow/SKILL (enh031 test passes)</success_criteria>
