@@ -21,7 +21,8 @@ describe('Phase 174.4 — report.html', () => {
   const html = report.renderReport(AGG, { title: 'CRM rollout', lang: 'vi', personaName: (id) => `P${id}` });
 
   test('self-contained: no external URLs, no external scripts or styles', () => {
-    expect(html).not.toMatch(/https?:\/\//);
+    // XML namespace identifiers (SVG / XHTML) are names, not network requests
+    expect(html.replace(/http:\/\/www\.w3\.org\/[\w/.]+/g, '')).not.toMatch(/https?:\/\//);
     expect(html).not.toMatch(/<link\b|<script[^>]+src=/);
   });
 
