@@ -522,3 +522,11 @@ describe('ENH-125 Tool Policy — integration', () => {
     expect(allowed.length).toBeGreaterThanOrEqual(10);
   });
 });
+
+describe('phase170-t1: review probes — unquoted sed -n and grep on paths', () => {
+  const { classifyBashCommand } = require('../../lib/tool-policy.cjs');
+  test.each(['sed -n 1,20p a.md', "sed -n '5,9p' a.md", 'grep -rn foo lib', 'grep foo file.md', 'cd x && grep -r foo .'])(
+    'flags %s', (cmd) => expect(classifyBashCommand(cmd).violation).toBe(true));
+  test.each(['npm test 2>&1 | grep Tests:', 'git log --oneline | grep vp-p', 'git status --porcelain | grep -v x', 'echo a | sed -n 1p'])(
+    'allows pipe filter %s', (cmd) => expect(classifyBashCommand(cmd).violation).toBe(false));
+});
