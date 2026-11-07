@@ -72,6 +72,7 @@ shipping code. Use `/vp-request` → `/vp-evolve` → `/vp-auto` for framework f
 | persona_review_council | input, output |
 | google_slides_upload | input, output |
 | confirm_output | output |
+| rehearsal_hall | input, output |
 | iterate | input, output |
 
 
@@ -1634,7 +1635,39 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 | Unknown `--variant` | Show valid variants for type; ask user to select |
 
 
-**Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (when available) / Stop. On accept: `writeProvenance(...)`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`.
+**Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (Step 10b) / Stop. On accept: `writeProvenance(...)`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`.
+
+---
+
+</step>
+
+<step name="rehearsal_hall">
+## Step 10b: Rehearsal Hall (ENH-121)
+
+Offered at the end of every run and re-runnable later with `/vp-proposal --simulate <docs/proposals/{slug}>` (uses the
+current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--remove <ids>`).
+
+**Gate (input, ENH-124):** AskUserQuestion — "Rehearse this deck in a simulated hall?" Options: Run the rehearsal
+(Recommended) / Choose who sits in the hall / Skip. `recordGate(root, slug, 'rehearsal_hall', 'input', result)`.
+
+1. `buildTimeline(manifest, { durationMin, lang })` from `lib/proposal-simulation.cjs` (speaking rate vi 150 / en 140 wpm,
+   `[click]` cues, pauses) and `slideLoad` per slide.
+2. `selectHall({ type, variant, audienceProfile, hall, add, remove })` → 12–16 listeners by default (`--hall all` = every
+   reviewer persona), #20 always present, primary-audience personas weighted ×2; #31 observes.
+3. **Listeners (Claude Code):** one subagent per listener via the Agent tool, all in parallel, each given only
+   `templates/proposal/simulation/listener-prompt.md` filled with its own persona card, the audience context, the
+   timeline JSON and the Deck QA slide images when they exist. Text-only adapters run listeners sequentially and say so.
+4. `parseListener(json, timeline)` for each answer — negative reactions without a quote from their segment are dropped.
+5. `aggregate({ timeline, listeners, manifest, primary, keyMessages, keywords, previous })` from
+   `lib/proposal-sim-aggregate.cjs`; `previous` = the latest earlier run's `data.json` for run-over-run deltas.
+6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta })` from `lib/proposal-sim-report.cjs`
+   → `simulation/run-{n}/report.html` (self-contained, opens offline, 3D hall replay with a 2D fallback),
+   `summary.md`, `data.json` — every page labelled "AI simulation — not real audience data". When the installed
+   ViePilot has no `three` package, the report shows the 2D hall only.
+
+**Gate (output, ENH-124):** AskUserQuestion — headline results (retention, tune-outs, would-act %, key-message recall,
+top 3 improvements) and the report path. Options: Iterate on the top improvements (Recommended — Step 11) / Open the
+report / Run again with another hall / Done. `recordGate(root, slug, 'rehearsal_hall', 'output', result)`.
 
 ---
 
