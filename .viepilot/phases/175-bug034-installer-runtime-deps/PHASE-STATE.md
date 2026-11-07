@@ -10,7 +10,7 @@ in_progress
 | Task | Status | Notes |
 |------|--------|-------|
 | 175.1 | done ✅ | deps_install + lock copy + --skip-deps + injectable runner + jest setup |
-| 175.2 | pending | tests + docs + CHANGELOG 3.22.1 + resolve BUG-034 |
+| 175.2 | in_progress 🔄 | tests + docs + 3.22.1 |
 
 ## Dependencies
 - Phase 174 ✅
@@ -23,4 +23,4 @@ in_progress
 
 ## Todo
 - [x] [vp] 175.1 — deps_install step in the install plan
-- [ ] [vp] 175.2 — tests, docs, release 3.22.1
+- [~] [vp] 175.2 — tests, docs, release 3.22.1
