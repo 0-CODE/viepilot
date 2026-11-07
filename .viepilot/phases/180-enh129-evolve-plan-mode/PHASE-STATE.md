@@ -4,7 +4,7 @@
 180 — ENH-129: optional Plan Mode for /vp-evolve (v3.24.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -18,6 +18,14 @@ in_progress
 
 ## Version Target
 3.24.0 (MINOR)
+
+## Completed
+2026-11-07
+
+## Git
+- Release commit: bfc7d24
+- Tag: vp-p180-complete
+- Full suite: 3282 passed
 
 ## Sources
 .viepilot/requests/ENH-129.md

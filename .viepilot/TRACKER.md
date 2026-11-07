@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **179** ✅ (v3.23.1) · **Next Phase**: **180** ⏳ planned (ENH-129 → v3.24.0, 3 tasks, planned in Plan Mode)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **180** ✅ (v3.24.0) · **Next Phase**: — (phases 165–180 complete; backlog empty on this branch)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 180 complete: ENH-129 → v3.24.0 (3282 tests). Optional Plan Mode for /vp-evolve (+ vp-auto high-risk task); planned in Plan Mode | Close phase 180 | 180 |
 | 2026-11-07 | Phase 180 planned for ENH-129 in Plan Mode (dogfood; approved via ExitPlanMode): optional --plan-mode for /vp-evolve, verbatim write, vp-auto per-task note | `/vp-evolve` | 180 |
 | 2026-11-07 | Phase 179 complete: BUG-037 → v3.23.1 (3278 tests). Skeptic-first panel, replyTo ids, stance before/after, computed engine label, diff latest two, card centring rule | Close phase 179 | 179 |
 | 2026-11-07 | Phase 179 planned for BUG-037 (3 tasks → 3.23.1): computed engine, replyTo ids, skeptic-first panel, stance before/after, presenter cap, diff latest-two, card centring | `/vp-evolve` | 179 |
