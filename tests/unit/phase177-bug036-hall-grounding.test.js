@@ -103,3 +103,29 @@ describe('BUG-036 177.3 — grounding in summary/report; deltas from data.json',
     expect(next.deltas.avgRetention).toBe(10);
   });
 });
+
+describe('BUG-036 177.4 — hall replay shows slide images', () => {
+  const os = require('os');
+  test('embedSlideImages: data URIs by slide number, missing/oversized skipped', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vp177-img-'));
+    const a = path.join(dir, 'slide-1.jpg'); fs.writeFileSync(a, Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+    const big = path.join(dir, 'slide-3.jpg'); fs.writeFileSync(big, Buffer.alloc(500 * 1024));
+    const out = report.embedSlideImages([a, path.join(dir, 'nope.jpg'), big]);
+    expect(Object.keys(out)).toEqual(['1']);
+    expect(out[1]).toMatch(/^data:image\/jpeg;base64,/);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+
+  test('writeRun puts the images into the hall data; hall3d draws them (3D texture + 2D image)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vp177-run-'));
+    const img = path.join(dir, 'slide-1.jpg'); fs.writeFileSync(img, Buffer.from([0xff, 0xd8, 0xff, 0xd9]));
+    const agg = aggregate({ timeline: TL, listeners: [sim.parseListener({ personaId: 3, states: [{ seg: 0, attention: 80 }] }, TL).listener], manifest: { slides: [{ index: 1 }] } });
+    const run = report.writeRun(path.join(dir, 'simulation'), { agg, timeline: TL, listeners: [], hall: { listeners: [3] }, meta: { lang: 'en' }, slideImages: [img], assets: { hallScript: '', threeSource: '' } });
+    const html = fs.readFileSync(path.join(run.dir, 'report.html'), 'utf8');
+    expect(html).toMatch(/"slideImages":\{"1":"data:image\/jpeg;base64,/);
+    const js = fs.readFileSync(path.join(ROOT, 'templates/proposal/simulation/hall3d.js'), 'utf8');
+    expect(js).toMatch(/ctx\.drawImage\(im/);
+    expect(js).toMatch(/createElementNS\(NS, 'image'\)/);
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+});

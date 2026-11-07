@@ -65,6 +65,15 @@
   var names = data.names || {};
   var nameOf = function (id) { return names[id] || ('#' + id); };
   var slideTitle = function (n) { var s = (data.timeline.slides || []).filter(function (x) { return x.slide === n; })[0]; return s ? s.heading : ''; };
+  // Slide images (BUG-036): data URIs keyed by slide number; the heading is the fallback when one is missing.
+  var slideImages = data.slideImages || {};
+  var imgCache = {};
+  function slideImage(n, onload) {
+    var src = slideImages[n];
+    if (!src || !root.Image) return null;
+    if (!imgCache[n]) { var im = new root.Image(); im.onload = function () { im.ready = true; if (onload) onload(n); }; im.src = src; imgCache[n] = im; }
+    return imgCache[n];
+  }
 
   mount.innerHTML =
     '<div class="hall-ui" style="display:grid;gap:8px">' +
@@ -113,6 +122,9 @@
     var svg = doc.createElementNS(NS, 'svg'); svg.setAttribute('viewBox', '-11 -2 22 14'); svg.style.width = '100%'; svg.style.height = '100%';
     var stage = doc.createElementNS(NS, 'rect'); stage.setAttribute('x', -5); stage.setAttribute('y', -1.5); stage.setAttribute('width', 10); stage.setAttribute('height', 1.2); stage.setAttribute('rx', 0.3); stage.setAttribute('fill', '#4f6ef7');
     svg.appendChild(stage);
+    var shot = doc.createElementNS(NS, 'image'); shot.setAttribute('x', -3.2); shot.setAttribute('y', -1.9); shot.setAttribute('width', 6.4); shot.setAttribute('height', 3.6);
+    shot.setAttribute('preserveAspectRatio', 'xMidYMid meet'); svg.setAttribute('viewBox', '-11 -2.5 22 14.5'); svg.appendChild(shot);
+    var shown2D = null;
     var layout = HallCore.seatLayout(data.listeners.length), dots = [];
     data.listeners.forEach(function (l, i) {
       var c = doc.createElementNS(NS, 'circle'); c.setAttribute('cx', layout[i].x); c.setAttribute('cy', layout[i].z - 4); c.setAttribute('r', 0.55); c.style.cursor = 'pointer';
@@ -121,7 +133,9 @@
       svg.appendChild(c); dots.push(c);
     });
     view.appendChild(svg);
-    return { draw: function (f) { f.seats.forEach(function (s, i) { dots[i].setAttribute('fill', s.color); dots[i].setAttribute('fill-opacity', s.tunedOut ? 0.25 : 1); dots[i].setAttribute('stroke', s.primary ? '#fff' : 'none'); dots[i].setAttribute('stroke-width', s.primary ? 0.15 : 0); }); } };
+    return { draw: function (f) {
+      if (f.slide !== shown2D) { shown2D = f.slide; if (slideImages[f.slide]) { shot.setAttribute('href', slideImages[f.slide]); shot.style.display = ''; } else shot.style.display = 'none'; }
+      f.seats.forEach(function (s, i) { dots[i].setAttribute('fill', s.color); dots[i].setAttribute('fill-opacity', s.tunedOut ? 0.25 : 1); dots[i].setAttribute('stroke', s.primary ? '#fff' : 'none'); dots[i].setAttribute('stroke-width', s.primary ? 0.15 : 0); }); } };
   }
 
   // ── 3D hall ─────────────────────────────────────────────────────────────────
@@ -145,8 +159,16 @@
     var screen = new THREE.Mesh(new THREE.PlaneGeometry(8, 4.5), new THREE.MeshBasicMaterial({ map: screenTex })); screen.position.set(0, 3.2, -2.6); scene.add(screen);
     var lastSlide = null;
     function paintScreen(slide) {
-      ctx.fillStyle = '#1a1f36'; ctx.fillRect(0, 0, 1024, 576); ctx.fillStyle = '#ffffff'; ctx.font = 'bold 60px system-ui, sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('Slide ' + slide, 512, 220); ctx.font = '44px system-ui, sans-serif'; ctx.fillText(String(slideTitle(slide)).slice(0, 40), 512, 320); screenTex.needsUpdate = true;
+      ctx.fillStyle = '#1a1f36'; ctx.fillRect(0, 0, 1024, 576);
+      var im = slideImage(slide, function (n) { if (n === lastSlide) paintScreen(n); });
+      if (im && im.ready) {
+        var r = Math.min(1024 / im.width, 576 / im.height), dw = im.width * r, dh = im.height * r;
+        ctx.drawImage(im, (1024 - dw) / 2, (576 - dh) / 2, dw, dh);
+      } else {
+        ctx.fillStyle = '#ffffff'; ctx.font = 'bold 60px system-ui, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('Slide ' + slide, 512, 220); ctx.font = '44px system-ui, sans-serif'; ctx.fillText(String(slideTitle(slide)).slice(0, 40), 512, 320);
+      }
+      screenTex.needsUpdate = true;
     }
     var layout = HallCore.seatLayout(data.listeners.length), people = [];
     data.listeners.forEach(function (l, i) {

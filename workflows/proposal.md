@@ -1707,7 +1707,7 @@ current version; options `--duration 5|15|30`, `--hall all`, `--add <ids>`, `--r
    counted. The report shows visual coverage and quote quality next to the numbers.
 5. `aggregate({ timeline, listeners, manifest, primary, keyMessages, keywords, previous })` from
    `lib/proposal-sim-aggregate.cjs`; `previous` = the latest earlier run's `data.json` for run-over-run deltas.
-6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta })` from `lib/proposal-sim-report.cjs`,
+6. `writeRun(versionPaths(...).simulationDir, { agg, timeline, listeners, hall, meta, slideImages })` (`slideImages` = the Deck QA renders, so the hall screen shows the real slides) from `lib/proposal-sim-report.cjs`,
    then `refreshProvenance(root, slug, version)` so the run's files are hashed with the sealed version. Output:
    `simulation/run-{n}/report.html` (self-contained, opens offline, 3D hall replay with a 2D fallback),
    `summary.md`, `data.json` — every page labelled "AI simulation — not real audience data". When the installed
