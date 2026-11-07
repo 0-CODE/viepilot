@@ -4421,3 +4421,24 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 178 --phase-complete` → exit 0
 - [x] version = 3.23.0
+
+
+## Phase 179 — BUG-037: first live panel run fixes (v3.23.1)
+
+**Goal**: The panel engine label is derived from how messages actually flowed, replyTo accepts message or panelist ids, the strongest skeptics always get a seat, before/after uses each panelist's own stance, the presenter respects the word cap, card text is vertically centred, and proposal diff compares the latest two versions.
+**Estimated Tasks**: 3
+**Status**: ⏳ planned
+**Version Target**: 3.23.1
+**Dependencies**: Phase 178 ✅
+**Directory**: `.viepilot/phases/179-bug037-panel-live-fixes/`
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 179.1 | Panel lib: computed engine, replyTo resolution, skeptic-first selection, stance before/after | M |
+| 179.2 | Report shows stance/conditions; proposal diff latest-two; card text centring guidance | S |
+| 179.3 | Tests + CHANGELOG 3.23.1 + resolve BUG-037 | S |
+
+**Verification**:
+- [ ] `npm test` → full suite green
+- [ ] `node bin/vp-tools.cjs todo check --phase 179 --phase-complete` → exit 0
+- [ ] version = 3.23.1

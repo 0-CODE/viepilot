@@ -1,7 +1,7 @@
 # ViePilot (framework repo) - Tracker
 
 ## Current State
-- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **178** ✅ (v3.23.0) · **Next Phase**: — (phases 165–178 complete; backlog empty on this branch)
+- **Branch**: `from-3.12.2` (parallel line from 3.12.2) — **Last Completed Phase**: **178** ✅ (v3.23.0) · **Next Phase**: **179** ⏳ planned (BUG-037 → v3.23.1, 3 tasks)
 - **Milestone**: **v3.0** — Per-Adapter Intelligence Refactor (FEAT-021) — Phases 127–138 → v3.5.0
 - **Current Phase**: ~~136~~ — all phases 136-138 ✅ done (v3.5.0)
 - **Last Completed Phase**: **138** ✅ (ENH-088 intake schedule + --auto mode → v3.5.0)
@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-07 | Phase 179 planned for BUG-037 (3 tasks → 3.23.1): computed engine, replyTo ids, skeptic-first panel, stance before/after, presenter cap, diff latest-two, card centring | `/vp-evolve` | 179 |
 | 2026-11-07 | Phase 178 complete: ENH-128 → v3.23.0 (3270 tests). Panel Q&A after independent listening: selectPanel, protocol + caps + citations, presenter/panel prompts, relay + agent-teams engines, report section | Close phase 178 | 178 |
 | 2026-11-07 | Phase 178 planned for ENH-128 (5 tasks → 3.23.0): panel selection + message protocol, presenter/panel prompts, relay + agent-teams engines, debate report section | `/vp-evolve` | 178 |
 | 2026-11-07 | Phase 177 complete: BUG-036 → v3.22.3 (3259 tests). Listeners must open every slide (verifyVisual), selective quotes + mechanical flag, grounding + model-estimate labels, slide images in hall replay, deltas from data.json, session backfill | Close phase 177 | 177 |
@@ -315,7 +316,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | BUG-035 | 🐛 | Lỗi từ lần chạy thử vp-proposal thật (hall/council chọn sai người, session/gate, hints, nguồn, timing, backstage, animation) + hỏi người dùng bằng text thay vì AskUserQuestion | high | ✅ done (**3.22.2**, Phase 176) |
 | BUG-036 | 🐛 | Hội trường giả lập: agent không xem ảnh slide (13/16), chống bịa bị lách (chép nguyên đoạn vào line), số liệu không ghi là ước lượng, màn 3D không hiện slide, deltas null, session cũ currentVersion null | high | ✅ done (**3.22.3**, Phase 177) |
 | ENH-128 | 🔧 | Hội trường: persona tranh luận với nhau + chất vấn diễn giả bằng message (nghe độc lập → panel Q&A 4–6 người + presenter agent; teams opt-in / relay mặc định) | medium | ✅ done (**3.23.0**, Phase 178) |
-| BUG-037 | 🐛 | Panel chạy thật lần đầu: nhãn engine sai (relay ghi là teams), replyTo id mơ hồ, selectPanel bỏ sót người phản đối mạnh nhất, before/after chỉ so wouldAct, diễn giả vượt 80 chữ, chữ trong thẻ lệch, proposal diff so sai bản | medium | new |
+| BUG-037 | 🐛 | Panel chạy thật lần đầu: nhãn engine sai (relay ghi là teams), replyTo id mơ hồ, selectPanel bỏ sót người phản đối mạnh nhất, before/after chỉ so wouldAct, diễn giả vượt 80 chữ, chữ trong thẻ lệch, proposal diff so sai bản | medium | triaged → Phase 179 |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
 | ENH-125 | 🔧 | Chính sách công cụ cho mọi skill/agent ViePilot: Read đọc, Grep/Glob tìm, Edit sửa, Write tạo, Task giao subagent, TodoWrite (TaskCreate…) theo dõi việc; cấm sửa bằng sed/python/heredoc; Bash chỉ chạy lệnh; lint test + hook PreToolUse (warn/block, có consent) | high | ✅ done (**3.18.0**, Phase 170) |
 | ENH-124 | 🔧 | vp-proposal giữ bối cảnh: session.json sau mỗi bước + `--resume` + bước Iterate + hook Claude Code (UserPromptSubmit/SessionStart, có consent); AskUserQuestion bắt buộc ở mọi gate đầu vào/đầu ra (hiện 14/21 bước thiếu) + gate lint | high | ✅ done (**3.19.0**, Phase 171) |
