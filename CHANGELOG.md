@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.22.0] - 2026-11-07
+### Added
+- Rehearsal Hall for vp-proposal (ENH-121): after a run, or later with `--simulate <proposal dir>`, 12–16 personas (or `--hall all`) listen to the deck along the real timeline as independent subagents.
+  - `lib/proposal-simulation.cjs`: timeline from the spoken script (speaking rate per language, `[click]` cues, pauses, planned vs spoken time), slide cognitive load, hall selection (type personas first, decision makers weighted, #20 present, #31 observer), listener parsing that drops negative reactions without a quote from the segment.
+  - `templates/proposal/simulation/listener-prompt.md`: per-segment attention, comprehension, emotion, funnel stage, questions, objections, tune-out, 24-hour recall, verdict.
+  - `lib/proposal-sim-aggregate.cjs`: persona evaluations, ranked improvements, tune-out moments, retention (all and decision-maker weighted), keyword and criteria effectiveness, attention heatmap, cognitive load and confusion spikes, emotion arc vs the intended arc, persuasion funnel, questions and objections with answered flags, pacing, 24-hour recall vs key messages, run-over-run deltas.
+  - `lib/proposal-sim-report.cjs`: self-contained `report.html` (inline SVG charts, light/dark, phone width, "AI simulation — not real audience data"), `summary.md`, `data.json` in `simulation/run-{n}/`.
+  - `templates/proposal/simulation/hall3d.js`: 3D hall replay (three.js inlined and loaded from a Blob URL — works offline; drag to orbit, zoom, click a seat for its live state; seats coloured by attention, dimmed after tune-out, flags for questions and objections, decision makers ringed) with a 2D SVG fallback.
+- Dependency: `three` (used only for the replay).
+
+### Changed
+- vp-proposal SKILL 0.7.0; workflow Step 10b Rehearsal Hall with input and output gates.
+
+---
+
 ## [3.21.0] - 2026-11-07
 ### Added
 - Outline first (ENH-122): after the type is confirmed, vp-proposal agrees on a key message and, per slide, its job, the evidence it needs and its time budget (`lib/proposal-outline.cjs`); no content is written until the outline is approved.
