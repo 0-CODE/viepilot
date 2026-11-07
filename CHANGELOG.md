@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.19.0] - 2026-11-07
+### Added
+- vp-proposal asks the user at every gate (ENH-124): each workflow step has an input and/or output AskUserQuestion gate (or names the gate that covers it); gate registry `lib/proposal-gates.cjs` with `lintWorkflowGates` so the workflow cannot drift back.
+- Durable proposal sessions: `lib/proposal-session.cjs` keeps `docs/proposals/{slug}/session.json` (steps, decisions with their source, gates, pending gate; schema-versioned with migration). `/vp-proposal --resume [slug]` continues where the run stopped without re-asking confirmed decisions.
+- Step 11 Iterate: follow-up change requests rerun only the invalidated steps, in a new version, with their gates.
+- Optional Claude Code hooks `vp-tools hooks install --proposal-context` (UserPromptSubmit + SessionStart startup/resume/compact) remind the agent of the active proposal and the re-entry rule; consent-gated, dry-run, idempotent.
+- Versioned, never-overwritten outputs (ENH-126): `lib/proposal-store.cjs` — `docs/proposals/{slug}/versions/v{n}-{date}/` with `provenance.json` (ViePilot version, gates passed, sha256 per file); hand-edit detection by hash.
+- Step 1b Detect existing proposal: Upgrade (runs only the gates added or changed since the proposal was made — `upgradePlan`), Revise, New proposal, Keep; `upgrade-report.md`.
+- `vp-tools proposal status|resume|migrate|diff|prune`: migrate copies legacy flat files into `versions/v1-{date}/` (dry-run, confirmation, originals kept, never repeated); prune never removes the current version. Works in any project (no `.viepilot/` required).
+
+### Changed
+- vp-proposal SKILL 0.5.0 (`--resume`, `--yes` semantics, re-entry rule); workflow 0.3.0.
+
+### Fixed
+- Phase 150 update-check fast-path test asserts behaviour (guard file untouched) instead of wall-clock time.
+
+---
+
 ## [3.18.0] - 2026-11-07
 ### Added
 - Tool-use policy for every ViePilot skill, workflow and agent (ENH-125): Read to read, Grep/Glob to search, Edit to change, Write to create, Task to delegate, TodoWrite (or TaskCreate/TaskUpdate/TaskList) to track work; Bash only for running programs. One source (`templates/tool-policy.md`, `lib/tool-policy.cjs`) with a per-adapter mapping for Claude Code, Cursor, Codex, Copilot and Antigravity.
