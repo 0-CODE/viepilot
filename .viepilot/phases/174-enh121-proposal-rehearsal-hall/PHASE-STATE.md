@@ -13,7 +13,7 @@ in_progress
 | 174.2 | done ✅ | listener-prompt.md, parseListener, selectHall |
 | 174.3 | done ✅ | proposal-sim-aggregate.cjs — 5 requested outputs + 4 chart groups + deltas |
 | 174.4 | done ✅ | proposal-sim-report.cjs — HTML/MD/JSON, writeRun |
-| 174.5 | pending | 3D hall replay + 2D fallback |
+| 174.5 | in_progress 🔄 | 3D hall replay + 2D fallback |
 | 174.6 | pending | Workflow: end-of-flow gate + --simulate re-run |
 | 174.7 | pending | Tests + CHANGELOG 3.22.0 + resolve ENH-121 |
 
@@ -31,6 +31,6 @@ in_progress
 - [x] [vp] 174.2 — Listener contract + hall audience
 - [x] [vp] 174.3 — Aggregator: all metrics and chart data
 - [x] [vp] 174.4 — Report: HTML (inline SVG) + summary.md + data.json
-- [ ] [vp] 174.5 — 3D hall replay + 2D fallback
+- [~] [vp] 174.5 — 3D hall replay + 2D fallback
 - [ ] [vp] 174.6 — Workflow: end-of-flow gate + --simulate re-run
 - [ ] [vp] 174.7 — Tests + CHANGELOG 3.22.0 + resolve ENH-121
