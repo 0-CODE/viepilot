@@ -1177,12 +1177,16 @@ Runs on the manifest **and** the spoken script, before anything is rendered:
    hashes, file paths and function names (non-technical audiences), changelog verbs, dated "what we did" lists,
    "first we… then we…" narration. Every finding is rewritten through TRANSFORM and re-checked; anything left is
    fail-loud (rendering does not start).
-2. `detectDevNotes(manifest, script)` — not-done work, "remaining / watch-out" lists, hedges. Each finding goes to the
-   **Backstage Editor (#31)**, who decides `fix | reframe | backstage | remove` with a reason; `enforceMaterialRule`
+2. `detectDevNotes(manifest, script, { keep })` — not-done work, "remaining / watch-out" lists, hedges, quoted line by
+   line (only in their work-item sense: "forgets what it is doing" or an honest "no numbers yet" is not a dev note). Each finding
+   goes to the **Backstage Editor (#31)**, who decides `fix | reframe | backstage | remove | keep` with a reason (`keep`
+   = false positive or deliberate; pass kept lines back as `keep` on re-checks); `enforceMaterialRule`
    forbids hiding a material risk (budget, delay, security, legal) from a decision audience — reframe it as
    risk → mitigation → ask instead.
-3. `buildBackstage(decisions, { title })` → `versionPaths(...).backstage` (presenter-only: tough questions with
-   prepared answers, open items with owner and date, reframes, fixes, removals). `findBackstageLeaks` must be `ok`: no
+3. `buildBackstage(decisions, { title, lang, manifest, contentMap })` → `versionPaths(...).backstage` (presenter-only,
+   headings in the deck language: tough questions with prepared answers, open items with owner and date — not
+   repeating the questions —, reframes that are really on the slides (others listed as pending), fixes, removals
+   including the Content Map DROP items). `findBackstageLeaks` must be `ok`: no
    backstage or removed text may remain on slides, in notes or in the script. Speaker notes may keep a short
    `[Backstage]` pointer where a question is likely.
 
@@ -1656,6 +1660,11 @@ recordProposalLang(lang)  // → update ~/.viepilot/config.json proposal.recentL
 **Completeness check (BUG-035 G2):** before this gate run `missingArtifacts(root, slug, version)` from
 `lib/proposal-store.cjs` (pptx, docx, md, the three scripts, `-script.docx`, review, backstage, outline, manifest).
 Generate anything missing first; list what is still missing in the gate question.
+
+**Consistency and placeholders (BUG-035 G6):** run `checkConsistency(manifest, [{ name: 'backstage', text }])` and
+`findPlaceholders(manifest)` from `lib/proposal-curation.cjs`. Fix contradictions (e.g. "before the session" on the
+slide vs "after the session" in the notes) before the gate. Remaining placeholders (`[fill in name + channel]`) are
+listed in the gate question and Accept becomes "Accept with N placeholders"; never auto-accept them under `--yes`.
 
 **Gate (output, ENH-124):** AskUserQuestion — the package is complete: Accept this version (Recommended) / Iterate on something (Step 11) / Run the Rehearsal Hall (Step 10b) / Stop. On accept: `writeProvenance(..., { seal: true, gatesPassed })`, `setCurrentVersion(...)`, `finishSession(...)`; `recordGate(root, slug, 'confirm_output', 'output', result)`. Gate records keep every kind per step (`gates[step].byKind.input` / `.output`).
 
