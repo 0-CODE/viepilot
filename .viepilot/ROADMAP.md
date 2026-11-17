@@ -4476,7 +4476,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 181.5 | R3: executor turn budget, split rule, report-before-budget; release 3.25.0 | M |
 
 ## Phase 182 — BUG-038: panel run 2 fixes (v3.25.1)
-**Status**: planned · **Request**: BUG-038 · **Depends on**: 181
+**Status**: ✅ done (2026-11-18) · **Request**: BUG-038 · **Depends on**: 181
 
 | Task | Description | Complexity |
 |------|-------------|------------|

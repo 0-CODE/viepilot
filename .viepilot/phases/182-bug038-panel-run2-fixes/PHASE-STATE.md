@@ -4,7 +4,7 @@
 182 — BUG-038: panel run 2 fixes (v3.25.1)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -19,6 +19,14 @@ in_progress
 
 ## Version Target
 3.25.1 (PATCH)
+
+## Completed
+2026-11-18
+
+## Git
+- Release commit: cde1168
+- Tag: vp-p182-complete
+- Full suite: 3399 passed (2 skipped)
 
 ## Sources
 .viepilot/requests/BUG-038.md
