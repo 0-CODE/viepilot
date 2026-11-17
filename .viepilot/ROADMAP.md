@@ -4463,3 +4463,14 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] `npm test` → full suite green
 - [x] `node bin/vp-tools.cjs todo check --phase 180 --phase-complete` → exit 0
 - [x] version = 3.24.0
+
+## Phase 181 — BUG-039: skills load their workflow deterministically (v3.25.0)
+**Status**: planned · **Request**: BUG-039 · **Depends on**: 180
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 181.1 | Installer: ship each skill's workflow inside the skill + explicit Read step (fix A) | L |
+| 181.2 | Hard gates inline in SKILL.md (fix C) + banner fw version | M |
+| 181.3 | R1: PHASE-STATE template vs todo-mirror parser | S |
+| 181.4 | R2: crystallize research subagents return text; orchestrator persists the stack cache | M |
+| 181.5 | R3: executor turn budget, split rule, report-before-budget; release 3.25.0 | M |
