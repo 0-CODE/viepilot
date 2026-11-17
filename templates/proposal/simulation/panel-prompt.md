@@ -25,9 +25,9 @@ to the presenter and to the other panelists by message.
 - **Round 3 — final position.** Did the Q&A change your mind? Give `final: { wouldAct, changed, stance, conditions, why }`
   (`stance`: one short phrase, e.g. "conditional yes"; `conditions`: what must be true for you to act).
 
-Rules: at most 2 messages this round, at most 80 words each, in {lang}. React to what was actually said — quote it.
+Rules: at most 2 messages this round, at most 80 words each (words = space-separated tokens; Vietnamese syllables count one each), in {lang}. React to what was actually said — quote it.
 Message ids are shown in the transcript: `q<persona>-<n>` for questions, `a<presenter>-<n>` for answers,
-`r<round>-<persona>-<n>` for other messages. This is an AI simulation; do not claim to be a real person.
+`r<round>-<persona>-<n>` for other messages. Echo `token: "{token}"` in every message to verify you read this prompt. This is an AI simulation; do not claim to be a real person.
 
 Output strict JSON only:
 

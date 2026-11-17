@@ -1737,9 +1737,17 @@ members / Use agent teams / Skip. `recordGate(root, slug, 'panel', 'input', resu
    the roster and the transcript so far) asks the presenter one question; the presenter
    (`templates/proposal/simulation/presenter-prompt.md`) answers each with citations or `noAnswer`.
 3. **Round 2:** panelists answer each other (quote the words they answer); **Round 3:** final positions.
-4. `buildTranscript(messages, { roster, sourceIds })` validates every message (unknown sources, missing citations,
-   over-cap messages are flagged or dropped); `unansweredQuestions(transcript)` → deck gaps; `beforeAfter(agg,
-   transcript)` → who changed their mind.
+4. `buildTranscript(messages, { roster, sourceIds, roundTokens })` validates every message:
+   - unknown sources, missing citations, citations without noAnswer/partial, noAnswer with cites
+   - word count: 80 words max (words = space-separated tokens; Vietnamese syllables count one each)
+   - read token: each panelist must echo the token from their round prompt; missing/wrong token flags "round prompt not read"
+   - over-cap messages (>2 per sender per round) are flagged or dropped
+   
+   **Word-count discipline:** an over-limit message is sent back to its author once for a rewrite before merging.
+   Only a second failure is kept and flagged in the report.
+   
+   Extract `unansweredQuestions(transcript)` → deck gaps; `beforeAfter(agg, transcript)` → who changed their mind;
+   `repeatedPhrases(presenterAnswers)` → flag n-grams (3–5 word phrases) in >⅓ of presenter answers.
 
 **Engines (same protocol, same caps):**
 - **relay (default, every host):** the orchestrator spawns the presenter and each panelist as subagents and moves the
