@@ -4,12 +4,12 @@
 181 — BUG-039: skills load their workflow deterministically (v3.25.0)
 
 ## Status
-planned
+in_progress
 
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 181.1 | pending | |
+| 181.1 | in_progress | installer renders skill workflows |
 | 181.2 | pending | |
 | 181.3 | pending | |
 | 181.4 | pending | |
@@ -25,7 +25,7 @@ planned
 .viepilot/requests/BUG-039.md
 
 ## Todo
-- [ ] [vp] 181.1 — Installer: ship each skill's workflow inside the skill + explicit Read step (fix A)
+- [~] [vp] 181.1 — Installer: ship each skill's workflow inside the skill + explicit Read step (fix A)
 - [ ] [vp] 181.2 — Hard gates inline in SKILL.md (fix C) + banner fw version
 - [ ] [vp] 181.3 — R1: PHASE-STATE template vs todo-mirror parser
 - [ ] [vp] 181.4 — R2: crystallize research subagents return text; orchestrator persists the stack cache
