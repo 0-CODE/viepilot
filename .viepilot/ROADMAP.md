@@ -4465,7 +4465,7 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 - [x] version = 3.24.0
 
 ## Phase 181 — BUG-039: skills load their workflow deterministically (v3.25.0)
-**Status**: planned · **Request**: BUG-039 · **Depends on**: 180
+**Status**: ✅ done (2026-11-18) · **Request**: BUG-039 · **Depends on**: 180
 
 | Task | Description | Complexity |
 |------|-------------|------------|

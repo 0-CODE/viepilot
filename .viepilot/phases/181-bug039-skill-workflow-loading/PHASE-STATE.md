@@ -4,7 +4,7 @@
 181 — BUG-039: skills load their workflow deterministically (v3.25.0)
 
 ## Status
-in_progress
+done ✅
 
 ## Tasks
 | Task | Status | Notes |
@@ -20,6 +20,14 @@ in_progress
 
 ## Version Target
 3.25.0 (MINOR)
+
+## Completed
+2026-11-18
+
+## Git
+- Release commit: adec459
+- Tag: vp-p181-complete
+- Full suite: 3346 passed (2 skipped)
 
 ## Sources
 .viepilot/requests/BUG-039.md
