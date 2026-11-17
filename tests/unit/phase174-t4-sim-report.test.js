@@ -62,7 +62,8 @@ describe('Phase 174.4 — summary.md and run folders', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vp-run-'));
     try {
       const a = report.writeRun(dir, { agg: AGG, timeline: TL, listeners: LS, hall: { listeners: [2], observers: [31] }, meta: { title: 'x', lang: 'en' } });
-      const b = report.writeRun(dir, { agg: AGG, timeline: TL, listeners: LS, hall: { listeners: [2], observers: [31] }, meta: { title: 'x', lang: 'en' } });
+      // Duplicate run requires force: true (BUG-038)
+      const b = report.writeRun(dir, { agg: AGG, timeline: TL, listeners: LS, hall: { listeners: [2], observers: [31] }, meta: { title: 'x', lang: 'en' } }, { force: true });
       expect(path.basename(a.dir)).toBe('run-1');
       expect(path.basename(b.dir)).toBe('run-2');
       expect(fs.readdirSync(a.dir).sort()).toEqual(['data.json', 'report.html', 'summary.md']);

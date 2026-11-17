@@ -77,7 +77,12 @@ describe('BUG-035 G2 — outline, completeness, seal, provenance refresh', () =>
     fs.mkdirSync(path.join(dir, 'simulation', 'run-1'), { recursive: true });
     fs.writeFileSync(path.join(dir, 'simulation', 'run-1', 'data.json'), '{}');
     fs.writeFileSync(path.join(dir, 'demo.md'), 'hand edit');
-    expect(store.refreshProvenance(root, SLUG, version)).toEqual([path.join('simulation', 'run-1', 'data.json')]);
+    const result = store.refreshProvenance(root, SLUG, version);
+    // Returns array with added files (and new properties for removed, updated, tampered)
+    expect(result.length).toBe(1);
+    expect(result[0]).toBe(path.join('simulation', 'run-1', 'data.json'));
+    expect(result.added).toEqual([path.join('simulation', 'run-1', 'data.json')]);
+    expect(result.tampered).toEqual(['demo.md']);
     const after = store.readProvenance(root, SLUG, version);
     expect(after.artifacts['demo.md']).toBe(before.artifacts['demo.md']);
     expect(store.detectHandEdits(root, SLUG, version).map((d) => d.artifact)).toEqual(['demo.md']);
