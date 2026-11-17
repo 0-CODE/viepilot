@@ -4474,3 +4474,13 @@ to confirm, and adds `internal-presentation` and `research-proposal` (5 variants
 | 181.3 | R1: PHASE-STATE template vs todo-mirror parser | S |
 | 181.4 | R2: crystallize research subagents return text; orchestrator persists the stack cache | M |
 | 181.5 | R3: executor turn budget, split rule, report-before-budget; release 3.25.0 | M |
+
+## Phase 182 — BUG-038: panel run 2 fixes (v3.25.1)
+**Status**: planned · **Request**: BUG-038 · **Depends on**: 181
+
+| Task | Description | Complexity |
+|------|-------------|------------|
+| 182.1 | Presenter answers: noAnswer+cites contradiction, partial state, answer ids | M |
+| 182.2 | Word-count rule + one rewrite round; presenter anti-repetition; round-prompt read token | M |
+| 182.3 | Provenance refresh prunes and re-hashes; writeRun duplicate guard | S |
+| 182.4 | Card margin order in the workflow; release 3.25.1 | S |

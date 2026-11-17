@@ -62,6 +62,7 @@ Phase 35 (ENH-022)    [██████████] done
 
 ## Decision Log
 
+| 2026-11-18 | Phase 182 planned for BUG-038 (4 tasks → 3.25.1): presenter noAnswer/partial + answer ids, word-count rule + rewrite round, anti-repetition, read token, provenance prune/re-hash + writeRun guard, card margin order | `/vp-evolve` | 182 |
 | 2026-11-18 | Phase 181 complete: BUG-039 → v3.25.0 (3346 tests). Skills ship workflows in references/ + Step 0 Read, inline hard gates, PHASE-STATE template/parser, stack-cache write, executor 60 turns + missing report = PARTIAL | Close phase 181 | 181 |
 | 2026-11-17 | Phase 181 planned for BUG-039 (5 tasks → 3.25.0): installer ships workflow into skills/references + Step 0 Read, inline hard gates, PHASE-STATE template/parser, crystallize stack-cache via orchestrator, executor budget | `/vp-evolve` | 181 |
 | 2026-11-07 | Phase 180 complete: ENH-129 → v3.24.0 (3282 tests). Optional Plan Mode for /vp-evolve (+ vp-auto high-risk task); planned in Plan Mode | Close phase 180 | 180 |
@@ -322,7 +323,7 @@ _v3 ROADMAP ready. Run `/vp-auto --from 127` to start Phase 127 (vp-tools detect
 | BUG-036 | 🐛 | Hội trường giả lập: agent không xem ảnh slide (13/16), chống bịa bị lách (chép nguyên đoạn vào line), số liệu không ghi là ước lượng, màn 3D không hiện slide, deltas null, session cũ currentVersion null | high | ✅ done (**3.22.3**, Phase 177) |
 | ENH-128 | 🔧 | Hội trường: persona tranh luận với nhau + chất vấn diễn giả bằng message (nghe độc lập → panel Q&A 4–6 người + presenter agent; teams opt-in / relay mặc định) | medium | ✅ done (**3.23.0**, Phase 178) |
 | BUG-037 | 🐛 | Panel chạy thật lần đầu: nhãn engine sai (relay ghi là teams), replyTo id mơ hồ, selectPanel bỏ sót người phản đối mạnh nhất, before/after chỉ so wouldAct, diễn giả vượt 80 chữ, chữ trong thẻ lệch, proposal diff so sai bản | medium | ✅ done (**3.23.1**, Phase 179) |
-| BUG-038 | 🐛 | Panel v3: noAnswer mâu thuẫn cites, đếm chữ sai, câu trả lời không có id, diễn giả lặp câu, không kiểm panelist đọc prompt, provenance/run chỉ cộng thêm, sai thứ tự margin trong workflow | high | 🆕 new |
+| BUG-038 | 🐛 | Panel v3: noAnswer mâu thuẫn cites, đếm chữ sai, câu trả lời không có id, diễn giả lặp câu, không kiểm panelist đọc prompt, provenance/run chỉ cộng thêm, sai thứ tự margin trong workflow | high | 📋 planned (Phase 182 → 3.25.1) |
 | BUG-039 | 🐛 | Skill @-include workflow không được nạp (gate ENH-118/096 chỉ nằm trong workflow); template PHASE-STATE lệch parser todo-mirror; subagent crystallize bị chặn ghi stack cache; executor hết 30 lượt | high | ✅ done (**3.25.0**, Phase 181) |
 | ENH-129 | 🔧 | /vp-evolve tùy chọn Plan Mode (EnterPlanMode/ExitPlanMode), gợi ý cho L/XL, ExitPlanMode thay gate chốt | low | ✅ done (**3.24.0**, Phase 180) |
 | ENH-126 | 🔧 | vp-proposal phiên bản & nâng cấp: mỗi proposal 1 thư mục, versions/ bất biến + manifest.json + provenance.json; khi chạy lại hỏi Upgrade / Revise / New / Keep; Upgrade chỉ chạy gate mới từ phiên bản cũ; bảo vệ bản chỉnh tay; migrate file cũ; diff/prune | high | ✅ done (**3.19.0**, Phase 171) |
