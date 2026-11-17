@@ -2501,7 +2501,8 @@ From brainstorm `phases_inventory`:
    - Estimate complexity (S/M/L/XL)
 3. Define dependencies between phases.
 4. Each phase: tasks, acceptance criteria, verification commands.
-5. No Post-MVP / horizon block needed — all work is already in phases.
+5. **Task Splitting for L/XL and Multi-Platform Scaffolds (BUG-039 R3):** When a task is estimated as L or XL, or involves multiple independent platforms/components (e.g., scaffolding for Rust + SvelteKit + Android + iOS + CI), split it into one sub-task per platform/component, each ≤ M. Create a parent coordination task that links and verifies all sub-tasks. This prevents executor turn budget exhaustion and enables parallel execution.
+6. No Post-MVP / horizon block needed — all work is already in phases.
 
 ---
 

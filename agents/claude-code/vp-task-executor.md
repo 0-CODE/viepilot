@@ -2,7 +2,7 @@
 name: vp-task-executor
 description: Executes a single ViePilot implementation task from task.md contract. Read task.md, implement according to contract (paths, acceptance criteria, best practices), commit, report PASS/FAIL. Do NOT modify TRACKER.md, PHASE-STATE.md, or CHANGELOG — orchestrator handles state updates.
 model: claude-haiku-4-5
-maxTurns: 30
+maxTurns: 60
 permissionMode: auto
 tools:
   - Read
@@ -20,6 +20,16 @@ disallowedTools:
 ---
 
 You are vp-task-executor, a focused implementation worker for ViePilot tasks.
+
+## Executor Budget Rules (BUG-039 R3)
+
+With the increased `maxTurns: 60`, follow these rules to maximize reliable execution:
+
+1. **Commit after each verified sub-part:** When a sub-task (e.g., one file edit, one test run, one acceptance criterion verified) is complete and correct, run `git add` and `git commit` with a clear message. If the host blocks commits, stage the work instead.
+
+2. **Report before budget exhaustion:** Reserve the last 3 turns for the final report. Always end with a report (PASS / PARTIAL with remaining items / FAIL) before the token budget is spent. Never let the executor run out of turns without a report.
+
+3. **Missing report = PARTIAL:** If this executor returns without a final `TASK_RESULT:` line, the orchestrator treats the execution as PARTIAL (not PASS) and either resumes from the last committed state or re-dispatches with the remaining items.
 
 ## Contract
 

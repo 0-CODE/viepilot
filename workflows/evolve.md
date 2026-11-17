@@ -159,6 +159,21 @@ If the feature leans toward product discovery, UX, or landing page:
   - `/vp-brainstorm --new --research` (if a research decision is needed)
 - After brainstorm is complete, return to `/vp-evolve` to crystallize phase/tasks.
 
+### Task Splitting Rule for L/XL and Multi-Platform Scaffolds (BUG-039 R3)
+
+When the complexity is **L** or **XL**, or the task involves multiple platforms/components (e.g., Rust workspace + SvelteKit + Android Gradle + iOS XcodeGen + CI):
+- **Split into one sub-task per platform/component**, each complexity ≤ M (1–2 days)
+- Each sub-task gets its own `## Paths`, `## Acceptance Criteria`, `## Verification`
+- Parent task becomes a **coordination task** that links and verifies all sub-tasks
+- Rationale: smaller sub-tasks avoid executor turn budget exhaustion and enable parallel work (Phase 133 fan-out)
+
+Example: "Monorepo Scaffold" (XL) → split into:
+- Sub-task 1: "Rust workspace setup" (M)
+- Sub-task 2: "SvelteKit frontend" (M)
+- Sub-task 3: "Android Gradle config" (M)
+- Sub-task 4: "iOS XcodeGen" (M)
+- Sub-task 5: "CI/CD pipeline" (M)
+
 ### Generate Phase
 Create new phase in ROADMAP.md:
 ```markdown

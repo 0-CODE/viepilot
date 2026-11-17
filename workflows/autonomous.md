@@ -838,6 +838,12 @@ If the block is present:
 - Re-verify
 - If still fail → control point
 
+**PARTIAL (executor missing report — BUG-039 R3):**
+If the executor returns without a final `TASK_RESULT:` line (stopped at turn limit or unfinished):
+- Inspect the last committed state with `git status` and `git diff`
+- If work is staged but not committed, run `npm test` to verify the diff, then commit it yourself
+- Resume the same executor with the remaining items (via SendMessage on Claude Code), or re-dispatch a new executor task with the incomplete acceptance criteria listed
+
 **FAIL:**
 → Go to handle_blocker
 </step>

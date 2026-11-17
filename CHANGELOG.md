@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.25.0] - 2026-11-18
+### Fixed
+- **BUG-039 A: Skill workflows load deterministically (fix A):** `vp-tools install --target claude-code` now ships each `vp-*` skill's workflow as a sibling reference file (e.g., `references/autonomous.md`), and replaces the unloadable `@$HOME` include with an explicit Step 0 Read instruction using the Read tool. Avoids executor skipping workflow rules and prevents subagents from opening large files via forbidden Bash patterns.
+- **BUG-039 C: Hard gates inline in SKILL.md (fix C):** ENH-118 (Todo Mirror) and ENH-096 (orchestrator delegation) rules are now inline in SKILL.md so the agent sees them without needing to open the workflow. Skill banner now shows the correct framework version instead of a stale `fw 2.19.0`.
+- **BUG-039 R1: PHASE-STATE template now uses `## Tasks` with `Task` column, not `## Task Status`:** Parser accepts both legacy and new formats; `vp-tools todo check` exits 0 on template-generated phases.
+- **BUG-039 R2: Research subagents return text; orchestrator persists stack cache:** `vp-tools stack-cache write` reads SUMMARY / BEST-PRACTICES / ANTI-PATTERNS / SOURCES from stdin/JSON (crystallize workflow Step 1C); subagents no longer write report files directly.
+- **BUG-039 R3: Executor budget and split rules:** `vp-task-executor` maxTurns 30 → 60; prompt requires commit after each verified sub-part and a report (PASS / PARTIAL + remaining items) before budget exhaustion. Executor without report is treated as PARTIAL (never PASS). Evolve/crystallize now split L/XL or multi-platform scaffold tasks into one sub-task per platform/component (≤ M each) to avoid turn budget overrun.
+
+---
+
 ## [3.24.0] - 2026-11-07
 ### Added
 - **Plan Mode for `/vp-evolve` (ENH-129, Claude Code, optional):** `--plan-mode`, or an AskUserQuestion offer for L/XL or vague requests, plans the phase in Claude Code Plan Mode.
