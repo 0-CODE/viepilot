@@ -387,6 +387,26 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 **Prompts using AskUserQuestion in this skill:**
 - Control point decisions (retry / skip / rollback / stop — Step 7)
 
+<hard_gates>
+
+## Hard Gates for vp-auto
+
+**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` or first installed copy).
+Run: phase start `todo check --phase N` (exit 0), every task transition `todo sync/check --phase N`, task PASS `todo check`, phase end `todo check --phase N --phase-complete`.
+Detail: `workflows/autonomous.md` lines 235–376.
+
+**ENH-096 — Orchestrator Delegation (Claude Code):** Never edit implementation files (`lib/`, `bin/`, `tests/`, etc.).
+Only: Read (state), Bash (read-only git), Agent (spawn executors). All implementation via `vp-task-executor`.
+Detail: `workflows/autonomous.md` lines 269–379.
+
+**BUG-001 — Doc-First Gate:** Task `.md` must hold real plan (no `{{PLACEHOLDER}}`); PHASE-STATE.md must show task `in_progress` before first implementation commit.
+Detail: `workflows/autonomous.md` lines 521–535.
+
+**BUG-003 — Git Persistence Before PASS:** Before task PASS, run `node bin/vp-tools.cjs git-persistence --strict` (must exit 0).
+Detail: `workflows/autonomous.md` lines 192–199.
+
+</hard_gates>
+
 ## Native todo mirror (ENH-118)
 
 You MUST follow the "Todo Mirror (ENH-118 — MANDATORY)" block in `workflows/autonomous.md`; it is a hard gate, not optional.

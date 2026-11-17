@@ -355,6 +355,17 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 - Brainstorm routing decision (Step 3A — Yes / No)
 - Workflow continuation (Step 5 — Execute /vp-auto / Create request / Done)
 
+<hard_gates>
+
+## Hard Gates for vp-evolve
+
+**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` or first installed copy).
+For EACH new phase: run `node "$VP_TOOLS" todo sync --phase N` then `todo check --phase N` (must exit 0).
+Evolve is not complete until this block runs for every new phase.
+Detail: `workflows/evolve.md` lines 228–255.
+
+</hard_gates>
+
 ## Native todo mirror (ENH-118)
 
 You MUST follow the "Todo Mirror (ENH-118 — MANDATORY)" block in `workflows/evolve.md`; it is a hard gate, not optional.

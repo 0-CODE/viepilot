@@ -102,4 +102,42 @@ describe('install renders every skill (temp HOME)', () => {
     expect(plan.steps.some((s) => s.kind === 'render_skill_workflows')).toBe(false);
     expect(plan.steps.some((s) => s.kind === 'note' && /symlink mode: skill workflows/.test(s.message))).toBe(true);
   });
+
+  test('source vp-auto/SKILL.md contains ENH-118 todo check text in <hard_gates>', () => {
+    const src = fs.readFileSync(path.join(ROOT, 'skills', 'vp-auto', 'SKILL.md'), 'utf8');
+    expect(src).toContain('<hard_gates>');
+    expect(src).toContain('ENH-118');
+    expect(src).toContain('todo check --phase');
+    expect(src).toContain('ENH-096');
+    expect(src).toContain('git-persistence --strict');
+  });
+
+  test('source vp-evolve/SKILL.md contains ENH-118 todo check text in <hard_gates>', () => {
+    const src = fs.readFileSync(path.join(ROOT, 'skills', 'vp-evolve', 'SKILL.md'), 'utf8');
+    expect(src).toContain('<hard_gates>');
+    expect(src).toContain('ENH-118');
+    expect(src).toContain('todo check --phase');
+  });
+
+  test('installed banners show package version from package.json', () => {
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    const expectedVersion = pkgJson.version;
+    let count = 0;
+    for (const name of fs.readdirSync(skillsDir)) {
+      const text = fs.readFileSync(path.join(skillsDir, name, 'SKILL.md'), 'utf8');
+      const bannerMatch = text.match(/\(fw\s+[\d.]+\)/);
+      if (bannerMatch) {
+        expect({ name, banner: bannerMatch[0] }).toEqual({ name, banner: `(fw ${expectedVersion})` });
+        count++;
+      }
+    }
+    expect(count).toBeGreaterThanOrEqual(2);
+  });
+
+  test('source SKILL.md banners remain unchanged', () => {
+    const srcAuto = fs.readFileSync(path.join(ROOT, 'skills', 'vp-auto', 'SKILL.md'), 'utf8');
+    const srcEvolve = fs.readFileSync(path.join(ROOT, 'skills', 'vp-evolve', 'SKILL.md'), 'utf8');
+    expect(srcAuto).toContain('(fw 2.19.0)');
+    expect(srcEvolve).toContain('(fw 2.19.0)');
+  });
 });
