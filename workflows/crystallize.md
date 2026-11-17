@@ -1697,42 +1697,47 @@ For each selected stack extracted in Step 1:
 5. Build a concise implementation guide that can be reused by `vp-auto`.
 6. Capture "Do / Don't" rules and common anti-patterns.
 
-Required output per stack:
-- Quick summary (token-light)
-- Best practices
-- Anti-patterns
-- Source links + checked date
-- Version compatibility note (e.g. MyBatis 3.x, Spring Boot 3.x integration notes)
+**Return findings as fenced markdown sections** (do NOT write files; orchestrator persists them):
 
-Recommended structure:
-```yaml
-stack: mybatis
-official_sources:
-  - https://mybatis.org/mybatis-3/
-guideline:
-  do:
-    - Prefer XML mapper for complex SQL and reusable fragments
-  dont:
-    - Avoid large inline SQL annotations for complex queries
 ```
+## SUMMARY
+Quick reference checklist for fast lookup...
+
+## BEST-PRACTICES
+- Prefer XML mapper for complex SQL
+- Use reusable fragments for schema changes
+
+## ANTI-PATTERNS
+- Avoid large inline SQL annotations for complex queries
+- Don't hardcode vendor-specific features
+
+## SOURCES
+- https://mybatis.org/mybatis-3/ (checked 2026-11-18)
+- Verifying: Spring Boot 3.x integration notes (official Spring docs)
+```
+
+Include version compatibility note (e.g. MyBatis 3.x, Spring Boot 3.x integration notes).
 
 If official sources cannot be verified, pause crystallize and ask user to confirm temporary assumptions.
 </step>
 
 <step name="write_stack_cache">
-## Step 1C: Write Global Stack Cache
+## Step 1C: Orchestrator Persists Stack Cache
 
-Persist stack guidance globally for cross-project reuse:
+After research subagent returns text sections:
 
-```bash
-mkdir -p "$HOME/.viepilot/stacks/{stack}"
-```
-
-Files per stack:
-- `~/.viepilot/stacks/{stack}/SUMMARY.md` (short checklist for fast lookup)
-- `~/.viepilot/stacks/{stack}/BEST-PRACTICES.md`
-- `~/.viepilot/stacks/{stack}/ANTI-PATTERNS.md`
-- `~/.viepilot/stacks/{stack}/SOURCES.md` (official docs + last validated date)
+1. Extract the four fenced sections from agent response (SUMMARY, BEST-PRACTICES, ANTI-PATTERNS, SOURCES).
+2. Call `vp-tools stack-cache write --stack {stack_id} --from -` with JSON input:
+   ```bash
+   echo '{
+     "SUMMARY": "...",
+     "BEST-PRACTICES": "...",
+     "ANTI-PATTERNS": "...",
+     "SOURCES": "..."
+   }' | vp-tools stack-cache write --stack {stack_id} --from -
+   ```
+3. Validates stack ID (must match `/^[a-z0-9][a-z0-9._-]*$/`).
+4. Writes to `~/.viepilot/stacks/{stack}/{SUMMARY,BEST-PRACTICES,ANTI-PATTERNS,SOURCES}.md` with date header.
 
 Also create project-local index for traceability:
 - `.viepilot/STACKS.md` listing stacks used and cache paths.

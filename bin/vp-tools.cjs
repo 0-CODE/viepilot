@@ -2338,6 +2338,89 @@ ${colors.cyan}Examples:${colors.reset}
   },
 
   /**
+   * Stack cache management
+   * Usage: vp-tools stack-cache write --stack <id> --from <json|-> [--home <dir>]
+   */
+  'stack-cache': (args) => {
+    const stackCache = require(path.join(__dirname, '../lib/stack-cache.cjs'));
+    const sub = args[0];
+    const flag = (n) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : undefined; };
+
+    if (sub === 'write') {
+      const stackId = flag('--stack');
+      const fromArg = flag('--from');
+      const homeOverride = flag('--home');
+
+      // Validate required arguments
+      if (!stackId) {
+        console.error(formatError('Missing required argument --stack'));
+        process.exit(1);
+      }
+      if (!fromArg) {
+        console.error(formatError('Missing required argument --from (use "-" for stdin or path to .json)'));
+        process.exit(1);
+      }
+
+      // Read sections from input
+      let sections;
+      try {
+        let input;
+
+        if (fromArg === '-') {
+          // Read from stdin (synchronously for simplicity)
+          const stdinData = fs.readFileSync(0, 'utf8');
+          input = stdinData;
+        } else if (fromArg.endsWith('.json')) {
+          // Read JSON file
+          input = fs.readFileSync(fromArg, 'utf8');
+        } else {
+          // Try to parse as inline JSON
+          input = fromArg;
+        }
+
+        // Try to parse as JSON first
+        try {
+          const parsed = JSON.parse(input);
+          if (parsed.sections && typeof parsed.sections === 'object') {
+            sections = parsed.sections;
+          } else if (typeof parsed === 'object' && parsed.SUMMARY) {
+            // Object with section keys directly
+            sections = parsed;
+          } else {
+            // Might be text with sections
+            sections = stackCache.parseSections(input);
+          }
+        } catch (e) {
+          // Not JSON, try parsing as text with sections
+          sections = stackCache.parseSections(input);
+        }
+      } catch (err) {
+        console.error(formatError(`Failed to read input: ${err.message}`));
+        process.exit(1);
+      }
+
+      // Write cache
+      try {
+        const home = homeOverride || os.homedir();
+        const writtenPaths = stackCache.writeStackCache({
+          stack: stackId,
+          sections,
+          home,
+        });
+
+        console.log(formatSuccess(`Stack cache written for "${stackId}"`));
+        writtenPaths.forEach(p => console.log(`  ${p}`));
+      } catch (err) {
+        console.error(formatError(err.message));
+        process.exit(1);
+      }
+    } else {
+      console.error(formatError(`Unknown stack-cache subcommand: "${sub}"`, 'Usage: vp-tools stack-cache write --stack <id> --from <json|->'));
+      process.exit(1);
+    }
+  },
+
+  /**
    * Help
    */
   help: (args) => {
@@ -2519,6 +2602,20 @@ ${colors.cyan}Examples:${colors.reset}
           'vp-tools tracker compact --path /path/to/TRACKER.md',
         ],
       },
+      'stack-cache': {
+        usage: 'vp-tools stack-cache write --stack <id> --from <json|-> [--home <dir>]',
+        description: 'Persist stack research cache for cross-project reuse (BUG-039 R2)',
+        options: [
+          '--stack <id>    Stack identifier (e.g., mybatis, spring-boot-3.x); must match /^[a-z0-9][a-z0-9._-]*$/',
+          '--from <input>  Input source: - (stdin), path/to/file.json, or JSON string',
+          '--home <dir>    Override home directory (for tests); default: os.homedir()',
+        ],
+        examples: [
+          'vp-tools stack-cache write --stack mybatis --from sections.json',
+          'echo \'{"SUMMARY":"...","BEST-PRACTICES":"..."}\' | vp-tools stack-cache write --stack mybatis --from -',
+          'vp-tools stack-cache write --stack mybatis --from - --home /tmp/viepilot',
+        ],
+      },
     };
 
     if (command && commandHelp[command]) {
@@ -2574,6 +2671,7 @@ ${colors.cyan}Commands:${colors.reset}
   ${colors.bold}policy${colors.reset} render|sync        Policy management: render blocks (--adapter <id>) or sync all files [--check]
   ${colors.bold}proposal${colors.reset} <op> [opts]      Proposal session and version management (ENH-124, ENH-126)
   ${colors.bold}tracker${colors.reset} compact [--keep N] Compact bloated TRACKER.md, archive history
+  ${colors.bold}stack-cache${colors.reset} write         Persist stack research for cross-project reuse (BUG-039 R2)
   ${colors.bold}help${colors.reset} [command]           Show help (optionally for specific command)
 
 ${colors.cyan}Examples:${colors.reset}
