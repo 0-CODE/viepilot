@@ -6,10 +6,10 @@
 - **Progress**: 0/{{TASK_COUNT}} tasks (0%)
 - **Current Task**: -
 
-## Task Status
+## Tasks
 
-| # | Task | Status | Started | Completed | Git Tag |
-|---|------|--------|---------|-----------|---------|
+| Task | Title | Status | Started | Completed | Git Tag |
+|------|-------|--------|---------|-----------|---------|
 {{TASK_TABLE}}
 
 ## Blockers
