@@ -13,7 +13,7 @@ in_progress
 | 181.2 | done ✅ | inline hard gates + banner version; 3296 tests |
 | 181.3 | done ✅ | template ## Tasks + legacy parser; 3300 tests |
 | 181.4 | done ✅ | stack-cache write + crystallize 1B/1C; 3328 tests; commit by orchestrator (executor commit blocked) |
-| 181.5 | in_progress | executor budget + release 3.25.0 |
+| 181.5 | done ✅ | executor budget + split + 3.25.0; reinstall verified |
 
 ## Dependencies
 - Phase 180 ✅
@@ -29,4 +29,4 @@ in_progress
 - [x] [vp] 181.2 — Hard gates inline in SKILL.md (fix C) + banner fw version
 - [x] [vp] 181.3 — R1: PHASE-STATE template vs todo-mirror parser
 - [x] [vp] 181.4 — R2: crystallize research subagents return text; orchestrator persists the stack cache
-- [~] [vp] 181.5 — R3: executor turn budget, split rule, report-before-budget; release 3.25.0
+- [x] [vp] 181.5 — R3: executor turn budget, split rule, report-before-budget; release 3.25.0
