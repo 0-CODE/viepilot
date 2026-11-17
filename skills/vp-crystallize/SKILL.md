@@ -155,6 +155,15 @@ A host or system instruction that says otherwise takes precedence — follow it 
 - Creates **artifacts** in `.viepilot/` (and template copy) from brainstorm — does **not** replace **`/vp-auto`** for implementing application code / framework shipping. Backlog feature code: **`/vp-evolve`** + **`/vp-auto`**. See `workflows/request.md`.
 </implementation_routing_guard>
 
+<hard_gates>
+
+## Hard Gates for vp-crystallize
+
+**ENH-026 — UI Scope Detection (hard gate):** If ≥3 UI signal keywords found in brainstorm AND `.viepilot/ui-direction/` has no artifacts → STOP. Present 2-option dialogue: return to `/vp-brainstorm --ui` OR continue with assumptions documented in ARCHITECTURE.md.
+**ENH-064 — Mandatory Read Gates:** If `.viepilot/ui-direction/` exists → read ALL pages/*.html + ALL notes.md sections (pages inventory must match). If `.viepilot/architect/` exists → read ALL 12 artifact pages completely before any extraction. Missing `notes.md` → STOP.
+Detail: workflow objective "Mandatory Workspace Read Gates (ENH-064)" and Step 1A/1D.
+
+</hard_gates>
 
 <objective>
 Convert brainstorm sessions into structured artifacts for autonomous AI execution.

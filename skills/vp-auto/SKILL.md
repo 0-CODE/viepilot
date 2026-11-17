@@ -391,19 +391,21 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 
 ## Hard Gates for vp-auto
 
-**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` or first installed copy).
-Run: phase start `todo check --phase N` (exit 0), every task transition `todo sync/check --phase N`, task PASS `todo check`, phase end `todo check --phase N --phase-complete`.
-Detail: `workflows/autonomous.md` lines 235–376.
+**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` when developing ViePilot, else first installed copy found). Execute in sequence:
+1. `node "$VP_TOOLS" todo payload --phase N --adapter <id>` (create native items; fallback when no todo tool)
+2. `node "$VP_TOOLS" todo sync --phase N` (sync checklist)
+3. `node "$VP_TOOLS" todo check --phase N` (must exit 0 before dispatching any executor)
+On every task transition: sync and check. Task PASS: check before next. Phase end: `todo check --phase N --phase-complete`.
+Detail: workflow Step 2 "Todo Mirror (ENH-118 — MANDATORY)".
 
-**ENH-096 — Orchestrator Delegation (Claude Code):** Never edit implementation files (`lib/`, `bin/`, `tests/`, etc.).
-Only: Read (state), Bash (read-only git), Agent (spawn executors). All implementation via `vp-task-executor`.
-Detail: `workflows/autonomous.md` lines 269–379.
+**ENH-096 — Orchestrator Delegation (Claude Code):** Never edit implementation files (`lib/`, `bin/`, `tests/`, `agents/`, `skills/`, `workflows/`). Only: Read (state), Bash (read-only git), Agent (spawn executors). All implementation via `vp-task-executor`. Append `{DISPATCH_RULES}` (from workflow) verbatim to every subagent prompt.
+Detail: workflow Step 3b "⛔ ORCHESTRATOR STOP — Implementation Delegation Rule (ENH-096)".
 
 **BUG-001 — Doc-First Gate:** Task `.md` must hold real plan (no `{{PLACEHOLDER}}`); PHASE-STATE.md must show task `in_progress` before first implementation commit.
-Detail: `workflows/autonomous.md` lines 521–535.
+Detail: workflow "Pre-execution documentation gate (doc-first; BUG-001)".
 
 **BUG-003 — Git Persistence Before PASS:** Before task PASS, run `node bin/vp-tools.cjs git-persistence --strict` (must exit 0).
-Detail: `workflows/autonomous.md` lines 192–199.
+Detail: objective section "Git persistence gate before PASS (BUG-003)".
 
 </hard_gates>
 

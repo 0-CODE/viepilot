@@ -359,10 +359,12 @@ Before the first interactive prompt, call `ToolSearch` with `query: "select:AskU
 
 ## Hard Gates for vp-evolve
 
-**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` or first installed copy).
-For EACH new phase: run `node "$VP_TOOLS" todo sync --phase N` then `todo check --phase N` (must exit 0).
+**ENH-118 — Todo Mirror (MANDATORY):** Resolve VP_TOOLS (repo `bin/vp-tools.cjs` when developing ViePilot, else first installed copy found). For EACH new phase, execute in sequence:
+1. `node "$VP_TOOLS" todo payload --phase N --adapter <id>` (create native items; fallback when no todo tool)
+2. `node "$VP_TOOLS" todo sync --phase N` (sync checklist)
+3. `node "$VP_TOOLS" todo check --phase N` (must exit 0)
 Evolve is not complete until this block runs for every new phase.
-Detail: `workflows/evolve.md` lines 228–255.
+Detail: workflow Step 1 "Todo Mirror (ENH-118 — MANDATORY)".
 
 </hard_gates>
 

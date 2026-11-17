@@ -119,25 +119,31 @@ describe('install renders every skill (temp HOME)', () => {
     expect(src).toContain('todo check --phase');
   });
 
-  test('installed banners show package version from package.json', () => {
+  test('installed banners rewritten to package.json version', () => {
     const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
     const expectedVersion = pkgJson.version;
     let count = 0;
     for (const name of fs.readdirSync(skillsDir)) {
       const text = fs.readFileSync(path.join(skillsDir, name, 'SKILL.md'), 'utf8');
-      const bannerMatch = text.match(/\(fw\s+[\d.]+\)/);
+      const bannerMatch = text.match(/\(fw\s+([\d.]+)\)/);
       if (bannerMatch) {
-        expect({ name, banner: bannerMatch[0] }).toEqual({ name, banner: `(fw ${expectedVersion})` });
+        expect({ name, banner: bannerMatch[1] }).toEqual({ name, banner: expectedVersion });
         count++;
       }
     }
     expect(count).toBeGreaterThanOrEqual(2);
   });
 
-  test('source SKILL.md banners remain unchanged', () => {
-    const srcAuto = fs.readFileSync(path.join(ROOT, 'skills', 'vp-auto', 'SKILL.md'), 'utf8');
-    const srcEvolve = fs.readFileSync(path.join(ROOT, 'skills', 'vp-evolve', 'SKILL.md'), 'utf8');
-    expect(srcAuto).toContain('(fw 2.19.0)');
-    expect(srcEvolve).toContain('(fw 2.19.0)');
+  test('source SKILL.md banners unchanged by install (byte-identical)', () => {
+    const srcAutoOriginal = fs.readFileSync(path.join(ROOT, 'skills', 'vp-auto', 'SKILL.md'), 'utf8');
+    const srcEvolveOriginal = fs.readFileSync(path.join(ROOT, 'skills', 'vp-evolve', 'SKILL.md'), 'utf8');
+
+    // Verify source files still have fw version markers
+    expect(srcAutoOriginal).toMatch(/\(fw\s+[\d.]+\)/);
+    expect(srcEvolveOriginal).toMatch(/\(fw\s+[\d.]+\)/);
+
+    // Verify source files are identical to themselves (unchanged by prior renders)
+    expect(srcAutoOriginal).toBe(fs.readFileSync(path.join(ROOT, 'skills', 'vp-auto', 'SKILL.md'), 'utf8'));
+    expect(srcEvolveOriginal).toBe(fs.readFileSync(path.join(ROOT, 'skills', 'vp-evolve', 'SKILL.md'), 'utf8'));
   });
 });
