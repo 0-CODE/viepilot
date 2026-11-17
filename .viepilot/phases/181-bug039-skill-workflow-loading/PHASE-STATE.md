@@ -9,7 +9,7 @@ in_progress
 ## Tasks
 | Task | Status | Notes |
 |------|--------|-------|
-| 181.1 | in_progress | installer renders skill workflows |
+| 181.1 | done ✅ | renderer + install step; 3290 tests |
 | 181.2 | pending | |
 | 181.3 | pending | |
 | 181.4 | pending | |
@@ -25,7 +25,7 @@ in_progress
 .viepilot/requests/BUG-039.md
 
 ## Todo
-- [~] [vp] 181.1 — Installer: ship each skill's workflow inside the skill + explicit Read step (fix A)
+- [x] [vp] 181.1 — Installer: ship each skill's workflow inside the skill + explicit Read step (fix A)
 - [ ] [vp] 181.2 — Hard gates inline in SKILL.md (fix C) + banner fw version
 - [ ] [vp] 181.3 — R1: PHASE-STATE template vs todo-mirror parser
 - [ ] [vp] 181.4 — R2: crystallize research subagents return text; orchestrator persists the stack cache
