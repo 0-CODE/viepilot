@@ -205,3 +205,15 @@ describe('BUG-038 182.1 — backward compatibility', () => {
     expect(t.messages[1].partial).toBe(true);
   });
 });
+
+describe('BUG-038 182.4 — workflow card margin order', () => {
+  const fs = require('fs');
+  const path = require('path');
+
+  test('workflow contains "left, right, bottom, top" margin order and not "[t, r, b, l]"', () => {
+    const workflowPath = path.join(__dirname, '../../workflows/proposal.md');
+    const workflowContent = fs.readFileSync(workflowPath, 'utf-8');
+    expect(workflowContent).toContain('left, right, bottom, top');
+    expect(workflowContent).not.toContain('[t, r, b, l]');
+  });
+});

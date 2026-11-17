@@ -115,8 +115,22 @@ describe('Phase 181 — BUG-039 R3: Executor Budget and Rules', () => {
   });
 
   describe('Version consistency', () => {
-    test('package.json version should be 3.25.0', () => {
-      expect(packageJson.version).toBe('3.25.0');
+    // Helper to compare semantic versions numerically
+    const compareVersions = (v1, v2) => {
+      const parts1 = v1.split('.').map(Number);
+      const parts2 = v2.split('.').map(Number);
+      for (let i = 0; i < 3; i++) {
+        if (parts1[i] > parts2[i]) return 1;
+        if (parts1[i] < parts2[i]) return -1;
+      }
+      return 0;
+    };
+
+    test('package.json version matches semantic versioning and is >= 3.25.0', () => {
+      // Version should match /^\d+\.\d+\.\d+$/
+      expect(packageJson.version).toMatch(/^\d+\.\d+\.\d+$/);
+      // Version should be >= 3.25.0
+      expect(compareVersions(packageJson.version, '3.25.0')).toBeGreaterThanOrEqual(0);
     });
 
     test('no hardcoded version literals in test suite', () => {

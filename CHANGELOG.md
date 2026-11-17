@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.25.1] - 2026-11-18
+### Fixed
+- **BUG-038 presenter answers:** `noAnswer` with cites is flagged as a contradiction; new `partial: true` state for answers with a named gap; `partialAnswers` report section lists them separately from unanswered questions.
+- **BUG-038 word-count rule:** one rule (`countWords`: space-separated tokens; Vietnamese syllables count one each) in prompts and validation; workflow sends one rewrite request for over-80-word messages before flagging.
+- **BUG-038 presenter anti-repetition:** new rule in presenter prompt against stock phrases; a phrase repeated in more than ⅓ of answers is flagged with `repeatedPhrases` in the panel report.
+- **BUG-038 per-round read token:** round prompts carry a `roundToken` (nonce) that panelists must echo in their answers; messages without it are flagged; workflow checks it.
+- **BUG-038 message IDs:** questions get `q<persona>-<n>`, answers get `a<persona>-<n>` (derived from question id), round 2+ messages get `r<round>-<persona>-<n>`; `replyTo` can reference answer ids so panelists can reply to answers.
+- **BUG-038 provenance and run writes:** `refreshProvenance` now prunes deleted entries and re-hashes changed simulation files, reporting changed/missing sealed deliverables (tampered); `writeRun` refuses duplicate runs (same agg hash as latest) unless `force: true` is passed.
+- **BUG-038 workflow card margin order:** corrected to `[left, right, bottom, top]` in points (pptxgenjs order).
+
+---
+
 ## [3.25.0] - 2026-11-18
 ### Fixed
 - **BUG-039 A: Skill workflows load deterministically (fix A):** `vp-tools install --target claude-code` now ships each `vp-*` skill's workflow as a sibling reference file (e.g., `references/autonomous.md`), and replaces the unloadable `@$HOME` include with an explicit Step 0 Read instruction using the Read tool. Avoids executor skipping workflow rules and prevents subagents from opening large files via forbidden Bash patterns.
